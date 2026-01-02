@@ -1209,6 +1209,76 @@ export const translations = {
   },
 
   // ============================================================================
+  // ERROR PAGES (404, Error)
+  // ============================================================================
+  errorPages: {
+    notFound: {
+      title: {
+        fr: 'Page non trouvée',
+        en: 'Page Not Found',
+        nl: 'Pagina niet gevonden',
+        de: 'Seite nicht gefunden',
+      },
+      description: {
+        fr: 'Désolé, nous n\'avons pas trouvé la page que vous cherchez. Elle a peut-être été déplacée ou supprimée.',
+        en: 'Sorry, we couldn\'t find the page you\'re looking for. It might have been moved or deleted.',
+        nl: 'Sorry, we konden de pagina die je zoekt niet vinden. Deze is mogelijk verplaatst of verwijderd.',
+        de: 'Entschuldigung, wir konnten die gesuchte Seite nicht finden. Sie wurde möglicherweise verschoben oder gelöscht.',
+      },
+      goHome: {
+        fr: 'Retour à l\'accueil',
+        en: 'Go Home',
+        nl: 'Naar startpagina',
+        de: 'Zur Startseite',
+      },
+      browseProperties: {
+        fr: 'Parcourir les annonces',
+        en: 'Browse Properties',
+        nl: 'Woningen bekijken',
+        de: 'Immobilien durchsuchen',
+      },
+      goBack: {
+        fr: 'Retour',
+        en: 'Go Back',
+        nl: 'Terug',
+        de: 'Zurück',
+      },
+    },
+    error: {
+      title: {
+        fr: 'Oups ! Une erreur est survenue',
+        en: 'Oops! Something went wrong',
+        nl: 'Oeps! Er ging iets mis',
+        de: 'Hoppla! Etwas ist schiefgelaufen',
+      },
+      description: {
+        fr: 'Nous sommes désolés, quelque chose d\'inattendu s\'est produit. Ne vous inquiétez pas, vos données sont en sécurité.',
+        en: 'We\'re sorry, but something unexpected happened. Don\'t worry, your data is safe.',
+        nl: 'Sorry, er is iets onverwachts gebeurd. Maak je geen zorgen, je gegevens zijn veilig.',
+        de: 'Es tut uns leid, aber etwas Unerwartetes ist passiert. Keine Sorge, Ihre Daten sind sicher.',
+      },
+      tryAgain: {
+        fr: 'Réessayer',
+        en: 'Try Again',
+        nl: 'Opnieuw proberen',
+        de: 'Erneut versuchen',
+      },
+      goHome: {
+        fr: 'Retour à l\'accueil',
+        en: 'Go Home',
+        nl: 'Naar startpagina',
+        de: 'Zur Startseite',
+      },
+      errorId: {
+        fr: 'ID de l\'erreur',
+        en: 'Error ID',
+        nl: 'Fout-ID',
+        de: 'Fehler-ID',
+      },
+    },
+  },
+
+  // ============================================================================
   // SETTINGS PAGE
   // ============================================================================
   settings: {
@@ -6011,6 +6081,1260 @@ export const translations = {
           nl: 'Welkom, Bewoner!',
           de: 'Willkommen, Bewohner!',
         },
+      },
+    },
+  },
+
+  // ============================================================================
+  // ABOUT PAGE
+  // ============================================================================
+  about: {
+    hero: {
+      title: {
+        fr: 'À Propos d\'',
+        en: 'About ',
+        nl: 'Over ',
+        de: 'Über ',
+      },
+      subtitle: {
+        fr: 'Nous révolutionnons la recherche de colocation à Bruxelles avec une plateforme moderne, sécurisée et intelligente qui connecte les bonnes personnes au bon moment.',
+        en: 'We are revolutionizing roommate search in Brussels with a modern, secure, and intelligent platform that connects the right people at the right time.',
+        nl: 'Wij revolutioneren het zoeken naar huisgenoten in Brussel met een modern, veilig en intelligent platform dat de juiste mensen op het juiste moment verbindt.',
+        de: 'Wir revolutionieren die Mitbewohnersuche in Brüssel mit einer modernen, sicheren und intelligenten Plattform, die die richtigen Menschen zur richtigen Zeit verbindet.',
+      },
+      joinFree: {
+        fr: 'Rejoins-nous gratuitement',
+        en: 'Join us for free',
+        nl: 'Sluit je gratis aan',
+        de: 'Kostenlos beitreten',
+      },
+      browseListings: {
+        fr: 'Explorer les annonces',
+        en: 'Browse listings',
+        nl: 'Bekijk advertenties',
+        de: 'Anzeigen durchsuchen',
+      },
+    },
+    mission: {
+      badge: {
+        fr: 'Notre Mission',
+        en: 'Our Mission',
+        nl: 'Onze Missie',
+        de: 'Unsere Mission',
+      },
+      title: {
+        fr: 'Simplifier la vie en colocation',
+        en: 'Simplifying shared living',
+        nl: 'Het samenwonen vereenvoudigen',
+        de: 'Gemeinsames Wohnen vereinfachen',
+      },
+      description1: {
+        fr: 'Chercher une colocation peut être stressant, chronophage et frustrant. Nous avons créé Izzico pour transformer cette expérience en quelque chose de simple, rapide et même agréable.',
+        en: 'Searching for a shared home can be stressful, time-consuming, and frustrating. We created Izzico to transform this experience into something simple, fast, and even enjoyable.',
+        nl: 'Het zoeken naar een gedeelde woning kan stressvol, tijdrovend en frustrerend zijn. We hebben Izzico gemaakt om deze ervaring om te zetten in iets eenvoudigs, snels en zelfs aangenaams.',
+        de: 'Die Suche nach einer WG kann stressig, zeitaufwendig und frustrierend sein. Wir haben Izzico geschaffen, um diese Erfahrung in etwas Einfaches, Schnelles und sogar Angenehmes zu verwandeln.',
+      },
+      description2: {
+        fr: 'Notre algorithme de matching intelligent analyse tes préférences, ton style de vie et ta personnalité pour te connecter avec des colocataires vraiment compatibles.',
+        en: 'Our intelligent matching algorithm analyzes your preferences, lifestyle, and personality to connect you with truly compatible roommates.',
+        nl: 'Ons intelligente matching-algoritme analyseert je voorkeuren, levensstijl en persoonlijkheid om je te verbinden met echt compatibele huisgenoten.',
+        de: 'Unser intelligenter Matching-Algorithmus analysiert deine Präferenzen, deinen Lebensstil und deine Persönlichkeit, um dich mit wirklich kompatiblen Mitbewohnern zu verbinden.',
+      },
+      successTitle: {
+        fr: 'Des milliers de matchs réussis',
+        en: 'Thousands of successful matches',
+        nl: 'Duizenden succesvolle matches',
+        de: 'Tausende erfolgreiche Matches',
+      },
+      successDescription: {
+        fr: 'Chaque jour, nous aidons des personnes à trouver leur coloc idéale',
+        en: 'Every day, we help people find their ideal roommate',
+        nl: 'Elke dag helpen we mensen hun ideale huisgenoot te vinden',
+        de: 'Jeden Tag helfen wir Menschen, ihren idealen Mitbewohner zu finden',
+      },
+    },
+    values: {
+      title: {
+        fr: 'Nos Valeurs',
+        en: 'Our Values',
+        nl: 'Onze Waarden',
+        de: 'Unsere Werte',
+      },
+      subtitle: {
+        fr: 'Ce qui guide chacune de nos décisions',
+        en: 'What guides every decision we make',
+        nl: 'Wat al onze beslissingen stuurt',
+        de: 'Was jede unserer Entscheidungen leitet',
+      },
+      security: {
+        title: {
+          fr: 'Sécurité & Confiance',
+          en: 'Security & Trust',
+          nl: 'Veiligheid & Vertrouwen',
+          de: 'Sicherheit & Vertrauen',
+        },
+        description: {
+          fr: 'Vérification d\'identité et annonces contrôlées pour une expérience sûre et fiable.',
+          en: 'Identity verification and controlled listings for a safe and reliable experience.',
+          nl: 'Identiteitsverificatie en gecontroleerde advertenties voor een veilige en betrouwbare ervaring.',
+          de: 'Identitätsprüfung und kontrollierte Anzeigen für ein sicheres und zuverlässiges Erlebnis.',
+        },
+      },
+      community: {
+        title: {
+          fr: 'Communauté',
+          en: 'Community',
+          nl: 'Gemeenschap',
+          de: 'Gemeinschaft',
+        },
+        description: {
+          fr: 'Créer des connexions authentiques entre colocataires compatibles.',
+          en: 'Creating authentic connections between compatible roommates.',
+          nl: 'Het creëren van authentieke connecties tussen compatibele huisgenoten.',
+          de: 'Authentische Verbindungen zwischen kompatiblen Mitbewohnern schaffen.',
+        },
+      },
+      simplicity: {
+        title: {
+          fr: 'Simplicité',
+          en: 'Simplicity',
+          nl: 'Eenvoud',
+          de: 'Einfachheit',
+        },
+        description: {
+          fr: 'Une plateforme intuitive qui simplifie chaque étape de ta recherche.',
+          en: 'An intuitive platform that simplifies every step of your search.',
+          nl: 'Een intuïtief platform dat elke stap van je zoektocht vereenvoudigt.',
+          de: 'Eine intuitive Plattform, die jeden Schritt deiner Suche vereinfacht.',
+        },
+      },
+      innovation: {
+        title: {
+          fr: 'Innovation',
+          en: 'Innovation',
+          nl: 'Innovatie',
+          de: 'Innovation',
+        },
+        description: {
+          fr: 'Algorithme de matching intelligent pour trouver ta coloc idéale.',
+          en: 'Intelligent matching algorithm to find your ideal roommate.',
+          nl: 'Intelligent matching-algoritme om je ideale huisgenoot te vinden.',
+          de: 'Intelligenter Matching-Algorithmus, um deinen idealen Mitbewohner zu finden.',
+        },
+      },
+    },
+    stats: {
+      title: {
+        fr: 'Izzico en Chiffres',
+        en: 'Izzico in Numbers',
+        nl: 'Izzico in Cijfers',
+        de: 'Izzico in Zahlen',
+      },
+      subtitle: {
+        fr: 'Notre impact sur la communauté',
+        en: 'Our impact on the community',
+        nl: 'Onze impact op de gemeenschap',
+        de: 'Unser Einfluss auf die Gemeinschaft',
+      },
+      activeUsers: {
+        fr: 'Utilisateurs actifs',
+        en: 'Active users',
+        nl: 'Actieve gebruikers',
+        de: 'Aktive Nutzer',
+      },
+      colivingsCreated: {
+        fr: 'Colocations créées',
+        en: 'Colivings created',
+        nl: 'Samenwoningen gecreëerd',
+        de: 'Erstellte WGs',
+      },
+      satisfactionRate: {
+        fr: 'Taux de satisfaction',
+        en: 'Satisfaction rate',
+        nl: 'Tevredenheidspercentage',
+        de: 'Zufriedenheitsrate',
+      },
+      supportAvailable: {
+        fr: 'Support disponible',
+        en: 'Support available',
+        nl: 'Ondersteuning beschikbaar',
+        de: 'Support verfügbar',
+      },
+    },
+    team: {
+      badge: {
+        fr: 'Notre Équipe',
+        en: 'Our Team',
+        nl: 'Ons Team',
+        de: 'Unser Team',
+      },
+      title: {
+        fr: 'Rencontre l\'équipe derrière Izzico',
+        en: 'Meet the team behind Izzico',
+        nl: 'Ontmoet het team achter Izzico',
+        de: 'Triff das Team hinter Izzico',
+      },
+      subtitle: {
+        fr: 'Des passionnés qui travaillent chaque jour pour améliorer ton expérience',
+        en: 'Passionate people working every day to improve your experience',
+        nl: 'Gepassioneerde mensen die elke dag werken om je ervaring te verbeteren',
+        de: 'Leidenschaftliche Menschen, die jeden Tag daran arbeiten, dein Erlebnis zu verbessern',
+      },
+      members: {
+        marie: {
+          role: {
+            fr: 'CEO & Co-fondatrice',
+            en: 'CEO & Co-founder',
+            nl: 'CEO & Mede-oprichter',
+            de: 'CEO & Mitgründerin',
+          },
+          bio: {
+            fr: 'Passionnée par le logement partagé et l\'innovation sociale.',
+            en: 'Passionate about shared housing and social innovation.',
+            nl: 'Gepassioneerd door gedeelde huisvesting en sociale innovatie.',
+            de: 'Leidenschaftlich für gemeinsames Wohnen und soziale Innovation.',
+          },
+        },
+        thomas: {
+          role: {
+            fr: 'CTO & Co-fondateur',
+            en: 'CTO & Co-founder',
+            nl: 'CTO & Mede-oprichter',
+            de: 'CTO & Mitgründer',
+          },
+          bio: {
+            fr: 'Expert en IA et développement web, ancien de Facebook.',
+            en: 'AI and web development expert, former Facebook engineer.',
+            nl: 'AI- en webontwikkelingsexpert, voormalig Facebook-ingenieur.',
+            de: 'KI- und Webentwicklungsexperte, ehemaliger Facebook-Ingenieur.',
+          },
+        },
+        sophie: {
+          role: {
+            fr: 'Head of Product',
+            en: 'Head of Product',
+            nl: 'Head of Product',
+            de: 'Head of Product',
+          },
+          bio: {
+            fr: 'Designer UX avec 8 ans d\'expérience chez Airbnb.',
+            en: 'UX Designer with 8 years of experience at Airbnb.',
+            nl: 'UX Designer met 8 jaar ervaring bij Airbnb.',
+            de: 'UX-Designerin mit 8 Jahren Erfahrung bei Airbnb.',
+          },
+        },
+        lucas: {
+          role: {
+            fr: 'Head of Growth',
+            en: 'Head of Growth',
+            nl: 'Head of Growth',
+            de: 'Head of Growth',
+          },
+          bio: {
+            fr: 'Spécialiste marketing digital et growth hacking.',
+            en: 'Digital marketing and growth hacking specialist.',
+            nl: 'Specialist in digitale marketing en growth hacking.',
+            de: 'Spezialist für digitales Marketing und Growth Hacking.',
+          },
+        },
+      },
+    },
+    story: {
+      title: {
+        fr: 'Notre Histoire',
+        en: 'Our Story',
+        nl: 'Ons Verhaal',
+        de: 'Unsere Geschichte',
+      },
+      subtitle: {
+        fr: 'Comment Izzico est né',
+        en: 'How Izzico was born',
+        nl: 'Hoe Izzico is ontstaan',
+        de: 'Wie Izzico entstand',
+      },
+      paragraph1: {
+        fr: 'Tout a commencé en 2023 quand Marie et Thomas, deux amis de longue date, ont partagé leurs frustrations respectives concernant la recherche de colocation à Bruxelles. Entre les annonces douteuses, les incompatibilités de personnalité et les processus archaïques, ils ont réalisé qu\'il fallait une solution moderne.',
+        en: 'It all started in 2023 when Marie and Thomas, long-time friends, shared their frustrations about searching for roommates in Brussels. Between dubious listings, personality incompatibilities, and archaic processes, they realized a modern solution was needed.',
+        nl: 'Het begon allemaal in 2023 toen Marie en Thomas, al lang bevriend, hun frustraties deelden over het zoeken naar huisgenoten in Brussel. Tussen dubieuze advertenties, persoonlijkheidsincompatibiliteiten en archaïsche processen, realiseerden ze zich dat er een moderne oplossing nodig was.',
+        de: 'Alles begann 2023, als Marie und Thomas, langjährige Freunde, ihre Frustrationen über die Mitbewohnersuche in Brüssel teilten. Zwischen dubiosen Anzeigen, Persönlichkeitsinkompatibilitäten und veralteten Prozessen erkannten sie, dass eine moderne Lösung benötigt wurde.',
+      },
+      paragraph2: {
+        fr: 'Forts de leur expérience respective dans la tech et le design, ils ont décidé de créer la plateforme qu\'ils auraient rêvé d\'avoir : une solution qui utilise l\'intelligence artificielle pour matcher les bonnes personnes, qui vérifie les identités pour plus de sécurité, et qui rend le processus aussi simple que possible.',
+        en: 'With their combined experience in tech and design, they decided to create the platform they had dreamed of: a solution that uses artificial intelligence to match the right people, verifies identities for more security, and makes the process as simple as possible.',
+        nl: 'Met hun gecombineerde ervaring in tech en design, besloten ze het platform te creëren waarvan ze hadden gedroomd: een oplossing die kunstmatige intelligentie gebruikt om de juiste mensen te matchen, identiteiten verifieert voor meer veiligheid, en het proces zo eenvoudig mogelijk maakt.',
+        de: 'Mit ihrer kombinierten Erfahrung in Tech und Design beschlossen sie, die Plattform zu schaffen, von der sie geträumt hatten: eine Lösung, die künstliche Intelligenz nutzt, um die richtigen Menschen zusammenzubringen, Identitäten für mehr Sicherheit überprüft und den Prozess so einfach wie möglich macht.',
+      },
+      paragraph3: {
+        fr: 'Aujourd\'hui, Izzico aide des milliers de personnes à trouver leur colocation idéale chaque mois. Notre équipe grandit, notre technologie s\'améliore, mais notre mission reste la même : simplifier la vie en colocation pour tous.',
+        en: 'Today, Izzico helps thousands of people find their ideal coliving every month. Our team grows, our technology improves, but our mission remains the same: simplifying shared living for everyone.',
+        nl: 'Vandaag helpt Izzico elke maand duizenden mensen hun ideale samenwoning te vinden. Ons team groeit, onze technologie verbetert, maar onze missie blijft hetzelfde: het samenwonen voor iedereen vereenvoudigen.',
+        de: 'Heute hilft Izzico jeden Monat Tausenden von Menschen, ihr ideales WG-Leben zu finden. Unser Team wächst, unsere Technologie verbessert sich, aber unsere Mission bleibt dieselbe: das gemeinsame Wohnen für alle zu vereinfachen.',
+      },
+    },
+    cta: {
+      title: {
+        fr: 'Prêt à rejoindre l\'aventure?',
+        en: 'Ready to join the adventure?',
+        nl: 'Klaar om mee te doen aan het avontuur?',
+        de: 'Bereit, dem Abenteuer beizutreten?',
+      },
+      subtitle: {
+        fr: 'Inscris-toi gratuitement et trouve ta colocation idéale dès aujourd\'hui',
+        en: 'Sign up for free and find your ideal roommate today',
+        nl: 'Meld je gratis aan en vind vandaag nog je ideale huisgenoot',
+        de: 'Melde dich kostenlos an und finde noch heute deinen idealen Mitbewohner',
+      },
+      createAccount: {
+        fr: 'Créer mon compte gratuit',
+        en: 'Create my free account',
+        nl: 'Maak mijn gratis account aan',
+        de: 'Mein kostenloses Konto erstellen',
+      },
+      browseListings: {
+        fr: 'Explorer les annonces',
+        en: 'Browse listings',
+        nl: 'Bekijk advertenties',
+        de: 'Anzeigen durchsuchen',
+      },
+    },
+  },
+
+  // ============================================================================
+  // OWNERS PAGE
+  // ============================================================================
+  owners: {
+    hero: {
+      badge: {
+        fr: 'Pour les Propriétaires',
+        en: 'For Owners',
+        nl: 'Voor Eigenaren',
+        de: 'Für Eigentümer',
+      },
+      title: {
+        fr: 'Loue plus vite, gagne plus, stresse moins',
+        en: 'Rent faster, earn more, stress less',
+        nl: 'Sneller verhuren, meer verdienen, minder stress',
+        de: 'Schneller vermieten, mehr verdienen, weniger Stress',
+      },
+      subtitle: {
+        fr: 'La plateforme moderne pour gérer tes colocations. Matching intelligent, gestion simplifiée, revenus optimisés.',
+        en: 'The modern platform to manage your shared housing. Smart matching, simplified management, optimized income.',
+        nl: 'Het moderne platform om je gedeelde woningen te beheren. Slimme matching, vereenvoudigd beheer, geoptimaliseerde inkomsten.',
+        de: 'Die moderne Plattform zur Verwaltung deiner WGs. Intelligentes Matching, vereinfachte Verwaltung, optimierte Einnahmen.',
+      },
+      listProperty: {
+        fr: 'Lister mon bien gratuitement',
+        en: 'List my property for free',
+        nl: 'Mijn woning gratis adverteren',
+        de: 'Meine Immobilie kostenlos inserieren',
+      },
+      seeFeatures: {
+        fr: 'Voir les fonctionnalités',
+        en: 'See features',
+        nl: 'Bekijk functies',
+        de: 'Funktionen ansehen',
+      },
+      freeSignup: {
+        fr: '✓ Gratuit à l\'inscription • ✓ Sans engagement • ✓ Support 24/7',
+        en: '✓ Free signup • ✓ No commitment • ✓ 24/7 support',
+        nl: '✓ Gratis aanmelden • ✓ Geen verplichtingen • ✓ 24/7 ondersteuning',
+        de: '✓ Kostenlose Anmeldung • ✓ Keine Verpflichtung • ✓ 24/7 Support',
+      },
+      avgIncome: {
+        fr: 'Revenu moyen mensuel par propriétaire',
+        en: 'Average monthly income per owner',
+        nl: 'Gemiddeld maandelijks inkomen per eigenaar',
+        de: 'Durchschnittliches monatliches Einkommen pro Eigentümer',
+      },
+    },
+    stats: {
+      propertiesListed: {
+        fr: 'Propriétés listées',
+        en: 'Properties listed',
+        nl: 'Geadverteerde woningen',
+        de: 'Gelistete Immobilien',
+      },
+      avgOccupancy: {
+        fr: 'Taux d\'occupation moyen',
+        en: 'Average occupancy rate',
+        nl: 'Gemiddelde bezettingsgraad',
+        de: 'Durchschnittliche Auslastung',
+      },
+      avgRoi: {
+        fr: 'ROI moyen annuel',
+        en: 'Average annual ROI',
+        nl: 'Gemiddeld jaarlijks ROI',
+        de: 'Durchschnittlicher jährlicher ROI',
+      },
+      avgRentalTime: {
+        fr: 'Temps de location moyen',
+        en: 'Average rental time',
+        nl: 'Gemiddelde verhuurtijd',
+        de: 'Durchschnittliche Vermietungszeit',
+      },
+    },
+    benefits: {
+      title: {
+        fr: 'Pourquoi choisir Izzico?',
+        en: 'Why choose Izzico?',
+        nl: 'Waarom Izzico kiezen?',
+        de: 'Warum Izzico wählen?',
+      },
+      subtitle: {
+        fr: 'Tout ce dont tu as besoin pour gérer tes colocations comme un pro',
+        en: 'Everything you need to manage your shared housing like a pro',
+        nl: 'Alles wat je nodig hebt om je gedeelde woningen als een pro te beheren',
+        de: 'Alles was du brauchst, um deine WGs wie ein Profi zu verwalten',
+      },
+      maximizeRevenue: {
+        title: {
+          fr: 'Maximise tes revenus',
+          en: 'Maximize your income',
+          nl: 'Maximaliseer je inkomsten',
+          de: 'Maximiere dein Einkommen',
+        },
+        description: {
+          fr: 'Algorithme de pricing intelligent qui optimise ton loyer selon le marché et l\'occupation.',
+          en: 'Smart pricing algorithm that optimizes your rent based on market and occupancy.',
+          nl: 'Slim prijsalgoritme dat je huur optimaliseert op basis van markt en bezetting.',
+          de: 'Intelligenter Preisalgorithmus, der deine Miete basierend auf Markt und Auslastung optimiert.',
+        },
+      },
+      verifiedTenants: {
+        title: {
+          fr: 'Locataires vérifiés',
+          en: 'Verified tenants',
+          nl: 'Geverifieerde huurders',
+          de: 'Verifizierte Mieter',
+        },
+        description: {
+          fr: 'Tous les profils sont vérifiés (identité, revenus, références) pour ta tranquillité d\'esprit.',
+          en: 'All profiles are verified (identity, income, references) for your peace of mind.',
+          nl: 'Alle profielen zijn geverifieerd (identiteit, inkomen, referenties) voor je gemoedsrust.',
+          de: 'Alle Profile sind verifiziert (Identität, Einkommen, Referenzen) für deine Sicherheit.',
+        },
+      },
+      saveTime: {
+        title: {
+          fr: 'Gagne du temps',
+          en: 'Save time',
+          nl: 'Bespaar tijd',
+          de: 'Spare Zeit',
+        },
+        description: {
+          fr: 'Automatise les visites, la sélection et la gestion administrative. Focus sur l\'essentiel.',
+          en: 'Automate visits, selection, and administrative management. Focus on what matters.',
+          nl: 'Automatiseer bezichtigingen, selectie en administratief beheer. Focus op wat belangrijk is.',
+          de: 'Automatisiere Besichtigungen, Auswahl und Verwaltung. Konzentriere dich auf das Wesentliche.',
+        },
+      },
+      smartMatching: {
+        title: {
+          fr: 'Matching intelligent',
+          en: 'Smart matching',
+          nl: 'Slimme matching',
+          de: 'Intelligentes Matching',
+        },
+        description: {
+          fr: 'Notre IA trouve les meilleurs candidats selon tes critères et le profil de ta coloc.',
+          en: 'Our AI finds the best candidates based on your criteria and your coliving profile.',
+          nl: 'Onze AI vindt de beste kandidaten op basis van je criteria en je samenwoningsprofiel.',
+          de: 'Unsere KI findet die besten Kandidaten basierend auf deinen Kriterien und deinem WG-Profil.',
+        },
+      },
+      realTimeAnalytics: {
+        title: {
+          fr: 'Analytics en temps réel',
+          en: 'Real-time analytics',
+          nl: 'Realtime analytics',
+          de: 'Echtzeit-Analytics',
+        },
+        description: {
+          fr: 'Dashboard complet avec KPIs, revenus, occupation et insights pour optimiser ta rentabilité.',
+          en: 'Complete dashboard with KPIs, revenue, occupancy, and insights to optimize your profitability.',
+          nl: 'Compleet dashboard met KPI\'s, inkomsten, bezetting en inzichten om je winstgevendheid te optimaliseren.',
+          de: 'Komplettes Dashboard mit KPIs, Einnahmen, Auslastung und Insights zur Optimierung deiner Rentabilität.',
+        },
+      },
+      dedicatedSupport: {
+        title: {
+          fr: 'Support dédié',
+          en: 'Dedicated support',
+          nl: 'Toegewijde ondersteuning',
+          de: 'Dedizierter Support',
+        },
+        description: {
+          fr: 'Une équipe à ton écoute 24/7 pour répondre à toutes tes questions et t\'accompagner.',
+          en: 'A team available 24/7 to answer all your questions and support you.',
+          nl: 'Een team 24/7 beschikbaar om al je vragen te beantwoorden en je te ondersteunen.',
+          de: 'Ein Team 24/7 verfügbar, um alle deine Fragen zu beantworten und dich zu unterstützen.',
+        },
+      },
+    },
+    features: {
+      title: {
+        fr: 'Fonctionnalités clés',
+        en: 'Key features',
+        nl: 'Belangrijkste functies',
+        de: 'Hauptfunktionen',
+      },
+      optimizedListings: {
+        title: {
+          fr: 'Annonces optimisées',
+          en: 'Optimized listings',
+          nl: 'Geoptimaliseerde advertenties',
+          de: 'Optimierte Anzeigen',
+        },
+        description: {
+          fr: 'Templates professionnels et suggestions IA pour maximiser l\'attractivité',
+          en: 'Professional templates and AI suggestions to maximize attractiveness',
+          nl: 'Professionele templates en AI-suggesties om de aantrekkingskracht te maximaliseren',
+          de: 'Professionelle Vorlagen und KI-Vorschläge zur Maximierung der Attraktivität',
+        },
+      },
+      simplifiedManagement: {
+        title: {
+          fr: 'Gestion simplifiée',
+          en: 'Simplified management',
+          nl: 'Vereenvoudigd beheer',
+          de: 'Vereinfachte Verwaltung',
+        },
+        description: {
+          fr: 'Dashboard centralisé pour gérer toutes tes propriétés en un coup d\'œil',
+          en: 'Centralized dashboard to manage all your properties at a glance',
+          nl: 'Gecentraliseerd dashboard om al je woningen in één oogopslag te beheren',
+          de: 'Zentrales Dashboard zur Verwaltung aller deiner Immobilien auf einen Blick',
+        },
+      },
+      securePayments: {
+        title: {
+          fr: 'Paiements sécurisés',
+          en: 'Secure payments',
+          nl: 'Veilige betalingen',
+          de: 'Sichere Zahlungen',
+        },
+        description: {
+          fr: 'Collecte automatique des loyers et gestion financière intégrée',
+          en: 'Automatic rent collection and integrated financial management',
+          nl: 'Automatische huurinning en geïntegreerd financieel beheer',
+          de: 'Automatischer Mieteinzug und integriertes Finanzmanagement',
+        },
+      },
+      roiTracking: {
+        title: {
+          fr: 'ROI tracking',
+          en: 'ROI tracking',
+          nl: 'ROI tracking',
+          de: 'ROI-Tracking',
+        },
+        description: {
+          fr: 'Suis ton retour sur investissement avec des analytics détaillés',
+          en: 'Track your return on investment with detailed analytics',
+          nl: 'Volg je rendement met gedetailleerde analytics',
+          de: 'Verfolge deine Rendite mit detaillierten Analytics',
+        },
+      },
+    },
+    testimonials: {
+      title: {
+        fr: 'Ce que disent nos propriétaires',
+        en: 'What our owners say',
+        nl: 'Wat onze eigenaren zeggen',
+        de: 'Was unsere Eigentümer sagen',
+      },
+      subtitle: {
+        fr: 'Rejoins des centaines de propriétaires satisfaits',
+        en: 'Join hundreds of satisfied owners',
+        nl: 'Sluit je aan bij honderden tevreden eigenaren',
+        de: 'Schließ dich hunderten zufriedener Eigentümer an',
+      },
+      jean: {
+        role: {
+          fr: 'Propriétaire de 3 colocations',
+          en: 'Owner of 3 colivings',
+          nl: 'Eigenaar van 3 samenwoningen',
+          de: 'Eigentümer von 3 WGs',
+        },
+        quote: {
+          fr: 'Izzico a transformé ma façon de gérer mes biens. Je gagne 10h par semaine et mes revenus ont augmenté de 15%!',
+          en: 'Izzico has transformed the way I manage my properties. I save 10 hours per week and my income increased by 15%!',
+          nl: 'Izzico heeft de manier waarop ik mijn woningen beheer veranderd. Ik bespaar 10 uur per week en mijn inkomen is met 15% gestegen!',
+          de: 'Izzico hat die Art verändert, wie ich meine Immobilien verwalte. Ich spare 10 Stunden pro Woche und mein Einkommen ist um 15% gestiegen!',
+        },
+      },
+      sophie: {
+        role: {
+          fr: 'Investisseuse immobilier',
+          en: 'Real estate investor',
+          nl: 'Vastgoedinvesteerder',
+          de: 'Immobilieninvestorin',
+        },
+        quote: {
+          fr: 'Le matching intelligent est incroyable. Fini les mauvaises surprises, tous mes locataires sont compatibles!',
+          en: 'The smart matching is incredible. No more bad surprises, all my tenants are compatible!',
+          nl: 'De slimme matching is ongelooflijk. Geen vervelende verrassingen meer, al mijn huurders zijn compatibel!',
+          de: 'Das intelligente Matching ist unglaublich. Keine bösen Überraschungen mehr, alle meine Mieter sind kompatibel!',
+        },
+      },
+      pierre: {
+        role: {
+          fr: 'Propriétaire depuis 2 ans',
+          en: 'Owner for 2 years',
+          nl: 'Eigenaar sinds 2 jaar',
+          de: 'Eigentümer seit 2 Jahren',
+        },
+        quote: {
+          fr: 'Interface ultra intuitive et support réactif. Je recommande à tous les propriétaires!',
+          en: 'Ultra intuitive interface and responsive support. I recommend it to all owners!',
+          nl: 'Ultra intuïtieve interface en responsieve ondersteuning. Ik raad het alle eigenaren aan!',
+          de: 'Ultra intuitive Benutzeroberfläche und reaktionsschneller Support. Ich empfehle es allen Eigentümern!',
+        },
+      },
+    },
+    pricing: {
+      title: {
+        fr: 'Tarifs Transparents',
+        en: 'Transparent Pricing',
+        nl: 'Transparante Prijzen',
+        de: 'Transparente Preise',
+      },
+      subtitle: {
+        fr: 'Commence gratuitement, upgrade quand tu veux',
+        en: 'Start for free, upgrade when you want',
+        nl: 'Begin gratis, upgrade wanneer je wilt',
+        de: 'Starte kostenlos, upgrade wann du willst',
+      },
+      free: {
+        name: {
+          fr: 'Gratuit',
+          en: 'Free',
+          nl: 'Gratis',
+          de: 'Kostenlos',
+        },
+        features: {
+          unlimitedListings: {
+            fr: 'Annonces illimitées',
+            en: 'Unlimited listings',
+            nl: 'Onbeperkte advertenties',
+            de: 'Unbegrenzte Anzeigen',
+          },
+          dashboardAnalytics: {
+            fr: 'Dashboard analytics',
+            en: 'Dashboard analytics',
+            nl: 'Dashboard analytics',
+            de: 'Dashboard-Analytics',
+          },
+          candidateMessaging: {
+            fr: 'Messagerie candidats',
+            en: 'Candidate messaging',
+            nl: 'Berichtverkeer met kandidaten',
+            de: 'Kandidaten-Nachrichten',
+          },
+          emailSupport: {
+            fr: 'Support email',
+            en: 'Email support',
+            nl: 'E-mail ondersteuning',
+            de: 'E-Mail-Support',
+          },
+        },
+        cta: {
+          fr: 'Commencer gratuitement',
+          en: 'Start for free',
+          nl: 'Gratis beginnen',
+          de: 'Kostenlos starten',
+        },
+      },
+      premium: {
+        name: {
+          fr: 'Premium',
+          en: 'Premium',
+          nl: 'Premium',
+          de: 'Premium',
+        },
+        popular: {
+          fr: 'Populaire',
+          en: 'Popular',
+          nl: 'Populair',
+          de: 'Beliebt',
+        },
+        features: {
+          everythingInFree: {
+            fr: 'Tout dans Free',
+            en: 'Everything in Free',
+            nl: 'Alles in Gratis',
+            de: 'Alles in Kostenlos',
+          },
+          priorityMatching: {
+            fr: 'Matching prioritaire',
+            en: 'Priority matching',
+            nl: 'Prioritaire matching',
+            de: 'Prioritäts-Matching',
+          },
+          aiPricing: {
+            fr: 'Pricing intelligent IA',
+            en: 'AI smart pricing',
+            nl: 'AI slimme prijsstelling',
+            de: 'KI-intelligente Preisgestaltung',
+          },
+          phoneSupport: {
+            fr: 'Support téléphone prioritaire',
+            en: 'Priority phone support',
+            nl: 'Prioritaire telefonische ondersteuning',
+            de: 'Prioritäts-Telefonsupport',
+          },
+          multiProperty: {
+            fr: 'Gestion multi-propriétés',
+            en: 'Multi-property management',
+            nl: 'Multi-woning beheer',
+            de: 'Multi-Immobilien-Verwaltung',
+          },
+          dataExport: {
+            fr: 'Export des données',
+            en: 'Data export',
+            nl: 'Data export',
+            de: 'Datenexport',
+          },
+        },
+        cta: {
+          fr: 'Essayer 14 jours gratuits',
+          en: 'Try 14 days free',
+          nl: 'Probeer 14 dagen gratis',
+          de: '14 Tage kostenlos testen',
+        },
+      },
+    },
+    cta: {
+      title: {
+        fr: 'Prêt à optimiser tes revenus locatifs?',
+        en: 'Ready to optimize your rental income?',
+        nl: 'Klaar om je huurinkomsten te optimaliseren?',
+        de: 'Bereit, deine Mieteinnahmen zu optimieren?',
+      },
+      subtitle: {
+        fr: 'Rejoins des centaines de propriétaires qui font confiance à Izzico',
+        en: 'Join hundreds of owners who trust Izzico',
+        nl: 'Sluit je aan bij honderden eigenaren die Izzico vertrouwen',
+        de: 'Schließ dich hunderten Eigentümern an, die Izzico vertrauen',
+      },
+      button: {
+        fr: 'Lister ma première propriété',
+        en: 'List my first property',
+        nl: 'Mijn eerste woning adverteren',
+        de: 'Meine erste Immobilie inserieren',
+      },
+      noCreditCard: {
+        fr: 'Aucune carte bancaire requise • Configuration en 5 minutes',
+        en: 'No credit card required • Setup in 5 minutes',
+        nl: 'Geen creditcard vereist • Instellen in 5 minuten',
+        de: 'Keine Kreditkarte erforderlich • Einrichtung in 5 Minuten',
+      },
+    },
+  },
+
+  // ============================================================================
+  // CHECKOUT PAGE
+  // ============================================================================
+  checkout: {
+    header: {
+      back: {
+        fr: 'Retour',
+        en: 'Back',
+        nl: 'Terug',
+        de: 'Zurück',
+      },
+      securePayment: {
+        fr: 'Paiement sécurisé',
+        en: 'Secure payment',
+        nl: 'Veilige betaling',
+        de: 'Sichere Zahlung',
+      },
+    },
+    loading: {
+      preparingPayment: {
+        fr: 'Préparation du paiement sécurisé...',
+        en: 'Preparing secure payment...',
+        nl: 'Veilige betaling voorbereiden...',
+        de: 'Sichere Zahlung wird vorbereitet...',
+      },
+      loadingForm: {
+        fr: 'Chargement du formulaire de paiement...',
+        en: 'Loading payment form...',
+        nl: 'Betalingsformulier laden...',
+        de: 'Zahlungsformular wird geladen...',
+      },
+    },
+    errors: {
+      invalidPlan: {
+        title: {
+          fr: 'Plan invalide',
+          en: 'Invalid plan',
+          nl: 'Ongeldig plan',
+          de: 'Ungültiger Plan',
+        },
+        description: {
+          fr: 'Le plan sélectionné n\'existe pas. Veuillez choisir un plan valide.',
+          en: 'The selected plan does not exist. Please choose a valid plan.',
+          nl: 'Het geselecteerde plan bestaat niet. Kies een geldig plan.',
+          de: 'Der ausgewählte Plan existiert nicht. Bitte wählen Sie einen gültigen Plan.',
+        },
+        seeAvailablePlans: {
+          fr: 'Voir les plans disponibles',
+          en: 'See available plans',
+          nl: 'Bekijk beschikbare plannen',
+          de: 'Verfügbare Pläne ansehen',
+        },
+      },
+      generic: {
+        title: {
+          fr: 'Erreur',
+          en: 'Error',
+          nl: 'Fout',
+          de: 'Fehler',
+        },
+        retry: {
+          fr: 'Réessayer',
+          en: 'Retry',
+          nl: 'Opnieuw proberen',
+          de: 'Erneut versuchen',
+        },
+        back: {
+          fr: 'Retour',
+          en: 'Back',
+          nl: 'Terug',
+          de: 'Zurück',
+        },
+      },
+      unauthorized: {
+        fr: 'Vous devez être connecté pour accéder à cette page',
+        en: 'You must be logged in to access this page',
+        nl: 'U moet ingelogd zijn om deze pagina te bezoeken',
+        de: 'Sie müssen angemeldet sein, um auf diese Seite zugreifen zu können',
+      },
+      checkoutCreation: {
+        fr: 'Erreur lors de la création du checkout',
+        en: 'Error creating checkout',
+        nl: 'Fout bij het aanmaken van de checkout',
+        de: 'Fehler beim Erstellen des Checkouts',
+      },
+      sessionNotCreated: {
+        fr: 'La session de paiement n\'a pas pu être créée. Veuillez réessayer.',
+        en: 'The payment session could not be created. Please try again.',
+        nl: 'De betalingssessie kon niet worden aangemaakt. Probeer het opnieuw.',
+        de: 'Die Zahlungssitzung konnte nicht erstellt werden. Bitte versuchen Sie es erneut.',
+      },
+      unableToLoad: {
+        title: {
+          fr: 'Impossible de charger le formulaire',
+          en: 'Unable to load form',
+          nl: 'Kan formulier niet laden',
+          de: 'Formular kann nicht geladen werden',
+        },
+      },
+    },
+    plans: {
+      interval: {
+        month: {
+          fr: 'mois',
+          en: 'month',
+          nl: 'maand',
+          de: 'Monat',
+        },
+        year: {
+          fr: 'an',
+          en: 'year',
+          nl: 'jaar',
+          de: 'Jahr',
+        },
+      },
+      subscription: {
+        annual: {
+          fr: 'Abonnement annuel',
+          en: 'Annual subscription',
+          nl: 'Jaarabonnement',
+          de: 'Jahresabonnement',
+        },
+        monthly: {
+          fr: 'Abonnement mensuel',
+          en: 'Monthly subscription',
+          nl: 'Maandabonnement',
+          de: 'Monatsabonnement',
+        },
+      },
+      savings: {
+        fr: 'Économisez',
+        en: 'Save',
+        nl: 'Bespaar',
+        de: 'Sparen Sie',
+      },
+      perYear: {
+        fr: '/an',
+        en: '/year',
+        nl: '/jaar',
+        de: '/Jahr',
+      },
+      freeTrialIncluded: {
+        fr: 'Essai gratuit de',
+        en: 'Free trial of',
+        nl: 'Gratis proefperiode van',
+        de: 'Kostenlose Testversion von',
+      },
+      included: {
+        fr: 'inclus',
+        en: 'included',
+        nl: 'inbegrepen',
+        de: 'inklusive',
+      },
+      free: {
+        fr: 'GRATUIT',
+        en: 'FREE',
+        nl: 'GRATIS',
+        de: 'KOSTENLOS',
+      },
+      trialDays: {
+        owner: {
+          fr: '3 mois',
+          en: '3 months',
+          nl: '3 maanden',
+          de: '3 Monate',
+        },
+        resident: {
+          fr: '6 mois',
+          en: '6 months',
+          nl: '6 maanden',
+          de: '6 Monate',
+        },
+      },
+    },
+    features: {
+      includedInSubscription: {
+        fr: 'Inclus dans votre abonnement',
+        en: 'Included in your subscription',
+        nl: 'Inbegrepen in je abonnement',
+        de: 'In Ihrem Abonnement enthalten',
+      },
+      owner: {
+        multiProperty: {
+          fr: 'Gestion multi-propriétés',
+          en: 'Multi-property management',
+          nl: 'Beheer van meerdere woningen',
+          de: 'Multi-Immobilien-Verwaltung',
+        },
+        advancedMatching: {
+          fr: 'Matching avancé colocataires',
+          en: 'Advanced roommate matching',
+          nl: 'Geavanceerde huisgenoot matching',
+          de: 'Erweitertes Mitbewohner-Matching',
+        },
+        unlimitedMessaging: {
+          fr: 'Messagerie illimitée',
+          en: 'Unlimited messaging',
+          nl: 'Onbeperkte berichten',
+          de: 'Unbegrenzte Nachrichten',
+        },
+        analyticsBoard: {
+          fr: 'Tableau de bord analytique',
+          en: 'Analytics dashboard',
+          nl: 'Analyse dashboard',
+          de: 'Analytics-Dashboard',
+        },
+        documentsContracts: {
+          fr: 'Documents & contrats',
+          en: 'Documents & contracts',
+          nl: 'Documenten & contracten',
+          de: 'Dokumente & Verträge',
+        },
+        prioritySupport: {
+          fr: 'Support prioritaire',
+          en: 'Priority support',
+          nl: 'Prioritaire ondersteuning',
+          de: 'Prioritäts-Support',
+        },
+      },
+      resident: {
+        verifiedProfile: {
+          fr: 'Profil vérifié & visible',
+          en: 'Verified & visible profile',
+          nl: 'Geverifieerd & zichtbaar profiel',
+          de: 'Verifiziertes & sichtbares Profil',
+        },
+        colivingMatching: {
+          fr: 'Matching de colocations',
+          en: 'Coliving matching',
+          nl: 'Samenwoning matching',
+          de: 'WG-Matching',
+        },
+        unlimitedMessaging: {
+          fr: 'Messagerie illimitée',
+          en: 'Unlimited messaging',
+          nl: 'Onbeperkte berichten',
+          de: 'Unbegrenzte Nachrichten',
+        },
+        personalizedAlerts: {
+          fr: 'Alertes personnalisées',
+          en: 'Personalized alerts',
+          nl: 'Gepersonaliseerde meldingen',
+          de: 'Personalisierte Benachrichtigungen',
+        },
+        residentCommunity: {
+          fr: 'Communauté de résidents',
+          en: 'Resident community',
+          nl: 'Bewonerscommissie',
+          de: 'Bewohner-Community',
+        },
+        dedicatedSupport: {
+          fr: 'Support dédié',
+          en: 'Dedicated support',
+          nl: 'Toegewijde ondersteuning',
+          de: 'Dedizierter Support',
+        },
+      },
+    },
+    trust: {
+      title: {
+        fr: 'Paiement 100% sécurisé',
+        en: '100% secure payment',
+        nl: '100% veilige betaling',
+        de: '100% sichere Zahlung',
+      },
+      stripe: {
+        title: {
+          fr: 'Sécurisé par Stripe',
+          en: 'Secured by Stripe',
+          nl: 'Beveiligd door Stripe',
+          de: 'Gesichert durch Stripe',
+        },
+        description: {
+          fr: 'Données chiffrées SSL 256-bit',
+          en: 'SSL 256-bit encrypted data',
+          nl: 'SSL 256-bit versleutelde gegevens',
+          de: 'SSL 256-Bit verschlüsselte Daten',
+        },
+      },
+      cancellation: {
+        title: {
+          fr: 'Annulation flexible',
+          en: 'Flexible cancellation',
+          nl: 'Flexibele annulering',
+          de: 'Flexible Stornierung',
+        },
+        description: {
+          fr: 'Annulez quand vous voulez',
+          en: 'Cancel anytime you want',
+          nl: 'Annuleer wanneer je wilt',
+          de: 'Jederzeit kündbar',
+        },
+      },
+      deferredPayment: {
+        title: {
+          fr: 'Paiement différé',
+          en: 'Deferred payment',
+          nl: 'Uitgestelde betaling',
+          de: 'Aufgeschobene Zahlung',
+        },
+        description: {
+          fr: '1er prélèvement après l\'essai',
+          en: 'First charge after trial',
+          nl: 'Eerste afschrijving na proefperiode',
+          de: 'Erste Abbuchung nach Testversion',
+        },
+      },
+      paymentMethods: {
+        fr: 'Moyens de paiement acceptés',
+        en: 'Accepted payment methods',
+        nl: 'Geaccepteerde betaalmethoden',
+        de: 'Akzeptierte Zahlungsmethoden',
+      },
+    },
+    form: {
+      title: {
+        fr: 'Finaliser votre abonnement',
+        en: 'Complete your subscription',
+        nl: 'Voltooi je abonnement',
+        de: 'Abonnement abschließen',
+      },
+      subtitle: {
+        fr: 'Entrez vos informations de paiement ci-dessous',
+        en: 'Enter your payment information below',
+        nl: 'Voer hieronder je betalingsgegevens in',
+        de: 'Geben Sie unten Ihre Zahlungsinformationen ein',
+      },
+    },
+    support: {
+      question: {
+        fr: 'Une question ? Contactez-nous à',
+        en: 'Have a question? Contact us at',
+        nl: 'Heb je een vraag? Neem contact met ons op via',
+        de: 'Haben Sie eine Frage? Kontaktieren Sie uns unter',
+      },
+    },
+  },
+
+  // ============================================================================
+  // COMING SOON PAGES
+  // ============================================================================
+  comingSoon: {
+    searcher: {
+      backToHome: {
+        fr: 'Retour à l\'accueil',
+        en: 'Back to home',
+        nl: 'Terug naar home',
+        de: 'Zurück zur Startseite',
+      },
+      title: {
+        fr: 'Bientôt Disponible !',
+        en: 'Coming Soon!',
+        nl: 'Binnenkort Beschikbaar!',
+        de: 'Demnächst Verfügbar!',
+      },
+      subtitle: {
+        fr: 'La fonction',
+        en: 'The',
+        nl: 'De',
+        de: 'Die',
+      },
+      featureName: {
+        fr: 'Chercheur',
+        en: 'Searcher',
+        nl: 'Zoeker',
+        de: 'Sucher',
+      },
+      arriving: {
+        fr: 'arrive très prochainement.',
+        en: 'feature is coming very soon.',
+        nl: 'functie komt zeer binnenkort.',
+        de: 'Funktion kommt sehr bald.',
+      },
+      whatscoming: {
+        fr: 'Qu\'est-ce qui arrive ?',
+        en: 'What\'s coming?',
+        nl: 'Wat komt eraan?',
+        de: 'Was kommt?',
+      },
+      features: {
+        marketplace: {
+          title: {
+            fr: 'Marketplace Complète',
+            en: 'Complete Marketplace',
+            nl: 'Complete Marktplaats',
+            de: 'Vollständiger Marktplatz',
+          },
+          description: {
+            fr: 'Parcourez des centaines de propriétés disponibles avec recherche avancée',
+            en: 'Browse hundreds of available properties with advanced search',
+            nl: 'Blader door honderden beschikbare woningen met geavanceerd zoeken',
+            de: 'Durchsuchen Sie Hunderte von verfügbaren Immobilien mit erweiterter Suche',
+          },
+        },
+        matching: {
+          title: {
+            fr: 'Matching Intelligent',
+            en: 'Smart Matching',
+            nl: 'Slim Matchen',
+            de: 'Intelligentes Matching',
+          },
+          description: {
+            fr: 'Trouvez votre colocation idéale grâce à notre algorithme de compatibilité',
+            en: 'Find your ideal coliving through our compatibility algorithm',
+            nl: 'Vind je ideale samenwoning via ons compatibiliteitsalgoritme',
+            de: 'Finden Sie Ihre ideale WG durch unseren Kompatibilitätsalgorithmus',
+          },
+        },
+        alerts: {
+          title: {
+            fr: 'Alertes Temps Réel',
+            en: 'Real-Time Alerts',
+            nl: 'Realtime Meldingen',
+            de: 'Echtzeit-Benachrichtigungen',
+          },
+          description: {
+            fr: 'Soyez notifié instantanément dès qu\'une propriété correspond à vos critères',
+            en: 'Get notified instantly when a property matches your criteria',
+            nl: 'Word direct op de hoogte gesteld wanneer een woning aan je criteria voldoet',
+            de: 'Werden Sie sofort benachrichtigt, wenn eine Immobilie Ihren Kriterien entspricht',
+          },
+        },
+      },
+      waitlist: {
+        title: {
+          fr: 'Inscrivez-vous à la liste d\'attente',
+          en: 'Join the waitlist',
+          nl: 'Schrijf je in voor de wachtlijst',
+          de: 'Tragen Sie sich in die Warteliste ein',
+        },
+        subtitle: {
+          fr: 'Soyez parmi les premiers à accéder à la marketplace !',
+          en: 'Be among the first to access the marketplace!',
+          nl: 'Wees een van de eersten die toegang krijgt tot de marktplaats!',
+          de: 'Gehören Sie zu den Ersten, die Zugang zum Marktplatz erhalten!',
+        },
+        placeholder: {
+          fr: 'votre@email.com',
+          en: 'your@email.com',
+          nl: 'jouw@email.com',
+          de: 'ihre@email.com',
+        },
+        button: {
+          fr: 'Rejoindre',
+          en: 'Join',
+          nl: 'Aanmelden',
+          de: 'Beitreten',
+        },
+        success: {
+          title: {
+            fr: '✅ Merci ! Vous êtes sur la liste !',
+            en: '✅ Thanks! You\'re on the list!',
+            nl: '✅ Bedankt! Je staat op de lijst!',
+            de: '✅ Danke! Sie sind auf der Liste!',
+          },
+          message: {
+            fr: 'Nous vous contacterons dès l\'ouverture de la marketplace.',
+            en: 'We\'ll contact you as soon as the marketplace opens.',
+            nl: 'We nemen contact met je op zodra de marktplaats opent.',
+            de: 'Wir kontaktieren Sie, sobald der Marktplatz öffnet.',
+          },
+        },
+      },
+      alternatives: {
+        title: {
+          fr: 'En attendant, découvrez nos autres fonctionnalités',
+          en: 'Meanwhile, discover our other features',
+          nl: 'Ontdek ondertussen onze andere functies',
+          de: 'Entdecken Sie in der Zwischenzeit unsere anderen Funktionen',
+        },
+        owner: {
+          fr: 'Gérer une Propriété (Owner)',
+          en: 'Manage a Property (Owner)',
+          nl: 'Een Woning Beheren (Eigenaar)',
+          de: 'Eine Immobilie Verwalten (Eigentümer)',
+        },
+        resident: {
+          fr: 'Gérer ma Colocation (Resident)',
+          en: 'Manage my Coliving (Resident)',
+          nl: 'Mijn Samenwoning Beheren (Bewoner)',
+          de: 'Meine WG Verwalten (Bewohner)',
+        },
+      },
+    },
+  },
+
+  // ============================================================================
+  // COMPONENTS
+  // ============================================================================
+  components: {
+    proTipCard: {
+      profileCompletion: {
+        fr: 'Complétion du profil',
+        en: 'Profile Completion',
+        nl: 'Profiel Voltooiing',
+        de: 'Profil Vervollständigung',
+      },
+    },
+    loadingView: {
+      loadingMessages: {
+        fr: 'Chargement de vos messages',
+        en: 'Loading your messages',
+        nl: 'Je berichten laden',
+        de: 'Ihre Nachrichten werden geladen',
       },
     },
   },

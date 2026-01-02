@@ -20,6 +20,8 @@ import {
   FileEdit,
   Clock,
   Percent,
+  DollarSign,
+  CheckCheck,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -27,12 +29,16 @@ import { toast } from 'sonner';
 
 import {
   OwnerPageHeader,
-  OwnerKPICard,
-  OwnerKPIGrid,
   OwnerNavigationCard,
   OwnerNavigationGrid,
 } from '@/components/owner';
-import { ownerGradient, ownerGradientLight, ownerPageBackground, semanticColors } from '@/lib/constants/owner-theme';
+import {
+  ownerGradient,
+  ownerGradientLight,
+  ownerPageBackground,
+  ownerPalette,
+  semanticColors,
+} from '@/lib/constants/owner-theme';
 import {
   portfolioService,
   type PortfolioOverview,
@@ -143,68 +149,268 @@ export default function PortfolioHubPage() {
           }
         />
 
-        {/* KPIs Section */}
+        {/* Bold KPIs Section - 5-color palette */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="mt-6"
         >
-          <OwnerKPIGrid columns={4}>
-            <OwnerKPICard
-              title="Biens"
-              value={overview?.properties.total || 0}
-              icon={Building2}
-              variant="primary"
-              subtext={
-                overview?.properties.published
-                  ? `${overview.properties.published} publiés`
-                  : undefined
-              }
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Card 1: Total Properties - PRIMARY gradient (hero card) */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/properties')}
-            />
-            <OwnerKPICard
-              title="Candidatures"
-              value={overview?.applications.total || 0}
-              icon={Users}
-              variant={overview?.applications.pending ? 'warning' : 'info'}
-              badge={
-                overview?.applications.pending
-                  ? { label: `${overview.applications.pending} en attente`, variant: 'warning' }
-                  : undefined
-              }
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              style={{
+                background: `linear-gradient(135deg, ${ownerPalette.primary.main} 0%, ${ownerPalette.secondary.main} 100%)`,
+                boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
+              }}
+            >
+              {/* Decorative circles */}
+              <div
+                className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-20"
+                style={{ background: 'white' }}
+              />
+              <div
+                className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full opacity-10"
+                style={{ background: 'white' }}
+              />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(255,255,255,0.2)' }}
+                  >
+                    <Building2 className="w-5 h-5 text-white" />
+                  </div>
+                  {overview?.properties.draft && overview.properties.draft > 0 && (
+                    <span className="px-2 py-1 bg-white/20 rounded-full text-xs font-medium text-white">
+                      {overview.properties.draft} brouillon{overview.properties.draft > 1 ? 's' : ''}
+                    </span>
+                  )}
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">
+                  {overview?.properties.total || 0}
+                </p>
+                <p className="text-white/80 text-sm font-medium">
+                  Biens au total
+                </p>
+                <div className="mt-3 flex items-center gap-2 text-white/70 text-xs">
+                  <CheckCheck className="w-3.5 h-3.5" />
+                  <span>{overview?.properties.published || 0} publiés</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 2: Applications - TERTIARY light background */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/applications')}
-            />
-            <OwnerKPICard
-              title="Taux d'occupation"
-              value={`${overview?.performance.occupancyRate || 0}%`}
-              icon={Percent}
-              variant={
-                (overview?.performance.occupancyRate || 0) >= 80
-                  ? 'success'
-                  : (overview?.performance.occupancyRate || 0) >= 50
-                  ? 'warning'
-                  : 'danger'
-              }
-              subtext={
-                overview?.properties.vacant
-                  ? `${overview.properties.vacant} vacant${overview.properties.vacant > 1 ? 's' : ''}`
-                  : 'Tout loué'
-              }
-            />
-            <OwnerKPICard
-              title="Loyers mensuels"
-              value={`${(overview?.performance.totalMonthlyRent || 0).toLocaleString()}€`}
-              icon={TrendingUp}
-              variant="success"
-              subtext={
-                overview?.performance.avgRentPerProperty
-                  ? `~${overview.performance.avgRentPerProperty.toLocaleString()}€/bien`
-                  : undefined
-              }
-              onClick={() => router.push('/dashboard/owner/finance')}
-            />
-          </OwnerKPIGrid>
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              style={{
+                background: ownerPalette.tertiary.light,
+                border: `2px solid ${ownerPalette.tertiary.border}`,
+                boxShadow: `0 4px 16px ${ownerPalette.tertiary.shadow}`,
+              }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: ownerPalette.tertiary.main }}
+                >
+                  <Users className="w-5 h-5 text-white" />
+                </div>
+                {overview?.applications.pending && overview.applications.pending > 0 && (
+                  <span
+                    className="px-2 py-1 rounded-full text-xs font-bold text-white animate-pulse"
+                    style={{ background: semanticColors.warning.gradient }}
+                  >
+                    {overview.applications.pending} en attente
+                  </span>
+                )}
+              </div>
+              <p
+                className="text-3xl font-bold mb-1"
+                style={{ color: ownerPalette.tertiary.text }}
+              >
+                {overview?.applications.total || 0}
+              </p>
+              <p
+                className="text-sm font-medium"
+                style={{ color: ownerPalette.tertiary.text, opacity: 0.8 }}
+              >
+                Candidatures
+              </p>
+              <div className="mt-3 flex items-center gap-3 text-xs" style={{ color: ownerPalette.tertiary.text }}>
+                <span className="flex items-center gap-1">
+                  <CheckCircle className="w-3.5 h-3.5" style={{ color: semanticColors.success.text }} />
+                  {overview?.applications.approved || 0} acceptées
+                </span>
+              </div>
+            </motion.div>
+
+            {/* Card 3: Occupancy Rate - QUATERNARY with progress */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              style={{
+                background: ownerPalette.quaternary.light,
+                border: `2px solid ${ownerPalette.quaternary.border}`,
+                boxShadow: `0 4px 16px ${ownerPalette.quaternary.shadow}`,
+              }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{ background: ownerPalette.quaternary.main }}
+                >
+                  <Percent className="w-5 h-5 text-white" />
+                </div>
+                {(overview?.performance.occupancyRate || 0) >= 80 ? (
+                  <span
+                    className="px-2 py-1 rounded-full text-xs font-medium"
+                    style={{ background: semanticColors.success.bg, color: semanticColors.success.text }}
+                  >
+                    Excellent
+                  </span>
+                ) : (overview?.properties.vacant || 0) > 0 ? (
+                  <span
+                    className="px-2 py-1 rounded-full text-xs font-medium"
+                    style={{ background: semanticColors.warning.bg, color: semanticColors.warning.text }}
+                  >
+                    {overview?.properties.vacant} vacant{(overview?.properties.vacant || 0) > 1 ? 's' : ''}
+                  </span>
+                ) : null}
+              </div>
+              <p
+                className="text-3xl font-bold mb-1"
+                style={{ color: ownerPalette.quaternary.text }}
+              >
+                {overview?.performance.occupancyRate || 0}%
+              </p>
+              <p
+                className="text-sm font-medium"
+                style={{ color: ownerPalette.quaternary.text, opacity: 0.8 }}
+              >
+                Taux d'occupation
+              </p>
+              {/* Progress bar */}
+              <div className="mt-3">
+                <div
+                  className="h-2 rounded-full overflow-hidden"
+                  style={{ background: ownerPalette.quaternary.border }}
+                >
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: `${overview?.performance.occupancyRate || 0}%` }}
+                    transition={{ delay: 0.5, duration: 0.8 }}
+                    className="h-full rounded-full"
+                    style={{
+                      background:
+                        (overview?.performance.occupancyRate || 0) >= 80
+                          ? semanticColors.success.gradient
+                          : (overview?.performance.occupancyRate || 0) >= 50
+                          ? semanticColors.warning.gradient
+                          : semanticColors.danger.gradient,
+                    }}
+                  />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 4: Monthly Rent - ACCENT (changes based on revenue) */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => router.push('/dashboard/owner/finances')}
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              style={{
+                background:
+                  (overview?.performance.totalMonthlyRent || 0) > 0
+                    ? semanticColors.success.bg
+                    : ownerPalette.accent.light,
+                border: `2px solid ${
+                  (overview?.performance.totalMonthlyRent || 0) > 0
+                    ? semanticColors.success.border
+                    : ownerPalette.accent.border
+                }`,
+                boxShadow: `0 4px 16px ${ownerPalette.accent.shadow}`,
+              }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  style={{
+                    background:
+                      (overview?.performance.totalMonthlyRent || 0) > 0
+                        ? semanticColors.success.gradient
+                        : ownerPalette.accent.main,
+                  }}
+                >
+                  <DollarSign className="w-5 h-5 text-white" />
+                </div>
+                <span
+                  className="px-2 py-1 rounded-full text-xs font-medium"
+                  style={{
+                    background:
+                      (overview?.performance.totalMonthlyRent || 0) > 0
+                        ? semanticColors.success.bg
+                        : ownerPalette.accent.light,
+                    color:
+                      (overview?.performance.totalMonthlyRent || 0) > 0
+                        ? semanticColors.success.text
+                        : ownerPalette.accent.text,
+                    border: `1px solid ${
+                      (overview?.performance.totalMonthlyRent || 0) > 0
+                        ? semanticColors.success.border
+                        : ownerPalette.accent.border
+                    }`,
+                  }}
+                >
+                  /mois
+                </span>
+              </div>
+              <p
+                className="text-3xl font-bold mb-1"
+                style={{
+                  color:
+                    (overview?.performance.totalMonthlyRent || 0) > 0
+                      ? semanticColors.success.text
+                      : ownerPalette.accent.text,
+                }}
+              >
+                {(overview?.performance.totalMonthlyRent || 0).toLocaleString()}€
+              </p>
+              <p
+                className="text-sm font-medium"
+                style={{
+                  color:
+                    (overview?.performance.totalMonthlyRent || 0) > 0
+                      ? semanticColors.success.text
+                      : ownerPalette.accent.text,
+                  opacity: 0.8,
+                }}
+              >
+                Loyers mensuels
+              </p>
+              <div
+                className="mt-3 text-xs"
+                style={{
+                  color:
+                    (overview?.performance.totalMonthlyRent || 0) > 0
+                      ? semanticColors.success.text
+                      : ownerPalette.accent.text,
+                }}
+              >
+                ~{(overview?.performance.avgRentPerProperty || 0).toLocaleString()}€ / bien
+              </div>
+            </motion.div>
+          </div>
         </motion.div>
 
         {/* Actions Required & Recent Properties */}
@@ -495,40 +701,52 @@ export default function PortfolioHubPage() {
           </OwnerNavigationGrid>
         </motion.div>
 
-        {/* Quick Stats Footer */}
+        {/* Summary Bar - Bold gradient */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
           className="mt-8 mb-4"
         >
-          <div className="bg-white/60 backdrop-blur-sm rounded-2xl border border-gray-200 p-4">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-              <div>
-                <p className="text-2xl font-bold" style={{ color: '#9c5698' }}>
+          <div
+            className="relative overflow-hidden rounded-2xl p-5"
+            style={{
+              background: ownerGradient,
+              boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
+            }}
+          >
+            {/* Decorative pattern */}
+            <div className="absolute inset-0 opacity-10">
+              <div className="absolute top-0 left-1/4 w-32 h-32 rounded-full bg-white blur-2xl" />
+              <div className="absolute bottom-0 right-1/4 w-40 h-40 rounded-full bg-white blur-3xl" />
+            </div>
+
+            <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div className="space-y-1">
+                <p className="text-3xl font-bold text-white">
                   {overview?.properties.total || 0}
                 </p>
-                <p className="text-xs text-gray-500">Biens au total</p>
+                <p className="text-white/70 text-sm">Biens au total</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold" style={{ color: '#059669' }}>
+              <div className="space-y-1">
+                <p className="text-3xl font-bold text-white">
                   {overview?.properties.rented || 0}
                 </p>
-                <p className="text-xs text-gray-500">Biens loués</p>
+                <p className="text-white/70 text-sm">Biens loués</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">
+              <div className="space-y-1">
+                <p className="text-3xl font-bold text-white">
                   {overview?.applications.approved || 0}
                 </p>
-                <p className="text-xs text-gray-500">Candidats acceptés</p>
+                <p className="text-white/70 text-sm">Locataires acceptés</p>
               </div>
-              <div>
-                <p className="text-2xl font-bold" style={{ color: '#9c5698' }}>
+              <div className="space-y-1">
+                <p className="text-3xl font-bold text-white">
                   {overview?.performance.avgRentPerProperty
                     ? `${overview.performance.avgRentPerProperty.toLocaleString()}€`
                     : '0€'}
                 </p>
-                <p className="text-xs text-gray-500">Loyer moyen</p>
+                <p className="text-white/70 text-sm">Loyer moyen</p>
               </div>
             </div>
           </div>

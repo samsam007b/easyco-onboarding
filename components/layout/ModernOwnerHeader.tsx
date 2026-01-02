@@ -139,24 +139,8 @@ const navigationDomains = {
     label: 'Finances',
     icon: Wallet,
     description: 'Track your income',
-    items: [
-      {
-        id: 'hub',
-        href: '/dashboard/owner/finances',
-        label: 'Overview',
-        icon: LayoutDashboard,
-        description: 'Finances Hub',
-        color: '#059669'
-      },
-      {
-        id: 'analytics',
-        href: '/dashboard/owner/finance',
-        label: 'Payments & Analytics',
-        icon: BarChart3,
-        description: 'Detailed rent tracking',
-        color: '#10b981'
-      }
-    ]
+    href: '/dashboard/owner/finances',
+    items: []
   }
 };
 
@@ -205,8 +189,14 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
     }
   };
 
-  // Check if any item in a domain is active
+  // Check if any item in a domain is active (or direct href)
   const isDomainActive = (domain: typeof navigationDomains.portfolio) => {
+    // Check direct href first
+    const directHref = 'href' in domain ? (domain as { href: string }).href : null;
+    if (directHref && (pathname === directHref || pathname?.startsWith(directHref + '/'))) {
+      return true;
+    }
+    // Check items
     return domain.items.some(item =>
       pathname === item.href || pathname?.startsWith(item.href + '/')
     );
@@ -255,12 +245,42 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
               const isActive = isDomainActive(domain);
               const Icon = domain.icon;
               const isOpen = activeDropdown === domain.id;
+              const hasItems = domain.items.length > 0;
+              const directHref = 'href' in domain ? (domain as { href: string }).href : null;
 
               // Calculate total badge for domain
               const domainBadge = domain.items.reduce((acc, item) => {
                 const badge = 'badgeKey' in item ? getBadgeValue(item.badgeKey) : 0;
                 return acc + (badge || 0);
               }, 0);
+
+              // Direct link (no dropdown) if domain has href and no items
+              if (!hasItems && directHref) {
+                return (
+                  <div key={domain.id} className="relative">
+                    <Link
+                      href={directHref}
+                      className={cn(
+                        "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                        isActive
+                          ? "text-purple-900 bg-purple-50"
+                          : "text-gray-600 hover:bg-purple-50/50"
+                      )}
+                    >
+                      <Icon className="w-4 h-4" />
+                      <span>{domain.label}</span>
+                    </Link>
+                    {isActive && (
+                      <motion.div
+                        className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
+                        style={{ borderTopColor: '#9c5698' }}
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                      />
+                    )}
+                  </div>
+                );
+              }
 
               return (
                 <div key={domain.id} className="relative">
@@ -658,10 +678,31 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                 {Object.values(navigationDomains).map((domain) => {
                   const Icon = domain.icon;
                   const isExpanded = expandedMobileSection === domain.id;
+                  const hasItems = domain.items.length > 0;
+                  const directHref = 'href' in domain ? (domain as { href: string }).href : null;
                   const domainBadge = domain.items.reduce((acc, item) => {
                     const badge = 'badgeKey' in item ? getBadgeValue(item.badgeKey) : 0;
                     return acc + (badge || 0);
                   }, 0);
+
+                  // Direct link (no expandable) if domain has href and no items
+                  if (!hasItems && directHref) {
+                    const isActive = pathname === directHref || pathname?.startsWith(directHref + '/');
+                    return (
+                      <Link
+                        key={domain.id}
+                        href={directHref}
+                        onClick={() => setMobileMenuOpen(false)}
+                        className={cn(
+                          "flex items-center gap-3 px-4 py-3 rounded-xl transition",
+                          isActive ? "bg-purple-50 text-purple-900" : "hover:bg-purple-50"
+                        )}
+                      >
+                        <Icon className="w-5 h-5 text-gray-700" />
+                        <span className="font-medium text-gray-900">{domain.label}</span>
+                      </Link>
+                    );
+                  }
 
                   return (
                     <div key={domain.id}>

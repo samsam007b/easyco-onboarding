@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import Image from 'next/image';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Load Stripe outside of component to avoid recreating on each render
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
@@ -32,10 +33,10 @@ type PlanType = 'owner_monthly' | 'owner_annual' | 'resident_monthly' | 'residen
 interface PlanDetails {
   name: string;
   price: string;
-  interval: string;
+  intervalKey: 'month' | 'year';
   savings?: string;
-  trialDays: string;
-  features: string[];
+  trialKey: 'owner' | 'resident';
+  featureKeys: string[];
   isAnnual: boolean;
   userType: 'owner' | 'resident';
 }
@@ -44,15 +45,15 @@ const planDetails: Record<PlanType, PlanDetails> = {
   owner_monthly: {
     name: 'IzzIco Owner',
     price: '15,99',
-    interval: 'mois',
-    trialDays: '3 mois',
-    features: [
-      'Gestion multi-propriétés',
-      'Matching avancé colocataires',
-      'Messagerie illimitée',
-      'Tableau de bord analytique',
-      'Documents & contrats',
-      'Support prioritaire',
+    intervalKey: 'month',
+    trialKey: 'owner',
+    featureKeys: [
+      'multiProperty',
+      'advancedMatching',
+      'unlimitedMessaging',
+      'analyticsBoard',
+      'documentsContracts',
+      'prioritySupport',
     ],
     isAnnual: false,
     userType: 'owner',
@@ -60,16 +61,16 @@ const planDetails: Record<PlanType, PlanDetails> = {
   owner_annual: {
     name: 'IzzIco Owner',
     price: '159,90',
-    interval: 'an',
+    intervalKey: 'year',
     savings: '31,98',
-    trialDays: '3 mois',
-    features: [
-      'Gestion multi-propriétés',
-      'Matching avancé colocataires',
-      'Messagerie illimitée',
-      'Tableau de bord analytique',
-      'Documents & contrats',
-      'Support prioritaire',
+    trialKey: 'owner',
+    featureKeys: [
+      'multiProperty',
+      'advancedMatching',
+      'unlimitedMessaging',
+      'analyticsBoard',
+      'documentsContracts',
+      'prioritySupport',
     ],
     isAnnual: true,
     userType: 'owner',
@@ -77,15 +78,15 @@ const planDetails: Record<PlanType, PlanDetails> = {
   resident_monthly: {
     name: 'IzzIco Resident',
     price: '7,99',
-    interval: 'mois',
-    trialDays: '6 mois',
-    features: [
-      'Profil vérifié & visible',
-      'Matching de colocations',
-      'Messagerie illimitée',
-      'Alertes personnalisées',
-      'Communauté de résidents',
-      'Support dédié',
+    intervalKey: 'month',
+    trialKey: 'resident',
+    featureKeys: [
+      'verifiedProfile',
+      'colivingMatching',
+      'unlimitedMessaging',
+      'personalizedAlerts',
+      'residentCommunity',
+      'dedicatedSupport',
     ],
     isAnnual: false,
     userType: 'resident',
@@ -93,16 +94,16 @@ const planDetails: Record<PlanType, PlanDetails> = {
   resident_annual: {
     name: 'IzzIco Resident',
     price: '79,90',
-    interval: 'an',
+    intervalKey: 'year',
     savings: '15,98',
-    trialDays: '6 mois',
-    features: [
-      'Profil vérifié & visible',
-      'Matching de colocations',
-      'Messagerie illimitée',
-      'Alertes personnalisées',
-      'Communauté de résidents',
-      'Support dédié',
+    trialKey: 'resident',
+    featureKeys: [
+      'verifiedProfile',
+      'colivingMatching',
+      'unlimitedMessaging',
+      'personalizedAlerts',
+      'residentCommunity',
+      'dedicatedSupport',
     ],
     isAnnual: true,
     userType: 'resident',
@@ -143,6 +144,8 @@ export default function CheckoutPage() {
   const router = useRouter();
   const params = useParams();
   const plan = params.plan as string;
+  const { language, getSection } = useLanguage();
+  const t = getSection('checkout');
 
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [checkoutError, setCheckoutError] = useState<string | null>(null);
@@ -162,7 +165,7 @@ export default function CheckoutPage() {
   // Fetch client secret for embedded checkout
   const fetchClientSecret = useCallback(async (isRetry = false) => {
     if (!isValidPlan(plan)) {
-      setPageError('Plan invalide');
+      setPageError(t?.errors?.invalidPlan?.title?.[language] || 'Invalid plan');
       setLoading(false);
       return;
     }
@@ -183,30 +186,56 @@ export default function CheckoutPage() {
 
       if (!response.ok) {
         if (response.status === 401) {
-          setPageError('Vous devez être connecté pour accéder à cette page');
+          setPageError(t?.errors?.unauthorized?.[language] || 'You must be logged in to access this page');
           return;
         }
-        throw new Error(data.error || 'Erreur lors de la création du checkout');
+        throw new Error(data.error || t?.errors?.checkoutCreation?.[language] || 'Error creating checkout');
       }
 
       if (!data.clientSecret) {
-        throw new Error('La session de paiement n\'a pas pu être créée. Veuillez réessayer.');
+        throw new Error(t?.errors?.sessionNotCreated?.[language] || 'The payment session could not be created. Please try again.');
       }
 
       setClientSecret(data.clientSecret);
       setCheckoutError(null);
     } catch (err: any) {
       console.error('Checkout error:', err);
-      setCheckoutError(err.message || 'Une erreur est survenue');
+      setCheckoutError(err.message || 'An error occurred');
     } finally {
       setLoading(false);
       setCheckoutLoading(false);
     }
-  }, [plan]);
+  }, [plan, language, t]);
 
   useEffect(() => {
     fetchClientSecret();
   }, [fetchClientSecret]);
+
+  // Get translated trial period
+  const getTrialDays = () => {
+    if (!currentPlan) return '';
+    return t?.plans?.trialDays?.[currentPlan.trialKey]?.[language] || (currentPlan.trialKey === 'owner' ? '3 months' : '6 months');
+  };
+
+  // Get translated interval
+  const getInterval = () => {
+    if (!currentPlan) return '';
+    return t?.plans?.interval?.[currentPlan.intervalKey]?.[language] || currentPlan.intervalKey;
+  };
+
+  // Get translated subscription type
+  const getSubscriptionType = () => {
+    if (!currentPlan) return '';
+    return currentPlan.isAnnual
+      ? (t?.plans?.subscription?.annual?.[language] || 'Annual subscription')
+      : (t?.plans?.subscription?.monthly?.[language] || 'Monthly subscription');
+  };
+
+  // Get translated feature
+  const getFeature = (featureKey: string) => {
+    if (!currentPlan) return featureKey;
+    return t?.features?.[currentPlan.userType]?.[featureKey]?.[language] || featureKey;
+  };
 
   // Handle invalid plan
   if (!currentPlan) {
@@ -220,15 +249,17 @@ export default function CheckoutPage() {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-red-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Plan invalide</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            {t?.errors?.invalidPlan?.title?.[language] || 'Invalid plan'}
+          </h1>
           <p className="text-gray-600 mb-6">
-            Le plan sélectionné n'existe pas. Veuillez choisir un plan valide.
+            {t?.errors?.invalidPlan?.description?.[language] || 'The selected plan does not exist. Please choose a valid plan.'}
           </p>
           <button
             onClick={() => router.push('/dashboard/subscription')}
             className="px-6 py-3 bg-gradient-to-r from-[#ff651e] to-[#9c5698] text-white rounded-xl font-semibold hover:shadow-lg transition"
           >
-            Voir les plans disponibles
+            {t?.errors?.invalidPlan?.seeAvailablePlans?.[language] || 'See available plans'}
           </button>
         </motion.div>
       </div>
@@ -241,7 +272,9 @@ export default function CheckoutPage() {
       <div className={`min-h-screen bg-gradient-to-br ${isOwner ? 'from-[#f3e8f2] via-white to-[#e8d4e6]' : 'from-[#fef3f0] via-white to-[#fde8e3]'} flex items-center justify-center`}>
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 mt-4">Préparation du paiement sécurisé...</p>
+          <p className="text-gray-600 mt-4">
+            {t?.loading?.preparingPayment?.[language] || 'Preparing secure payment...'}
+          </p>
         </div>
       </div>
     );
@@ -259,7 +292,9 @@ export default function CheckoutPage() {
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-red-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Erreur</h1>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+            {t?.errors?.generic?.title?.[language] || 'Error'}
+          </h1>
           <p className="text-gray-600 mb-6">{pageError}</p>
           <div className="space-y-3">
             <button
@@ -270,13 +305,13 @@ export default function CheckoutPage() {
               }}
               className={`w-full px-6 py-3 bg-gradient-to-r ${colors.gradient} text-white rounded-xl font-semibold hover:shadow-lg transition`}
             >
-              Réessayer
+              {t?.errors?.generic?.retry?.[language] || 'Retry'}
             </button>
             <button
               onClick={() => router.back()}
               className="w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition"
             >
-              Retour
+              {t?.errors?.generic?.back?.[language] || 'Back'}
             </button>
           </div>
         </motion.div>
@@ -295,7 +330,7 @@ export default function CheckoutPage() {
               className="flex items-center gap-2 text-white/90 hover:text-white transition group"
             >
               <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-              <span className="font-medium">Retour</span>
+              <span className="font-medium">{t?.header?.back?.[language] || 'Back'}</span>
             </button>
             <div className="flex items-center gap-2">
               <Image
@@ -313,7 +348,9 @@ export default function CheckoutPage() {
             </div>
             <div className="flex items-center gap-2 text-white/90">
               <Lock className="w-4 h-4" />
-              <span className="text-sm font-medium hidden sm:inline">Paiement sécurisé</span>
+              <span className="text-sm font-medium hidden sm:inline">
+                {t?.header?.securePayment?.[language] || 'Secure payment'}
+              </span>
             </div>
           </div>
         </div>
@@ -335,7 +372,9 @@ export default function CheckoutPage() {
                 {/* Trial Badge */}
                 <div className={`absolute -top-3 -right-3 bg-gradient-to-r ${colors.gradient} text-white px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1.5`}>
                   <Gift className="w-4 h-4" />
-                  <span className="text-sm font-bold">{currentPlan.trialDays} GRATUIT</span>
+                  <span className="text-sm font-bold">
+                    {getTrialDays()} {t?.plans?.free?.[language] || 'FREE'}
+                  </span>
                 </div>
 
                 {/* Plan Header */}
@@ -352,9 +391,7 @@ export default function CheckoutPage() {
                   </div>
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">{currentPlan.name}</h2>
-                    <p className="text-sm text-gray-500">
-                      {currentPlan.isAnnual ? 'Abonnement annuel' : 'Abonnement mensuel'}
-                    </p>
+                    <p className="text-sm text-gray-500">{getSubscriptionType()}</p>
                   </div>
                 </div>
 
@@ -364,20 +401,20 @@ export default function CheckoutPage() {
                     <span className={`text-4xl font-bold bg-gradient-to-r ${colors.gradient} bg-clip-text text-transparent`}>
                       {currentPlan.price}€
                     </span>
-                    <span className="text-gray-500 font-medium">/{currentPlan.interval}</span>
+                    <span className="text-gray-500 font-medium">/{getInterval()}</span>
                   </div>
                   {currentPlan.savings && (
                     <div className={`inline-flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full ${colors.bg}`}>
                       <Zap className={`w-4 h-4 ${colors.text}`} />
                       <span className={`text-sm font-semibold ${colors.text}`}>
-                        Économisez {currentPlan.savings}€/an
+                        {t?.plans?.savings?.[language] || 'Save'} {currentPlan.savings}€{t?.plans?.perYear?.[language] || '/year'}
                       </span>
                     </div>
                   )}
                   <div className="flex items-center gap-2 mt-3">
                     <Sparkles className="w-4 h-4 text-emerald-500" />
                     <span className="text-sm text-emerald-700 font-medium">
-                      Essai gratuit de {currentPlan.trialDays} inclus
+                      {t?.plans?.freeTrialIncluded?.[language] || 'Free trial of'} {getTrialDays()} {t?.plans?.included?.[language] || 'included'}
                     </span>
                   </div>
                 </div>
@@ -386,10 +423,10 @@ export default function CheckoutPage() {
                 <div className="space-y-3">
                   <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                     <Check className={`w-5 h-5 ${colors.text}`} />
-                    Inclus dans votre abonnement
+                    {t?.features?.includedInSubscription?.[language] || 'Included in your subscription'}
                   </h3>
                   <div className="grid gap-2.5 pl-1">
-                    {currentPlan.features.map((feature, index) => (
+                    {currentPlan.featureKeys.map((featureKey, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -402,7 +439,7 @@ export default function CheckoutPage() {
                         >
                           <Check className={`w-3 h-3 ${colors.text}`} />
                         </div>
-                        <span className="text-gray-700 text-sm">{feature}</span>
+                        <span className="text-gray-700 text-sm">{getFeature(featureKey)}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -419,7 +456,7 @@ export default function CheckoutPage() {
             >
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Shield className={`w-5 h-5 ${colors.text}`} />
-                Paiement 100% sécurisé
+                {t?.trust?.title?.[language] || '100% secure payment'}
               </h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -427,8 +464,12 @@ export default function CheckoutPage() {
                     <Shield className={`w-5 h-5 ${colors.text}`} />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Sécurisé par Stripe</p>
-                    <p className="text-sm text-gray-500">Données chiffrées SSL 256-bit</p>
+                    <p className="font-medium text-gray-900">
+                      {t?.trust?.stripe?.title?.[language] || 'Secured by Stripe'}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {t?.trust?.stripe?.description?.[language] || 'SSL 256-bit encrypted data'}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -436,8 +477,12 @@ export default function CheckoutPage() {
                     <Lock className={`w-5 h-5 ${colors.text}`} />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Annulation flexible</p>
-                    <p className="text-sm text-gray-500">Annulez quand vous voulez</p>
+                    <p className="font-medium text-gray-900">
+                      {t?.trust?.cancellation?.title?.[language] || 'Flexible cancellation'}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      {t?.trust?.cancellation?.description?.[language] || 'Cancel anytime you want'}
+                    </p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -445,9 +490,11 @@ export default function CheckoutPage() {
                     <CreditCard className={`w-5 h-5 ${colors.text}`} />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">Paiement différé</p>
+                    <p className="font-medium text-gray-900">
+                      {t?.trust?.deferredPayment?.title?.[language] || 'Deferred payment'}
+                    </p>
                     <p className="text-sm text-gray-500">
-                      1er prélèvement après l'essai
+                      {t?.trust?.deferredPayment?.description?.[language] || 'First charge after trial'}
                     </p>
                   </div>
                 </div>
@@ -455,7 +502,9 @@ export default function CheckoutPage() {
 
               {/* Payment methods */}
               <div className="mt-6 pt-4 border-t border-gray-100">
-                <p className="text-xs text-gray-500 mb-2">Moyens de paiement acceptés</p>
+                <p className="text-xs text-gray-500 mb-2">
+                  {t?.trust?.paymentMethods?.[language] || 'Accepted payment methods'}
+                </p>
                 <div className="flex items-center gap-2">
                   <div className="px-2 py-1 bg-gray-50 rounded text-xs font-medium text-gray-600">Visa</div>
                   <div className="px-2 py-1 bg-gray-50 rounded text-xs font-medium text-gray-600">Mastercard</div>
@@ -476,9 +525,11 @@ export default function CheckoutPage() {
             <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
               {/* Header */}
               <div className={`bg-gradient-to-r ${colors.gradientLight} px-6 lg:px-8 py-4 border-b border-gray-100`}>
-                <h2 className="text-xl font-bold text-gray-900">Finaliser votre abonnement</h2>
+                <h2 className="text-xl font-bold text-gray-900">
+                  {t?.form?.title?.[language] || 'Complete your subscription'}
+                </h2>
                 <p className="text-sm text-gray-600 mt-1">
-                  Entrez vos informations de paiement ci-dessous
+                  {t?.form?.subtitle?.[language] || 'Enter your payment information below'}
                 </p>
               </div>
 
@@ -496,7 +547,7 @@ export default function CheckoutPage() {
                       <AlertCircle className="w-8 h-8 text-red-600" />
                     </div>
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                      Impossible de charger le formulaire
+                      {t?.errors?.unableToLoad?.title?.[language] || 'Unable to load form'}
                     </h3>
                     <p className="text-gray-600 mb-6 max-w-sm mx-auto">
                       {checkoutError}
@@ -515,7 +566,7 @@ export default function CheckoutPage() {
                           Loading...
                         </span>
                       ) : (
-                        'Retry'
+                        t?.errors?.generic?.retry?.[language] || 'Retry'
                       )}
                     </button>
                   </div>
@@ -532,7 +583,7 @@ export default function CheckoutPage() {
                       <div className={`h-14 bg-gradient-to-r ${colors.gradientLight} rounded-lg`}></div>
                     </div>
                     <p className="text-sm text-gray-500 text-center pt-4">
-                      Loading payment form...
+                      {t?.loading?.loadingForm?.[language] || 'Loading payment form...'}
                     </p>
                   </div>
                 )}
@@ -547,7 +598,7 @@ export default function CheckoutPage() {
               className="mt-6 text-center"
             >
               <p className="text-sm text-gray-500">
-                Une question ? Contactez-nous à{' '}
+                {t?.support?.question?.[language] || 'Have a question? Contact us at'}{' '}
                 <a
                   href="mailto:support@izzico.be"
                   className={`font-medium ${colors.text} hover:underline`}

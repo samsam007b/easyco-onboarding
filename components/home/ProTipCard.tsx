@@ -4,6 +4,7 @@ import { Sparkles } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ProTipCardProps {
   message: string;
@@ -13,6 +14,9 @@ interface ProTipCardProps {
 }
 
 export function ProTipCard({ message, ctaText, onCtaClick, progress }: ProTipCardProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('components')?.proTipCard;
+
   return (
     <Card className="rounded-2xl shadow-lg bg-gradient-to-br from-yellow-400 to-yellow-500 border-0">
       <CardContent className="p-6">
@@ -25,7 +29,7 @@ export function ProTipCard({ message, ctaText, onCtaClick, progress }: ProTipCar
             {progress !== undefined && (
               <div className="mb-4">
                 <div className="flex justify-between text-sm text-white/90 mb-2">
-                  <span>Profile Completion</span>
+                  <span>{t?.profileCompletion?.[language] || 'Profile Completion'}</span>
                   <span>{progress}%</span>
                 </div>
                 <Progress value={progress} className="h-2 bg-white/20" />

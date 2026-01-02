@@ -4,10 +4,13 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import LoadingView from '@/components/ui/LoadingView';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function MessagesRedirectPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('components')?.loadingView;
 
   useEffect(() => {
     const redirectToMessages = async () => {
@@ -34,5 +37,6 @@ export default function MessagesRedirectPage() {
   }, [router, supabase]);
 
   // Show loading state
-  return <LoadingView message="Loading your messages" fullScreen />;
+  const loadingMessage = t?.loadingMessages?.[language] || 'Loading your messages';
+  return <LoadingView message={loadingMessage} fullScreen />;
 }

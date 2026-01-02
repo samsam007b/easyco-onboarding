@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function Error({
   error,
@@ -11,6 +12,9 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('errorPages')?.error;
+
   useEffect(() => {
     // Log the error to the security dashboard
     const logError = async () => {
@@ -46,11 +50,11 @@ export default function Error({
         </div>
 
         <h1 className="text-2xl font-bold text-gray-900 mb-2">
-          Oops! Something went wrong
+          {t?.title?.[language] || 'Oops! Something went wrong'}
         </h1>
 
         <p className="text-gray-600 mb-6">
-          We're sorry, but something unexpected happened. Don't worry, your data is safe.
+          {t?.description?.[language] || 'We\'re sorry, but something unexpected happened. Don\'t worry, your data is safe.'}
         </p>
 
         {process.env.NODE_ENV === 'development' && error && (
@@ -60,7 +64,7 @@ export default function Error({
             </p>
             {error.digest && (
               <p className="text-xs text-red-600 mt-2">
-                Error ID: {error.digest}
+                {t?.errorId?.[language] || 'Error ID'}: {error.digest}
               </p>
             )}
           </div>
@@ -72,7 +76,7 @@ export default function Error({
             className="flex items-center gap-2"
           >
             <RefreshCw className="w-4 h-4" />
-            Try Again
+            {t?.tryAgain?.[language] || 'Try Again'}
           </Button>
 
           <Button
@@ -81,7 +85,7 @@ export default function Error({
             className="flex items-center gap-2"
           >
             <Home className="w-4 h-4" />
-            Go Home
+            {t?.goHome?.[language] || 'Go Home'}
           </Button>
         </div>
       </div>

@@ -5,6 +5,7 @@ import { Search, Calendar, Bell, Home, ArrowLeft, Sparkles, MapPin, Heart, Users
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // V2 Fun Design Colors - Searcher Theme (Gold/Amber)
 const SEARCHER_GRADIENT = 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)';
@@ -16,10 +17,12 @@ export default function SearcherComingSoon() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const { language, getSection } = useLanguage();
+  const t = getSection('comingSoon')?.searcher;
 
   const handleWaitlist = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: Implémenter sauvegarde dans Supabase (table waitlist)
+    // TODO: Implement save to Supabase (waitlist table)
     setSubscribed(true);
     setTimeout(() => {
       setEmail('');
@@ -44,22 +47,19 @@ export default function SearcherComingSoon() {
   const features = [
     {
       icon: Search,
-      title: 'Marketplace Complète',
-      description: 'Parcourez des centaines de propriétés disponibles avec recherche avancée',
+      key: 'marketplace',
       gradient: 'linear-gradient(135deg, #f59e0b 0%, #fbbf24 100%)',
       bgColor: 'rgba(245, 158, 11, 0.1)',
     },
     {
       icon: Heart,
-      title: 'Matching Intelligent',
-      description: 'Trouvez votre colocation idéale grâce à notre algorithme de compatibilité',
+      key: 'matching',
       gradient: 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)',
       bgColor: 'rgba(239, 68, 68, 0.1)',
     },
     {
       icon: Bell,
-      title: 'Alertes Temps Réel',
-      description: 'Soyez notifié instantanément dès qu\'une propriété correspond à vos critères',
+      key: 'alerts',
       gradient: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)',
       bgColor: 'rgba(139, 92, 246, 0.1)',
     },
@@ -111,7 +111,7 @@ export default function SearcherComingSoon() {
           className="mb-8 flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors group"
         >
           <ArrowLeft className="w-5 h-5" />
-          <span className="font-medium">Retour à l'accueil</span>
+          <span className="font-medium">{t?.backToHome?.[language] || 'Back to home'}</span>
         </motion.button>
 
         <div className="text-center">
@@ -155,7 +155,7 @@ export default function SearcherComingSoon() {
             variants={itemVariants}
             className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4"
           >
-            Bientôt Disponible !{' '}
+            {t?.title?.[language] || 'Coming Soon!'}{' '}
             <motion.span
               animate={{ rotate: [0, 10, -10, 0] }}
               transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
@@ -169,14 +169,14 @@ export default function SearcherComingSoon() {
             variants={itemVariants}
             className="text-xl md:text-2xl text-gray-600 mb-10"
           >
-            La fonction{' '}
+            {t?.subtitle?.[language] || 'The'}{' '}
             <span
               className="font-bold bg-clip-text text-transparent"
               style={{ backgroundImage: SEARCHER_GRADIENT }}
             >
-              Chercheur
+              {t?.featureName?.[language] || 'Searcher'}
             </span>{' '}
-            arrive très prochainement.
+            {t?.arriving?.[language] || 'feature is coming very soon.'}
           </motion.p>
 
           {/* Features Card */}
@@ -204,7 +204,7 @@ export default function SearcherComingSoon() {
                 >
                   <Zap className="w-5 h-5 text-white" />
                 </motion.div>
-                Qu'est-ce qui arrive ?
+                {t?.whatscoming?.[language] || 'What\'s coming?'}
               </h2>
 
               <div className="grid md:grid-cols-3 gap-6">
@@ -235,9 +235,11 @@ export default function SearcherComingSoon() {
                         >
                           <Icon className="w-7 h-7" style={{ color: feature.gradient.includes('#f59e0b') ? '#f59e0b' : feature.gradient.includes('#ef4444') ? '#ef4444' : '#8b5cf6' }} />
                         </motion.div>
-                        <h3 className="font-bold text-gray-900 mb-2 text-lg">{feature.title}</h3>
+                        <h3 className="font-bold text-gray-900 mb-2 text-lg">
+                          {t?.features?.[feature.key]?.title?.[language] || feature.key}
+                        </h3>
                         <p className="text-sm text-gray-600 leading-relaxed">
-                          {feature.description}
+                          {t?.features?.[feature.key]?.description?.[language] || ''}
                         </p>
                       </div>
                     </motion.div>
@@ -271,10 +273,10 @@ export default function SearcherComingSoon() {
               </motion.div>
 
               <h3 className="text-2xl md:text-3xl font-bold mb-3">
-                Inscrivez-vous à la liste d'attente
+                {t?.waitlist?.title?.[language] || 'Join the waitlist'}
               </h3>
               <p className="mb-6 text-white/90 text-lg max-w-md mx-auto">
-                Soyez parmi les premiers à accéder à la marketplace !
+                {t?.waitlist?.subtitle?.[language] || 'Be among the first to access the marketplace!'}
               </p>
 
               {!subscribed ? (
@@ -284,7 +286,7 @@ export default function SearcherComingSoon() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="votre@email.com"
+                      placeholder={t?.waitlist?.placeholder?.[language] || 'your@email.com'}
                       required
                       className="flex-1 px-6 py-4 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30 transition-shadow text-base font-medium"
                     />
@@ -295,7 +297,7 @@ export default function SearcherComingSoon() {
                       className="bg-white px-8 py-4 rounded-xl font-bold transition-all text-base"
                       style={{ color: SEARCHER_PRIMARY }}
                     >
-                      Rejoindre
+                      {t?.waitlist?.button?.[language] || 'Join'}
                     </motion.button>
                   </div>
                 </form>
@@ -305,9 +307,9 @@ export default function SearcherComingSoon() {
                   animate={{ scale: 1, opacity: 1 }}
                   className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 max-w-md mx-auto"
                 >
-                  <p className="text-xl font-bold">✅ Merci ! Vous êtes sur la liste !</p>
+                  <p className="text-xl font-bold">{t?.waitlist?.success?.title?.[language] || '✅ Thanks! You\'re on the list!'}</p>
                   <p className="text-white/90 mt-2">
-                    Nous vous contacterons dès l'ouverture de la marketplace.
+                    {t?.waitlist?.success?.message?.[language] || 'We\'ll contact you as soon as the marketplace opens.'}
                   </p>
                 </motion.div>
               )}
@@ -323,7 +325,7 @@ export default function SearcherComingSoon() {
             <div className="relative z-10">
               <h4 className="font-bold text-gray-900 mb-4 flex items-center justify-center gap-2">
                 <Home className="w-5 h-5 text-gray-600" />
-                En attendant, découvrez nos autres fonctionnalités
+                {t?.alternatives?.title?.[language] || 'Meanwhile, discover our other features'}
               </h4>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
@@ -333,7 +335,7 @@ export default function SearcherComingSoon() {
                     style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)' }}
                   >
                     <Users className="w-4 h-4 mr-2" />
-                    Gérer une Propriété (Owner)
+                    {t?.alternatives?.owner?.[language] || 'Manage a Property (Owner)'}
                   </Button>
                 </motion.div>
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
@@ -343,7 +345,7 @@ export default function SearcherComingSoon() {
                     style={{ background: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)' }}
                   >
                     <Home className="w-4 h-4 mr-2" />
-                    Gérer ma Colocation (Resident)
+                    {t?.alternatives?.resident?.[language] || 'Manage my Coliving (Resident)'}
                   </Button>
                 </motion.div>
               </div>

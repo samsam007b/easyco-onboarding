@@ -301,18 +301,29 @@
             </div>
 
             <div class="comparison-section">
-                <h3>Buste - Terminaisons de l'arc</h3>
+                <h3>Buste - Calibration Fredoka</h3>
                 <div class="side-by-side">
                     <div class="compare-box">
-                        <h4>Buste actuel</h4>
+                        <h4>Reference: Fredoka "n" (arc inversé)</h4>
+                        <div style="position: relative;">
+                            <div class="fredoka-letter" style="font-size: 150px; transform: scaleY(-1);">n</div>
+                        </div>
+                    </div>
+                    <div class="compare-box highlight">
+                        <h4>Buste actuel (ajustable)</h4>
                         <div id="bust-preview"></div>
                     </div>
-                    <div class="compare-box">
-                        <h4>Reference: arc Fredoka</h4>
-                        <svg viewBox="0 0 100 60" width="200" height="120">
-                            <path d="M 15 50 Q 50 10 85 50" fill="none" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                </div>
+                <div class="terminal-zoom" style="margin-top: 1.5rem;">
+                    <div class="terminal-item">
+                        <svg viewBox="0 0 60 40" width="120" height="80">
+                            <text x="30" y="32" font-family="Fredoka" font-weight="600" font-size="40" fill="white" text-anchor="middle" transform="scale(1,-1) translate(0,-40)">n</text>
                         </svg>
+                        <span>Fredoka "n" (reference)</span>
                     </div>
+                    <div class="terminal-item" id="bust-terminal-current"></div>
+                    <div class="terminal-item" id="bust-terminal-85"></div>
+                    <div class="terminal-item" id="bust-terminal-100"></div>
                 </div>
             </div>
 
@@ -333,8 +344,8 @@
 
                 <div class="control-row">
                     <span class="control-label">Arrondi</span>
-                    <input type="range" id="cap-roundness" min="0" max="100" value="100">
-                    <span class="control-value" id="cap-roundness-val">100%</span>
+                    <input type="range" id="cap-roundness" min="0" max="100" value="85">
+                    <span class="control-value" id="cap-roundness-val">85%</span>
                 </div>
 
                 <div class="info-box">
@@ -356,11 +367,47 @@
             </div>
 
             <div class="panel-section">
+                <div class="section-title">Parametres du Buste</div>
+
+                <div class="control-row">
+                    <span class="control-label">Courbure arc</span>
+                    <input type="range" id="bust-curvature" min="0" max="200" value="100">
+                    <span class="control-value" id="bust-curvature-val">100%</span>
+                </div>
+
+                <div class="preset-grid">
+                    <button class="btn" data-bust-curvature="50">Aplati (50%)</button>
+                    <button class="btn" data-bust-curvature="85">~Fredoka (85%)</button>
+                    <button class="btn primary" data-bust-curvature="100">Normal (100%)</button>
+                    <button class="btn" data-bust-curvature="150">Courbe (150%)</button>
+                </div>
+
+                <div class="control-row" style="margin-top: 1rem;">
+                    <span class="control-label">Arrondi caps</span>
+                    <input type="range" id="bust-cap-roundness" min="0" max="100" value="85">
+                    <span class="control-value" id="bust-cap-roundness-val">85%</span>
+                </div>
+
+                <div class="preset-grid">
+                    <button class="btn" data-bust-cap="0">Carre (0%)</button>
+                    <button class="btn" data-bust-cap="50">Squircle (50%)</button>
+                    <button class="btn primary" data-bust-cap="85">~Fredoka (85%)</button>
+                    <button class="btn" data-bust-cap="100">Round (100%)</button>
+                </div>
+
+                <div class="info-box">
+                    <strong>Courbure:</strong> Tension de la courbe Bezier (comparer avec Fredoka "n")<br>
+                    <strong>Arrondi caps:</strong> Terminaisons aux extremites (comparer avec les autres elements)
+                </div>
+            </div>
+
+            <div class="panel-section">
                 <div class="section-title">Epaisseurs (verrouillees)</div>
                 <div class="info-box">
                     Cercle: 7.5<br>
-                    Loupe: 6.5<br>
+                    Loupe: 6<br>
                     Cle: 6<br>
+                    Dents: 3<br>
                     Buste: 6.5
                 </div>
             </div>
@@ -384,17 +431,20 @@
     </div>
 
     <script>
-        // LOCKED SPECS - Typography-matched to Fredoka 600
-        const GLOBAL_STROKE = 13; // Fredoka 600 stem ratio = 13%
+        // LOCKED SPECS - Individual stroke widths
         const SPECS = {
-            circle: { cy: 41, r: 15, stroke: GLOBAL_STROKE },
-            loupe: { length: 21, angle: 139, stroke: GLOBAL_STROKE },
-            key: { length: 21, angle: 36, stroke: GLOBAL_STROKE, teeth: 2, teethSize: 7, teethStroke: GLOBAL_STROKE * 0.5 },
-            bust: { gap: 2, width: 35, height: 21, stroke: GLOBAL_STROKE }
+            circle: { cy: 41, r: 15, stroke: 7.5 },
+            loupe: { length: 21, angle: 139, stroke: 6 },
+            key: { length: 21, angle: 36, stroke: 6, teeth: 2, teethSize: 7, teethStroke: 3 },
+            bust: { gap: 2, width: 35, height: 21, stroke: 6.5 }
         };
 
-        // LOCKED: stroke-linecap: round (100%)
-        let capRoundness = 100;
+        // LOCKED: stroke-linecap: custom (85%)
+        let capRoundness = 85;
+
+        // NEW: Bust-specific parameters (adjustable)
+        let bustCurvature = 100;      // 0-200%: how curved the arc is (100% = default)
+        let bustCapRoundness = 85;    // 0-100%: terminal roundness for bust
 
         function createSVG(tag, attrs) {
             const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -450,22 +500,75 @@
             }
         }
 
-        function createStyledBust(cx, bustTop, bustWidth, bustHeight, strokeWidth, roundness, color) {
+        function createStyledBust(cx, bustTop, bustWidth, bustHeight, strokeWidth, capRound, curvature, color) {
             color = color || '#ffffff';
+            curvature = curvature !== undefined ? curvature : 100;
             const g = createSVG('g', {});
             const leftX = cx - bustWidth / 2;
             const rightX = cx + bustWidth / 2;
             const endY = bustTop + bustHeight;
 
-            // Use round for Fredoka-style (>=50%), butt for square
-            var linecap = roundness >= 50 ? 'round' : 'butt';
-            g.appendChild(createSVG('path', {
-                d: 'M ' + leftX + ' ' + endY + ' Q ' + cx + ' ' + bustTop + ' ' + rightX + ' ' + endY,
-                fill: 'none',
-                stroke: color,
-                'stroke-width': strokeWidth,
-                'stroke-linecap': linecap
-            }));
+            // Curvature affects the control point Y position
+            // 100% = default (bustTop), 0% = flat line, 200% = very curved
+            const curveIntensity = curvature / 100;
+            const controlY = endY - (bustHeight * curveIntensity);
+
+            // Custom terminal caps for bust
+            const hw = strokeWidth / 2;
+            const radius = hw * (capRound / 100);
+
+            if (capRound >= 95) {
+                // Use native round linecap
+                g.appendChild(createSVG('path', {
+                    d: 'M ' + leftX + ' ' + endY + ' Q ' + cx + ' ' + controlY + ' ' + rightX + ' ' + endY,
+                    fill: 'none',
+                    stroke: color,
+                    'stroke-width': strokeWidth,
+                    'stroke-linecap': 'round'
+                }));
+            } else if (capRound <= 5) {
+                // Use native butt linecap
+                g.appendChild(createSVG('path', {
+                    d: 'M ' + leftX + ' ' + endY + ' Q ' + cx + ' ' + controlY + ' ' + rightX + ' ' + endY,
+                    fill: 'none',
+                    stroke: color,
+                    'stroke-width': strokeWidth,
+                    'stroke-linecap': 'butt'
+                }));
+            } else {
+                // Custom rounded terminals using mask technique
+                // Draw the arc with butt linecap, then add rounded rect caps at endpoints
+                g.appendChild(createSVG('path', {
+                    d: 'M ' + leftX + ' ' + endY + ' Q ' + cx + ' ' + controlY + ' ' + rightX + ' ' + endY,
+                    fill: 'none',
+                    stroke: color,
+                    'stroke-width': strokeWidth,
+                    'stroke-linecap': 'butt'
+                }));
+
+                // Add custom rounded caps at the endpoints
+                // Left endpoint
+                g.appendChild(createSVG('rect', {
+                    x: leftX - hw,
+                    y: endY - hw,
+                    width: strokeWidth,
+                    height: strokeWidth,
+                    rx: radius,
+                    ry: radius,
+                    fill: color
+                }));
+
+                // Right endpoint
+                g.appendChild(createSVG('rect', {
+                    x: rightX - hw,
+                    y: endY - hw,
+                    width: strokeWidth,
+                    height: strokeWidth,
+                    rx: radius,
+                    ry: radius,
+                    fill: color
+                }));
+            }
 
             return g;
         }
@@ -533,7 +636,7 @@
             var bustTop = cy + r + SPECS.bust.gap;
             svg.appendChild(createStyledBust(
                 cx, bustTop, SPECS.bust.width, SPECS.bust.height,
-                SPECS.bust.stroke, capRoundness, color
+                SPECS.bust.stroke, bustCapRoundness, bustCurvature, color
             ));
 
             return svg;
@@ -576,8 +679,36 @@
             var bustPreview = document.getElementById('bust-preview');
             clearElement(bustPreview);
             var bustSvg = createSVG('svg', { viewBox: '0 0 100 60', width: 200, height: 120 });
-            bustSvg.appendChild(createStyledBust(50, 10, 70, 40, 8, capRoundness, '#ffffff'));
+            bustSvg.appendChild(createStyledBust(50, 10, 70, 40, 8, bustCapRoundness, bustCurvature, '#ffffff'));
             bustPreview.appendChild(bustSvg);
+
+            // Bust terminal comparisons
+            var bustTerminalCurrent = document.getElementById('bust-terminal-current');
+            clearElement(bustTerminalCurrent);
+            var bustCurrentSvg = createSVG('svg', { viewBox: '0 0 80 50', width: 120, height: 75 });
+            bustCurrentSvg.appendChild(createStyledBust(40, 8, 60, 32, 6, bustCapRoundness, bustCurvature, '#ffffff'));
+            bustTerminalCurrent.appendChild(bustCurrentSvg);
+            var labelCurrent = document.createElement('span');
+            labelCurrent.textContent = 'Actuel (' + bustCapRoundness + '%)';
+            bustTerminalCurrent.appendChild(labelCurrent);
+
+            var bustTerminal85 = document.getElementById('bust-terminal-85');
+            clearElement(bustTerminal85);
+            var bust85Svg = createSVG('svg', { viewBox: '0 0 80 50', width: 120, height: 75 });
+            bust85Svg.appendChild(createStyledBust(40, 8, 60, 32, 6, 85, bustCurvature, '#ffffff'));
+            bustTerminal85.appendChild(bust85Svg);
+            var label85 = document.createElement('span');
+            label85.textContent = 'Fredoka 85%';
+            bustTerminal85.appendChild(label85);
+
+            var bustTerminal100 = document.getElementById('bust-terminal-100');
+            clearElement(bustTerminal100);
+            var bust100Svg = createSVG('svg', { viewBox: '0 0 80 50', width: 120, height: 75 });
+            bust100Svg.appendChild(createStyledBust(40, 8, 60, 32, 6, 100, bustCurvature, '#ffffff'));
+            bustTerminal100.appendChild(bust100Svg);
+            var label100 = document.createElement('span');
+            label100.textContent = 'Round 100%';
+            bustTerminal100.appendChild(label100);
 
             var lockup = document.getElementById('lockup-icon');
             clearElement(lockup);
@@ -597,13 +728,28 @@
                 linecapValue = 'custom (rx: ' + (capRoundness / 100).toFixed(2) + ' * stroke/2)';
             }
 
+            // Bust linecap value
+            var bustLinecapValue;
+            if (bustCapRoundness >= 95) {
+                bustLinecapValue = 'round';
+            } else if (bustCapRoundness <= 5) {
+                bustLinecapValue = 'butt';
+            } else {
+                bustLinecapValue = 'custom (rx: ' + (bustCapRoundness / 100).toFixed(2) + ' * stroke/2)';
+            }
+
             display.textContent = '/* TERMINAISONS */\n' +
                 'stroke-linecap: ' + linecapValue + '\n' +
                 'cap-roundness: ' + capRoundness + '%\n\n' +
+                '/* BUSTE */\n' +
+                'bust-curvature: ' + bustCurvature + '%\n' +
+                'bust-cap-roundness: ' + bustCapRoundness + '%\n' +
+                'bust-linecap: ' + bustLinecapValue + '\n\n' +
                 '/* STROKES VERROUILLES */\n' +
                 'circle: 7.5\n' +
-                'loupe: 6.5\n' +
+                'loupe: 6\n' +
                 'key: 6\n' +
+                'teeth: 3\n' +
                 'bust: 6.5\n\n' +
                 '/* PROPORTIONS VERROUILLEES */\n' +
                 'circle: cy=41, r=15\n' +
@@ -625,6 +771,20 @@
                 document.getElementById('cap-roundness-val').textContent = capRoundness + '%';
                 render();
             });
+        });
+
+        // Bust curvature slider
+        document.getElementById('bust-curvature').addEventListener('input', function(e) {
+            bustCurvature = parseInt(e.target.value);
+            document.getElementById('bust-curvature-val').textContent = bustCurvature + '%';
+            render();
+        });
+
+        // Bust cap roundness slider
+        document.getElementById('bust-cap-roundness').addEventListener('input', function(e) {
+            bustCapRoundness = parseInt(e.target.value);
+            document.getElementById('bust-cap-roundness-val').textContent = bustCapRoundness + '%';
+            render();
         });
 
         document.getElementById('copy-specs').addEventListener('click', function() {

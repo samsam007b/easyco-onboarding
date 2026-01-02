@@ -106,24 +106,19 @@ Pour modifier les specs verrouillées:
 
 ## Configuration Icône Unifiée
 
-### Stroke Global (Uniforme - Basé sur Fredoka 600)
+### Stroke (Par élément - Équilibre optique)
 ```
-stroke-width: 13
-stroke-linecap: butt
-terminal-rx: 4.225
-terminal-ry: 4.225
+stroke-linecap: round (pour tous les éléments)
 ```
-> **Calcul:** Fredoka 600 a un ratio stem/em-square de ~13%.
-> Dans un viewBox 100×100, cela donne stroke-width: 13.
-> Toutes les parties de l'icône utilisent ce même stroke.
-> Les terminaisons utilisent des rect arrondis (rx=ry=4.225).
+> **Note:** Les strokes individuels sont calibrés pour l'équilibre optique
+> plutôt qu'une épaisseur uniforme. Cela crée une meilleure harmonie visuelle.
 
 ### Cercle Central (Tête - Élément Partagé)
 ```
 cx: 50
 cy: 41
 r: 15
-stroke: 13 (global)
+stroke: 7.5
 ```
 > Le cercle n'a pas de terminaisons visibles (forme fermée).
 
@@ -131,18 +126,19 @@ stroke: 13 (global)
 ```
 length: 21
 angle: 139°
-stroke: 13 (global)
-terminal: rect rx=4.225 ry=4.225
+stroke: 6
+linecap: round
 ```
 
 ### Tige Clé (Droite - Owner)
 ```
 length: 21
 angle: 36°
-stroke: 13 (global)
+stroke: 6
 teeth: 2
-teethStroke: 6.5 (50% du global)
-terminal: rect rx=4.225 ry=4.225
+teethSize: 7
+teethStroke: 3 (50% du stroke clé)
+linecap: round
 ```
 
 ### Buste (Bas - Resident/Personne)
@@ -150,48 +146,20 @@ terminal: rect rx=4.225 ry=4.225
 gap: 2
 width: 35
 height: 21
-stroke: 13 (global)
-terminal: stroke-linecap: round (compromis)
+stroke: 6.5
+linecap: round
 ```
-> **Note:** Le buste utilise `stroke-linecap: round` car les terminaisons
-> custom sur une courbe de Bézier créent des artefacts visuels.
-> Visuellement très proche du style Fredoka.
+> Le buste utilise une courbe de Bézier quadratique.
 
-### Terminaisons (Style Fredoka)
-
-**Lignes droites (Loupe, Clé, Dents):**
+### Résumé des Strokes
 ```
-stroke-linecap: butt
-Terminal caps: rect avec rx/ry
-
-Ratio d'arrondi Fredoka:
-  rx = 65% de (stroke-width / 2)
-  ry = 65% de (stroke-width / 2)
-
-Pour stroke-width: 13:
-  half-width = 6.5
-  rx = 6.5 * 0.65 = 4.225
-  ry = 6.5 * 0.65 = 4.225
+Cercle:  7.5  (élément central, plus épais)
+Loupe:   6    (cohérent avec clé)
+Clé:     6    (cohérent avec loupe)
+Dents:   3    (50% du stroke clé)
+Buste:   6.5  (légèrement plus que loupe/clé)
 ```
-
-**Courbes (Buste):**
-```
-stroke-linecap: round (approximation acceptable)
-```
-> Les terminaisons round sont visuellement proches du style Fredoka
-> et évitent les problèmes de calcul d'angle sur les arcs.
-
-### Note Typographique
-```
-Le stroke-width de 13 correspond EXACTEMENT au ratio
-stem/em-square de Fredoka 600 (13%).
-
-Lignes droites: terminaisons custom (rect rx/ry=65%)
-Courbes: stroke-linecap: round (compromis visuel)
-
-Les dents de la clé utilisent 50% du stroke global
-pour maintenir l'équilibre visuel.
-```
+> Tous les éléments utilisent stroke-linecap: round.
 
 ### Couleurs par Défaut
 ```
