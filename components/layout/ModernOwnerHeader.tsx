@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef, memo } from 'react';
+import { useState, memo } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
@@ -20,23 +20,25 @@ import {
   Menu,
   X,
   ChevronDown,
-  CreditCard,
-  Heart,
-  Globe,
+  ChevronRight,
   Wrench,
-  Receipt,
-  UserPlus,
+  FileText,
   BarChart3,
-  Zap,
-  Sparkles
+  Sparkles,
+  Briefcase,
+  UserCheck,
+  Wallet,
+  PieChart
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import NotificationBell from '@/components/notifications/NotificationBell';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
+
+// V3 Owner gradient
+const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
 
 interface ModernOwnerHeaderProps {
   profile: {
@@ -50,8 +52,103 @@ interface ModernOwnerHeaderProps {
     occupation?: number;
     pendingApplications?: number;
     unreadMessages?: number;
+    openMaintenance?: number;
   };
 }
+
+// Navigation structure by business domain
+const navigationDomains = {
+  portfolio: {
+    id: 'portfolio',
+    label: 'Portfolio',
+    icon: Briefcase,
+    description: 'Gérez vos biens immobiliers',
+    items: [
+      {
+        id: 'properties',
+        href: '/dashboard/owner/properties',
+        label: 'Propriétés',
+        icon: Building2,
+        description: 'Tous vos biens',
+        color: '#9c5698'
+      },
+      {
+        id: 'applications',
+        href: '/dashboard/owner/applications',
+        label: 'Candidatures',
+        icon: UserCheck,
+        description: 'Demandes de location',
+        color: '#a5568d',
+        badgeKey: 'pendingApplications'
+      },
+      {
+        id: 'performance',
+        href: '/dashboard/owner/finance',
+        label: 'Performance',
+        icon: BarChart3,
+        description: 'Analytiques & ROI',
+        color: '#af5682'
+      }
+    ]
+  },
+  gestion: {
+    id: 'gestion',
+    label: 'Gestion',
+    icon: Users,
+    description: 'Gérez vos locataires',
+    items: [
+      {
+        id: 'tenants',
+        href: '/dashboard/owner/tenants',
+        label: 'Locataires',
+        icon: Users,
+        description: 'Vos résidents actuels',
+        color: '#9c5698'
+      },
+      {
+        id: 'leases',
+        href: '/dashboard/owner/leases',
+        label: 'Baux',
+        icon: FileText,
+        description: 'Contrats de location',
+        color: '#a5568d'
+      },
+      {
+        id: 'maintenance',
+        href: '/dashboard/owner/maintenance',
+        label: 'Maintenance',
+        icon: Wrench,
+        description: 'Demandes & travaux',
+        color: '#b85676',
+        badgeKey: 'openMaintenance'
+      }
+    ]
+  },
+  finances: {
+    id: 'finances',
+    label: 'Finances',
+    icon: Wallet,
+    description: 'Suivez vos revenus',
+    items: [
+      {
+        id: 'overview',
+        href: '/dashboard/owner/finance',
+        label: 'Vue d\'ensemble',
+        icon: PieChart,
+        description: 'Tableau de bord financier',
+        color: '#059669'
+      },
+      {
+        id: 'payments',
+        href: '/dashboard/owner/finance',
+        label: 'Paiements',
+        icon: DollarSign,
+        description: 'Loyers & encaissements',
+        color: '#10b981'
+      }
+    ]
+  }
+};
 
 const ModernOwnerHeader = memo(function ModernOwnerHeader({
   profile,
@@ -59,13 +156,13 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
 }: ModernOwnerHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { language, setLanguage, getSection } = useLanguage();
+  const { getSection } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
-  const [showQuickActions, setShowQuickActions] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [expandedMobileSection, setExpandedMobileSection] = useState<string | null>(null);
 
-  // Traductions
   const header = getSection('header');
   const common = getSection('common');
   const notifications = getSection('notifications');
@@ -73,102 +170,50 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
   const {
     monthlyRevenue = 0,
     roi = 0,
-    occupation = 0,
     pendingApplications = 0,
-    unreadMessages = 0
+    unreadMessages = 0,
+    openMaintenance = 0
   } = stats;
-
-  const navItems = [
-    {
-      id: 'properties',
-      href: '/dashboard/owner/properties',
-      label: header?.nav?.properties || 'Propriétés',
-      icon: Building2,
-    },
-    {
-      id: 'applications',
-      href: '/dashboard/owner/applications',
-      label: header?.nav?.applications || 'Candidatures',
-      icon: Users,
-      badge: pendingApplications > 0 ? pendingApplications : null,
-    },
-    {
-      id: 'finance',
-      href: '/dashboard/owner/finance',
-      label: header?.nav?.finance || 'Finance',
-      icon: DollarSign,
-    },
-    {
-      id: 'maintenance',
-      href: '/dashboard/owner/maintenance',
-      label: header?.nav?.maintenance || 'Maintenance',
-      icon: Wrench,
-    },
-    {
-      id: 'messages',
-      href: '/dashboard/owner/messages',
-      label: header?.nav?.messages || 'Messages',
-      icon: MessageCircle,
-      badge: unreadMessages > 0 ? unreadMessages : null,
-    },
-  ];
-
-  const quickActions = [
-    {
-      id: 'add-property',
-      href: '/properties/add',
-      label: header?.quickActions?.owner?.addProperty?.label || 'Ajouter une propriété',
-      icon: Building2,
-      description: header?.quickActions?.owner?.addProperty?.description || 'Créer un nouveau bien',
-    },
-    {
-      id: 'create-ticket',
-      href: '/dashboard/owner/maintenance',
-      label: header?.quickActions?.owner?.maintenanceTicket?.label || 'Ticket maintenance',
-      icon: Wrench,
-      description: header?.quickActions?.owner?.maintenanceTicket?.description || 'Signaler un problème',
-    },
-    {
-      id: 'add-expense',
-      href: '/dashboard/owner/expenses/add',
-      label: header?.quickActions?.owner?.addExpense?.label || 'Ajouter une dépense',
-      icon: Receipt,
-      description: header?.quickActions?.owner?.addExpense?.description || 'Enregistrer une dépense',
-    },
-    {
-      id: 'view-analytics',
-      href: '/dashboard/owner/finance',
-      label: header?.quickActions?.owner?.viewAnalytics?.label || 'Voir les analytics',
-      icon: BarChart3,
-      description: header?.quickActions?.owner?.viewAnalytics?.description || 'Performances détaillées',
-    },
-  ];
 
   const handleLogout = async () => {
     setShowProfileMenu(false);
     router.push('/auth/logout');
   };
 
+  // Check if any item in a domain is active
+  const isDomainActive = (domain: typeof navigationDomains.portfolio) => {
+    return domain.items.some(item =>
+      pathname === item.href || pathname?.startsWith(item.href + '/')
+    );
+  };
+
+  // Get badge value for an item
+  const getBadgeValue = (badgeKey?: string) => {
+    if (!badgeKey) return null;
+    const value = stats[badgeKey as keyof typeof stats];
+    return typeof value === 'number' && value > 0 ? value : null;
+  };
+
+  // Close dropdown when clicking outside
+  const closeDropdown = () => setActiveDropdown(null);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
-      {/* Glassmorphism background with gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-white/80 via-white/70 to-white/60 backdrop-blur-3xl backdrop-saturate-150"
-           style={{
-             WebkitBackdropFilter: 'blur(40px) saturate(150%)',
-             backdropFilter: 'blur(40px) saturate(150%)'
-           }}
+      {/* Glassmorphism background */}
+      <div
+        className="absolute inset-0 bg-gradient-to-b from-white/90 via-white/80 to-white/70 backdrop-blur-2xl"
+        style={{
+          WebkitBackdropFilter: 'blur(32px) saturate(150%)',
+          backdropFilter: 'blur(32px) saturate(150%)'
+        }}
       />
-      <div className="absolute inset-0 border-b border-white/30 shadow-lg" />
+      <div className="absolute inset-0 border-b border-gray-200/50 shadow-sm" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Header Row */}
         <div className="flex items-center justify-between h-16">
 
-          {/* Logo IzzIco */}
-          <Link
-            href="/dashboard/owner"
-            className="flex items-center group"
-          >
+          {/* Logo */}
+          <Link href="/dashboard/owner" className="flex items-center group">
             <Image
               src="/logos/izzico-logo-small.png"
               alt="IzzIco"
@@ -179,213 +224,262 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
             />
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Mega Menus */}
           <nav className="hidden lg:flex items-center gap-1">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
-              const Icon = item.icon;
+            {Object.values(navigationDomains).map((domain) => {
+              const isActive = isDomainActive(domain);
+              const Icon = domain.icon;
+              const isOpen = activeDropdown === domain.id;
+
+              // Calculate total badge for domain
+              const domainBadge = domain.items.reduce((acc, item) => {
+                const badge = 'badgeKey' in item ? getBadgeValue(item.badgeKey) : 0;
+                return acc + (badge || 0);
+              }, 0);
 
               return (
-                <div key={item.id} className="relative">
-                  {/* Triangle pointer - avec couleur du dégradé Owner */}
-                  {isActive && (
-                    <motion.div
-                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
-                      style={{
-                        borderTopColor: 'var(--owner-500)'
-                      }}
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                    />
-                  )}
-
-                  <Link
-                    href={item.href}
-                    prefetch={true}
+                <div key={domain.id} className="relative">
+                  <button
+                    onClick={() => setActiveDropdown(isOpen ? null : domain.id)}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
-                      isActive
-                        ? "text-purple-900 font-semibold bg-purple-50"
+                      "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                      isActive || isOpen
+                        ? "text-purple-900 bg-purple-50"
                         : "text-gray-600 hover:bg-purple-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                    {item.badge && (
+                    <span>{domain.label}</span>
+                    {domainBadge > 0 && (
                       <Badge
-                        className="ml-1 badge-gradient-owner h-5 min-w-[20px] px-1.5"
-                        style={{
-                          background: 'var(--gradient-owner)'
-                        }}
+                        className="ml-1 h-5 min-w-[20px] px-1.5 text-white"
+                        style={{ background: ownerGradient }}
                       >
-                        {item.badge}
+                        {domainBadge}
                       </Badge>
                     )}
-                  </Link>
+                    <ChevronDown className={cn(
+                      "w-3.5 h-3.5 transition-transform",
+                      isOpen && "rotate-180"
+                    )} />
+                  </button>
+
+                  {/* Triangle pointer */}
+                  {isActive && !isOpen && (
+                    <motion.div
+                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
+                      style={{ borderTopColor: '#9c5698' }}
+                      initial={{ opacity: 0, y: -5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                    />
+                  )}
+
+                  {/* Dropdown */}
+                  <AnimatePresence>
+                    {isOpen && (
+                      <>
+                        <div className="fixed inset-0 z-10" onClick={closeDropdown} />
+                        <motion.div
+                          initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                          transition={{ type: "spring", stiffness: 400, damping: 25 }}
+                          className="absolute left-0 mt-3 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
+                        >
+                          {/* Domain header */}
+                          <div className="px-4 py-3 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)' }}>
+                            <div className="flex items-center gap-2">
+                              <div
+                                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                                style={{ background: ownerGradient }}
+                              >
+                                <Icon className="w-4 h-4 text-white" />
+                              </div>
+                              <div>
+                                <p className="font-semibold text-gray-900">{domain.label}</p>
+                                <p className="text-xs text-gray-500">{domain.description}</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Items */}
+                          <div className="p-2">
+                            {domain.items.map((item) => {
+                              const ItemIcon = item.icon;
+                              const badge = 'badgeKey' in item ? getBadgeValue(item.badgeKey) : null;
+                              const isItemActive = pathname === item.href;
+
+                              return (
+                                <Link
+                                  key={item.id}
+                                  href={item.href}
+                                  onClick={closeDropdown}
+                                  className={cn(
+                                    "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group",
+                                    isItemActive
+                                      ? "bg-purple-50"
+                                      : "hover:bg-gray-50"
+                                  )}
+                                >
+                                  <div
+                                    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                                    style={{ background: `${item.color}15` }}
+                                  >
+                                    <ItemIcon className="w-4.5 h-4.5" style={{ color: item.color }} />
+                                  </div>
+                                  <div className="flex-1 min-w-0">
+                                    <p className={cn(
+                                      "text-sm font-medium",
+                                      isItemActive ? "text-purple-900" : "text-gray-900"
+                                    )}>
+                                      {item.label}
+                                    </p>
+                                    <p className="text-xs text-gray-500 truncate">{item.description}</p>
+                                  </div>
+                                  {badge && (
+                                    <Badge
+                                      className="text-white"
+                                      style={{ background: item.color }}
+                                    >
+                                      {badge}
+                                    </Badge>
+                                  )}
+                                  <ChevronRight className="w-4 h-4 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </motion.div>
+                      </>
+                    )}
+                  </AnimatePresence>
                 </div>
               );
             })}
+
+            {/* Messages - Direct link */}
+            <Link
+              href="/dashboard/owner/messages"
+              className={cn(
+                "relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                pathname?.startsWith('/dashboard/owner/messages')
+                  ? "text-purple-900 bg-purple-50"
+                  : "text-gray-600 hover:bg-purple-50/50"
+              )}
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>Messages</span>
+              {unreadMessages > 0 && (
+                <Badge className="ml-1 h-5 min-w-[20px] px-1.5 text-white" style={{ background: ownerGradient }}>
+                  {unreadMessages}
+                </Badge>
+              )}
+              {pathname?.startsWith('/dashboard/owner/messages') && (
+                <motion.div
+                  className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
+                  style={{ borderTopColor: '#9c5698' }}
+                  initial={{ opacity: 0, y: -5 }}
+                  animate={{ opacity: 1, y: 0 }}
+                />
+              )}
+            </Link>
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-3">
-            {/* Quick Actions Menu - Desktop Only */}
-            <div className="hidden lg:block relative">
-              <button
-                onClick={() => setShowQuickActions(!showQuickActions)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-700 hover:bg-purple-50 transition-all border border-gray-200 hover:border-purple-300"
-                aria-label={header?.quickActions?.title || 'Actions Rapides'}
-                aria-expanded={showQuickActions}
-                aria-haspopup="true"
-              >
-                <Zap className="w-4 h-4 text-purple-600" />
-                <span>{header?.quickActions?.title || 'Actions Rapides'}</span>
-                <ChevronDown className={cn(
-                  "w-4 h-4 transition-transform",
-                  showQuickActions && "rotate-180"
-                )} />
-              </button>
-
-              {/* Quick Actions Dropdown */}
-              <AnimatePresence>
-                {showQuickActions && (
-                  <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setShowQuickActions(false)}
-                    />
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-72 bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-purple-200/50 py-2 z-20"
-                    >
-                      <div className="px-4 py-3 border-b border-purple-200/50">
-                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
-                          <Zap className="w-4 h-4 text-purple-600" />
-                          {header?.quickActions?.title || 'Actions Rapides'}
-                        </h3>
-                      </div>
-                      <div className="p-2">
-                        {quickActions.map((action) => {
-                          const Icon = action.icon;
-                          return (
-                            <Link
-                              key={action.id}
-                              href={action.href}
-                              className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-gradient-to-r hover:from-purple-50/50 hover:to-indigo-50/50 transition group"
-                              onClick={() => setShowQuickActions(false)}
-                            >
-                              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform">
-                                <Icon className="w-5 h-5 text-gray-700" />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p className="text-sm font-semibold text-gray-900">
-                                  {action.label}
-                                </p>
-                                <p className="text-xs text-gray-500">
-                                  {action.description}
-                                </p>
-                              </div>
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </div>
-
-            {/* Quick Stats - Desktop Only - Now Clickable */}
-            {monthlyRevenue > 0 && (
-              <Link
-                href="/dashboard/owner/finance"
-                className="hidden xl:flex items-center gap-4 px-4 py-2 rounded-xl bg-gradient-to-r from-purple-50/50 to-purple-100/30 border border-purple-200/50 hover:border-purple-300/50 hover:shadow-md transition-all cursor-pointer group"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-200/70 to-indigo-200/70 flex items-center justify-center group-hover:scale-110 transition-transform">
-                    <DollarSign className="w-4 h-4 text-gray-700" />
-                  </div>
-                  <div>
-                    <p className="text-xs text-gray-600 font-medium">{header?.stats?.revenue || 'Revenus'}</p>
-                    <p className="text-sm font-bold text-purple-900">
-                      €{monthlyRevenue.toLocaleString()}
-                    </p>
-                  </div>
-                </div>
-
-                {roi > 0 && (
-                  <>
-                    <div className="w-px h-8 bg-purple-200" />
-                    <div className="flex items-center gap-2">
-                      <TrendingUp className="w-4 h-4 text-purple-600 group-hover:scale-110 transition-transform" />
-                      <div>
-                        <p className="text-xs text-gray-600 font-medium">{header?.stats?.roi || 'ROI'}</p>
-                        <p className="text-sm font-bold text-purple-900">{roi}%</p>
-                      </div>
-                    </div>
-                  </>
-                )}
-              </Link>
-            )}
+          <div className="flex items-center gap-2">
+            {/* Add Property Button - Desktop */}
+            <Link href="/dashboard/owner?addProperty=true" className="hidden lg:block">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button
+                  size="sm"
+                  className="rounded-full text-white shadow-lg"
+                  style={{ background: ownerGradient, boxShadow: '0 4px 14px rgba(156, 86, 152, 0.3)' }}
+                >
+                  <Plus className="w-4 h-4 mr-1.5" />
+                  Ajouter
+                </Button>
+              </motion.div>
+            </Link>
 
             {/* Notifications */}
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
-                aria-label={`Notifications${(pendingApplications > 0 || unreadMessages > 0) ? ` (${pendingApplications + unreadMessages} non lues)` : ''}`}
-                aria-expanded={showNotifications}
-                aria-haspopup="true"
+                aria-label="Notifications"
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(pendingApplications > 0 || unreadMessages > 0) && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-purple-500 rounded-full border-2 border-white" />
+                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full border-2 border-white" style={{ background: '#c2566b' }} />
                 )}
               </button>
 
-              {/* Notifications Dropdown */}
               <AnimatePresence>
                 {showNotifications && (
                   <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setShowNotifications(false)}
-                    />
+                    <div className="fixed inset-0 z-10" onClick={() => setShowNotifications(false)} />
                     <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
                     >
-                      <div className="px-4 py-3 border-b border-gray-200">
+                      <div className="px-4 py-3 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)' }}>
                         <h3 className="font-semibold text-gray-900">{notifications?.title || 'Notifications'}</h3>
                       </div>
-                      <div className="max-h-96 overflow-y-auto">
+                      <div className="max-h-80 overflow-y-auto">
                         {pendingApplications > 0 && (
                           <Link
                             href="/dashboard/owner/applications"
                             className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
-                            <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                              <Users className="w-5 h-5 text-yellow-600" />
+                            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                              <UserCheck className="w-5 h-5 text-amber-600" />
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
-                                {pendingApplications > 1
-                                  ? `${pendingApplications} ${notifications?.newApplications || 'nouvelles candidatures'}`
-                                  : `1 ${notifications?.newApplication || 'nouvelle candidature'}`
-                                }
+                                {pendingApplications} candidature{pendingApplications > 1 ? 's' : ''} en attente
                               </p>
-                              <p className="text-xs text-gray-500">{notifications?.clickToView || 'Cliquez pour voir'}</p>
+                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
                             </div>
                           </Link>
                         )}
-                        {(pendingApplications === 0 && unreadMessages === 0) && (
+                        {unreadMessages > 0 && (
+                          <Link
+                            href="/dashboard/owner/messages"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition"
+                            onClick={() => setShowNotifications(false)}
+                          >
+                            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                              <MessageCircle className="w-5 h-5 text-blue-600" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-gray-900">
+                                {unreadMessages} message{unreadMessages > 1 ? 's' : ''} non lu{unreadMessages > 1 ? 's' : ''}
+                              </p>
+                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
+                            </div>
+                          </Link>
+                        )}
+                        {openMaintenance > 0 && (
+                          <Link
+                            href="/dashboard/owner/maintenance"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition"
+                            onClick={() => setShowNotifications(false)}
+                          >
+                            <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center">
+                              <Wrench className="w-5 h-5 text-orange-600" />
+                            </div>
+                            <div className="flex-1">
+                              <p className="text-sm font-medium text-gray-900">
+                                {openMaintenance} ticket{openMaintenance > 1 ? 's' : ''} ouvert{openMaintenance > 1 ? 's' : ''}
+                              </p>
+                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
+                            </div>
+                          </Link>
+                        )}
+                        {pendingApplications === 0 && unreadMessages === 0 && openMaintenance === 0 && (
                           <div className="px-4 py-8 text-center text-gray-500">
                             <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
                             <p className="text-sm">{notifications?.none || 'Aucune notification'}</p>
@@ -408,183 +502,102 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
-                aria-label="Menu profil"
-                aria-expanded={showProfileMenu}
-                aria-haspopup="true"
               >
                 <div
                   className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
-                  style={{
-                    background: 'var(--gradient-owner)'
-                  }}
+                  style={{ background: ownerGradient }}
                 >
                   <Building2 className="w-4 h-4 text-white" />
                 </div>
-                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-purple-900 transition-colors hidden md:block" />
+                <ChevronDown className="w-4 h-4 text-gray-600 hidden md:block" />
               </button>
 
-              {/* Profile Dropdown */}
               <AnimatePresence>
                 {showProfileMenu && (
                   <>
-                    <div
-                      className="fixed inset-0 z-10"
-                      onClick={() => setShowProfileMenu(false)}
-                    />
+                    <div className="fixed inset-0 z-10" onClick={() => setShowProfileMenu(false)} />
                     <motion.div
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
                     >
-                      {/* Premium Header with Gradient */}
-                      <div className="relative px-6 py-5 bg-gradient-to-br from-purple-200/70 via-indigo-200/70 to-purple-200/70 text-gray-900">
-                        <div className="absolute inset-0 bg-white/10" />
-                        <div className="relative flex items-center gap-4">
-                          {/* Avatar with Progress Ring */}
-                          <div className="relative">
-                            <svg className="absolute inset-0 -m-1.5" width="68" height="68">
-                              <circle cx="34" cy="34" r="32" fill="none" stroke="rgba(100,100,100,0.2)" strokeWidth="2" />
-                              <circle
-                                cx="34" cy="34" r="32"
-                                fill="none"
-                                stroke="rgba(110, 86, 207, 0.5)"
-                                strokeWidth="3"
-                                strokeLinecap="round"
-                                strokeDasharray={`${2 * Math.PI * 32}`}
-                                strokeDashoffset={`${2 * Math.PI * 32 * (1 - 0.75)}`}
-                                transform="rotate(-90 34 34)"
-                                className="transition-all duration-1000"
+                      {/* Profile Header */}
+                      <div className="px-5 py-4" style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)' }}>
+                        <div className="flex items-center gap-3">
+                          <div
+                            className="w-12 h-12 rounded-full flex items-center justify-center border-2 border-white shadow-md"
+                            style={{ background: ownerGradient }}
+                          >
+                            {profile.avatar_url ? (
+                              <Image
+                                src={profile.avatar_url}
+                                alt={profile.full_name}
+                                width={48}
+                                height={48}
+                                className="w-full h-full rounded-full object-cover"
                               />
-                            </svg>
-                            <div className="w-16 h-16 rounded-full bg-white/50 backdrop-blur-sm border-2 border-gray-300 flex items-center justify-center overflow-hidden">
-                              {profile.avatar_url ? (
-                                <Image
-                                  src={profile.avatar_url}
-                                  alt={profile.full_name}
-                                  width={64}
-                                  height={64}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <User className="w-8 h-8 text-gray-700" />
-                              )}
-                            </div>
+                            ) : (
+                              <User className="w-6 h-6 text-white" />
+                            )}
                           </div>
-
-                          {/* User Info */}
                           <div className="flex-1 min-w-0">
-                            <p className="font-bold text-gray-900 truncate text-lg">{profile.full_name}</p>
-                            <p className="text-gray-700 text-sm truncate">{profile.email}</p>
-                            <div className="mt-1 flex items-center gap-1.5">
-                              <div className="h-1.5 flex-1 bg-gray-300 rounded-full overflow-hidden">
-                                <div className="h-full bg-purple-400 rounded-full" style={{ width: '75%' }} />
-                              </div>
-                              <span className="text-xs text-gray-700 font-medium">75%</span>
-                            </div>
+                            <p className="font-bold text-gray-900 truncate">{profile.full_name}</p>
+                            <p className="text-sm text-gray-600 truncate">{profile.email}</p>
                           </div>
                         </div>
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 bg-gradient-to-br from-purple-50/50 to-indigo-50/50 border-b border-purple-200/50">
-                        <div className="grid grid-cols-3 gap-2">
-                          <div className="text-center">
-                            <div className="text-lg font-bold text-gray-900">
-                              {stats?.monthlyRevenue ? `€${Math.round(stats.monthlyRevenue / 1000)}k` : '€0'}
+                      {monthlyRevenue > 0 && (
+                        <div className="px-4 py-3 border-b border-gray-100">
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <DollarSign className="w-4 h-4 text-emerald-600" />
+                              <span className="text-sm text-gray-600">Revenus du mois</span>
                             </div>
-                            <div className="text-xs text-gray-600">{header?.stats?.revenue || 'Revenus'}</div>
+                            <span className="font-bold text-gray-900">€{monthlyRevenue.toLocaleString()}</span>
                           </div>
-                          <div className="text-center border-x border-purple-200/50">
-                            <div className="text-lg font-bold text-gray-900">
-                              {stats?.roi || 0}%
+                          {roi > 0 && (
+                            <div className="flex items-center justify-between mt-2">
+                              <div className="flex items-center gap-2">
+                                <TrendingUp className="w-4 h-4 text-purple-600" />
+                                <span className="text-sm text-gray-600">ROI</span>
+                              </div>
+                              <span className="font-bold text-purple-900">{roi}%</span>
                             </div>
-                            <div className="text-xs text-gray-600">{header?.stats?.roi || 'ROI'}</div>
-                          </div>
-                          <div className="text-center">
-                            <div className="text-lg font-bold text-gray-900">
-                              {stats?.occupation || 0}%
-                            </div>
-                            <div className="text-xs text-gray-600">{header?.stats?.occupation || 'Occupation'}</div>
-                          </div>
+                          )}
                         </div>
-                      </div>
+                      )}
 
                       {/* Menu Items */}
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition-all"
+                          className="flex items-center gap-3 px-4 py-2.5 hover:bg-purple-50 transition"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-purple-100 flex items-center justify-center transition-transform">
-                            <User className="w-4 h-4 text-purple-600" />
-                          </div>
-                          <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">{common?.myProfile || 'Mon Profil'}</span>
-                            <span className="text-xs text-gray-500">{common?.manageInfo || 'Gérer mes informations'}</span>
-                          </div>
-                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
+                          <User className="w-4 h-4 text-purple-600" />
+                          <span className="text-sm font-medium text-gray-900">{common?.myProfile || 'Mon Profil'}</span>
                         </Link>
-
-                        <Link
-                          href="/dashboard/owner/finance"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-green-50 transition-all"
-                          onClick={() => setShowProfileMenu(false)}
-                        >
-                          <div className="w-9 h-9 rounded-xl bg-green-100 flex items-center justify-center transition-transform">
-                            <DollarSign className="w-4 h-4 text-green-600" />
-                          </div>
-                          <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">{common?.finances || 'Finance'}</span>
-                            <span className="text-xs text-gray-500">{common?.revenueAndExpenses || 'Revenus et dépenses'}</span>
-                          </div>
-                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
-                        </Link>
-
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-blue-50 transition-all"
+                          className="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50 transition"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-blue-100 flex items-center justify-center transition-transform">
-                            <Settings className="w-4 h-4 text-blue-600" />
-                          </div>
-                          <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">{common?.settings || 'Paramètres'}</span>
-                            <span className="text-xs text-gray-500">{common?.preferencesAndPrivacy || 'Préférences et confidentialité'}</span>
-                          </div>
-                          <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
+                          <Settings className="w-4 h-4 text-blue-600" />
+                          <span className="text-sm font-medium text-gray-900">{common?.settings || 'Paramètres'}</span>
                         </Link>
                       </div>
 
-                      {/* Complete Profile CTA */}
-                      <div className="px-4 pb-3">
-                        <Link
-                          href="/profile"
-                          className="block w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-medium text-center hover:shadow-md hover:scale-[1.02] transition-all"
-                          onClick={() => setShowProfileMenu(false)}
-                        >
-                          <div className="flex items-center justify-center gap-2">
-                            <Sparkles className="w-4 h-4" />
-                            <span>{common?.completeProfile || 'Compléter mon profil'}</span>
-                          </div>
-                        </Link>
-                      </div>
+                      <div className="border-t border-gray-100" />
 
-                      {/* Divider */}
-                      <div className="border-t border-gray-200/80" />
-
-                      {/* Logout */}
                       <button
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all text-red-600 group"
+                        className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition text-red-600"
                       >
-                        <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
-                          <LogOut className="w-4 h-4 text-red-600" />
-                        </div>
-                        <span className="font-medium">{common?.logout || 'Se déconnecter'}</span>
+                        <LogOut className="w-4 h-4" />
+                        <span className="text-sm font-medium">{common?.logout || 'Se déconnecter'}</span>
                       </button>
                     </motion.div>
                   </>
@@ -596,9 +609,6 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
-              aria-label={mobileMenuOpen ? (common?.closeMenu || 'Fermer le menu') : (common?.openMenu || 'Ouvrir le menu')}
-              aria-expanded={mobileMenuOpen}
-              aria-controls="mobile-navigation"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
@@ -618,41 +628,109 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
               exit={{ height: 0, opacity: 0 }}
               className="lg:hidden overflow-hidden border-t border-gray-200"
             >
-              <nav id="mobile-navigation" className="py-4 flex flex-col gap-2" aria-label="Navigation mobile">
-                {navItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');
+              <nav className="py-4 space-y-2">
+                {/* Domain sections for mobile */}
+                {Object.values(navigationDomains).map((domain) => {
+                  const Icon = domain.icon;
+                  const isExpanded = expandedMobileSection === domain.id;
+                  const domainBadge = domain.items.reduce((acc, item) => {
+                    const badge = 'badgeKey' in item ? getBadgeValue(item.badgeKey) : 0;
+                    return acc + (badge || 0);
+                  }, 0);
 
                   return (
-                    <Link
-                      key={item.id}
-                      href={item.href}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className={cn(
-                        "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
-                        isActive
-                          ? "bg-purple-50 text-purple-900 font-semibold"
-                          : "text-gray-700 hover:bg-gray-100"
-                      )}
-                    >
-                      <div className="flex items-center gap-3">
-                        <Icon className="w-5 h-5" />
-                        {item.label}
-                      </div>
-                      {item.badge && (
-                        <Badge variant="error" className="bg-yellow-500 hover:bg-yellow-500 text-white border-0">
-                          {item.badge}
-                        </Badge>
-                      )}
-                    </Link>
+                    <div key={domain.id}>
+                      <button
+                        onClick={() => setExpandedMobileSection(isExpanded ? null : domain.id)}
+                        className="w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-purple-50 transition"
+                      >
+                        <div className="flex items-center gap-3">
+                          <Icon className="w-5 h-5 text-gray-700" />
+                          <span className="font-medium text-gray-900">{domain.label}</span>
+                          {domainBadge > 0 && (
+                            <Badge className="text-white" style={{ background: ownerGradient }}>
+                              {domainBadge}
+                            </Badge>
+                          )}
+                        </div>
+                        <ChevronDown className={cn(
+                          "w-5 h-5 text-gray-400 transition-transform",
+                          isExpanded && "rotate-180"
+                        )} />
+                      </button>
+
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: 'auto', opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="pl-8 pr-4 py-2 space-y-1">
+                              {domain.items.map((item) => {
+                                const ItemIcon = item.icon;
+                                const badge = 'badgeKey' in item ? getBadgeValue(item.badgeKey) : null;
+                                const isActive = pathname === item.href;
+
+                                return (
+                                  <Link
+                                    key={item.id}
+                                    href={item.href}
+                                    onClick={() => setMobileMenuOpen(false)}
+                                    className={cn(
+                                      "flex items-center justify-between px-4 py-2.5 rounded-xl transition",
+                                      isActive ? "bg-purple-50 text-purple-900" : "text-gray-700 hover:bg-gray-50"
+                                    )}
+                                  >
+                                    <div className="flex items-center gap-3">
+                                      <ItemIcon className="w-4 h-4" style={{ color: item.color }} />
+                                      <span className="font-medium">{item.label}</span>
+                                    </div>
+                                    {badge && (
+                                      <Badge className="text-white" style={{ background: item.color }}>
+                                        {badge}
+                                      </Badge>
+                                    )}
+                                  </Link>
+                                );
+                              })}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
                   );
                 })}
 
-                <div className="pt-4 mt-2 border-t border-gray-200">
-                  <Link href="/properties/add" onClick={() => setMobileMenuOpen(false)}>
-                    <Button className="w-full rounded-full bg-gradient-to-r from-purple-200/70 to-indigo-200/70 text-gray-900 font-semibold">
+                {/* Messages direct link */}
+                <Link
+                  href="/dashboard/owner/messages"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={cn(
+                    "flex items-center justify-between px-4 py-3 rounded-xl transition",
+                    pathname?.startsWith('/dashboard/owner/messages')
+                      ? "bg-purple-50 text-purple-900"
+                      : "text-gray-700 hover:bg-gray-50"
+                  )}
+                >
+                  <div className="flex items-center gap-3">
+                    <MessageCircle className="w-5 h-5" />
+                    <span className="font-medium">Messages</span>
+                  </div>
+                  {unreadMessages > 0 && (
+                    <Badge className="text-white" style={{ background: ownerGradient }}>
+                      {unreadMessages}
+                    </Badge>
+                  )}
+                </Link>
+
+                {/* Add Property CTA */}
+                <div className="pt-4 mt-2 border-t border-gray-200 px-4">
+                  <Link href="/dashboard/owner?addProperty=true" onClick={() => setMobileMenuOpen(false)}>
+                    <Button className="w-full rounded-full text-white" style={{ background: ownerGradient }}>
                       <Plus className="w-4 h-4 mr-2" />
-                      {header?.quickActions?.owner?.addProperty?.label || 'Ajouter une propriété'}
+                      Ajouter une propriété
                     </Button>
                   </Link>
                 </div>
@@ -661,43 +739,6 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
           )}
         </AnimatePresence>
       </div>
-
-      {/* Quick Stats Bar - Desktop Only - Now with Clickable Stats */}
-      {(occupation > 0 || pendingApplications > 0) && (
-        <div className="hidden lg:block bg-gradient-to-r from-purple-50/20 to-transparent border-t border-gray-200/50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2">
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-6 text-gray-700">
-                {occupation > 0 && (
-                  <Link
-                    href="/dashboard/owner/properties"
-                    className="flex items-center gap-2 hover:text-purple-900 transition-colors group"
-                  >
-                    <span className="text-gray-600 group-hover:text-purple-700">{header?.stats?.occupation || 'Occupation'}:</span>
-                    <strong className="text-purple-900 font-bold group-hover:scale-110 transition-transform inline-block">{occupation}%</strong>
-                  </Link>
-                )}
-                {pendingApplications > 0 && (
-                  <Link
-                    href="/dashboard/owner/applications"
-                    className="flex items-center gap-2 hover:text-purple-900 transition-colors group"
-                  >
-                    <span className="text-gray-600 group-hover:text-purple-700">{header?.nav?.applications || 'Candidatures'}:</span>
-                    <strong className="text-purple-900 font-bold group-hover:scale-110 transition-transform inline-block">{pendingApplications}</strong>
-                  </Link>
-                )}
-              </div>
-              <Link
-                href="/dashboard/owner/finance"
-                className="text-purple-600 hover:text-purple-800 transition text-xs font-medium flex items-center gap-1 group"
-              >
-                {header?.quickActions?.owner?.viewAnalytics?.label || 'Voir analytiques'}
-                <TrendingUp className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      )}
     </header>
   );
 });
