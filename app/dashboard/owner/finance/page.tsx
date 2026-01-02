@@ -27,6 +27,10 @@ import {
   Download,
   ChevronRight,
   AlertTriangle,
+  ChevronLeft,
+  Users,
+  FileText,
+  Wrench,
 } from 'lucide-react';
 import {
   LineChart,
@@ -298,6 +302,53 @@ export default function FinanceReportPage() {
       style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)' }}
     >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        {/* Breadcrumb Navigation */}
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-2 text-sm mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner')}
+            className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Command Center
+          </button>
+          <span className="text-gray-300">/</span>
+          <span className="font-medium" style={{ color: '#9c5698' }}>Finances</span>
+        </motion.div>
+
+        {/* Quick Navigation Pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex flex-wrap gap-2 mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner/tenants')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <Users className="w-3.5 h-3.5" />
+            Locataires
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/leases')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Baux
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/maintenance')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <Wrench className="w-3.5 h-3.5" />
+            Maintenance
+          </button>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

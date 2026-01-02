@@ -35,7 +35,12 @@ import {
   Volume2,
   Sparkle,
   PawPrint,
-  Cigarette
+  Cigarette,
+  FileText,
+  ChevronLeft,
+  ArrowRight,
+  Wrench,
+  DollarSign
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatDistanceToNow, format } from 'date-fns';
@@ -297,6 +302,53 @@ export default function TenantsPage() {
       style={{ background: ownerGradientLight }}
     >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        {/* Breadcrumb Navigation */}
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-2 text-sm mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner')}
+            className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Command Center
+          </button>
+          <span className="text-gray-300">/</span>
+          <span className="font-medium" style={{ color: '#9c5698' }}>Locataires</span>
+        </motion.div>
+
+        {/* Quick Navigation Pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex flex-wrap gap-2 mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner/leases')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Baux
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/finance')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <DollarSign className="w-3.5 h-3.5" />
+            Finances
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/maintenance')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <Wrench className="w-3.5 h-3.5" />
+            Maintenance
+          </button>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -480,6 +532,43 @@ export default function TenantsPage() {
             </div>
           </div>
         </motion.div>
+
+        {/* Alert Banner for Tenants Leaving Soon */}
+        <AnimatePresence>
+          {stats.leavingSoon > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mb-6"
+            >
+              <div className="relative overflow-hidden rounded-2xl p-4 border-2 bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center flex-shrink-0">
+                    <Clock className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-amber-800">
+                      {stats.leavingSoon} locataire{stats.leavingSoon > 1 ? 's' : ''} termine{stats.leavingSoon > 1 ? 'nt' : ''} leur bail prochainement
+                    </h3>
+                    <p className="text-sm text-amber-600">
+                      Anticipez les départs et planifiez les relances ou recherches de nouveaux locataires
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => router.push('/dashboard/owner/leases?filter=ending_soon')}
+                    className="rounded-full border-2 border-amber-300 text-amber-700 hover:bg-amber-100 font-medium"
+                  >
+                    Voir les baux
+                    <ArrowRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Tenants List */}
         <AnimatePresence mode="wait">
@@ -672,8 +761,21 @@ export default function TenantsPage() {
                               className="rounded-lg h-8 w-8 p-0 hover:bg-purple-50"
                               onClick={(e) => {
                                 e.stopPropagation();
+                                router.push(`/dashboard/owner/leases?tenant=${resident.id}`);
+                              }}
+                              title="Voir le bail"
+                            >
+                              <FileText className="w-4 h-4 text-gray-500" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              className="rounded-lg h-8 w-8 p-0 hover:bg-purple-50"
+                              onClick={(e) => {
+                                e.stopPropagation();
                                 /* TODO: Open messages */
                               }}
+                              title="Envoyer un message"
                             >
                               <MessageCircle className="w-4 h-4 text-gray-500" />
                             </Button>
@@ -683,8 +785,9 @@ export default function TenantsPage() {
                               className="rounded-lg h-8 w-8 p-0 hover:bg-purple-50"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                /* TODO: Open payment */
+                                router.push(`/dashboard/owner/finance?tenant=${resident.id}`);
                               }}
+                              title="Voir les paiements"
                             >
                               <CreditCard className="w-4 h-4 text-gray-500" />
                             </Button>

@@ -27,7 +27,10 @@ import {
   DollarSign,
   RefreshCw,
   TrendingUp,
-  Loader2
+  Loader2,
+  ChevronLeft,
+  Users,
+  FileText,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { maintenanceService } from '@/lib/services/maintenance-service';
@@ -310,6 +313,53 @@ export default function MaintenancePage() {
       style={{ background: ownerGradientLight }}
     >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        {/* Breadcrumb Navigation */}
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-2 text-sm mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner')}
+            className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Command Center
+          </button>
+          <span className="text-gray-300">/</span>
+          <span className="font-medium" style={{ color: '#9c5698' }}>Maintenance</span>
+        </motion.div>
+
+        {/* Quick Navigation Pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex flex-wrap gap-2 mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner/tenants')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <Users className="w-3.5 h-3.5" />
+            Locataires
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/leases')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Baux
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/finance')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <DollarSign className="w-3.5 h-3.5" />
+            Finances
+          </button>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -524,6 +574,47 @@ export default function MaintenancePage() {
             ))}
           </div>
         </motion.div>
+
+        {/* Alert Banner for Urgent Open Requests */}
+        <AnimatePresence>
+          {requests.filter(r => r.status === 'open' && r.priority === 'high').length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mb-6"
+            >
+              <div className="relative overflow-hidden rounded-2xl p-4 border-2 bg-gradient-to-r from-red-50 to-rose-50 border-red-200">
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    animate={{ scale: [1, 1.1, 1] }}
+                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center flex-shrink-0"
+                  >
+                    <AlertTriangle className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <div className="flex-1">
+                    <h3 className="font-bold text-red-800">
+                      {requests.filter(r => r.status === 'open' && r.priority === 'high').length} demande{requests.filter(r => r.status === 'open' && r.priority === 'high').length > 1 ? 's' : ''} urgente{requests.filter(r => r.status === 'open' && r.priority === 'high').length > 1 ? 's' : ''} en attente
+                    </h3>
+                    <p className="text-sm text-red-600">
+                      Ces demandes nécessitent une intervention rapide
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setFilterStatus('open')}
+                    className="rounded-full border-2 border-red-300 text-red-700 hover:bg-red-100 font-medium"
+                  >
+                    Voir les urgences
+                    <AlertCircle className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Requests List */}
         <AnimatePresence mode="wait">

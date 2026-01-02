@@ -29,7 +29,11 @@ import {
   FileSignature,
   Repeat,
   TrendingUp,
-  XCircle
+  XCircle,
+  ChevronLeft,
+  Users,
+  DollarSign,
+  Wrench
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, differenceInDays, differenceInMonths, addMonths, isPast, isFuture } from 'date-fns';
@@ -274,6 +278,53 @@ export default function LeasesPage() {
       style={{ background: ownerGradientLight }}
     >
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
+        {/* Breadcrumb Navigation */}
+        <motion.div
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-2 text-sm mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner')}
+            className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Command Center
+          </button>
+          <span className="text-gray-300">/</span>
+          <span className="font-medium" style={{ color: '#9c5698' }}>Baux</span>
+        </motion.div>
+
+        {/* Quick Navigation Pills */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="flex flex-wrap gap-2 mb-4"
+        >
+          <button
+            onClick={() => router.push('/dashboard/owner/tenants')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <Users className="w-3.5 h-3.5" />
+            Locataires
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/finance')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <DollarSign className="w-3.5 h-3.5" />
+            Finances
+          </button>
+          <button
+            onClick={() => router.push('/dashboard/owner/maintenance')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
+          >
+            <Wrench className="w-3.5 h-3.5" />
+            Maintenance
+          </button>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -477,6 +528,74 @@ export default function LeasesPage() {
             ))}
           </div>
         </motion.div>
+
+        {/* Alert Banner for Critical Leases */}
+        <AnimatePresence>
+          {(stats.expired > 0 || stats.endingSoon > 0) && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mb-6"
+            >
+              <div
+                className={cn(
+                  "relative overflow-hidden rounded-2xl p-4 border-2",
+                  stats.expired > 0
+                    ? "bg-gradient-to-r from-red-50 to-rose-50 border-red-200"
+                    : "bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200"
+                )}
+              >
+                <div className="flex items-center gap-4">
+                  <div
+                    className={cn(
+                      "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
+                      stats.expired > 0
+                        ? "bg-gradient-to-br from-red-500 to-rose-500"
+                        : "bg-gradient-to-br from-amber-500 to-yellow-500"
+                    )}
+                  >
+                    <AlertTriangle className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className={cn(
+                      "font-bold",
+                      stats.expired > 0 ? "text-red-800" : "text-amber-800"
+                    )}>
+                      {stats.expired > 0
+                        ? `${stats.expired} bail${stats.expired > 1 ? 'x' : ''} expiré${stats.expired > 1 ? 's' : ''} à renouveler`
+                        : `${stats.endingSoon} bail${stats.endingSoon > 1 ? 'x' : ''} expire${stats.endingSoon > 1 ? 'nt' : ''} bientôt`
+                      }
+                    </h3>
+                    <p className={cn(
+                      "text-sm",
+                      stats.expired > 0 ? "text-red-600" : "text-amber-600"
+                    )}>
+                      {stats.expired > 0
+                        ? "Action requise pour renouveler ou terminer ces contrats"
+                        : "Pensez à contacter vos locataires pour discuter du renouvellement"
+                      }
+                    </p>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setFilterStatus(stats.expired > 0 ? 'expired' : 'ending_soon')}
+                    className={cn(
+                      "rounded-full border-2 font-medium",
+                      stats.expired > 0
+                        ? "border-red-300 text-red-700 hover:bg-red-100"
+                        : "border-amber-300 text-amber-700 hover:bg-amber-100"
+                    )}
+                  >
+                    Voir les baux
+                    <ChevronRight className="w-4 h-4 ml-1" />
+                  </Button>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Leases List */}
         <AnimatePresence mode="wait">

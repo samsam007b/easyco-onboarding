@@ -32,9 +32,22 @@ import {
   Wallet,
   Home,
   RefreshCw,
+  MoreHorizontal,
+  Settings,
+  Download,
+  PieChart,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import {
   LineChart,
@@ -519,6 +532,91 @@ export default function OwnerCommandCenter() {
                 <RefreshCw className={cn("w-4 h-4 mr-2", isRefreshing && "animate-spin")} />
                 Actualiser
               </Button>
+
+              {/* Quick Actions Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="rounded-full"
+                  >
+                    <MoreHorizontal className="w-4 h-4 mr-2" />
+                    Actions
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-56">
+                  <DropdownMenuLabel className="flex items-center gap-2">
+                    <BarChart3 className="w-4 h-4" style={{ color: '#9c5698' }} />
+                    Navigation rapide
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onClick={() => router.push('/dashboard/owner/tenants')}
+                      className="cursor-pointer"
+                    >
+                      <Users className="w-4 h-4 mr-2" style={{ color: '#9c5698' }} />
+                      Locataires
+                      <span className="ml-auto text-xs text-gray-400">→</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => router.push('/dashboard/owner/leases')}
+                      className="cursor-pointer"
+                    >
+                      <FileText className="w-4 h-4 mr-2" style={{ color: '#a5568d' }} />
+                      Baux
+                      <span className="ml-auto text-xs text-gray-400">→</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => router.push('/dashboard/owner/finance')}
+                      className="cursor-pointer"
+                    >
+                      <Wallet className="w-4 h-4 mr-2" style={{ color: '#af5682' }} />
+                      Finances
+                      <span className="ml-auto text-xs text-gray-400">→</span>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => router.push('/dashboard/owner/maintenance')}
+                      className="cursor-pointer"
+                    >
+                      <Wrench className="w-4 h-4 mr-2" style={{ color: '#b85676' }} />
+                      Maintenance
+                      <span className="ml-auto text-xs text-gray-400">→</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuLabel className="flex items-center gap-2">
+                    <Settings className="w-4 h-4" style={{ color: '#c2566b' }} />
+                    Outils
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem
+                      onClick={() => router.push('/properties/add')}
+                      className="cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4 mr-2" style={{ color: '#059669' }} />
+                      Ajouter une propriété
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => {/* Export functionality */}}
+                      className="cursor-pointer"
+                    >
+                      <Download className="w-4 h-4 mr-2" style={{ color: '#6366f1' }} />
+                      Exporter rapport
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                      onClick={() => router.push('/dashboard/owner/analytics')}
+                      className="cursor-pointer"
+                    >
+                      <PieChart className="w-4 h-4 mr-2" style={{ color: '#8b5cf6' }} />
+                      Analytics avancées
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => router.push('/properties/add')}
