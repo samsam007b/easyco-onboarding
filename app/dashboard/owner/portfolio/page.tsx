@@ -23,6 +23,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 import {
   OwnerPageHeader,
@@ -72,6 +73,7 @@ export default function PortfolioHubPage() {
       setRecentProperties(propertiesData);
     } catch (error) {
       console.error('Failed to load portfolio data:', error);
+      toast.error('Erreur lors du chargement des données du portfolio');
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);

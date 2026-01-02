@@ -22,6 +22,30 @@ interface PropertyInfo {
   name: string;
 }
 
+/** Internal type for maintenance request with joined profile data */
+interface RequestWithProfile {
+  id: string;
+  property_id: string;
+  created_by: string;
+  title: string;
+  description: string;
+  category: MaintenanceCategory;
+  priority: MaintenancePriority;
+  status: MaintenanceStatus;
+  location?: string;
+  images: string[];
+  estimated_cost?: number;
+  actual_cost?: number;
+  assigned_to?: string;
+  resolved_at?: string;
+  created_at: string;
+  updated_at: string;
+  profiles?: {
+    full_name?: string;
+    avatar_url?: string;
+  };
+}
+
 class MaintenanceService {
   private supabase = createClient();
 
@@ -66,30 +90,6 @@ class MaintenanceService {
       const { data, error } = await query;
 
       if (error) throw error;
-
-      // Type for the raw query result with joined profile
-      interface RequestWithProfile {
-        id: string;
-        property_id: string;
-        created_by: string;
-        title: string;
-        description: string;
-        category: MaintenanceCategory;
-        priority: MaintenancePriority;
-        status: MaintenanceStatus;
-        location?: string;
-        images: string[];
-        estimated_cost?: number;
-        actual_cost?: number;
-        assigned_to?: string;
-        resolved_at?: string;
-        created_at: string;
-        updated_at: string;
-        profiles?: {
-          full_name?: string;
-          avatar_url?: string;
-        };
-      }
 
       const enriched: MaintenanceRequestWithProperty[] =
         (data as RequestWithProfile[] | null)?.map((r) => ({
@@ -161,10 +161,10 @@ class MaintenanceService {
       if (error) throw error;
 
       const enriched: MaintenanceRequestWithCreator[] =
-        data?.map((r) => ({
+        (data as RequestWithProfile[] | null)?.map((r) => ({
           ...r,
-          creator_name: (r.profiles as any)?.full_name || 'Utilisateur inconnu',
-          creator_avatar: (r.profiles as any)?.avatar_url,
+          creator_name: r.profiles?.full_name || 'Utilisateur inconnu',
+          creator_avatar: r.profiles?.avatar_url,
         })) || [];
 
       console.log(`[Maintenance] ✅ Fetched ${enriched.length} requests`);
@@ -196,10 +196,11 @@ class MaintenanceService {
 
       if (error) throw error;
 
+      const typedData = data as RequestWithProfile;
       const enriched: MaintenanceRequestWithCreator = {
-        ...data,
-        creator_name: (data.profiles as any)?.full_name || 'Utilisateur inconnu',
-        creator_avatar: (data.profiles as any)?.avatar_url,
+        ...typedData,
+        creator_name: typedData.profiles?.full_name || 'Utilisateur inconnu',
+        creator_avatar: typedData.profiles?.avatar_url,
       };
 
       return enriched;

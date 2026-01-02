@@ -68,6 +68,14 @@ export interface ActivityItem {
   icon?: string;
 }
 
+/** Internal type for property data from database */
+interface PropertyData {
+  id: string;
+  title: string;
+  status?: string;
+  monthly_rent?: number;
+}
+
 class GestionService {
   private supabase = createClient();
 
@@ -160,7 +168,7 @@ class GestionService {
   /**
    * Get lease statistics
    */
-  private async getLeaseStats(propertyIds: string[], properties: any[]): Promise<LeaseStats> {
+  private async getLeaseStats(propertyIds: string[], properties: PropertyData[]): Promise<LeaseStats> {
     try {
       const { data: residents } = await this.supabase
         .from('property_residents')

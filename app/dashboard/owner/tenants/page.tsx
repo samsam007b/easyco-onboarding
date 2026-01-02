@@ -451,13 +451,14 @@ export default function TenantsPage() {
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
             <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
               <input
                 type="text"
                 placeholder="Rechercher un locataire..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all"
+                aria-label="Rechercher un locataire par nom, profession ou propriété"
               />
             </div>
 
@@ -467,6 +468,7 @@ export default function TenantsPage() {
                 value={filterProperty}
                 onChange={(e) => setFilterProperty(e.target.value)}
                 className="appearance-none pl-4 pr-10 py-3 rounded-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all cursor-pointer min-w-[200px]"
+                aria-label="Filtrer par propriété"
               >
                 <option value="all">Toutes les propriétés</option>
                 {properties.map(p => (

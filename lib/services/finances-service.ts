@@ -71,6 +71,44 @@ export interface RentPaymentRecord {
   month: string;
 }
 
+/** Internal type for property data from database */
+interface PropertyData {
+  id: string;
+  title: string;
+  status?: string;
+  monthly_rent?: number;
+}
+
+/** Internal type for payment data from database */
+interface PaymentData {
+  id: string;
+  property_id: string;
+  user_id: string;
+  amount: number;
+  due_date: string;
+  paid_at?: string;
+  status: 'paid' | 'pending' | 'overdue';
+  month: string;
+}
+
+/** Internal type for resident data from database */
+interface ResidentData {
+  property_id: string;
+}
+
+/** Internal type for payment with user join */
+interface PaymentWithUser {
+  id: string;
+  property_id: string;
+  user_id: string;
+  amount: number;
+  due_date: string;
+  paid_at?: string;
+  status: 'paid' | 'pending' | 'overdue';
+  month: string;
+  users?: { full_name?: string };
+}
+
 class FinancesService {
   private supabase = createClient();
 
@@ -130,9 +168,9 @@ class FinancesService {
    * Calculate KPIs
    */
   private async calculateKPIs(
-    properties: any[],
-    payments: any[],
-    residents: any[]
+    properties: PropertyData[],
+    payments: PaymentData[],
+    residents: ResidentData[]
   ): Promise<FinancesKPIs> {
     // Current month expected revenue
     const rentedPropertyIds = new Set(residents.map(r => r.property_id));
@@ -188,7 +226,7 @@ class FinancesService {
   /**
    * Calculate payment summary
    */
-  private async calculatePaymentSummary(payments: any[]): Promise<PaymentSummary> {
+  private async calculatePaymentSummary(payments: PaymentData[]): Promise<PaymentSummary> {
     const now = new Date();
     const currentMonthKey = format(now, 'yyyy-MM');
     const currentMonthPayments = payments.filter(p => p.month.startsWith(currentMonthKey));
@@ -219,8 +257,8 @@ class FinancesService {
    * Calculate monthly trend data
    */
   private async calculateMonthlyTrend(
-    payments: any[],
-    properties: any[],
+    payments: PaymentData[],
+    properties: PropertyData[],
     months: number
   ): Promise<MonthlyTrendData[]> {
     const trend: MonthlyTrendData[] = [];
@@ -268,9 +306,9 @@ class FinancesService {
    * Generate finance alerts
    */
   private async generateAlerts(
-    properties: any[],
-    payments: any[],
-    residents: any[]
+    properties: PropertyData[],
+    payments: PaymentData[],
+    residents: ResidentData[]
   ): Promise<FinanceAlert[]> {
     const alerts: FinanceAlert[] = [];
 
@@ -372,11 +410,11 @@ class FinancesService {
 
       if (!payments) return [];
 
-      return payments.map(p => ({
+      return (payments as PaymentWithUser[]).map(p => ({
         id: p.id,
         propertyId: p.property_id,
         propertyTitle: propertyMap.get(p.property_id) || 'Propriété',
-        tenantName: (p.users as any)?.full_name || 'Locataire',
+        tenantName: p.users?.full_name || 'Locataire',
         tenantId: p.user_id,
         amount: p.amount,
         dueDate: new Date(p.due_date),

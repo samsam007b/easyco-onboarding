@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -68,6 +69,7 @@ export default function GestionHubPage() {
       setRecentActivity(activityData);
     } catch (error) {
       console.error('Failed to load gestion data:', error);
+      toast.error('Erreur lors du chargement des données de gestion');
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
