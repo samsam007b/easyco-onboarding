@@ -46,6 +46,7 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import type { Property } from '@/types/property.types';
+import { AddPropertyModal } from '@/components/dashboard/AddPropertyModal';
 
 // V3 Owner gradient palette
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
@@ -122,6 +123,7 @@ export default function FinanceReportPage() {
   });
   const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([]);
   const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
+  const [showAddPropertyModal, setShowAddPropertyModal] = useState(false);
 
   const loadFinanceData = useCallback(async (showRefresh = false) => {
     try {
@@ -620,7 +622,7 @@ export default function FinanceReportPage() {
               <h4 className="font-semibold text-gray-900 mb-2">Aucune propriété</h4>
               <p className="text-gray-600 mb-4">Ajoutez votre première propriété pour voir les finances</p>
               <Button
-                onClick={() => router.push('/properties/add')}
+                onClick={() => setShowAddPropertyModal(true)}
                 className="rounded-full text-white"
                 style={{ background: ownerGradient }}
               >
@@ -706,6 +708,13 @@ export default function FinanceReportPage() {
           )}
         </motion.div>
       </main>
+
+      {/* Add Property Modal */}
+      <AddPropertyModal
+        open={showAddPropertyModal}
+        onOpenChange={setShowAddPropertyModal}
+        onSuccess={() => loadFinanceData(true)}
+      />
     </div>
   );
 }

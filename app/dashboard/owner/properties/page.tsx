@@ -29,6 +29,7 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { AddPropertyModal } from '@/components/dashboard/AddPropertyModal';
 
 // V3 Owner gradient palette
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
@@ -56,6 +57,7 @@ export default function PropertiesManagement() {
     propertyId: null,
     propertyTitle: ''
   });
+  const [showAddPropertyModal, setShowAddPropertyModal] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -266,7 +268,7 @@ export default function PropertiesManagement() {
             </div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
               <Button
-                onClick={() => router.push('/properties/add')}
+                onClick={() => setShowAddPropertyModal(true)}
                 className="rounded-full text-white shadow-md hover:shadow-lg transition-all"
                 style={{ background: ownerGradient }}
                 size="lg"
@@ -464,7 +466,7 @@ export default function PropertiesManagement() {
             {filterStatus === 'all' && (
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.98 }}>
                 <Button
-                  onClick={() => router.push('/properties/add')}
+                  onClick={() => setShowAddPropertyModal(true)}
                   className="rounded-full text-white px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-all"
                   style={{ background: ownerGradient }}
                 >
@@ -687,6 +689,13 @@ export default function PropertiesManagement() {
           </motion.div>
         </div>
       )}
+
+      {/* Add Property Modal */}
+      <AddPropertyModal
+        open={showAddPropertyModal}
+        onOpenChange={setShowAddPropertyModal}
+        onSuccess={() => loadData()}
+      />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
@@ -66,6 +66,7 @@ import UpgradeNotification from '@/components/subscriptions/UpgradeNotification'
 import { useLanguage } from '@/lib/i18n/use-language';
 import { rentService } from '@/lib/services/rent-service';
 import { maintenanceService } from '@/lib/services/maintenance-service';
+import { AddPropertyModal } from './AddPropertyModal';
 
 // V3 Owner Gradient Colors
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
@@ -137,6 +138,7 @@ interface DashboardStats {
 
 export default function OwnerCommandCenter() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
   const { language, getSection } = useLanguage();
   const owner = getSection('dashboard')?.owner;
@@ -149,6 +151,7 @@ export default function OwnerCommandCenter() {
   const [propertyStatuses, setPropertyStatuses] = useState<PropertyStatus[]>([]);
   const [urgentActions, setUrgentActions] = useState<UrgentAction[]>([]);
   const [upcomingDeadlines, setUpcomingDeadlines] = useState<UpcomingDeadline[]>([]);
+  const [showAddPropertyModal, setShowAddPropertyModal] = useState(false);
   const [stats, setStats] = useState<DashboardStats>({
     totalRevenue: 0,
     revenueChange: 0,
@@ -397,6 +400,15 @@ export default function OwnerCommandCenter() {
     loadDashboardData();
   }, [loadDashboardData]);
 
+  // Check URL for addProperty parameter
+  useEffect(() => {
+    if (searchParams.get('addProperty') === 'true') {
+      setShowAddPropertyModal(true);
+      // Remove the query param from URL without navigation
+      router.replace('/dashboard/owner', { scroll: false });
+    }
+  }, [searchParams, router]);
+
   // Generate revenue chart data (would be from real data)
   const generateRevenueData = () => {
     const monthKeys = ['jan', 'feb', 'mar', 'apr', 'may', 'jun'] as const;
@@ -593,7 +605,7 @@ export default function OwnerCommandCenter() {
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
                     <DropdownMenuItem
-                      onClick={() => router.push('/properties/add')}
+                      onClick={() => setShowAddPropertyModal(true)}
                       className="cursor-pointer"
                     >
                       <Plus className="w-4 h-4 mr-2" style={{ color: '#059669' }} />
@@ -619,7 +631,7 @@ export default function OwnerCommandCenter() {
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
-                  onClick={() => router.push('/properties/add')}
+                  onClick={() => setShowAddPropertyModal(true)}
                   className="rounded-full text-white shadow-lg"
                   style={{ background: ownerGradient, boxShadow: '0 4px 14px rgba(156, 86, 152, 0.3)' }}
                 >
@@ -890,7 +902,7 @@ export default function OwnerCommandCenter() {
                 <h4 className="font-semibold text-gray-900 mb-2">Aucune propriété</h4>
                 <p className="text-gray-600 mb-4">Ajoutez votre première propriété pour commencer</p>
                 <Button
-                  onClick={() => router.push('/properties/add')}
+                  onClick={() => setShowAddPropertyModal(true)}
                   className="rounded-full text-white"
                   style={{ background: ownerGradient }}
                 >
@@ -1189,6 +1201,13 @@ export default function OwnerCommandCenter() {
           ))}
         </motion.div>
       </div>
+
+      {/* Add Property Modal */}
+      <AddPropertyModal
+        open={showAddPropertyModal}
+        onOpenChange={setShowAddPropertyModal}
+        onSuccess={() => loadDashboardData(true)}
+      />
     </div>
   );
 }
