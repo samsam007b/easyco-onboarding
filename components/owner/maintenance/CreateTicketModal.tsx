@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { ownerGradient } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   MAINTENANCE_CATEGORIES,
   MAINTENANCE_PRIORITIES,
@@ -36,6 +37,9 @@ export function CreateTicketModal({
   properties,
   isSubmitting = false,
 }: CreateTicketModalProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerMaintenance');
+
   const [selectedProperty, setSelectedProperty] = useState<string>(
     properties.length === 1 ? properties[0].id : ''
   );
@@ -137,7 +141,7 @@ export function CreateTicketModal({
               style={{ background: ownerGradient }}
             >
               <h2 className="text-lg font-bold text-white">
-                Nouvelle demande de maintenance
+                {t?.newMaintenanceRequest?.[language] || 'New maintenance request'}
               </h2>
               <button
                 onClick={handleClose}
@@ -152,7 +156,7 @@ export function CreateTicketModal({
               {/* Property Selection */}
               <div>
                 <Label htmlFor="property" className="text-sm font-medium text-gray-700">
-                  Propriete *
+                  {t?.property?.[language] || 'Property'} *
                 </Label>
                 <select
                   id="property"
@@ -161,7 +165,7 @@ export function CreateTicketModal({
                   className="mt-1 w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
                   required
                 >
-                  <option value="">Selectionnez une propriete</option>
+                  <option value="">{t?.selectProperty?.[language] || 'Select a property'}</option>
                   {properties.map((prop) => (
                     <option key={prop.id} value={prop.id}>
                       {prop.name}
@@ -173,13 +177,13 @@ export function CreateTicketModal({
               {/* Title */}
               <div>
                 <Label htmlFor="title" className="text-sm font-medium text-gray-700">
-                  Titre *
+                  {t?.title?.[language] || 'Title'} *
                 </Label>
                 <Input
                   id="title"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  placeholder="Ex: Fuite d'eau sous l'evier"
+                  placeholder={t?.titlePlaceholder?.[language] || 'Ex: Water leak under the sink'}
                   className="mt-1 rounded-xl"
                   required
                 />
@@ -188,13 +192,13 @@ export function CreateTicketModal({
               {/* Description */}
               <div>
                 <Label htmlFor="description" className="text-sm font-medium text-gray-700">
-                  Description *
+                  {t?.description?.[language] || 'Description'} *
                 </Label>
                 <textarea
                   id="description"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Decrivez le probleme en detail..."
+                  placeholder={t?.descriptionPlaceholder?.[language] || 'Describe the issue in detail...'}
                   className="mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all resize-none"
                   rows={3}
                   required
@@ -203,7 +207,7 @@ export function CreateTicketModal({
 
               {/* Category */}
               <div>
-                <Label className="text-sm font-medium text-gray-700">Categorie *</Label>
+                <Label className="text-sm font-medium text-gray-700">{t?.category?.[language] || 'Category'} *</Label>
                 <div className="mt-2 grid grid-cols-4 gap-2">
                   {MAINTENANCE_CATEGORIES.map((cat) => (
                     <button
@@ -228,7 +232,7 @@ export function CreateTicketModal({
 
               {/* Priority */}
               <div>
-                <Label className="text-sm font-medium text-gray-700">Priorite *</Label>
+                <Label className="text-sm font-medium text-gray-700">{t?.priority?.[language] || 'Priority'} *</Label>
                 <div className="mt-2 flex gap-2">
                   {MAINTENANCE_PRIORITIES.map((prio) => (
                     <button
@@ -250,7 +254,7 @@ export function CreateTicketModal({
                   <div className="mt-2 flex items-start gap-2 p-3 bg-red-50 rounded-xl text-sm text-red-700">
                     <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                     <span>
-                      Les urgences necessitent une intervention immediate (fuite importante, panne de chauffage en hiver, etc.)
+                      {t?.emergencyWarning?.[language] || 'Emergencies require immediate intervention (major leak, heating failure in winter, etc.)'}
                     </span>
                   </div>
                 )}
@@ -259,13 +263,13 @@ export function CreateTicketModal({
               {/* Location */}
               <div>
                 <Label htmlFor="location" className="text-sm font-medium text-gray-700">
-                  Emplacement
+                  {t?.location?.[language] || 'Location'}
                 </Label>
                 <Input
                   id="location"
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Ex: Salle de bain, Cuisine"
+                  placeholder={t?.locationPlaceholder?.[language] || 'Ex: Bathroom, Kitchen'}
                   className="mt-1 rounded-xl"
                 />
               </div>
@@ -273,7 +277,7 @@ export function CreateTicketModal({
               {/* Estimated Cost */}
               <div>
                 <Label htmlFor="cost" className="text-sm font-medium text-gray-700">
-                  Cout estime
+                  {t?.estimatedCost?.[language] || 'Estimated cost'}
                 </Label>
                 <div className="mt-1 relative">
                   <Input
@@ -295,7 +299,7 @@ export function CreateTicketModal({
               {/* Images */}
               <div>
                 <Label className="text-sm font-medium text-gray-700">
-                  Photos ({images.length}/5)
+                  {t?.photos?.[language] || 'Photos'} ({images.length}/5)
                 </Label>
                 <div className="mt-2">
                   {imagePreview.length > 0 && (
@@ -322,7 +326,7 @@ export function CreateTicketModal({
                     <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-purple-400 hover:bg-purple-50/50 transition-all">
                       <Upload className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-500">
-                        Ajouter des photos
+                        {t?.addPhotos?.[language] || 'Add photos'}
                       </span>
                       <input
                         type="file"
@@ -345,7 +349,7 @@ export function CreateTicketModal({
                   className="flex-1 rounded-xl"
                   disabled={isSubmitting}
                 >
-                  Annuler
+                  {t?.cancel?.[language] || 'Cancel'}
                 </Button>
                 <Button
                   type="submit"
@@ -356,10 +360,10 @@ export function CreateTicketModal({
                   {isSubmitting ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                      Creation...
+                      {t?.creating?.[language] || 'Creating...'}
                     </>
                   ) : (
-                    'Creer la demande'
+                    t?.createRequest?.[language] || 'Create request'
                   )}
                 </Button>
               </div>

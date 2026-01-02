@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{PROJECT_NAME}} - {{WORKBENCH_TITLE}}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════════════════════════
+           BRAND WORKBENCH TEMPLATE v1.0
+           Template réutilisable pour outils interactifs de design
+
+           Variables à remplacer:
+           - {{PROJECT_NAME}} : Nom du projet (ex: IzzIco)
+           - {{WORKBENCH_TITLE}} : Titre du workbench
+           - {{ACCENT_COLOR}} : Couleur accent (ex: #6366f1)
+
+           Structure:
+           1. Zone Canvas (gauche) - Visualisations interactives
+           2. Panneau Contrôles (droite) - Sliders et paramètres
+           3. Section Specs - Affichage des valeurs finales
+        ═══════════════════════════════════════════════════════════════ */
+
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: {{ACCENT_COLOR}};
+            --accent-soft: {{ACCENT_COLOR}}26; /* 15% opacity */
+            --accent-border: {{ACCENT_COLOR}}4d; /* 30% opacity */
+            --success: #10b981;
+            --warning: #fbbf24;
+            --error: #ef4444;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           LAYOUT PRINCIPAL - Grille 2 colonnes
+        ═══════════════════════════════════════════════════════════════ */
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            overflow-y: auto;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           TYPOGRAPHIE
+        ═══════════════════════════════════════════════════════════════ */
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        h2 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        h4 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           COMPOSANTS - Boîtes d'information
+        ═══════════════════════════════════════════════════════════════ */
+        .hint {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #a5b4fc;
+            margin-bottom: 1rem;
+        }
+
+        .hint strong {
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .specs-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           COMPOSANTS - Sections de contenu
+        ═══════════════════════════════════════════════════════════════ */
+        .section {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+        }
+
+        .preview-area {
+            background: var(--bg-control);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .compare-box {
+            background: var(--bg-control);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .compare-box.highlight {
+            border: 2px solid var(--accent);
+        }
+
+        .compare-box.selected {
+            border: 2px solid var(--success);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           COMPOSANTS - Indicateurs de statut
+        ═══════════════════════════════════════════════════════════════ */
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .status-indicator.good {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .status-indicator.warning {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--warning);
+        }
+
+        .status-indicator.error {
+            background: rgba(239, 68, 68, 0.15);
+            color: var(--error);
+        }
+
+        .status-indicator.info {
+            background: var(--accent-soft);
+            color: #a5b4fc;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PANNEAU DE CONTRÔLES (droite)
+        ═══════════════════════════════════════════════════════════════ */
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CONTRÔLES - Sliders
+        ═══════════════════════════════════════════════════════════════ */
+        .control-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CONTRÔLES - Boutons
+        ═══════════════════════════════════════════════════════════════ */
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.75rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.5rem;
+            transition: all 0.15s;
+        }
+
+        .btn:hover {
+            background: var(--border);
+        }
+
+        .btn.primary {
+            background: var(--accent);
+            border-color: var(--accent);
+        }
+
+        .btn.success {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           CONTRÔLES - Toggle buttons
+        ═══════════════════════════════════════════════════════════════ */
+        .toggle-group {
+            display: flex;
+            gap: 0.25rem;
+            background: var(--bg-control);
+            border-radius: 6px;
+            padding: 0.25rem;
+        }
+
+        .toggle-btn {
+            padding: 0.4rem 0.75rem;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.15s;
+        }
+
+        .toggle-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           COMPOSANTS - Affichage de valeurs
+        ═══════════════════════════════════════════════════════════════ */
+        .value-display {
+            background: var(--accent-soft);
+            border: 1px solid var(--accent-border);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .value-display .value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent);
+            font-family: monospace;
+        }
+
+        .value-display .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           TYPOGRAPHIE DE RÉFÉRENCE (Fredoka)
+        ═══════════════════════════════════════════════════════════════ */
+        .fredoka {
+            font-family: 'Fredoka', sans-serif;
+            line-height: 1;
+        }
+
+        .fredoka-600 { font-weight: 600; }
+        .fredoka-540 { font-weight: 540; }
+        .fredoka-500 { font-weight: 500; }
+
+        /* ═══════════════════════════════════════════════════════════════
+           LOCKUP (icône + wordmark)
+        ═══════════════════════════════════════════════════════════════ */
+        .lockup {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .lockup .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: white;
+            letter-spacing: -0.02em;
+        }
+
+        /* Spacing personnalisé pour "zz" dans "izzico" */
+        .lockup .wordmark .zz-space {
+            margin-right: -0.18em;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           RESPONSIVE
+        ═══════════════════════════════════════════════════════════════ */
+        @media (max-width: 1024px) {
+            .app-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .controls-panel {
+                border-left: none;
+                border-top: 1px solid var(--border);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- ═══════════════════════════════════════════════════════════
+             ZONE CANVAS (gauche)
+        ═══════════════════════════════════════════════════════════ -->
+        <div class="canvas-area">
+            <div>
+                <h1>{{WORKBENCH_TITLE}}</h1>
+                <div class="hint">
+                    <strong>Objectif :</strong> {{OBJECTIVE_TEXT}}<br>
+                    <strong>Méthode :</strong> {{METHOD_TEXT}}
+                </div>
+            </div>
+
+            <!-- Section de prévisualisation principale -->
+            <div class="section">
+                <h3>Prévisualisation</h3>
+                <div class="preview-area" id="main-preview">
+                    <!-- Contenu généré par JavaScript -->
+                </div>
+                <div class="status-indicator info" id="status">
+                    Ajustez les paramètres dans le panneau de droite
+                </div>
+            </div>
+
+            <!-- Section de comparaison (optionnelle) -->
+            <div class="section">
+                <h3>Comparaison</h3>
+                <div class="side-by-side">
+                    <div class="compare-box">
+                        <h4>Option A</h4>
+                        <div id="compare-a"></div>
+                    </div>
+                    <div class="compare-box highlight">
+                        <h4>Option B</h4>
+                        <div id="compare-b"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             PANNEAU DE CONTRÔLES (droite)
+        ═══════════════════════════════════════════════════════════ -->
+        <div class="controls-panel">
+            <!-- Section: Paramètres principaux -->
+            <div class="panel-section">
+                <div class="section-title">Paramètres</div>
+
+                <div class="control-row">
+                    <span class="control-label">Paramètre 1</span>
+                    <input type="range" id="param1" min="0" max="100" step="1" value="50">
+                    <span class="control-value" id="param1-val">50</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Paramètre 2</span>
+                    <input type="range" id="param2" min="0" max="100" step="0.1" value="50">
+                    <span class="control-value" id="param2-val">50.0</span>
+                </div>
+
+                <div class="info-box" style="margin-top: 1rem;">
+                    Description des paramètres et leur impact sur le résultat.
+                </div>
+            </div>
+
+            <!-- Section: Options de style -->
+            <div class="panel-section">
+                <div class="section-title">Style</div>
+
+                <div class="toggle-group" id="style-toggle">
+                    <button class="toggle-btn active" data-value="a">Option A</button>
+                    <button class="toggle-btn" data-value="b">Option B</button>
+                    <button class="toggle-btn" data-value="c">Option C</button>
+                </div>
+            </div>
+
+            <!-- Section: Valeurs calculées -->
+            <div class="panel-section">
+                <div class="section-title">Valeurs</div>
+                <div class="value-display">
+                    <div class="value" id="computed-value">0</div>
+                    <div class="label">Valeur calculée</div>
+                </div>
+            </div>
+
+            <!-- Section: Spécifications finales -->
+            <div class="panel-section">
+                <div class="section-title">Spécifications</div>
+                <div class="specs-box" id="specs-display">
+/* Généré automatiquement */
+param1: 50
+param2: 50.0
+style: a
+                </div>
+                <button class="btn primary" id="copy-specs">Copier les specs</button>
+            </div>
+
+            <!-- Section: Actions -->
+            <div class="panel-section">
+                <div class="section-title">Actions</div>
+                <div class="btn-group">
+                    <button class="btn" id="reset-btn">Réinitialiser</button>
+                    <button class="btn success" id="validate-btn">Valider</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* ═══════════════════════════════════════════════════════════════
+           UTILITAIRES SAFE DOM
+           Fonctions sécurisées pour manipulation DOM (pas de innerHTML)
+        ═══════════════════════════════════════════════════════════════ */
+
+        /**
+         * Crée un élément SVG avec les attributs spécifiés
+         */
+        function createSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(function(k) {
+                el.setAttribute(k, attrs[k]);
+            });
+            return el;
+        }
+
+        /**
+         * Crée un élément HTML avec les attributs spécifiés
+         */
+        function createElement(tag, attrs, textContent) {
+            var el = document.createElement(tag);
+            if (attrs) {
+                Object.keys(attrs).forEach(function(k) {
+                    if (k === 'className') {
+                        el.className = attrs[k];
+                    } else if (k === 'style' && typeof attrs[k] === 'object') {
+                        Object.assign(el.style, attrs[k]);
+                    } else {
+                        el.setAttribute(k, attrs[k]);
+                    }
+                });
+            }
+            if (textContent !== undefined) {
+                el.textContent = textContent;
+            }
+            return el;
+        }
+
+        /**
+         * Vide un élément de tous ses enfants
+         */
+        function clearElement(el) {
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           ÉTAT DE L'APPLICATION
+        ═══════════════════════════════════════════════════════════════ */
+        var state = {
+            param1: 50,
+            param2: 50,
+            style: 'a'
+        };
+
+        /* ═══════════════════════════════════════════════════════════════
+           FONCTIONS DE RENDU
+           À personnaliser selon le workbench
+        ═══════════════════════════════════════════════════════════════ */
+
+        /**
+         * Met à jour l'affichage de la prévisualisation principale
+         */
+        function renderMainPreview() {
+            var container = document.getElementById('main-preview');
+            clearElement(container);
+
+            // Exemple: créer un SVG simple
+            var svg = createSVG('svg', {
+                viewBox: '0 0 100 100',
+                width: 200,
+                height: 200
+            });
+
+            var circle = createSVG('circle', {
+                cx: 50,
+                cy: 50,
+                r: state.param1 / 3,
+                fill: 'none',
+                stroke: 'white',
+                'stroke-width': state.param2 / 10
+            });
+
+            svg.appendChild(circle);
+            container.appendChild(svg);
+        }
+
+        /**
+         * Met à jour les zones de comparaison
+         */
+        function renderComparison() {
+            // Implémenter selon les besoins
+        }
+
+        /**
+         * Met à jour l'affichage des spécifications
+         */
+        function updateSpecs() {
+            var display = document.getElementById('specs-display');
+            display.textContent = '/* SPECIFICATIONS */\n' +
+                'param1: ' + state.param1 + '\n' +
+                'param2: ' + state.param2.toFixed(1) + '\n' +
+                'style: ' + state.style;
+        }
+
+        /**
+         * Met à jour l'indicateur de statut
+         */
+        function updateStatus(type, message) {
+            var status = document.getElementById('status');
+            status.className = 'status-indicator ' + type;
+            status.textContent = message;
+        }
+
+        /**
+         * Rendu global
+         */
+        function render() {
+            renderMainPreview();
+            renderComparison();
+            updateSpecs();
+
+            // Mettre à jour la valeur calculée
+            var computedValue = (state.param1 * state.param2 / 100).toFixed(2);
+            document.getElementById('computed-value').textContent = computedValue;
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           GESTIONNAIRES D'ÉVÉNEMENTS
+        ═══════════════════════════════════════════════════════════════ */
+
+        // Paramètre 1
+        document.getElementById('param1').addEventListener('input', function(e) {
+            state.param1 = parseInt(e.target.value);
+            document.getElementById('param1-val').textContent = state.param1;
+            render();
+        });
+
+        // Paramètre 2
+        document.getElementById('param2').addEventListener('input', function(e) {
+            state.param2 = parseFloat(e.target.value);
+            document.getElementById('param2-val').textContent = state.param2.toFixed(1);
+            render();
+        });
+
+        // Toggle de style
+        document.querySelectorAll('#style-toggle .toggle-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#style-toggle .toggle-btn').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                btn.classList.add('active');
+                state.style = btn.dataset.value;
+                render();
+            });
+        });
+
+        // Copier les specs
+        document.getElementById('copy-specs').addEventListener('click', function() {
+            var specs = document.getElementById('specs-display').textContent;
+            navigator.clipboard.writeText(specs).then(function() {
+                updateStatus('good', '✓ Spécifications copiées dans le presse-papier');
+                setTimeout(function() {
+                    updateStatus('info', 'Ajustez les paramètres dans le panneau de droite');
+                }, 2000);
+            });
+        });
+
+        // Réinitialiser
+        document.getElementById('reset-btn').addEventListener('click', function() {
+            state.param1 = 50;
+            state.param2 = 50;
+            state.style = 'a';
+
+            document.getElementById('param1').value = 50;
+            document.getElementById('param1-val').textContent = '50';
+            document.getElementById('param2').value = 50;
+            document.getElementById('param2-val').textContent = '50.0';
+
+            document.querySelectorAll('#style-toggle .toggle-btn').forEach(function(btn, i) {
+                btn.classList.toggle('active', i === 0);
+            });
+
+            render();
+            updateStatus('info', 'Paramètres réinitialisés');
+        });
+
+        // Valider
+        document.getElementById('validate-btn').addEventListener('click', function() {
+            updateStatus('good', '✓ Configuration validée ! Copiez les specs pour les verrouiller.');
+        });
+
+        /* ═══════════════════════════════════════════════════════════════
+           INITIALISATION
+        ═══════════════════════════════════════════════════════════════ */
+        render();
+    </script>
+</body>
+</html>

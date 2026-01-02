@@ -23,6 +23,10 @@
           },
           {
             "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/brand-anti-alternative.sh"
+          },
+          {
+            "type": "command",
             "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/english-code-guard.sh"
           }
         ]

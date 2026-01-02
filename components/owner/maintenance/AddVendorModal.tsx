@@ -24,6 +24,7 @@ import {
 } from '@/lib/services/vendor-service';
 import { ownerGradient } from '@/lib/constants/owner-theme';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface AddVendorModalProps {
   open: boolean;

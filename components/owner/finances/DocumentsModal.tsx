@@ -26,6 +26,7 @@ import {
 } from '@/lib/services/document-generation-service';
 import { ownerGradient } from '@/lib/constants/owner-theme';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Types
 type DocumentType = 'receipt' | 'housing' | 'rent';
@@ -57,31 +58,13 @@ interface DocumentsModalProps {
   preselectedPropertyId?: string;
 }
 
-const documentTypes = [
-  {
-    id: 'receipt' as const,
-    label: 'Quittance de loyer',
-    description: 'Attestation de paiement du loyer mensuel',
-    icon: Receipt,
-  },
-  {
-    id: 'housing' as const,
-    label: 'Attestation d\'hébergement',
-    description: 'Certificat de résidence pour démarches administratives',
-    icon: Home,
-  },
-  {
-    id: 'rent' as const,
-    label: 'Attestation de loyer',
-    description: 'Document récapitulatif des conditions locatives',
-    icon: ClipboardList,
-  },
-];
-
-const months = [
-  'Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin',
-  'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre',
-];
+// Document type definitions (labels are translated in the component)
+const documentTypeIds = ['receipt', 'housing', 'rent'] as const;
+const documentTypeIcons = {
+  receipt: Receipt,
+  housing: Home,
+  rent: ClipboardList,
+};
 
 export function DocumentsModal({
   open,
@@ -95,6 +78,54 @@ export function DocumentsModal({
   preselectedPropertyId,
 }: DocumentsModalProps) {
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerDocuments');
+
+  // Locale mapping for currency formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+
+  // Get translated document types
+  const getDocumentTypes = () => [
+    {
+      id: 'receipt' as const,
+      label: t?.rentReceipt?.[language] || 'Rent Receipt',
+      description: t?.rentReceiptDesc?.[language] || 'Monthly rent payment attestation',
+      icon: Receipt,
+    },
+    {
+      id: 'housing' as const,
+      label: t?.housingAttestation?.[language] || 'Housing Attestation',
+      description: t?.housingAttestationDesc?.[language] || 'Residence certificate for administrative procedures',
+      icon: Home,
+    },
+    {
+      id: 'rent' as const,
+      label: t?.rentAttestation?.[language] || 'Rent Attestation',
+      description: t?.rentAttestationDesc?.[language] || 'Summary document of rental conditions',
+      icon: ClipboardList,
+    },
+  ];
+
+  // Get translated months
+  const getMonths = () => [
+    t?.january?.[language] || 'January',
+    t?.february?.[language] || 'February',
+    t?.march?.[language] || 'March',
+    t?.april?.[language] || 'April',
+    t?.may?.[language] || 'May',
+    t?.june?.[language] || 'June',
+    t?.july?.[language] || 'July',
+    t?.august?.[language] || 'August',
+    t?.september?.[language] || 'September',
+    t?.october?.[language] || 'October',
+    t?.november?.[language] || 'November',
+    t?.december?.[language] || 'December',
+  ];
 
   // State
   const [step, setStep] = useState<'type' | 'tenant' | 'details' | 'generating' | 'complete'>('type');
@@ -199,7 +230,7 @@ export function DocumentsModal({
       setTenants(tenantOptions);
     } catch (err) {
       console.error('[DocumentsModal] Error loading tenants:', err);
-      setError('Impossible de charger les locataires');
+      setError(t?.errorLoadingTenants?.[language] || 'Unable to load tenants');
     } finally {
       setIsLoading(false);
     }
@@ -214,7 +245,7 @@ export function DocumentsModal({
     setPaymentDate(new Date().toISOString().split('T')[0]);
     setRentAmount(0);
     setChargesAmount(0);
-    setPaymentMethod('Virement bancaire');
+    setPaymentMethod(t?.bankTransfer?.[language] || 'Bank transfer');
     setPurpose('');
     setError(null);
   };
@@ -319,7 +350,7 @@ export function DocumentsModal({
           break;
         }
         default:
-          throw new Error('Type de document inconnu');
+          throw new Error(t?.unknownDocumentType?.[language] || 'Unknown document type');
       }
 
       // Simulate slight delay for UX
@@ -328,10 +359,10 @@ export function DocumentsModal({
       // Download
       documentGenerationService.downloadDocument(blob, filename);
       setStep('complete');
-      toast.success('Document généré avec succès');
+      toast.success(t?.documentGenerated?.[language] || 'Document generated successfully');
     } catch (err) {
       console.error('[DocumentsModal] Error generating document:', err);
-      toast.error('Erreur lors de la génération du document');
+      toast.error(t?.errorGeneratingDocument?.[language] || 'Error generating document');
       setStep('details');
     }
   };
@@ -389,13 +420,13 @@ export function DocumentsModal({
                 </motion.div>
 
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900">Générer un document</h2>
+                  <h2 className="text-xl font-bold text-gray-900">{t?.generateDocument?.[language] || 'Generate a document'}</h2>
                   <p className="text-sm text-gray-500">
-                    {step === 'type' && 'Choisissez le type de document'}
-                    {step === 'tenant' && 'Sélectionnez le locataire'}
-                    {step === 'details' && 'Complétez les informations'}
-                    {step === 'generating' && 'Génération en cours...'}
-                    {step === 'complete' && 'Document prêt'}
+                    {step === 'type' && (t?.chooseDocumentType?.[language] || 'Choose the document type')}
+                    {step === 'tenant' && (t?.selectTenant?.[language] || 'Select tenant')}
+                    {step === 'details' && (t?.completeInformation?.[language] || 'Complete the information')}
+                    {step === 'generating' && (t?.generating?.[language] || 'Generating...')}
+                    {step === 'complete' && (t?.documentReady?.[language] || 'Document ready')}
                   </p>
                 </div>
               </div>
@@ -420,7 +451,7 @@ export function DocumentsModal({
                 animate={{ opacity: 1, y: 0 }}
                 className="space-y-3"
               >
-                {documentTypes.map((docType) => (
+                {getDocumentTypes().map((docType) => (
                   <button
                     key={docType.id}
                     onClick={() => handleSelectType(docType.id)}
@@ -455,7 +486,7 @@ export function DocumentsModal({
                 ) : tenants.length === 0 ? (
                   <div className="text-center py-12">
                     <User className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-                    <p className="text-gray-500">Aucun locataire actif</p>
+                    <p className="text-gray-500">{t?.noActiveTenants?.[language] || 'No active tenants'}</p>
                   </div>
                 ) : (
                   tenants.map((tenant) => (
@@ -483,7 +514,7 @@ export function DocumentsModal({
                   onClick={() => setStep('type')}
                   className="w-full mt-4"
                 >
-                  Retour
+                  {t?.back?.[language] || 'Back'}
                 </Button>
               </motion.div>
             )}
@@ -514,7 +545,7 @@ export function DocumentsModal({
                     {/* Period */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Période
+                        {t?.period?.[language] || 'Period'}
                       </label>
                       <div className="grid grid-cols-2 gap-3">
                         <select
@@ -522,7 +553,7 @@ export function DocumentsModal({
                           onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
                           className="px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         >
-                          {months.map((month, idx) => (
+                          {getMonths().map((month, idx) => (
                             <option key={idx} value={idx + 1}>
                               {month}
                             </option>
@@ -545,7 +576,7 @@ export function DocumentsModal({
                     {/* Payment Date */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Date de paiement
+                        {t?.paymentDate?.[language] || 'Payment date'}
                       </label>
                       <input
                         type="date"
@@ -559,7 +590,7 @@ export function DocumentsModal({
                     <div className="grid grid-cols-2 gap-3">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Loyer (€)
+                          {t?.rent?.[language] || 'Rent'} (€)
                         </label>
                         <input
                           type="number"
@@ -572,7 +603,7 @@ export function DocumentsModal({
                       </div>
                       <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Charges (€)
+                          {t?.charges?.[language] || 'Charges'} (€)
                         </label>
                         <input
                           type="number"
@@ -588,26 +619,26 @@ export function DocumentsModal({
                     {/* Payment Method */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Mode de paiement
+                        {t?.paymentMethod?.[language] || 'Payment method'}
                       </label>
                       <select
                         value={paymentMethod}
                         onChange={(e) => setPaymentMethod(e.target.value)}
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       >
-                        <option>Virement bancaire</option>
-                        <option>Chèque</option>
-                        <option>Espèces</option>
-                        <option>Prélèvement automatique</option>
+                        <option value={t?.bankTransfer?.[language] || 'Bank transfer'}>{t?.bankTransfer?.[language] || 'Bank transfer'}</option>
+                        <option value={t?.check?.[language] || 'Check'}>{t?.check?.[language] || 'Check'}</option>
+                        <option value={t?.cash?.[language] || 'Cash'}>{t?.cash?.[language] || 'Cash'}</option>
+                        <option value={t?.directDebit?.[language] || 'Direct debit'}>{t?.directDebit?.[language] || 'Direct debit'}</option>
                       </select>
                     </div>
 
                     {/* Total */}
                     <div className="p-4 rounded-xl bg-purple-50 border border-purple-100">
                       <div className="flex justify-between items-center">
-                        <span className="text-gray-600">Total</span>
+                        <span className="text-gray-600">{t?.total?.[language] || 'Total'}</span>
                         <span className="text-xl font-bold text-purple-600">
-                          {new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(
+                          {new Intl.NumberFormat(localeMap[language] || 'fr-FR', { style: 'currency', currency: 'EUR' }).format(
                             rentAmount + chargesAmount
                           )}
                         </span>
@@ -623,7 +654,7 @@ export function DocumentsModal({
                       <div className="grid grid-cols-2 gap-3">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Loyer (€)
+                            {t?.rent?.[language] || 'Rent'} (€)
                           </label>
                           <input
                             type="number"
@@ -636,7 +667,7 @@ export function DocumentsModal({
                         </div>
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
-                            Charges (€)
+                            {t?.charges?.[language] || 'Charges'} (€)
                           </label>
                           <input
                             type="number"
@@ -652,13 +683,13 @@ export function DocumentsModal({
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Motif / Destination (optionnel)
+                        {t?.purposeOptional?.[language] || 'Purpose / Destination (optional)'}
                       </label>
                       <input
                         type="text"
                         value={purpose}
                         onChange={(e) => setPurpose(e.target.value)}
-                        placeholder="Ex: Constitution d'un dossier CAF"
+                        placeholder={t?.purposePlaceholder?.[language] || 'Ex: CAF application'}
                         className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       />
                     </div>
@@ -675,7 +706,7 @@ export function DocumentsModal({
                 className="py-12 text-center"
               >
                 <Loader2 className="w-12 h-12 mx-auto animate-spin text-purple-600 mb-4" />
-                <p className="text-gray-600">Génération du document...</p>
+                <p className="text-gray-600">{t?.generatingDocument?.[language] || 'Generating document...'}</p>
               </motion.div>
             )}
 
@@ -695,21 +726,21 @@ export function DocumentsModal({
                   <CheckCircle className="w-8 h-8 text-green-600" />
                 </motion.div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Document téléchargé
+                  {t?.documentDownloaded?.[language] || 'Document downloaded'}
                 </h3>
                 <p className="text-gray-500 mb-6">
-                  Votre document a été généré et téléchargé avec succès.
+                  {t?.documentDownloadedDesc?.[language] || 'Your document has been generated and downloaded successfully.'}
                 </p>
                 <div className="flex gap-3 justify-center">
                   <Button variant="outline" onClick={resetForm} className="rounded-xl">
-                    Générer un autre
+                    {t?.generateAnother?.[language] || 'Generate another'}
                   </Button>
                   <Button
                     onClick={onClose}
                     className="rounded-xl text-white"
                     style={{ background: ownerGradient }}
                   >
-                    Fermer
+                    {t?.close?.[language] || 'Close'}
                   </Button>
                 </div>
               </motion.div>
@@ -724,7 +755,7 @@ export function DocumentsModal({
                 onClick={() => setStep(tenants.length === 1 ? 'type' : 'tenant')}
                 className="flex-1 rounded-xl"
               >
-                Retour
+                {t?.back?.[language] || 'Back'}
               </Button>
               <Button
                 onClick={handleGenerate}
@@ -732,7 +763,7 @@ export function DocumentsModal({
                 style={{ background: ownerGradient }}
               >
                 <Download className="w-4 h-4 mr-2" />
-                Générer le PDF
+                {t?.generatePdf?.[language] || 'Generate PDF'}
               </Button>
             </div>
           )}

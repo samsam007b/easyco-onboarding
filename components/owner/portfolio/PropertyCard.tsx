@@ -467,16 +467,16 @@ export function PropertyCard({
         <div className="flex items-center gap-4 mb-4 text-sm text-gray-600">
           <span className="flex items-center gap-1">
             <Bed className="w-4 h-4" />
-            {property.bedrooms} ch.
+            {property.bedrooms} {t?.bedrooms?.[language] || 'bd'}
           </span>
           {property.bathrooms !== undefined && (
             <span className="flex items-center gap-1">
-              {property.bathrooms} sdb.
+              {property.bathrooms} {t?.bathrooms?.[language] || 'ba'}
             </span>
           )}
           {property.surface !== undefined && (
             <span className="flex items-center gap-1">
-              {property.surface} m²
+              {property.surface} {t?.sqm?.[language] || 'm²'}
             </span>
           )}
         </div>
@@ -487,7 +487,7 @@ export function PropertyCard({
             <p className="text-2xl font-bold" style={{ color: '#9c5698' }}>
               {property.monthlyRent.toLocaleString()}€
             </p>
-            <p className="text-xs text-gray-500">/mois</p>
+            <p className="text-xs text-gray-500">{t?.perMonth?.[language] || '/month'}</p>
           </div>
 
           <div className="flex items-center gap-3">
@@ -496,14 +496,14 @@ export function PropertyCard({
                 <Eye className="w-4 h-4" />
                 <span className="font-semibold">{property.views}</span>
               </div>
-              <p className="text-[10px] text-gray-400">vues</p>
+              <p className="text-[10px] text-gray-400">{t?.views?.[language] || 'views'}</p>
             </div>
             <div className="text-center">
               <div className="flex items-center gap-1 text-gray-600">
                 <MessageSquare className="w-4 h-4" />
                 <span className="font-semibold">{property.inquiries}</span>
               </div>
-              <p className="text-[10px] text-gray-400">demandes</p>
+              <p className="text-[10px] text-gray-400">{t?.inquiries?.[language] || 'inquiries'}</p>
             </div>
             {property.applications !== undefined && (
               <div className="text-center">
@@ -511,7 +511,7 @@ export function PropertyCard({
                   <Users className="w-4 h-4" />
                   <span className="font-semibold">{property.applications}</span>
                 </div>
-                <p className="text-[10px] text-gray-400">candidatures</p>
+                <p className="text-[10px] text-gray-400">{t?.candidatures?.[language] || 'applications'}</p>
               </div>
             )}
           </div>
@@ -530,7 +530,7 @@ export function PropertyCard({
                   {property.leaseEndDate && (
                     <p className="text-xs text-gray-500 flex items-center gap-1">
                       <Calendar className="w-3 h-3" />
-                      Bail jusqu'au {new Date(property.leaseEndDate).toLocaleDateString('fr-FR')}
+                      {t?.leaseUntil?.[language] || 'Lease until'} {new Date(property.leaseEndDate).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-NL' : language === 'de' ? 'de-DE' : 'en-US')}
                     </p>
                   )}
                 </div>
@@ -553,7 +553,7 @@ export function PropertyCard({
               }}
             >
               <ExternalLink className="w-4 h-4 mr-1" />
-              Détails
+              {t?.details?.[language] || 'Details'}
             </Button>
           )}
           {onEdit && (
@@ -566,7 +566,7 @@ export function PropertyCard({
               }}
             >
               <Edit className="w-4 h-4 mr-1" />
-              Modifier
+              {t?.edit?.[language] || 'Edit'}
             </Button>
           )}
           <DropdownMenu>
@@ -579,13 +579,13 @@ export function PropertyCard({
               {onHistory && (
                 <DropdownMenuItem onClick={onHistory}>
                   <History className="w-4 h-4 mr-2" />
-                  Historique
+                  {t?.history?.[language] || 'History'}
                 </DropdownMenuItem>
               )}
               {onArchive && (
                 <DropdownMenuItem onClick={onArchive}>
                   <Archive className="w-4 h-4 mr-2" />
-                  Archiver
+                  {t?.archive?.[language] || 'Archive'}
                 </DropdownMenuItem>
               )}
               {onDelete && (
@@ -593,7 +593,7 @@ export function PropertyCard({
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={onDelete} className="text-red-600">
                     <Trash2 className="w-4 h-4 mr-2" />
-                    Supprimer
+                    {t?.delete?.[language] || 'Delete'}
                   </DropdownMenuItem>
                 </>
               )}

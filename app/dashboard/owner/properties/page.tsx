@@ -32,7 +32,7 @@ import {
   type PropertyFiltersState,
   type ViewMode,
 } from '@/components/owner/portfolio';
-import { ownerGradientLight, ownerPageBackground, ownerGradient } from '@/lib/constants/owner-theme';
+import { ownerGradientLight, ownerPageBackground, ownerGradient, ownerPalette } from '@/lib/constants/owner-theme';
 
 export default function PropertiesManagement() {
   const router = useRouter();
@@ -337,12 +337,17 @@ export default function PropertiesManagement() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="mt-4 bg-purple-50 border border-purple-200 rounded-2xl p-4 flex items-center justify-between"
+              className="mt-4 rounded-2xl p-4 flex items-center justify-between"
+              style={{
+                backgroundColor: ownerPalette.secondary.light,
+                borderWidth: 1,
+                borderColor: ownerPalette.secondary.border,
+              }}
             >
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: ownerGradient }}
+                  style={{ backgroundColor: ownerPalette.secondary.main }}
                 >
                   <CheckSquare className="w-5 h-5 text-white" />
                 </div>

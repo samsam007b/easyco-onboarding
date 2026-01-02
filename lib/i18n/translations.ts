@@ -20262,6 +20262,701 @@ export const translations = {
       },
     },
   },
+
+  // ============================================================================
+  // OWNER DOCUMENTS MODAL
+  // ============================================================================
+  ownerDocuments: {
+    // Modal Header
+    generateDocument: {
+      fr: 'Générer un document',
+      en: 'Generate a document',
+      nl: 'Document genereren',
+      de: 'Dokument erstellen',
+    },
+    chooseDocType: {
+      fr: 'Choisissez le type de document',
+      en: 'Choose the document type',
+      nl: 'Kies het documenttype',
+      de: 'Wählen Sie den Dokumenttyp',
+    },
+    selectTenant: {
+      fr: 'Sélectionnez le locataire',
+      en: 'Select the tenant',
+      nl: 'Selecteer de huurder',
+      de: 'Mieter auswählen',
+    },
+    completeInfo: {
+      fr: 'Complétez les informations',
+      en: 'Complete the information',
+      nl: 'Vul de informatie in',
+      de: 'Informationen vervollständigen',
+    },
+    generating: {
+      fr: 'Génération en cours...',
+      en: 'Generating...',
+      nl: 'Genereren...',
+      de: 'Wird generiert...',
+    },
+    documentReady: {
+      fr: 'Document prêt',
+      en: 'Document ready',
+      nl: 'Document klaar',
+      de: 'Dokument bereit',
+    },
+
+    // Document Types
+    rentReceipt: {
+      fr: 'Quittance de loyer',
+      en: 'Rent receipt',
+      nl: 'Huurkwitantie',
+      de: 'Mietquittung',
+    },
+    rentReceiptDesc: {
+      fr: 'Attestation de paiement du loyer mensuel',
+      en: 'Monthly rent payment certificate',
+      nl: 'Certificaat maandelijkse huurbetaling',
+      de: 'Monatliche Mietzahlungsbescheinigung',
+    },
+    housingAttestation: {
+      fr: 'Attestation d\'hébergement',
+      en: 'Housing certificate',
+      nl: 'Huisvestingsverklaring',
+      de: 'Wohnbescheinigung',
+    },
+    housingAttestationDesc: {
+      fr: 'Certificat de résidence pour démarches administratives',
+      en: 'Residence certificate for administrative procedures',
+      nl: 'Verblijfsverklaring voor administratieve procedures',
+      de: 'Wohnortbescheinigung für Verwaltungsverfahren',
+    },
+    rentAttestation: {
+      fr: 'Attestation de loyer',
+      en: 'Rent certificate',
+      nl: 'Huurverklaring',
+      de: 'Mietbescheinigung',
+    },
+    rentAttestationDesc: {
+      fr: 'Document récapitulatif des conditions locatives',
+      en: 'Summary document of rental conditions',
+      nl: 'Samenvattend document van huurvoorwaarden',
+      de: 'Zusammenfassendes Dokument der Mietbedingungen',
+    },
+
+    // Tenant Selection
+    noActiveTenant: {
+      fr: 'Aucun locataire actif',
+      en: 'No active tenant',
+      nl: 'Geen actieve huurder',
+      de: 'Kein aktiver Mieter',
+    },
+    loadingTenants: {
+      fr: 'Chargement des locataires...',
+      en: 'Loading tenants...',
+      nl: 'Huurders laden...',
+      de: 'Mieter werden geladen...',
+    },
+    errorLoadingTenants: {
+      fr: 'Impossible de charger les locataires',
+      en: 'Unable to load tenants',
+      nl: 'Kan huurders niet laden',
+      de: 'Mieter können nicht geladen werden',
+    },
+    back: {
+      fr: 'Retour',
+      en: 'Back',
+      nl: 'Terug',
+      de: 'Zurück',
+    },
+
+    // Form Labels
+    period: {
+      fr: 'Période',
+      en: 'Period',
+      nl: 'Periode',
+      de: 'Zeitraum',
+    },
+    paymentDate: {
+      fr: 'Date de paiement',
+      en: 'Payment date',
+      nl: 'Betaaldatum',
+      de: 'Zahlungsdatum',
+    },
+    rent: {
+      fr: 'Loyer',
+      en: 'Rent',
+      nl: 'Huur',
+      de: 'Miete',
+    },
+    charges: {
+      fr: 'Charges',
+      en: 'Charges',
+      nl: 'Servicekosten',
+      de: 'Nebenkosten',
+    },
+    paymentMethod: {
+      fr: 'Mode de paiement',
+      en: 'Payment method',
+      nl: 'Betaalmethode',
+      de: 'Zahlungsmethode',
+    },
+    total: {
+      fr: 'Total',
+      en: 'Total',
+      nl: 'Totaal',
+      de: 'Gesamt',
+    },
+    purposeOptional: {
+      fr: 'Motif / Destination (optionnel)',
+      en: 'Purpose / Destination (optional)',
+      nl: 'Doel / Bestemming (optioneel)',
+      de: 'Zweck / Verwendung (optional)',
+    },
+    purposePlaceholder: {
+      fr: 'Ex: Constitution d\'un dossier CAF',
+      en: 'Ex: Building a CAF file',
+      nl: 'Bv: Samenstellen CAF-dossier',
+      de: 'Z.B.: Erstellung einer CAF-Akte',
+    },
+
+    // Payment Methods
+    bankTransfer: {
+      fr: 'Virement bancaire',
+      en: 'Bank transfer',
+      nl: 'Bankoverschrijving',
+      de: 'Banküberweisung',
+    },
+    check: {
+      fr: 'Chèque',
+      en: 'Check',
+      nl: 'Cheque',
+      de: 'Scheck',
+    },
+    cash: {
+      fr: 'Espèces',
+      en: 'Cash',
+      nl: 'Contant',
+      de: 'Bargeld',
+    },
+    directDebit: {
+      fr: 'Prélèvement automatique',
+      en: 'Direct debit',
+      nl: 'Automatische incasso',
+      de: 'Lastschrift',
+    },
+
+    // Months
+    january: { fr: 'Janvier', en: 'January', nl: 'Januari', de: 'Januar' },
+    february: { fr: 'Février', en: 'February', nl: 'Februari', de: 'Februar' },
+    march: { fr: 'Mars', en: 'March', nl: 'Maart', de: 'März' },
+    april: { fr: 'Avril', en: 'April', nl: 'April', de: 'April' },
+    may: { fr: 'Mai', en: 'May', nl: 'Mei', de: 'Mai' },
+    june: { fr: 'Juin', en: 'June', nl: 'Juni', de: 'Juni' },
+    july: { fr: 'Juillet', en: 'July', nl: 'Juli', de: 'Juli' },
+    august: { fr: 'Août', en: 'August', nl: 'Augustus', de: 'August' },
+    september: { fr: 'Septembre', en: 'September', nl: 'September', de: 'September' },
+    october: { fr: 'Octobre', en: 'October', nl: 'Oktober', de: 'Oktober' },
+    november: { fr: 'Novembre', en: 'November', nl: 'November', de: 'November' },
+    december: { fr: 'Décembre', en: 'December', nl: 'December', de: 'Dezember' },
+
+    // Actions & Completion
+    generatePdf: {
+      fr: 'Générer le PDF',
+      en: 'Generate PDF',
+      nl: 'PDF genereren',
+      de: 'PDF erstellen',
+    },
+    generatingDocument: {
+      fr: 'Génération du document...',
+      en: 'Generating document...',
+      nl: 'Document genereren...',
+      de: 'Dokument wird erstellt...',
+    },
+    documentDownloaded: {
+      fr: 'Document téléchargé',
+      en: 'Document downloaded',
+      nl: 'Document gedownload',
+      de: 'Dokument heruntergeladen',
+    },
+    documentSuccess: {
+      fr: 'Votre document a été généré et téléchargé avec succès.',
+      en: 'Your document has been generated and downloaded successfully.',
+      nl: 'Uw document is succesvol gegenereerd en gedownload.',
+      de: 'Ihr Dokument wurde erfolgreich erstellt und heruntergeladen.',
+    },
+    generateAnother: {
+      fr: 'Générer un autre',
+      en: 'Generate another',
+      nl: 'Nog een genereren',
+      de: 'Noch eines erstellen',
+    },
+    close: {
+      fr: 'Fermer',
+      en: 'Close',
+      nl: 'Sluiten',
+      de: 'Schließen',
+    },
+
+    // Toasts
+    toastSuccess: {
+      fr: 'Document généré avec succès',
+      en: 'Document generated successfully',
+      nl: 'Document succesvol gegenereerd',
+      de: 'Dokument erfolgreich erstellt',
+    },
+    toastError: {
+      fr: 'Erreur lors de la génération du document',
+      en: 'Error generating document',
+      nl: 'Fout bij genereren document',
+      de: 'Fehler beim Erstellen des Dokuments',
+    },
+    unknownDocType: {
+      fr: 'Type de document inconnu',
+      en: 'Unknown document type',
+      nl: 'Onbekend documenttype',
+      de: 'Unbekannter Dokumenttyp',
+    },
+  },
+
+  // ============================================================================
+  // OWNER MAINTENANCE
+  // ============================================================================
+  ownerMaintenance: {
+    // Create Ticket Modal
+    newMaintenanceRequest: {
+      fr: 'Nouvelle demande de maintenance',
+      en: 'New maintenance request',
+      nl: 'Nieuw onderhoudsverzoek',
+      de: 'Neue Wartungsanfrage',
+    },
+    property: {
+      fr: 'Propriété',
+      en: 'Property',
+      nl: 'Woning',
+      de: 'Immobilie',
+    },
+    selectProperty: {
+      fr: 'Sélectionnez une propriété',
+      en: 'Select a property',
+      nl: 'Selecteer een woning',
+      de: 'Wählen Sie eine Immobilie',
+    },
+    title: {
+      fr: 'Titre',
+      en: 'Title',
+      nl: 'Titel',
+      de: 'Titel',
+    },
+    titlePlaceholder: {
+      fr: 'Ex: Fuite d\'eau sous l\'évier',
+      en: 'Ex: Water leak under the sink',
+      nl: 'Bv: Waterlek onder de gootsteen',
+      de: 'Z.B.: Wasserleck unter der Spüle',
+    },
+    description: {
+      fr: 'Description',
+      en: 'Description',
+      nl: 'Beschrijving',
+      de: 'Beschreibung',
+    },
+    descriptionPlaceholder: {
+      fr: 'Décrivez le problème en détail...',
+      en: 'Describe the problem in detail...',
+      nl: 'Beschrijf het probleem in detail...',
+      de: 'Beschreiben Sie das Problem im Detail...',
+    },
+    category: {
+      fr: 'Catégorie',
+      en: 'Category',
+      nl: 'Categorie',
+      de: 'Kategorie',
+    },
+    priority: {
+      fr: 'Priorité',
+      en: 'Priority',
+      nl: 'Prioriteit',
+      de: 'Priorität',
+    },
+    emergencyWarning: {
+      fr: 'Les urgences nécessitent une intervention immédiate (fuite importante, panne de chauffage en hiver, etc.)',
+      en: 'Emergencies require immediate intervention (major leak, heating failure in winter, etc.)',
+      nl: 'Noodgevallen vereisen onmiddellijke interventie (groot lek, verwarmingsstoring in de winter, etc.)',
+      de: 'Notfälle erfordern sofortige Intervention (großes Leck, Heizungsausfall im Winter, etc.)',
+    },
+    location: {
+      fr: 'Emplacement',
+      en: 'Location',
+      nl: 'Locatie',
+      de: 'Standort',
+    },
+    locationPlaceholder: {
+      fr: 'Ex: Salle de bain, Cuisine',
+      en: 'Ex: Bathroom, Kitchen',
+      nl: 'Bv: Badkamer, Keuken',
+      de: 'Z.B.: Badezimmer, Küche',
+    },
+    estimatedCost: {
+      fr: 'Coût estimé',
+      en: 'Estimated cost',
+      nl: 'Geschatte kosten',
+      de: 'Geschätzte Kosten',
+    },
+    photos: {
+      fr: 'Photos',
+      en: 'Photos',
+      nl: 'Foto\'s',
+      de: 'Fotos',
+    },
+    addPhotos: {
+      fr: 'Ajouter des photos',
+      en: 'Add photos',
+      nl: 'Foto\'s toevoegen',
+      de: 'Fotos hinzufügen',
+    },
+    cancel: {
+      fr: 'Annuler',
+      en: 'Cancel',
+      nl: 'Annuleren',
+      de: 'Abbrechen',
+    },
+    creating: {
+      fr: 'Création...',
+      en: 'Creating...',
+      nl: 'Aanmaken...',
+      de: 'Erstellen...',
+    },
+    createRequest: {
+      fr: 'Créer la demande',
+      en: 'Create request',
+      nl: 'Verzoek aanmaken',
+      de: 'Anfrage erstellen',
+    },
+
+    // Add Vendor Modal
+    addVendor: {
+      fr: 'Ajouter un prestataire',
+      en: 'Add a vendor',
+      nl: 'Leverancier toevoegen',
+      de: 'Anbieter hinzufügen',
+    },
+    registerNewVendor: {
+      fr: 'Enregistrez un nouveau prestataire',
+      en: 'Register a new vendor',
+      nl: 'Registreer een nieuwe leverancier',
+      de: 'Neuen Anbieter registrieren',
+    },
+    vendorName: {
+      fr: 'Nom du prestataire',
+      en: 'Vendor name',
+      nl: 'Naam leverancier',
+      de: 'Anbietername',
+    },
+    vendorNamePlaceholder: {
+      fr: 'Ex: Jean Dupont',
+      en: 'Ex: John Smith',
+      nl: 'Bv: Jan Jansen',
+      de: 'Z.B.: Hans Müller',
+    },
+    companyName: {
+      fr: 'Nom de l\'entreprise',
+      en: 'Company name',
+      nl: 'Bedrijfsnaam',
+      de: 'Firmenname',
+    },
+    companyNamePlaceholder: {
+      fr: 'Ex: Plomberie Express SARL',
+      en: 'Ex: Express Plumbing LLC',
+      nl: 'Bv: Express Loodgieterij BV',
+      de: 'Z.B.: Express Sanitär GmbH',
+    },
+    specialty: {
+      fr: 'Spécialité',
+      en: 'Specialty',
+      nl: 'Specialiteit',
+      de: 'Fachgebiet',
+    },
+    phone: {
+      fr: 'Téléphone',
+      en: 'Phone',
+      nl: 'Telefoon',
+      de: 'Telefon',
+    },
+    email: {
+      fr: 'Email',
+      en: 'Email',
+      nl: 'E-mail',
+      de: 'E-Mail',
+    },
+    address: {
+      fr: 'Adresse',
+      en: 'Address',
+      nl: 'Adres',
+      de: 'Adresse',
+    },
+    city: {
+      fr: 'Ville',
+      en: 'City',
+      nl: 'Stad',
+      de: 'Stadt',
+    },
+    postalCode: {
+      fr: 'Code postal',
+      en: 'Postal code',
+      nl: 'Postcode',
+      de: 'Postleitzahl',
+    },
+    siret: {
+      fr: 'N° SIRET',
+      en: 'Business ID',
+      nl: 'KvK-nummer',
+      de: 'Handelsregisternummer',
+    },
+    notes: {
+      fr: 'Notes',
+      en: 'Notes',
+      nl: 'Notities',
+      de: 'Notizen',
+    },
+    notesPlaceholder: {
+      fr: 'Notes personnelles sur ce prestataire...',
+      en: 'Personal notes about this vendor...',
+      nl: 'Persoonlijke notities over deze leverancier...',
+      de: 'Persönliche Notizen zu diesem Anbieter...',
+    },
+    addToFavorites: {
+      fr: 'Ajouter aux favoris',
+      en: 'Add to favorites',
+      nl: 'Toevoegen aan favorieten',
+      de: 'Zu Favoriten hinzufügen',
+    },
+    adding: {
+      fr: 'Ajout...',
+      en: 'Adding...',
+      nl: 'Toevoegen...',
+      de: 'Hinzufügen...',
+    },
+    add: {
+      fr: 'Ajouter',
+      en: 'Add',
+      nl: 'Toevoegen',
+      de: 'Hinzufügen',
+    },
+    vendorAdded: {
+      fr: 'Prestataire ajouté !',
+      en: 'Vendor added!',
+      nl: 'Leverancier toegevoegd!',
+      de: 'Anbieter hinzugefügt!',
+    },
+    vendorAddedToDirectory: {
+      fr: 'a été ajouté à votre annuaire.',
+      en: 'has been added to your directory.',
+      nl: 'is toegevoegd aan uw adresboek.',
+      de: 'wurde zu Ihrem Verzeichnis hinzugefügt.',
+    },
+
+    // Validation Errors
+    nameRequired: {
+      fr: 'Le nom est requis',
+      en: 'Name is required',
+      nl: 'Naam is verplicht',
+      de: 'Name ist erforderlich',
+    },
+    invalidEmail: {
+      fr: 'Email invalide',
+      en: 'Invalid email',
+      nl: 'Ongeldig e-mailadres',
+      de: 'Ungültige E-Mail',
+    },
+    invalidPhone: {
+      fr: 'Numéro de téléphone invalide',
+      en: 'Invalid phone number',
+      nl: 'Ongeldig telefoonnummer',
+      de: 'Ungültige Telefonnummer',
+    },
+    invalidSiret: {
+      fr: 'Le SIRET doit contenir 14 chiffres',
+      en: 'Business ID must contain 14 digits',
+      nl: 'KvK-nummer moet 14 cijfers bevatten',
+      de: 'Handelsregisternummer muss 14 Ziffern enthalten',
+    },
+    mustBeLoggedIn: {
+      fr: 'Vous devez être connecté',
+      en: 'You must be logged in',
+      nl: 'U moet ingelogd zijn',
+      de: 'Sie müssen angemeldet sein',
+    },
+    vendorAddSuccess: {
+      fr: 'Prestataire ajouté',
+      en: 'Vendor added',
+      nl: 'Leverancier toegevoegd',
+      de: 'Anbieter hinzugefügt',
+    },
+    vendorAddError: {
+      fr: 'Erreur lors de l\'ajout',
+      en: 'Error while adding',
+      nl: 'Fout bij toevoegen',
+      de: 'Fehler beim Hinzufügen',
+    },
+  },
+
+  // ============================================================================
+  // OWNER LEASES
+  // ============================================================================
+  ownerLeases: {
+    // Create Lease Modal
+    createLease: {
+      fr: 'Créer un bail',
+      en: 'Create a lease',
+      nl: 'Huurcontract aanmaken',
+      de: 'Mietvertrag erstellen',
+    },
+    convertToLease: {
+      fr: 'Convertir la candidature approuvée en contrat de location',
+      en: 'Convert the approved application to a rental contract',
+      nl: 'De goedgekeurde aanvraag omzetten in een huurcontract',
+      de: 'Die genehmigte Bewerbung in einen Mietvertrag umwandeln',
+    },
+    tenant: {
+      fr: 'Locataire',
+      en: 'Tenant',
+      nl: 'Huurder',
+      de: 'Mieter',
+    },
+    property: {
+      fr: 'Propriété',
+      en: 'Property',
+      nl: 'Woning',
+      de: 'Immobilie',
+    },
+    moveInDate: {
+      fr: 'Date d\'entrée',
+      en: 'Move-in date',
+      nl: 'Ingangsdatum',
+      de: 'Einzugsdatum',
+    },
+    leaseDuration: {
+      fr: 'Durée du bail',
+      en: 'Lease duration',
+      nl: 'Huurduur',
+      de: 'Mietdauer',
+    },
+    sixMonths: {
+      fr: '6 mois',
+      en: '6 months',
+      nl: '6 maanden',
+      de: '6 Monate',
+    },
+    oneYear: {
+      fr: '1 an',
+      en: '1 year',
+      nl: '1 jaar',
+      de: '1 Jahr',
+    },
+    twoYears: {
+      fr: '2 ans',
+      en: '2 years',
+      nl: '2 jaar',
+      de: '2 Jahre',
+    },
+    threeYears: {
+      fr: '3 ans',
+      en: '3 years',
+      nl: '3 jaar',
+      de: '3 Jahre',
+    },
+    expectedEndDate: {
+      fr: 'Fin prévue:',
+      en: 'Expected end:',
+      nl: 'Verwachte einddatum:',
+      de: 'Voraussichtliches Ende:',
+    },
+    monthlyRent: {
+      fr: 'Loyer mensuel',
+      en: 'Monthly rent',
+      nl: 'Maandelijkse huur',
+      de: 'Monatliche Miete',
+    },
+    securityDeposit: {
+      fr: 'Dépôt de garantie',
+      en: 'Security deposit',
+      nl: 'Borg',
+      de: 'Kaution',
+    },
+    summary: {
+      fr: 'Récapitulatif',
+      en: 'Summary',
+      nl: 'Samenvatting',
+      de: 'Zusammenfassung',
+    },
+    annualRent: {
+      fr: 'Loyer annuel',
+      en: 'Annual rent',
+      nl: 'Jaarlijkse huur',
+      de: 'Jahresmiete',
+    },
+    totalDuration: {
+      fr: 'Durée totale',
+      en: 'Total duration',
+      nl: 'Totale duur',
+      de: 'Gesamtdauer',
+    },
+    months: {
+      fr: 'mois',
+      en: 'months',
+      nl: 'maanden',
+      de: 'Monate',
+    },
+    cancel: {
+      fr: 'Annuler',
+      en: 'Cancel',
+      nl: 'Annuleren',
+      de: 'Abbrechen',
+    },
+    creating: {
+      fr: 'Création...',
+      en: 'Creating...',
+      nl: 'Aanmaken...',
+      de: 'Erstellen...',
+    },
+    createLeaseBtn: {
+      fr: 'Créer le bail',
+      en: 'Create lease',
+      nl: 'Huurcontract aanmaken',
+      de: 'Mietvertrag erstellen',
+    },
+
+    // Validation & Toasts
+    validRentRequired: {
+      fr: 'Veuillez saisir un loyer mensuel valide',
+      en: 'Please enter a valid monthly rent',
+      nl: 'Voer een geldige maandelijkse huur in',
+      de: 'Bitte geben Sie eine gültige Monatsmiete ein',
+    },
+    applicantIdMissing: {
+      fr: 'ID du candidat manquant',
+      en: 'Applicant ID missing',
+      nl: 'Aanvrager-ID ontbreekt',
+      de: 'Bewerber-ID fehlt',
+    },
+    leaseCreatedSuccess: {
+      fr: 'Bail créé avec succès !',
+      en: 'Lease created successfully!',
+      nl: 'Huurcontract succesvol aangemaakt!',
+      de: 'Mietvertrag erfolgreich erstellt!',
+    },
+    nowTenant: {
+      fr: 'est maintenant locataire',
+      en: 'is now a tenant',
+      nl: 'is nu huurder',
+      de: 'ist jetzt Mieter',
+    },
+    leaseCreationError: {
+      fr: 'Erreur lors de la création du bail',
+      en: 'Error creating lease',
+      nl: 'Fout bij aanmaken huurcontract',
+      de: 'Fehler beim Erstellen des Mietvertrags',
+    },
+  },
 };
 
 // Helper function to get translation

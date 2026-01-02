@@ -15,6 +15,7 @@ import {
 import { cn } from '@/lib/utils';
 import { ownerGradient, semanticColors } from '@/lib/constants/owner-theme';
 import { PropertyCard, type PropertyCardData } from './PropertyCard';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { PropertyFilters, type PropertyFiltersState, type ViewMode } from './PropertyFilters';
 
 interface PropertyHealthGridProps {
@@ -59,6 +60,9 @@ export function PropertyHealthGrid({
   onSelectionChange,
   className,
 }: PropertyHealthGridProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerPortfolio');
+
   // Get unique cities for filter dropdown
   const cities = useMemo(() => {
     const citySet = new Set(properties.map((p) => p.city));
@@ -183,8 +187,8 @@ export function PropertyHealthGrid({
                 <Building2 className="w-5 h-5 text-white" />
               </div>
               <div>
-                <p className="text-lg font-bold text-gray-900">{properties.length} biens</p>
-                <p className="text-sm text-gray-500">dans votre portfolio</p>
+                <p className="text-lg font-bold text-gray-900">{properties.length} {t?.biens?.[language] || 'properties'}</p>
+                <p className="text-sm text-gray-500">{t?.propertiesInPortfolio?.[language] || 'in your portfolio'}</p>
               </div>
             </div>
 
@@ -198,7 +202,7 @@ export function PropertyHealthGrid({
                 </div>
                 <div>
                   <p className="text-lg font-bold text-emerald-600">{healthSummary.excellent}</p>
-                  <p className="text-xs text-gray-500">Excellent</p>
+                  <p className="text-xs text-gray-500">{t?.excellent?.[language] || 'Excellent'}</p>
                 </div>
               </div>
 
@@ -208,7 +212,7 @@ export function PropertyHealthGrid({
                 </div>
                 <div>
                   <p className="text-lg font-bold text-amber-600">{healthSummary.attention}</p>
-                  <p className="text-xs text-gray-500">Attention</p>
+                  <p className="text-xs text-gray-500">{t?.attention?.[language] || 'Attention'}</p>
                 </div>
               </div>
 
@@ -218,7 +222,7 @@ export function PropertyHealthGrid({
                 </div>
                 <div>
                   <p className="text-lg font-bold text-red-600">{healthSummary.critical}</p>
-                  <p className="text-xs text-gray-500">Critique</p>
+                  <p className="text-xs text-gray-500">{t?.critical?.[language] || 'Critical'}</p>
                 </div>
               </div>
             </div>
@@ -230,19 +234,19 @@ export function PropertyHealthGrid({
               <p className="text-lg font-bold" style={{ color: '#9c5698' }}>
                 {properties.filter((p) => p.isRented).length}
               </p>
-              <p className="text-xs text-gray-500">Loués</p>
+              <p className="text-xs text-gray-500">{t?.rented?.[language] || 'Rented'}</p>
             </div>
             <div className="text-center">
               <p className="text-lg font-bold text-amber-600">
                 {properties.filter((p) => !p.isRented && p.status === 'published').length}
               </p>
-              <p className="text-xs text-gray-500">Vacants</p>
+              <p className="text-xs text-gray-500">{t?.vacants?.[language] || 'Vacant'}</p>
             </div>
             <div className="text-center">
               <p className="text-lg font-bold text-gray-600">
                 {properties.filter((p) => p.status === 'draft').length}
               </p>
-              <p className="text-xs text-gray-500">Brouillons</p>
+              <p className="text-xs text-gray-500">{t?.drafts?.[language] || 'Drafts'}</p>
             </div>
           </div>
         </div>
@@ -273,11 +277,11 @@ export function PropertyHealthGrid({
           >
             <Home className="w-10 h-10 text-white" />
           </div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun bien trouvé</h3>
+          <h3 className="text-lg font-semibold text-gray-900 mb-2">{t?.noPropertiesFound?.[language] || 'No properties found'}</h3>
           <p className="text-gray-500 max-w-md mx-auto">
             {filters.search || filters.status !== 'all' || filters.health !== 'all'
-              ? 'Essayez de modifier vos filtres pour voir plus de résultats.'
-              : 'Vous n\'avez pas encore de biens dans votre portfolio.'}
+              ? (t?.noPropertiesFilterHint?.[language] || 'Try adjusting your filters to see more results.')
+              : (t?.noPropertiesYetHint?.[language] || 'You don\'t have any properties in your portfolio yet.')}
           </p>
         </motion.div>
       ) : (
