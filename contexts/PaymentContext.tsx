@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useAuth } from '@/lib/contexts/auth-context';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { toast } from 'sonner';
 import type {
   PaymentAccount,
@@ -20,6 +21,162 @@ import type {
   Currency,
 } from '@/types/payment.types';
 
+// =============================================================================
+// TRANSLATIONS
+// =============================================================================
+const t = {
+  auth: {
+    required: {
+      fr: 'Vous devez être connecté',
+      en: 'You must be logged in',
+      nl: 'U moet ingelogd zijn',
+      de: 'Sie müssen angemeldet sein',
+    },
+  },
+  accounts: {
+    loadError: {
+      fr: 'Erreur lors du chargement des moyens de paiement',
+      en: 'Error loading payment methods',
+      nl: 'Fout bij laden van betaalmethodes',
+      de: 'Fehler beim Laden der Zahlungsmethoden',
+    },
+    added: {
+      fr: 'Moyen de paiement ajouté avec succès',
+      en: 'Payment method added successfully',
+      nl: 'Betaalmethode succesvol toegevoegd',
+      de: 'Zahlungsmethode erfolgreich hinzugefügt',
+    },
+    addError: {
+      fr: "Erreur lors de l'ajout du moyen de paiement",
+      en: 'Error adding payment method',
+      nl: 'Fout bij toevoegen betaalmethode',
+      de: 'Fehler beim Hinzufügen der Zahlungsmethode',
+    },
+    removed: {
+      fr: 'Moyen de paiement supprimé',
+      en: 'Payment method removed',
+      nl: 'Betaalmethode verwijderd',
+      de: 'Zahlungsmethode entfernt',
+    },
+    removeError: {
+      fr: 'Erreur lors de la suppression',
+      en: 'Error removing',
+      nl: 'Fout bij verwijderen',
+      de: 'Fehler beim Entfernen',
+    },
+    defaultUpdated: {
+      fr: 'Moyen de paiement par défaut mis à jour',
+      en: 'Default payment method updated',
+      nl: 'Standaard betaalmethode bijgewerkt',
+      de: 'Standard-Zahlungsmethode aktualisiert',
+    },
+    updateError: {
+      fr: 'Erreur lors de la mise à jour',
+      en: 'Error updating',
+      nl: 'Fout bij bijwerken',
+      de: 'Fehler beim Aktualisieren',
+    },
+  },
+  transactions: {
+    loadError: {
+      fr: 'Erreur lors du chargement des transactions',
+      en: 'Error loading transactions',
+      nl: 'Fout bij laden van transacties',
+      de: 'Fehler beim Laden der Transaktionen',
+    },
+    created: {
+      fr: 'Transaction créée',
+      en: 'Transaction created',
+      nl: 'Transactie aangemaakt',
+      de: 'Transaktion erstellt',
+    },
+    createError: {
+      fr: 'Erreur lors de la création de la transaction',
+      en: 'Error creating transaction',
+      nl: 'Fout bij aanmaken transactie',
+      de: 'Fehler beim Erstellen der Transaktion',
+    },
+    updated: {
+      fr: 'Transaction mise à jour',
+      en: 'Transaction updated',
+      nl: 'Transactie bijgewerkt',
+      de: 'Transaktion aktualisiert',
+    },
+    updateError: {
+      fr: 'Erreur lors de la mise à jour',
+      en: 'Error updating',
+      nl: 'Fout bij bijwerken',
+      de: 'Fehler beim Aktualisieren',
+    },
+  },
+  schedules: {
+    loadError: {
+      fr: 'Erreur lors du chargement des échéanciers',
+      en: 'Error loading payment schedules',
+      nl: 'Fout bij laden van betalingsschema\'s',
+      de: 'Fehler beim Laden der Zahlungspläne',
+    },
+    created: {
+      fr: 'Échéancier créé avec succès',
+      en: 'Payment schedule created successfully',
+      nl: 'Betalingsschema succesvol aangemaakt',
+      de: 'Zahlungsplan erfolgreich erstellt',
+    },
+    createError: {
+      fr: "Erreur lors de la création de l'échéancier",
+      en: 'Error creating payment schedule',
+      nl: 'Fout bij aanmaken betalingsschema',
+      de: 'Fehler beim Erstellen des Zahlungsplans',
+    },
+    updated: {
+      fr: 'Échéancier mis à jour',
+      en: 'Payment schedule updated',
+      nl: 'Betalingsschema bijgewerkt',
+      de: 'Zahlungsplan aktualisiert',
+    },
+    updateError: {
+      fr: 'Erreur lors de la mise à jour',
+      en: 'Error updating',
+      nl: 'Fout bij bijwerken',
+      de: 'Fehler beim Aktualisieren',
+    },
+    deleted: {
+      fr: 'Échéancier supprimé',
+      en: 'Payment schedule deleted',
+      nl: 'Betalingsschema verwijderd',
+      de: 'Zahlungsplan gelöscht',
+    },
+    deleteError: {
+      fr: 'Erreur lors de la suppression',
+      en: 'Error deleting',
+      nl: 'Fout bij verwijderen',
+      de: 'Fehler beim Löschen',
+    },
+  },
+  payments: {
+    createError: {
+      fr: 'Erreur lors de la création du paiement',
+      en: 'Error creating payment',
+      nl: 'Fout bij aanmaken betaling',
+      de: 'Fehler beim Erstellen der Zahlung',
+    },
+    confirmed: {
+      fr: 'Paiement confirmé avec succès',
+      en: 'Payment confirmed successfully',
+      nl: 'Betaling succesvol bevestigd',
+      de: 'Zahlung erfolgreich bestätigt',
+    },
+    confirmError: {
+      fr: 'Erreur lors de la confirmation du paiement',
+      en: 'Error confirming payment',
+      nl: 'Fout bij bevestigen betaling',
+      de: 'Fehler beim Bestätigen der Zahlung',
+    },
+  },
+};
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
 const PaymentContext = createContext<PaymentContextValue | undefined>(undefined);
 
 export function usePayment() {
@@ -32,6 +189,9 @@ export function usePayment() {
 
 export function PaymentProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const { language } = useLanguage();
+  const langRef = useRef<Language>(language as Language);
+  langRef.current = language as Language;
   const supabase = createClient();
 
   // State
@@ -61,13 +221,13 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       setPaymentAccounts(data || []);
     } catch (error) {
       console.error('Error loading payment accounts:', error);
-      toast.error('Erreur lors du chargement des moyens de paiement');
+      toast.error(t.accounts.loadError[langRef.current]);
     }
   };
 
   const addPaymentAccount = async (params: CreatePaymentAccountParams): Promise<PaymentAccount | null> => {
     if (!user) {
-      toast.error('Vous devez être connecté');
+      toast.error(t.auth.required[langRef.current]);
       return null;
     }
 
@@ -93,11 +253,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       setPaymentAccounts(prev => [data, ...prev]);
-      toast.success('Moyen de paiement ajouté avec succès');
+      toast.success(t.accounts.added[langRef.current]);
       return data;
     } catch (error) {
       console.error('Error adding payment account:', error);
-      toast.error('Erreur lors de l\'ajout du moyen de paiement');
+      toast.error(t.accounts.addError[langRef.current]);
       return null;
     }
   };
@@ -115,11 +275,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       setPaymentAccounts(prev => prev.filter(acc => acc.id !== accountId));
-      toast.success('Moyen de paiement supprimé');
+      toast.success(t.accounts.removed[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error removing payment account:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t.accounts.removeError[langRef.current]);
       return false;
     }
   };
@@ -144,11 +304,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadPaymentAccounts();
-      toast.success('Moyen de paiement par défaut mis à jour');
+      toast.success(t.accounts.defaultUpdated[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error setting default payment account:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t.accounts.updateError[langRef.current]);
       return false;
     }
   };
@@ -179,7 +339,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       setTransactions(data || []);
     } catch (error) {
       console.error('Error loading transactions:', error);
-      toast.error('Erreur lors du chargement des transactions');
+      toast.error(t.transactions.loadError[langRef.current]);
     } finally {
       setIsLoading(false);
     }
@@ -187,7 +347,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
 
   const createTransaction = async (params: CreateTransactionParams): Promise<Transaction | null> => {
     if (!user) {
-      toast.error('Vous devez être connecté');
+      toast.error(t.auth.required[langRef.current]);
       return null;
     }
 
@@ -207,11 +367,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       setTransactions(prev => [data, ...prev]);
-      toast.success('Transaction créée');
+      toast.success(t.transactions.created[langRef.current]);
       return data;
     } catch (error) {
       console.error('Error creating transaction:', error);
-      toast.error('Erreur lors de la création de la transaction');
+      toast.error(t.transactions.createError[langRef.current]);
       return null;
     }
   };
@@ -232,11 +392,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadTransactions();
-      toast.success('Transaction mise à jour');
+      toast.success(t.transactions.updated[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error updating transaction:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t.transactions.updateError[langRef.current]);
       return false;
     }
   };
@@ -280,7 +440,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       setPaymentSchedules(data || []);
     } catch (error) {
       console.error('Error loading payment schedules:', error);
-      toast.error('Erreur lors du chargement des échéanciers');
+      toast.error(t.schedules.loadError[langRef.current]);
     }
   };
 
@@ -288,7 +448,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
     params: CreatePaymentScheduleParams
   ): Promise<PaymentSchedule | null> => {
     if (!user) {
-      toast.error('Vous devez être connecté');
+      toast.error(t.auth.required[langRef.current]);
       return null;
     }
 
@@ -307,11 +467,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       setPaymentSchedules(prev => [data, ...prev]);
-      toast.success('Échéancier créé avec succès');
+      toast.success(t.schedules.created[langRef.current]);
       return data;
     } catch (error) {
       console.error('Error creating payment schedule:', error);
-      toast.error('Erreur lors de la création de l\'échéancier');
+      toast.error(t.schedules.createError[langRef.current]);
       return null;
     }
   };
@@ -332,11 +492,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadPaymentSchedules();
-      toast.success('Échéancier mis à jour');
+      toast.success(t.schedules.updated[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error updating payment schedule:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t.schedules.updateError[langRef.current]);
       return false;
     }
   };
@@ -354,11 +514,11 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       setPaymentSchedules(prev => prev.filter(s => s.id !== scheduleId));
-      toast.success('Échéancier supprimé');
+      toast.success(t.schedules.deleted[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error deleting payment schedule:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t.schedules.deleteError[langRef.current]);
       return false;
     }
   };
@@ -386,7 +546,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
     currency: Currency = 'EUR'
   ): Promise<StripePaymentIntent | null> => {
     if (!user) {
-      toast.error('Vous devez être connecté');
+      toast.error(t.auth.required[langRef.current]);
       return null;
     }
 
@@ -405,7 +565,7 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
       return data.paymentIntent;
     } catch (error) {
       console.error('Error creating payment intent:', error);
-      toast.error('Erreur lors de la création du paiement');
+      toast.error(t.payments.createError[langRef.current]);
       return null;
     }
   };
@@ -421,12 +581,12 @@ export function PaymentProvider({ children }: { children: ReactNode }) {
 
       if (!response.ok) throw new Error('Failed to confirm payment');
 
-      toast.success('Paiement confirmé avec succès');
+      toast.success(t.payments.confirmed[langRef.current]);
       await loadTransactions();
       return true;
     } catch (error) {
       console.error('Error confirming payment:', error);
-      toast.error('Erreur lors de la confirmation du paiement');
+      toast.error(t.payments.confirmError[langRef.current]);
       return false;
     }
   };

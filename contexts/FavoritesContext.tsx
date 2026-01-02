@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode, useRef } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useAuth } from '@/lib/contexts/auth-context';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { toast } from 'sonner';
 import type {
   UserFavorite,
@@ -19,6 +20,180 @@ import type {
   UpdateSavedSearchParams,
 } from '@/types/favorites.types';
 
+// =============================================================================
+// TRANSLATIONS
+// =============================================================================
+const t = {
+  loading: {
+    favorites: {
+      fr: 'Erreur lors du chargement des favoris',
+      en: 'Error loading favorites',
+      nl: 'Fout bij laden van favorieten',
+      de: 'Fehler beim Laden der Favoriten',
+    },
+    comparisons: {
+      fr: 'Erreur lors du chargement des comparaisons',
+      en: 'Error loading comparisons',
+      nl: 'Fout bij laden van vergelijkingen',
+      de: 'Fehler beim Laden der Vergleiche',
+    },
+    searches: {
+      fr: 'Erreur lors du chargement des recherches',
+      en: 'Error loading searches',
+      nl: 'Fout bij laden van zoekopdrachten',
+      de: 'Fehler beim Laden der Suchen',
+    },
+  },
+  auth: {
+    required: {
+      fr: 'Vous devez être connecté',
+      en: 'You must be logged in',
+      nl: 'U moet ingelogd zijn',
+      de: 'Sie müssen angemeldet sein',
+    },
+  },
+  favorites: {
+    added: {
+      fr: 'Propriété ajoutée aux favoris',
+      en: 'Property added to favorites',
+      nl: 'Eigendom toegevoegd aan favorieten',
+      de: 'Immobilie zu Favoriten hinzugefügt',
+    },
+    alreadyExists: {
+      fr: 'Cette propriété est déjà dans vos favoris',
+      en: 'This property is already in your favorites',
+      nl: 'Dit eigendom staat al in uw favorieten',
+      de: 'Diese Immobilie ist bereits in Ihren Favoriten',
+    },
+    addError: {
+      fr: "Erreur lors de l'ajout aux favoris",
+      en: 'Error adding to favorites',
+      nl: 'Fout bij toevoegen aan favorieten',
+      de: 'Fehler beim Hinzufügen zu Favoriten',
+    },
+    updated: {
+      fr: 'Favori mis à jour',
+      en: 'Favorite updated',
+      nl: 'Favoriet bijgewerkt',
+      de: 'Favorit aktualisiert',
+    },
+    updateError: {
+      fr: 'Erreur lors de la mise à jour',
+      en: 'Error updating',
+      nl: 'Fout bij bijwerken',
+      de: 'Fehler beim Aktualisieren',
+    },
+    removed: {
+      fr: 'Propriété retirée des favoris',
+      en: 'Property removed from favorites',
+      nl: 'Eigendom verwijderd uit favorieten',
+      de: 'Immobilie aus Favoriten entfernt',
+    },
+    removeError: {
+      fr: 'Erreur lors de la suppression',
+      en: 'Error removing',
+      nl: 'Fout bij verwijderen',
+      de: 'Fehler beim Entfernen',
+    },
+  },
+  comparisons: {
+    created: {
+      fr: 'Comparaison créée',
+      en: 'Comparison created',
+      nl: 'Vergelijking aangemaakt',
+      de: 'Vergleich erstellt',
+    },
+    createError: {
+      fr: 'Erreur lors de la création de la comparaison',
+      en: 'Error creating comparison',
+      nl: 'Fout bij aanmaken vergelijking',
+      de: 'Fehler beim Erstellen des Vergleichs',
+    },
+    updated: {
+      fr: 'Comparaison mise à jour',
+      en: 'Comparison updated',
+      nl: 'Vergelijking bijgewerkt',
+      de: 'Vergleich aktualisiert',
+    },
+    updateError: {
+      fr: 'Erreur lors de la mise à jour',
+      en: 'Error updating',
+      nl: 'Fout bij bijwerken',
+      de: 'Fehler beim Aktualisieren',
+    },
+    deleted: {
+      fr: 'Comparaison supprimée',
+      en: 'Comparison deleted',
+      nl: 'Vergelijking verwijderd',
+      de: 'Vergleich gelöscht',
+    },
+    deleteError: {
+      fr: 'Erreur lors de la suppression',
+      en: 'Error deleting',
+      nl: 'Fout bij verwijderen',
+      de: 'Fehler beim Löschen',
+    },
+    maxProperties: {
+      fr: 'Maximum 5 propriétés par comparaison',
+      en: 'Maximum 5 properties per comparison',
+      nl: 'Maximaal 5 eigendommen per vergelijking',
+      de: 'Maximal 5 Immobilien pro Vergleich',
+    },
+    propertyExists: {
+      fr: 'Cette propriété est déjà dans la comparaison',
+      en: 'This property is already in the comparison',
+      nl: 'Dit eigendom staat al in de vergelijking',
+      de: 'Diese Immobilie ist bereits im Vergleich',
+    },
+  },
+  searches: {
+    saved: {
+      fr: 'Recherche sauvegardée',
+      en: 'Search saved',
+      nl: 'Zoekopdracht opgeslagen',
+      de: 'Suche gespeichert',
+    },
+    saveError: {
+      fr: 'Erreur lors de la sauvegarde de la recherche',
+      en: 'Error saving search',
+      nl: 'Fout bij opslaan zoekopdracht',
+      de: 'Fehler beim Speichern der Suche',
+    },
+    updated: {
+      fr: 'Recherche mise à jour',
+      en: 'Search updated',
+      nl: 'Zoekopdracht bijgewerkt',
+      de: 'Suche aktualisiert',
+    },
+    updateError: {
+      fr: 'Erreur lors de la mise à jour',
+      en: 'Error updating',
+      nl: 'Fout bij bijwerken',
+      de: 'Fehler beim Aktualisieren',
+    },
+    deleted: {
+      fr: 'Recherche supprimée',
+      en: 'Search deleted',
+      nl: 'Zoekopdracht verwijderd',
+      de: 'Suche gelöscht',
+    },
+    deleteError: {
+      fr: 'Erreur lors de la suppression',
+      en: 'Error deleting',
+      nl: 'Fout bij verwijderen',
+      de: 'Fehler beim Löschen',
+    },
+    matchError: {
+      fr: 'Erreur lors de la recherche de correspondances',
+      en: 'Error finding matches',
+      nl: 'Fout bij zoeken naar overeenkomsten',
+      de: 'Fehler beim Suchen von Übereinstimmungen',
+    },
+  },
+};
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
 const FavoritesContext = createContext<FavoritesContextValue | undefined>(undefined);
 
 export function useFavorites() {
@@ -31,6 +206,9 @@ export function useFavorites() {
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const { language } = useLanguage();
+  const langRef = useRef<Language>(language as Language);
+  langRef.current = language as Language;
   const supabase = createClient();
 
   // State
@@ -59,7 +237,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       setFavoritesCount(data?.length || 0);
     } catch (error) {
       console.error('Error loading favorites:', error);
-      toast.error('Erreur lors du chargement des favoris');
+      toast.error(t.loading.favorites[langRef.current]);
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +245,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
   const addFavorite = async (params: AddFavoriteParams): Promise<UserFavorite | null> => {
     if (!user) {
-      toast.error('Vous devez être connecté');
+      toast.error(t.auth.required[langRef.current]);
       return null;
     }
 
@@ -113,7 +291,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
           : f
       ));
 
-      toast.success('Propriété ajoutée aux favoris');
+      toast.success(t.favorites.added[langRef.current]);
       // Type assertion needed because Supabase infers from insert, not select
       return {
         id: data.id,
@@ -133,10 +311,10 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
       // Check for unique constraint violation
       if (error?.code === '23505') {
-        toast.info('Cette propriété est déjà dans vos favoris');
+        toast.info(t.favorites.alreadyExists[langRef.current]);
       } else {
         console.error('Error adding favorite:', error);
-        toast.error('Erreur lors de l\'ajout aux favoris');
+        toast.error(t.favorites.addError[langRef.current]);
       }
       return null;
     }
@@ -167,13 +345,13 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
       if (error) throw error;
 
-      toast.success('Favori mis à jour');
+      toast.success(t.favorites.updated[langRef.current]);
       return true;
     } catch (error) {
       // Rollback on error
       setFavorites(originalFavorites);
       console.error('Error updating favorite:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t.favorites.updateError[langRef.current]);
       return false;
     }
   };
@@ -198,14 +376,14 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
       if (error) throw error;
 
-      toast.success('Propriété retirée des favoris');
+      toast.success(t.favorites.removed[langRef.current]);
       return true;
     } catch (error) {
       // Rollback on error
       setFavorites(originalFavorites);
       setFavoritesCount(originalCount);
       console.error('Error removing favorite:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t.favorites.removeError[langRef.current]);
       return false;
     }
   };
@@ -274,7 +452,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       setComparisons(comparisonsWithProperties);
     } catch (error) {
       console.error('Error loading comparisons:', error);
-      toast.error('Erreur lors du chargement des comparaisons');
+      toast.error(t.loading.comparisons[langRef.current]);
     }
   };
 
@@ -282,7 +460,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     params: CreateComparisonParams
   ): Promise<PropertyComparison | null> => {
     if (!user) {
-      toast.error('Vous devez être connecté');
+      toast.error(t.auth.required[langRef.current]);
       return null;
     }
 
@@ -299,11 +477,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadComparisons();
-      toast.success('Comparaison créée');
+      toast.success(t.comparisons.created[langRef.current]);
       return data;
     } catch (error) {
       console.error('Error creating comparison:', error);
-      toast.error('Erreur lors de la création de la comparaison');
+      toast.error(t.comparisons.createError[langRef.current]);
       return null;
     }
   };
@@ -324,11 +502,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadComparisons();
-      toast.success('Comparaison mise à jour');
+      toast.success(t.comparisons.updated[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error updating comparison:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t.comparisons.updateError[langRef.current]);
       return false;
     }
   };
@@ -346,11 +524,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadComparisons();
-      toast.success('Comparaison supprimée');
+      toast.success(t.comparisons.deleted[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error deleting comparison:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t.comparisons.deleteError[langRef.current]);
       return false;
     }
   };
@@ -364,12 +542,12 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
 
     // Max 5 properties per comparison
     if (comparison.property_ids.length >= 5) {
-      toast.error('Maximum 5 propriétés par comparaison');
+      toast.error(t.comparisons.maxProperties[langRef.current]);
       return false;
     }
 
     if (comparison.property_ids.includes(propertyId)) {
-      toast.info('Cette propriété est déjà dans la comparaison');
+      toast.info(t.comparisons.propertyExists[langRef.current]);
       return false;
     }
 
@@ -408,7 +586,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       setSavedSearches(data || []);
     } catch (error) {
       console.error('Error loading saved searches:', error);
-      toast.error('Erreur lors du chargement des recherches');
+      toast.error(t.loading.searches[langRef.current]);
     }
   };
 
@@ -416,7 +594,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     params: CreateSavedSearchParams
   ): Promise<SavedSearch | null> => {
     if (!user) {
-      toast.error('Vous devez être connecté');
+      toast.error(t.auth.required[langRef.current]);
       return null;
     }
 
@@ -433,11 +611,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadSavedSearches();
-      toast.success('Recherche sauvegardée');
+      toast.success(t.searches.saved[langRef.current]);
       return data;
     } catch (error) {
       console.error('Error creating saved search:', error);
-      toast.error('Erreur lors de la sauvegarde de la recherche');
+      toast.error(t.searches.saveError[langRef.current]);
       return null;
     }
   };
@@ -458,11 +636,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadSavedSearches();
-      toast.success('Recherche mise à jour');
+      toast.success(t.searches.updated[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error updating saved search:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(t.searches.updateError[langRef.current]);
       return false;
     }
   };
@@ -480,11 +658,11 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       if (error) throw error;
 
       await loadSavedSearches();
-      toast.success('Recherche supprimée');
+      toast.success(t.searches.deleted[langRef.current]);
       return true;
     } catch (error) {
       console.error('Error deleting saved search:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(t.searches.deleteError[langRef.current]);
       return false;
     }
   };
@@ -498,7 +676,7 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
       return data || [];
     } catch (error) {
       console.error('Error finding matching properties:', error);
-      toast.error('Erreur lors de la recherche de correspondances');
+      toast.error(t.searches.matchError[langRef.current]);
       return [];
     }
   };
