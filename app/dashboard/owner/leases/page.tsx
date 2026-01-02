@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
@@ -10,38 +10,43 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
   FileText,
-  Plus,
-  Calendar,
-  Clock,
-  CheckCircle,
-  AlertCircle,
-  AlertTriangle,
-  Sparkles,
-  Home,
-  User,
-  Euro,
   RefreshCw,
   Download,
   ChevronRight,
+  ChevronLeft,
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
   CalendarClock,
   CalendarCheck,
   CalendarX,
   FileSignature,
   Repeat,
-  TrendingUp,
-  XCircle,
-  ChevronLeft,
+  Home,
+  Euro,
+  Clock,
   Users,
-  DollarSign,
-  Wrench
+  GanttChart,
+  Workflow
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { format, differenceInDays, differenceInMonths, addMonths, isPast, isFuture } from 'date-fns';
+import { format, differenceInDays, addMonths, isPast, isFuture } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-// V3 Owner gradient constants
-const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
-const ownerGradientLight = 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)';
+// Shared Owner Components
+import {
+  OwnerPageHeader,
+  OwnerKPICard,
+  OwnerKPIGrid,
+  OwnerAlertBanner
+} from '@/components/owner';
+
+// Lease-specific Components
+import { LeaseTimeline } from '@/components/owner/leases';
+import { RenewalWorkflow } from '@/components/owner/leases';
+
+// Theme constants
+import { ownerGradient, ownerGradientLight } from '@/lib/constants/owner-theme';
 
 type LeaseStatus = 'active' | 'ending_soon' | 'expired' | 'future';
 
@@ -68,6 +73,7 @@ interface LeaseStats {
   endingSoon: number;
   expired: number;
   totalMonthlyRent: number;
+  averageDuration: number;
 }
 
 export default function LeasesPage() {
@@ -76,6 +82,7 @@ export default function LeasesPage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | LeaseStatus>('all');
+  const [viewMode, setViewMode] = useState<'list' | 'timeline'>('list');
   const [leases, setLeases] = useState<Lease[]>([]);
   const [stats, setStats] = useState<LeaseStats>({
     total: 0,
@@ -83,6 +90,7 @@ export default function LeasesPage() {
     endingSoon: 0,
     expired: 0,
     totalMonthlyRent: 0,
+    averageDuration: 0,
   });
 
   // Fetch lease data
@@ -189,6 +197,9 @@ export default function LeasesPage() {
       const totalMonthlyRent = leasesData
         .filter(l => l.status === 'active' || l.status === 'ending_soon')
         .reduce((sum, l) => sum + l.monthly_rent, 0);
+      const avgDuration = leasesData.length > 0
+        ? Math.round(leasesData.reduce((sum, l) => sum + l.duration_months, 0) / leasesData.length)
+        : 0;
 
       setStats({
         total: leasesData.length,
@@ -196,6 +207,7 @@ export default function LeasesPage() {
         endingSoon,
         expired,
         totalMonthlyRent,
+        averageDuration: avgDuration,
       });
 
     } catch (error) {
@@ -214,6 +226,36 @@ export default function LeasesPage() {
     if (filterStatus === 'all') return true;
     return lease.status === filterStatus;
   });
+
+  // Transform leases for Timeline component
+  const timelineLeases = useMemo(() => {
+    return leases.map(lease => ({
+      id: lease.id,
+      tenantName: lease.tenant_name,
+      propertyName: lease.property_name,
+      startDate: lease.start_date,
+      endDate: lease.end_date,
+      status: lease.status,
+      monthlyRent: lease.monthly_rent,
+    }));
+  }, [leases]);
+
+  // Transform leases for RenewalWorkflow component
+  const renewalLeases = useMemo(() => {
+    // Only include ending_soon and expired leases for renewal workflow
+    return leases
+      .filter(l => l.status === 'ending_soon' || l.status === 'expired')
+      .map(lease => ({
+        id: lease.id,
+        tenantName: lease.tenant_name,
+        tenantPhoto: lease.tenant_photo || undefined,
+        propertyName: lease.property_name,
+        endDate: lease.end_date,
+        monthlyRent: lease.monthly_rent,
+        renewalStatus: 'pending' as const, // Default to pending - would come from DB in real app
+        daysRemaining: lease.days_remaining,
+      }));
+  }, [leases]);
 
   // Get status config
   const getStatusConfig = (status: LeaseStatus) => {
@@ -285,86 +327,22 @@ export default function LeasesPage() {
           className="flex items-center gap-2 text-sm mb-4"
         >
           <button
-            onClick={() => router.push('/dashboard/owner')}
+            onClick={() => router.push('/dashboard/owner/gestion')}
             className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Command Center
+            Gestion
           </button>
           <span className="text-gray-300">/</span>
           <span className="font-medium" style={{ color: '#9c5698' }}>Baux</span>
         </motion.div>
 
-        {/* Quick Navigation Pills */}
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="flex flex-wrap gap-2 mb-4"
-        >
-          <button
-            onClick={() => router.push('/dashboard/owner/tenants')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
-          >
-            <Users className="w-3.5 h-3.5" />
-            Locataires
-          </button>
-          <button
-            onClick={() => router.push('/dashboard/owner/finance')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
-          >
-            <DollarSign className="w-3.5 h-3.5" />
-            Finances
-          </button>
-          <button
-            onClick={() => router.push('/dashboard/owner/maintenance')}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white/60 border border-gray-200 text-gray-600 hover:border-purple-300 hover:text-purple-700 transition-all"
-          >
-            <Wrench className="w-3.5 h-3.5" />
-            Maintenance
-          </button>
-        </motion.div>
-
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8 mb-6"
-        >
-          {/* V3 Decorative circles */}
-          <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10" style={{ background: ownerGradient }} />
-          <div className="absolute -bottom-4 -left-4 w-20 h-20 rounded-full opacity-10" style={{ background: ownerGradient }} />
-
-          <div className="relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-            <div>
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 flex items-center gap-3 mb-2">
-                <div className="relative">
-                  <motion.div
-                    animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
-                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 rounded-2xl blur-lg"
-                    style={{ background: ownerGradient }}
-                  />
-                  <div
-                    className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
-                    style={{ background: ownerGradient }}
-                  >
-                    <FileText className="w-6 h-6 text-white" />
-                  </div>
-                  <motion.div
-                    animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-1 -right-1"
-                  >
-                    <Sparkles className="w-4 h-4 text-amber-400" />
-                  </motion.div>
-                </div>
-                Baux
-              </h1>
-              <p className="text-gray-600">
-                {stats.total} contrat{stats.total !== 1 ? 's' : ''} de location
-              </p>
-            </div>
+        {/* Header using shared component */}
+        <OwnerPageHeader
+          icon={FileText}
+          title="Baux"
+          subtitle={`${stats.total} contrat${stats.total !== 1 ? 's' : ''} de location`}
+          actions={
             <div className="flex items-center gap-3">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -392,113 +370,70 @@ export default function LeasesPage() {
                 </Button>
               </motion.div>
             </div>
+          }
+        />
+
+        {/* KPIs */}
+        <OwnerKPIGrid columns={4} className="mt-6 mb-6">
+          <OwnerKPICard
+            icon={FileText}
+            title="Total"
+            value={stats.total}
+            variant="primary"
+          />
+          <OwnerKPICard
+            icon={CheckCircle}
+            title="Actifs"
+            value={stats.active}
+            variant="success"
+          />
+          <OwnerKPICard
+            icon={AlertTriangle}
+            title="Fin proche (3 mois)"
+            value={stats.endingSoon}
+            variant="warning"
+          />
+          <OwnerKPICard
+            icon={Euro}
+            title="Loyers mensuels"
+            value={`${stats.totalMonthlyRent.toLocaleString('fr-FR')}€`}
+            variant="primary"
+          />
+        </OwnerKPIGrid>
+
+        {/* View Toggle and Filters */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          {/* View Mode Toggle */}
+          <div className="flex items-center gap-2 p-1 bg-gray-100 rounded-full">
+            <Button
+              variant={viewMode === 'list' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('list')}
+              className={cn(
+                "rounded-full",
+                viewMode === 'list' && 'text-white'
+              )}
+              style={viewMode === 'list' ? { background: ownerGradient } : undefined}
+            >
+              <Users className="w-4 h-4 mr-2" />
+              Liste
+            </Button>
+            <Button
+              variant={viewMode === 'timeline' ? 'default' : 'ghost'}
+              size="sm"
+              onClick={() => setViewMode('timeline')}
+              className={cn(
+                "rounded-full",
+                viewMode === 'timeline' && 'text-white'
+              )}
+              style={viewMode === 'timeline' ? { background: ownerGradient } : undefined}
+            >
+              <GanttChart className="w-4 h-4 mr-2" />
+              Timeline
+            </Button>
           </div>
 
-          {/* Stats */}
-          <div className="relative grid grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
-            {/* Total */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              transition={{ delay: 0.1 }}
-              className="relative overflow-hidden p-4 rounded-xl border border-purple-200/50 shadow-sm"
-              style={{ background: ownerGradientLight }}
-            >
-              <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full opacity-15" style={{ background: ownerGradient }} />
-              <div className="relative flex items-center gap-2 mb-2">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm"
-                  style={{ background: ownerGradient }}
-                >
-                  <FileText className="w-4 h-4 text-white" />
-                </div>
-                <p className="text-sm text-gray-600 font-medium">Total</p>
-              </div>
-              <p className="text-2xl font-bold" style={{ color: '#9c5698' }}>{stats.total}</p>
-            </motion.div>
-
-            {/* Active */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              transition={{ delay: 0.15 }}
-              className="relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 p-4 rounded-xl border border-green-200/50 shadow-sm"
-            >
-              <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full bg-green-400 opacity-15" />
-              <div className="relative flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center shadow-sm">
-                  <CheckCircle className="w-4 h-4 text-white" />
-                </div>
-                <p className="text-sm text-gray-600 font-medium">Actifs</p>
-              </div>
-              <p className="text-2xl font-bold text-green-700">{stats.active}</p>
-            </motion.div>
-
-            {/* Ending Soon */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              transition={{ delay: 0.2 }}
-              className="relative overflow-hidden bg-gradient-to-br from-amber-50 to-yellow-50 p-4 rounded-xl border border-amber-200/50 shadow-sm"
-            >
-              <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full bg-amber-400 opacity-15" />
-              <div className="relative flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-amber-500 to-yellow-500 flex items-center justify-center shadow-sm">
-                  <AlertTriangle className="w-4 h-4 text-white" />
-                </div>
-                <p className="text-sm text-gray-600 font-medium">Fin proche</p>
-              </div>
-              <p className="text-2xl font-bold text-amber-700">{stats.endingSoon}</p>
-              <p className="text-xs text-gray-500">dans 3 mois</p>
-            </motion.div>
-
-            {/* Expired */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              transition={{ delay: 0.25 }}
-              className="relative overflow-hidden bg-gradient-to-br from-red-50 to-rose-50 p-4 rounded-xl border border-red-200/50 shadow-sm"
-            >
-              <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full bg-red-400 opacity-15" />
-              <div className="relative flex items-center gap-2 mb-2">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-red-500 to-rose-500 flex items-center justify-center shadow-sm">
-                  <XCircle className="w-4 h-4 text-white" />
-                </div>
-                <p className="text-sm text-gray-600 font-medium">Expirés</p>
-              </div>
-              <p className="text-2xl font-bold text-red-700">{stats.expired}</p>
-            </motion.div>
-
-            {/* Monthly Revenue */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              whileHover={{ scale: 1.03, y: -2 }}
-              transition={{ delay: 0.3 }}
-              className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 p-4 rounded-xl border border-purple-200/50 shadow-sm col-span-2 lg:col-span-1"
-            >
-              <div className="absolute -top-3 -right-3 w-12 h-12 rounded-full opacity-15" style={{ background: ownerGradient }} />
-              <div className="relative flex items-center gap-2 mb-2">
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center shadow-sm"
-                  style={{ background: ownerGradient }}
-                >
-                  <TrendingUp className="w-4 h-4 text-white" />
-                </div>
-                <p className="text-sm text-gray-600 font-medium">Loyers</p>
-              </div>
-              <p className="text-xl font-bold" style={{ color: '#9c5698' }}>
-                {stats.totalMonthlyRent.toLocaleString('fr-FR')}€
-              </p>
-              <p className="text-xs text-gray-500">/mois</p>
-            </motion.div>
-          </div>
-
-          {/* Filters */}
+          {/* Status Filters */}
           <div className="flex flex-wrap gap-2">
             {[
               { value: 'all' as const, label: 'Tous', count: stats.total },
@@ -527,274 +462,285 @@ export default function LeasesPage() {
               </motion.div>
             ))}
           </div>
-        </motion.div>
+        </div>
 
-        {/* Alert Banner for Critical Leases */}
-        <AnimatePresence>
-          {(stats.expired > 0 || stats.endingSoon > 0) && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="mb-6"
-            >
-              <div
-                className={cn(
-                  "relative overflow-hidden rounded-2xl p-4 border-2",
-                  stats.expired > 0
-                    ? "bg-gradient-to-r from-red-50 to-rose-50 border-red-200"
-                    : "bg-gradient-to-r from-amber-50 to-yellow-50 border-amber-200"
-                )}
-              >
-                <div className="flex items-center gap-4">
-                  <div
-                    className={cn(
-                      "w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0",
-                      stats.expired > 0
-                        ? "bg-gradient-to-br from-red-500 to-rose-500"
-                        : "bg-gradient-to-br from-amber-500 to-yellow-500"
-                    )}
-                  >
-                    <AlertTriangle className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className={cn(
-                      "font-bold",
-                      stats.expired > 0 ? "text-red-800" : "text-amber-800"
-                    )}>
-                      {stats.expired > 0
-                        ? `${stats.expired} bail${stats.expired > 1 ? 'x' : ''} expiré${stats.expired > 1 ? 's' : ''} à renouveler`
-                        : `${stats.endingSoon} bail${stats.endingSoon > 1 ? 'x' : ''} expire${stats.endingSoon > 1 ? 'nt' : ''} bientôt`
-                      }
-                    </h3>
-                    <p className={cn(
-                      "text-sm",
-                      stats.expired > 0 ? "text-red-600" : "text-amber-600"
-                    )}>
-                      {stats.expired > 0
-                        ? "Action requise pour renouveler ou terminer ces contrats"
-                        : "Pensez à contacter vos locataires pour discuter du renouvellement"
-                      }
-                    </p>
-                  </div>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => setFilterStatus(stats.expired > 0 ? 'expired' : 'ending_soon')}
-                    className={cn(
-                      "rounded-full border-2 font-medium",
-                      stats.expired > 0
-                        ? "border-red-300 text-red-700 hover:bg-red-100"
-                        : "border-amber-300 text-amber-700 hover:bg-amber-100"
-                    )}
-                  >
-                    Voir les baux
-                    <ChevronRight className="w-4 h-4 ml-1" />
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Alert Banner */}
+        {(stats.expired > 0 || stats.endingSoon > 0) && (
+          <OwnerAlertBanner
+            severity={stats.expired > 0 ? 'critical' : 'warning'}
+            title={
+              stats.expired > 0
+                ? `${stats.expired} bail${stats.expired > 1 ? 'x' : ''} expiré${stats.expired > 1 ? 's' : ''} à renouveler`
+                : `${stats.endingSoon} bail${stats.endingSoon > 1 ? 'x' : ''} expire${stats.endingSoon > 1 ? 'nt' : ''} bientôt`
+            }
+            description={
+              stats.expired > 0
+                ? "Action requise pour renouveler ou terminer ces contrats"
+                : "Pensez à contacter vos locataires pour discuter du renouvellement"
+            }
+            action={{
+              label: "Voir les baux",
+              onClick: () => setFilterStatus(stats.expired > 0 ? 'expired' : 'ending_soon')
+            }}
+            className="mb-6"
+          />
+        )}
+
+        {/* UNIQUE SECTION 1: Lease Timeline (Gantt-like) */}
+        {viewMode === 'timeline' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-6"
+          >
+            <LeaseTimeline
+              leases={timelineLeases}
+              onLeaseClick={(leaseId) => {
+                // TODO: Open lease details modal
+                console.log('Lease clicked:', leaseId);
+              }}
+            />
+          </motion.div>
+        )}
+
+        {/* UNIQUE SECTION 2: Renewal Workflow Pipeline */}
+        {renewalLeases.length > 0 && viewMode === 'list' && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-6"
+          >
+            <RenewalWorkflow
+              leases={renewalLeases}
+              onContact={(leaseId) => {
+                const lease = leases.find(l => l.id === leaseId);
+                if (lease) {
+                  router.push(`/dashboard/owner/messages?tenant=${lease.resident_id}`);
+                }
+              }}
+              onRenew={(leaseId) => {
+                // TODO: Open renewal modal
+                console.log('Renew lease:', leaseId);
+              }}
+              onDecline={(leaseId) => {
+                // TODO: Open decline modal
+                console.log('Decline renewal:', leaseId);
+              }}
+            />
+          </motion.div>
+        )}
 
         {/* Leases List */}
-        <AnimatePresence mode="wait">
-          {filteredLeases.length === 0 ? (
-            <motion.div
-              key="empty"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
-            >
-              <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10" style={{ background: ownerGradient }} />
-              <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full opacity-10" style={{ background: ownerGradient }} />
+        {viewMode === 'list' && (
+          <AnimatePresence mode="wait">
+            {filteredLeases.length === 0 ? (
+              <motion.div
+                key="empty"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
+              >
+                <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10" style={{ background: ownerGradient }} />
+                <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full opacity-10" style={{ background: ownerGradient }} />
 
-              <div className="relative w-20 h-20 mx-auto mb-6">
-                <motion.div
-                  animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 rounded-2xl blur-lg"
-                  style={{ background: ownerGradient }}
-                />
-                <div
-                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
-                  style={{ background: ownerGradient }}
-                >
-                  <FileText className="w-10 h-10 text-white" />
-                </div>
-              </div>
-
-              <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                {filterStatus === 'all' ? 'Aucun bail' : 'Aucun bail trouvé'}
-              </h3>
-              <p className="text-gray-600 mb-4 max-w-md mx-auto">
-                {filterStatus === 'all'
-                  ? 'Ajoutez des locataires avec des dates de bail pour voir les contrats ici'
-                  : 'Essayez un autre filtre'}
-              </p>
-            </motion.div>
-          ) : (
-            <motion.div
-              key="list"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="space-y-4"
-            >
-              {filteredLeases.map((lease, index) => {
-                const statusConfig = getStatusConfig(lease.status);
-                const StatusIcon = statusConfig.icon;
-
-                return (
+                <div className="relative w-20 h-20 mx-auto mb-6">
                   <motion.div
-                    key={lease.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    whileHover={{ scale: 1.01, y: -2 }}
-                    transition={{ delay: 0.05 + index * 0.02 }}
-                    className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
-                    style={{
-                      borderLeftWidth: '4px',
-                      borderLeftColor: statusConfig.color,
-                    }}
-                    onClick={() => {/* TODO: Open lease details */}}
+                    animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    className="absolute inset-0 rounded-2xl blur-lg"
+                    style={{ background: ownerGradient }}
+                  />
+                  <div
+                    className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                    style={{ background: ownerGradient }}
                   >
-                    <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full opacity-10" style={{ background: ownerGradient }} />
+                    <FileText className="w-10 h-10 text-white" />
+                  </div>
+                </div>
 
-                    <div className="relative flex flex-col lg:flex-row gap-6">
-                      {/* Tenant and Property Info */}
-                      <div className="flex-1">
-                        <div className="flex items-start gap-4 mb-4">
-                          {/* Tenant Avatar */}
-                          <div className="flex-shrink-0">
-                            {lease.tenant_photo ? (
-                              <img
-                                src={lease.tenant_photo}
-                                alt={lease.tenant_name}
-                                className="w-14 h-14 rounded-xl object-cover shadow-sm"
-                              />
-                            ) : (
-                              <div
-                                className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-sm"
-                                style={{ background: ownerGradient }}
-                              >
-                                {getInitials(lease.tenant_name)}
-                              </div>
-                            )}
-                          </div>
+                <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                  {filterStatus === 'all' ? 'Aucun bail' : 'Aucun bail trouvé'}
+                </h3>
+                <p className="text-gray-600 mb-4 max-w-md mx-auto">
+                  {filterStatus === 'all'
+                    ? 'Ajoutez des locataires avec des dates de bail pour voir les contrats ici'
+                    : 'Essayez un autre filtre'}
+                </p>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="list"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-4"
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5" style={{ color: '#9c5698' }} />
+                    Tous les contrats
+                  </h3>
+                  <span className="text-sm text-gray-500">
+                    {filteredLeases.length} bail{filteredLeases.length !== 1 ? 'x' : ''}
+                  </span>
+                </div>
 
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1 flex-wrap">
-                              <h3 className="text-lg font-bold text-gray-900">
-                                {lease.tenant_name}
-                              </h3>
-                              <Badge className={cn(statusConfig.className, "border")}>
-                                <StatusIcon className="w-3 h-3 mr-1" />
-                                {statusConfig.label}
-                              </Badge>
-                            </div>
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <Home className="w-4 h-4 text-gray-400" />
-                              <span className="truncate">{lease.property_name}</span>
-                            </div>
-                          </div>
+                {filteredLeases.map((lease, index) => {
+                  const statusConfig = getStatusConfig(lease.status);
+                  const StatusIcon = statusConfig.icon;
 
-                          {/* Monthly Rent */}
-                          <div className="text-right flex-shrink-0">
-                            <div className="text-xl font-bold" style={{ color: '#9c5698' }}>
-                              {lease.monthly_rent.toLocaleString('fr-FR')}€
-                            </div>
-                            <div className="text-xs text-gray-500">/mois</div>
-                          </div>
-                        </div>
+                  return (
+                    <motion.div
+                      key={lease.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      whileHover={{ scale: 1.01, y: -2 }}
+                      transition={{ delay: 0.05 + index * 0.02 }}
+                      className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
+                      style={{
+                        borderLeftWidth: '4px',
+                        borderLeftColor: statusConfig.color,
+                      }}
+                      onClick={() => {/* TODO: Open lease details */}}
+                    >
+                      <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full opacity-10" style={{ background: ownerGradient }} />
 
-                        {/* Lease Timeline */}
-                        <div className="space-y-3">
-                          {/* Date range */}
-                          <div className="flex items-center justify-between text-sm">
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CalendarCheck className="w-4 h-4 text-green-500" />
-                              <span>Début: {format(lease.start_date, 'd MMM yyyy', { locale: fr })}</span>
-                            </div>
-                            <div className="flex items-center gap-2 text-gray-600">
-                              <CalendarX className="w-4 h-4 text-red-500" />
-                              <span>Fin: {format(lease.end_date, 'd MMM yyyy', { locale: fr })}</span>
-                            </div>
-                          </div>
-
-                          {/* Progress bar */}
-                          <div className="relative">
-                            <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                              <motion.div
-                                initial={{ width: 0 }}
-                                animate={{ width: `${lease.progress_percent}%` }}
-                                transition={{ duration: 0.8, ease: "easeOut" }}
-                                className="h-full rounded-full"
-                                style={{
-                                  background: lease.status === 'expired'
-                                    ? '#ef4444'
-                                    : lease.status === 'ending_soon'
-                                      ? '#f59e0b'
-                                      : ownerGradient
-                                }}
-                              />
-                            </div>
-                            <div className="flex justify-between mt-1 text-xs text-gray-500">
-                              <span>{lease.duration_months} mois</span>
-                              {lease.status !== 'expired' && (
-                                <span className={cn(
-                                  lease.status === 'ending_soon' && "text-amber-600 font-medium"
-                                )}>
-                                  {lease.days_remaining} jours restants
-                                </span>
+                      <div className="relative flex flex-col lg:flex-row gap-6">
+                        {/* Tenant and Property Info */}
+                        <div className="flex-1">
+                          <div className="flex items-start gap-4 mb-4">
+                            {/* Tenant Avatar */}
+                            <div className="flex-shrink-0">
+                              {lease.tenant_photo ? (
+                                <img
+                                  src={lease.tenant_photo}
+                                  alt={lease.tenant_name}
+                                  className="w-14 h-14 rounded-xl object-cover shadow-sm"
+                                />
+                              ) : (
+                                <div
+                                  className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-sm"
+                                  style={{ background: ownerGradient }}
+                                >
+                                  {getInitials(lease.tenant_name)}
+                                </div>
                               )}
                             </div>
+
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 mb-1 flex-wrap">
+                                <h3 className="text-lg font-bold text-gray-900">
+                                  {lease.tenant_name}
+                                </h3>
+                                <Badge className={cn(statusConfig.className, "border")}>
+                                  <StatusIcon className="w-3 h-3 mr-1" />
+                                  {statusConfig.label}
+                                </Badge>
+                              </div>
+                              <div className="flex items-center gap-2 text-sm text-gray-600">
+                                <Home className="w-4 h-4 text-gray-400" />
+                                <span className="truncate">{lease.property_name}</span>
+                              </div>
+                            </div>
+
+                            {/* Monthly Rent */}
+                            <div className="text-right flex-shrink-0">
+                              <div className="text-xl font-bold" style={{ color: '#9c5698' }}>
+                                {lease.monthly_rent.toLocaleString('fr-FR')}€
+                              </div>
+                              <div className="text-xs text-gray-500">/mois</div>
+                            </div>
+                          </div>
+
+                          {/* Lease Timeline */}
+                          <div className="space-y-3">
+                            {/* Date range */}
+                            <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center gap-2 text-gray-600">
+                                <CalendarCheck className="w-4 h-4 text-green-500" />
+                                <span>Début: {format(lease.start_date, 'd MMM yyyy', { locale: fr })}</span>
+                              </div>
+                              <div className="flex items-center gap-2 text-gray-600">
+                                <CalendarX className="w-4 h-4 text-red-500" />
+                                <span>Fin: {format(lease.end_date, 'd MMM yyyy', { locale: fr })}</span>
+                              </div>
+                            </div>
+
+                            {/* Progress bar */}
+                            <div className="relative">
+                              <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                <motion.div
+                                  initial={{ width: 0 }}
+                                  animate={{ width: `${lease.progress_percent}%` }}
+                                  transition={{ duration: 0.8, ease: "easeOut" }}
+                                  className="h-full rounded-full"
+                                  style={{
+                                    background: lease.status === 'expired'
+                                      ? '#ef4444'
+                                      : lease.status === 'ending_soon'
+                                        ? '#f59e0b'
+                                        : ownerGradient
+                                  }}
+                                />
+                              </div>
+                              <div className="flex justify-between mt-1 text-xs text-gray-500">
+                                <span>{lease.duration_months} mois</span>
+                                {lease.status !== 'expired' && (
+                                  <span className={cn(
+                                    lease.status === 'ending_soon' && "text-amber-600 font-medium"
+                                  )}>
+                                    {lease.days_remaining} jours restants
+                                  </span>
+                                )}
+                              </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
 
-                      {/* Actions */}
-                      <div className="flex lg:flex-col gap-2 lg:w-40">
-                        {lease.status === 'ending_soon' && (
+                        {/* Actions */}
+                        <div className="flex lg:flex-col gap-2 lg:w-40">
+                          {lease.status === 'ending_soon' && (
+                            <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1">
+                              <Button
+                                className="w-full rounded-xl text-white border-0 shadow-md transition-all"
+                                style={{
+                                  background: ownerGradient,
+                                  boxShadow: '0 4px 12px rgba(156, 86, 152, 0.3)'
+                                }}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  /* TODO: Renew lease */
+                                }}
+                              >
+                                <Repeat className="w-4 h-4 mr-2" />
+                                Renouveler
+                              </Button>
+                            </motion.div>
+                          )}
                           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1">
                             <Button
-                              className="w-full rounded-xl text-white border-0 shadow-md transition-all"
-                              style={{
-                                background: ownerGradient,
-                                boxShadow: '0 4px 12px rgba(156, 86, 152, 0.3)'
-                              }}
+                              variant="outline"
+                              className="w-full rounded-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                /* TODO: Renew lease */
+                                /* TODO: Download contract */
                               }}
                             >
-                              <Repeat className="w-4 h-4 mr-2" />
-                              Renouveler
+                              <Download className="w-4 h-4 mr-2" />
+                              Contrat
                             </Button>
                           </motion.div>
-                        )}
-                        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1">
-                          <Button
-                            variant="outline"
-                            className="w-full rounded-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              /* TODO: Download contract */
-                            }}
-                          >
-                            <Download className="w-4 h-4 mr-2" />
-                            Contrat
-                          </Button>
-                        </motion.div>
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </motion.div>
-          )}
-        </AnimatePresence>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
       </main>
     </div>
   );

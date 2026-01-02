@@ -98,12 +98,20 @@ const navigationDomains = {
     description: 'Gérez vos locataires',
     items: [
       {
+        id: 'hub',
+        href: '/dashboard/owner/gestion',
+        label: 'Vue d\'ensemble',
+        icon: LayoutDashboard,
+        description: 'Hub de gestion opérationnelle',
+        color: '#9c5698'
+      },
+      {
         id: 'tenants',
         href: '/dashboard/owner/tenants',
         label: 'Locataires',
         icon: Users,
         description: 'Vos résidents actuels',
-        color: '#9c5698'
+        color: '#a5568d'
       },
       {
         id: 'leases',
@@ -111,7 +119,7 @@ const navigationDomains = {
         label: 'Baux',
         icon: FileText,
         description: 'Contrats de location',
-        color: '#a5568d'
+        color: '#af5682'
       },
       {
         id: 'maintenance',
