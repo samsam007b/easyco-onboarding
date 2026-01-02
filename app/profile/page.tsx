@@ -487,35 +487,56 @@ export default function ProfilePage() {
     return null
   }
 
+  // V3 Owner gradient constant
+  const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)'
+
   // Get role-specific colors
   const getRoleColors = () => {
     const role = userData.user_type
     if (role === 'owner') return {
-      gradient: 'from-purple-600 to-purple-700',
-      light: 'from-purple-50 via-white to-purple-50/30',
-      ring: 'from-purple-400 to-purple-600',
-      text: 'text-purple-600',
-      bg: 'bg-purple-50',
-      border: 'border-purple-200',
-      hover: 'hover:border-purple-300'
+      gradient: 'from-[#9c5698] to-[#c2566b]',
+      gradientStyle: ownerGradient,
+      light: 'from-[#F8F0F7]/30 via-white to-[#FDF5F9]/30',
+      lightBg: 'from-[#F8F0F7]/50 to-[#FDF5F9]/50',
+      ring: 'from-[#9c5698] to-[#c2566b]',
+      text: 'text-[#9c5698]',
+      bg: 'bg-[#F8F0F7]',
+      bgHex: '#F8F0F7',
+      border: 'border-[#D4B5D1]',
+      hover: 'hover:border-[#B89AB5]',
+      primary: '#9c5698',
+      accent: '#c2566b',
+      svgStops: ['#9c5698', '#af5682', '#c2566b']
     }
     if (role === 'resident') return {
       gradient: 'from-orange-600 to-red-600',
+      gradientStyle: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
       light: 'from-orange-50 via-white to-red-50/30',
+      lightBg: 'from-orange-50/50 to-red-50/50',
       ring: 'from-orange-400 to-red-500',
       text: 'text-orange-600',
       bg: 'bg-orange-50',
+      bgHex: '#fff7ed',
       border: 'border-orange-200',
-      hover: 'hover:border-orange-300'
+      hover: 'hover:border-orange-300',
+      primary: '#ff651e',
+      accent: '#e05747',
+      svgStops: ['#e05747', '#ff651e', '#ff9014']
     }
     return {
       gradient: 'from-[#FFA040] to-[#FFD080]',
+      gradientStyle: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
       light: 'from-orange-50 via-white to-yellow-50/30',
+      lightBg: 'from-amber-50/50 to-yellow-50/50',
       ring: 'from-[#FFA040] to-[#FFD080]',
       text: 'text-[#FFA040]',
       bg: 'bg-orange-50',
+      bgHex: '#fffbeb',
       border: 'border-orange-200',
-      hover: 'hover:border-orange-300'
+      hover: 'hover:border-orange-300',
+      primary: '#f59e0b',
+      accent: '#eab308',
+      svgStops: ['#f59e0b', '#eab308', '#fbbf24']
     }
   }
 
@@ -956,7 +977,7 @@ export default function ProfilePage() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`bg-gradient-to-br from-purple-50/50 to-pink-50/50 backdrop-blur-sm rounded-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
+                  className={`bg-gradient-to-br ${colors.lightBg} backdrop-blur-sm rounded-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
                 >
                   {/* Header - Always visible */}
                   <div className="flex items-center justify-between">
@@ -981,16 +1002,19 @@ export default function ProfilePage() {
                           />
                         </svg>
                         <div className="absolute inset-0 flex items-center justify-center">
-                          <span className="text-xs font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          <span
+                            className="text-xs font-bold bg-clip-text text-transparent"
+                            style={{ backgroundImage: colors.gradientStyle }}
+                          >
                             {profileCompletion}%
                           </span>
                         </div>
                         <svg className="hidden">
                           <defs>
                             <linearGradient id="compactGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" stopColor="#9333ea" />
-                              <stop offset="50%" stopColor="#ec4899" />
-                              <stop offset="100%" stopColor="#f97316" />
+                              <stop offset="0%" stopColor={colors.svgStops[0]} />
+                              <stop offset="50%" stopColor={colors.svgStops[1]} />
+                              <stop offset="100%" stopColor={colors.svgStops[2]} />
                             </linearGradient>
                           </defs>
                         </svg>
@@ -1120,7 +1144,7 @@ export default function ProfilePage() {
                             </div>
                             <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-pink-500 to-rose-600 transition-all duration-500"
+                                className={`h-full bg-gradient-to-r ${colors.gradient} transition-all duration-500`}
                                 style={{ width: `${userProfile?.extended_personality ? 100 : 0}%` }}
                               />
                             </div>
@@ -1141,7 +1165,7 @@ export default function ProfilePage() {
                             </div>
                             <div className="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-gradient-to-r from-purple-500 to-violet-600 transition-all duration-500"
+                                className={`h-full bg-gradient-to-r ${colors.gradient} transition-all duration-500`}
                                 style={{ width: `${userProfile?.core_values && userProfile.core_values.length > 0 ? 100 : 0}%` }}
                               />
                             </div>
@@ -1256,8 +1280,8 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center flex-shrink-0">
-                            <Shield className="w-6 h-6 text-purple-600" />
+                          <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center flex-shrink-0`}>
+                            <Shield className={`w-6 h-6 ${colors.text}`} />
                           </div>
                           <div className="flex-1">
                             <h3 className="font-semibold text-gray-900 mb-1">{t('profile.enhance.values.title')}</h3>
