@@ -100,25 +100,64 @@ export default function SettingsPage() {
     }
   };
 
-  // Role-specific colors
+  // V3 Owner gradient constant
+  const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
+  const residentGradient = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+  const searcherGradient = 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)';
+
+  // Role-specific colors - V3 palette
   const getRoleColors = () => {
     if (userType === 'owner') return {
-      gradient: 'from-purple-100 to-pink-100/70',
-      light: 'from-purple-50/30 via-white to-pink-50/20',
-      accent: 'purple',
-      cardHover: 'hover:border-purple-200',
+      gradient: 'from-[#F8F0F7]/30 via-white to-[#FDF5F9]/30',
+      light: 'from-[#F8F0F7]/30 via-white to-[#FDF5F9]/20',
+      accent: 'mauve',
+      cardHover: 'hover:border-[#D4B5D1]',
+      // Inline style values
+      gradientStyle: ownerGradient,
+      primary: '#9c5698',
+      secondary: '#a5568d',
+      tertiary: '#af5682',
+      quaternary: '#b85676',
+      accentColor: '#c2566b',
+      lightBg: '#F8F0F7',
+      shadow: 'rgba(156, 86, 152, 0.3)',
+      shadowLight: 'rgba(156, 86, 152, 0.12)',
+      hoverBg: 'linear-gradient(135deg, rgba(156, 86, 152, 0.08) 0%, rgba(194, 86, 107, 0.08) 100%)',
+      buttonBg: 'linear-gradient(135deg, #FDF5F9 0%, #F8F0F7 100%)',
     };
     if (userType === 'resident') return {
-      gradient: 'from-[#F5D5CF] to-[#FFDAC9]/70',
+      gradient: 'from-[#FFF3EF]/30 via-white to-[#FFEBE5]/20',
       light: 'from-[#FFF3EF]/30 via-white to-[#FFEBE5]/20',
       accent: 'orange',
       cardHover: 'hover:border-[#FFDAC9]',
+      gradientStyle: residentGradient,
+      primary: '#e05747',
+      secondary: '#ff651e',
+      tertiary: '#ff9014',
+      quaternary: '#ff9014',
+      accentColor: '#ff651e',
+      lightBg: '#FFF3EF',
+      shadow: 'rgba(255, 101, 30, 0.3)',
+      shadowLight: 'rgba(255, 101, 30, 0.12)',
+      hoverBg: 'linear-gradient(135deg, rgba(224, 87, 71, 0.08) 0%, rgba(255, 144, 20, 0.08) 100%)',
+      buttonBg: 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)',
     };
     return {
-      gradient: 'from-[#FFA040] to-[#FFB85C]',
-      light: 'from-orange-50 via-white to-yellow-50/30',
-      accent: 'orange',
+      gradient: 'from-orange-50/30 via-white to-yellow-50/30',
+      light: 'from-orange-50/30 via-white to-yellow-50/30',
+      accent: 'gold',
       cardHover: 'hover:border-orange-300',
+      gradientStyle: searcherGradient,
+      primary: '#f59e0b',
+      secondary: '#eab308',
+      tertiary: '#fbbf24',
+      quaternary: '#fbbf24',
+      accentColor: '#eab308',
+      lightBg: '#fffbeb',
+      shadow: 'rgba(245, 158, 11, 0.3)',
+      shadowLight: 'rgba(245, 158, 11, 0.12)',
+      hoverBg: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(234, 179, 8, 0.08) 100%)',
+      buttonBg: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
     };
   };
 
@@ -302,7 +341,7 @@ export default function SettingsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50/30 via-white to-gray-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium">{settings.loading || 'Loading...'}</p>
@@ -312,7 +351,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
+    <div className={`min-h-screen bg-gradient-to-br ${colors.gradient}`}>
       {/* V3 Fun Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/30" />
@@ -335,8 +374,8 @@ export default function SettingsPage() {
               }}
               variant="outline"
               className="mb-6 rounded-full border-gray-200 hover:border-transparent"
-              style={{ color: '#ff651e' }}
-              onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(224, 87, 71, 0.08) 0%, rgba(255, 144, 20, 0.08) 100%)'}
+              style={{ color: colors.primary }}
+              onMouseEnter={(e) => e.currentTarget.style.background = colors.hoverBg}
               onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
@@ -353,7 +392,7 @@ export default function SettingsPage() {
                 <motion.div
                   className="absolute inset-0 rounded-2xl opacity-30"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: colors.gradientStyle,
                     filter: 'blur(15px)',
                   }}
                   animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
@@ -363,8 +402,8 @@ export default function SettingsPage() {
                 <div
                   className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.3)',
+                    background: colors.gradientStyle,
+                    boxShadow: `0 8px 24px ${colors.shadow}`,
                   }}
                 >
                   <SettingsIcon className="w-10 h-10 text-white" />
@@ -375,7 +414,7 @@ export default function SettingsPage() {
                   animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
                   transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                 >
-                  <Sparkles className="w-5 h-5 text-amber-400" />
+                  <Sparkles className="w-5 h-5" style={{ color: colors.tertiary }} />
                 </motion.div>
               </motion.div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">{settings.title || 'Paramètres'}</h1>
@@ -415,10 +454,10 @@ export default function SettingsPage() {
                   className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
                   style={{
                     background: category.id === 'account'
-                      ? 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)'
+                      ? `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`
                       : category.id === 'preferences'
-                      ? 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)'
-                      : 'linear-gradient(135deg, #ff9014 0%, #FFB85C 100%)',
+                      ? `linear-gradient(135deg, ${colors.secondary} 0%, ${colors.tertiary} 100%)`
+                      : `linear-gradient(135deg, ${colors.tertiary} 0%, ${colors.accentColor} 100%)`,
                   }}
                 >
                   <CategoryIcon className="w-5 h-5 text-white" />
@@ -489,8 +528,8 @@ export default function SettingsPage() {
                               style={{
                                 background: section.badge === 'Premium'
                                   ? 'linear-gradient(135deg, #F3E8FF 0%, #FCE7F3 100%)'
-                                  : 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)',
-                                color: section.badge === 'Premium' ? '#7C3AED' : '#ff651e',
+                                  : colors.buttonBg,
+                                color: section.badge === 'Premium' ? '#7C3AED' : colors.primary,
                               }}
                             >
                               {section.badge}
@@ -506,9 +545,9 @@ export default function SettingsPage() {
                           </div>
                           <div
                             className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all group-hover:translate-x-1"
-                            style={{ background: 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)' }}
+                            style={{ background: colors.buttonBg }}
                           >
-                            <ChevronRight className="w-4 h-4" style={{ color: '#ff651e' }} />
+                            <ChevronRight className="w-4 h-4" style={{ color: colors.primary }} />
                           </div>
                         </div>
                       </div>
@@ -527,16 +566,16 @@ export default function SettingsPage() {
           transition={{ delay: 0.4 }}
           whileHover={{ scale: 1.01 }}
           className="mt-8 rounded-3xl p-8 bg-white relative overflow-hidden shadow-lg"
-          style={{ boxShadow: '0 8px 32px rgba(255, 101, 30, 0.12)' }}
+          style={{ boxShadow: `0 8px 32px ${colors.shadowLight}` }}
         >
           {/* Decorative background */}
           <div
             className="absolute -right-12 -top-12 w-48 h-48 rounded-full opacity-10"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+            style={{ background: colors.gradientStyle }}
           />
           <div
             className="absolute -left-8 -bottom-8 w-32 h-32 rounded-full opacity-10"
-            style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}
+            style={{ background: `linear-gradient(135deg, ${colors.secondary} 0%, ${colors.tertiary} 100%)` }}
           />
 
           <div className="relative flex flex-col md:flex-row items-center justify-between gap-6">
@@ -545,8 +584,8 @@ export default function SettingsPage() {
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-                  boxShadow: '0 6px 20px rgba(255, 101, 30, 0.3)',
+                  background: colors.gradientStyle,
+                  boxShadow: `0 6px 20px ${colors.shadow}`,
                 }}
               >
                 <HelpCircle className="w-7 h-7 text-white" />
@@ -561,8 +600,12 @@ export default function SettingsPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => router.push('/help')}
-                className="px-5 py-2.5 rounded-full border-2 border-gray-200 text-gray-700 hover:border-orange-200 transition-all duration-300 font-medium"
-                style={{ background: 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)' }}
+                className="px-5 py-2.5 rounded-full border-2 border-gray-200 text-gray-700 transition-all duration-300 font-medium"
+                style={{
+                  background: colors.buttonBg,
+                }}
+                onMouseEnter={(e) => e.currentTarget.style.borderColor = colors.primary}
+                onMouseLeave={(e) => e.currentTarget.style.borderColor = '#e5e7eb'}
               >
                 {settings.help?.helpCenter || 'Centre d\'aide'}
               </motion.button>
@@ -572,8 +615,8 @@ export default function SettingsPage() {
                 onClick={() => router.push('/contact')}
                 className="px-5 py-2.5 rounded-full text-white font-semibold shadow-lg transition-all duration-300"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-                  boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                  background: colors.gradientStyle,
+                  boxShadow: `0 4px 14px ${colors.shadow}`,
                 }}
               >
                 {settings.help?.contactSupport || 'Contacter le support'}
