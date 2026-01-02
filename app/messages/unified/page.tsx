@@ -3,7 +3,31 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
+import { useLanguage } from '@/lib/i18n/use-language';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+
+const t = {
+  redirectError: {
+    fr: 'Erreur de redirection. Veuillez réessayer.',
+    en: 'Redirect error. Please try again.',
+    nl: 'Omleidingsfout. Probeer opnieuw.',
+    de: 'Weiterleitungsfehler. Bitte versuchen Sie es erneut.',
+  },
+  backToLogin: {
+    fr: 'Retour à la connexion',
+    en: 'Back to login',
+    nl: 'Terug naar inloggen',
+    de: 'Zurück zur Anmeldung',
+  },
+  redirecting: {
+    fr: 'Redirection vers vos messages...',
+    en: 'Redirecting to your messages...',
+    nl: 'Doorsturen naar uw berichten...',
+    de: 'Weiterleitung zu Ihren Nachrichten...',
+  },
+};
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
 
 /**
  * Unified Messages Redirect Page
@@ -13,7 +37,9 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
  */
 export default function UnifiedMessagesRedirectPage() {
   const router = useRouter();
-  const [error, setError] = useState<string | null>(null);
+  const { language } = useLanguage();
+  const lang = language as Language;
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
     const redirectToRoleBasedPage = async () => {
@@ -52,23 +78,23 @@ export default function UnifiedMessagesRedirectPage() {
         }
       } catch (err) {
         console.error('Error redirecting:', err);
-        setError('Erreur de redirection. Veuillez réessayer.');
+        setHasError(true);
       }
     };
 
     redirectToRoleBasedPage();
   }, [router]);
 
-  if (error) {
+  if (hasError) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
         <div className="text-center">
-          <p className="text-red-600 mb-4">{error}</p>
+          <p className="text-red-600 mb-4">{t.redirectError[lang]}</p>
           <button
             onClick={() => router.push('/login')}
             className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
           >
-            Retour à la connexion
+            {t.backToLogin[lang]}
           </button>
         </div>
       </div>
@@ -81,7 +107,7 @@ export default function UnifiedMessagesRedirectPage() {
         <div className="flex justify-center mb-6">
           <LoadingHouse size={80} />
         </div>
-        <p className="text-gray-600 font-medium">Redirection vers vos messages...</p>
+        <p className="text-gray-600 font-medium">{t.redirecting[lang]}</p>
       </div>
     </div>
   );

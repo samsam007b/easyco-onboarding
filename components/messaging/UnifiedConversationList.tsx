@@ -26,6 +26,10 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { messageVariantStyles } from './MessagesLayout';
+
+// Type for variant
+type MessageVariant = 'searcher' | 'owner' | 'hub';
 
 // V2 Fun Animation variants
 const containerVariants = {
@@ -73,6 +77,7 @@ interface UnifiedConversationListProps {
   onSelectConversation: (conversation: UnifiedConversation) => void;
   onInviteClick?: (type: 'owner' | 'resident') => void;
   currentUserId?: string;
+  variant?: MessageVariant;
 }
 
 export const UnifiedConversationList = memo(function UnifiedConversationList({
@@ -81,9 +86,13 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
   onSelectConversation,
   onInviteClick,
   currentUserId,
+  variant = 'hub',
 }: UnifiedConversationListProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const { language, getSection } = useLanguage();
+
+  // Get variant-specific styles
+  const styles = messageVariantStyles[variant];
   const unifiedMessaging = getSection('unifiedMessaging');
 
   // Locale mapping for date formatting
@@ -120,7 +129,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
         transition={{ type: 'spring' as const, stiffness: 300, damping: 25 }}
         className="p-4 border-b border-gray-100"
         style={{
-          background: 'linear-gradient(180deg, rgba(255,245,243,1) 0%, rgba(255,255,255,0) 100%)',
+          background: `linear-gradient(180deg, ${styles.light}40 0%, rgba(255,255,255,0) 100%)`,
         }}
       >
         <div className="flex items-center gap-3 mb-4">
@@ -128,8 +137,8 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
             whileHover={{ scale: 1.1, rotate: 5 }}
             className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+              background: styles.accentGradient,
+              boxShadow: `0 8px 24px ${styles.primary}59`,
             }}
           >
             <MessageCircle className="w-6 h-6 text-white" />
@@ -146,7 +155,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
             <p className="text-xs text-gray-500 flex items-center gap-2">
               <Badge
                 className="text-xs border-none text-white font-bold"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
+                style={{ background: styles.accentGradient }}
               >
                 {pinnedConversations.length + conversations.length}
               </Badge>
@@ -168,9 +177,11 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
             placeholder={unifiedMessaging?.searchPlaceholder || "Rechercher une conversation..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-11 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange-300 bg-white shadow-sm text-sm"
+            className="pl-11 pr-4 py-3 rounded-2xl border-2 border-gray-200 bg-white shadow-sm text-sm"
             style={{
               background: 'linear-gradient(135deg, #fff 0%, #fafafa 100%)',
+              // @ts-expect-error CSS custom property for focus state
+              '--tw-ring-color': styles.focusBorder,
             }}
           />
         </motion.div>
@@ -233,8 +244,8 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                           onClick={() => onInviteClick?.('resident')}
                           className="h-8 text-xs rounded-full text-white font-semibold shadow-md"
                           style={{
-                            background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
-                            boxShadow: '0 4px 12px rgba(255, 101, 30, 0.3)',
+                            background: styles.accentGradient,
+                            boxShadow: `0 4px 12px ${styles.primary}4D`,
                           }}
                         >
                           <UserPlus className="w-3 h-3 mr-1" />
@@ -265,7 +276,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                 animate={{ rotate: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
               >
-                <Pin className="w-4 h-4 text-orange-500" />
+                <Pin className="w-4 h-4" style={{ color: styles.primary }} />
               </motion.div>
               <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">
                 {unifiedMessaging?.pinned || 'Épinglées'}
@@ -285,6 +296,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                     onClick={() => onSelectConversation(conv)}
                     currentUserId={currentUserId}
                     isPinned
+                    variantStyles={styles}
                   />
                 </motion.div>
               ))}
@@ -321,6 +333,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                     isSelected={conv.id === selectedConversationId}
                     onClick={() => onSelectConversation(conv)}
                     currentUserId={currentUserId}
+                    variantStyles={styles}
                   />
                 </motion.div>
               ))}
@@ -345,7 +358,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               <motion.div
                 className="absolute inset-0 rounded-2xl opacity-40"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: styles.accentGradient,
                   filter: 'blur(15px)',
                 }}
                 animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -354,8 +367,8 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
               <div
                 className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-                  boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                  background: styles.accentGradient,
+                  boxShadow: `0 8px 24px ${styles.primary}59`,
                 }}
               >
                 <MessageCircle className="w-10 h-10 text-white" />
@@ -407,6 +420,7 @@ interface ConversationItemProps {
   onClick: () => void;
   currentUserId?: string;
   isPinned?: boolean;
+  variantStyles: typeof messageVariantStyles.hub;
 }
 
 function ConversationItem({
@@ -415,6 +429,7 @@ function ConversationItem({
   onClick,
   currentUserId,
   isPinned,
+  variantStyles,
 }: ConversationItemProps) {
   const { language, getSection } = useLanguage();
   const unifiedMessaging = getSection('unifiedMessaging');
@@ -492,16 +507,20 @@ function ConversationItem({
         'hover:bg-white active:scale-[0.99]',
         isSelected
           ? 'bg-white shadow-md border-2'
-          : 'bg-transparent border-2 border-transparent hover:border-orange-100',
-        hasUnread && !isSelected && 'bg-white shadow-sm border-2 border-orange-100',
+          : 'bg-transparent border-2 border-transparent',
+        hasUnread && !isSelected && 'bg-white shadow-sm border-2',
         conversation.isVirtual && 'opacity-80'
       )}
       style={
         isSelected
           ? {
-              background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
-              borderColor: 'rgba(255, 91, 33, 0.3)',
-              boxShadow: '0 4px 12px rgba(255, 101, 30, 0.15)',
+              background: variantStyles.selectedBg,
+              borderColor: variantStyles.selectedBorder,
+              boxShadow: `0 4px 12px ${variantStyles.primary}26`,
+            }
+          : hasUnread && !isSelected
+          ? {
+              borderColor: `${variantStyles.light}`,
             }
           : undefined
       }
@@ -624,8 +643,8 @@ function ConversationItem({
             <Badge
               className="text-white text-xs px-2.5 py-1 rounded-full flex-shrink-0 font-bold min-w-[22px] justify-center border-none shadow-md"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
-                boxShadow: '0 2px 8px rgba(255, 101, 30, 0.4)',
+                background: variantStyles.accentGradient,
+                boxShadow: `0 2px 8px ${variantStyles.primary}66`,
               }}
             >
               {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}

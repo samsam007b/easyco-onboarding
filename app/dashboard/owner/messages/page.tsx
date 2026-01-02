@@ -378,6 +378,7 @@ function OwnerMessagesContent() {
               onSelectConversation={handleSelectConversation}
               onInviteClick={handleInviteClick}
               currentUserId={userId || undefined}
+              variant="owner"
             />
           ) : (
             <div className="flex items-center justify-center h-full">

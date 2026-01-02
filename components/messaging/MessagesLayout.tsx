@@ -50,32 +50,59 @@ interface MessagesLayoutProps {
   showChat?: boolean;
 }
 
-const variantStyles = {
+// V3 Role-based color themes - exported for use in conversation list
+export const messageVariantStyles = {
   searcher: {
     gradient: 'from-searcher-50/30 via-white to-searcher-50/30',
     accent: 'bg-gradient-searcher',
+    accentGradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
     accentLight: 'from-searcher-50 to-searcher-100',
     border: 'border-searcher-200',
     text: 'text-searcher-600',
-    shadow: 'rgba(74, 144, 226, 0.35)',
+    shadow: 'rgba(245, 158, 11, 0.35)',
+    primary: '#f59e0b',
+    light: '#fef3c7',
+    focusBorder: 'focus:border-searcher-300',
+    hoverBg: 'hover:border-searcher-100',
+    selectedBg: 'rgba(254, 243, 199, 0.5)',
+    selectedBorder: 'rgba(245, 158, 11, 0.3)',
   },
   owner: {
-    gradient: 'from-purple-50/30 via-white to-indigo-50/30',
-    accent: 'bg-gradient-to-br from-purple-500 to-indigo-500',
-    accentLight: 'from-purple-50 to-indigo-50',
-    border: 'border-purple-200',
-    text: 'text-purple-600',
-    shadow: 'rgba(124, 58, 237, 0.35)',
+    // V3 Owner mauve palette
+    gradient: 'from-[#F8F0F7]/30 via-white to-[#FDF5F9]/30',
+    accent: 'bg-gradient-to-br from-[#9c5698] to-[#c2566b]',
+    accentGradient: 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)',
+    accentLight: 'from-[#F8F0F7] to-[#FDF5F9]',
+    border: 'border-[#D4B5D1]',
+    text: 'text-[#9c5698]',
+    shadow: 'rgba(156, 86, 152, 0.35)',
+    primary: '#9c5698',
+    light: '#F8F0F7',
+    focusBorder: 'focus:border-[#D4B5D1]',
+    hoverBg: 'hover:border-[#F8F0F7]',
+    selectedBg: 'rgba(248, 240, 247, 0.8)',
+    selectedBorder: 'rgba(156, 86, 152, 0.3)',
   },
   hub: {
+    // Resident orange theme
     gradient: 'from-orange-50/30 via-white to-orange-50/30',
     accent: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+    accentGradient: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
     accentLight: 'from-orange-50 to-red-50',
     border: 'border-orange-200',
     text: 'text-orange-600',
     shadow: 'rgba(255, 101, 30, 0.35)',
+    primary: '#ff651e',
+    light: '#fff7ed',
+    focusBorder: 'focus:border-orange-300',
+    hoverBg: 'hover:border-orange-100',
+    selectedBg: 'rgba(255, 245, 243, 1)',
+    selectedBorder: 'rgba(255, 91, 33, 0.3)',
   },
 };
+
+// Alias for internal use
+const variantStyles = messageVariantStyles;
 
 export function MessagesLayout({
   sidebar,
@@ -155,7 +182,8 @@ interface DefaultEmptyStateProps {
 }
 
 function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
-  const isHub = variant === 'hub';
+  // Get the proper gradient for each variant
+  const accentGradient = styles.accentGradient || styles.accent;
 
   return (
     <motion.div
@@ -174,9 +202,7 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
         <motion.div
           className="absolute inset-0 rounded-3xl opacity-30"
           style={{
-            background: isHub
-              ? 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
-              : styles.accent,
+            background: accentGradient,
             filter: 'blur(20px)',
           }}
           animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -187,9 +213,7 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
         <div
           className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg"
           style={{
-            background: isHub
-              ? 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
-              : undefined,
+            background: accentGradient,
             boxShadow: `0 8px 24px ${styles.shadow}`,
           }}
         >
