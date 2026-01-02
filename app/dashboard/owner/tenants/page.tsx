@@ -393,7 +393,7 @@ export default function TenantsPage() {
         />
 
         {/* KPIs - Bold 5-color pattern */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 mb-6">
           {/* Card 1: Total Tenants - Solid PRIMARY */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}

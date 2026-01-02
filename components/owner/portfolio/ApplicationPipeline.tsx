@@ -50,8 +50,40 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { format, formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
+import type { Locale } from 'date-fns';
 import { ownerGradient, semanticColors } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const dateLocales: Record<string, Locale> = { fr, en: enUS, nl, de };
+
+const numberLocales: Record<string, string> = { fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE' };
+
+const t = {
+  columns: {
+    pending: { fr: 'En attente', en: 'Pending', nl: 'In afwachting', de: 'Ausstehend' },
+    reviewing: { fr: 'En cours', en: 'Reviewing', nl: 'In behandeling', de: 'In Bearbeitung' },
+    approved: { fr: 'Approuvées', en: 'Approved', nl: 'Goedgekeurd', de: 'Genehmigt' },
+    rejected: { fr: 'Refusées', en: 'Rejected', nl: 'Afgewezen', de: 'Abgelehnt' },
+  },
+  status: {
+    approved: { fr: 'Approuvée', en: 'Approved', nl: 'Goedgekeurd', de: 'Genehmigt' },
+    rejected: { fr: 'Refusée', en: 'Rejected', nl: 'Afgewezen', de: 'Abgelehnt' },
+  },
+  header: {
+    title: { fr: 'Pipeline Candidatures', en: 'Application Pipeline', nl: 'Kandidatenpijplijn', de: 'Bewerbungspipeline' },
+    newSingular: { fr: 'nouveau', en: 'new', nl: 'nieuw', de: 'neu' },
+    newPlural: { fr: 'nouveaux', en: 'new', nl: 'nieuw', de: 'neu' },
+    pending: { fr: 'en attente', en: 'pending', nl: 'in afwachting', de: 'ausstehend' },
+    reviewing: { fr: 'en cours', en: 'reviewing', nl: 'in behandeling', de: 'in Bearbeitung' },
+  },
+  empty: {
+    noApplications: { fr: 'Aucune candidature', en: 'No applications', nl: 'Geen aanvragen', de: 'Keine Bewerbungen' },
+  },
+  income: {
+    perMonth: { fr: '/mois', en: '/month', nl: '/maand', de: '/Monat' },
+  },
+};
 
 export type ApplicationStatus = 'pending' | 'reviewing' | 'approved' | 'rejected';
 export type ApplicationType = 'individual' | 'group';
@@ -87,11 +119,11 @@ interface ApplicationPipelineProps {
   className?: string;
 }
 
-const columns: { id: ApplicationStatus; title: string; icon: typeof Clock; color: string }[] = [
-  { id: 'pending', title: 'En attente', icon: Clock, color: '#f59e0b' },
-  { id: 'reviewing', title: 'En cours', icon: Eye, color: '#3b82f6' },
-  { id: 'approved', title: 'Approuvées', icon: CheckCircle, color: '#10b981' },
-  { id: 'rejected', title: 'Refusées', icon: XCircle, color: '#ef4444' },
+const getColumns = (language: string): { id: ApplicationStatus; title: string; icon: typeof Clock; color: string }[] => [
+  { id: 'pending', title: t.columns.pending[language as keyof typeof t.columns.pending] || 'Pending', icon: Clock, color: '#f59e0b' },
+  { id: 'reviewing', title: t.columns.reviewing[language as keyof typeof t.columns.reviewing] || 'Reviewing', icon: Eye, color: '#3b82f6' },
+  { id: 'approved', title: t.columns.approved[language as keyof typeof t.columns.approved] || 'Approved', icon: CheckCircle, color: '#10b981' },
+  { id: 'rejected', title: t.columns.rejected[language as keyof typeof t.columns.rejected] || 'Rejected', icon: XCircle, color: '#ef4444' },
 ];
 
 // Sortable Application Card
@@ -106,6 +138,7 @@ function SortableApplicationCard({
   onApprove?: () => void;
   onReject?: () => void;
 }) {
+  const { language } = useLanguage();
   const {
     attributes,
     listeners,
@@ -221,13 +254,13 @@ function SortableApplicationCard({
           {application.monthlyIncome && (
             <div className="flex items-center gap-1 text-gray-600">
               <Euro className="w-3.5 h-3.5 text-emerald-500" />
-              <span>{application.monthlyIncome.toLocaleString()}€/mois</span>
+              <span>{application.monthlyIncome.toLocaleString(numberLocales[language] || 'en-US')}€{t.income.perMonth[language as keyof typeof t.income.perMonth] || '/month'}</span>
             </div>
           )}
           {application.moveInDate && (
             <div className="flex items-center gap-1 text-gray-600">
               <Calendar className="w-3.5 h-3.5 text-blue-500" />
-              <span>{format(application.moveInDate, 'd MMM', { locale: fr })}</span>
+              <span>{format(application.moveInDate, 'd MMM', { locale: dateLocales[language] || dateLocales.en })}</span>
             </div>
           )}
         </div>
@@ -235,7 +268,7 @@ function SortableApplicationCard({
         {/* Footer */}
         <div className="flex items-center justify-between pt-2 border-t border-gray-100">
           <span className="text-xs text-gray-400">
-            {formatDistanceToNow(application.createdAt, { addSuffix: true, locale: fr })}
+            {formatDistanceToNow(application.createdAt, { addSuffix: true, locale: dateLocales[language] || dateLocales.en })}
           </span>
 
           {/* Quick actions */}
@@ -273,13 +306,13 @@ function SortableApplicationCard({
           {application.status === 'approved' && (
             <span className="flex items-center gap-1 text-xs text-emerald-600">
               <CheckCircle className="w-3.5 h-3.5" />
-              Approuvée
+              {t.status.approved[language as keyof typeof t.status.approved] || 'Approved'}
             </span>
           )}
           {application.status === 'rejected' && (
             <span className="flex items-center gap-1 text-xs text-red-600">
               <XCircle className="w-3.5 h-3.5" />
-              Refusée
+              {t.status.rejected[language as keyof typeof t.status.rejected] || 'Rejected'}
             </span>
           )}
         </div>
@@ -325,8 +358,12 @@ export function ApplicationPipeline({
   onReject,
   className,
 }: ApplicationPipelineProps) {
+  const { language } = useLanguage();
   const [activeId, setActiveId] = useState<string | null>(null);
   const [activeApplication, setActiveApplication] = useState<ApplicationData | null>(null);
+
+  // Memoized columns based on language
+  const columns = useMemo(() => getColumns(language), [language]);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -428,15 +465,17 @@ export function ApplicationPipeline({
             </div>
             <div>
               <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                Pipeline Candidatures
+                {t.header.title[language as keyof typeof t.header.title] || 'Application Pipeline'}
                 {totalNew > 0 && (
                   <span className="px-2 py-0.5 text-xs font-bold bg-blue-100 text-blue-600 rounded-full animate-pulse">
-                    +{totalNew} nouveau{totalNew > 1 ? 'x' : ''}
+                    +{totalNew} {totalNew > 1
+                      ? (t.header.newPlural[language as keyof typeof t.header.newPlural] || 'new')
+                      : (t.header.newSingular[language as keyof typeof t.header.newSingular] || 'new')}
                   </span>
                 )}
               </h3>
               <p className="text-sm text-gray-500">
-                {pendingCount} en attente · {reviewingCount} en cours
+                {pendingCount} {t.header.pending[language as keyof typeof t.header.pending] || 'pending'} · {reviewingCount} {t.header.reviewing[language as keyof typeof t.header.reviewing] || 'reviewing'}
               </p>
             </div>
           </div>
@@ -516,7 +555,7 @@ export function ApplicationPipeline({
                       {columnApps.length === 0 ? (
                         <div className="flex flex-col items-center justify-center h-[200px] text-gray-400">
                           <ColumnIcon className="w-10 h-10 mb-2 opacity-50" />
-                          <p className="text-sm">Aucune candidature</p>
+                          <p className="text-sm">{t.empty.noApplications[language as keyof typeof t.empty.noApplications] || 'No applications'}</p>
                         </div>
                       ) : (
                         columnApps.map((app) => (

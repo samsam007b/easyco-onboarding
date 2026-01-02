@@ -371,7 +371,7 @@ export function PaymentTable({
                       <p className="text-sm text-gray-700">{payment.tenantName}</p>
                     </td>
                     <td className="px-4 py-4">
-                      <p className="font-bold text-gray-900">{payment.amount.toLocaleString()}e</p>
+                      <p className="font-bold text-gray-900">{payment.amount.toLocaleString(numberLocales[language] || 'en-US')}€</p>
                     </td>
                     <td className="px-4 py-4">
                       <p className="text-sm text-gray-600">
@@ -404,7 +404,7 @@ export function PaymentTable({
                             className="h-8 px-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50"
                           >
                             <Check className="w-4 h-4 mr-1" />
-                            <span className="hidden sm:inline">Marquer paye</span>
+                            <span className="hidden sm:inline">{t.actions.markPaid[language as keyof typeof t.actions.markPaid] || 'Mark paid'}</span>
                           </Button>
                         )}
                         {payment.status === 'overdue' && onSendReminder && (
@@ -415,7 +415,7 @@ export function PaymentTable({
                             className="h-8 px-2 text-amber-600 hover:text-amber-700 hover:bg-amber-50"
                           >
                             <Send className="w-4 h-4 mr-1" />
-                            <span className="hidden sm:inline">Relancer</span>
+                            <span className="hidden sm:inline">{t.actions.sendReminder[language as keyof typeof t.actions.sendReminder] || 'Send reminder'}</span>
                           </Button>
                         )}
                       </div>
