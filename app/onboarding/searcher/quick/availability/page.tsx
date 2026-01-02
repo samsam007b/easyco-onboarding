@@ -6,6 +6,7 @@ import { ArrowRight, Calendar, Clock } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { handleSupabaseError, handleValidationError, ErrorCode } from '@/lib/utils/error-handler';
 import {
   OnboardingLayout,
@@ -20,6 +21,7 @@ type MoveInFlexibility = 'asap' | 'exact' | 'flexible';
 
 export default function QuickAvailabilityPage() {
   const router = useRouter();
+  const { t, language } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -148,26 +150,26 @@ export default function QuickAvailabilityPage() {
 
   const flexibilityOptions: Array<{
     id: MoveInFlexibility;
-    label: string;
-    description: string;
+    labelKey: string;
+    descKey: string;
     icon: string;
   }> = [
     {
       id: 'asap',
-      label: 'Dès que possible',
-      description: 'Je cherche à emménager maintenant',
+      labelKey: 'asap',
+      descKey: 'asapDesc',
       icon: '🏃',
     },
     {
       id: 'exact',
-      label: 'Date précise',
-      description: 'J\'ai une date d\'emménagement fixe',
+      labelKey: 'exact',
+      descKey: 'exactDesc',
       icon: '📅',
     },
     {
       id: 'flexible',
-      label: 'Flexible',
-      description: 'Je peux m\'adapter de quelques semaines',
+      labelKey: 'flexible',
+      descKey: 'flexibleDesc',
       icon: '🤝',
     },
   ];
@@ -178,15 +180,15 @@ export default function QuickAvailabilityPage() {
     <OnboardingLayout
       role="searcher"
       backUrl="/onboarding/searcher/quick/lifestyle"
-      backLabel="Retour"
+      backLabel={t('quickOnboarding.common.back')}
       progress={{
         current: 4,
         total: 5,
         label: 'Étape 4 sur 5',
-        stepName: 'Disponibilité',
+        stepName: t('quickOnboarding.availability.stepName'),
       }}
       isLoading={isPageLoading}
-      loadingText="Chargement..."
+      loadingText={t('quickOnboarding.common.loading')}
     >
       {/* Header */}
       <div className="text-center mb-8">
@@ -195,15 +197,15 @@ export default function QuickAvailabilityPage() {
         </div>
         <OnboardingHeading
           role="searcher"
-          title="Quand veux-tu emménager ?"
-          description="Cela nous aide à te montrer des logements disponibles"
+          title={t('quickOnboarding.availability.title')}
+          description={t('quickOnboarding.availability.description')}
         />
       </div>
 
       <div className="space-y-6">
         {/* Flexibility Options */}
         <div>
-          <OnboardingLabel required>Ma flexibilité</OnboardingLabel>
+          <OnboardingLabel required>{t('quickOnboarding.availability.flexibility.label')}</OnboardingLabel>
           <OnboardingGrid columns={3}>
             {flexibilityOptions.map((option) => (
               <OnboardingSelectionCard
@@ -214,8 +216,8 @@ export default function QuickAvailabilityPage() {
               >
                 <div className="text-center">
                   <div className="text-3xl mb-2">{option.icon}</div>
-                  <p className="font-semibold text-gray-900 mb-1 text-sm">{option.label}</p>
-                  <p className="text-xs text-gray-600">{option.description}</p>
+                  <p className="font-semibold text-gray-900 mb-1 text-sm">{t(`quickOnboarding.availability.flexibility.${option.labelKey}`)}</p>
+                  <p className="text-xs text-gray-600">{t(`quickOnboarding.availability.flexibility.${option.descKey}`)}</p>
                 </div>
               </OnboardingSelectionCard>
             ))}
@@ -225,7 +227,7 @@ export default function QuickAvailabilityPage() {
         {/* Date Picker (shown if not ASAP) */}
         {moveInFlexibility !== 'asap' && (
           <div>
-            <OnboardingLabel required>Date d'emménagement souhaitée</OnboardingLabel>
+            <OnboardingLabel required>{t('quickOnboarding.availability.dateLabel')}</OnboardingLabel>
             <div className="relative">
               <Clock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
               <input
@@ -240,7 +242,7 @@ export default function QuickAvailabilityPage() {
             </div>
             {moveInDate && (
               <p className="text-xs text-green-600 mt-2">
-                Date sélectionnée: {new Date(moveInDate).toLocaleDateString('fr-FR', {
+                {t('quickOnboarding.availability.selectedDate')}: {new Date(moveInDate).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-BE' : language === 'de' ? 'de-DE' : 'en-US', {
                   weekday: 'long',
                   year: 'numeric',
                   month: 'long',
@@ -255,7 +257,7 @@ export default function QuickAvailabilityPage() {
         {moveInFlexibility === 'asap' && (
           <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4">
             <p className="text-sm text-green-800 font-medium">
-              Super! Nous te montrerons les logements disponibles immédiatement.
+              {t('quickOnboarding.availability.asapMessage')}
             </p>
           </div>
         )}
@@ -263,7 +265,7 @@ export default function QuickAvailabilityPage() {
         {/* Info Box */}
         <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
           <p className="text-sm text-blue-800">
-            <span className="font-semibold">Astuce:</span> Plus tu es flexible, plus tu auras d'options disponibles!
+            <span className="font-semibold">{t('quickOnboarding.availability.tip.label')}</span> {t('quickOnboarding.availability.tip.text')}
           </p>
         </div>
       </div>
@@ -275,10 +277,10 @@ export default function QuickAvailabilityPage() {
           disabled={!canContinue || isLoading}
         >
           {isLoading ? (
-            'Chargement...'
+            t('quickOnboarding.common.loading')
           ) : (
             <span className="flex items-center justify-center gap-2">
-              Terminer
+              {t('quickOnboarding.availability.finish')}
               <ArrowRight className="w-5 h-5" />
             </span>
           )}
@@ -286,7 +288,7 @@ export default function QuickAvailabilityPage() {
       </div>
 
       <p className="text-center text-sm text-gray-500 mt-6">
-        Dernière étape! Ton profil sera prêt après celle-ci
+        {t('quickOnboarding.availability.lastStep')}
       </p>
     </OnboardingLayout>
   );

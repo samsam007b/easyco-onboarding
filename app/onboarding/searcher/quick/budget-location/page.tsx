@@ -6,6 +6,7 @@ import { ArrowRight, MapPin, Euro } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
 import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
 import {
   OnboardingLayout,
@@ -16,6 +17,7 @@ import {
 
 export default function QuickBudgetLocationPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -89,17 +91,17 @@ export default function QuickBudgetLocationPage() {
 
   const handleNext = async () => {
     if (minBudget < 0) {
-      toast.error('Le budget minimum doit être positif');
+      toast.error(t('quickOnboarding.budgetLocation.errors.minBudgetPositive'));
       return;
     }
 
     if (maxBudget <= minBudget) {
-      toast.error('Le budget maximum doit être supérieur au minimum');
+      toast.error(t('quickOnboarding.budgetLocation.errors.maxBudgetGreater'));
       return;
     }
 
     if (!preferredCity.trim()) {
-      toast.error('La ville préférée est requise');
+      toast.error(t('quickOnboarding.budgetLocation.errors.cityRequired'));
       return;
     }
 
@@ -131,7 +133,7 @@ export default function QuickBudgetLocationPage() {
       router.push('/onboarding/searcher/quick/lifestyle');
     } catch (error: any) {
       console.error('Error saving:', error);
-      toast.error(error.message || 'Erreur lors de la sauvegarde');
+      toast.error(error.message || t('quickOnboarding.common.saveError'));
     } finally {
       setIsLoading(false);
     }
@@ -143,15 +145,15 @@ export default function QuickBudgetLocationPage() {
     <OnboardingLayout
       role="searcher"
       backUrl="/onboarding/searcher/quick/basic-info"
-      backLabel="Retour"
+      backLabel={t('quickOnboarding.common.back')}
       progress={{
         current: 2,
         total: 5,
         label: 'Étape 2 sur 5',
-        stepName: 'Budget et Localisation',
+        stepName: t('quickOnboarding.budgetLocation.stepName'),
       }}
       isLoading={isPageLoading}
-      loadingText="Chargement..."
+      loadingText={t('quickOnboarding.common.loading')}
     >
       {/* Header */}
       <div className="text-center mb-8">
@@ -160,20 +162,20 @@ export default function QuickBudgetLocationPage() {
         </div>
         <OnboardingHeading
           role="searcher"
-          title="Budget et Localisation"
-          description="Aide-nous à trouver des options dans ton budget et ta zone préférée"
+          title={t('quickOnboarding.budgetLocation.title')}
+          description={t('quickOnboarding.budgetLocation.description')}
         />
       </div>
 
       <div className="space-y-6">
         {/* Budget Range */}
         <div className="p-5 rounded-xl bg-green-50 border border-green-200">
-          <OnboardingLabel required>Budget mensuel</OnboardingLabel>
+          <OnboardingLabel required>{t('quickOnboarding.budgetLocation.monthlyBudget')}</OnboardingLabel>
 
           {/* Min Budget */}
           <div className="mb-4">
             <label htmlFor="minBudget" className="block text-xs text-gray-600 mb-2">
-              Budget minimum (€/mois)
+              {t('quickOnboarding.budgetLocation.minBudget')}
             </label>
             <input
               id="minBudget"
@@ -189,7 +191,7 @@ export default function QuickBudgetLocationPage() {
           {/* Max Budget */}
           <div className="mb-4">
             <label htmlFor="maxBudget" className="block text-xs text-gray-600 mb-2">
-              Budget maximum (€/mois)
+              {t('quickOnboarding.budgetLocation.maxBudget')}
             </label>
             <input
               id="maxBudget"
@@ -204,7 +206,7 @@ export default function QuickBudgetLocationPage() {
 
           {/* Visual Range Display */}
           <div className="bg-white rounded-lg p-4 text-center border border-green-200">
-            <p className="text-sm text-gray-600 mb-1">Ton budget mensuel</p>
+            <p className="text-sm text-gray-600 mb-1">{t('quickOnboarding.budgetLocation.yourBudget')}</p>
             <p className="text-2xl font-bold text-orange-600">
               €{minBudget} - €{maxBudget}
             </p>
@@ -213,19 +215,19 @@ export default function QuickBudgetLocationPage() {
 
         {/* Preferred City */}
         <div>
-          <OnboardingLabel required>Ville préférée</OnboardingLabel>
+          <OnboardingLabel required>{t('quickOnboarding.budgetLocation.preferredCity')}</OnboardingLabel>
           <div className="relative">
             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none z-10" />
             <SafeGooglePlacesAutocomplete
               onPlaceSelect={handlePlaceSelect}
-              placeholder="Ex: Bruxelles, Liège, Gand..."
+              placeholder={t('quickOnboarding.budgetLocation.cityPlaceholder')}
               inputClassName="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
             />
           </div>
           {preferredCity && (
             <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
               <MapPin className="w-3 h-3" />
-              Ville sélectionnée: {preferredCity}
+              {t('quickOnboarding.budgetLocation.selectedCity')}: {preferredCity}
             </p>
           )}
         </div>
@@ -238,10 +240,10 @@ export default function QuickBudgetLocationPage() {
           disabled={!canContinue || isLoading}
         >
           {isLoading ? (
-            'Chargement...'
+            t('quickOnboarding.common.loading')
           ) : (
             <span className="flex items-center justify-center gap-2">
-              Continuer
+              {t('quickOnboarding.common.continue')}
               <ArrowRight className="w-5 h-5" />
             </span>
           )}
@@ -249,7 +251,7 @@ export default function QuickBudgetLocationPage() {
       </div>
 
       <p className="text-center text-sm text-gray-500 mt-6">
-        Tes préférences sont sauvegardées automatiquement
+        {t('quickOnboarding.common.autoSave')}
       </p>
     </OnboardingLayout>
   );

@@ -6,6 +6,7 @@ import { ArrowRight, Sparkles, Dog, Cigarette, Trash2 } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   OnboardingLayout,
   OnboardingHeading,
@@ -15,6 +16,7 @@ import {
 
 export default function QuickLifestylePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -96,33 +98,33 @@ export default function QuickLifestylePage() {
       router.push('/onboarding/searcher/quick/availability');
     } catch (error: any) {
       console.error('Error saving:', error);
-      toast.error(error.message || 'Erreur lors de la sauvegarde');
+      toast.error(error.message || t('quickOnboarding.common.saveError'));
     } finally {
       setIsLoading(false);
     }
   };
 
   const cleanlinessLabels = [
-    { value: 1, label: 'Décontracté', emoji: '😊' },
-    { value: 2, label: 'Souple', emoji: '🙂' },
-    { value: 3, label: 'Normal', emoji: '😐' },
-    { value: 4, label: 'Ordonné', emoji: '🧹' },
-    { value: 5, label: 'Très propre', emoji: '✨' },
+    { value: 1, labelKey: 'relaxed', emoji: '😊' },
+    { value: 2, labelKey: 'flexible', emoji: '🙂' },
+    { value: 3, labelKey: 'normal', emoji: '😐' },
+    { value: 4, labelKey: 'organized', emoji: '🧹' },
+    { value: 5, labelKey: 'veryClean', emoji: '✨' },
   ];
 
   return (
     <OnboardingLayout
       role="searcher"
       backUrl="/onboarding/searcher/quick/budget-location"
-      backLabel="Retour"
+      backLabel={t('quickOnboarding.common.back')}
       progress={{
         current: 3,
         total: 5,
         label: 'Étape 3 sur 5',
-        stepName: 'Style de Vie',
+        stepName: t('quickOnboarding.lifestyle.stepName'),
       }}
       isLoading={isPageLoading}
-      loadingText="Chargement..."
+      loadingText={t('quickOnboarding.common.loading')}
     >
       {/* Header */}
       <div className="text-center mb-8">
@@ -131,8 +133,8 @@ export default function QuickLifestylePage() {
         </div>
         <OnboardingHeading
           role="searcher"
-          title="Ton Style de Vie"
-          description="Ces infos nous aident à trouver des colocataires compatibles"
+          title={t('quickOnboarding.lifestyle.title')}
+          description={t('quickOnboarding.lifestyle.description')}
         />
       </div>
 
@@ -145,8 +147,8 @@ export default function QuickLifestylePage() {
                 <Cigarette className="w-6 h-6 text-gray-600 group-hover:text-orange-600 transition" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900">Je fume</p>
-                <p className="text-sm text-gray-500">Tabac ou cigarette électronique</p>
+                <p className="font-semibold text-gray-900">{t('quickOnboarding.lifestyle.smoking.label')}</p>
+                <p className="text-sm text-gray-500">{t('quickOnboarding.lifestyle.smoking.description')}</p>
               </div>
             </div>
             <div className="relative">
@@ -171,8 +173,8 @@ export default function QuickLifestylePage() {
                 <Dog className="w-6 h-6 text-gray-600 group-hover:text-orange-600 transition" />
               </div>
               <div>
-                <p className="font-semibold text-gray-900">J'ai des animaux</p>
-                <p className="text-sm text-gray-500">Chien, chat ou autre animal de compagnie</p>
+                <p className="font-semibold text-gray-900">{t('quickOnboarding.lifestyle.pets.label')}</p>
+                <p className="text-sm text-gray-500">{t('quickOnboarding.lifestyle.pets.description')}</p>
               </div>
             </div>
             <div className="relative">
@@ -196,8 +198,8 @@ export default function QuickLifestylePage() {
               <Trash2 className="w-6 h-6 text-gray-600" />
             </div>
             <div>
-              <p className="font-semibold text-gray-900">Niveau de propreté</p>
-              <p className="text-sm text-gray-500">Comment décris-tu ton niveau de propreté?</p>
+              <p className="font-semibold text-gray-900">{t('quickOnboarding.lifestyle.cleanliness.label')}</p>
+              <p className="text-sm text-gray-500">{t('quickOnboarding.lifestyle.cleanliness.question')}</p>
             </div>
           </div>
 
@@ -217,7 +219,7 @@ export default function QuickLifestylePage() {
               >
                 <span className="text-2xl">{item.emoji}</span>
                 <span className="text-xs font-medium text-center text-gray-700">
-                  {item.label}
+                  {t(`quickOnboarding.lifestyle.cleanliness.levels.${item.labelKey}`)}
                 </span>
               </button>
             ))}
@@ -226,7 +228,7 @@ export default function QuickLifestylePage() {
           {/* Selected Level Display */}
           <div className="mt-4 text-center bg-orange-50 rounded-lg p-3">
             <p className="text-sm text-gray-600">
-              Ton niveau: <span className="font-bold text-orange-600">{cleanlinessLabels[cleanlinessLevel - 1].label}</span>
+              {t('quickOnboarding.lifestyle.cleanliness.yourLevel')}: <span className="font-bold text-orange-600">{t(`quickOnboarding.lifestyle.cleanliness.levels.${cleanlinessLabels[cleanlinessLevel - 1].labelKey}`)}</span>
             </p>
           </div>
         </div>
@@ -239,10 +241,10 @@ export default function QuickLifestylePage() {
           disabled={isLoading}
         >
           {isLoading ? (
-            'Chargement...'
+            t('quickOnboarding.common.loading')
           ) : (
             <span className="flex items-center justify-center gap-2">
-              Continuer
+              {t('quickOnboarding.common.continue')}
               <ArrowRight className="w-5 h-5" />
             </span>
           )}
@@ -250,7 +252,7 @@ export default function QuickLifestylePage() {
       </div>
 
       <p className="text-center text-sm text-gray-500 mt-6">
-        Tes préférences sont sauvegardées automatiquement
+        {t('quickOnboarding.common.autoSave')}
       </p>
     </OnboardingLayout>
   );

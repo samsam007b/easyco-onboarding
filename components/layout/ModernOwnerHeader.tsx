@@ -65,12 +65,20 @@ const navigationDomains = {
     description: 'Gérez vos biens immobiliers',
     items: [
       {
+        id: 'hub',
+        href: '/dashboard/owner/portfolio',
+        label: 'Vue d\'ensemble',
+        icon: LayoutDashboard,
+        description: 'Hub Portfolio',
+        color: '#9c5698'
+      },
+      {
         id: 'properties',
         href: '/dashboard/owner/properties',
         label: 'Propriétés',
         icon: Building2,
         description: 'Tous vos biens',
-        color: '#9c5698'
+        color: '#a5568d'
       },
       {
         id: 'applications',
@@ -78,16 +86,8 @@ const navigationDomains = {
         label: 'Candidatures',
         icon: UserCheck,
         description: 'Demandes de location',
-        color: '#a5568d',
+        color: '#af5682',
         badgeKey: 'pendingApplications'
-      },
-      {
-        id: 'performance',
-        href: '/dashboard/owner/finance',
-        label: 'Performance',
-        icon: BarChart3,
-        description: 'Analytiques & ROI',
-        color: '#af5682'
       }
     ]
   },
@@ -139,19 +139,19 @@ const navigationDomains = {
     description: 'Suivez vos revenus',
     items: [
       {
-        id: 'overview',
-        href: '/dashboard/owner/finance',
+        id: 'hub',
+        href: '/dashboard/owner/finances',
         label: 'Vue d\'ensemble',
-        icon: PieChart,
-        description: 'Tableau de bord financier',
+        icon: LayoutDashboard,
+        description: 'Hub Finances',
         color: '#059669'
       },
       {
-        id: 'payments',
+        id: 'analytics',
         href: '/dashboard/owner/finance',
-        label: 'Paiements',
-        icon: DollarSign,
-        description: 'Loyers & encaissements',
+        label: 'Paiements & Analytics',
+        icon: BarChart3,
+        description: 'Suivi détaillé des loyers',
         color: '#10b981'
       }
     ]

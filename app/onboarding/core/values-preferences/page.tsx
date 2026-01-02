@@ -46,15 +46,15 @@ export default function CoreValuesPreferencesPage() {
 
   const handleContinue = () => {
     if (coreValues.length === 0) {
-      toast.error('Please select at least one core value');
+      toast.error(t('coreOnboarding.valuesPreferences.errors.valuesRequired'));
       return;
     }
     if (!opennessToSharing) {
-      toast.error('Openness to sharing is required');
+      toast.error(t('coreOnboarding.valuesPreferences.errors.sharingRequired'));
       return;
     }
     if (!culturalOpenness) {
-      toast.error('Cultural openness is required');
+      toast.error(t('coreOnboarding.valuesPreferences.errors.culturalRequired'));
       return;
     }
 
@@ -83,28 +83,28 @@ export default function CoreValuesPreferencesPage() {
   };
 
   const coreValueOptions = [
-    { value: 'respect', label: 'Respect', icon: <Shield className="w-4 h-4" />, desc: 'Mutual respect is key' },
-    { value: 'cleanliness', label: 'Cleanliness', icon: <Shield className="w-4 h-4" />, desc: 'Keep things tidy' },
-    { value: 'communication', label: 'Communication', icon: <Shield className="w-4 h-4" />, desc: 'Open dialogue' },
-    { value: 'sustainability', label: 'Sustainability', icon: <Shield className="w-4 h-4" />, desc: 'Eco-conscious living' },
-    { value: 'fun', label: 'Fun', icon: <Shield className="w-4 h-4" />, desc: 'Enjoy life together' },
-    { value: 'privacy', label: 'Privacy', icon: <Shield className="w-4 h-4" />, desc: 'Personal space matters' },
-    { value: 'diversity', label: 'Diversity', icon: <Shield className="w-4 h-4" />, desc: 'Embrace differences' },
-    { value: 'growth', label: 'Personal Growth', icon: <Shield className="w-4 h-4" />, desc: 'Self-improvement' },
+    { value: 'respect', labelKey: 'respect', icon: <Shield className="w-4 h-4" />, descKey: 'respectDesc' },
+    { value: 'cleanliness', labelKey: 'cleanliness', icon: <Shield className="w-4 h-4" />, descKey: 'cleanlinessDesc' },
+    { value: 'communication', labelKey: 'communication', icon: <Shield className="w-4 h-4" />, descKey: 'communicationDesc' },
+    { value: 'sustainability', labelKey: 'sustainability', icon: <Shield className="w-4 h-4" />, descKey: 'sustainabilityDesc' },
+    { value: 'fun', labelKey: 'fun', icon: <Shield className="w-4 h-4" />, descKey: 'funDesc' },
+    { value: 'privacy', labelKey: 'privacy', icon: <Shield className="w-4 h-4" />, descKey: 'privacyDesc' },
+    { value: 'diversity', labelKey: 'diversity', icon: <Shield className="w-4 h-4" />, descKey: 'diversityDesc' },
+    { value: 'growth', labelKey: 'growth', icon: <Shield className="w-4 h-4" />, descKey: 'growthDesc' },
   ];
 
   const opennessOptions = [
-    { value: 'private', label: 'Private', desc: 'I prefer my own space and things' },
-    { value: 'moderate', label: 'Moderate', desc: 'Happy to share some things' },
-    { value: 'open', label: 'Open', desc: 'I enjoy sharing and communal living' },
-    { value: 'very_open', label: 'Very Open', desc: 'Everything is shared!' },
+    { value: 'private', labelKey: 'private', descKey: 'privateDesc' },
+    { value: 'moderate', labelKey: 'moderate', descKey: 'moderateDesc' },
+    { value: 'open', labelKey: 'open', descKey: 'openDesc' },
+    { value: 'very_open', labelKey: 'veryOpen', descKey: 'veryOpenDesc' },
   ];
 
   const culturalOpennessOptions = [
-    { value: 'conservative', label: 'Conservative', desc: 'Prefer similar backgrounds' },
-    { value: 'moderate', label: 'Moderate', desc: 'Open to some diversity' },
-    { value: 'open', label: 'Open', desc: 'Enjoy cultural diversity' },
-    { value: 'very_open', label: 'Very Open', desc: 'Love multicultural living!' },
+    { value: 'conservative', labelKey: 'conservative', descKey: 'conservativeDesc' },
+    { value: 'moderate', labelKey: 'moderate', descKey: 'moderateDesc' },
+    { value: 'open', labelKey: 'open', descKey: 'openDesc' },
+    { value: 'very_open', labelKey: 'veryOpen', descKey: 'veryOpenDesc' },
   ];
 
   return (
@@ -115,24 +115,24 @@ export default function CoreValuesPreferencesPage() {
       progress={{
         current: 4,
         total: 4,
-        label: 'Step 4 of 4',
-        stepName: 'Values',
+        label: t('coreOnboarding.valuesPreferences.progress'),
+        stepName: t('coreOnboarding.valuesPreferences.stepName'),
       }}
       isLoading={isLoading}
       loadingText={common.loading}
     >
       <OnboardingHeading
         role={role}
-        title="Your Core Values"
-        description="What matters most to you in a shared living environment?"
+        title={t('coreOnboarding.valuesPreferences.title')}
+        description={t('coreOnboarding.valuesPreferences.description')}
       />
 
       <div className="space-y-6">
         {/* Core Values */}
         <div>
-          <OnboardingLabel required>Select Your Core Values</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.valuesPreferences.selectValues')}</OnboardingLabel>
           <p className="text-sm text-gray-600 mb-3">
-            Choose the values that are most important to you (select multiple)
+            {t('coreOnboarding.valuesPreferences.selectValuesHint')}
           </p>
           <OnboardingGrid columns={2}>
             {coreValueOptions.map((option) => (
@@ -145,8 +145,8 @@ export default function CoreValuesPreferencesPage() {
                 <div className="flex items-start gap-2">
                   <div className="mt-1 text-gray-600">{option.icon}</div>
                   <div className="flex-1">
-                    <div className="font-medium text-sm">{option.label}</div>
-                    <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                    <div className="font-medium text-sm">{t(`coreOnboarding.valuesPreferences.values.${option.labelKey}`)}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t(`coreOnboarding.valuesPreferences.values.${option.descKey}`)}</div>
                   </div>
                 </div>
               </OnboardingSelectionCard>
@@ -154,16 +154,16 @@ export default function CoreValuesPreferencesPage() {
           </OnboardingGrid>
           {coreValues.length > 0 && (
             <p className="text-xs text-gray-500 mt-2">
-              Selected: {coreValues.length} value{coreValues.length > 1 ? 's' : ''}
+              {coreValues.length} {t('coreOnboarding.valuesPreferences.selected')}
             </p>
           )}
         </div>
 
         {/* Openness to Sharing */}
         <div>
-          <OnboardingLabel required>Openness to Sharing</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.valuesPreferences.opennessToSharing')}</OnboardingLabel>
           <p className="text-sm text-gray-600 mb-3">
-            How comfortable are you sharing spaces and items with flatmates?
+            {t('coreOnboarding.valuesPreferences.opennessQuestion')}
           </p>
           <OnboardingGrid columns={2}>
             {opennessOptions.map((option) => (
@@ -174,8 +174,8 @@ export default function CoreValuesPreferencesPage() {
                 onClick={() => setOpennessToSharing(option.value)}
               >
                 <div className="text-center">
-                  <div className="font-medium">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium">{t(`coreOnboarding.valuesPreferences.opennessOptions.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`coreOnboarding.valuesPreferences.opennessOptions.${option.descKey}`)}</div>
                 </div>
               </OnboardingSelectionCard>
             ))}
@@ -184,9 +184,9 @@ export default function CoreValuesPreferencesPage() {
 
         {/* Cultural Openness */}
         <div>
-          <OnboardingLabel required>Cultural Openness</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.valuesPreferences.culturalOpenness')}</OnboardingLabel>
           <p className="text-sm text-gray-600 mb-3">
-            How do you feel about living with people from different cultures?
+            {t('coreOnboarding.valuesPreferences.culturalQuestion')}
           </p>
           <OnboardingGrid columns={2}>
             {culturalOpennessOptions.map((option) => (
@@ -197,8 +197,8 @@ export default function CoreValuesPreferencesPage() {
                 onClick={() => setCulturalOpenness(option.value)}
               >
                 <div className="text-center">
-                  <div className="font-medium">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium">{t(`coreOnboarding.valuesPreferences.culturalOptions.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`coreOnboarding.valuesPreferences.culturalOptions.${option.descKey}`)}</div>
                 </div>
               </OnboardingSelectionCard>
             ))}

@@ -118,7 +118,7 @@ export default function ReviewPage() {
 
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) {
-        toast.error('Please log in to continue');
+        toast.error(t('common.errors.loginRequired') || 'Please log in to continue');
         router.push('/login');
         return;
       }
@@ -231,7 +231,7 @@ export default function ReviewPage() {
         safeLocalStorage.remove('preferences');
         safeLocalStorage.remove('verification');
 
-        toast.success(`Profile for ${data.coreBasicInfo.profileName} saved successfully!`);
+        toast.success(`Profil pour ${data.coreBasicInfo.profileName} enregistré avec succès !`);
         router.push('/dashboard/searcher');
       } else {
         const result = await saveOnboardingData(user.id, onboardingData, 'searcher');
@@ -240,7 +240,7 @@ export default function ReviewPage() {
           throw new Error('Failed to save profile');
         }
 
-        toast.success('Profile saved successfully!');
+        toast.success(t('onboarding.review.profileSaved') || 'Profile saved successfully!');
       }
 
       safeLocalStorage.remove('coreBasicInfo');
@@ -253,7 +253,7 @@ export default function ReviewPage() {
 
       router.push('/onboarding/searcher/enhance');
     } catch (err: any) {
-      toast.error('Error: ' + err.message);
+      toast.error((t('common.errors.error') || 'Error: ') + err.message);
       setIsSubmitting(false);
     }
   };
@@ -266,7 +266,7 @@ export default function ReviewPage() {
       progress={{
         current: 6,
         total: 6,
-        label: 'Étape 6 sur 6',
+        label: `${t('onboarding.progress.step')} 6 ${t('onboarding.progress.of')} 6`,
         stepName: t('onboarding.review.title'),
       }}
       isLoading={isLoading}
@@ -338,12 +338,12 @@ export default function ReviewPage() {
           <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Clock className="w-5 h-5 text-orange-600" />
-              <h2 className="font-semibold text-gray-900">Daily Life</h2>
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.dailyLifeSection')}</h2>
             </div>
             <dl className="space-y-2 text-sm">
               {data.coreDailyLife.occupationStatus && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Occupation</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.occupationLabel')}</dt>
                   <dd className="font-medium text-gray-900 capitalize">{data.coreDailyLife.occupationStatus.replace(/_/g, ' ')}</dd>
                 </div>
               )}
@@ -361,27 +361,27 @@ export default function ReviewPage() {
               )}
               {data.coreDailyLife.workSchedule && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Work Schedule</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.workScheduleLabel')}</dt>
                   <dd className="font-medium text-gray-900 capitalize">{data.coreDailyLife.workSchedule}</dd>
                 </div>
               )}
               <div className="flex justify-between">
                 <dt className="text-gray-600">{t('onboarding.review.smokerLabel')}</dt>
-                <dd className="font-medium text-gray-900">{data.coreDailyLife.smoking ? t('onboarding.review.yes') : t('onboarding.review.no')}</dd>
+                <dd className="font-medium text-gray-900">{data.coreDailyLife.smoking ? t('common.yes') : t('common.no')}</dd>
               </div>
               {data.coreDailyLife.hasPets !== undefined && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Pets</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.petsLabel')}</dt>
                   <dd className="font-medium text-gray-900">
                     {data.coreDailyLife.hasPets
-                      ? `Yes${data.coreDailyLife.petType ? ` (${data.coreDailyLife.petType})` : ''}`
-                      : 'No'}
+                      ? `${t('common.yes')}${data.coreDailyLife.petType ? ` (${data.coreDailyLife.petType})` : ''}`
+                      : t('common.no')}
                   </dd>
                 </div>
               )}
               {data.coreDailyLife.cleanliness && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Cleanliness Level</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.cleanlinessLabel')}</dt>
                   <dd className="font-medium text-gray-900">{data.coreDailyLife.cleanliness}/10</dd>
                 </div>
               )}
@@ -394,30 +394,30 @@ export default function ReviewPage() {
           <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Users className="w-5 h-5 text-orange-600" />
-              <h2 className="font-semibold text-gray-900">Social Life</h2>
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.socialLifeSection')}</h2>
             </div>
             <dl className="space-y-2 text-sm">
               {data.coreSocialPersonality.socialEnergy !== undefined && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Social Energy</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.socialEnergyLabel')}</dt>
                   <dd className="font-medium text-gray-900">{data.coreSocialPersonality.socialEnergy}/10</dd>
                 </div>
               )}
               {data.coreSocialPersonality.sharedMealsInterest !== undefined && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Shared Meals</dt>
-                  <dd className="font-medium text-gray-900">{data.coreSocialPersonality.sharedMealsInterest ? 'Interested' : 'Not interested'}</dd>
+                  <dt className="text-gray-600">{t('onboarding.review.sharedMealsLabel')}</dt>
+                  <dd className="font-medium text-gray-900">{data.coreSocialPersonality.sharedMealsInterest ? t('onboarding.review.interested') : t('onboarding.review.notInterested')}</dd>
                 </div>
               )}
               {data.coreSocialPersonality.eventParticipationInterest && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Event Participation</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.eventParticipationLabel')}</dt>
                   <dd className="font-medium text-gray-900 capitalize">{data.coreSocialPersonality.eventParticipationInterest}</dd>
                 </div>
               )}
               {data.coreSocialPersonality.guestFrequency && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Guest Frequency</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.guestFrequencyLabel')}</dt>
                   <dd className="font-medium text-gray-900 capitalize">{data.coreSocialPersonality.guestFrequency}</dd>
                 </div>
               )}
@@ -430,12 +430,12 @@ export default function ReviewPage() {
           <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Home className="w-5 h-5 text-orange-600" />
-              <h2 className="font-semibold text-gray-900">Values & Openness</h2>
+              <h2 className="font-semibold text-gray-900">{t('onboarding.review.valuesSection')}</h2>
             </div>
             <dl className="space-y-2 text-sm">
               {data.coreValuesPreferences.coreValues && data.coreValuesPreferences.coreValues.length > 0 && (
                 <div>
-                  <dt className="text-gray-600 mb-1">Core Values</dt>
+                  <dt className="text-gray-600 mb-1">{t('onboarding.review.coreValuesLabel')}</dt>
                   <dd className="font-medium text-gray-900">
                     <div className="flex flex-wrap gap-1">
                       {data.coreValuesPreferences.coreValues.map((value: string) => (
@@ -449,13 +449,13 @@ export default function ReviewPage() {
               )}
               {data.coreValuesPreferences.opennessToSharing && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Openness to Sharing</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.opennessLabel')}</dt>
                   <dd className="font-medium text-gray-900 capitalize">{data.coreValuesPreferences.opennessToSharing.replace(/_/g, ' ')}</dd>
                 </div>
               )}
               {data.coreValuesPreferences.culturalOpenness && (
                 <div className="flex justify-between">
-                  <dt className="text-gray-600">Cultural Openness</dt>
+                  <dt className="text-gray-600">{t('onboarding.review.culturalOpennessLabel')}</dt>
                   <dd className="font-medium text-gray-900 capitalize">{data.coreValuesPreferences.culturalOpenness}</dd>
                 </div>
               )}

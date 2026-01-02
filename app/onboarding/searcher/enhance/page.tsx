@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { User, Heart, Palette, Users, DollarSign, ShieldCheck, X, Music, Home, Dumbbell } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface EnhanceSection {
   id: string;
@@ -21,13 +22,14 @@ interface EnhanceSection {
 
 export default function OnboardingEnhanceMenu() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [userId, setUserId] = useState<string | null>(null);
   const [sections, setSections] = useState<EnhanceSection[]>([
     {
       id: 'about',
-      title: 'À propos',
-      description: 'Parlez-nous de vous',
+      title: '',
+      description: '',
       icon: User,
       path: '/onboarding/searcher/enhance/about',
       color: 'bg-blue-100 text-blue-600',
@@ -35,8 +37,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'personality',
-      title: 'Personnalité',
-      description: 'Votre style de vie',
+      title: '',
+      description: '',
       icon: Heart,
       path: '/onboarding/searcher/enhance/personality',
       color: 'bg-pink-100 text-pink-600',
@@ -44,8 +46,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'values',
-      title: 'Valeurs',
-      description: 'Ce qui compte pour vous',
+      title: '',
+      description: '',
       icon: ShieldCheck,
       path: '/onboarding/searcher/enhance/values',
       color: 'bg-purple-100 text-purple-600',
@@ -53,8 +55,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'hobbies',
-      title: 'Loisirs',
-      description: 'Vos passions et activités',
+      title: '',
+      description: '',
       icon: Palette,
       path: '/onboarding/searcher/enhance/hobbies',
       color: 'bg-green-100 text-green-600',
@@ -62,8 +64,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'lifestyle-details',
-      title: 'Style de vie',
-      description: 'Musique, cuisine, communication',
+      title: '',
+      description: '',
       icon: Music,
       path: '/onboarding/searcher/enhance/lifestyle-details',
       color: 'bg-teal-100 text-teal-600',
@@ -71,8 +73,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'ideal-living',
-      title: 'Logement idéal',
-      description: 'Taille, mix, préférences',
+      title: '',
+      description: '',
       icon: Home,
       path: '/onboarding/searcher/enhance/ideal-living',
       color: 'bg-cyan-100 text-cyan-600',
@@ -80,8 +82,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'community-activities',
-      title: 'Activités',
-      description: 'Sport et vie communautaire',
+      title: '',
+      description: '',
       icon: Dumbbell,
       path: '/onboarding/searcher/enhance/community-activities',
       color: 'bg-lime-100 text-lime-600',
@@ -89,8 +91,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'community',
-      title: 'Communauté',
-      description: 'Événements et repas partagés',
+      title: '',
+      description: '',
       icon: Users,
       path: '/onboarding/searcher/enhance/community',
       color: 'bg-orange-100 text-orange-600',
@@ -98,8 +100,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'financial',
-      title: 'Financier',
-      description: 'Situation professionnelle',
+      title: '',
+      description: '',
       icon: DollarSign,
       path: '/onboarding/searcher/enhance/financial',
       color: 'bg-yellow-100 text-yellow-600',
@@ -107,8 +109,8 @@ export default function OnboardingEnhanceMenu() {
     },
     {
       id: 'verification',
-      title: 'Vérification',
-      description: 'Vérifiez votre identité',
+      title: '',
+      description: '',
       icon: ShieldCheck,
       path: '/onboarding/searcher/enhance/verification',
       color: 'bg-indigo-100 text-indigo-600',
@@ -160,9 +162,18 @@ export default function OnboardingEnhanceMenu() {
   const progressPercentage = (completedCount / totalCount) * 100;
 
   const handleSkip = () => {
-    toast.info('Vous pourrez compléter votre profil plus tard !');
+    toast.info(t('enhanceSearcher.menu.skipMessage'));
     router.push('/dashboard/searcher');
   };
+
+  // Get translated section data
+  const getTranslatedSections = () => sections.map(section => ({
+    ...section,
+    title: t(`enhanceSearcher.menu.sections.${section.id}.title`),
+    description: t(`enhanceSearcher.menu.sections.${section.id}.description`),
+  }));
+
+  const translatedSections = getTranslatedSections();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-yellow-50">
@@ -171,9 +182,9 @@ export default function OnboardingEnhanceMenu() {
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Améliorez votre profil</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{t('enhanceSearcher.menu.title')}</h1>
               <p className="text-sm text-gray-600 mt-1">
-                Complétez les sections pour augmenter vos chances de matching
+                {t('enhanceSearcher.menu.subtitle')}
               </p>
             </div>
             <Button
@@ -182,7 +193,7 @@ export default function OnboardingEnhanceMenu() {
               className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
             >
               <X className="w-4 h-4" />
-              Passer
+              {t('enhanceSearcher.menu.skip')}
             </Button>
           </div>
 
@@ -190,7 +201,7 @@ export default function OnboardingEnhanceMenu() {
           <div className="mt-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-700">
-                {completedCount} sur {totalCount} sections complétées
+                {completedCount}/{totalCount} étapes complétées
               </span>
               <span className="text-sm font-bold text-orange-600">
                 {Math.round(progressPercentage)}%
@@ -205,7 +216,7 @@ export default function OnboardingEnhanceMenu() {
       {/* Sections Grid */}
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {sections.map((section) => {
+          {translatedSections.map((section) => {
             const IconComponent = section.icon;
             return (
               <button
@@ -250,7 +261,7 @@ export default function OnboardingEnhanceMenu() {
             variant="outline"
             className="text-gray-600"
           >
-            Continuer plus tard
+            {t('enhanceSearcher.menu.continueLater')}
           </Button>
         </div>
       </main>

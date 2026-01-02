@@ -5,10 +5,12 @@ import { useRouter } from 'next/navigation';
 import { CheckCircle, Sparkles, Home, Heart, Users, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
+import { useLanguage } from '@/lib/i18n/use-language';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
 
 export default function QuickCompletePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [countdown, setCountdown] = useState(5);
 
   useEffect(() => {
@@ -112,13 +114,13 @@ export default function QuickCompletePage() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            🎉 Bravo {/* Could add user's name here */}!
+            🎉 {t('quickOnboarding.complete.congrats')}
           </h1>
           <p className="text-xl text-gray-600 mb-2">
-            Ton profil est prêt et actif
+            {t('quickOnboarding.complete.profileReady')}
           </p>
           <p className="text-gray-500">
-            Notre algorithme IA va maintenant te trouver les meilleures options
+            {t('quickOnboarding.complete.aiMessage')}
           </p>
         </motion.div>
 
@@ -131,7 +133,7 @@ export default function QuickCompletePage() {
         >
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-orange-500" />
-            Ce que tu peux faire maintenant
+            {t('quickOnboarding.complete.whatsNext.title')}
           </h2>
 
           <div className="space-y-4">
@@ -142,10 +144,10 @@ export default function QuickCompletePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  Découvre tes matchs
+                  {t('quickOnboarding.complete.whatsNext.matches.title')}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Nous avons déjà des propriétés qui correspondent à tes critères
+                  {t('quickOnboarding.complete.whatsNext.matches.description')}
                 </p>
               </div>
             </div>
@@ -157,10 +159,10 @@ export default function QuickCompletePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  Enregistre tes favoris
+                  {t('quickOnboarding.complete.whatsNext.favorites.title')}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Crée une liste de logements qui te plaisent
+                  {t('quickOnboarding.complete.whatsNext.favorites.description')}
                 </p>
               </div>
             </div>
@@ -172,10 +174,10 @@ export default function QuickCompletePage() {
               </div>
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">
-                  Forme un groupe
+                  {t('quickOnboarding.complete.whatsNext.group.title')}
                 </h3>
                 <p className="text-sm text-gray-600">
-                  Trouve des colocataires compatibles et cherchez ensemble
+                  {t('quickOnboarding.complete.whatsNext.group.description')}
                 </p>
               </div>
             </div>
@@ -194,7 +196,7 @@ export default function QuickCompletePage() {
             onClick={handleGoToDashboard}
             className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-5 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all hover:shadow-2xl hover:scale-105"
           >
-            <span className="text-lg">Aller au Dashboard</span>
+            <span className="text-lg">{t('quickOnboarding.complete.goToDashboard')}</span>
             <ArrowRight className="w-6 h-6" />
           </button>
 
@@ -204,12 +206,12 @@ export default function QuickCompletePage() {
             className="w-full bg-white hover:bg-gray-50 text-gray-700 font-semibold py-4 px-6 rounded-2xl border-2 border-gray-200 hover:border-orange-300 transition-all flex items-center justify-center gap-2"
           >
             <Sparkles className="w-5 h-5 text-orange-500" />
-            <span>Compléter mon profil pour de meilleurs matchs</span>
+            <span>{t('quickOnboarding.complete.completeProfile')}</span>
           </button>
 
           {/* Auto-redirect Counter */}
           <p className="text-center text-sm text-gray-500">
-            Redirection automatique dans <span className="font-bold text-orange-600">{countdown}s</span>...
+            Redirection automatique dans {countdown}s...
           </p>
         </motion.div>
 
@@ -221,7 +223,7 @@ export default function QuickCompletePage() {
           className="mt-8 bg-blue-50 border border-blue-200 rounded-2xl p-6"
         >
           <p className="text-sm text-blue-800">
-            💡 <span className="font-semibold">Astuce Pro:</span> Complète ton profil à 100% pour obtenir jusqu'à <span className="font-bold">3x plus de matchs</span> de qualité!
+            💡 <span className="font-semibold">{t('quickOnboarding.complete.proTip.label')}</span> {t('quickOnboarding.complete.proTip.text')}
           </p>
         </motion.div>
       </div>

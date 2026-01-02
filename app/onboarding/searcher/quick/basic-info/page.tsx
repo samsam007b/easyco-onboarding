@@ -9,6 +9,7 @@ import { safeLocalStorage } from '@/lib/browser';
 import ProgressBar, { generateStepsArray } from '@/components/onboarding/ProgressBar';
 import { useOnboardingFunnel } from '@/lib/analytics/use-analytics';
 import { trackQuickStartFunnel } from '@/lib/analytics/funnels';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   OnboardingLayout,
   OnboardingHeading,
@@ -18,6 +19,7 @@ import {
 
 export default function QuickBasicInfoPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(false);
   const [isPageLoading, setIsPageLoading] = useState(true);
@@ -79,15 +81,15 @@ export default function QuickBasicInfoPage() {
 
   const handleNext = async () => {
     if (!firstName.trim()) {
-      toast.error('Le prénom est requis');
+      toast.error(t('quickOnboarding.basicInfo.errors.firstNameRequired'));
       return;
     }
     if (!lastName.trim()) {
-      toast.error('Le nom de famille est requis');
+      toast.error(t('quickOnboarding.basicInfo.errors.lastNameRequired'));
       return;
     }
     if (!dateOfBirth) {
-      toast.error('La date de naissance est requise');
+      toast.error(t('quickOnboarding.basicInfo.errors.dobRequired'));
       return;
     }
 
@@ -99,11 +101,11 @@ export default function QuickBasicInfoPage() {
       age--;
     }
     if (age < 18) {
-      toast.error('Tu dois avoir au moins 18 ans');
+      toast.error(t('quickOnboarding.basicInfo.errors.ageRestriction'));
       return;
     }
     if (!nationality.trim()) {
-      toast.error('La nationalité est requise');
+      toast.error(t('quickOnboarding.basicInfo.errors.nationalityRequired'));
       return;
     }
 
@@ -163,7 +165,7 @@ export default function QuickBasicInfoPage() {
       router.push('/onboarding/searcher/quick/budget-location');
     } catch (error: any) {
       console.error('Error saving:', error);
-      toast.error(error.message || 'Erreur lors de la sauvegarde');
+      toast.error(error.message || t('quickOnboarding.common.saveError'));
     } finally {
       setIsLoading(false);
     }
@@ -175,15 +177,15 @@ export default function QuickBasicInfoPage() {
     <OnboardingLayout
       role="searcher"
       backUrl="/onboarding/searcher/mode-selection"
-      backLabel="Retour"
+      backLabel={t('quickOnboarding.common.back')}
       progress={{
         current: 1,
         total: 5,
         label: 'Étape 1 sur 5',
-        stepName: 'Informations de base',
+        stepName: t('quickOnboarding.basicInfo.stepName'),
       }}
       isLoading={isPageLoading}
-      loadingText="Chargement..."
+      loadingText={t('quickOnboarding.common.loading')}
     >
       {/* Header */}
       <div className="text-center mb-8">
@@ -192,8 +194,8 @@ export default function QuickBasicInfoPage() {
         </div>
         <OnboardingHeading
           role="searcher"
-          title="Commençons par les bases"
-          description="Dis-nous qui tu es pour personnaliser ton expérience"
+          title={t('quickOnboarding.basicInfo.title')}
+          description={t('quickOnboarding.basicInfo.description')}
         />
       </div>
 
@@ -201,48 +203,48 @@ export default function QuickBasicInfoPage() {
         {/* First Name */}
         <OnboardingInput
           role="searcher"
-          label="Prénom"
+          label={t('quickOnboarding.basicInfo.firstName')}
           required
           icon={User}
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          placeholder="Jean"
+          placeholder={t('quickOnboarding.basicInfo.firstNamePlaceholder')}
         />
 
         {/* Last Name */}
         <OnboardingInput
           role="searcher"
-          label="Nom de famille"
+          label={t('quickOnboarding.basicInfo.lastName')}
           required
           icon={User}
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          placeholder="Dupont"
+          placeholder={t('quickOnboarding.basicInfo.lastNamePlaceholder')}
         />
 
         {/* Date of Birth */}
         <div>
           <OnboardingInput
             role="searcher"
-            label="Date de naissance"
+            label={t('quickOnboarding.basicInfo.dateOfBirth')}
             required
             icon={Calendar}
             type="date"
             value={dateOfBirth}
             onChange={(e) => setDateOfBirth(e.target.value)}
           />
-          <p className="text-xs text-gray-500 mt-1">Tu dois avoir au moins 18 ans</p>
+          <p className="text-xs text-gray-500 mt-1">{t('quickOnboarding.basicInfo.ageHint')}</p>
         </div>
 
         {/* Nationality */}
         <OnboardingInput
           role="searcher"
-          label="Nationalité"
+          label={t('quickOnboarding.basicInfo.nationality')}
           required
           icon={Globe}
           value={nationality}
           onChange={(e) => setNationality(e.target.value)}
-          placeholder="Belge"
+          placeholder={t('quickOnboarding.basicInfo.nationalityPlaceholder')}
         />
       </div>
 
@@ -253,10 +255,10 @@ export default function QuickBasicInfoPage() {
           disabled={!canContinue || isLoading}
         >
           {isLoading ? (
-            'Chargement...'
+            t('quickOnboarding.common.loading')
           ) : (
             <span className="flex items-center justify-center gap-2">
-              Continuer
+              {t('quickOnboarding.common.continue')}
               <ArrowRight className="w-5 h-5" />
             </span>
           )}
@@ -264,7 +266,7 @@ export default function QuickBasicInfoPage() {
       </div>
 
       <p className="text-center text-sm text-gray-500 mt-6">
-        Tes informations sont sauvegardées automatiquement
+        {t('quickOnboarding.common.autoSave')}
       </p>
     </OnboardingLayout>
   );
