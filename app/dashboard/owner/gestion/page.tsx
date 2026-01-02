@@ -24,7 +24,8 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de, type Locale } from 'date-fns/locale';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 import {
   OwnerPageHeader,
@@ -45,6 +46,16 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 export default function GestionHubPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.owner?.gestion;
+
+  // Date-fns locale mapping
+  const dateLocaleMap: Record<string, Locale> = { fr, en: enUS, nl, de };
+  const dateLocale = dateLocaleMap[language] || fr;
+
+  // Number locale mapping
+  const numberLocaleMap: Record<string, string> = { fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE' };
+  const numberLocale = numberLocaleMap[language] || 'fr-FR';
 
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -76,7 +87,7 @@ export default function GestionHubPage() {
       setRecentActivity(activityData);
     } catch (error) {
       console.error('Failed to load gestion data:', error);
-      toast.error('Erreur lors du chargement des données de gestion');
+      toast.error(t?.toast?.errorLoadingData?.[language] || 'Error loading management data');
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -105,9 +116,9 @@ export default function GestionHubPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Loading...
+            {t?.loading?.title?.[language] || 'Loading...'}
           </h3>
-          <p className="text-gray-600">Preparing your dashboard</p>
+          <p className="text-gray-600">{t?.loading?.subtitle?.[language] || 'Preparing your dashboard'}</p>
         </div>
       </div>
     );
@@ -121,10 +132,10 @@ export default function GestionHubPage() {
         {/* Header */}
         <OwnerPageHeader
           icon={Activity}
-          title="Gestion Opérationnelle"
-          subtitle="Pilotez votre portefeuille au quotidien"
-          breadcrumb={{ label: 'Command Center', href: '/dashboard/owner' }}
-          currentPage="Gestion"
+          title={t?.header?.title?.[language] || 'Operational Management'}
+          subtitle={t?.header?.subtitle?.[language] || 'Manage your portfolio daily'}
+          breadcrumb={{ label: t?.header?.breadcrumb?.[language] || 'Command Center', href: '/dashboard/owner' }}
+          currentPage={t?.header?.currentPage?.[language] || 'Management'}
           actions={
             <Button
               variant="outline"
@@ -134,7 +145,7 @@ export default function GestionHubPage() {
               className="rounded-full"
             >
               <RefreshCw className={cn('w-4 h-4 mr-2', isRefreshing && 'animate-spin')} />
-              Actualiser
+              {t?.header?.refresh?.[language] || 'Refresh'}
             </Button>
           }
         />
@@ -178,7 +189,7 @@ export default function GestionHubPage() {
                   </div>
                   {overview?.tenants.newThisMonth && overview.tenants.newThisMonth > 0 && (
                     <span className="px-2 py-1 bg-white/20 rounded-full text-xs font-medium text-white">
-                      +{overview.tenants.newThisMonth} ce mois
+                      +{overview.tenants.newThisMonth} {t?.kpi?.thisMonth?.[language] || 'this month'}
                     </span>
                   )}
                 </div>
@@ -186,11 +197,11 @@ export default function GestionHubPage() {
                   {overview?.tenants.active || 0}
                 </p>
                 <p className="text-white/80 text-sm font-medium">
-                  Locataires actifs
+                  {t?.kpi?.activeTenants?.[language] || 'Active tenants'}
                 </p>
                 <div className="mt-3 flex items-center gap-2 text-white/70 text-xs">
                   <UserCheck className="w-3.5 h-3.5" />
-                  <span>{overview?.tenants.active || 0} occupent vos biens</span>
+                  <span>{t?.kpi?.tenantsOccupying?.[language]?.replace('{count}', String(overview?.tenants.active || 0)) || `${overview?.tenants.active || 0} occupying your properties`}</span>
                 </div>
               </div>
             </motion.div>
@@ -219,7 +230,7 @@ export default function GestionHubPage() {
                     className="px-2 py-1 rounded-full text-xs font-bold text-white animate-pulse"
                     style={{ background: semanticColors.warning.gradient }}
                   >
-                    {overview.leases.expiringSoon} à renouveler
+                    {overview.leases.expiringSoon} {t?.kpi?.toRenew?.[language] || 'to renew'}
                   </span>
                 )}
               </div>
@@ -233,12 +244,12 @@ export default function GestionHubPage() {
                 className="text-sm font-medium"
                 style={{ color: ownerPalette.tertiary.text, opacity: 0.8 }}
               >
-                Baux actifs
+                {t?.kpi?.activeLeases?.[language] || 'Active leases'}
               </p>
               <div className="mt-3 flex items-center gap-3 text-xs" style={{ color: ownerPalette.tertiary.text }}>
                 <span className="flex items-center gap-1">
                   <ClipboardCheck className="w-3.5 h-3.5" style={{ color: semanticColors.success.text }} />
-                  Contrats en cours
+                  {t?.kpi?.currentContracts?.[language] || 'Current contracts'}
                 </span>
               </div>
             </motion.div>
@@ -283,7 +294,7 @@ export default function GestionHubPage() {
                 </div>
                 {overview?.maintenance.urgent && overview.maintenance.urgent > 0 && (
                   <span className="px-2 py-1 bg-white/20 rounded-full text-xs font-bold text-white animate-pulse">
-                    {overview.maintenance.urgent} urgent{overview.maintenance.urgent > 1 ? 's' : ''}
+                    {overview.maintenance.urgent} {t?.kpi?.urgent?.[language] || 'urgent'}
                   </span>
                 )}
               </div>
@@ -302,7 +313,7 @@ export default function GestionHubPage() {
                   opacity: (overview?.maintenance.urgent || 0) > 0 ? 1 : 0.8,
                 }}
               >
-                Tickets ouverts
+                {t?.kpi?.openTickets?.[language] || 'Open tickets'}
               </p>
               <div
                 className="mt-3 text-xs"
@@ -310,7 +321,7 @@ export default function GestionHubPage() {
                   color: (overview?.maintenance.urgent || 0) > 0 ? 'rgba(255,255,255,0.7)' : ownerPalette.quaternary.text,
                 }}
               >
-                {overview?.maintenance.open || 0} ouverts · {overview?.maintenance.inProgress || 0} en cours
+                {overview?.maintenance.open || 0} {t?.kpi?.open?.[language] || 'open'} · {overview?.maintenance.inProgress || 0} {t?.kpi?.inProgress?.[language] || 'in progress'}
               </div>
             </motion.div>
 
@@ -341,17 +352,17 @@ export default function GestionHubPage() {
                   style={{ background: healthStyle.bg, color: healthStyle.text, border: `1px solid ${healthStyle.border}` }}
                 >
                   {overview?.healthScore && overview.healthScore >= 80
-                    ? 'Excellent'
+                    ? (t?.kpi?.excellent?.[language] || 'Excellent')
                     : overview?.healthScore && overview.healthScore >= 50
-                    ? 'Attention'
-                    : 'Urgent'}
+                    ? (t?.kpi?.attention?.[language] || 'Attention')
+                    : (t?.kpi?.urgentLabel?.[language] || 'Urgent')}
                 </span>
               </div>
               <p className="text-3xl font-bold mb-1" style={{ color: healthStyle.text }}>
                 {overview?.healthScore || 100}%
               </p>
               <p className="text-sm font-medium" style={{ color: healthStyle.text, opacity: 0.8 }}>
-                Santé globale
+                {t?.kpi?.globalHealth?.[language] || 'Global health'}
               </p>
               {/* Progress bar */}
               <div className="mt-3">
@@ -385,7 +396,7 @@ export default function GestionHubPage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" style={{ color: '#c2566b' }} />
-                  Actions urgentes
+                  {t?.urgentActions?.title?.[language] || 'Urgent actions'}
                 </h2>
                 {urgentActions.length > 3 && (
                   <Button
@@ -394,7 +405,7 @@ export default function GestionHubPage() {
                     className="text-sm"
                     style={{ color: '#9c5698' }}
                   >
-                    Voir tout ({urgentActions.length})
+                    {t?.urgentActions?.viewAll?.[language] || 'View all'} ({urgentActions.length})
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 )}
@@ -408,8 +419,8 @@ export default function GestionHubPage() {
                   >
                     <CheckCircle className="w-8 h-8 text-white" />
                   </div>
-                  <p className="text-gray-600">Aucune action urgente</p>
-                  <p className="text-sm text-gray-500 mt-1">Tout est sous contrôle !</p>
+                  <p className="text-gray-600">{t?.urgentActions?.empty?.title?.[language] || 'No urgent actions'}</p>
+                  <p className="text-sm text-gray-500 mt-1">{t?.urgentActions?.empty?.subtitle?.[language] || 'Everything is under control!'}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -490,12 +501,12 @@ export default function GestionHubPage() {
             <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6 h-full">
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
                 <Clock className="w-5 h-5" style={{ color: '#9c5698' }} />
-                Activité récente
+                {t?.recentActivity?.title?.[language] || 'Recent activity'}
               </h2>
 
               {recentActivity.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-gray-500 text-sm">Aucune activité récente</p>
+                  <p className="text-gray-500 text-sm">{t?.recentActivity?.empty?.[language] || 'No recent activity'}</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -528,7 +539,7 @@ export default function GestionHubPage() {
                           {activity.propertyName && ` • ${activity.propertyName}`}
                         </p>
                         <p className="text-xs text-gray-400 mt-1">
-                          {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true, locale: fr })}
+                          {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true, locale: dateLocale })}
                         </p>
                       </div>
                     </motion.div>
@@ -548,19 +559,19 @@ export default function GestionHubPage() {
         >
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Sparkles className="w-5 h-5" style={{ color: '#9c5698' }} />
-            Accès rapide
+            {t?.quickAccess?.title?.[language] || 'Quick access'}
           </h2>
 
           <OwnerNavigationGrid>
             <OwnerNavigationCard
-              title="Locataires"
-              description="Gérez les relations avec vos locataires"
+              title={t?.quickAccess?.tenants?.title?.[language] || 'Tenants'}
+              description={t?.quickAccess?.tenants?.description?.[language] || 'Manage relationships with your tenants'}
               icon={Users}
               href="/dashboard/owner/tenants"
               stats={[
-                { label: 'actifs', value: overview?.tenants.active || 0 },
+                { label: t?.quickAccess?.active?.[language] || 'active', value: overview?.tenants.active || 0 },
                 ...(overview?.tenants.withIssues
-                  ? [{ label: 'à suivre', value: overview.tenants.withIssues, variant: 'warning' as const }]
+                  ? [{ label: t?.quickAccess?.toFollow?.[language] || 'to follow', value: overview.tenants.withIssues, variant: 'warning' as const }]
                   : []),
               ]}
               badge={
@@ -570,14 +581,14 @@ export default function GestionHubPage() {
               }
             />
             <OwnerNavigationCard
-              title="Baux"
-              description="Suivez vos contrats de location"
+              title={t?.quickAccess?.leases?.title?.[language] || 'Leases'}
+              description={t?.quickAccess?.leases?.description?.[language] || 'Track your rental contracts'}
               icon={FileText}
               href="/dashboard/owner/leases"
               stats={[
-                { label: 'actifs', value: overview?.leases.active || 0 },
+                { label: t?.quickAccess?.active?.[language] || 'active', value: overview?.leases.active || 0 },
                 ...(overview?.leases.expiringSoon
-                  ? [{ label: 'expirent bientôt', value: overview.leases.expiringSoon, variant: 'warning' as const }]
+                  ? [{ label: t?.quickAccess?.expiringSoon?.[language] || 'expiring soon', value: overview.leases.expiringSoon, variant: 'warning' as const }]
                   : []),
               ]}
               badge={
@@ -587,13 +598,13 @@ export default function GestionHubPage() {
               }
             />
             <OwnerNavigationCard
-              title="Maintenance"
-              description="Traitez les demandes d'intervention"
+              title={t?.quickAccess?.maintenance?.title?.[language] || 'Maintenance'}
+              description={t?.quickAccess?.maintenance?.description?.[language] || 'Handle intervention requests'}
               icon={Wrench}
               href="/dashboard/owner/maintenance"
               stats={[
-                { label: 'ouverts', value: overview?.maintenance.open || 0 },
-                { label: 'en cours', value: overview?.maintenance.inProgress || 0 },
+                { label: t?.quickAccess?.open?.[language] || 'open', value: overview?.maintenance.open || 0 },
+                { label: t?.quickAccess?.inProgress?.[language] || 'in progress', value: overview?.maintenance.inProgress || 0 },
               ]}
               badge={
                 overview?.maintenance.urgent
@@ -628,30 +639,30 @@ export default function GestionHubPage() {
               <div className="space-y-1">
                 <p className="text-3xl font-bold text-white">
                   {overview?.leases.totalMonthlyRent
-                    ? `${overview.leases.totalMonthlyRent.toLocaleString()}€`
+                    ? `${overview.leases.totalMonthlyRent.toLocaleString(numberLocale)}€`
                     : '0€'}
                 </p>
-                <p className="text-white/70 text-sm">Loyers mensuels</p>
+                <p className="text-white/70 text-sm">{t?.summary?.monthlyRents?.[language] || 'Monthly rents'}</p>
               </div>
               <div className="space-y-1">
                 <p className="text-3xl font-bold text-white">
                   {overview?.maintenance.avgResolutionHours || 0}h
                 </p>
-                <p className="text-white/70 text-sm">Temps résolution moyen</p>
+                <p className="text-white/70 text-sm">{t?.summary?.avgResolutionTime?.[language] || 'Avg resolution time'}</p>
               </div>
               <div className="space-y-1">
                 <p className="text-3xl font-bold text-white">
                   {overview?.maintenance.resolved || 0}
                 </p>
-                <p className="text-white/70 text-sm">Tickets résolus</p>
+                <p className="text-white/70 text-sm">{t?.summary?.resolvedTickets?.[language] || 'Resolved tickets'}</p>
               </div>
               <div className="space-y-1">
                 <p className="text-3xl font-bold text-white">
                   {overview?.maintenance.totalCost
-                    ? `${overview.maintenance.totalCost.toLocaleString()}€`
+                    ? `${overview.maintenance.totalCost.toLocaleString(numberLocale)}€`
                     : '0€'}
                 </p>
-                <p className="text-white/70 text-sm">Coûts maintenance</p>
+                <p className="text-white/70 text-sm">{t?.summary?.maintenanceCosts?.[language] || 'Maintenance costs'}</p>
               </div>
             </div>
           </div>

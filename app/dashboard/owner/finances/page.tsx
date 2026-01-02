@@ -45,6 +45,7 @@ import {
   type FinanceAlert,
 } from '@/lib/services/finances-service';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Animation variants
 const containerVariants = {
@@ -68,6 +69,12 @@ const itemVariants = {
 export default function FinancesHubPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.owner?.finances;
+
+  // Number locale mapping for currency formatting
+  const numberLocaleMap: Record<string, string> = { fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE' };
+  const numberLocale = numberLocaleMap[language] || 'fr-FR';
 
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -118,7 +125,7 @@ export default function FinancesHubPage() {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('fr-FR', {
+    return new Intl.NumberFormat(numberLocale, {
       style: 'currency',
       currency: 'EUR',
       maximumFractionDigits: 0,
@@ -135,8 +142,8 @@ export default function FinancesHubPage() {
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">Chargement...</h3>
-          <p className="text-gray-600">Analyse de vos finances</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{t?.loading?.title?.[language] || 'Loading...'}</h3>
+          <p className="text-gray-600">{t?.loading?.subtitle?.[language] || 'Analyzing your finances'}</p>
         </div>
       </div>
     );
@@ -163,8 +170,8 @@ export default function FinancesHubPage() {
               <Sparkles className="w-4 h-4 text-yellow-300 absolute -top-1 -right-1" />
             </div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Finances</h1>
-              <p className="text-gray-500 text-sm">Vue d'ensemble de vos revenus</p>
+              <h1 className="text-2xl font-bold text-gray-900">{t?.header?.title?.[language] || 'Finances'}</h1>
+              <p className="text-gray-500 text-sm">{t?.header?.subtitle?.[language] || 'Overview of your income'}</p>
             </div>
           </div>
           <Button
@@ -175,7 +182,7 @@ export default function FinancesHubPage() {
             className="rounded-full border-gray-300"
           >
             <RefreshCw className={cn('w-4 h-4 mr-2', isRefreshing && 'animate-spin')} />
-            Actualiser
+            {t?.header?.refresh?.[language] || 'Refresh'}
           </Button>
         </motion.div>
 
@@ -196,7 +203,7 @@ export default function FinancesHubPage() {
             <div className="absolute bottom-0 left-0 w-16 h-16 rounded-full bg-white/5 -ml-4 -mb-4" />
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
-                <span className="text-white/80 text-sm font-medium">Revenus du mois</span>
+                <span className="text-white/80 text-sm font-medium">{t?.kpi?.monthlyRevenue?.[language] || 'Monthly revenue'}</span>
                 <BadgeEuro className="w-5 h-5 text-white/60" />
               </div>
               <p className="text-3xl font-bold text-white mb-2">
@@ -218,7 +225,7 @@ export default function FinancesHubPage() {
                     </span>
                   </>
                 ) : (
-                  <span className="text-white/60 text-sm">Stable</span>
+                  <span className="text-white/60 text-sm">{t?.kpi?.stable?.[language] || 'Stable'}</span>
                 )}
               </div>
             </div>
@@ -239,7 +246,7 @@ export default function FinancesHubPage() {
               style={{ background: `${ownerPalette.tertiary.main}15` }} />
             <div className="flex items-center justify-between mb-3">
               <span style={{ color: ownerPalette.tertiary.text }} className="text-sm font-medium">
-                En attente
+                {t?.kpi?.pending?.[language] || 'Pending'}
               </span>
               <div
                 className="w-8 h-8 rounded-lg flex items-center justify-center"
@@ -259,10 +266,10 @@ export default function FinancesHubPage() {
                   color: ownerPalette.tertiary.text,
                 }}
               >
-                {overview?.paymentSummary.pendingCount} paiement(s)
+                {overview?.paymentSummary.pendingCount} {t?.kpi?.payments?.[language] || 'payment(s)'}
               </span>
             ) : (
-              <span className="text-sm text-gray-500">Aucun en attente</span>
+              <span className="text-sm text-gray-500">{t?.kpi?.nonePending?.[language] || 'None pending'}</span>
             )}
           </motion.div>
 
@@ -288,7 +295,7 @@ export default function FinancesHubPage() {
                 'text-sm font-medium',
                 (overview?.kpis.overdueAmount || 0) > 0 ? 'text-white/80' : 'text-emerald-700'
               )}>
-                Impayés
+                {t?.kpi?.overdue?.[language] || 'Overdue'}
               </span>
               <div
                 className={cn(
@@ -316,11 +323,11 @@ export default function FinancesHubPage() {
             </p>
             {(overview?.paymentSummary.overdueCount || 0) > 0 ? (
               <span className="text-sm font-medium text-white/90 px-2 py-0.5 rounded-full bg-white/20">
-                {overview?.paymentSummary.overdueCount} en retard
+                {overview?.paymentSummary.overdueCount} {t?.kpi?.late?.[language] || 'late'}
               </span>
             ) : (
               <span className="text-sm text-emerald-600 font-medium flex items-center gap-1">
-                <CheckCircle className="w-3 h-3" /> Tout est payé
+                <CheckCircle className="w-3 h-3" /> {t?.kpi?.allPaid?.[language] || 'All paid'}
               </span>
             )}
           </motion.div>
@@ -339,7 +346,7 @@ export default function FinancesHubPage() {
               style={{ background: `${ownerPalette.quaternary.main}15` }} />
             <div className="flex items-center justify-between mb-3">
               <span style={{ color: ownerPalette.quaternary.text }} className="text-sm font-medium">
-                Taux d'encaissement
+                {t?.kpi?.collectionRate?.[language] || 'Collection rate'}
               </span>
               <div
                 className="w-8 h-8 rounded-lg flex items-center justify-center"
@@ -379,7 +386,7 @@ export default function FinancesHubPage() {
               >
                 <h2 className="font-bold text-gray-900 flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" style={{ color: ownerPalette.accent.main }} />
-                  Alertes financières
+                  {t?.alerts?.title?.[language] || 'Financial alerts'}
                 </h2>
                 {(overview?.alerts?.length || 0) > 0 && (
                   <span
@@ -400,8 +407,8 @@ export default function FinancesHubPage() {
                     >
                       <CheckCircle className="w-8 h-8 text-white" />
                     </div>
-                    <p className="font-semibold text-gray-900">Aucune alerte</p>
-                    <p className="text-sm text-gray-500 mt-1">Vos finances sont en ordre !</p>
+                    <p className="font-semibold text-gray-900">{t?.alerts?.empty?.title?.[language] || 'No alerts'}</p>
+                    <p className="text-sm text-gray-500 mt-1">{t?.alerts?.empty?.subtitle?.[language] || 'Your finances are in order!'}</p>
                   </div>
                 ) : (
                   <div className="space-y-3">
@@ -481,7 +488,7 @@ export default function FinancesHubPage() {
               >
                 <h2 className="font-bold text-gray-900 flex items-center gap-2">
                   <BarChart3 className="w-5 h-5" style={{ color: ownerPalette.primary.main }} />
-                  Tendance
+                  {t?.trend?.title?.[language] || 'Trend'}
                 </h2>
                 <Button
                   variant="ghost"
@@ -490,7 +497,7 @@ export default function FinancesHubPage() {
                   className="text-sm h-8 px-2"
                   style={{ color: ownerPalette.primary.main }}
                 >
-                  Détails
+                  {t?.trend?.details?.[language] || 'Details'}
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
@@ -533,7 +540,7 @@ export default function FinancesHubPage() {
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-medium" style={{ color: ownerPalette.primary.text }}>
-                      Ce mois
+                      {t?.trend?.thisMonth?.[language] || 'This month'}
                     </span>
                     <div className="flex items-center gap-2">
                       <span className="text-xl font-bold" style={{ color: ownerPalette.primary.main }}>
@@ -566,7 +573,7 @@ export default function FinancesHubPage() {
         <motion.div variants={itemVariants}>
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <PiggyBank className="w-5 h-5" style={{ color: ownerPalette.secondary.main }} />
-            Gestion financière
+            {t?.quickActions?.title?.[language] || 'Financial management'}
           </h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

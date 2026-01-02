@@ -215,7 +215,7 @@ export default function OwnerCommandCenter() {
         pendingApplications = count || 0;
       }
 
-      // Load rent data for each property
+      // Batch fetch all data to avoid N+1 queries
       const urgentActionsTemp: UrgentAction[] = [];
       const deadlinesTemp: UpcomingDeadline[] = [];
       const propertyStatusesTemp: PropertyStatus[] = [];
@@ -224,25 +224,41 @@ export default function OwnerCommandCenter() {
       let totalOpenMaintenance = 0;
       let totalUrgentMaintenance = 0;
 
-      // Process each property
+      // BATCH: Get maintenance stats for ALL properties in one query
+      const maintenanceStatsMap = await maintenanceService.getStatsForProperties(propertyIds);
+
+      // BATCH: Get rent payments for ALL properties in one query
+      const { data: allRentPayments } = await supabase
+        .from('rent_payments')
+        .select('*')
+        .in('property_id', propertyIds)
+        .order('month', { ascending: false });
+
+      // Group rent payments by property_id
+      const rentPaymentsByProperty = new Map<string, typeof allRentPayments>();
+      allRentPayments?.forEach(payment => {
+        const existing = rentPaymentsByProperty.get(payment.property_id) || [];
+        existing.push(payment);
+        rentPaymentsByProperty.set(payment.property_id, existing);
+      });
+
+      // Process each property using cached batch data
       for (const property of propertiesData) {
-        // Get maintenance stats
-        const maintenanceStats = await maintenanceService.getStats(property.id);
+        // Get maintenance stats from batch result
+        const maintenanceStats = maintenanceStatsMap.get(property.id) || {
+          open_count: 0,
+          in_progress_count: 0,
+          by_priority: {} as Record<string, number>,
+        };
         const openCount = maintenanceStats.open_count + maintenanceStats.in_progress_count;
         const urgentCount = maintenanceStats.by_priority?.high || 0;
 
         totalOpenMaintenance += openCount;
         totalUrgentMaintenance += urgentCount;
 
-        // Get rent payments for this property
-        const { data: rentPayments } = await supabase
-          .from('rent_payments')
-          .select('*')
-          .eq('property_id', property.id)
-          .order('month', { ascending: false })
-          .limit(3);
-
-        const overduePayments = rentPayments?.filter(p => p.status === 'overdue') || [];
+        // Get rent payments from batch result (limit to 3 most recent)
+        const rentPayments = (rentPaymentsByProperty.get(property.id) || []).slice(0, 3);
+        const overduePayments = rentPayments.filter(p => p.status === 'overdue');
         const hasOverdueRent = overduePayments.length > 0;
         const overdueAmount = overduePayments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
 

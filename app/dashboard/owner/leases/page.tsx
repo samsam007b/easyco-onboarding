@@ -532,16 +532,18 @@ export default function LeasesPage() {
             severity={stats.expired > 0 ? 'critical' : 'warning'}
             title={
               stats.expired > 0
-                ? `${stats.expired} bail${stats.expired > 1 ? 'x' : ''} expiré${stats.expired > 1 ? 's' : ''} à renouveler`
-                : `${stats.endingSoon} bail${stats.endingSoon > 1 ? 'x' : ''} expire${stats.endingSoon > 1 ? 'nt' : ''} bientôt`
+                ? (t?.alert?.expiredTitle?.[language]?.replace('{count}', String(stats.expired)) ||
+                   `${stats.expired} expired lease${stats.expired > 1 ? 's' : ''} to renew`)
+                : (t?.alert?.endingSoonTitle?.[language]?.replace('{count}', String(stats.endingSoon)) ||
+                   `${stats.endingSoon} lease${stats.endingSoon > 1 ? 's' : ''} expiring soon`)
             }
             description={
               stats.expired > 0
-                ? "Action requise pour renouveler ou terminer ces contrats"
-                : "Pensez à contacter vos locataires pour discuter du renouvellement"
+                ? (t?.alert?.expiredDescription?.[language] || 'Action required to renew or terminate these contracts')
+                : (t?.alert?.endingSoonDescription?.[language] || 'Consider contacting your tenants to discuss renewal')
             }
             action={{
-              label: "Voir les baux",
+              label: t?.alert?.viewLeases?.[language] || 'View leases',
               onClick: () => setFilterStatus(stats.expired > 0 ? 'expired' : 'ending_soon')
             }}
             className="mb-6"
@@ -560,7 +562,15 @@ export default function LeasesPage() {
               onLeaseClick={(leaseId) => {
                 const lease = leases.find(l => l.id === leaseId);
                 if (lease) {
-                  toast.info(`Bail de ${lease.tenant_name} - ${format(lease.start_date, 'dd MMM yyyy', { locale: fr })} au ${format(lease.end_date, 'dd MMM yyyy', { locale: fr })}`);
+                  const fromDate = format(lease.start_date, 'dd MMM yyyy', { locale: dateLocale });
+                  const toDate = format(lease.end_date, 'dd MMM yyyy', { locale: dateLocale });
+                  toast.info(
+                    t?.toast?.leaseInfo?.[language]
+                      ?.replace('{tenant}', lease.tenant_name)
+                      ?.replace('{from}', fromDate)
+                      ?.replace('{to}', toDate) ||
+                    `Lease for ${lease.tenant_name} - ${fromDate} to ${toDate}`
+                  );
                 }
               }}
             />
@@ -586,13 +596,19 @@ export default function LeasesPage() {
               onRenew={(leaseId) => {
                 const lease = leases.find(l => l.id === leaseId);
                 if (lease) {
-                  toast.info(`Renouvellement de bail pour ${lease.tenant_name} - Fonctionnalité bientôt disponible`);
+                  toast.info(
+                    t?.toast?.renewalComingSoon?.[language]?.replace('{tenant}', lease.tenant_name) ||
+                    `Lease renewal for ${lease.tenant_name} - Coming soon`
+                  );
                 }
               }}
               onDecline={(leaseId) => {
                 const lease = leases.find(l => l.id === leaseId);
                 if (lease) {
-                  toast.info(`Fin de bail pour ${lease.tenant_name} - Fonctionnalité bientôt disponible`);
+                  toast.info(
+                    t?.toast?.terminationComingSoon?.[language]?.replace('{tenant}', lease.tenant_name) ||
+                    `Lease termination for ${lease.tenant_name} - Coming soon`
+                  );
                 }
               }}
             />
@@ -629,12 +645,14 @@ export default function LeasesPage() {
                 </div>
 
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                  {filterStatus === 'all' ? 'Aucun bail' : 'Aucun bail trouvé'}
+                  {filterStatus === 'all'
+                    ? (t?.empty?.noLeases?.[language] || 'No leases')
+                    : (t?.empty?.noLeasesFound?.[language] || 'No leases found')}
                 </h3>
                 <p className="text-gray-600 mb-4 max-w-md mx-auto">
                   {filterStatus === 'all'
-                    ? 'Ajoutez des locataires avec des dates de bail pour voir les contrats ici'
-                    : 'Essayez un autre filtre'}
+                    ? (t?.empty?.addTenantsHint?.[language] || 'Add tenants with lease dates to see contracts here')
+                    : (t?.empty?.tryAnotherFilter?.[language] || 'Try another filter')}
                 </p>
               </motion.div>
             ) : (
@@ -648,10 +666,11 @@ export default function LeasesPage() {
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
                     <FileText className="w-5 h-5" style={{ color: '#9c5698' }} />
-                    Tous les contrats
+                    {t?.list?.allContracts?.[language] || 'All contracts'}
                   </h3>
                   <span className="text-sm text-gray-500">
-                    {filteredLeases.length} bail{filteredLeases.length !== 1 ? 'x' : ''}
+                    {t?.list?.leaseCount?.[language]?.replace('{count}', String(filteredLeases.length)) ||
+                     `${filteredLeases.length} lease${filteredLeases.length !== 1 ? 's' : ''}`}
                   </span>
                 </div>
 
@@ -672,7 +691,15 @@ export default function LeasesPage() {
                         borderLeftColor: statusConfig.color,
                       }}
                       onClick={() => {
-                        toast.info(`Bail de ${lease.tenant_name} - ${format(lease.start_date, 'dd MMM yyyy', { locale: fr })} au ${format(lease.end_date, 'dd MMM yyyy', { locale: fr })}`);
+                        const fromDate = format(lease.start_date, 'dd MMM yyyy', { locale: dateLocale });
+                        const toDate = format(lease.end_date, 'dd MMM yyyy', { locale: dateLocale });
+                        toast.info(
+                          t?.toast?.leaseInfo?.[language]
+                            ?.replace('{tenant}', lease.tenant_name)
+                            ?.replace('{from}', fromDate)
+                            ?.replace('{to}', toDate) ||
+                          `Lease for ${lease.tenant_name} - ${fromDate} to ${toDate}`
+                        );
                       }}
                     >
                       <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full opacity-10" style={{ background: ownerGradient }} />
@@ -718,9 +745,9 @@ export default function LeasesPage() {
                             {/* Monthly Rent */}
                             <div className="text-right flex-shrink-0">
                               <div className="text-xl font-bold" style={{ color: '#9c5698' }}>
-                                {lease.monthly_rent.toLocaleString('fr-FR')}€
+                                {lease.monthly_rent.toLocaleString(numberLocale)}€
                               </div>
-                              <div className="text-xs text-gray-500">/mois</div>
+                              <div className="text-xs text-gray-500">/{t?.list?.perMonth?.[language] || 'month'}</div>
                             </div>
                           </div>
 
@@ -730,11 +757,11 @@ export default function LeasesPage() {
                             <div className="flex items-center justify-between text-sm">
                               <div className="flex items-center gap-2 text-gray-600">
                                 <CalendarCheck className="w-4 h-4 text-green-500" />
-                                <span>Début: {format(lease.start_date, 'd MMM yyyy', { locale: fr })}</span>
+                                <span>{t?.list?.start?.[language] || 'Start'}: {format(lease.start_date, 'd MMM yyyy', { locale: dateLocale })}</span>
                               </div>
                               <div className="flex items-center gap-2 text-gray-600">
                                 <CalendarX className="w-4 h-4 text-red-500" />
-                                <span>Fin: {format(lease.end_date, 'd MMM yyyy', { locale: fr })}</span>
+                                <span>{t?.list?.end?.[language] || 'End'}: {format(lease.end_date, 'd MMM yyyy', { locale: dateLocale })}</span>
                               </div>
                             </div>
 
@@ -756,12 +783,13 @@ export default function LeasesPage() {
                                 />
                               </div>
                               <div className="flex justify-between mt-1 text-xs text-gray-500">
-                                <span>{lease.duration_months} mois</span>
+                                <span>{lease.duration_months} {t?.list?.months?.[language] || 'months'}</span>
                                 {lease.status !== 'expired' && (
                                   <span className={cn(
                                     lease.status === 'ending_soon' && "text-amber-600 font-medium"
                                   )}>
-                                    {lease.days_remaining} jours restants
+                                    {t?.list?.daysRemaining?.[language]?.replace('{count}', String(lease.days_remaining)) ||
+                                     `${lease.days_remaining} days remaining`}
                                   </span>
                                 )}
                               </div>
@@ -781,11 +809,14 @@ export default function LeasesPage() {
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  toast.info(`Renouvellement de bail pour ${lease.tenant_name} - Fonctionnalité bientôt disponible`);
+                                  toast.info(
+                                    t?.toast?.renewalComingSoon?.[language]?.replace('{tenant}', lease.tenant_name) ||
+                                    `Lease renewal for ${lease.tenant_name} - Coming soon`
+                                  );
                                 }}
                               >
                                 <Repeat className="w-4 h-4 mr-2" />
-                                Renouveler
+                                {t?.actions?.renew?.[language] || 'Renew'}
                               </Button>
                             </motion.div>
                           )}
@@ -799,7 +830,7 @@ export default function LeasesPage() {
                               }}
                             >
                               <Download className="w-4 h-4 mr-2" />
-                              Contrat
+                              {t?.actions?.contract?.[language] || 'Contract'}
                             </Button>
                           </motion.div>
                         </div>
