@@ -36,6 +36,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { createClient } from '@/lib/auth/supabase-client';
+import { toast } from 'sonner';
 
 // V3 Owner gradient
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
@@ -184,8 +186,23 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
   } = stats;
 
   const handleLogout = async () => {
-    setShowProfileMenu(false);
-    router.push('/auth/logout');
+    try {
+      setShowProfileMenu(false);
+      const supabase = createClient();
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error('Logout error:', error);
+        toast.error('Erreur lors de la déconnexion');
+        return;
+      }
+
+      toast.success('Déconnexion réussie');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Erreur lors de la déconnexion');
+    }
   };
 
   // Check if any item in a domain is active

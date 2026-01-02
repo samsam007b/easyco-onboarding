@@ -30,6 +30,8 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { createClient } from '@/lib/auth/supabase-client';
+import { toast } from 'sonner';
 import FranceFlag from '@/components/icons/flags/FranceFlag';
 import UKFlag from '@/components/icons/flags/UKFlag';
 import NetherlandsFlag from '@/components/icons/flags/NetherlandsFlag';
@@ -155,8 +157,23 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
   ];
 
   const handleLogout = async () => {
-    setShowProfileMenu(false);
-    router.push('/auth/logout');
+    try {
+      setShowProfileMenu(false);
+      const supabase = createClient();
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error('Logout error:', error);
+        toast.error('Erreur lors de la déconnexion');
+        return;
+      }
+
+      toast.success('Déconnexion réussie');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Erreur lors de la déconnexion');
+    }
   };
 
   const formatDate = (dateString: string) => {

@@ -32,6 +32,7 @@ import NotificationBell from '@/components/notifications/NotificationBell';
 import { createClient } from '@/lib/auth/supabase-client';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { toast } from 'sonner';
 import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
 import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
 
@@ -172,8 +173,23 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
   ];
 
   const handleLogout = async () => {
-    setShowProfileMenu(false);
-    router.push('/auth/logout');
+    try {
+      setShowProfileMenu(false);
+      const supabase = createClient();
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        console.error('Logout error:', error);
+        toast.error('Erreur lors de la déconnexion');
+        return;
+      }
+
+      toast.success('Déconnexion réussie');
+      window.location.href = '/';
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error('Erreur lors de la déconnexion');
+    }
   };
 
   return (

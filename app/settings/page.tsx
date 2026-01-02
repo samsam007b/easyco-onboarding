@@ -28,6 +28,9 @@ import {
   FileText,
   Gift,
   BadgeCheck,
+  Wrench,
+  Building2,
+  BellRing,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -41,7 +44,8 @@ interface SettingsSection {
   badge?: string;
   color: string;
   category: 'account' | 'preferences' | 'advanced';
-  requiresResidence?: boolean; // If true, hide for users without a residence
+  requiresResidence?: boolean; // If true, hide for users without a residence (for searchers)
+  roles?: ('owner' | 'resident' | 'searcher')[]; // If specified, only show for these roles
 }
 
 export default function SettingsPage() {
@@ -167,7 +171,8 @@ export default function SettingsPage() {
       color: 'bg-purple-100',
       badge: isCreator ? (settings.badges?.creator || 'Créateur') : undefined,
       category: 'account',
-      requiresResidence: true, // Hide for searchers without residence
+      requiresResidence: true,
+      roles: ['resident'], // Only for residents with their coliving
     },
     {
       id: 'residence-profile',
@@ -178,7 +183,8 @@ export default function SettingsPage() {
       color: 'bg-pink-100',
       badge: settings.badges?.new || 'New',
       category: 'account',
-      requiresResidence: true, // Hide for searchers without residence
+      requiresResidence: true,
+      roles: ['resident'], // Only for residents managing their coliving
     },
     {
       id: 'referrals',
@@ -245,7 +251,7 @@ export default function SettingsPage() {
       href: '/settings/bank-info',
       color: 'bg-indigo-100',
       category: 'advanced',
-      requiresResidence: true, // Only for residents who need to receive payments
+      roles: ['owner', 'resident'], // Owners receive rent, residents may receive reimbursements
     },
     {
       id: 'invoices',
@@ -255,6 +261,27 @@ export default function SettingsPage() {
       href: '/settings/invoices',
       color: 'bg-emerald-100',
       category: 'advanced',
+    },
+    // Owner-specific settings
+    {
+      id: 'vendor-management',
+      title: settings.sections?.vendorManagement?.title || 'Prestataires',
+      description: settings.sections?.vendorManagement?.description || 'Gérer vos artisans et prestataires de maintenance',
+      icon: Wrench,
+      href: '/settings/vendors',
+      color: 'bg-amber-100',
+      category: 'advanced',
+      roles: ['owner'], // Only for property owners
+    },
+    {
+      id: 'property-alerts',
+      title: settings.sections?.propertyAlerts?.title || 'Alertes propriétés',
+      description: settings.sections?.propertyAlerts?.description || 'Notifications sur vos biens (baux, maintenance, paiements)',
+      icon: BellRing,
+      href: '/settings/property-alerts',
+      color: 'bg-purple-100',
+      category: 'preferences',
+      roles: ['owner'], // Only for property owners
     },
     {
       id: 'devices',
@@ -362,11 +389,15 @@ export default function SettingsPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {categories.map((category, categoryIndex) => {
           const CategoryIcon = category.icon;
-          // Filter sections by category and by residence requirement
+          // Filter sections by category, role, and residence requirement
           const categorySections = settingsSections.filter(s => {
             if (s.category !== category.id) return false;
-            // Hide residence-related sections for users without a residence
-            if (s.requiresResidence && !hasResidence) return false;
+            // Check role-based visibility
+            if (s.roles && s.roles.length > 0) {
+              if (!s.roles.includes(userType as 'owner' | 'resident' | 'searcher')) return false;
+            }
+            // Hide residence-related sections for users without a residence (for non-owners)
+            if (s.requiresResidence && !hasResidence && userType !== 'owner') return false;
             return true;
           });
 
@@ -418,6 +449,9 @@ export default function SettingsPage() {
                       case 'bank-info': return 'linear-gradient(135deg, #7B8BD9 0%, #9BA8E0 100%)'; // Soft indigo
                       case 'invoices': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)'; // Soft sage
                       case 'devices': return 'linear-gradient(135deg, #70B0C0 0%, #90C8D8 100%)'; // Soft teal
+                      // Owner-specific settings
+                      case 'vendor-management': return 'linear-gradient(135deg, #D9A870 0%, #E0C090 100%)'; // Soft amber (tools/maintenance)
+                      case 'property-alerts': return 'linear-gradient(135deg, #9B7BD9 0%, #B59BE0 100%)'; // Soft lavender (notifications)
                       default: return 'linear-gradient(135deg, #D08070 0%, #E0A090 100%)'; // Soft terracotta
                     }
                   };
