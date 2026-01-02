@@ -32,6 +32,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { ownerGradient, semanticColors } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export type PropertyStatus = 'published' | 'draft' | 'archived';
 export type PropertyHealth = 'excellent' | 'attention' | 'critical';
@@ -90,38 +91,38 @@ const healthConfig = {
     color: '#059669',
     bgColor: 'bg-emerald-100',
     borderColor: 'border-emerald-300',
-    label: 'Excellent',
+    labelKey: 'excellent',
     icon: CheckCircle,
   },
   attention: {
     color: '#D97706',
     bgColor: 'bg-amber-100',
     borderColor: 'border-amber-300',
-    label: 'Attention',
+    labelKey: 'attention',
     icon: AlertTriangle,
   },
   critical: {
     color: '#DC2626',
     bgColor: 'bg-red-100',
     borderColor: 'border-red-300',
-    label: 'Critique',
+    labelKey: 'critical',
     icon: Clock,
   },
 };
 
 const statusConfig = {
   published: {
-    label: 'Publié',
+    labelKey: 'publishedStatus',
     bgColor: 'bg-emerald-100',
     textColor: 'text-emerald-700',
   },
   draft: {
-    label: 'Brouillon',
+    labelKey: 'draft',
     bgColor: 'bg-gray-100',
     textColor: 'text-gray-600',
   },
   archived: {
-    label: 'Archivé',
+    labelKey: 'archived',
     bgColor: 'bg-slate-100',
     textColor: 'text-slate-600',
   },
@@ -140,10 +141,19 @@ export function PropertyCard({
   onSelect,
   className,
 }: PropertyCardProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerPortfolio');
+
   const health = calculateHealth(property);
   const healthStyle = healthConfig[health];
   const statusStyle = statusConfig[property.status];
   const HealthIcon = healthStyle.icon;
+
+  // Get translated labels
+  const healthLabel = t?.[healthStyle.labelKey]?.[language] || healthStyle.labelKey;
+  const statusLabel = property.isRented
+    ? (t?.rented?.[language] || 'Rented')
+    : (t?.[statusStyle.labelKey]?.[language] || statusStyle.labelKey);
 
   // Compact list variant
   if (variant === 'list') {
@@ -205,7 +215,7 @@ export function PropertyCard({
           <div className="flex items-center gap-2">
             <p className="font-semibold text-gray-900 truncate">{property.title}</p>
             <span className={cn('px-2 py-0.5 text-xs font-medium rounded-full', statusStyle.bgColor, statusStyle.textColor)}>
-              {property.isRented ? 'Loué' : statusStyle.label}
+              {statusLabel}
             </span>
           </div>
           <p className="text-sm text-gray-500 flex items-center gap-1">
@@ -249,25 +259,25 @@ export function PropertyCard({
             {onViewDetails && (
               <DropdownMenuItem onClick={onViewDetails}>
                 <ExternalLink className="w-4 h-4 mr-2" />
-                Voir détails
+                {t?.viewDetails?.[language] || 'View details'}
               </DropdownMenuItem>
             )}
             {onEdit && (
               <DropdownMenuItem onClick={onEdit}>
                 <Edit className="w-4 h-4 mr-2" />
-                Modifier
+                {t?.edit?.[language] || 'Edit'}
               </DropdownMenuItem>
             )}
             {onHistory && (
               <DropdownMenuItem onClick={onHistory}>
                 <History className="w-4 h-4 mr-2" />
-                Historique
+                {t?.history?.[language] || 'History'}
               </DropdownMenuItem>
             )}
             {onArchive && (
               <DropdownMenuItem onClick={onArchive}>
                 <Archive className="w-4 h-4 mr-2" />
-                Archiver
+                {t?.archive?.[language] || 'Archive'}
               </DropdownMenuItem>
             )}
             {onDelete && (
@@ -275,7 +285,7 @@ export function PropertyCard({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={onDelete} className="text-red-600">
                   <Trash2 className="w-4 h-4 mr-2" />
-                  Supprimer
+                  {t?.delete?.[language] || 'Delete'}
                 </DropdownMenuItem>
               </>
             )}
@@ -326,7 +336,7 @@ export function PropertyCard({
             style={{ color: healthStyle.color }}
           >
             <HealthIcon className="w-3 h-3" />
-            {healthStyle.label}
+            {healthLabel}
           </div>
 
           {/* Status Badge */}
@@ -335,7 +345,7 @@ export function PropertyCard({
             statusStyle.bgColor,
             statusStyle.textColor
           )}>
-            {property.isRented ? 'Loué' : statusStyle.label}
+            {statusLabel}
           </div>
         </div>
 
@@ -406,7 +416,7 @@ export function PropertyCard({
           style={{ color: healthStyle.color }}
         >
           <HealthIcon className="w-3.5 h-3.5" />
-          {healthStyle.label}
+          {healthLabel}
         </div>
 
         {/* Status Badge */}
@@ -415,7 +425,7 @@ export function PropertyCard({
           statusStyle.bgColor,
           statusStyle.textColor
         )}>
-          {property.isRented ? 'Loué' : statusStyle.label}
+          {statusLabel}
         </div>
 
         {/* Selection Checkbox */}
@@ -437,7 +447,7 @@ export function PropertyCard({
         {property.daysVacant && property.daysVacant > 0 && !property.isRented && (
           <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-lg text-xs text-white flex items-center gap-1">
             <Clock className="w-3 h-3" />
-            {property.daysVacant}j vacant
+            {property.daysVacant}{t?.daysVacant?.[language] || 'd vacant'}
           </div>
         )}
       </div>

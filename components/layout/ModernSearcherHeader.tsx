@@ -56,8 +56,9 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
-  const { getSection } = useLanguage();
+  const { language, getSection } = useLanguage();
   const nav = getSection('dashboard').searcher.header;
+  const common = getSection('common');
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -180,15 +181,15 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
 
       if (error) {
         console.error('Logout error:', error);
-        toast.error('Erreur lors de la déconnexion');
+        toast.error(common?.logoutError?.[language] || 'Logout failed');
         return;
       }
 
-      toast.success('Déconnexion réussie');
+      toast.success(common?.logoutSuccess?.[language] || 'Successfully logged out');
       window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
-      toast.error('Erreur lors de la déconnexion');
+      toast.error(common?.logoutError?.[language] || 'Logout failed');
     }
   };
 
@@ -281,7 +282,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                 className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100/50 hover:shadow-md transition-all"
               >
                 <Bookmark className="w-4 h-4 text-orange-600" />
-                <span className="text-sm font-medium text-orange-900">{favoritesCount} favoris</span>
+                <span className="text-sm font-medium text-orange-900">{favoritesCount} {common?.favorites?.[language] || 'favorites'}</span>
               </Link>
             )}
 
@@ -290,7 +291,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
-                aria-label={`Notifications${(matchesCount > 0 || unreadMessages > 0) ? ` (${matchesCount + unreadMessages} non lues)` : ''}`}
+                aria-label={`${common?.notifications?.[language] || 'Notifications'}${(matchesCount > 0 || unreadMessages > 0) ? ` (${matchesCount + unreadMessages} ${common?.unreadNotifications?.[language] || 'unread'})` : ''}`}
                 aria-expanded={showNotifications}
                 aria-haspopup="true"
               >
@@ -315,7 +316,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
-                        <h3 className="font-semibold text-gray-900">Notifications</h3>
+                        <h3 className="font-semibold text-gray-900">{common?.notifications?.[language] || 'Notifications'}</h3>
                       </div>
                       <div className="max-h-96 overflow-y-auto">
                         {matchesCount > 0 && (
@@ -329,16 +330,16 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
-                                {matchesCount} nouveau{matchesCount > 1 ? 'x' : ''} match{matchesCount > 1 ? 's' : ''}
+                                {matchesCount} {matchesCount > 1 ? (common?.newMatchesPlural?.[language] || 'new matches') : (common?.newMatches?.[language] || 'new match')}
                               </p>
-                              <p className="text-xs text-gray-500">Propriétés compatibles avec vous</p>
+                              <p className="text-xs text-gray-500">{common?.compatibleProperties?.[language] || 'Properties compatible with you'}</p>
                             </div>
                           </Link>
                         )}
                         {(matchesCount === 0 && unreadMessages === 0) && (
                           <div className="px-4 py-8 text-center text-gray-500">
                             <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                            <p className="text-sm">Aucune notification</p>
+                            <p className="text-sm">{common?.noNotifications?.[language] || 'No notifications'}</p>
                           </div>
                         )}
                       </div>
@@ -358,7 +359,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
-                aria-label="Menu profil"
+                aria-label={common?.profileMenu?.[language] || 'Profile menu'}
                 aria-expanded={showProfileMenu}
                 aria-haspopup="true"
               >
@@ -449,7 +450,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                             <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
                               {favoritesCount}
                             </div>
-                            <div className="text-xs text-gray-600">Favoris</div>
+                            <div className="text-xs text-gray-600">{nav.favorites}</div>
                           </div>
                           <div className="text-center border-x border-orange-200/50">
                             <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
@@ -461,7 +462,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                             <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
                               {unreadMessages}
                             </div>
-                            <div className="text-xs text-gray-600">Messages</div>
+                            <div className="text-xs text-gray-600">{nav.messages}</div>
                           </div>
                         </div>
                       </div>
@@ -477,8 +478,8 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                             <User className="w-4 h-4 text-orange-700" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Mon Profil</span>
-                            <span className="text-xs text-gray-500">Gérer mes informations</span>
+                            <span className="text-gray-900 font-medium block">{common?.myProfile?.[language] || 'My Profile'}</span>
+                            <span className="text-xs text-gray-500">{common?.manageInfo?.[language] || 'Manage my information'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -492,8 +493,8 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                             <Save className="w-4 h-4 text-blue-700" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Recherches</span>
-                            <span className="text-xs text-gray-500">Mes recherches sauvegardées</span>
+                            <span className="text-gray-900 font-medium block">{common?.savedSearches?.[language] || 'Searches'}</span>
+                            <span className="text-xs text-gray-500">{common?.mySavedSearches?.[language] || 'My saved searches'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -507,8 +508,8 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                             <Settings className="w-4 h-4 text-purple-700" />
                           </div>
                           <div className="flex-1">
-                            <span className="text-gray-900 font-medium block">Paramètres</span>
-                            <span className="text-xs text-gray-500">Préférences et confidentialité</span>
+                            <span className="text-gray-900 font-medium block">{common?.settings?.[language] || 'Settings'}</span>
+                            <span className="text-xs text-gray-500">{common?.preferencesAndPrivacy?.[language] || 'Preferences and privacy'}</span>
                           </div>
                           <ChevronDown className="w-4 h-4 text-gray-400 -rotate-90 group-hover:translate-x-1 transition-transform" />
                         </Link>
@@ -523,7 +524,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                         >
                           <div className="flex items-center justify-center gap-2">
                             <Sparkles className="w-4 h-4" />
-                            <span>Compléter mon profil</span>
+                            <span>{common?.completeProfile?.[language] || 'Complete my profile'}</span>
                           </div>
                         </Link>
                       </div>
@@ -539,7 +540,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                         <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
                           <LogOut className="w-4 h-4 text-red-600" />
                         </div>
-                        <span className="font-medium">Déconnexion</span>
+                        <span className="font-medium">{common?.logout?.[language] || 'Log out'}</span>
                       </button>
                     </motion.div>
                   </>
@@ -551,7 +552,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
-              aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-label={mobileMenuOpen ? (common?.closeMenu?.[language] || 'Close menu') : (common?.openMenu?.[language] || 'Open menu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
             >

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Send, Image as ImageIcon, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ChatInputProps {
   onSendMessage: (message: string, imageUrl?: string) => Promise<void>;
@@ -17,8 +18,11 @@ export function ChatInput({
   onSendMessage,
   onTyping,
   disabled = false,
-  placeholder = 'Écrivez votre message...',
+  placeholder,
 }: ChatInputProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('components')?.chat;
+  const defaultPlaceholder = t?.placeholder?.[language] || 'Write your message...';
   const [message, setMessage] = useState('');
   const [sending, setSending] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -37,7 +41,7 @@ export function ChatInput({
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Impossible d\'envoyer le message');
+      toast.error(t?.sendError?.[language] || 'Unable to send message');
     } finally {
       setSending(false);
     }
@@ -68,13 +72,13 @@ export function ChatInput({
 
     // Check file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Veuillez sélectionner une image');
+      toast.error(t?.selectImage?.[language] || 'Please select an image');
       return;
     }
 
     // Check file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('L\'image est trop volumineuse (max 5MB)');
+      toast.error(t?.imageTooLarge?.[language] || 'Image is too large (max 5MB)');
       return;
     }
 
@@ -82,10 +86,10 @@ export function ChatInput({
       setUploading(true);
       // TODO: Implement image upload to Supabase Storage
       // For now, just show a message
-      toast.info('Upload d\'images bientôt disponible');
+      toast.info(t?.uploadComingSoon?.[language] || 'Image upload coming soon');
     } catch (error) {
       console.error('Error uploading image:', error);
-      toast.error('Impossible d\'uploader l\'image');
+      toast.error(t?.uploadError?.[language] || 'Unable to upload image');
     } finally {
       setUploading(false);
       if (fileInputRef.current) {
@@ -127,7 +131,7 @@ export function ChatInput({
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           onInput={handleInput}
-          placeholder={placeholder}
+          placeholder={placeholder || defaultPlaceholder}
           disabled={disabled || sending}
           className="min-h-[44px] max-h-[120px] resize-none"
           rows={1}
@@ -146,7 +150,7 @@ export function ChatInput({
 
       {/* Hint text */}
       <p className="text-xs text-gray-500 mt-2">
-        Appuyez sur Entrée pour envoyer, Shift+Entrée pour une nouvelle ligne
+        {t?.hint?.[language] || 'Press Enter to send, Shift+Enter for new line'}
       </p>
     </div>
   );

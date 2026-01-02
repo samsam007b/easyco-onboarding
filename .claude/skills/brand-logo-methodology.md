@@ -230,7 +230,33 @@ Laquelle te parle le plus?
 | `izzico-workbench.html` | Ajustement spacing/taille |
 | `izzico-stroke-analysis.html` | Analyse epaisseur pixels |
 | `izzico-weight-tuning.html` | Ajustement poids par lettre |
-| `izzico-brand-guidelines.html` | Document de reference final |
+| `izzico-stroke-width-workbench.html` | Calibration stroke vs Fredoka |
+| `izzico-linecap-workbench.html` | Calibration terminaisons + buste |
+| `izzico-icon-final.html` | Preview icone finale |
+
+### Specs Icone Verrouillees
+```css
+/* TERMINAISONS */
+cap-roundness: 85%  /* Squircle Fredoka */
+
+/* STROKES (equilibre optique) */
+circle: 7.5
+loupe: 6
+key: 6
+teeth: 3
+bust: 6.5
+
+/* BUSTE */
+bust-curvature: 85%
+bust-cap-roundness: 85%
+/* Terminaisons alignees avec tangente de la courbe */
+
+/* PROPORTIONS */
+circle: cy=41, r=15
+loupe: len=21, angle=139deg
+key: len=21, angle=36deg, teeth=2, teethSize=7
+bust: gap=2, w=35, h=21
+```
 
 ---
 
@@ -406,6 +432,96 @@ workbench/
 - CSS variables pour les parametres ajustables
 - `navigator.clipboard.writeText()` pour export
 
+---
+
+# LECONS CRITIQUES (Phase Icon 2026-01-02)
+
+## Erreurs a NE JAMAIS Repeter
+
+### Erreur 1: Anticiper les Etapes
+**Symptome:** Passer a la suite avant "OK" explicite
+**Impact:** Frustration utilisateur, perte de controle
+**Prevention:**
+```
+User dit "Je valide X" → Appliquer X
+User dit "Je veux Y" → Appliquer Y
+User dit RIEN → ATTENDRE, ne pas continuer
+```
+
+### Erreur 2: Proposer des Alternatives Non Sollicitees
+**Symptome:** "Voulez-vous aussi 90%, 95%, 100%?"
+**Impact:** Dilution du focus, surcharge cognitive
+**Prevention:**
+```
+User donne une valeur (85%) → Appliquer 85%, STOP
+Ne PAS ajouter "et voici d'autres options"
+```
+
+### Erreur 3: Ignorer l'Orientation Geometrique
+**Symptome:** Terminaisons verticales sur courbe inclinee
+**Impact:** Effet visuel "fleche" non desire
+**Solution technique:**
+```javascript
+// TOUJOURS calculer l'angle tangent pour les courbes de Bezier
+const angle = Math.atan2(controlY - startY, controlX - startX) * 180 / Math.PI;
+transform: 'translate(...) rotate(' + angle + ')'
+```
+
+### Erreur 4: Epaisseurs Uniformes
+**Symptome:** Tous les elements avec le meme stroke-width
+**Impact:** Desequilibre optique
+**Solution:**
+```
+Elements centraux (cercle) → plus epais
+Elements lineaires (loupe, cle) → standard
+Details fins (dents) → plus fin
+Elements courbes (buste) → leger surplus
+```
+
+---
+
+## Formules Techniques Utiles
+
+### Ratio Stem/Height (Fredoka 600)
+```
+stem_ratio = 13%
+Pour viewBox 100x100: stroke-width = 7.5 (apres equilibrage optique)
+```
+
+### Terminaisons Squircle
+```
+radius = (cap_roundness / 100) * (stroke_width / 2)
+Pour 85%: radius = 0.85 * stroke/2
+```
+
+### Tangente Bezier Quadratique
+```javascript
+// Point de depart
+tanAngle1 = atan2(controlY - startY, controlX - startX)
+
+// Point d'arrivee
+tanAngle2 = atan2(endY - controlY, endX - controlX)
+```
+
+---
+
+## Validation Explicite Requise
+
+**Phrases qui valident:**
+- "Je valide"
+- "OK on garde ca"
+- "Parfait, verrouille"
+- "C'est bon"
+- "Confirme"
+
+**Phrases qui NE valident PAS:**
+- (silence)
+- "Hmm"
+- "Continue"
+- "Montre-moi"
+
+**Si doute:** Demander "Tu valides cette configuration?"
+
 ## Quand Regenerer un Workbench?
 
 **Regenerer TOUJOURS pour:**
@@ -422,3 +538,103 @@ workbench/
 2. Remplacer [FONT] par la police choisie
 3. Ajouter sliders specifiques si besoin (ex: poids par lettre)
 4. Adapter la palette de couleurs au projet
+
+---
+
+# PHASE POST-VERROUILLAGE: Lockups et Proportions
+
+## Workflow Lockup (Icon + Wordmark)
+
+### Phase L1: Page de Variations
+**Trigger:** Specs icon ET wordmark verrouillees
+**Action:** Creer page HTML montrant:
+- Lockups horizontaux et verticaux
+- App icons (differentes tailles: 29px, 60px, 120px, 180px)
+- Variations couleur (fond sombre, clair, gradient)
+- Versions multi-roles (si applicable)
+
+### Phase L2: Analyse des Proportions
+**Trigger:** Premiere visualisation du lockup
+**Action:** Inclure un outil interactif avec:
+- Slider taille icon
+- Slider taille wordmark
+- Slider gap (ecart)
+- Calcul automatique des ratios
+
+**Metriques a afficher:**
+```
+Ratio Icon / Cap-Height: [valeur]
+Ratio Icon / X-Height: [valeur]
+Ratio Gap / Icon: [valeur]
+Largeur Totale: [valeur]px
+```
+
+**Recommandations automatiques:**
+- Ratio Icon/Cap-Height optimal: 1.0 - 1.3
+- Ratio Gap/Icon optimal: 0.15 - 0.25
+- Ratio dore (reference): 1.618
+
+### Phase L3: Validation Lockup
+**Trigger:** User ajuste les proportions
+**Action:** Attendre validation explicite avant de verrouiller
+
+**Format de verrouillage lockup:**
+```markdown
+## Lockup Horizontal
+- Icon: [taille]px
+- Wordmark: [taille]px
+- Gap: [taille]px
+- Ratio Icon/Cap-Height: [valeur]
+```
+
+---
+
+## Calculs Typographiques
+
+### Fredoka Metrics (Reference)
+```
+Cap-height: ~72% de la font-size
+X-height: ~73% de la cap-height (soit ~52% de font-size)
+```
+
+### Formule pour ratio ideal
+```javascript
+// Pour un wordmark de taille X px
+const capHeight = wordmarkSize * 0.72;
+const xHeight = capHeight * 0.73;
+
+// Ratio dore pour icon
+const idealIconSize = capHeight * 1.618;
+
+// Ratio equilibre
+const balancedIconSize = capHeight * 1.15; // 1.0-1.3 range
+```
+
+---
+
+## Types de Workbenches
+
+| Type | Usage | Sliders |
+|------|-------|---------|
+| `spacing-workbench` | Ajustement lettrage | font-size, letter-spacing |
+| `weight-tuning` | Poids par lettre | font-weight per char |
+| `stroke-analysis` | Mesure epaisseur | canvas pixel analysis |
+| `stroke-width` | Calibration icon | stroke-width global |
+| `linecap-workbench` | Terminaisons | cap-roundness, curvature |
+| `brand-variations` | Vue d'ensemble | icon-size, wordmark-size, gap |
+
+---
+
+## Anti-Patterns Post-Verrouillage
+
+### NE JAMAIS faire apres verrouillage:
+- Proposer des alternatives de police
+- Suggerer des modifications de spacing
+- Changer les poids des lettres
+- Modifier les proportions de l'icon
+
+### TOUJOURS autorise:
+- Variations de couleur
+- Adaptations de taille (responsive)
+- Mockups et applications
+- Export en differents formats

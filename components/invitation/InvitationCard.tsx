@@ -18,6 +18,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { acceptInvitation, refuseInvitation } from '@/lib/services/invitation-service';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import type { InvitationStatus, InvitedRole } from '@/types/invitation.types';
 
 interface InvitationCardProps {
@@ -47,6 +48,8 @@ export function InvitationCard({
   expiresAt,
   onStatusChange
 }: InvitationCardProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('components')?.invitation;
   const [isLoading, setIsLoading] = useState(false);
   const [currentStatus, setCurrentStatus] = useState<InvitationStatus>(status);
 
@@ -54,7 +57,13 @@ export function InvitationCard({
   const effectiveStatus = isExpired && status === 'pending' ? 'expired' : currentStatus;
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR', {
+    const localeMap: Record<string, string> = {
+      fr: 'fr-FR',
+      en: 'en-US',
+      nl: 'nl-NL',
+      de: 'de-DE',
+    };
+    return new Date(dateString).toLocaleDateString(localeMap[language] || 'fr-FR', {
       day: 'numeric',
       month: 'short',
       year: 'numeric'
@@ -67,13 +76,13 @@ export function InvitationCard({
       const response = await acceptInvitation(id);
       if (response.success) {
         setCurrentStatus('accepted');
-        toast.success('Invitation acceptee ! Bienvenue dans la colocation.');
+        toast.success(t?.acceptSuccess?.[language] || 'Invitation accepted! Welcome to the coliving.');
         onStatusChange?.();
       } else {
-        toast.error(response.message || 'Erreur lors de l\'acceptation');
+        toast.error(response.message || t?.acceptErrorGeneric?.[language] || 'Error accepting invitation');
       }
     } catch (error) {
-      toast.error('Erreur lors de l\'acceptation de l\'invitation');
+      toast.error(t?.acceptError?.[language] || 'Error accepting the invitation');
     } finally {
       setIsLoading(false);
     }
@@ -85,13 +94,13 @@ export function InvitationCard({
       const response = await refuseInvitation(id);
       if (response.success) {
         setCurrentStatus('refused');
-        toast.info('Invitation refusee.');
+        toast.info(t?.refuseSuccess?.[language] || 'Invitation declined.');
         onStatusChange?.();
       } else {
-        toast.error(response.message || 'Erreur lors du refus');
+        toast.error(response.message || t?.refuseErrorGeneric?.[language] || 'Error declining invitation');
       }
     } catch (error) {
-      toast.error('Erreur lors du refus de l\'invitation');
+      toast.error(t?.refuseError?.[language] || 'Error declining the invitation');
     } finally {
       setIsLoading(false);
     }
@@ -102,7 +111,7 @@ export function InvitationCard({
       case 'pending':
         return {
           icon: Clock,
-          label: 'En attente',
+          label: t?.status?.pending?.[language] || 'Pending',
           bgColor: 'bg-yellow-100',
           textColor: 'text-yellow-700',
           borderColor: 'border-yellow-200'
@@ -110,7 +119,7 @@ export function InvitationCard({
       case 'accepted':
         return {
           icon: CheckCircle,
-          label: 'Acceptee',
+          label: t?.status?.accepted?.[language] || 'Accepted',
           bgColor: 'bg-green-100',
           textColor: 'text-green-700',
           borderColor: 'border-green-200'
@@ -118,7 +127,7 @@ export function InvitationCard({
       case 'refused':
         return {
           icon: XCircle,
-          label: 'Refusee',
+          label: t?.status?.refused?.[language] || 'Declined',
           bgColor: 'bg-red-100',
           textColor: 'text-red-700',
           borderColor: 'border-red-200'
@@ -126,7 +135,7 @@ export function InvitationCard({
       case 'expired':
         return {
           icon: AlertCircle,
-          label: 'Expiree',
+          label: t?.status?.expired?.[language] || 'Expired',
           bgColor: 'bg-gray-100',
           textColor: 'text-gray-600',
           borderColor: 'border-gray-200'
@@ -134,7 +143,7 @@ export function InvitationCard({
       default:
         return {
           icon: Clock,
-          label: 'Inconnu',
+          label: t?.status?.unknown?.[language] || 'Unknown',
           bgColor: 'bg-gray-100',
           textColor: 'text-gray-600',
           borderColor: 'border-gray-200'
@@ -172,7 +181,7 @@ export function InvitationCard({
           )}
           <div>
             <p className="font-semibold text-gray-900">{inviterName}</p>
-            <p className="text-sm text-gray-500">vous a invite</p>
+            <p className="text-sm text-gray-500">{t?.invitedYou?.[language] || 'invited you'}</p>
           </div>
         </div>
 
@@ -194,7 +203,7 @@ export function InvitationCard({
             <Home className="w-5 h-5 text-orange-600" />
           )}
           <span className={`text-sm font-medium ${isOwner ? 'text-purple-700' : 'text-orange-700'}`}>
-            En tant que {isOwner ? 'proprietaire' : 'resident'}
+            {t?.asRole?.[language] || 'As'} {isOwner ? (t?.roleOwner?.[language] || 'owner') : (t?.roleResident?.[language] || 'resident')}
           </span>
         </div>
 
@@ -210,11 +219,11 @@ export function InvitationCard({
       <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
         <div className="flex items-center gap-1">
           <Calendar className="w-4 h-4" />
-          <span>Recu le {formatDate(createdAt)}</span>
+          <span>{t?.receivedOn?.[language] || 'Received on'} {formatDate(createdAt)}</span>
         </div>
         {effectiveStatus === 'pending' && (
           <span className="text-yellow-600">
-            Expire le {formatDate(expiresAt)}
+            {t?.expiresOn?.[language] || 'Expires on'} {formatDate(expiresAt)}
           </span>
         )}
       </div>
@@ -229,7 +238,7 @@ export function InvitationCard({
             className="flex-1 rounded-xl border-red-200 text-red-600 hover:bg-red-50"
           >
             <X className="w-4 h-4 mr-2" />
-            Refuser
+            {t?.decline?.[language] || 'Decline'}
           </Button>
           <Button
             onClick={handleAccept}
@@ -241,7 +250,7 @@ export function InvitationCard({
             }`}
           >
             <Check className="w-4 h-4 mr-2" />
-            Accepter
+            {t?.accept?.[language] || 'Accept'}
           </Button>
         </div>
       )}

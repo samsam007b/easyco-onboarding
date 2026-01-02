@@ -1206,6 +1206,72 @@ export const translations = {
       nl: 'Menu sluiten',
       de: 'Menü schließen',
     },
+    profileMenu: {
+      fr: 'Menu profil',
+      en: 'Profile menu',
+      nl: 'Profielmenu',
+      de: 'Profilmenü',
+    },
+    quickActionsMenu: {
+      fr: 'Menu actions rapides',
+      en: 'Quick actions menu',
+      nl: 'Snelle acties menu',
+      de: 'Schnellaktionen-Menü',
+    },
+    notifications: {
+      fr: 'Notifications',
+      en: 'Notifications',
+      nl: 'Meldingen',
+      de: 'Benachrichtigungen',
+    },
+    noNotifications: {
+      fr: 'Aucune notification',
+      en: 'No notifications',
+      nl: 'Geen meldingen',
+      de: 'Keine Benachrichtigungen',
+    },
+    unreadNotifications: {
+      fr: 'non lues',
+      en: 'unread',
+      nl: 'ongelezen',
+      de: 'ungelesen',
+    },
+    favorites: {
+      fr: 'favoris',
+      en: 'favorites',
+      nl: 'favorieten',
+      de: 'Favoriten',
+    },
+    savedSearches: {
+      fr: 'Recherches',
+      en: 'Searches',
+      nl: 'Zoekopdrachten',
+      de: 'Suchen',
+    },
+    mySavedSearches: {
+      fr: 'Mes recherches sauvegardées',
+      en: 'My saved searches',
+      nl: 'Mijn opgeslagen zoekopdrachten',
+      de: 'Meine gespeicherten Suchen',
+    },
+    newMatches: {
+      fr: 'nouveau match',
+      en: 'new match',
+      nl: 'nieuwe match',
+      de: 'neuer Match',
+    },
+    newMatchesPlural: {
+      fr: 'nouveaux matchs',
+      en: 'new matches',
+      nl: 'nieuwe matches',
+      de: 'neue Matches',
+    },
+    compatibleProperties: {
+      fr: 'Propriétés compatibles avec vous',
+      en: 'Properties compatible with you',
+      nl: 'Woningen die bij jou passen',
+      de: 'Passende Immobilien für Sie',
+    },
   },
 
   // ============================================================================
@@ -7335,6 +7401,460 @@ export const translations = {
         en: 'Loading your messages',
         nl: 'Je berichten laden',
         de: 'Ihre Nachrichten werden geladen',
+      },
+    },
+    chat: {
+      placeholder: {
+        fr: 'Écrivez votre message...',
+        en: 'Write your message...',
+        nl: 'Schrijf je bericht...',
+        de: 'Schreiben Sie Ihre Nachricht...',
+      },
+      sendError: {
+        fr: 'Impossible d\'envoyer le message',
+        en: 'Unable to send message',
+        nl: 'Kan bericht niet verzenden',
+        de: 'Nachricht konnte nicht gesendet werden',
+      },
+      selectImage: {
+        fr: 'Veuillez sélectionner une image',
+        en: 'Please select an image',
+        nl: 'Selecteer een afbeelding',
+        de: 'Bitte wählen Sie ein Bild aus',
+      },
+      imageTooLarge: {
+        fr: 'L\'image est trop volumineuse (max 5MB)',
+        en: 'Image is too large (max 5MB)',
+        nl: 'Afbeelding is te groot (max 5MB)',
+        de: 'Bild ist zu groß (max 5MB)',
+      },
+      uploadComingSoon: {
+        fr: 'Upload d\'images bientôt disponible',
+        en: 'Image upload coming soon',
+        nl: 'Afbeelding uploaden binnenkort beschikbaar',
+        de: 'Bild-Upload kommt bald',
+      },
+      uploadError: {
+        fr: 'Impossible d\'uploader l\'image',
+        en: 'Unable to upload image',
+        nl: 'Kan afbeelding niet uploaden',
+        de: 'Bild konnte nicht hochgeladen werden',
+      },
+      hint: {
+        fr: 'Appuyez sur Entrée pour envoyer, Shift+Entrée pour une nouvelle ligne',
+        en: 'Press Enter to send, Shift+Enter for a new line',
+        nl: 'Druk op Enter om te verzenden, Shift+Enter voor een nieuwe regel',
+        de: 'Drücken Sie Enter zum Senden, Shift+Enter für eine neue Zeile',
+      },
+    },
+    invitation: {
+      invitedYou: {
+        fr: 'vous a invité',
+        en: 'invited you',
+        nl: 'heeft je uitgenodigd',
+        de: 'hat Sie eingeladen',
+      },
+      status: {
+        pending: {
+          fr: 'En attente',
+          en: 'Pending',
+          nl: 'In afwachting',
+          de: 'Ausstehend',
+        },
+        accepted: {
+          fr: 'Acceptée',
+          en: 'Accepted',
+          nl: 'Geaccepteerd',
+          de: 'Akzeptiert',
+        },
+        refused: {
+          fr: 'Refusée',
+          en: 'Refused',
+          nl: 'Geweigerd',
+          de: 'Abgelehnt',
+        },
+        expired: {
+          fr: 'Expirée',
+          en: 'Expired',
+          nl: 'Verlopen',
+          de: 'Abgelaufen',
+        },
+        unknown: {
+          fr: 'Inconnu',
+          en: 'Unknown',
+          nl: 'Onbekend',
+          de: 'Unbekannt',
+        },
+      },
+      asRole: {
+        owner: {
+          fr: 'En tant que propriétaire',
+          en: 'As owner',
+          nl: 'Als eigenaar',
+          de: 'Als Eigentümer',
+        },
+        resident: {
+          fr: 'En tant que résident',
+          en: 'As resident',
+          nl: 'Als bewoner',
+          de: 'Als Bewohner',
+        },
+      },
+      receivedOn: {
+        fr: 'Reçu le',
+        en: 'Received on',
+        nl: 'Ontvangen op',
+        de: 'Empfangen am',
+      },
+      expiresOn: {
+        fr: 'Expire le',
+        en: 'Expires on',
+        nl: 'Verloopt op',
+        de: 'Läuft ab am',
+      },
+      accept: {
+        fr: 'Accepter',
+        en: 'Accept',
+        nl: 'Accepteren',
+        de: 'Annehmen',
+      },
+      refuse: {
+        fr: 'Refuser',
+        en: 'Refuse',
+        nl: 'Weigeren',
+        de: 'Ablehnen',
+      },
+      acceptSuccess: {
+        fr: 'Invitation acceptée ! Bienvenue dans la colocation.',
+        en: 'Invitation accepted! Welcome to the coliving.',
+        nl: 'Uitnodiging geaccepteerd! Welkom in de samenwoning.',
+        de: 'Einladung angenommen! Willkommen in der WG.',
+      },
+      acceptError: {
+        fr: 'Erreur lors de l\'acceptation de l\'invitation',
+        en: 'Error accepting the invitation',
+        nl: 'Fout bij het accepteren van de uitnodiging',
+        de: 'Fehler beim Annehmen der Einladung',
+      },
+      refuseSuccess: {
+        fr: 'Invitation refusée.',
+        en: 'Invitation refused.',
+        nl: 'Uitnodiging geweigerd.',
+        de: 'Einladung abgelehnt.',
+      },
+      refuseError: {
+        fr: 'Erreur lors du refus de l\'invitation',
+        en: 'Error refusing the invitation',
+        nl: 'Fout bij het weigeren van de uitnodiging',
+        de: 'Fehler beim Ablehnen der Einladung',
+      },
+    },
+    savedSearches: {
+      loadError: {
+        fr: 'Impossible de charger les recherches sauvegardées',
+        en: 'Unable to load saved searches',
+        nl: 'Kan opgeslagen zoekopdrachten niet laden',
+        de: 'Gespeicherte Suchen konnten nicht geladen werden',
+      },
+      deleteSuccess: {
+        fr: 'Recherche supprimée',
+        en: 'Search deleted',
+        nl: 'Zoekopdracht verwijderd',
+        de: 'Suche gelöscht',
+      },
+      deleteError: {
+        fr: 'Impossible de supprimer la recherche',
+        en: 'Unable to delete the search',
+        nl: 'Kan zoekopdracht niet verwijderen',
+        de: 'Suche konnte nicht gelöscht werden',
+      },
+      notificationsEnabled: {
+        fr: 'Notifications activées pour cette recherche',
+        en: 'Notifications enabled for this search',
+        nl: 'Meldingen ingeschakeld voor deze zoekopdracht',
+        de: 'Benachrichtigungen für diese Suche aktiviert',
+      },
+      notificationsDisabled: {
+        fr: 'Notifications désactivées',
+        en: 'Notifications disabled',
+        nl: 'Meldingen uitgeschakeld',
+        de: 'Benachrichtigungen deaktiviert',
+      },
+      notificationsError: {
+        fr: 'Impossible de modifier les notifications',
+        en: 'Unable to modify notifications',
+        nl: 'Kan meldingen niet wijzigen',
+        de: 'Benachrichtigungen konnten nicht geändert werden',
+      },
+      noSavedSearches: {
+        fr: 'Aucune recherche sauvegardée',
+        en: 'No saved searches',
+        nl: 'Geen opgeslagen zoekopdrachten',
+        de: 'Keine gespeicherten Suchen',
+      },
+      saveHint: {
+        fr: 'Sauvegardez vos recherches pour y accéder rapidement plus tard',
+        en: 'Save your searches for quick access later',
+        nl: 'Sla je zoekopdrachten op voor snelle toegang later',
+        de: 'Speichern Sie Ihre Suchen für schnellen Zugriff später',
+      },
+      bedroom: {
+        fr: 'chambre',
+        en: 'bedroom',
+        nl: 'slaapkamer',
+        de: 'Schlafzimmer',
+      },
+      bedrooms: {
+        fr: 'chambres',
+        en: 'bedrooms',
+        nl: 'slaapkamers',
+        de: 'Schlafzimmer',
+      },
+      amenity: {
+        fr: 'équipement',
+        en: 'amenity',
+        nl: 'voorziening',
+        de: 'Ausstattung',
+      },
+      amenities: {
+        fr: 'équipements',
+        en: 'amenities',
+        nl: 'voorzieningen',
+        de: 'Ausstattungen',
+      },
+      created: {
+        fr: 'Créée',
+        en: 'Created',
+        nl: 'Aangemaakt',
+        de: 'Erstellt',
+      },
+      disableNotifications: {
+        fr: 'Désactiver les notifications',
+        en: 'Disable notifications',
+        nl: 'Meldingen uitschakelen',
+        de: 'Benachrichtigungen deaktivieren',
+      },
+      enableNotifications: {
+        fr: 'Activer les notifications',
+        en: 'Enable notifications',
+        nl: 'Meldingen inschakelen',
+        de: 'Benachrichtigungen aktivieren',
+      },
+      delete: {
+        fr: 'Supprimer',
+        en: 'Delete',
+        nl: 'Verwijderen',
+        de: 'Löschen',
+      },
+      loadSearch: {
+        fr: 'Charger cette recherche',
+        en: 'Load this search',
+        nl: 'Deze zoekopdracht laden',
+        de: 'Diese Suche laden',
+      },
+    },
+    headers: {
+      logoutSuccess: {
+        fr: 'Déconnexion réussie',
+        en: 'Successfully logged out',
+        nl: 'Succesvol uitgelogd',
+        de: 'Erfolgreich abgemeldet',
+      },
+      logoutError: {
+        fr: 'Erreur lors de la déconnexion',
+        en: 'Error during logout',
+        nl: 'Fout bij uitloggen',
+        de: 'Fehler beim Abmelden',
+      },
+    },
+    reviews: {
+      // ReviewsList
+      loginToVote: {
+        fr: 'Connectez-vous pour voter',
+        en: 'Log in to vote',
+        nl: 'Log in om te stemmen',
+        de: 'Melden Sie sich an, um abzustimmen',
+      },
+      voteError: {
+        fr: 'Erreur lors du vote',
+        en: 'Error voting',
+        nl: 'Fout bij het stemmen',
+        de: 'Fehler beim Abstimmen',
+      },
+      noReviews: {
+        fr: 'Aucun avis pour le moment',
+        en: 'No reviews yet',
+        nl: 'Nog geen beoordelingen',
+        de: 'Noch keine Bewertungen',
+      },
+      beFirstToReview: {
+        fr: 'Soyez le premier à laisser un avis sur cette propriété',
+        en: 'Be the first to leave a review for this property',
+        nl: 'Wees de eerste om een beoordeling voor deze woning achter te laten',
+        de: 'Seien Sie der Erste, der eine Bewertung für diese Immobilie hinterlässt',
+      },
+      reviewCount: {
+        fr: 'avis',
+        en: 'reviews',
+        nl: 'beoordelingen',
+        de: 'Bewertungen',
+      },
+      cleanliness: {
+        fr: 'Propreté',
+        en: 'Cleanliness',
+        nl: 'Netheid',
+        de: 'Sauberkeit',
+      },
+      location: {
+        fr: 'Emplacement',
+        en: 'Location',
+        nl: 'Locatie',
+        de: 'Lage',
+      },
+      valueForMoney: {
+        fr: 'Rapport qualité-prix',
+        en: 'Value for money',
+        nl: 'Prijs-kwaliteitverhouding',
+        de: 'Preis-Leistungs-Verhältnis',
+      },
+      amenities: {
+        fr: 'Équipements',
+        en: 'Amenities',
+        nl: 'Voorzieningen',
+        de: 'Ausstattung',
+      },
+      communication: {
+        fr: 'Communication',
+        en: 'Communication',
+        nl: 'Communicatie',
+        de: 'Kommunikation',
+      },
+      verifiedStay: {
+        fr: 'Séjour vérifié',
+        en: 'Verified stay',
+        nl: 'Geverifieerd verblijf',
+        de: 'Verifizierter Aufenthalt',
+      },
+      stayedMonths: {
+        fr: 'A séjourné {count} mois',
+        en: 'Stayed {count} months',
+        nl: 'Verbleef {count} maanden',
+        de: 'Blieb {count} Monate',
+      },
+      helpful: {
+        fr: 'Utile',
+        en: 'Helpful',
+        nl: 'Nuttig',
+        de: 'Hilfreich',
+      },
+      // AddReviewModal
+      leaveReview: {
+        fr: 'Laisser un avis',
+        en: 'Leave a review',
+        nl: 'Laat een beoordeling achter',
+        de: 'Eine Bewertung hinterlassen',
+      },
+      close: {
+        fr: 'Fermer',
+        en: 'Close',
+        nl: 'Sluiten',
+        de: 'Schließen',
+      },
+      overallRating: {
+        fr: 'Note globale',
+        en: 'Overall rating',
+        nl: 'Totale beoordeling',
+        de: 'Gesamtbewertung',
+      },
+      required: {
+        fr: '*',
+        en: '*',
+        nl: '*',
+        de: '*',
+      },
+      titleOptional: {
+        fr: 'Titre (optionnel)',
+        en: 'Title (optional)',
+        nl: 'Titel (optioneel)',
+        de: 'Titel (optional)',
+      },
+      titlePlaceholder: {
+        fr: 'Résumez votre expérience',
+        en: 'Summarize your experience',
+        nl: 'Vat je ervaring samen',
+        de: 'Fassen Sie Ihre Erfahrung zusammen',
+      },
+      yourReviewOptional: {
+        fr: 'Votre avis (optionnel)',
+        en: 'Your review (optional)',
+        nl: 'Je beoordeling (optioneel)',
+        de: 'Ihre Bewertung (optional)',
+      },
+      reviewPlaceholder: {
+        fr: 'Partagez votre expérience avec les futurs locataires...',
+        en: 'Share your experience with future tenants...',
+        nl: 'Deel je ervaring met toekomstige huurders...',
+        de: 'Teilen Sie Ihre Erfahrung mit zukünftigen Mietern...',
+      },
+      detailedRatingsOptional: {
+        fr: 'Notes détaillées (optionnel)',
+        en: 'Detailed ratings (optional)',
+        nl: 'Gedetailleerde beoordelingen (optioneel)',
+        de: 'Detaillierte Bewertungen (optional)',
+      },
+      cancel: {
+        fr: 'Annuler',
+        en: 'Cancel',
+        nl: 'Annuleren',
+        de: 'Abbrechen',
+      },
+      publishing: {
+        fr: 'Publication...',
+        en: 'Publishing...',
+        nl: 'Publiceren...',
+        de: 'Veröffentlichen...',
+      },
+      publishReview: {
+        fr: 'Publier l\'avis',
+        en: 'Publish review',
+        nl: 'Beoordeling publiceren',
+        de: 'Bewertung veröffentlichen',
+      },
+      selectOverallRating: {
+        fr: 'Veuillez sélectionner une note globale',
+        en: 'Please select an overall rating',
+        nl: 'Selecteer een totale beoordeling',
+        de: 'Bitte wählen Sie eine Gesamtbewertung',
+      },
+      mustBeLoggedIn: {
+        fr: 'Vous devez être connecté',
+        en: 'You must be logged in',
+        nl: 'Je moet ingelogd zijn',
+        de: 'Sie müssen angemeldet sein',
+      },
+      mustHaveStayed: {
+        fr: 'Vous devez avoir séjourné dans cette propriété pour laisser un avis',
+        en: 'You must have stayed at this property to leave a review',
+        nl: 'Je moet in deze woning hebben verbleven om een beoordeling achter te laten',
+        de: 'Sie müssen in dieser Immobilie gewohnt haben, um eine Bewertung zu hinterlassen',
+      },
+      alreadyReviewed: {
+        fr: 'Vous avez déjà laissé un avis pour cette propriété',
+        en: 'You have already left a review for this property',
+        nl: 'Je hebt al een beoordeling voor deze woning achtergelaten',
+        de: 'Sie haben bereits eine Bewertung für diese Immobilie hinterlassen',
+      },
+      reviewPublished: {
+        fr: 'Avis publié avec succès !',
+        en: 'Review published successfully!',
+        nl: 'Beoordeling succesvol gepubliceerd!',
+        de: 'Bewertung erfolgreich veröffentlicht!',
+      },
+      publishError: {
+        fr: 'Erreur lors de la publication de l\'avis',
+        en: 'Error publishing the review',
+        nl: 'Fout bij het publiceren van de beoordeling',
+        de: 'Fehler beim Veröffentlichen der Bewertung',
       },
     },
   },
@@ -14080,6 +14600,437 @@ export const translations = {
         nl: 'Details Toevoegen',
         de: 'Details Hinzufügen',
       },
+    },
+  },
+
+  // ============================================================================
+  // OWNER PORTFOLIO
+  // ============================================================================
+  ownerPortfolio: {
+    // Page Header
+    pageTitle: {
+      fr: 'Portfolio Immobilier',
+      en: 'Real Estate Portfolio',
+      nl: 'Vastgoedportfolio',
+      de: 'Immobilienportfolio',
+    },
+    pageSubtitle: {
+      fr: 'Votre patrimoine en un coup d\'œil',
+      en: 'Your portfolio at a glance',
+      nl: 'Uw portefeuille in één oogopslag',
+      de: 'Ihr Portfolio auf einen Blick',
+    },
+    commandCenter: {
+      fr: 'Command Center',
+      en: 'Command Center',
+      nl: 'Command Center',
+      de: 'Command Center',
+    },
+    portfolio: {
+      fr: 'Portfolio',
+      en: 'Portfolio',
+      nl: 'Portfolio',
+      de: 'Portfolio',
+    },
+    refresh: {
+      fr: 'Actualiser',
+      en: 'Refresh',
+      nl: 'Vernieuwen',
+      de: 'Aktualisieren',
+    },
+
+    // Loading State
+    loading: {
+      fr: 'Chargement...',
+      en: 'Loading...',
+      nl: 'Laden...',
+      de: 'Laden...',
+    },
+    preparingPortfolio: {
+      fr: 'Préparation de votre portfolio',
+      en: 'Preparing your portfolio',
+      nl: 'Uw portfolio voorbereiden',
+      de: 'Ihr Portfolio wird vorbereitet',
+    },
+    errorLoading: {
+      fr: 'Erreur lors du chargement des données du portfolio',
+      en: 'Error loading portfolio data',
+      nl: 'Fout bij het laden van portfoliogegevens',
+      de: 'Fehler beim Laden der Portfolio-Daten',
+    },
+
+    // KPI Cards
+    totalProperties: {
+      fr: 'Biens au total',
+      en: 'Total properties',
+      nl: 'Totaal aantal woningen',
+      de: 'Gesamtzahl Immobilien',
+    },
+    published: {
+      fr: 'publiés',
+      en: 'published',
+      nl: 'gepubliceerd',
+      de: 'veröffentlicht',
+    },
+    applications: {
+      fr: 'Candidatures',
+      en: 'Applications',
+      nl: 'Aanvragen',
+      de: 'Bewerbungen',
+    },
+    approved: {
+      fr: 'acceptées',
+      en: 'approved',
+      nl: 'goedgekeurd',
+      de: 'genehmigt',
+    },
+    occupancyRate: {
+      fr: 'Taux d\'occupation',
+      en: 'Occupancy rate',
+      nl: 'Bezettingsgraad',
+      de: 'Belegungsrate',
+    },
+    excellent: {
+      fr: 'Excellent',
+      en: 'Excellent',
+      nl: 'Uitstekend',
+      de: 'Ausgezeichnet',
+    },
+    vacant: {
+      fr: 'vacant',
+      en: 'vacant',
+      nl: 'leeg',
+      de: 'leer',
+    },
+    vacants: {
+      fr: 'vacants',
+      en: 'vacant',
+      nl: 'leeg',
+      de: 'leer',
+    },
+    monthlyRent: {
+      fr: 'Loyers mensuels',
+      en: 'Monthly rent',
+      nl: 'Maandelijkse huur',
+      de: 'Monatliche Miete',
+    },
+    perMonth: {
+      fr: '/mois',
+      en: '/month',
+      nl: '/maand',
+      de: '/Monat',
+    },
+    perProperty: {
+      fr: '/ bien',
+      en: '/ property',
+      nl: '/ woning',
+      de: '/ Immobilie',
+    },
+
+    // Actions Section
+    actionsRequired: {
+      fr: 'Actions requises',
+      en: 'Actions required',
+      nl: 'Vereiste acties',
+      de: 'Erforderliche Aktionen',
+    },
+    viewAll: {
+      fr: 'Voir tout',
+      en: 'View all',
+      nl: 'Bekijk alles',
+      de: 'Alle anzeigen',
+    },
+    noActionsRequired: {
+      fr: 'Aucune action requise',
+      en: 'No action required',
+      nl: 'Geen actie vereist',
+      de: 'Keine Aktion erforderlich',
+    },
+    allUnderControl: {
+      fr: 'Tout est sous contrôle !',
+      en: 'Everything is under control!',
+      nl: 'Alles onder controle!',
+      de: 'Alles unter Kontrolle!',
+    },
+
+    // Recent Properties Section
+    recentProperties: {
+      fr: 'Derniers biens',
+      en: 'Recent properties',
+      nl: 'Recente woningen',
+      de: 'Neueste Immobilien',
+    },
+    viewAllProperties: {
+      fr: 'Voir tous',
+      en: 'View all',
+      nl: 'Bekijk alles',
+      de: 'Alle anzeigen',
+    },
+    noPropertiesYet: {
+      fr: 'Aucun bien pour le moment',
+      en: 'No properties yet',
+      nl: 'Nog geen woningen',
+      de: 'Noch keine Immobilien',
+    },
+    addProperty: {
+      fr: 'Ajouter un bien',
+      en: 'Add a property',
+      nl: 'Woning toevoegen',
+      de: 'Immobilie hinzufügen',
+    },
+    bedrooms: {
+      fr: 'ch',
+      en: 'bd',
+      nl: 'slk',
+      de: 'SZ',
+    },
+    bathrooms: {
+      fr: 'sdb',
+      en: 'ba',
+      nl: 'bdk',
+      de: 'Bad',
+    },
+    sqm: {
+      fr: 'm²',
+      en: 'sqm',
+      nl: 'm²',
+      de: 'm²',
+    },
+
+    // Property Status
+    rented: {
+      fr: 'Loué',
+      en: 'Rented',
+      nl: 'Verhuurd',
+      de: 'Vermietet',
+    },
+    draft: {
+      fr: 'Brouillon',
+      en: 'Draft',
+      nl: 'Concept',
+      de: 'Entwurf',
+    },
+    archived: {
+      fr: 'Archivé',
+      en: 'Archived',
+      nl: 'Gearchiveerd',
+      de: 'Archiviert',
+    },
+    publishedStatus: {
+      fr: 'Publié',
+      en: 'Published',
+      nl: 'Gepubliceerd',
+      de: 'Veröffentlicht',
+    },
+
+    // Health Status
+    attention: {
+      fr: 'Attention',
+      en: 'Attention',
+      nl: 'Aandacht',
+      de: 'Achtung',
+    },
+    critical: {
+      fr: 'Critique',
+      en: 'Critical',
+      nl: 'Kritiek',
+      de: 'Kritisch',
+    },
+
+    // Quick Access Section
+    quickAccess: {
+      fr: 'Accès rapide',
+      en: 'Quick access',
+      nl: 'Snelle toegang',
+      de: 'Schnellzugriff',
+    },
+
+    // Navigation Cards
+    properties: {
+      fr: 'Propriétés',
+      en: 'Properties',
+      nl: 'Woningen',
+      de: 'Immobilien',
+    },
+    managePortfolio: {
+      fr: 'Gérez votre parc immobilier',
+      en: 'Manage your real estate portfolio',
+      nl: 'Beheer uw vastgoedportfolio',
+      de: 'Verwalten Sie Ihr Immobilienportfolio',
+    },
+    drafts: {
+      fr: 'brouillons',
+      en: 'drafts',
+      nl: 'concepten',
+      de: 'Entwürfe',
+    },
+    evaluateCandidates: {
+      fr: 'Évaluez les candidats pour vos biens',
+      en: 'Evaluate candidates for your properties',
+      nl: 'Beoordeel kandidaten voor uw woningen',
+      de: 'Bewerten Sie Kandidaten für Ihre Immobilien',
+    },
+    total: {
+      fr: 'total',
+      en: 'total',
+      nl: 'totaal',
+      de: 'Gesamt',
+    },
+    pending: {
+      fr: 'en attente',
+      en: 'pending',
+      nl: 'in afwachting',
+      de: 'ausstehend',
+    },
+    performance: {
+      fr: 'Performance',
+      en: 'Performance',
+      nl: 'Prestatie',
+      de: 'Leistung',
+    },
+    analyzePortfolio: {
+      fr: 'Analysez la rentabilité de votre portfolio',
+      en: 'Analyze your portfolio profitability',
+      nl: 'Analyseer de winstgevendheid van uw portfolio',
+      de: 'Analysieren Sie die Rentabilität Ihres Portfolios',
+    },
+    totalViews: {
+      fr: 'vues totales',
+      en: 'total views',
+      nl: 'totale weergaven',
+      de: 'Gesamtansichten',
+    },
+    requests: {
+      fr: 'demandes',
+      en: 'requests',
+      nl: 'verzoeken',
+      de: 'Anfragen',
+    },
+
+    // Summary Bar
+    rentedProperties: {
+      fr: 'Biens loués',
+      en: 'Rented properties',
+      nl: 'Verhuurde woningen',
+      de: 'Vermietete Immobilien',
+    },
+    acceptedTenants: {
+      fr: 'Locataires acceptés',
+      en: 'Accepted tenants',
+      nl: 'Geaccepteerde huurders',
+      de: 'Akzeptierte Mieter',
+    },
+    averageRent: {
+      fr: 'Loyer moyen',
+      en: 'Average rent',
+      nl: 'Gemiddelde huur',
+      de: 'Durchschnittliche Miete',
+    },
+
+    // Property Card Actions
+    viewDetails: {
+      fr: 'Voir détails',
+      en: 'View details',
+      nl: 'Bekijk details',
+      de: 'Details anzeigen',
+    },
+    edit: {
+      fr: 'Modifier',
+      en: 'Edit',
+      nl: 'Bewerken',
+      de: 'Bearbeiten',
+    },
+    archive: {
+      fr: 'Archiver',
+      en: 'Archive',
+      nl: 'Archiveren',
+      de: 'Archivieren',
+    },
+    delete: {
+      fr: 'Supprimer',
+      en: 'Delete',
+      nl: 'Verwijderen',
+      de: 'Löschen',
+    },
+    history: {
+      fr: 'Historique',
+      en: 'History',
+      nl: 'Geschiedenis',
+      de: 'Verlauf',
+    },
+    details: {
+      fr: 'Détails',
+      en: 'Details',
+      nl: 'Details',
+      de: 'Details',
+    },
+
+    // Stats Labels
+    views: {
+      fr: 'vues',
+      en: 'views',
+      nl: 'weergaven',
+      de: 'Ansichten',
+    },
+    inquiries: {
+      fr: 'demandes',
+      en: 'inquiries',
+      nl: 'aanvragen',
+      de: 'Anfragen',
+    },
+    candidatures: {
+      fr: 'candidatures',
+      en: 'applications',
+      nl: 'aanvragen',
+      de: 'Bewerbungen',
+    },
+
+    // Vacancy
+    daysVacant: {
+      fr: 'j vacant',
+      en: 'd vacant',
+      nl: 'd leeg',
+      de: 'T leer',
+    },
+
+    // Lease Info
+    leaseUntil: {
+      fr: 'Bail jusqu\'au',
+      en: 'Lease until',
+      nl: 'Huurcontract tot',
+      de: 'Mietvertrag bis',
+    },
+
+    // Health Grid
+    propertiesInPortfolio: {
+      fr: 'dans votre portfolio',
+      en: 'in your portfolio',
+      nl: 'in uw portfolio',
+      de: 'in Ihrem Portfolio',
+    },
+    noPropertiesFound: {
+      fr: 'Aucun bien trouvé',
+      en: 'No properties found',
+      nl: 'Geen woningen gevonden',
+      de: 'Keine Immobilien gefunden',
+    },
+    noPropertiesFilterHint: {
+      fr: 'Essayez de modifier vos filtres pour voir plus de résultats.',
+      en: 'Try adjusting your filters to see more results.',
+      nl: 'Probeer uw filters aan te passen om meer resultaten te zien.',
+      de: 'Passen Sie Ihre Filter an, um mehr Ergebnisse zu sehen.',
+    },
+    noPropertiesYetHint: {
+      fr: 'Vous n\'avez pas encore de biens dans votre portfolio.',
+      en: 'You don\'t have any properties in your portfolio yet.',
+      nl: 'U heeft nog geen woningen in uw portfolio.',
+      de: 'Sie haben noch keine Immobilien in Ihrem Portfolio.',
+    },
+    biens: {
+      fr: 'biens',
+      en: 'properties',
+      nl: 'woningen',
+      de: 'Immobilien',
     },
   },
 

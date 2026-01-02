@@ -202,3 +202,221 @@ ZZ spacing: -0.18em
   <span class="l-o">o</span>
 </span>
 ```
+
+---
+
+# PHASE 2: UNIFIED ICON (2026-01-02)
+
+## Chronologie de la Phase Icon
+
+### Phase 2.1: Concept de l'Icone Unifiee
+**Input utilisateur:** Creer une icone qui combine les 3 roles
+- Searcher = Loupe
+- Owner = Cle
+- Resident = Personne
+
+**Action Claude:** Conception d'un design ou le cercle central est partage
+- Le cercle = verre de loupe + tete de cle + tete de personne
+- Manche de loupe a gauche (angle 139deg)
+- Tige de cle a droite (angle 36deg)
+- Buste de personne en bas
+
+**Satisfaction:** HAUTE - Concept innovant et elegant
+
+---
+
+### Phase 2.2: Calibration du Stroke-Width
+**Objectif:** Matcher l'epaisseur des traits avec Fredoka 600
+
+**Action Claude:** Creation de `izzico-stroke-width-workbench.html`
+- Superposition du "i" Fredoka sur l'icone
+- Mesure du ratio stem/height de Fredoka (13%)
+- Calibration avec slider
+
+**Probleme rencontre:** Tentative de calibration uniforme (tous les elements meme epaisseur)
+
+**Solution:** Epaisseurs differenciees pour equilibre optique:
+```
+Cercle: 7.5 (plus epais car central)
+Loupe: 6
+Cle: 6
+Dents: 3 (50% du stroke cle)
+Buste: 6.5
+```
+
+**Satisfaction:** HAUTE apres ajustement optique
+
+---
+
+### Phase 2.3: Calibration des Terminaisons (Linecap)
+**Objectif:** Determiner l'arrondi des extremites des traits
+
+**Confusion initiale:**
+- Fredoka utilise-t-il `stroke-linecap: round` (100%) ?
+- Ou un arrondi intermediaire (squircle) ?
+
+**Action Claude:** Creation de `izzico-linecap-workbench.html`
+- Comparaison butt (0%) vs round (100%) vs custom
+- Zoom sur les terminaisons Fredoka
+- Analyse mathematique des courbes
+
+**Resultat:** Fredoka utilise ~85% d'arrondi (squircle, pas round parfait)
+
+**Satisfaction:** HAUTE - Precision typographique
+
+---
+
+### Phase 2.4: Ajout des Parametres du Buste
+**Input utilisateur:** "Je veux pouvoir ajuster:
+1. L'arrondi de la courbe du buste (curvature)
+2. L'arrondi des coins de la ligne (cap roundness)"
+
+**Action Claude:**
+1. Ajout de `bustCurvature` (0-200%, defaut 100%)
+2. Ajout de `bustCapRoundness` (0-100%, defaut 85%)
+3. Section de comparaison avec Fredoka "n" (inverse)
+4. Presets rapides
+
+**Erreur commise:** Passer a l'etape suivante sans validation
+
+**Symptome:** User dit "attend, d'abord je confirme, arrete de vouloir passer a la prochaine etape direct"
+
+**Lecon:** TOUJOURS attendre validation explicite avant de continuer
+
+---
+
+### Phase 2.5: Bug des Terminaisons Verticales
+**Probleme identifie par user:** Les terminaisons squircle du buste sont verticales, mais la courbe a un angle
+
+**Explication technique:**
+```
+La courbe de Bezier Q (quadratique) a une tangente a chaque extremite.
+Les caps doivent etre orientes selon cette tangente, pas verticaux.
+```
+
+**Erreur:** Caps places sans rotation
+```javascript
+// MAUVAIS - vertical
+<rect x="..." y="..." />
+```
+
+**Solution:** Calculer l'angle tangent et appliquer une rotation
+```javascript
+// BON - aligne avec la courbe
+const leftAngle = Math.atan2(controlY - endY, cx - leftX) * 180 / Math.PI;
+transform: 'translate(' + leftX + ', ' + endY + ') rotate(' + leftAngle + ')'
+```
+
+**Satisfaction:** TRES HAUTE - "Enfin je suis ravi! La, on tient enfin quelque chose qui me plait."
+
+---
+
+## Erreurs Critiques Identifiees (Phase Icon)
+
+### Erreur 1: Anticiper les Etapes
+**Symptome:** Passer a la suite avant "OK" explicite
+**Impact:** Perte de controle utilisateur, frustration
+**Prevention:** Hook qui bloque l'avancement sans validation
+
+### Erreur 2: Ignorer la Geometrie
+**Symptome:** Terminaisons verticales sur courbe inclinee
+**Impact:** Effet visuel "fleche" non desire
+**Prevention:** Toujours considerer l'orientation geometrique
+
+### Erreur 3: Proposer Trop de Variations
+**Symptome:** "Voulez-vous aussi 90%, 95%, 100%?"
+**Impact:** Dilution du focus, indecision
+**Prevention:** Appliquer la valeur demandee, point final
+
+---
+
+## Specs Finales Icone (LOCKED)
+
+```css
+/* TERMINAISONS */
+stroke-linecap: custom
+cap-roundness: 85%
+/* Equivalent: rx = 0.85 * stroke/2 */
+
+/* STROKES */
+circle: 7.5
+loupe: 6
+key: 6
+teeth: 3
+bust: 6.5
+
+/* BUSTE */
+bust-curvature: 85%
+bust-cap-roundness: 85%
+/* Terminaisons alignees avec tangente de la courbe */
+
+/* PROPORTIONS */
+circle: cy=41, r=15
+loupe: len=21, angle=139deg
+key: len=21, angle=36deg, teeth=2, teethSize=7
+bust: gap=2, w=35, h=21
+```
+
+---
+
+## Insights Techniques (Phase Icon)
+
+### Equilibre Optique des Strokes
+Les elements n'ont pas la meme "presence visuelle":
+- Cercle = zone centrale, tres visible → plus epais (7.5)
+- Loupe/Cle = elements lineaires → standard (6)
+- Dents = details fins → plus fin (3)
+- Buste = element courbe → leger surplus (6.5)
+
+### Courbes de Bezier Quadratiques
+```
+M startX startY Q controlX controlY endX endY
+```
+- Tangente au debut = vecteur (start → control)
+- Tangente a la fin = vecteur (control → end)
+- Angle = atan2(dy, dx)
+
+### Squircle vs Round
+- Round (100%): demi-cercle parfait, tres doux
+- Squircle (85%): intermediaire, plus typographique
+- Butt (0%): carre, industriel
+
+Fredoka utilise 85% → coherence wordmark/icone
+
+---
+
+## Fichiers Crees (Phase Icon)
+
+| Fichier | Role |
+|---------|------|
+| `izzico-stroke-width-workbench.html` | Calibration epaisseur vs Fredoka |
+| `izzico-linecap-workbench.html` | Calibration terminaisons + buste |
+| `izzico-icon-final.html` | Preview icone complete |
+| `izzico-fredoka-analysis-workbench.html` | Analyse caracteristiques Fredoka |
+
+---
+
+## Recommandations pour Futurs Projets
+
+### Workflow Valide
+```
+1. CONCEPT → Definir l'idee centrale
+2. WORKBENCH → Creer outil de calibration
+3. CALIBRATION → Ajuster avec reference (police, design systeme)
+4. VALIDATION → Attendre "OK" explicite
+5. LOCK → Verrouiller dans locked-specs.md
+6. DECLINAISONS → Couleurs, tailles (APRES lock)
+```
+
+### Anti-Patterns a Eviter
+- Ne PAS proposer d'alternatives non demandees
+- Ne PAS avancer sans validation
+- Ne PAS ignorer les angles/orientations geometriques
+- Ne PAS utiliser des valeurs uniformes quand l'equilibre optique est necessaire
+
+### Outils Indispensables
+1. **Workbench interactif** avec sliders
+2. **Reference visuelle** (police, design existant)
+3. **Zoom sur les details** (terminaisons, courbes)
+4. **Export specs** en un clic
+5. **Fichier locked-specs.md** comme source of truth

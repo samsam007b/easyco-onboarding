@@ -9,6 +9,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface AddReviewModalProps {
   propertyId: string;
@@ -25,6 +26,8 @@ export default function AddReviewModal({
   onClose,
   onSuccess,
 }: AddReviewModalProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('components')?.reviews;
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     rating: 0,
@@ -73,7 +76,7 @@ export default function AddReviewModal({
     e.preventDefault();
 
     if (formData.rating === 0) {
-      toast.error('Veuillez sélectionner une note globale');
+      toast.error(t?.selectRatingError?.[language] || 'Please select an overall rating');
       return;
     }
 
@@ -82,7 +85,7 @@ export default function AddReviewModal({
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast.error('Vous devez être connecté');
+        toast.error(t?.mustBeLoggedIn?.[language] || 'You must be logged in');
         return;
       }
 
@@ -93,7 +96,7 @@ export default function AddReviewModal({
       });
 
       if (!canReview) {
-        toast.error('Vous devez avoir séjourné dans cette propriété pour laisser un avis');
+        toast.error(t?.mustHaveStayed?.[language] || 'You must have stayed at this property to leave a review');
         return;
       }
 
@@ -115,19 +118,19 @@ export default function AddReviewModal({
 
       if (error) {
         if (error.code === '23505') {
-          toast.error('Vous avez déjà laissé un avis pour cette propriété');
+          toast.error(t?.alreadyReviewed?.[language] || 'You have already reviewed this property');
         } else {
           throw error;
         }
         return;
       }
 
-      toast.success('Avis publié avec succès!');
+      toast.success(t?.reviewPublished?.[language] || 'Review published successfully!');
       onSuccess?.();
       onClose();
     } catch (error: any) {
       logger.error('Error submitting review', error);
-      toast.error(error.message || 'Erreur lors de la publication de l\'avis');
+      toast.error(error.message || (t?.publishError?.[language] || 'Error publishing review'));
     } finally {
       setSubmitting(false);
     }
@@ -140,13 +143,13 @@ export default function AddReviewModal({
       <Card className="max-w-2xl w-full my-8">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-2xl">Laisser un avis</CardTitle>
+            <CardTitle className="text-2xl">{t?.leaveReview?.[language] || 'Leave a review'}</CardTitle>
             <Button
               variant="ghost"
               size="icon"
               onClick={onClose}
               className="rounded-full"
-              aria-label="Fermer"
+              aria-label={t?.close?.[language] || 'Close'}
             >
               <X className="h-5 w-5" />
             </Button>
@@ -157,7 +160,7 @@ export default function AddReviewModal({
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Overall Rating */}
             <div className="space-y-2">
-              <Label className="text-base font-semibold">Note globale *</Label>
+              <Label className="text-base font-semibold">{t?.overallRating?.[language] || 'Overall rating'} *</Label>
               <div className="flex gap-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <button
@@ -180,13 +183,13 @@ export default function AddReviewModal({
 
             {/* Title */}
             <div>
-              <Label htmlFor="title">Titre (optionnel)</Label>
+              <Label htmlFor="title">{t?.titleOptional?.[language] || 'Title (optional)'}</Label>
               <input
                 type="text"
                 id="title"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                placeholder="Résumez votre expérience"
+                placeholder={t?.titlePlaceholder?.[language] || 'Summarize your experience'}
                 className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
                 maxLength={100}
               />
@@ -194,26 +197,26 @@ export default function AddReviewModal({
 
             {/* Comment */}
             <div>
-              <Label htmlFor="comment">Votre avis (optionnel)</Label>
+              <Label htmlFor="comment">{t?.yourReviewOptional?.[language] || 'Your review (optional)'}</Label>
               <textarea
                 id="comment"
                 rows={4}
                 value={formData.comment}
                 onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
-                placeholder="Partagez votre expérience avec les futurs locataires..."
+                placeholder={t?.commentPlaceholder?.[language] || 'Share your experience with future tenants...'}
                 className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
               />
             </div>
 
             {/* Detailed Ratings */}
             <div className="border-t pt-6">
-              <h3 className="text-base font-semibold mb-4">Notes détaillées (optionnel)</h3>
+              <h3 className="text-base font-semibold mb-4">{t?.detailedRatingsOptional?.[language] || 'Detailed ratings (optional)'}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {renderStars('cleanlinessRating', formData.cleanlinessRating, 'Propreté')}
-                {renderStars('locationRating', formData.locationRating, 'Emplacement')}
-                {renderStars('valueRating', formData.valueRating, 'Rapport qualité-prix')}
-                {renderStars('amenitiesRating', formData.amenitiesRating, 'Équipements')}
-                {renderStars('communicationRating', formData.communicationRating, 'Communication')}
+                {renderStars('cleanlinessRating', formData.cleanlinessRating, t?.cleanliness?.[language] || 'Cleanliness')}
+                {renderStars('locationRating', formData.locationRating, t?.location?.[language] || 'Location')}
+                {renderStars('valueRating', formData.valueRating, t?.valueForMoney?.[language] || 'Value for money')}
+                {renderStars('amenitiesRating', formData.amenitiesRating, t?.amenities?.[language] || 'Amenities')}
+                {renderStars('communicationRating', formData.communicationRating, t?.communication?.[language] || 'Communication')}
               </div>
             </div>
 
@@ -225,7 +228,7 @@ export default function AddReviewModal({
                 onClick={onClose}
                 disabled={submitting}
               >
-                Annuler
+                {t?.cancel?.[language] || 'Cancel'}
               </Button>
               <Button
                 type="submit"
@@ -235,10 +238,10 @@ export default function AddReviewModal({
                 {submitting ? (
                   <div className="flex items-center gap-2">
                     <LoadingHouse size={16} />
-                    <span>Publication...</span>
+                    <span>{t?.publishing?.[language] || 'Publishing...'}</span>
                   </div>
                 ) : (
-                  'Publier l\'avis'
+                  t?.publishReview?.[language] || 'Publish review'
                 )}
               </Button>
             </div>

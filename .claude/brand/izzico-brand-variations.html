@@ -237,6 +237,186 @@
             color: #818cf8;
             margin-top: 0.5rem;
         }
+
+        /* Proportion Analysis Tool */
+        .proportion-tool {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .proportion-preview {
+            background: var(--dark);
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .proportion-lockup {
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .proportion-guides {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+        }
+
+        .guide-line {
+            position: absolute;
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .guide-line.horizontal {
+            height: 1px;
+            left: 0;
+            right: 0;
+        }
+
+        .guide-line.vertical {
+            width: 1px;
+            top: 0;
+            bottom: 0;
+        }
+
+        .guide-label {
+            position: absolute;
+            font-size: 0.6rem;
+            color: #818cf8;
+            background: rgba(99, 102, 241, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .proportion-controls {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .control-group label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            height: 6px;
+            -webkit-appearance: none;
+            background: var(--border);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #818cf8;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .control-group input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            margin-right: 0.5rem;
+        }
+
+        .proportion-metrics {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+
+        .metric-item {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #818cf8;
+        }
+
+        .metric-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .proportion-recommendations {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .recommendation {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .recommendation.good {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .recommendation.good .rec-icon {
+            color: #22c55e;
+        }
+
+        .recommendation.warning {
+            background: rgba(234, 179, 8, 0.1);
+            border: 1px solid rgba(234, 179, 8, 0.3);
+        }
+
+        .recommendation.warning .rec-icon {
+            color: #eab308;
+        }
+
+        .recommendation.info {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .recommendation.info .rec-icon {
+            color: #818cf8;
+        }
+
+        .rec-icon {
+            font-size: 1.2rem;
+        }
+
+        .rec-text {
+            font-size: 0.8rem;
+            color: var(--text);
+        }
     </style>
 </head>
 <body>
@@ -282,21 +462,53 @@
         </div>
     </div>
 
+    <!-- Section 6: Proportion Analysis -->
+    <div class="section">
+        <div class="section-title">Analyse des Proportions</div>
+        <div class="proportion-tool">
+            <div class="proportion-preview" id="proportion-preview">
+                <div class="proportion-lockup" id="proportion-lockup"></div>
+                <div class="proportion-guides" id="proportion-guides"></div>
+            </div>
+            <div class="proportion-controls">
+                <div class="control-group">
+                    <label>Taille icone: <span id="icon-size-value">80</span>px</label>
+                    <input type="range" id="icon-size" min="40" max="120" value="80">
+                </div>
+                <div class="control-group">
+                    <label>Taille wordmark: <span id="wordmark-size-value">48</span>px</label>
+                    <input type="range" id="wordmark-size" min="24" max="80" value="48">
+                </div>
+                <div class="control-group">
+                    <label>Ecart (gap): <span id="gap-size-value">16</span>px</label>
+                    <input type="range" id="gap-size" min="8" max="48" value="16">
+                </div>
+                <div class="control-group">
+                    <label>
+                        <input type="checkbox" id="show-guides" checked>
+                        Afficher guides
+                    </label>
+                </div>
+            </div>
+            <div class="proportion-metrics" id="proportion-metrics"></div>
+            <div class="proportion-recommendations" id="proportion-recommendations"></div>
+        </div>
+    </div>
+
     <div class="footer">
         <p>IzzIco Brand Guidelines - Configuration Verrouillée</p>
     </div>
 
     <script>
-        // LOCKED SPECS - TYPOGRAPHY-MATCHED (Fredoka 600)
-        // Global stroke = 13 (Fredoka 600 stem ratio: 13% of em-square)
-        // Teeth stroke = 6.5 (50% of global)
-        const GLOBAL_STROKE = 13;
+        // LOCKED SPECS - 2026-01-02 (Verrouillees)
+        // Epaisseurs differenciees pour equilibre optique
+        // Cap-roundness: 85% (squircle Fredoka style)
         const SPECS = {
-            circle: { cy: 41, r: 15, stroke: GLOBAL_STROKE },
-            loupe: { length: 21, angle: 139, stroke: GLOBAL_STROKE },
-            key: { length: 21, angle: 36, stroke: GLOBAL_STROKE, teeth: 2, teethSize: 7, teethStroke: GLOBAL_STROKE * 0.5 },
-            bust: { gap: 2, width: 35, height: 21, stroke: GLOBAL_STROKE },
-            linecap: 'round'
+            circle: { cx: 50, cy: 41, r: 15, stroke: 7.5 },
+            loupe: { length: 21, angle: 139, stroke: 6 },
+            key: { length: 21, angle: 36, stroke: 6, teeth: 2, teethSize: 7, teethStroke: 3 },
+            bust: { gap: 2, width: 35, height: 21, stroke: 6.5, curvature: 0.85 },
+            capRoundness: 0.85  // 85% squircle
         };
 
         const COLORS = {
@@ -843,12 +1055,165 @@
             container.appendChild(row);
         }
 
+        // Proportion Analysis Tool - Safe DOM methods
+        function buildProportionAnalysis() {
+            const lockup = document.getElementById('proportion-lockup');
+            const guides = document.getElementById('proportion-guides');
+            const metrics = document.getElementById('proportion-metrics');
+            const recommendations = document.getElementById('proportion-recommendations');
+
+            const iconSizeSlider = document.getElementById('icon-size');
+            const wordmarkSizeSlider = document.getElementById('wordmark-size');
+            const gapSizeSlider = document.getElementById('gap-size');
+            const showGuidesCheckbox = document.getElementById('show-guides');
+
+            function createMetricItem(value, label) {
+                const item = document.createElement('div');
+                item.className = 'metric-item';
+                const valueDiv = document.createElement('div');
+                valueDiv.className = 'metric-value';
+                valueDiv.textContent = value;
+                const labelDiv = document.createElement('div');
+                labelDiv.className = 'metric-label';
+                labelDiv.textContent = label;
+                item.appendChild(valueDiv);
+                item.appendChild(labelDiv);
+                return item;
+            }
+
+            function createRecommendation(type, text) {
+                const rec = document.createElement('div');
+                rec.className = 'recommendation ' + type;
+                const icon = document.createElement('span');
+                icon.className = 'rec-icon';
+                icon.textContent = type === 'good' ? '✓' : type === 'warning' ? '!' : 'i';
+                const textSpan = document.createElement('span');
+                textSpan.className = 'rec-text';
+                textSpan.textContent = text;
+                rec.appendChild(icon);
+                rec.appendChild(textSpan);
+                return rec;
+            }
+
+            function createGuideLine(isHorizontal, position, color) {
+                const line = document.createElement('div');
+                line.className = 'guide-line ' + (isHorizontal ? 'horizontal' : 'vertical');
+                line.style.cssText = isHorizontal ?
+                    'top:' + position + '%;border-top:1px dashed ' + color :
+                    'left:' + position + '%;border-left:1px dashed ' + color;
+                return line;
+            }
+
+            function createGuideLabel(text, top, left, right) {
+                const label = document.createElement('div');
+                label.className = 'guide-label';
+                label.textContent = text;
+                label.style.top = top;
+                label.style.transform = 'translateY(-50%)';
+                if (left) label.style.left = left;
+                if (right) label.style.right = right;
+                return label;
+            }
+
+            function updateProportions() {
+                const iconSize = parseInt(iconSizeSlider.value);
+                const wordmarkSize = parseInt(wordmarkSizeSlider.value);
+                const gapSize = parseInt(gapSizeSlider.value);
+                const showGuides = showGuidesCheckbox.checked;
+
+                // Update value displays
+                document.getElementById('icon-size-value').textContent = iconSize;
+                document.getElementById('wordmark-size-value').textContent = wordmarkSize;
+                document.getElementById('gap-size-value').textContent = gapSize;
+
+                // Clear and rebuild lockup
+                while (lockup.firstChild) lockup.removeChild(lockup.firstChild);
+                const icon = createIcon({ color: COLORS.light, size: iconSize });
+                const gap = document.createElement('div');
+                gap.style.width = gapSize + 'px';
+                const wordmark = createWordmark(COLORS.light, wordmarkSize + 'px');
+
+                lockup.appendChild(icon);
+                lockup.appendChild(gap);
+                lockup.appendChild(wordmark);
+
+                // Calculate metrics
+                const wordmarkCapHeight = wordmarkSize * 0.72;
+                const wordmarkXHeight = wordmarkCapHeight * 0.73;
+                const iconToWordmarkRatio = (iconSize / wordmarkCapHeight).toFixed(2);
+                const iconToXHeightRatio = (iconSize / wordmarkXHeight).toFixed(2);
+                const gapToIconRatio = (gapSize / iconSize).toFixed(2);
+                const totalWidth = iconSize + gapSize + (wordmarkSize * 3.2);
+
+                // Update metrics
+                while (metrics.firstChild) metrics.removeChild(metrics.firstChild);
+                metrics.appendChild(createMetricItem(iconToWordmarkRatio, 'Ratio Icon / Cap-Height'));
+                metrics.appendChild(createMetricItem(iconToXHeightRatio, 'Ratio Icon / X-Height'));
+                metrics.appendChild(createMetricItem(gapToIconRatio, 'Ratio Gap / Icon'));
+                metrics.appendChild(createMetricItem(Math.round(totalWidth).toString(), 'Largeur Totale (px)'));
+
+                // Update recommendations
+                while (recommendations.firstChild) recommendations.removeChild(recommendations.firstChild);
+
+                if (iconToWordmarkRatio >= 1.0 && iconToWordmarkRatio <= 1.3) {
+                    recommendations.appendChild(createRecommendation('good',
+                        'Ratio Icon/Cap-Height (' + iconToWordmarkRatio + ') optimal - icone bien proportionnee.'));
+                } else if (iconToWordmarkRatio < 1.0) {
+                    recommendations.appendChild(createRecommendation('warning',
+                        'Ratio Icon/Cap-Height (' + iconToWordmarkRatio + ') bas - icone parait petite.'));
+                } else {
+                    recommendations.appendChild(createRecommendation('warning',
+                        'Ratio Icon/Cap-Height (' + iconToWordmarkRatio + ') eleve - icone domine.'));
+                }
+
+                if (gapToIconRatio >= 0.15 && gapToIconRatio <= 0.25) {
+                    recommendations.appendChild(createRecommendation('good',
+                        'Ecart (' + gapSize + 'px) bien calibre.'));
+                } else if (gapToIconRatio < 0.15) {
+                    recommendations.appendChild(createRecommendation('info',
+                        'Ecart (' + gapSize + 'px) serre - style compact.'));
+                } else {
+                    recommendations.appendChild(createRecommendation('info',
+                        'Ecart (' + gapSize + 'px) large - style aere.'));
+                }
+
+                const idealIconForGolden = Math.round(wordmarkCapHeight * 1.618);
+                recommendations.appendChild(createRecommendation('info',
+                    'Ratio dore (1.618): icon ideale = ' + idealIconForGolden + 'px'));
+                recommendations.appendChild(createRecommendation('info',
+                    'X-height: ' + Math.round(wordmarkXHeight) + 'px / Cap-height: ' + Math.round(wordmarkCapHeight) + 'px'));
+
+                // Update guides
+                while (guides.firstChild) guides.removeChild(guides.firstChild);
+                if (showGuides) {
+                    const preview = document.getElementById('proportion-preview');
+                    const previewH = preview.getBoundingClientRect().height;
+                    const centerY = 50;
+
+                    guides.appendChild(createGuideLine(true, centerY, 'rgba(99,102,241,0.5)'));
+                    guides.appendChild(createGuideLabel('Centre', centerY + '%', null, '10px'));
+
+                    const iconOffset = (iconSize / previewH * 50);
+                    guides.appendChild(createGuideLine(true, centerY - iconOffset, 'rgba(255,177,11,0.4)'));
+                    guides.appendChild(createGuideLine(true, centerY + iconOffset, 'rgba(255,177,11,0.4)'));
+                }
+            }
+
+            iconSizeSlider.addEventListener('input', updateProportions);
+            wordmarkSizeSlider.addEventListener('input', updateProportions);
+            gapSizeSlider.addEventListener('input', updateProportions);
+            showGuidesCheckbox.addEventListener('change', updateProportions);
+
+            updateProportions();
+        }
+
         // Initialize
         buildLockups();
         buildAppIcons();
         buildColorVariations();
         buildMultiroleVariations();
         buildSizesPreview();
+        buildProportionAnalysis();
     </script>
 </body>
 </html>

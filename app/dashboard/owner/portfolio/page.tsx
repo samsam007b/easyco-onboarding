@@ -26,6 +26,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 import {
   OwnerPageHeader,
@@ -50,6 +51,8 @@ import LoadingHouse from '@/components/ui/LoadingHouse';
 export default function PortfolioHubPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerPortfolio');
 
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -79,7 +82,7 @@ export default function PortfolioHubPage() {
       setRecentProperties(propertiesData);
     } catch (error) {
       console.error('Failed to load portfolio data:', error);
-      toast.error('Erreur lors du chargement des données du portfolio');
+      toast.error(t?.errorLoading?.[language] || 'Error loading portfolio data');
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -117,9 +120,9 @@ export default function PortfolioHubPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Loading...
+            {t?.loading?.[language] || 'Loading...'}
           </h3>
-          <p className="text-gray-600">Preparing your portfolio</p>
+          <p className="text-gray-600">{t?.preparingPortfolio?.[language] || 'Preparing your portfolio'}</p>
         </div>
       </div>
     );
@@ -131,10 +134,10 @@ export default function PortfolioHubPage() {
         {/* Header */}
         <OwnerPageHeader
           icon={Briefcase}
-          title="Portfolio Immobilier"
-          subtitle="Votre patrimoine en un coup d'œil"
-          breadcrumb={{ label: 'Command Center', href: '/dashboard/owner' }}
-          currentPage="Portfolio"
+          title={t?.pageTitle?.[language] || 'Real Estate Portfolio'}
+          subtitle={t?.pageSubtitle?.[language] || 'Your properties at a glance'}
+          breadcrumb={{ label: t?.commandCenter?.[language] || 'Command Center', href: '/dashboard/owner' }}
+          currentPage={t?.portfolio?.[language] || 'Portfolio'}
           actions={
             <Button
               variant="outline"
@@ -144,12 +147,12 @@ export default function PortfolioHubPage() {
               className="rounded-full"
             >
               <RefreshCw className={cn('w-4 h-4 mr-2', isRefreshing && 'animate-spin')} />
-              Actualiser
+              {t?.refresh?.[language] || 'Refresh'}
             </Button>
           }
         />
 
-        {/* Bold KPIs Section - 5-color palette */}
+        {/* KPIs Section - Individual colors like resident Finance */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -157,133 +160,124 @@ export default function PortfolioHubPage() {
           className="mt-6"
         >
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Card 1: Total Properties - PRIMARY gradient (hero card) */}
+            {/* Card 1: Total Properties - PRIMARY solid color */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/properties')}
               className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
               style={{
-                background: `linear-gradient(135deg, ${ownerPalette.primary.main} 0%, ${ownerPalette.secondary.main} 100%)`,
+                background: ownerPalette.primary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
               }}
             >
-              {/* Decorative circles */}
+              {/* Decorative circle */}
               <div
-                className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-20"
-                style={{ background: 'white' }}
-              />
-              <div
-                className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full opacity-10"
+                className="absolute -top-10 -right-10 w-28 h-28 rounded-full opacity-15"
                 style={{ background: 'white' }}
               />
 
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-11 h-11 rounded-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
-                    <Building2 className="w-5 h-5 text-white" />
+                    <Building2 className="w-6 h-6 text-white" />
                   </div>
                   {overview?.properties.draft && overview.properties.draft > 0 && (
-                    <span className="px-2 py-1 bg-white/20 rounded-full text-xs font-medium text-white">
-                      {overview.properties.draft} brouillon{overview.properties.draft > 1 ? 's' : ''}
+                    <span className="px-2.5 py-1 bg-white/25 rounded-full text-xs font-semibold text-white">
+                      {overview.properties.draft}
                     </span>
                   )}
                 </div>
                 <p className="text-3xl font-bold text-white mb-1">
                   {overview?.properties.total || 0}
                 </p>
-                <p className="text-white/80 text-sm font-medium">
-                  Biens au total
+                <p className="text-white/90 text-sm font-medium">
+                  {t?.totalProperties?.[language] || 'Total properties'}
                 </p>
                 <div className="mt-3 flex items-center gap-2 text-white/70 text-xs">
                   <CheckCheck className="w-3.5 h-3.5" />
-                  <span>{overview?.properties.published || 0} publiés</span>
+                  <span>{overview?.properties.published || 0} {t?.published?.[language] || 'published'}</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Card 2: Applications - TERTIARY light background */}
+            {/* Card 2: Applications - TERTIARY solid color */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/applications')}
               className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
               style={{
-                background: ownerPalette.tertiary.light,
-                border: `2px solid ${ownerPalette.tertiary.border}`,
-                boxShadow: `0 4px 16px ${ownerPalette.tertiary.shadow}`,
+                background: ownerPalette.tertiary.main,
+                boxShadow: `0 8px 32px ${ownerPalette.tertiary.shadow}`,
               }}
             >
-              <div className="flex items-center justify-between mb-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: ownerPalette.tertiary.main }}
-                >
-                  <Users className="w-5 h-5 text-white" />
-                </div>
-                {overview?.applications.pending && overview.applications.pending > 0 && (
-                  <span
-                    className="px-2 py-1 rounded-full text-xs font-bold text-white animate-pulse"
-                    style={{ background: semanticColors.warning.gradient }}
+              {/* Decorative circle */}
+              <div
+                className="absolute -top-10 -right-10 w-28 h-28 rounded-full opacity-15"
+                style={{ background: 'white' }}
+              />
+
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
-                    {overview.applications.pending} en attente
-                  </span>
-                )}
-              </div>
-              <p
-                className="text-3xl font-bold mb-1"
-                style={{ color: ownerPalette.tertiary.text }}
-              >
-                {overview?.applications.total || 0}
-              </p>
-              <p
-                className="text-sm font-medium"
-                style={{ color: ownerPalette.tertiary.text, opacity: 0.8 }}
-              >
-                Candidatures
-              </p>
-              <div className="mt-3 flex items-center gap-3 text-xs" style={{ color: ownerPalette.tertiary.text }}>
-                <span className="flex items-center gap-1">
-                  <CheckCircle className="w-3.5 h-3.5" style={{ color: semanticColors.success.text }} />
-                  {overview?.applications.approved || 0} acceptées
-                </span>
+                    <Users className="w-6 h-6 text-white" />
+                  </div>
+                  {overview?.applications.pending && overview.applications.pending > 0 && (
+                    <span className="px-2.5 py-1 bg-white/25 rounded-full text-xs font-semibold text-white">
+                      {overview.applications.pending}
+                    </span>
+                  )}
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">
+                  {overview?.applications.total || 0}
+                </p>
+                <p className="text-white/90 text-sm font-medium">
+                  {t?.applications?.[language] || 'Applications'}
+                </p>
+                <div className="mt-3 flex items-center gap-2 text-white/70 text-xs">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  <span>{overview?.applications.approved || 0} {t?.approved?.[language] || 'approved'}</span>
+                </div>
               </div>
             </motion.div>
 
-            {/* Card 3: Occupancy Rate - QUATERNARY with progress */}
+            {/* Card 3: Occupancy Rate - White card with progress bar */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
               style={{
-                background: ownerPalette.quaternary.light,
-                border: `2px solid ${ownerPalette.quaternary.border}`,
-                boxShadow: `0 4px 16px ${ownerPalette.quaternary.shadow}`,
+                border: `1px solid ${ownerPalette.quaternary.border}`,
+                boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
               }}
             >
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-11 h-11 rounded-xl flex items-center justify-center"
                   style={{ background: ownerPalette.quaternary.main }}
                 >
-                  <Percent className="w-5 h-5 text-white" />
+                  <Percent className="w-6 h-6 text-white" />
                 </div>
                 {(overview?.performance.occupancyRate || 0) >= 80 ? (
                   <span
-                    className="px-2 py-1 rounded-full text-xs font-medium"
+                    className="px-2.5 py-1 rounded-full text-xs font-medium"
                     style={{ background: semanticColors.success.bg, color: semanticColors.success.text }}
                   >
-                    Excellent
+                    {t?.excellent?.[language] || 'Excellent'}
                   </span>
                 ) : (overview?.properties.vacant || 0) > 0 ? (
                   <span
-                    className="px-2 py-1 rounded-full text-xs font-medium"
+                    className="px-2.5 py-1 rounded-full text-xs font-medium"
                     style={{ background: semanticColors.warning.bg, color: semanticColors.warning.text }}
                   >
-                    {overview?.properties.vacant} vacant{(overview?.properties.vacant || 0) > 1 ? 's' : ''}
+                    {overview?.properties.vacant} {(overview?.properties.vacant || 0) > 1 ? (t?.vacants?.[language] || 'vacant') : (t?.vacant?.[language] || 'vacant')}
                   </span>
                 ) : null}
               </div>
@@ -293,18 +287,12 @@ export default function PortfolioHubPage() {
               >
                 {overview?.performance.occupancyRate || 0}%
               </p>
-              <p
-                className="text-sm font-medium"
-                style={{ color: ownerPalette.quaternary.text, opacity: 0.8 }}
-              >
-                Taux d'occupation
+              <p className="text-gray-600 text-sm font-medium">
+                {t?.occupancyRate?.[language] || 'Occupancy rate'}
               </p>
               {/* Progress bar */}
               <div className="mt-3">
-                <div
-                  className="h-2 rounded-full overflow-hidden"
-                  style={{ background: ownerPalette.quaternary.border }}
-                >
+                <div className="h-2.5 rounded-full overflow-hidden bg-gray-100">
                   <motion.div
                     initial={{ width: 0 }}
                     animate={{ width: `${overview?.performance.occupancyRate || 0}%` }}
@@ -323,91 +311,42 @@ export default function PortfolioHubPage() {
               </div>
             </motion.div>
 
-            {/* Card 4: Monthly Rent - ACCENT (changes based on revenue) */}
+            {/* Card 4: Monthly Rent - White card with green accent */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/finances')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
               style={{
-                background:
-                  (overview?.performance.totalMonthlyRent || 0) > 0
-                    ? semanticColors.success.bg
-                    : ownerPalette.accent.light,
-                border: `2px solid ${
-                  (overview?.performance.totalMonthlyRent || 0) > 0
-                    ? semanticColors.success.border
-                    : ownerPalette.accent.border
-                }`,
-                boxShadow: `0 4px 16px ${ownerPalette.accent.shadow}`,
+                border: `1px solid ${semanticColors.success.border}`,
+                boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
               }}
             >
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{
-                    background:
-                      (overview?.performance.totalMonthlyRent || 0) > 0
-                        ? semanticColors.success.gradient
-                        : ownerPalette.accent.main,
-                  }}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  style={{ background: semanticColors.success.gradient }}
                 >
-                  <DollarSign className="w-5 h-5 text-white" />
+                  <TrendingUp className="w-6 h-6 text-white" />
                 </div>
                 <span
-                  className="px-2 py-1 rounded-full text-xs font-medium"
-                  style={{
-                    background:
-                      (overview?.performance.totalMonthlyRent || 0) > 0
-                        ? semanticColors.success.bg
-                        : ownerPalette.accent.light,
-                    color:
-                      (overview?.performance.totalMonthlyRent || 0) > 0
-                        ? semanticColors.success.text
-                        : ownerPalette.accent.text,
-                    border: `1px solid ${
-                      (overview?.performance.totalMonthlyRent || 0) > 0
-                        ? semanticColors.success.border
-                        : ownerPalette.accent.border
-                    }`,
-                  }}
+                  className="px-2.5 py-1 rounded-full text-xs font-medium"
+                  style={{ background: semanticColors.success.bg, color: semanticColors.success.text }}
                 >
-                  /mois
+                  {t?.perMonth?.[language] || '/month'}
                 </span>
               </div>
               <p
                 className="text-3xl font-bold mb-1"
-                style={{
-                  color:
-                    (overview?.performance.totalMonthlyRent || 0) > 0
-                      ? semanticColors.success.text
-                      : ownerPalette.accent.text,
-                }}
+                style={{ color: semanticColors.success.text }}
               >
                 {(overview?.performance.totalMonthlyRent || 0).toLocaleString()}€
               </p>
-              <p
-                className="text-sm font-medium"
-                style={{
-                  color:
-                    (overview?.performance.totalMonthlyRent || 0) > 0
-                      ? semanticColors.success.text
-                      : ownerPalette.accent.text,
-                  opacity: 0.8,
-                }}
-              >
-                Loyers mensuels
+              <p className="text-gray-600 text-sm font-medium">
+                {t?.monthlyRent?.[language] || 'Monthly rent'}
               </p>
-              <div
-                className="mt-3 text-xs"
-                style={{
-                  color:
-                    (overview?.performance.totalMonthlyRent || 0) > 0
-                      ? semanticColors.success.text
-                      : ownerPalette.accent.text,
-                }}
-              >
-                ~{(overview?.performance.avgRentPerProperty || 0).toLocaleString()}€ / bien
+              <div className="mt-3 text-xs text-gray-500">
+                ~{(overview?.performance.avgRentPerProperty || 0).toLocaleString()}€ {t?.perProperty?.[language] || '/ property'}
               </div>
             </motion.div>
           </div>
@@ -426,7 +365,7 @@ export default function PortfolioHubPage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" style={{ color: '#c2566b' }} />
-                  Actions requises
+                  {t?.actionsRequired?.[language] || 'Actions required'}
                 </h2>
                 {actions.length > 3 && (
                   <Button
@@ -435,7 +374,7 @@ export default function PortfolioHubPage() {
                     className="text-sm"
                     style={{ color: '#9c5698' }}
                   >
-                    Voir tout ({actions.length})
+                    {t?.viewAll?.[language] || 'View all'} ({actions.length})
                     <ArrowRight className="w-4 h-4 ml-1" />
                   </Button>
                 )}
@@ -449,8 +388,8 @@ export default function PortfolioHubPage() {
                   >
                     <CheckCircle className="w-8 h-8 text-white" />
                   </div>
-                  <p className="text-gray-600">Aucune action requise</p>
-                  <p className="text-sm text-gray-500 mt-1">Tout est sous contrôle !</p>
+                  <p className="text-gray-600">{t?.noActionsRequired?.[language] || 'No actions required'}</p>
+                  <p className="text-sm text-gray-500 mt-1">{t?.allUnderControl?.[language] || 'Everything is under control!'}</p>
                 </div>
               ) : (
                 <div className="space-y-3">
@@ -531,7 +470,7 @@ export default function PortfolioHubPage() {
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                   <Home className="w-5 h-5" style={{ color: '#9c5698' }} />
-                  Derniers biens
+                  {t?.recentProperties?.[language] || 'Recent properties'}
                 </h2>
                 <Button
                   variant="ghost"
@@ -540,7 +479,7 @@ export default function PortfolioHubPage() {
                   className="text-sm"
                   style={{ color: '#9c5698' }}
                 >
-                  Voir tous
+                  {t?.viewAllProperties?.[language] || 'View all'}
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
@@ -553,14 +492,14 @@ export default function PortfolioHubPage() {
                   >
                     <Building2 className="w-8 h-8 text-white" />
                   </div>
-                  <p className="text-gray-500 text-sm">Aucun bien pour le moment</p>
+                  <p className="text-gray-500 text-sm">{t?.noPropertiesYet?.[language] || 'No properties yet'}</p>
                   <Button
                     variant="outline"
                     size="sm"
                     className="mt-4"
                     onClick={() => router.push('/properties/add')}
                   >
-                    Ajouter un bien
+                    {t?.addProperty?.[language] || 'Add property'}
                   </Button>
                 </div>
               ) : (
@@ -598,7 +537,7 @@ export default function PortfolioHubPage() {
                           {property.title}
                         </p>
                         <p className="text-xs text-gray-500 truncate">
-                          {property.city} · {property.bedrooms} ch · {property.monthlyRent.toLocaleString()}€
+                          {property.city} · {property.bedrooms} {t?.bedrooms?.[language] || 'bd'} · {property.monthlyRent.toLocaleString()}€
                         </p>
                         <div className="flex items-center gap-2 mt-1">
                           {/* Status Badge */}
@@ -613,12 +552,12 @@ export default function PortfolioHubPage() {
                             )}
                           >
                             {property.isRented
-                              ? 'Loué'
+                              ? (t?.rented?.[language] || 'Rented')
                               : property.status === 'published'
-                              ? 'Vacant'
+                              ? (t?.vacant?.[language] || 'Vacant')
                               : property.status === 'draft'
-                              ? 'Brouillon'
-                              : 'Archivé'}
+                              ? (t?.draft?.[language] || 'Draft')
+                              : (t?.archived?.[language] || 'Archived')}
                           </span>
                           {/* Stats */}
                           <span className="flex items-center gap-1 text-[10px] text-gray-400">
@@ -650,19 +589,19 @@ export default function PortfolioHubPage() {
         >
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Sparkles className="w-5 h-5" style={{ color: '#9c5698' }} />
-            Accès rapide
+            {t?.quickAccess?.[language] || 'Quick access'}
           </h2>
 
           <OwnerNavigationGrid>
             <OwnerNavigationCard
-              title="Propriétés"
-              description="Gérez votre parc immobilier"
+              title={t?.properties?.[language] || 'Properties'}
+              description={t?.managePortfolio?.[language] || 'Manage your real estate portfolio'}
               icon={Building2}
               href="/dashboard/owner/properties"
               stats={[
-                { label: 'publiés', value: overview?.properties.published || 0 },
+                { label: t?.published?.[language] || 'published', value: overview?.properties.published || 0 },
                 ...(overview?.properties.draft
-                  ? [{ label: 'brouillons', value: overview.properties.draft, variant: 'warning' as const }]
+                  ? [{ label: t?.drafts?.[language] || 'drafts', value: overview.properties.draft, variant: 'warning' as const }]
                   : []),
               ]}
               badge={
@@ -672,14 +611,14 @@ export default function PortfolioHubPage() {
               }
             />
             <OwnerNavigationCard
-              title="Candidatures"
-              description="Évaluez les candidats pour vos biens"
+              title={t?.applications?.[language] || 'Applications'}
+              description={t?.evaluateCandidates?.[language] || 'Evaluate candidates for your properties'}
               icon={Users}
               href="/dashboard/owner/applications"
               stats={[
-                { label: 'total', value: overview?.applications.total || 0 },
+                { label: t?.total?.[language] || 'total', value: overview?.applications.total || 0 },
                 ...(overview?.applications.pending
-                  ? [{ label: 'en attente', value: overview.applications.pending, variant: 'warning' as const }]
+                  ? [{ label: t?.pending?.[language] || 'pending', value: overview.applications.pending, variant: 'warning' as const }]
                   : []),
               ]}
               badge={
@@ -689,19 +628,19 @@ export default function PortfolioHubPage() {
               }
             />
             <OwnerNavigationCard
-              title="Performance"
-              description="Analysez la rentabilité de votre portfolio"
+              title={t?.performance?.[language] || 'Performance'}
+              description={t?.analyzePortfolio?.[language] || 'Analyze your portfolio profitability'}
               icon={TrendingUp}
               href="/dashboard/owner/finance"
               stats={[
-                { label: 'vues totales', value: overview?.performance.totalViews || 0 },
-                { label: 'demandes', value: overview?.performance.totalInquiries || 0 },
+                { label: t?.totalViews?.[language] || 'total views', value: overview?.performance.totalViews || 0 },
+                { label: t?.requests?.[language] || 'requests', value: overview?.performance.totalInquiries || 0 },
               ]}
             />
           </OwnerNavigationGrid>
         </motion.div>
 
-        {/* Summary Bar - Bold gradient */}
+        {/* Summary Bar - Subtle white with colored stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -709,44 +648,47 @@ export default function PortfolioHubPage() {
           className="mt-8 mb-4"
         >
           <div
-            className="relative overflow-hidden rounded-2xl p-5"
-            style={{
-              background: ownerGradient,
-              boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
-            }}
+            className="rounded-2xl p-5 bg-white border"
+            style={{ borderColor: ownerPalette.primary.border }}
           >
-            {/* Decorative pattern */}
-            <div className="absolute inset-0 opacity-10">
-              <div className="absolute top-0 left-1/4 w-32 h-32 rounded-full bg-white blur-2xl" />
-              <div className="absolute bottom-0 right-1/4 w-40 h-40 rounded-full bg-white blur-3xl" />
-            </div>
-
-            <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div className="space-y-1">
-                <p className="text-3xl font-bold text-white">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="text-center space-y-1">
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: ownerPalette.primary.main }}
+                >
                   {overview?.properties.total || 0}
                 </p>
-                <p className="text-white/70 text-sm">Biens au total</p>
+                <p className="text-gray-500 text-sm">{t?.totalProperties?.[language] || 'Total properties'}</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-3xl font-bold text-white">
+              <div className="text-center space-y-1">
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: ownerPalette.tertiary.main }}
+                >
                   {overview?.properties.rented || 0}
                 </p>
-                <p className="text-white/70 text-sm">Biens loués</p>
+                <p className="text-gray-500 text-sm">{t?.rentedProperties?.[language] || 'Rented properties'}</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-3xl font-bold text-white">
+              <div className="text-center space-y-1">
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: ownerPalette.quaternary.main }}
+                >
                   {overview?.applications.approved || 0}
                 </p>
-                <p className="text-white/70 text-sm">Locataires acceptés</p>
+                <p className="text-gray-500 text-sm">{t?.acceptedTenants?.[language] || 'Accepted tenants'}</p>
               </div>
-              <div className="space-y-1">
-                <p className="text-3xl font-bold text-white">
+              <div className="text-center space-y-1">
+                <p
+                  className="text-3xl font-bold"
+                  style={{ color: semanticColors.success.text }}
+                >
                   {overview?.performance.avgRentPerProperty
                     ? `${overview.performance.avgRentPerProperty.toLocaleString()}€`
                     : '0€'}
                 </p>
-                <p className="text-white/70 text-sm">Loyer moyen</p>
+                <p className="text-gray-500 text-sm">{t?.averageRent?.[language] || 'Average rent'}</p>
               </div>
             </div>
           </div>

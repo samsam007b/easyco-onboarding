@@ -164,15 +164,15 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
 
       if (error) {
         console.error('Logout error:', error);
-        toast.error('Erreur lors de la déconnexion');
+        toast.error(common?.logoutError?.[language] || 'Logout failed');
         return;
       }
 
-      toast.success('Déconnexion réussie');
+      toast.success(common?.logoutSuccess?.[language] || 'Successfully logged out');
       window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
-      toast.error('Erreur lors de la déconnexion');
+      toast.error(common?.logoutError?.[language] || 'Logout failed');
     }
   };
 
@@ -336,7 +336,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                     e.currentTarget.style.color = '#ff651e';
                   }
                 }}
-                aria-label="Menu actions rapides"
+                aria-label={common?.quickActionsMenu?.[language] || 'Quick actions menu'}
                 aria-expanded={showQuickActions}
                 aria-haspopup="true"
               >
@@ -486,7 +486,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
                 className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
-                aria-label="Menu profil"
+                aria-label={common?.profileMenu?.[language] || 'Profile menu'}
                 aria-expanded={showProfileMenu}
                 aria-haspopup="true"
               >
@@ -658,7 +658,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
-              aria-label={mobileMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
+              aria-label={mobileMenuOpen ? (common?.closeMenu?.[language] || 'Close menu') : (common?.openMenu?.[language] || 'Open menu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
             >

@@ -10,7 +10,8 @@ import { Bookmark, Trash2, Bell, BellOff } from 'lucide-react';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { toast } from 'sonner';
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
+import { useLanguage } from '@/lib/i18n/use-language';
 import type { AdvancedFilterOptions } from './AdvancedFilters';
 
 interface SavedSearch {
@@ -26,9 +27,13 @@ interface SavedSearchesProps {
 }
 
 export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('components')?.savedSearches;
   const supabase = createClient();
   const [searches, setSearches] = useState<SavedSearch[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const dateLocale = { fr, en: enUS, nl, de }[language] || fr;
 
   const loadSearches = async () => {
     try {
@@ -50,7 +55,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
       setSearches(data || []);
     } catch (error) {
       logger.error('Error loading saved searches', error);
-      toast.error('Impossible de charger les recherches sauvegardées');
+      toast.error(t?.loadError?.[language] || 'Unable to load saved searches');
     } finally {
       setLoading(false);
     }
@@ -63,10 +68,10 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
       if (error) throw error;
 
       setSearches((prev) => prev.filter((s) => s.id !== searchId));
-      toast.success('Recherche supprimée');
+      toast.success(t?.deleteSuccess?.[language] || 'Search deleted');
     } catch (error) {
       logger.error('Error deleting search', error);
-      toast.error('Impossible de supprimer la recherche');
+      toast.error(t?.deleteError?.[language] || 'Unable to delete search');
     }
   };
 
@@ -87,12 +92,12 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
 
       toast.success(
         !currentValue
-          ? 'Notifications activées pour cette recherche'
-          : 'Notifications désactivées'
+          ? (t?.notificationsEnabled?.[language] || 'Notifications enabled for this search')
+          : (t?.notificationsDisabled?.[language] || 'Notifications disabled')
       );
     } catch (error) {
       logger.error('Error toggling notifications', error);
-      toast.error('Impossible de modifier les notifications');
+      toast.error(t?.notificationsError?.[language] || 'Unable to modify notifications');
     }
   };
 
@@ -112,9 +117,9 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
     return (
       <div className="text-center p-8">
         <Bookmark className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-        <p className="text-gray-600">Aucune recherche sauvegardée</p>
+        <p className="text-gray-600">{t?.noSearches?.[language] || 'No saved searches'}</p>
         <p className="text-sm text-gray-500 mt-1">
-          Sauvegardez vos recherches pour y accéder rapidement plus tard
+          {t?.noSearchesHint?.[language] || 'Save your searches to access them quickly later'}
         </p>
       </div>
     );
@@ -143,7 +148,9 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
                   )}
                   {search.filters.bedrooms !== null && search.filters.bedrooms !== undefined && (
                     <Badge variant="secondary" size="sm">
-                      {search.filters.bedrooms} chambre{search.filters.bedrooms > 1 ? 's' : ''}
+                      {search.filters.bedrooms} {search.filters.bedrooms > 1
+                        ? (t?.bedrooms?.[language] || 'bedrooms')
+                        : (t?.bedroom?.[language] || 'bedroom')}
                     </Badge>
                   )}
                   {(search.filters.minPrice || search.filters.maxPrice) && (
@@ -153,17 +160,18 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
                   )}
                   {search.filters.amenities && search.filters.amenities.length > 0 && (
                     <Badge variant="secondary" size="sm">
-                      +{search.filters.amenities.length} équipement
-                      {search.filters.amenities.length > 1 ? 's' : ''}
+                      +{search.filters.amenities.length} {search.filters.amenities.length > 1
+                        ? (t?.amenities?.[language] || 'amenities')
+                        : (t?.amenity?.[language] || 'amenity')}
                     </Badge>
                   )}
                 </div>
 
                 <p className="text-xs text-gray-500">
-                  Créée{' '}
+                  {t?.created?.[language] || 'Created'}{' '}
                   {formatDistanceToNow(new Date(search.created_at), {
                     addSuffix: true,
-                    locale: fr,
+                    locale: dateLocale,
                   })}
                 </p>
               </div>
@@ -176,8 +184,8 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
                   onClick={() => toggleNotifications(search.id, search.notifications_enabled)}
                   title={
                     search.notifications_enabled
-                      ? 'Désactiver les notifications'
-                      : 'Activer les notifications'
+                      ? (t?.disableNotifications?.[language] || 'Disable notifications')
+                      : (t?.enableNotifications?.[language] || 'Enable notifications')
                   }
                 >
                   {search.notifications_enabled ? (
@@ -191,7 +199,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
                   size="icon"
                   onClick={() => deleteSearch(search.id)}
                   className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                  title="Supprimer"
+                  title={t?.delete?.[language] || 'Delete'}
                 >
                   <Trash2 className="w-4 h-4" />
                 </Button>
@@ -205,7 +213,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
               onClick={() => onLoadSearch(search.filters)}
               className="w-full mt-3"
             >
-              Charger cette recherche
+              {t?.loadSearch?.[language] || 'Load this search'}
             </Button>
           </CardContent>
         </Card>

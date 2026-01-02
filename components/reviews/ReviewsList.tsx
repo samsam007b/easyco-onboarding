@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface Review {
@@ -37,12 +38,15 @@ interface ReviewsListProps {
 }
 
 export default function ReviewsList({ propertyId, className }: ReviewsListProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('components')?.reviews;
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [helpfulVotes, setHelpfulVotes] = useState<Set<string>>(new Set());
   const [userId, setUserId] = useState<string | null>(null);
 
   const supabase = createClient();
+  const localeMap: Record<string, string> = { fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE' };
 
   useEffect(() => {
     loadReviews();
@@ -87,7 +91,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
 
   const handleHelpfulClick = async (reviewId: string) => {
     if (!userId) {
-      toast.error('Connectez-vous pour voter');
+      toast.error(t?.loginToVote?.[language] || 'Log in to vote');
       return;
     }
 
@@ -120,7 +124,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
       loadReviews();
     } catch (error: any) {
       logger.error('Error voting', error);
-      toast.error('Erreur lors du vote');
+      toast.error(t?.voteError?.[language] || 'Error voting');
     }
   };
 
@@ -208,8 +212,8 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
     return (
       <div className="text-center py-12">
         <Star className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Aucun avis pour le moment</h3>
-        <p className="text-gray-600">Soyez le premier à laisser un avis sur cette propriété</p>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">{t?.noReviews?.[language] || 'No reviews yet'}</h3>
+        <p className="text-gray-600">{t?.beFirstToReview?.[language] || 'Be the first to leave a review for this property'}</p>
       </div>
     );
   }
@@ -229,14 +233,14 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                 </div>
                 {renderStars(Math.round(parseFloat(averages.overall)), 'lg')}
                 <p className="text-sm text-gray-600 mt-2">
-                  {reviews.length} avis
+                  {reviews.length} {t?.reviewCount?.[language] || 'reviews'}
                 </p>
               </div>
 
               <div className="flex-1 space-y-2">
                 {averages.cleanliness && (
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600 w-32">Propreté</span>
+                    <span className="text-sm text-gray-600 w-32">{t?.cleanliness?.[language] || 'Cleanliness'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-orange-500 h-2 rounded-full"
@@ -248,7 +252,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                 )}
                 {averages.location && (
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600 w-32">Emplacement</span>
+                    <span className="text-sm text-gray-600 w-32">{t?.location?.[language] || 'Location'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-orange-500 h-2 rounded-full"
@@ -260,7 +264,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                 )}
                 {averages.value && (
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600 w-32">Rapport qualité-prix</span>
+                    <span className="text-sm text-gray-600 w-32">{t?.valueForMoney?.[language] || 'Value for money'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-orange-500 h-2 rounded-full"
@@ -272,7 +276,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                 )}
                 {averages.amenities && (
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600 w-32">Équipements</span>
+                    <span className="text-sm text-gray-600 w-32">{t?.amenities?.[language] || 'Amenities'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-orange-500 h-2 rounded-full"
@@ -284,7 +288,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                 )}
                 {averages.communication && (
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-gray-600 w-32">Communication</span>
+                    <span className="text-sm text-gray-600 w-32">{t?.communication?.[language] || 'Communication'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
                         className="bg-orange-500 h-2 rounded-full"
@@ -333,7 +337,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                         {review.verified_stay && (
                           <Badge className="bg-green-100 text-green-700 text-xs">
                             <CheckCircle className="w-3 h-3 mr-1" />
-                            Séjour vérifié
+                            {t?.verifiedStay?.[language] || 'Verified stay'}
                           </Badge>
                         )}
                       </div>
@@ -341,7 +345,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                     </div>
                     <div className="text-sm text-gray-500 flex items-center gap-1">
                       <Calendar className="w-4 h-4" />
-                      {new Date(review.created_at).toLocaleDateString('fr-FR')}
+                      {new Date(review.created_at).toLocaleDateString(localeMap[language] || 'fr-FR')}
                     </div>
                   </div>
 
@@ -358,7 +362,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                   {/* Stay duration */}
                   {review.stay_duration_months && (
                     <p className="text-sm text-gray-600 mb-3">
-                      A séjourné {review.stay_duration_months} mois
+                      {(t?.stayedMonths?.[language] || 'Stayed {count} months').replace('{count}', String(review.stay_duration_months))}
                     </p>
                   )}
 
@@ -378,7 +382,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                         helpfulVotes.has(review.id) ? 'fill-orange-600' : ''
                       }`}
                     />
-                    Utile ({review.helpful_count})
+                    {t?.helpful?.[language] || 'Helpful'} ({review.helpful_count})
                   </Button>
                 </div>
               </div>

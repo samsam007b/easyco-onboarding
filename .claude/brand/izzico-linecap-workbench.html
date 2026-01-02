@@ -546,28 +546,47 @@
                     'stroke-linecap': 'butt'
                 }));
 
-                // Add custom rounded caps at the endpoints
-                // Left endpoint
-                g.appendChild(createSVG('rect', {
-                    x: leftX - hw,
-                    y: endY - hw,
-                    width: strokeWidth,
-                    height: strokeWidth,
-                    rx: radius,
-                    ry: radius,
-                    fill: color
-                }));
+                // Calculate tangent angles at endpoints for proper cap rotation
+                // For quadratic Bezier: tangent at P0 points toward control point
+                // tangent at P2 points from control point
+                const leftTangentX = cx - leftX;
+                const leftTangentY = controlY - endY;
+                const leftAngle = Math.atan2(leftTangentY, leftTangentX) * 180 / Math.PI;
 
-                // Right endpoint
-                g.appendChild(createSVG('rect', {
-                    x: rightX - hw,
-                    y: endY - hw,
+                const rightTangentX = rightX - cx;
+                const rightTangentY = endY - controlY;
+                const rightAngle = Math.atan2(rightTangentY, rightTangentX) * 180 / Math.PI;
+
+                // Add custom rounded caps at the endpoints, rotated to match curve tangent
+                // Left endpoint - rotated to match curve angle
+                const leftCapGroup = createSVG('g', {
+                    transform: 'translate(' + leftX + ', ' + endY + ') rotate(' + leftAngle + ')'
+                });
+                leftCapGroup.appendChild(createSVG('rect', {
+                    x: -hw,
+                    y: -hw,
                     width: strokeWidth,
                     height: strokeWidth,
                     rx: radius,
                     ry: radius,
                     fill: color
                 }));
+                g.appendChild(leftCapGroup);
+
+                // Right endpoint - rotated to match curve angle
+                const rightCapGroup = createSVG('g', {
+                    transform: 'translate(' + rightX + ', ' + endY + ') rotate(' + rightAngle + ')'
+                });
+                rightCapGroup.appendChild(createSVG('rect', {
+                    x: -hw,
+                    y: -hw,
+                    width: strokeWidth,
+                    height: strokeWidth,
+                    rx: radius,
+                    ry: radius,
+                    fill: color
+                }));
+                g.appendChild(rightCapGroup);
             }
 
             return g;
@@ -785,6 +804,26 @@
             bustCapRoundness = parseInt(e.target.value);
             document.getElementById('bust-cap-roundness-val').textContent = bustCapRoundness + '%';
             render();
+        });
+
+        // Bust curvature presets
+        document.querySelectorAll('[data-bust-curvature]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                bustCurvature = parseInt(btn.dataset.bustCurvature);
+                document.getElementById('bust-curvature').value = bustCurvature;
+                document.getElementById('bust-curvature-val').textContent = bustCurvature + '%';
+                render();
+            });
+        });
+
+        // Bust cap roundness presets
+        document.querySelectorAll('[data-bust-cap]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                bustCapRoundness = parseInt(btn.dataset.bustCap);
+                document.getElementById('bust-cap-roundness').value = bustCapRoundness;
+                document.getElementById('bust-cap-roundness-val').textContent = bustCapRoundness + '%';
+                render();
+            });
         });
 
         document.getElementById('copy-specs').addEventListener('click', function() {

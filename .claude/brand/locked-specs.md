@@ -106,12 +106,14 @@ Pour modifier les specs verrouillées:
 
 ## Configuration Icône Unifiée
 
-### Stroke (Par élément - Équilibre optique)
+### Terminaisons (Linecap)
 ```
-stroke-linecap: round (pour tous les éléments)
+stroke-linecap: custom
+cap-roundness: 85%
+/* Équivalent: rx = 0.85 * stroke/2 */
 ```
-> **Note:** Les strokes individuels sont calibrés pour l'équilibre optique
-> plutôt qu'une épaisseur uniforme. Cela crée une meilleure harmonie visuelle.
+> **Note:** Les terminaisons utilisent un arrondi de 85% (style Fredoka).
+> Ce n'est ni un `butt` (0%) ni un `round` parfait (100%), mais un squircle calibré.
 
 ### Cercle Central (Tête - Élément Partagé)
 ```
@@ -127,7 +129,7 @@ stroke: 7.5
 length: 21
 angle: 139°
 stroke: 6
-linecap: round
+linecap: custom (85%)
 ```
 
 ### Tige Clé (Droite - Owner)
@@ -138,7 +140,7 @@ stroke: 6
 teeth: 2
 teethSize: 7
 teethStroke: 3 (50% du stroke clé)
-linecap: round
+linecap: custom (85%)
 ```
 
 ### Buste (Bas - Resident/Personne)
@@ -147,9 +149,13 @@ gap: 2
 width: 35
 height: 21
 stroke: 6.5
-linecap: round
+curvature: 85%
+linecap: custom (85%)
+/* Les terminaisons sont alignées avec l'angle tangent de la courbe */
 ```
 > Le buste utilise une courbe de Bézier quadratique.
+> La curvature contrôle la tension de la courbe (85% = légèrement moins courbé que défaut).
+> Les terminaisons squircle sont rotées pour épouser l'angle de la courbe.
 
 ### Résumé des Strokes
 ```
@@ -159,7 +165,14 @@ Clé:     6    (cohérent avec loupe)
 Dents:   3    (50% du stroke clé)
 Buste:   6.5  (légèrement plus que loupe/clé)
 ```
-> Tous les éléments utilisent stroke-linecap: round.
+
+### Résumé des Terminaisons
+```
+cap-roundness: 85%         (tous les éléments)
+bust-curvature: 85%        (courbe de Bézier du buste)
+bust-cap-roundness: 85%    (terminaisons du buste)
+```
+> Tous les éléments utilisent des terminaisons squircle 85% (style Fredoka).
 
 ### Couleurs par Défaut
 ```
