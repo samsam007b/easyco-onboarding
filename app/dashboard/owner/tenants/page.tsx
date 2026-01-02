@@ -15,15 +15,22 @@ import {
   UserPlus,
   ArrowRight,
   Clock,
-  ChevronLeft
+  ChevronLeft,
+  UserCheck,
+  TrendingUp,
+  CalendarClock,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 
 // Import shared owner components
-import { OwnerPageHeader, OwnerKPICard, OwnerKPIGrid, OwnerAlertBanner } from '@/components/owner';
-import { ownerGradientLight } from '@/lib/constants/owner-theme';
+import { OwnerPageHeader, OwnerAlertBanner } from '@/components/owner';
+import {
+  ownerPageBackground,
+  ownerPalette,
+  semanticColors,
+} from '@/lib/constants/owner-theme';
 
 // Import tenant-specific components
 import {
@@ -305,7 +312,7 @@ export default function TenantsPage() {
     return (
       <div
         className="min-h-screen flex items-center justify-center"
-        style={{ background: ownerGradientLight }}
+        style={{ background: ownerPageBackground }}
       >
         <div className="text-center">
           <div className="flex justify-center mb-6">
@@ -323,7 +330,7 @@ export default function TenantsPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: ownerGradientLight }}>
+    <div className="min-h-screen" style={{ background: ownerPageBackground }}>
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Breadcrumb Navigation */}
         <motion.div
@@ -385,35 +392,142 @@ export default function TenantsPage() {
           }
         />
 
-        {/* KPIs */}
-        <OwnerKPIGrid columns={4} className="mb-6">
-          <OwnerKPICard
-            icon={Users}
-            title={t?.kpi?.total?.[language] || 'Total'}
-            value={stats.total}
-            variant="primary"
-          />
-          <OwnerKPICard
-            icon={Users}
-            title={t?.kpi?.active?.[language] || 'Active'}
-            value={stats.active}
-            variant="success"
-          />
-          <OwnerKPICard
-            icon={UserPlus}
-            title={t?.kpi?.new?.[language] || 'New'}
-            value={stats.newThisMonth}
-            variant="info"
-            subtext={t?.kpi?.thisMonth?.[language] || 'this month'}
-          />
-          <OwnerKPICard
-            icon={Clock}
-            title={t?.kpi?.leaseEnding?.[language] || 'Lease ending'}
-            value={stats.leavingSoon}
-            variant="warning"
-            subtext={t?.kpi?.inThreeMonths?.[language] || 'in 3 months'}
-          />
-        </OwnerKPIGrid>
+        {/* KPIs - Bold 5-color pattern */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          {/* Card 1: Total Tenants - Solid PRIMARY */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden rounded-2xl p-5 text-white cursor-pointer"
+            style={{ backgroundColor: ownerPalette.primary.main }}
+          >
+            <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full" />
+            <div className="relative">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <Users className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xs font-medium bg-white/20 px-2 py-1 rounded-full">
+                  {t?.kpi?.total?.[language] || 'Total'}
+                </span>
+              </div>
+              <div className="text-4xl font-bold mb-1">{stats.total}</div>
+              <div className="text-sm text-white/80">{t?.kpi?.tenantsLabel?.[language] || 'Locataires'}</div>
+              <div className="mt-3 pt-3 border-t border-white/20 flex items-center gap-2 text-sm">
+                <TrendingUp className="w-4 h-4" />
+                <span>{properties.length} {t?.kpi?.propertiesLabel?.[language] || 'propriétés'}</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 2: Active Tenants - Solid TERTIARY */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.15 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden rounded-2xl p-5 text-white cursor-pointer"
+            style={{ backgroundColor: ownerPalette.tertiary.main }}
+          >
+            <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full" />
+            <div className="relative">
+              <div className="flex items-center justify-between mb-3">
+                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                  <UserCheck className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xs font-medium bg-white/20 px-2 py-1 rounded-full">
+                  {t?.kpi?.active?.[language] || 'Actifs'}
+                </span>
+              </div>
+              <div className="text-4xl font-bold mb-1">{stats.active}</div>
+              <div className="text-sm text-white/80">{t?.kpi?.activeSubtitle?.[language] || 'En cours de bail'}</div>
+              <div className="mt-3 pt-3 border-t border-white/20 flex items-center gap-2 text-sm">
+                <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span>{t?.kpi?.allUpToDate?.[language] || 'Tous à jour'}</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 3: New This Month - White with INFO accent */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden bg-white rounded-2xl p-5 border border-gray-100 cursor-pointer"
+            style={{ boxShadow: '0 4px 14px rgba(156, 86, 152, 0.08)' }}
+          >
+            <div
+              className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-20"
+              style={{ backgroundColor: semanticColors.info.text }}
+            />
+            <div className="relative">
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: semanticColors.info.bg }}
+                >
+                  <UserPlus className="w-6 h-6" style={{ color: semanticColors.info.text }} />
+                </div>
+                <span
+                  className="text-xs font-medium px-2 py-1 rounded-full"
+                  style={{ backgroundColor: semanticColors.info.bg, color: semanticColors.info.text }}
+                >
+                  {t?.kpi?.new?.[language] || 'Nouveaux'}
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">{stats.newThisMonth}</div>
+              <div className="text-sm text-gray-600">{t?.kpi?.thisMonth?.[language] || 'Ce mois-ci'}</div>
+              <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+                <CalendarClock className="w-4 h-4" />
+                <span>{t?.kpi?.recentArrivals?.[language] || 'Arrivées récentes'}</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 4: Leaving Soon - White with WARNING accent */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden bg-white rounded-2xl p-5 border border-gray-100 cursor-pointer"
+            style={{ boxShadow: '0 4px 14px rgba(156, 86, 152, 0.08)' }}
+          >
+            <div
+              className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-20"
+              style={{ backgroundColor: semanticColors.warning.text }}
+            />
+            <div className="relative">
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ backgroundColor: semanticColors.warning.bg }}
+                >
+                  <Clock className="w-6 h-6" style={{ color: semanticColors.warning.text }} />
+                </div>
+                <span
+                  className="text-xs font-medium px-2 py-1 rounded-full"
+                  style={{ backgroundColor: semanticColors.warning.bg, color: semanticColors.warning.text }}
+                >
+                  {t?.kpi?.leaseEnding?.[language] || 'Fin de bail'}
+                </span>
+              </div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">{stats.leavingSoon}</div>
+              <div className="text-sm text-gray-600">{t?.kpi?.inThreeMonths?.[language] || 'Dans 3 mois'}</div>
+              <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 text-sm text-gray-500">
+                <ArrowRight className="w-4 h-4" />
+                <span>{t?.kpi?.planAhead?.[language] || 'Prévoir renouvellement'}</span>
+              </div>
+            </div>
+          </motion.div>
+        </div>
 
         {/* Alert Banner for Tenants Leaving Soon */}
         <OwnerAlertBanner
