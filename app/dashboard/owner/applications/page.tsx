@@ -22,6 +22,11 @@ import {
   Search,
   Filter,
   ChevronDown,
+  Users,
+  UserCheck,
+  UserX,
+  User,
+  TrendingUp,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import {
@@ -40,7 +45,13 @@ import {
   type ApplicationStatus,
   type ApplicationType,
 } from '@/components/owner/portfolio';
-import { ownerGradientLight, ownerPageBackground, ownerGradient } from '@/lib/constants/owner-theme';
+import {
+  ownerGradientLight,
+  ownerPageBackground,
+  ownerGradient,
+  ownerPalette,
+  semanticColors,
+} from '@/lib/constants/owner-theme';
 
 type FilterStatus = 'all' | ApplicationStatus;
 type FilterType = 'all' | ApplicationType;
@@ -374,41 +385,183 @@ export default function OwnerApplicationsPage() {
           }
         />
 
-        {/* Stats Summary */}
+        {/* Bold KPI Cards - 4 columns */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mt-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3"
+          className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
         >
-          {[
-            { label: t?.stats?.total?.[language] || 'Total', value: stats.total, color: '#9c5698' },
-            { label: t?.stats?.individual?.[language] || 'Individual', value: stats.individual, color: '#3b82f6' },
-            { label: t?.stats?.groups?.[language] || 'Groups', value: stats.groups, color: '#c2566b' },
-            { label: t?.status?.pending?.[language] || 'Pending', value: stats.pending, color: '#f59e0b' },
-            { label: t?.status?.reviewing?.[language] || 'In review', value: stats.reviewing, color: '#3b82f6' },
-            { label: t?.status?.approved?.[language] || 'Approved', value: stats.approved, color: '#10b981' },
-            { label: t?.status?.rejected?.[language] || 'Rejected', value: stats.rejected, color: '#ef4444' },
-          ].map((stat, idx) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.15 + idx * 0.05 }}
-              className="bg-white/80 backdrop-blur-sm rounded-xl border border-gray-200 p-3"
-            >
-              <div className="flex items-center gap-2 mb-1">
+          {/* Card 1: Total Applications - PRIMARY Solid */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.15 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+            style={{ background: ownerPalette.primary.main }}
+          >
+            {/* Decorative circle */}
+            <div
+              className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-20"
+              style={{ background: 'rgba(255,255,255,0.3)' }}
+            />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-2 h-2 rounded-full"
-                  style={{ backgroundColor: stat.color }}
-                />
-                <span className="text-xs text-gray-600">{stat.label}</span>
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ background: 'rgba(255,255,255,0.2)' }}
+                >
+                  <FileText className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xs font-medium text-white/80 bg-white/20 px-2 py-1 rounded-full">
+                  {t?.stats?.total?.[language] || 'Total'}
+                </span>
               </div>
-              <p className="text-xl font-bold" style={{ color: stat.color }}>
-                {stat.value}
+              <p className="text-4xl font-bold text-white mb-1">{stats.total}</p>
+              <p className="text-sm text-white/80">
+                {t?.stats?.candidatures?.[language] || 'candidatures reçues'}
               </p>
-            </motion.div>
-          ))}
+              <div className="mt-3 pt-3 border-t border-white/20 flex items-center gap-2 text-xs text-white/70">
+                <User className="w-3.5 h-3.5" />
+                <span>{stats.individual} {t?.stats?.individuals?.[language] || 'individuels'}</span>
+                <span className="mx-1">•</span>
+                <Users className="w-3.5 h-3.5" />
+                <span>{stats.groups} {t?.stats?.groupsLabel?.[language] || 'groupes'}</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 2: Pending - TERTIARY Solid */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+            style={{ background: ownerPalette.tertiary.main }}
+          >
+            {/* Decorative circle */}
+            <div
+              className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-20"
+              style={{ background: 'rgba(255,255,255,0.3)' }}
+            />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ background: 'rgba(255,255,255,0.2)' }}
+                >
+                  <Clock className="w-6 h-6 text-white" />
+                </div>
+                <span className="text-xs font-medium text-white/80 bg-white/20 px-2 py-1 rounded-full">
+                  {t?.stats?.actionRequired?.[language] || 'À traiter'}
+                </span>
+              </div>
+              <p className="text-4xl font-bold text-white mb-1">{stats.pending + stats.reviewing}</p>
+              <p className="text-sm text-white/80">
+                {t?.stats?.awaitingDecision?.[language] || 'en attente de décision'}
+              </p>
+              <div className="mt-3 pt-3 border-t border-white/20 flex items-center gap-2 text-xs text-white/70">
+                <TrendingUp className="w-3.5 h-3.5" />
+                <span>{stats.pending} {t?.status?.pending?.[language] || 'nouvelles'}</span>
+                <span className="mx-1">•</span>
+                <span>{stats.reviewing} {t?.status?.reviewing?.[language] || 'en cours'}</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 3: Approved - White with Success accent */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.25 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white border"
+            style={{ borderColor: semanticColors.success.border }}
+          >
+            {/* Decorative circle */}
+            <div
+              className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10"
+              style={{ background: semanticColors.success.gradient }}
+            />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ background: semanticColors.success.bg }}
+                >
+                  <UserCheck className="w-6 h-6" style={{ color: semanticColors.success.text }} />
+                </div>
+                <span
+                  className="text-xs font-medium px-2 py-1 rounded-full"
+                  style={{ background: semanticColors.success.bg, color: semanticColors.success.text }}
+                >
+                  {t?.status?.approved?.[language] || 'Approuvées'}
+                </span>
+              </div>
+              <p className="text-4xl font-bold mb-1" style={{ color: semanticColors.success.text }}>
+                {stats.approved}
+              </p>
+              <p className="text-sm text-gray-600">
+                {t?.stats?.candidatesAccepted?.[language] || 'candidats acceptés'}
+              </p>
+              <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-500">
+                <TrendingUp className="w-3.5 h-3.5" style={{ color: semanticColors.success.text }} />
+                <span>
+                  {stats.total > 0 ? Math.round((stats.approved / stats.total) * 100) : 0}% {t?.stats?.acceptanceRate?.[language] || "taux d'acceptation"}
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Card 4: Rejected - White with Danger accent */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            whileHover={{ scale: 1.02, y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white border"
+            style={{ borderColor: semanticColors.danger.border }}
+          >
+            {/* Decorative circle */}
+            <div
+              className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10"
+              style={{ background: semanticColors.danger.gradient }}
+            />
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  style={{ background: semanticColors.danger.bg }}
+                >
+                  <UserX className="w-6 h-6" style={{ color: semanticColors.danger.text }} />
+                </div>
+                <span
+                  className="text-xs font-medium px-2 py-1 rounded-full"
+                  style={{ background: semanticColors.danger.bg, color: semanticColors.danger.text }}
+                >
+                  {t?.status?.rejected?.[language] || 'Refusées'}
+                </span>
+              </div>
+              <p className="text-4xl font-bold mb-1" style={{ color: semanticColors.danger.text }}>
+                {stats.rejected}
+              </p>
+              <p className="text-sm text-gray-600">
+                {t?.stats?.candidatesRejected?.[language] || 'candidatures refusées'}
+              </p>
+              <div className="mt-3 pt-3 border-t border-gray-100 flex items-center gap-2 text-xs text-gray-500">
+                <TrendingUp className="w-3.5 h-3.5" style={{ color: semanticColors.danger.text }} />
+                <span>
+                  {stats.total > 0 ? Math.round((stats.rejected / stats.total) * 100) : 0}% {t?.stats?.rejectionRate?.[language] || 'taux de refus'}
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
 
         {/* Filters Bar */}
