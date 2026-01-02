@@ -208,10 +208,13 @@ class GestionService {
   }
 
   /**
-   * Get maintenance statistics
+   * Get maintenance statistics (uses batch method - avoids N+1)
    */
   private async getMaintenanceStats(propertyIds: string[]): Promise<MaintenanceStats> {
     try {
+      // Single batch query instead of N queries
+      const statsMap = await maintenanceService.getStatsForProperties(propertyIds);
+
       let totalOpen = 0;
       let totalInProgress = 0;
       let totalResolved = 0;
@@ -220,8 +223,7 @@ class GestionService {
       let totalResolutionHours = 0;
       let resolvedCount = 0;
 
-      for (const propertyId of propertyIds) {
-        const stats = await maintenanceService.getStats(propertyId);
+      statsMap.forEach((stats) => {
         totalOpen += stats.open_count || 0;
         totalInProgress += stats.in_progress_count || 0;
         totalResolved += stats.resolved_count || 0;
@@ -232,7 +234,7 @@ class GestionService {
           totalResolutionHours += stats.avg_resolution_time_hours * stats.resolved_count;
           resolvedCount += stats.resolved_count;
         }
-      }
+      });
 
       const avgResolutionHours = resolvedCount > 0
         ? Math.round(totalResolutionHours / resolvedCount)
@@ -363,28 +365,27 @@ class GestionService {
         }
       });
 
-      // 3. Urgent maintenance
-      for (const property of properties) {
-        const requests = await maintenanceService.getRequests(property.id, {
-          status: ['open', 'in_progress'],
-        });
+      // 3. Urgent maintenance (batch query - avoids N+1)
+      const allRequests = await maintenanceService.getRequestsForProperties(
+        properties.map(p => ({ id: p.id, name: p.title })),
+        { status: ['open', 'in_progress'] }
+      );
 
-        requests
-          .filter(r => r.priority === 'high' || r.priority === 'emergency')
-          .slice(0, 3)
-          .forEach(r => {
-            actions.push({
-              id: `maintenance-${r.id}`,
-              type: 'maintenance_urgent',
-              severity: r.priority === 'emergency' ? 'critical' : 'warning',
-              title: r.title,
-              description: `${r.priority === 'emergency' ? 'Urgence' : 'Priorité haute'} - ${r.category}`,
-              propertyName: property.title,
-              href: '/dashboard/owner/maintenance',
-              createdAt: r.created_at,
-            });
+      allRequests
+        .filter(r => r.priority === 'high' || r.priority === 'emergency')
+        .slice(0, 10) // Limit total urgent tickets shown
+        .forEach(r => {
+          actions.push({
+            id: `maintenance-${r.id}`,
+            type: 'maintenance_urgent',
+            severity: r.priority === 'emergency' ? 'critical' : 'warning',
+            title: r.title,
+            description: `${r.priority === 'emergency' ? 'Urgence' : 'Priorité haute'} - ${r.category}`,
+            propertyName: r.property_name,
+            href: '/dashboard/owner/maintenance',
+            createdAt: r.created_at,
           });
-      }
+        });
 
       // Sort by severity and date
       const severityOrder = { critical: 0, warning: 1, info: 2 };
@@ -437,23 +438,22 @@ class GestionService {
         });
       });
 
-      // Recent maintenance resolutions
-      for (const property of properties.slice(0, 3)) {
-        const requests = await maintenanceService.getRequests(property.id, {
-          status: ['resolved', 'closed'],
-        });
+      // Recent maintenance resolutions (batch query - avoids N+1)
+      const resolvedRequests = await maintenanceService.getRequestsForProperties(
+        properties.map(p => ({ id: p.id, name: p.title })),
+        { status: ['resolved', 'closed'] }
+      );
 
-        requests.slice(0, 3).forEach(r => {
-          activities.push({
-            id: `maintenance-${r.id}`,
-            type: 'maintenance',
-            action: 'Ticket résolu',
-            description: r.title,
-            propertyName: property.title,
-            timestamp: r.resolved_at || r.updated_at || r.created_at,
-          });
+      resolvedRequests.slice(0, 5).forEach(r => {
+        activities.push({
+          id: `maintenance-${r.id}`,
+          type: 'maintenance',
+          action: 'Ticket résolu',
+          description: r.title,
+          propertyName: r.property_name,
+          timestamp: r.resolved_at || r.updated_at || r.created_at,
         });
-      }
+      });
 
       // Sort by timestamp and limit
       return activities

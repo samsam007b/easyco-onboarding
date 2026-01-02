@@ -69,6 +69,16 @@ export interface PropertyPreview {
   isRented: boolean;
 }
 
+/** Internal type for property data from database queries */
+interface PropertyData {
+  id: string;
+  title?: string;
+  status?: 'published' | 'draft' | 'archived';
+  monthly_rent?: number;
+  views_count?: number;
+  inquiries_count?: number;
+}
+
 class PortfolioService {
   private supabase = createClient();
 
@@ -89,11 +99,20 @@ class PortfolioService {
 
       const propertyIds = properties.map(p => p.id);
 
-      // Fetch all data in parallel
+      // Fetch residents once for both property and performance stats (avoids duplicate query)
+      const { data: residents } = await this.supabase
+        .from('property_residents')
+        .select('property_id')
+        .in('property_id', propertyIds)
+        .eq('is_active', true);
+
+      const rentedPropertyIds = new Set(residents?.map(r => r.property_id) || []);
+
+      // Fetch application stats in parallel while computing other stats
       const [propertyStats, applicationStats, performanceStats] = await Promise.all([
-        this.getPropertyStats(properties),
+        Promise.resolve(this.getPropertyStatsSync(properties, rentedPropertyIds)),
         this.getApplicationStats(propertyIds),
-        this.getPerformanceStats(properties, propertyIds),
+        Promise.resolve(this.getPerformanceStatsSync(properties, rentedPropertyIds)),
       ]);
 
       return {
@@ -109,22 +128,12 @@ class PortfolioService {
   }
 
   /**
-   * Get property statistics
+   * Get property statistics (sync - uses pre-fetched rentedPropertyIds)
    */
-  private async getPropertyStats(properties: any[]): Promise<PropertyStats> {
+  private getPropertyStatsSync(properties: PropertyData[], rentedPropertyIds: Set<string>): PropertyStats {
     const published = properties.filter(p => p.status === 'published').length;
     const draft = properties.filter(p => p.status === 'draft').length;
     const archived = properties.filter(p => p.status === 'archived').length;
-
-    // Get rented properties (those with active residents)
-    const propertyIds = properties.map(p => p.id);
-    const { data: residents } = await this.supabase
-      .from('property_residents')
-      .select('property_id')
-      .in('property_id', propertyIds)
-      .eq('is_active', true);
-
-    const rentedPropertyIds = new Set(residents?.map(r => r.property_id) || []);
     const rented = rentedPropertyIds.size;
     const vacant = published - rented;
 
@@ -182,9 +191,9 @@ class PortfolioService {
   }
 
   /**
-   * Get performance statistics
+   * Get performance statistics (sync - uses pre-fetched rentedPropertyIds)
    */
-  private async getPerformanceStats(properties: any[], propertyIds: string[]): Promise<PerformanceStats> {
+  private getPerformanceStatsSync(properties: PropertyData[], rentedPropertyIds: Set<string>): PerformanceStats {
     const publishedProperties = properties.filter(p => p.status === 'published');
     const totalMonthlyRent = publishedProperties.reduce((sum, p) => sum + (p.monthly_rent || 0), 0);
     const avgRentPerProperty = publishedProperties.length > 0
@@ -194,14 +203,8 @@ class PortfolioService {
     const totalViews = properties.reduce((sum, p) => sum + (p.views_count || 0), 0);
     const totalInquiries = properties.reduce((sum, p) => sum + (p.inquiries_count || 0), 0);
 
-    // Calculate occupancy rate
-    const { data: residents } = await this.supabase
-      .from('property_residents')
-      .select('property_id')
-      .in('property_id', propertyIds)
-      .eq('is_active', true);
-
-    const rentedCount = new Set(residents?.map(r => r.property_id) || []).size;
+    // Calculate occupancy rate from pre-fetched data
+    const rentedCount = rentedPropertyIds.size;
     const occupancyRate = publishedProperties.length > 0
       ? Math.round((rentedCount / publishedProperties.length) * 100)
       : 0;

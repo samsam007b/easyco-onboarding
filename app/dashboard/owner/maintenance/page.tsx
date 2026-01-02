@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
@@ -35,6 +35,7 @@ import { cn } from '@/lib/utils';
 import { maintenanceService } from '@/lib/services/maintenance-service';
 import type {
   MaintenanceRequestWithCreator,
+  MaintenanceRequestWithProperty,
   MaintenanceStatus,
   MaintenancePriority,
   MaintenanceCategory,
@@ -162,7 +163,7 @@ export default function MaintenancePage() {
   const [ratingVendor, setRatingVendor] = useState<{ id: string; name: string; maintenanceId?: string; propertyId?: string; jobType?: string } | null>(null);
   const [viewMode, setViewMode] = useState<'kanban' | 'list'>('kanban');
   const [filterStatus, setFilterStatus] = useState<'all' | MaintenanceStatus>('all');
-  const [requests, setRequests] = useState<MaintenanceRequestWithCreator[]>([]);
+  const [requests, setRequests] = useState<MaintenanceRequestWithProperty[]>([]);
   const [properties, setProperties] = useState<PropertyInfo[]>([]);
   const [vendors, setVendors] = useState<Vendor[]>([]);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
@@ -174,6 +175,10 @@ export default function MaintenancePage() {
     totalCost: 0,
     avgResolutionHours: 0,
   });
+
+  // Debounce ref for refresh button (prevents rapid successive clicks)
+  const lastRefreshRef = useRef<number>(0);
+  const REFRESH_DEBOUNCE_MS = 2000;
 
   // Fetch all maintenance requests across user's properties
   const fetchMaintenanceData = useCallback(async () => {
@@ -201,6 +206,7 @@ export default function MaintenancePage() {
 
       if (propError) {
         console.error('[Maintenance] Failed to fetch properties:', propError);
+        toast.error('Impossible de charger vos propriétés');
         setIsLoading(false);
         return;
       }
@@ -214,23 +220,8 @@ export default function MaintenancePage() {
 
       setProperties(userProperties);
 
-      // 2. Fetch maintenance requests for all properties
-      const allRequests: MaintenanceRequestWithCreator[] = [];
-
-      for (const property of userProperties) {
-        const propertyRequests = await maintenanceService.getRequests(property.id);
-        // Add property name to each request for display
-        const enrichedRequests = propertyRequests.map(req => ({
-          ...req,
-          property_name: property.name,
-        }));
-        allRequests.push(...enrichedRequests);
-      }
-
-      // Sort by created_at descending
-      allRequests.sort((a, b) =>
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
+      // 2. Fetch maintenance requests for all properties (single batch query)
+      const allRequests = await maintenanceService.getRequestsForProperties(userProperties);
 
       setRequests(allRequests);
 
@@ -263,6 +254,7 @@ export default function MaintenancePage() {
 
     } catch (error) {
       console.error('[Maintenance] Error fetching data:', error);
+      toast.error('Erreur lors du chargement des données');
     } finally {
       setIsLoading(false);
     }
@@ -369,7 +361,7 @@ export default function MaintenancePage() {
         title: request.title,
         description: request.description || '',
         propertyId: request.property_id,
-        propertyName: (request as any).property_name || 'Propriété',
+        propertyName: request.property_name || 'Propriété',
         tenantId: request.created_by,
         tenantName: request.creator_name,
         status: mapStatus(request.status),
@@ -541,7 +533,7 @@ export default function MaintenancePage() {
           actions={
             <div className="flex items-center gap-3">
               {/* View toggle */}
-              <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-lg">
+              <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-lg" role="group" aria-label="Mode d'affichage">
                 <Button
                   variant={viewMode === 'kanban' ? 'default' : 'ghost'}
                   size="sm"
@@ -551,6 +543,8 @@ export default function MaintenancePage() {
                     viewMode === 'kanban' ? 'text-white' : ''
                   )}
                   style={viewMode === 'kanban' ? { background: ownerGradient } : undefined}
+                  aria-label="Vue Kanban"
+                  aria-pressed={viewMode === 'kanban'}
                 >
                   <LayoutGrid className="w-4 h-4" />
                 </Button>
@@ -563,6 +557,8 @@ export default function MaintenancePage() {
                     viewMode === 'list' ? 'text-white' : ''
                   )}
                   style={viewMode === 'list' ? { background: ownerGradient } : undefined}
+                  aria-label="Vue liste"
+                  aria-pressed={viewMode === 'list'}
                 >
                   <List className="w-4 h-4" />
                 </Button>
@@ -572,12 +568,17 @@ export default function MaintenancePage() {
               <Button
                 variant="outline"
                 onClick={() => {
+                  const now = Date.now();
+                  if (isLoading || now - lastRefreshRef.current < REFRESH_DEBOUNCE_MS) return;
+                  lastRefreshRef.current = now;
                   setIsLoading(true);
                   fetchMaintenanceData();
                 }}
                 className="rounded-full border-gray-300 hover:border-purple-400"
+                aria-label="Actualiser les données"
+                disabled={isLoading}
               >
-                <RefreshCw className="w-5 h-5" />
+                <RefreshCw className={cn('w-5 h-5', isLoading && 'animate-spin')} />
               </Button>
 
               {/* New ticket button */}
@@ -651,8 +652,7 @@ export default function MaintenancePage() {
                 tickets={kanbanTickets}
                 onStatusChange={handleStatusChange}
                 onTicketClick={(ticket) => {
-                  // TODO: Open ticket details modal
-                  console.log('Ticket clicked:', ticket);
+                  toast.info(`Ticket: ${ticket.title} - ${ticket.propertyName || 'Propriété'} (${ticket.status})`);
                 }}
                 className="mb-8"
               />
@@ -741,7 +741,9 @@ export default function MaintenancePage() {
                           borderLeftWidth: '4px',
                           borderLeftColor: priorityConfig.borderColor
                         }}
-                        onClick={() => {/* TODO: Open request details */}}
+                        onClick={() => {
+                          toast.info(`${request.title} - ${request.property_name} (${statusConfig.label})`);
+                        }}
                       >
                         <div className="relative flex flex-col lg:flex-row gap-6">
                           {/* Request Info */}
@@ -778,7 +780,7 @@ export default function MaintenancePage() {
                                 <div className="space-y-1.5 text-sm">
                                   <div className="flex items-center gap-2 text-gray-700">
                                     <Home className="w-4 h-4 text-gray-500" />
-                                    <span>{(request as any).property_name || 'Propriété'}</span>
+                                    <span>{request.property_name}</span>
                                   </div>
 
                                   {request.location && (
@@ -817,7 +819,7 @@ export default function MaintenancePage() {
                               className="flex-1 rounded-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                /* TODO: View details */
+                                toast.info(`${request.title} - ${request.description || 'Aucune description'}`);
                               }}
                             >
                               Voir Détails
@@ -882,7 +884,7 @@ export default function MaintenancePage() {
         </AnimatePresence>
 
         {/* Cost Tracker and Vendor Directory - Side by Side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <CostTracker
             currentMonthTotal={currentMonthTotal}
             previousMonthTotal={previousMonthTotal}

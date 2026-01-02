@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
@@ -97,6 +97,10 @@ export default function LeasesPage() {
     averageDuration: 0,
   });
 
+  // Debounce ref for refresh button (prevents rapid successive clicks)
+  const lastRefreshRef = useRef<number>(0);
+  const REFRESH_DEBOUNCE_MS = 2000;
+
   // Fetch lease data
   const fetchLeasesData = useCallback(async () => {
     try {
@@ -118,6 +122,7 @@ export default function LeasesPage() {
 
       if (propError) {
         console.error('[Leases] Failed to fetch properties:', propError);
+        toast.error('Impossible de charger vos propriétés');
         setIsLoading(false);
         return;
       }
@@ -141,6 +146,7 @@ export default function LeasesPage() {
 
       if (resError) {
         console.error('[Leases] Failed to fetch residents:', resError);
+        toast.error('Erreur lors du chargement des baux');
       }
 
       const now = new Date();
@@ -216,6 +222,7 @@ export default function LeasesPage() {
 
     } catch (error) {
       console.error('[Leases] Error fetching data:', error);
+      toast.error('Erreur lors du chargement des données');
     } finally {
       setIsLoading(false);
     }
@@ -382,17 +389,26 @@ export default function LeasesPage() {
                 <Button
                   variant="outline"
                   onClick={() => {
+                    const now = Date.now();
+                    if (isLoading || now - lastRefreshRef.current < REFRESH_DEBOUNCE_MS) return;
+                    lastRefreshRef.current = now;
                     setIsLoading(true);
                     fetchLeasesData();
                   }}
                   className="rounded-full border-gray-300 hover:border-purple-400"
+                  aria-label="Actualiser les baux"
+                  disabled={isLoading}
                 >
-                  <RefreshCw className="w-5 h-5" />
+                  <RefreshCw className={cn('w-5 h-5', isLoading && 'animate-spin')} />
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
-                  onClick={() => {/* TODO: Create new lease */}}
+                  onClick={() => {
+                    // Navigate to applications page where leases can be created from approved applications
+                    toast.info('Pour créer un bail, acceptez une candidature depuis la page Candidatures');
+                    router.push('/dashboard/owner/applications');
+                  }}
                   className="rounded-full text-white border-0 shadow-md hover:shadow-lg transition-all"
                   style={{
                     background: ownerGradient,
@@ -530,8 +546,10 @@ export default function LeasesPage() {
             <LeaseTimeline
               leases={timelineLeases}
               onLeaseClick={(leaseId) => {
-                // TODO: Open lease details modal
-                console.log('Lease clicked:', leaseId);
+                const lease = leases.find(l => l.id === leaseId);
+                if (lease) {
+                  toast.info(`Bail de ${lease.tenant_name} - ${format(lease.start_date, 'dd MMM yyyy', { locale: fr })} au ${format(lease.end_date, 'dd MMM yyyy', { locale: fr })}`);
+                }
               }}
             />
           </motion.div>
@@ -554,12 +572,16 @@ export default function LeasesPage() {
                 }
               }}
               onRenew={(leaseId) => {
-                // TODO: Open renewal modal
-                console.log('Renew lease:', leaseId);
+                const lease = leases.find(l => l.id === leaseId);
+                if (lease) {
+                  toast.info(`Renouvellement de bail pour ${lease.tenant_name} - Fonctionnalité bientôt disponible`);
+                }
               }}
               onDecline={(leaseId) => {
-                // TODO: Open decline modal
-                console.log('Decline renewal:', leaseId);
+                const lease = leases.find(l => l.id === leaseId);
+                if (lease) {
+                  toast.info(`Fin de bail pour ${lease.tenant_name} - Fonctionnalité bientôt disponible`);
+                }
               }}
             />
           </motion.div>
@@ -637,7 +659,9 @@ export default function LeasesPage() {
                         borderLeftWidth: '4px',
                         borderLeftColor: statusConfig.color,
                       }}
-                      onClick={() => {/* TODO: Open lease details */}}
+                      onClick={() => {
+                        toast.info(`Bail de ${lease.tenant_name} - ${format(lease.start_date, 'dd MMM yyyy', { locale: fr })} au ${format(lease.end_date, 'dd MMM yyyy', { locale: fr })}`);
+                      }}
                     >
                       <div className="absolute -top-6 -right-6 w-20 h-20 rounded-full opacity-10" style={{ background: ownerGradient }} />
 
@@ -745,7 +769,7 @@ export default function LeasesPage() {
                                 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  /* TODO: Renew lease */
+                                  toast.info(`Renouvellement de bail pour ${lease.tenant_name} - Fonctionnalité bientôt disponible`);
                                 }}
                               >
                                 <Repeat className="w-4 h-4 mr-2" />

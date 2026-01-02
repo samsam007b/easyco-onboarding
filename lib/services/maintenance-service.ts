@@ -7,14 +7,120 @@ import { createClient } from '@/lib/auth/supabase-client';
 import type {
   MaintenanceRequest,
   MaintenanceRequestWithCreator,
+  MaintenanceRequestWithProperty,
+  MaintenanceCategory,
+  MaintenancePriority,
   CreateMaintenanceForm,
   UpdateMaintenanceForm,
   MaintenanceStats,
   MaintenanceStatus,
 } from '@/types/maintenance.types';
 
+/** Property info for batch fetching */
+interface PropertyInfo {
+  id: string;
+  name: string;
+}
+
 class MaintenanceService {
   private supabase = createClient();
+
+  /**
+   * Get maintenance requests for multiple properties (batch query - fixes N+1)
+   * Returns requests enriched with property_name
+   */
+  async getRequestsForProperties(
+    properties: PropertyInfo[],
+    filters?: {
+      status?: MaintenanceStatus[];
+      category?: string;
+    }
+  ): Promise<MaintenanceRequestWithProperty[]> {
+    try {
+      if (properties.length === 0) return [];
+
+      const propertyIds = properties.map(p => p.id);
+      const propertyMap = new Map(properties.map(p => [p.id, p.name]));
+
+      let query = this.supabase
+        .from('maintenance_requests')
+        .select(`
+          *,
+          profiles!created_by (
+            full_name,
+            avatar_url
+          )
+        `)
+        .in('property_id', propertyIds)
+        .order('created_at', { ascending: false });
+
+      // Apply filters
+      if (filters?.status && filters.status.length > 0) {
+        query = query.in('status', filters.status);
+      }
+
+      if (filters?.category) {
+        query = query.eq('category', filters.category);
+      }
+
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      // Type for the raw query result with joined profile
+      interface RequestWithProfile {
+        id: string;
+        property_id: string;
+        created_by: string;
+        title: string;
+        description: string;
+        category: MaintenanceCategory;
+        priority: MaintenancePriority;
+        status: MaintenanceStatus;
+        location?: string;
+        images: string[];
+        estimated_cost?: number;
+        actual_cost?: number;
+        assigned_to?: string;
+        resolved_at?: string;
+        created_at: string;
+        updated_at: string;
+        profiles?: {
+          full_name?: string;
+          avatar_url?: string;
+        };
+      }
+
+      const enriched: MaintenanceRequestWithProperty[] =
+        (data as RequestWithProfile[] | null)?.map((r) => ({
+          id: r.id,
+          property_id: r.property_id,
+          created_by: r.created_by,
+          title: r.title,
+          description: r.description,
+          category: r.category,
+          priority: r.priority,
+          status: r.status,
+          location: r.location,
+          images: r.images,
+          estimated_cost: r.estimated_cost,
+          actual_cost: r.actual_cost,
+          assigned_to: r.assigned_to,
+          resolved_at: r.resolved_at,
+          created_at: r.created_at,
+          updated_at: r.updated_at,
+          creator_name: r.profiles?.full_name || 'Utilisateur inconnu',
+          creator_avatar: r.profiles?.avatar_url,
+          property_name: propertyMap.get(r.property_id) || 'Propriété',
+        })) || [];
+
+      console.log(`[Maintenance] ✅ Batch fetched ${enriched.length} requests for ${properties.length} properties`);
+      return enriched;
+    } catch (error) {
+      console.error('[Maintenance] ❌ Failed to batch fetch requests:', error);
+      return [];
+    }
+  }
 
   /**
    * Get all maintenance requests for a property
@@ -279,6 +385,95 @@ class MaintenanceService {
     });
 
     return Promise.all(uploadPromises);
+  }
+
+  /**
+   * Get maintenance statistics for multiple properties (batch - fixes N+1)
+   */
+  async getStatsForProperties(propertyIds: string[]): Promise<Map<string, MaintenanceStats>> {
+    const result = new Map<string, MaintenanceStats>();
+
+    if (propertyIds.length === 0) return result;
+
+    try {
+      // Single query for all properties
+      const { data: requests } = await this.supabase
+        .from('maintenance_requests')
+        .select('*')
+        .in('property_id', propertyIds);
+
+      // Initialize empty stats for all properties
+      propertyIds.forEach(id => {
+        result.set(id, {
+          total_requests: 0,
+          open_count: 0,
+          in_progress_count: 0,
+          resolved_count: 0,
+          avg_resolution_time_hours: 0,
+          total_cost: 0,
+          by_category: {} as Record<string, number>,
+          by_priority: {} as Record<string, number>,
+        });
+      });
+
+      if (!requests || requests.length === 0) return result;
+
+      // Group requests by property and calculate stats
+      const requestsByProperty = new Map<string, typeof requests>();
+      requests.forEach(r => {
+        const list = requestsByProperty.get(r.property_id) || [];
+        list.push(r);
+        requestsByProperty.set(r.property_id, list);
+      });
+
+      requestsByProperty.forEach((propRequests, propertyId) => {
+        const open_count = propRequests.filter(r => r.status === 'open').length;
+        const in_progress_count = propRequests.filter(r => r.status === 'in_progress').length;
+        const resolved_count = propRequests.filter(r => r.status === 'resolved').length;
+
+        // Average resolution time
+        const resolvedRequests = propRequests.filter(r => r.resolved_at && r.created_at);
+        const avgResolutionHours = resolvedRequests.length > 0
+          ? resolvedRequests.reduce((sum, r) => {
+              const created = new Date(r.created_at).getTime();
+              const resolved = new Date(r.resolved_at!).getTime();
+              return sum + (resolved - created) / (1000 * 60 * 60);
+            }, 0) / resolvedRequests.length
+          : 0;
+
+        // Total cost
+        const total_cost = propRequests.reduce((sum, r) => sum + Number(r.actual_cost || 0), 0);
+
+        // Count by category
+        const by_category = propRequests.reduce((acc: Record<string, number>, r) => {
+          acc[r.category] = (acc[r.category] || 0) + 1;
+          return acc;
+        }, {});
+
+        // Count by priority
+        const by_priority = propRequests.reduce((acc: Record<string, number>, r) => {
+          acc[r.priority] = (acc[r.priority] || 0) + 1;
+          return acc;
+        }, {});
+
+        result.set(propertyId, {
+          total_requests: propRequests.length,
+          open_count,
+          in_progress_count,
+          resolved_count,
+          avg_resolution_time_hours: Math.round(avgResolutionHours),
+          total_cost,
+          by_category,
+          by_priority,
+        });
+      });
+
+      console.log(`[Maintenance] ✅ Batch stats for ${propertyIds.length} properties`);
+      return result;
+    } catch (error) {
+      console.error('[Maintenance] ❌ Failed to batch fetch stats:', error);
+      return result;
+    }
   }
 
   /**

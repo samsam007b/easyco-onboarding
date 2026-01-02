@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback, useMemo } from 'react';
+import { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useRole } from '@/lib/role/role-context';
@@ -18,6 +18,7 @@ import {
   ChevronLeft
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
 
 // Import shared owner components
 import { OwnerPageHeader, OwnerKPICard, OwnerKPIGrid, OwnerAlertBanner } from '@/components/owner';
@@ -125,6 +126,10 @@ export default function TenantsPage() {
     leavingSoon: 0,
   });
 
+  // Debounce ref for refresh button (prevents rapid successive clicks)
+  const lastRefreshRef = useRef<number>(0);
+  const REFRESH_DEBOUNCE_MS = 2000;
+
   // Fetch all tenants across user's properties
   const fetchTenantsData = useCallback(async () => {
     try {
@@ -146,6 +151,7 @@ export default function TenantsPage() {
 
       if (propError) {
         console.error('[Tenants] Failed to fetch properties:', propError);
+        toast.error('Impossible de charger vos propriétés');
         setIsLoading(false);
         return;
       }
@@ -168,6 +174,7 @@ export default function TenantsPage() {
 
       if (resError) {
         console.error('[Tenants] Failed to fetch residents:', resError);
+        toast.error('Erreur lors du chargement des locataires');
       }
 
       // Create property map with resident counts
@@ -184,12 +191,13 @@ export default function TenantsPage() {
 
       setProperties(enrichedProperties);
 
-      // Enrich residents with property names and payment info
+      // Enrich residents with property names
+      // TODO: payment_status should come from a payments/transactions table when available
       const propertyMap = new Map(userProperties.map(p => [p.id, p.name]));
       const enrichedResidents: PropertyResident[] = (allResidents || []).map(r => ({
         ...r,
         property_name: propertyMap.get(r.property_id) || 'Propriété',
-        payment_status: ['paid', 'paid', 'paid', 'pending', 'overdue'][Math.floor(Math.random() * 5)] as 'paid' | 'pending' | 'overdue',
+        payment_status: undefined, // Will be populated when payment tracking is implemented
       }));
 
       setResidents(enrichedResidents);
@@ -219,6 +227,7 @@ export default function TenantsPage() {
 
     } catch (error) {
       console.error('[Tenants] Error fetching data:', error);
+      toast.error('Erreur lors du chargement des données');
     } finally {
       setIsLoading(false);
     }
@@ -340,15 +349,23 @@ export default function TenantsPage() {
               <Button
                 variant="outline"
                 onClick={() => {
+                  const now = Date.now();
+                  if (isLoading || now - lastRefreshRef.current < REFRESH_DEBOUNCE_MS) return;
+                  lastRefreshRef.current = now;
                   setIsLoading(true);
                   fetchTenantsData();
                 }}
                 className="rounded-full border-gray-300 hover:border-purple-400"
+                aria-label="Actualiser les locataires"
+                disabled={isLoading}
               >
-                <RefreshCw className="w-5 h-5" />
+                <RefreshCw className={cn('w-5 h-5', isLoading && 'animate-spin')} />
               </Button>
               <Button
-                onClick={() => {/* TODO: Open add tenant modal */}}
+                onClick={() => {
+                  toast.info('Pour ajouter un locataire, acceptez une candidature depuis la page Candidatures');
+                  router.push('/dashboard/owner/applications');
+                }}
                 className="rounded-full text-white border-0 shadow-md hover:shadow-lg transition-all"
                 style={{
                   background: 'linear-gradient(135deg, #9c5698 0%, #c2566b 100%)',
@@ -393,21 +410,18 @@ export default function TenantsPage() {
         </OwnerKPIGrid>
 
         {/* Alert Banner for Tenants Leaving Soon */}
-        <AnimatePresence>
-          {stats.leavingSoon > 0 && (
-            <OwnerAlertBanner
-              severity="warning"
-              icon={Clock}
-              title={`${stats.leavingSoon} locataire${stats.leavingSoon > 1 ? 's' : ''} termine${stats.leavingSoon > 1 ? 'nt' : ''} leur bail prochainement`}
-              description="Anticipez les départs et planifiez les relances ou recherches de nouveaux locataires"
-              action={{
-                label: 'Voir les baux',
-                onClick: () => router.push('/dashboard/owner/leases?filter=ending_soon')
-              }}
-              className="mb-6"
-            />
-          )}
-        </AnimatePresence>
+        <OwnerAlertBanner
+          severity="warning"
+          icon={Clock}
+          title={`${stats.leavingSoon} locataire${stats.leavingSoon > 1 ? 's' : ''} termine${stats.leavingSoon > 1 ? 'nt' : ''} leur bail prochainement`}
+          description="Anticipez les départs et planifiez les relances ou recherches de nouveaux locataires"
+          action={{
+            label: 'Voir les baux',
+            onClick: () => router.push('/dashboard/owner/leases?filter=ending_soon')
+          }}
+          show={stats.leavingSoon > 0}
+          className="mb-6"
+        />
 
         {/* ===== UNIQUE SECTIONS ===== */}
 
@@ -513,7 +527,10 @@ export default function TenantsPage() {
               {properties.length > 0 && !searchQuery && filterProperty === 'all' && (
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
-                    onClick={() => {/* TODO: Open add tenant modal */}}
+                    onClick={() => {
+                      toast.info('Pour ajouter un locataire, acceptez une candidature depuis la page Candidatures');
+                      router.push('/dashboard/owner/applications');
+                    }}
                     className="rounded-full text-white border-0 px-8 shadow-md hover:shadow-lg transition-all"
                     style={{
                       background: 'linear-gradient(135deg, #9c5698 0%, #c2566b 100%)',
@@ -532,7 +549,7 @@ export default function TenantsPage() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="grid grid-cols-1 lg:grid-cols-2 gap-4"
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
             >
               {filteredResidents.map((resident, index) => (
                 <TenantRelationshipCard
@@ -540,8 +557,10 @@ export default function TenantsPage() {
                   tenant={convertToCardFormat(resident)}
                   index={index}
                   onOpenDetails={(id) => {
-                    // TODO: Open tenant details modal
-                    console.log('Open details for tenant:', id);
+                    const tenant = filteredResidents.find(r => r.id === id);
+                    if (tenant) {
+                      toast.info(`${tenant.first_name} ${tenant.last_name} - ${tenant.property_name || 'Propriété'}`);
+                    }
                   }}
                 />
               ))}
