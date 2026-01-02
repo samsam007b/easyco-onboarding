@@ -400,25 +400,25 @@ export default function SettingsPage() {
                 {categorySections.map((section, index) => {
                   const Icon = section.icon;
 
-                  // Get gradient colors based on section
+                  // Get gradient colors based on section - Unified soft/matte palette
                   const getIconGradient = () => {
                     switch (section.id) {
-                      case 'profile': return 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)';
-                      case 'security': return 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)';
-                      case 'verification': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
-                      case 'privacy': return 'linear-gradient(135deg, #5B8BD9 0%, #7BA3E0 100%)';
-                      case 'private-codes': return 'linear-gradient(135deg, #9B7BD9 0%, #B59BE0 100%)';
-                      case 'residence-profile': return 'linear-gradient(135deg, #E07BAD 0%, #E0A0C0 100%)';
-                      case 'referrals': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
-                      case 'invitations': return 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)';
-                      case 'notifications': return 'linear-gradient(135deg, #D9A706 0%, #F5C30B 100%)';
-                      case 'language': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
-                      case 'email': return 'linear-gradient(135deg, #E07BAD 0%, #E0A0C0 100%)';
-                      case 'subscription': return 'linear-gradient(135deg, #9B7BD9 0%, #E07BAD 100%)';
-                      case 'bank-info': return 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)';
-                      case 'invoices': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)';
-                      case 'devices': return 'linear-gradient(135deg, #06B6D4 0%, #22D3EE 100%)';
-                      default: return 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)';
+                      case 'profile': return 'linear-gradient(135deg, #D08070 0%, #E0A090 100%)'; // Soft terracotta
+                      case 'security': return 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)'; // Soft dusty rose
+                      case 'verification': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)'; // Soft sage
+                      case 'privacy': return 'linear-gradient(135deg, #5B8BD9 0%, #7BA3E0 100%)'; // Soft blue
+                      case 'private-codes': return 'linear-gradient(135deg, #9B7BD9 0%, #B59BE0 100%)'; // Soft lavender
+                      case 'residence-profile': return 'linear-gradient(135deg, #E07BAD 0%, #E0A0C0 100%)'; // Soft pink
+                      case 'referrals': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)'; // Soft sage
+                      case 'invitations': return 'linear-gradient(135deg, #D9A870 0%, #E0C090 100%)'; // Soft warm amber
+                      case 'notifications': return 'linear-gradient(135deg, #D9B070 0%, #E0C890 100%)'; // Soft mustard
+                      case 'language': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)'; // Soft sage
+                      case 'email': return 'linear-gradient(135deg, #E07BAD 0%, #E0A0C0 100%)'; // Soft pink
+                      case 'subscription': return 'linear-gradient(135deg, #9B7BD9 0%, #C090C0 100%)'; // Soft purple-pink
+                      case 'bank-info': return 'linear-gradient(135deg, #7B8BD9 0%, #9BA8E0 100%)'; // Soft indigo
+                      case 'invoices': return 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)'; // Soft sage
+                      case 'devices': return 'linear-gradient(135deg, #70B0C0 0%, #90C8D8 100%)'; // Soft teal
+                      default: return 'linear-gradient(135deg, #D08070 0%, #E0A090 100%)'; // Soft terracotta
                     }
                   };
 
