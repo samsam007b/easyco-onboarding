@@ -91,6 +91,10 @@ export default function LeasesPage() {
   const dateLocaleMap: Record<string, Locale> = { fr, en: enUS, nl, de };
   const dateLocale = dateLocaleMap[language] || fr;
 
+  // Number locale mapping
+  const numberLocaleMap: Record<string, string> = { fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE' };
+  const numberLocale = numberLocaleMap[language] || 'fr-FR';
+
   const [isLoading, setIsLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | LeaseStatus>('all');
   const [viewMode, setViewMode] = useState<'list' | 'timeline'>('list');
@@ -129,7 +133,7 @@ export default function LeasesPage() {
 
       if (propError) {
         console.error('[Leases] Failed to fetch properties:', propError);
-        toast.error('Impossible de charger vos propriétés');
+        toast.error(t?.toast?.failedToLoadProperties?.[language] || 'Failed to load your properties');
         setIsLoading(false);
         return;
       }
@@ -153,7 +157,7 @@ export default function LeasesPage() {
 
       if (resError) {
         console.error('[Leases] Failed to fetch residents:', resError);
-        toast.error('Erreur lors du chargement des baux');
+        toast.error(t?.toast?.errorLoadingLeases?.[language] || 'Error loading leases');
       }
 
       const now = new Date();
@@ -229,7 +233,7 @@ export default function LeasesPage() {
 
     } catch (error) {
       console.error('[Leases] Error fetching data:', error);
-      toast.error('Erreur lors du chargement des données');
+      toast.error(t?.toast?.errorLoadingData?.[language] || 'Error loading data');
     } finally {
       setIsLoading(false);
     }
@@ -324,17 +328,17 @@ export default function LeasesPage() {
       durationMonths: lease.duration_months,
     };
 
-    toast.loading('Préparation du contrat...', { id: 'download-lease' });
+    toast.loading(t?.toast?.preparingContract?.[language] || 'Preparing contract...', { id: 'download-lease' });
 
     const result = downloadLeaseDocument(documentData);
 
     if (result.success) {
-      toast.success('Document prêt à imprimer', {
+      toast.success(t?.toast?.documentReady?.[language] || 'Document ready to print', {
         id: 'download-lease',
-        description: 'Utilisez "Enregistrer en PDF" dans la boîte de dialogue'
+        description: t?.toast?.saveToPdfHint?.[language] || 'Use "Save as PDF" in the dialog'
       });
     } else {
-      toast.error('Erreur lors de la génération', {
+      toast.error(t?.toast?.generationError?.[language] || 'Error generating document', {
         id: 'download-lease',
         description: result.error
       });
@@ -435,26 +439,26 @@ export default function LeasesPage() {
         <OwnerKPIGrid columns={4} className="mt-6 mb-6">
           <OwnerKPICard
             icon={FileText}
-            title="Total"
+            title={t?.kpi?.total?.[language] || 'Total'}
             value={stats.total}
             variant="primary"
           />
           <OwnerKPICard
             icon={CheckCircle}
-            title="Actifs"
+            title={t?.kpi?.active?.[language] || 'Active'}
             value={stats.active}
             variant="success"
           />
           <OwnerKPICard
             icon={AlertTriangle}
-            title="Fin proche (3 mois)"
+            title={t?.kpi?.endingSoon?.[language] || 'Ending soon (3 mo.)'}
             value={stats.endingSoon}
             variant="warning"
           />
           <OwnerKPICard
             icon={Euro}
-            title="Loyers mensuels"
-            value={`${stats.totalMonthlyRent.toLocaleString('fr-FR')}€`}
+            title={t?.kpi?.monthlyRent?.[language] || 'Monthly rent'}
+            value={`${stats.totalMonthlyRent.toLocaleString(numberLocale)}€`}
             variant="primary"
           />
         </OwnerKPIGrid>
@@ -474,7 +478,7 @@ export default function LeasesPage() {
               style={viewMode === 'list' ? { background: ownerGradient } : undefined}
             >
               <Users className="w-4 h-4 mr-2" />
-              Liste
+              {t?.viewMode?.list?.[language] || 'List'}
             </Button>
             <Button
               variant={viewMode === 'timeline' ? 'default' : 'ghost'}
@@ -487,17 +491,17 @@ export default function LeasesPage() {
               style={viewMode === 'timeline' ? { background: ownerGradient } : undefined}
             >
               <GanttChart className="w-4 h-4 mr-2" />
-              Timeline
+              {t?.viewMode?.timeline?.[language] || 'Timeline'}
             </Button>
           </div>
 
           {/* Status Filters */}
           <div className="flex flex-wrap gap-2">
             {[
-              { value: 'all' as const, label: 'Tous', count: stats.total },
-              { value: 'active' as const, label: 'Actifs', count: stats.active },
-              { value: 'ending_soon' as const, label: 'Fin proche', count: stats.endingSoon },
-              { value: 'expired' as const, label: 'Expirés', count: stats.expired }
+              { value: 'all' as const, label: t?.filters?.all?.[language] || 'All', count: stats.total },
+              { value: 'active' as const, label: t?.filters?.active?.[language] || 'Active', count: stats.active },
+              { value: 'ending_soon' as const, label: t?.filters?.endingSoon?.[language] || 'Ending soon', count: stats.endingSoon },
+              { value: 'expired' as const, label: t?.filters?.expired?.[language] || 'Expired', count: stats.expired }
             ].map((filter) => (
               <motion.div key={filter.value} whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                 <Button
