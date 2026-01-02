@@ -20,6 +20,9 @@ import {
   CheckCircle2,
   Clock,
   AlertTriangle,
+  FileText,
+  FileSpreadsheet,
+  ChevronDown,
 } from 'lucide-react';
 import {
   BarChart,
@@ -33,9 +36,16 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 import { OwnerPageHeader, OwnerKPICard, OwnerKPIGrid } from '@/components/owner';
-import { PaymentTable, MonthlyComparison, FinanceAlerts, type PaymentRecord, type FinanceAlertData } from '@/components/owner/finances';
+import { exportFinanceToCSV, exportFinanceToPDF, type FinanceExportData } from '@/lib/services/export-service';
+import { PaymentTable, MonthlyComparison, FinanceAlerts, DocumentsModal, type PaymentRecord, type FinanceAlertData } from '@/components/owner/finances';
 import { financesService, type FinancesOverview, type RentPaymentRecord } from '@/lib/services/finances-service';
 import { ownerGradient, ownerGradientLight, ownerPageBackground, semanticColors } from '@/lib/constants/owner-theme';
 
@@ -68,6 +78,9 @@ export default function FinanceAnalyticsPage() {
     changePercent: number;
   } | null>(null);
   const [properties, setProperties] = useState<PropertyFinance[]>([]);
+  const [showDocumentsModal, setShowDocumentsModal] = useState(false);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
+  const [ownerName, setOwnerName] = useState<string>('');
 
   const loadData = useCallback(async (refresh = false) => {
     if (refresh) setIsRefreshing(true);
@@ -80,6 +93,18 @@ export default function FinanceAnalyticsPage() {
       }
 
       setActiveRole('owner');
+      setCurrentUserId(user.id);
+
+      // Fetch owner's profile name
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('full_name')
+        .eq('id', user.id)
+        .single();
+
+      if (profile?.full_name) {
+        setOwnerName(profile.full_name);
+      }
 
       // Fetch all data in parallel
       const [overviewData, paymentsData, comparisonData] = await Promise.all([
@@ -197,8 +222,91 @@ export default function FinanceAnalyticsPage() {
   };
 
   const handleSendReminder = async (paymentId: string) => {
-    toast.info('Fonctionnalite de relance en cours de developpement');
+    try {
+      toast.loading('Envoi de la relance...', { id: 'reminder' });
+
+      const response = await fetch('/api/owner/payments/reminder', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ paymentId }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Echec de l\'envoi');
+      }
+
+      toast.success(`Relance envoyee a ${result.sentTo}`, { id: 'reminder' });
+    } catch (error) {
+      console.error('Error sending reminder:', error);
+      toast.error(
+        error instanceof Error ? error.message : 'Erreur lors de l\'envoi de la relance',
+        { id: 'reminder' }
+      );
+    }
   };
+
+  // Export handlers
+  const formatDateForExport = (date: Date): string => {
+    return date.toLocaleDateString('fr-FR');
+  };
+
+  const handleExportCSV = useCallback(() => {
+    if (!overview || recentPayments.length === 0) {
+      toast.error('Aucune donnee a exporter');
+      return;
+    }
+
+    const exportData: FinanceExportData = {
+      payments: recentPayments.map(p => ({
+        date: formatDateForExport(p.dueDate),
+        tenant: p.tenantName,
+        property: p.propertyTitle,
+        amount: p.amount,
+        status: p.status,
+        paymentMethod: 'Virement',
+      })),
+      summary: {
+        totalCollected: overview.paymentSummary.paid,
+        totalExpected: overview.paymentSummary.paid + overview.paymentSummary.pending + overview.paymentSummary.overdue,
+        totalOverdue: overview.paymentSummary.overdue,
+        collectionRate: overview.kpis.collectionRate,
+      },
+      period: new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }),
+    };
+
+    exportFinanceToCSV(exportData);
+    toast.success('Export CSV telecharge');
+  }, [overview, recentPayments]);
+
+  const handleExportPDF = useCallback(() => {
+    if (!overview || recentPayments.length === 0) {
+      toast.error('Aucune donnee a exporter');
+      return;
+    }
+
+    const exportData: FinanceExportData = {
+      payments: recentPayments.map(p => ({
+        date: formatDateForExport(p.dueDate),
+        tenant: p.tenantName,
+        property: p.propertyTitle,
+        amount: p.amount,
+        status: p.status,
+        paymentMethod: 'Virement',
+      })),
+      summary: {
+        totalCollected: overview.paymentSummary.paid,
+        totalExpected: overview.paymentSummary.paid + overview.paymentSummary.pending + overview.paymentSummary.overdue,
+        totalOverdue: overview.paymentSummary.overdue,
+        collectionRate: overview.kpis.collectionRate,
+      },
+      period: new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' }),
+    };
+
+    exportFinanceToPDF(exportData);
+    toast.success('Preparation du PDF pour impression...');
+  }, [overview, recentPayments]);
 
   if (isLoading) {
     return (
@@ -249,10 +357,34 @@ export default function FinanceAnalyticsPage() {
                 <RefreshCw className={cn('w-4 h-4 mr-2', isRefreshing && 'animate-spin')} />
                 Actualiser
               </Button>
-              <Button variant="outline" size="sm" className="rounded-full">
-                <Download className="w-4 h-4 mr-2" />
-                Export
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setShowDocumentsModal(true)}
+                className="rounded-full"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Documents
               </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="rounded-full">
+                    <Download className="w-4 h-4 mr-2" />
+                    Export
+                    <ChevronDown className="w-3 h-3 ml-1" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                  <DropdownMenuItem onClick={handleExportCSV} className="cursor-pointer">
+                    <FileSpreadsheet className="w-4 h-4 mr-2 text-green-600" />
+                    Export CSV (Excel)
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={handleExportPDF} className="cursor-pointer">
+                    <FileText className="w-4 h-4 mr-2 text-red-600" />
+                    Export PDF
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
           }
         />
@@ -542,6 +674,16 @@ export default function FinanceAnalyticsPage() {
           </div>
         </motion.div>
       </main>
+
+      {/* Documents Modal */}
+      {currentUserId && (
+        <DocumentsModal
+          open={showDocumentsModal}
+          onClose={() => setShowDocumentsModal(false)}
+          ownerId={currentUserId}
+          ownerName={ownerName}
+        />
+      )}
     </div>
   );
 }

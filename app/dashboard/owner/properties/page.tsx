@@ -27,6 +27,7 @@ import { AddPropertyModal } from '@/components/dashboard/AddPropertyModal';
 import { OwnerPageHeader } from '@/components/owner';
 import {
   PropertyHealthGrid,
+  PropertyTimelineModal,
   type PropertyCardData,
   type PropertyFiltersState,
   type ViewMode,
@@ -65,6 +66,14 @@ export default function PropertiesManagement() {
     open: false,
     propertyId: null,
     propertyTitle: '',
+  });
+
+  const [timelineModal, setTimelineModal] = useState<{
+    open: boolean;
+    property: { id: string; title: string; address?: string } | null;
+  }>({
+    open: false,
+    property: null,
   });
 
   const loadData = useCallback(async (refresh = false) => {
@@ -154,6 +163,17 @@ export default function PropertiesManagement() {
       open: true,
       propertyId: property.id,
       propertyTitle: property.title,
+    });
+  };
+
+  const handlePropertyHistory = (property: PropertyCardData) => {
+    setTimelineModal({
+      open: true,
+      property: {
+        id: property.id,
+        title: property.title,
+        address: property.address,
+      },
     });
   };
 
@@ -342,6 +362,7 @@ export default function PropertiesManagement() {
             onPropertyEdit={handlePropertyEdit}
             onPropertyArchive={handlePropertyArchive}
             onPropertyDelete={handlePropertyDelete}
+            onPropertyHistory={handlePropertyHistory}
             selectedProperties={selectedProperties}
             onSelectionChange={setSelectedProperties}
           />
@@ -453,6 +474,13 @@ export default function PropertiesManagement() {
         open={showAddPropertyModal}
         onOpenChange={setShowAddPropertyModal}
         onSuccess={() => loadData()}
+      />
+
+      {/* Property Timeline Modal */}
+      <PropertyTimelineModal
+        open={timelineModal.open}
+        onClose={() => setTimelineModal({ open: false, property: null })}
+        property={timelineModal.property}
       />
     </div>
   );

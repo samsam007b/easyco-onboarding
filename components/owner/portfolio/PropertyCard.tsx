@@ -20,6 +20,7 @@ import {
   CheckCircle,
   AlertTriangle,
   Clock,
+  History,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -66,6 +67,7 @@ interface PropertyCardProps {
   onArchive?: () => void;
   onDelete?: () => void;
   onViewDetails?: () => void;
+  onHistory?: () => void;
   selected?: boolean;
   onSelect?: (selected: boolean) => void;
   className?: string;
@@ -133,6 +135,7 @@ export function PropertyCard({
   onArchive,
   onDelete,
   onViewDetails,
+  onHistory,
   selected,
   onSelect,
   className,
@@ -253,6 +256,12 @@ export function PropertyCard({
               <DropdownMenuItem onClick={onEdit}>
                 <Edit className="w-4 h-4 mr-2" />
                 Modifier
+              </DropdownMenuItem>
+            )}
+            {onHistory && (
+              <DropdownMenuItem onClick={onHistory}>
+                <History className="w-4 h-4 mr-2" />
+                Historique
               </DropdownMenuItem>
             )}
             {onArchive && (
@@ -557,6 +566,12 @@ export function PropertyCard({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
+              {onHistory && (
+                <DropdownMenuItem onClick={onHistory}>
+                  <History className="w-4 h-4 mr-2" />
+                  Historique
+                </DropdownMenuItem>
+              )}
               {onArchive && (
                 <DropdownMenuItem onClick={onArchive}>
                   <Archive className="w-4 h-4 mr-2" />

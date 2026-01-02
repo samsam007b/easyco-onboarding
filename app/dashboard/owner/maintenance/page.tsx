@@ -53,6 +53,9 @@ import {
 // Unique maintenance components
 import {
   TicketKanbanBoard,
+  CreateTicketModal,
+  VendorRatingModal,
+  AddVendorModal,
   type MaintenanceTicket,
   type TicketStatus,
   type TicketPriority,
@@ -60,6 +63,9 @@ import {
 } from '@/components/owner/maintenance';
 import { CostTracker } from '@/components/owner/maintenance/CostTracker';
 import { VendorDirectory } from '@/components/owner/maintenance/VendorDirectory';
+import { vendorService, type Vendor, type VendorCategory } from '@/lib/services/vendor-service';
+import type { CreateMaintenanceForm } from '@/types/maintenance.types';
+import { toast } from 'sonner';
 
 import { ownerGradient, ownerGradientLight } from '@/lib/constants/owner-theme';
 
@@ -122,55 +128,24 @@ interface MaintenanceStats {
   avgResolutionHours: number;
 }
 
-// Mock vendors data (would come from backend in production)
-const mockVendors: Array<{
-  id: string;
-  name: string;
-  specialty: TicketCategory;
-  phone: string;
-  email?: string;
-  rating: number;
-  totalJobs: number;
-  avgResponseTime?: string;
-  isVerified: boolean;
-  isFavorite: boolean;
-}> = [
-  {
-    id: '1',
-    name: 'Plomberie Martin',
-    specialty: 'plumbing',
-    rating: 4.8,
-    phone: '06 12 34 56 78',
-    email: 'contact@plomberie-martin.fr',
-    isVerified: true,
-    totalJobs: 45,
-    avgResponseTime: '2h',
-    isFavorite: true,
-  },
-  {
-    id: '2',
-    name: 'Électricité Dupont',
-    specialty: 'electrical',
-    rating: 4.5,
-    phone: '06 98 76 54 32',
-    email: 'dupont.elec@gmail.com',
-    isVerified: true,
-    totalJobs: 32,
-    avgResponseTime: '4h',
-    isFavorite: false,
-  },
-  {
-    id: '3',
-    name: 'Multi-Services Pro',
-    specialty: 'other',
-    rating: 4.2,
-    phone: '06 11 22 33 44',
-    email: 'pro@multi-services.fr',
-    isVerified: false,
-    totalJobs: 18,
-    isFavorite: false,
-  },
-];
+// Map vendor category to ticket category for display
+const mapVendorCategoryToTicket = (category: VendorCategory): TicketCategory => {
+  const mapping: Record<VendorCategory, TicketCategory> = {
+    plumbing: 'plumbing',
+    electrical: 'electrical',
+    heating: 'heating',
+    appliances: 'appliance',
+    structural: 'other',
+    cleaning: 'other',
+    pest_control: 'pest',
+    locksmith: 'locksmith',
+    painting: 'painting',
+    gardening: 'other',
+    general: 'other',
+    other: 'other',
+  };
+  return mapping[category] || 'other';
+};
 
 export default function MaintenancePage() {
   const router = useRouter();
@@ -180,10 +155,17 @@ export default function MaintenancePage() {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
+  const [isCreating, setIsCreating] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showAddVendorModal, setShowAddVendorModal] = useState(false);
+  const [showRatingModal, setShowRatingModal] = useState(false);
+  const [ratingVendor, setRatingVendor] = useState<{ id: string; name: string; maintenanceId?: string; propertyId?: string; jobType?: string } | null>(null);
   const [viewMode, setViewMode] = useState<'kanban' | 'list'>('kanban');
   const [filterStatus, setFilterStatus] = useState<'all' | MaintenanceStatus>('all');
   const [requests, setRequests] = useState<MaintenanceRequestWithCreator[]>([]);
   const [properties, setProperties] = useState<PropertyInfo[]>([]);
+  const [vendors, setVendors] = useState<Vendor[]>([]);
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [stats, setStats] = useState<MaintenanceStats>({
     total: 0,
     open: 0,
@@ -205,6 +187,11 @@ export default function MaintenancePage() {
       }
 
       setActiveRole('owner');
+      setCurrentUserId(user.id);
+
+      // Fetch vendors for this owner
+      const ownerVendors = await vendorService.getVendors(user.id);
+      setVendors(ownerVendors);
 
       // 1. Get user's properties
       const { data: userProperties, error: propError } = await supabase
@@ -304,6 +291,74 @@ export default function MaintenancePage() {
       setIsUpdating(null);
     }
   };
+
+  // Create new maintenance ticket
+  const handleCreateTicket = async (propertyId: string, form: CreateMaintenanceForm) => {
+    setIsCreating(true);
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (!user) {
+        toast.error('Vous devez etre connecte pour creer une demande');
+        return;
+      }
+
+      const result = await maintenanceService.createRequest(propertyId, user.id, form);
+
+      if (result.success) {
+        toast.success('Demande de maintenance creee avec succes');
+        setShowCreateModal(false);
+        await fetchMaintenanceData();
+      } else {
+        toast.error(result.error || 'Erreur lors de la creation');
+      }
+    } catch (error) {
+      console.error('[Maintenance] Error creating ticket:', error);
+      toast.error('Erreur lors de la creation de la demande');
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  // Handle vendor toggle favorite
+  const handleToggleFavorite = async (vendorId: string) => {
+    const vendor = vendors.find(v => v.id === vendorId);
+    if (!vendor) return;
+
+    const success = await vendorService.toggleFavorite(vendorId, !vendor.isFavorite);
+    if (success) {
+      setVendors(prev => prev.map(v =>
+        v.id === vendorId ? { ...v, isFavorite: !v.isFavorite } : v
+      ));
+      toast.success(vendor.isFavorite ? 'Retire des favoris' : 'Ajoute aux favoris');
+    } else {
+      toast.error('Erreur lors de la mise a jour');
+    }
+  };
+
+  // Handle vendor rating after resolving a ticket
+  const handleRateVendor = (vendorId: string, vendorName: string, maintenanceId?: string, propertyId?: string, jobType?: string) => {
+    setRatingVendor({ id: vendorId, name: vendorName, maintenanceId, propertyId, jobType });
+    setShowRatingModal(true);
+  };
+
+  // Transform vendors for VendorDirectory component format
+  const vendorDirectoryData = useMemo(() => {
+    return vendors.map(v => ({
+      id: v.id,
+      name: v.name,
+      specialty: mapVendorCategoryToTicket(v.category),
+      phone: v.phone || '',
+      email: v.email,
+      address: v.city ? `${v.address || ''}, ${v.city}`.trim() : v.address,
+      rating: v.averageRating,
+      totalJobs: v.totalJobs,
+      avgResponseTime: undefined, // Would need to calculate from historical data
+      isVerified: v.isVerified,
+      isFavorite: v.isFavorite,
+    }));
+  }, [vendors]);
 
   // Transform requests to Kanban tickets
   const kanbanTickets: MaintenanceTicket[] = useMemo(() => {
@@ -527,7 +582,7 @@ export default function MaintenancePage() {
 
               {/* New ticket button */}
               <Button
-                onClick={() => {/* TODO: Open add ticket modal */}}
+                onClick={() => setShowCreateModal(true)}
                 className="rounded-full text-white border-0 shadow-md hover:shadow-lg transition-all"
                 style={{
                   background: ownerGradient,
@@ -835,7 +890,7 @@ export default function MaintenancePage() {
             costsByCategory={costsByCategory}
           />
           <VendorDirectory
-            vendors={mockVendors}
+            vendors={vendorDirectoryData}
             onContactVendor={(vendor, method) => {
               if (method === 'phone') {
                 window.location.href = `tel:${vendor.phone.replace(/\s/g, '')}`;
@@ -843,12 +898,52 @@ export default function MaintenancePage() {
                 window.location.href = `mailto:${vendor.email}`;
               }
             }}
-            onToggleFavorite={(vendorId) => {
-              console.log('Toggle favorite:', vendorId);
-            }}
+            onAddVendor={() => setShowAddVendorModal(true)}
+            onToggleFavorite={handleToggleFavorite}
           />
         </div>
       </main>
+
+      {/* Create Ticket Modal */}
+      <CreateTicketModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSubmit={handleCreateTicket}
+        properties={properties}
+        isSubmitting={isCreating}
+      />
+
+      {/* Add Vendor Modal */}
+      <AddVendorModal
+        open={showAddVendorModal}
+        onClose={() => setShowAddVendorModal(false)}
+        onVendorAdded={() => {
+          if (currentUserId) {
+            vendorService.getVendors(currentUserId).then(setVendors);
+          }
+        }}
+      />
+
+      {/* Vendor Rating Modal */}
+      {ratingVendor && (
+        <VendorRatingModal
+          open={showRatingModal}
+          onClose={() => {
+            setShowRatingModal(false);
+            setRatingVendor(null);
+          }}
+          vendorId={ratingVendor.id}
+          vendorName={ratingVendor.name}
+          maintenanceRequestId={ratingVendor.maintenanceId}
+          propertyId={ratingVendor.propertyId}
+          jobType={ratingVendor.jobType}
+          onRatingSubmitted={() => {
+            if (currentUserId) {
+              vendorService.getVendors(currentUserId).then(setVendors);
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

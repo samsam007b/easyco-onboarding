@@ -35,6 +35,7 @@ import {
 import { OwnerPageHeader } from '@/components/owner';
 import {
   ApplicationPipeline,
+  CreateLeaseModal,
   type ApplicationData,
   type ApplicationStatus,
   type ApplicationType,
@@ -76,6 +77,17 @@ export default function OwnerApplicationsPage() {
   });
   const [rejectReason, setRejectReason] = useState('');
   const [processingAction, setProcessingAction] = useState(false);
+
+  // Lease creation modal state
+  const [leaseModal, setLeaseModal] = useState<{
+    open: boolean;
+    application: ApplicationData | null;
+    applicantId: string | null;
+  }>({
+    open: false,
+    application: null,
+    applicantId: null,
+  });
 
   const {
     applications: hookApplications,
@@ -130,21 +142,23 @@ export default function OwnerApplicationsPage() {
     setIsRefreshing(false);
   }, [loadApplications]);
 
-  // Transform to ApplicationData format
-  const allApplications = useMemo((): ApplicationData[] => {
-    const individual: ApplicationData[] = applications.map((app) => ({
+  // Transform to ApplicationData format (with applicantId for lease creation)
+  const allApplications = useMemo((): (ApplicationData & { applicantId?: string })[] => {
+    const individual: (ApplicationData & { applicantId?: string })[] = applications.map((app) => ({
       id: app.id,
       type: 'individual' as ApplicationType,
       status: app.status as ApplicationStatus,
       propertyId: app.property_id,
       propertyTitle: app.property?.title || 'Propriété',
       propertyCity: app.property?.city || '',
+      applicantId: app.applicant_id,
       applicantName: app.applicant_name,
       applicantEmail: app.applicant_email,
       applicantPhone: app.applicant_phone || undefined,
       monthlyIncome: app.monthly_income || undefined,
       profession: app.occupation || undefined,
       moveInDate: app.desired_move_in_date ? new Date(app.desired_move_in_date) : undefined,
+      leaseDurationMonths: app.lease_duration_months || undefined,
       message: app.message || undefined,
       createdAt: new Date(app.created_at),
       updatedAt: new Date(app.updated_at || app.created_at),
@@ -283,6 +297,24 @@ export default function OwnerApplicationsPage() {
             : (t?.toast?.rejectSuccess?.[language] || 'Candidature rejetée')
         );
         await loadApplications(true);
+
+        // If approved and individual application, offer to create lease
+        if (actionModal.action === 'approve' && !isGroup) {
+          // Find the full application data with applicantId
+          const fullApp = allApplications.find(a => a.id === app.id);
+          const applicantId = (fullApp as ApplicationData & { applicantId?: string })?.applicantId;
+
+          if (applicantId) {
+            // Slight delay for better UX
+            setTimeout(() => {
+              setLeaseModal({
+                open: true,
+                application: app,
+                applicantId: applicantId,
+              });
+            }, 500);
+          }
+        }
       }
 
       handleCloseModal();
@@ -699,6 +731,31 @@ export default function OwnerApplicationsPage() {
           </div>
         )}
       </AnimatePresence>
+
+      {/* Create Lease Modal */}
+      {leaseModal.application && (
+        <CreateLeaseModal
+          isOpen={leaseModal.open}
+          onClose={() => setLeaseModal({ open: false, application: null, applicantId: null })}
+          onSuccess={async () => {
+            await loadApplications(true);
+          }}
+          applicationData={{
+            id: leaseModal.application.id,
+            applicantId: leaseModal.applicantId || undefined,
+            applicantName: leaseModal.application.applicantName,
+            applicantEmail: leaseModal.application.applicantEmail,
+            applicantPhone: leaseModal.application.applicantPhone,
+            propertyId: leaseModal.application.propertyId,
+            propertyTitle: leaseModal.application.propertyTitle,
+            moveInDate: leaseModal.application.moveInDate,
+            monthlyRent: leaseModal.application.monthlyIncome
+              ? Math.round(leaseModal.application.monthlyIncome / 3)
+              : undefined,
+            leaseDurationMonths: (leaseModal.application as ApplicationData & { leaseDurationMonths?: number }).leaseDurationMonths,
+          }}
+        />
+      )}
     </div>
   );
 }

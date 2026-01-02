@@ -27,6 +27,7 @@ interface PropertyHealthGridProps {
   onPropertyEdit?: (property: PropertyCardData) => void;
   onPropertyArchive?: (property: PropertyCardData) => void;
   onPropertyDelete?: (property: PropertyCardData) => void;
+  onPropertyHistory?: (property: PropertyCardData) => void;
   selectedProperties?: Set<string>;
   onSelectionChange?: (selected: Set<string>) => void;
   className?: string;
@@ -53,6 +54,7 @@ export function PropertyHealthGrid({
   onPropertyEdit,
   onPropertyArchive,
   onPropertyDelete,
+  onPropertyHistory,
   selectedProperties = new Set(),
   onSelectionChange,
   className,
@@ -302,6 +304,7 @@ export function PropertyHealthGrid({
                 onEdit={() => onPropertyEdit?.(property)}
                 onArchive={() => onPropertyArchive?.(property)}
                 onDelete={() => onPropertyDelete?.(property)}
+                onHistory={() => onPropertyHistory?.(property)}
                 onViewDetails={() => onPropertyClick?.(property)}
                 selected={selectedProperties.has(property.id)}
                 onSelect={

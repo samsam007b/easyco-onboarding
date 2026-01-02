@@ -48,6 +48,10 @@ import { RenewalWorkflow } from '@/components/owner/leases';
 // Theme constants
 import { ownerGradient, ownerGradientLight } from '@/lib/constants/owner-theme';
 
+// Services
+import { downloadLeaseDocument, type LeaseDocumentData } from '@/lib/services/lease-document-service';
+import { toast } from 'sonner';
+
 type LeaseStatus = 'active' | 'ending_soon' | 'expired' | 'future';
 
 interface Lease {
@@ -291,6 +295,36 @@ export default function LeasesPage() {
   // Get initials
   const getInitials = (name: string) => {
     return name.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2);
+  };
+
+  // Handle lease document download
+  const handleDownloadContract = (lease: Lease) => {
+    const documentData: LeaseDocumentData = {
+      leaseId: lease.id,
+      propertyTitle: lease.property_name,
+      propertyAddress: lease.property_address,
+      tenantName: lease.tenant_name,
+      monthlyRent: lease.monthly_rent,
+      startDate: lease.start_date,
+      endDate: lease.end_date,
+      durationMonths: lease.duration_months,
+    };
+
+    toast.loading('Préparation du contrat...', { id: 'download-lease' });
+
+    const result = downloadLeaseDocument(documentData);
+
+    if (result.success) {
+      toast.success('Document prêt à imprimer', {
+        id: 'download-lease',
+        description: 'Utilisez "Enregistrer en PDF" dans la boîte de dialogue'
+      });
+    } else {
+      toast.error('Erreur lors de la génération', {
+        id: 'download-lease',
+        description: result.error
+      });
+    }
   };
 
   if (isLoading) {
@@ -725,7 +759,7 @@ export default function LeasesPage() {
                               className="w-full rounded-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                /* TODO: Download contract */
+                                handleDownloadContract(lease);
                               }}
                             >
                               <Download className="w-4 h-4 mr-2" />
