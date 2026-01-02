@@ -16,6 +16,204 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const t = {
+  title: {
+    fr: 'Réserver une visite',
+    en: 'Book a Visit',
+    nl: 'Bezoek Boeken',
+    de: 'Besichtigung Buchen',
+  },
+  visitType: {
+    title: {
+      fr: 'Type de visite',
+      en: 'Visit Type',
+      nl: 'Type bezoek',
+      de: 'Besichtigungsart',
+    },
+    inPerson: {
+      fr: 'En personne',
+      en: 'In Person',
+      nl: 'Persoonlijk',
+      de: 'Vor Ort',
+    },
+    inPersonDesc: {
+      fr: 'Visiter la propriété',
+      en: 'Visit the property',
+      nl: 'Bezoek het pand',
+      de: 'Immobilie besichtigen',
+    },
+    virtual: {
+      fr: 'Virtuelle',
+      en: 'Virtual',
+      nl: 'Virtueel',
+      de: 'Virtuell',
+    },
+    virtualDesc: {
+      fr: 'Appel vidéo',
+      en: 'Video call',
+      nl: 'Videogesprek',
+      de: 'Videoanruf',
+    },
+  },
+  date: {
+    selectDate: {
+      fr: 'Sélectionner une date',
+      en: 'Select a Date',
+      nl: 'Selecteer een datum',
+      de: 'Datum auswählen',
+    },
+    availableSlots: {
+      fr: 'Créneaux disponibles',
+      en: 'Available Slots',
+      nl: 'Beschikbare tijdslots',
+      de: 'Verfügbare Termine',
+    },
+    noSlots: {
+      fr: 'Aucun créneau disponible pour cette date',
+      en: 'No slots available for this date',
+      nl: 'Geen tijdslots beschikbaar voor deze datum',
+      de: 'Keine Termine für dieses Datum verfügbar',
+    },
+    tryAnother: {
+      fr: 'Essayez une autre date',
+      en: 'Try another date',
+      nl: 'Probeer een andere datum',
+      de: 'Versuchen Sie ein anderes Datum',
+    },
+  },
+  contact: {
+    title: {
+      fr: 'Vos coordonnées',
+      en: 'Your Contact Info',
+      nl: 'Uw contactgegevens',
+      de: 'Ihre Kontaktdaten',
+    },
+    email: {
+      fr: 'Email',
+      en: 'Email',
+      nl: 'E-mail',
+      de: 'E-Mail',
+    },
+    phone: {
+      fr: 'Téléphone *',
+      en: 'Phone *',
+      nl: 'Telefoon *',
+      de: 'Telefon *',
+    },
+    message: {
+      fr: 'Message au propriétaire (Optionnel)',
+      en: 'Message to Owner (Optional)',
+      nl: 'Bericht aan eigenaar (Optioneel)',
+      de: 'Nachricht an Eigentümer (Optional)',
+    },
+    messagePlaceholder: {
+      fr: 'Dites pourquoi vous êtes intéressé...',
+      en: 'Tell them why you are interested...',
+      nl: 'Vertel waarom u geïnteresseerd bent...',
+      de: 'Erzählen Sie, warum Sie interessiert sind...',
+    },
+  },
+  summary: {
+    title: {
+      fr: 'Résumé de la réservation',
+      en: 'Booking Summary',
+      nl: 'Samenvatting boeking',
+      de: 'Buchungsübersicht',
+    },
+    date: {
+      fr: 'Date:',
+      en: 'Date:',
+      nl: 'Datum:',
+      de: 'Datum:',
+    },
+    time: {
+      fr: 'Heure:',
+      en: 'Time:',
+      nl: 'Tijd:',
+      de: 'Uhrzeit:',
+    },
+    type: {
+      fr: 'Type:',
+      en: 'Type:',
+      nl: 'Type:',
+      de: 'Art:',
+    },
+    inPersonVisit: {
+      fr: 'Visite en personne',
+      en: 'In-person visit',
+      nl: 'Persoonlijk bezoek',
+      de: 'Vor-Ort-Besichtigung',
+    },
+    virtualVisit: {
+      fr: 'Visite virtuelle',
+      en: 'Virtual visit',
+      nl: 'Virtueel bezoek',
+      de: 'Virtuelle Besichtigung',
+    },
+    duration: {
+      fr: 'Durée:',
+      en: 'Duration:',
+      nl: 'Duur:',
+      de: 'Dauer:',
+    },
+    thirtyMinutes: {
+      fr: '30 minutes',
+      en: '30 minutes',
+      nl: '30 minuten',
+      de: '30 Minuten',
+    },
+  },
+  buttons: {
+    cancel: {
+      fr: 'Annuler',
+      en: 'Cancel',
+      nl: 'Annuleren',
+      de: 'Abbrechen',
+    },
+    booking: {
+      fr: 'Réservation...',
+      en: 'Booking...',
+      nl: 'Boeken...',
+      de: 'Buchung...',
+    },
+    confirm: {
+      fr: 'Confirmer la réservation',
+      en: 'Confirm Booking',
+      nl: 'Bevestig boeking',
+      de: 'Buchung bestätigen',
+    },
+  },
+  perMonth: {
+    fr: '/mois',
+    en: '/month',
+    nl: '/maand',
+    de: '/Monat',
+  },
+  toasts: {
+    selectDateSlot: {
+      fr: 'Veuillez sélectionner une date et un créneau',
+      en: 'Please select a date and time slot',
+      nl: 'Selecteer een datum en tijdslot',
+      de: 'Bitte wählen Sie ein Datum und einen Termin',
+    },
+    phoneRequired: {
+      fr: 'Veuillez fournir votre numéro de téléphone',
+      en: 'Please provide your phone number',
+      nl: 'Gelieve uw telefoonnummer in te vullen',
+      de: 'Bitte geben Sie Ihre Telefonnummer an',
+    },
+    bookingFailed: {
+      fr: 'Échec de la réservation',
+      en: 'Booking failed',
+      nl: 'Boeking mislukt',
+      de: 'Buchung fehlgeschlagen',
+    },
+  },
+};
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
 
 interface BookVisitModalProps {
   property: {
@@ -33,6 +231,8 @@ interface BookVisitModalProps {
 
 export default function BookVisitModal({ property, ownerId, isOpen, onClose }: BookVisitModalProps) {
   const supabase = createClient();
+  const { language } = useLanguage();
+  const lang = language as Language;
   const { bookVisit } = useVisits();
   const { getAvailableSlots } = useVisitAvailability(property.id);
 
@@ -91,12 +291,12 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
 
   const handleBookVisit = async () => {
     if (!selectedDate || !selectedSlot) {
-      toast.error('Veuillez sélectionner une date et un créneau');
+      toast.error(t.toasts.selectDateSlot[lang]);
       return;
     }
 
     if (!visitorPhone.trim()) {
-      toast.error('Veuillez fournir votre numéro de téléphone');
+      toast.error(t.toasts.phoneRequired[lang]);
       return;
     }
 
@@ -123,7 +323,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
         setVisitorNotes('');
       }
     } catch (err: any) {
-      toast.error(err.message || 'Échec de la réservation');
+      toast.error(err.message || t.toasts.bookingFailed[lang]);
     } finally {
       setBooking(false);
     }
@@ -145,7 +345,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
           {/* Header */}
           <div className="sticky top-0 bg-white border-b p-6 flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-gray-900">Réserver une visite</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t.title[lang]}</h2>
               <p className="text-gray-600">{property.title}</p>
             </div>
             <button
@@ -172,13 +372,13 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                   <MapPin className="h-4 w-4" />
                   <span>{property.address ? `${property.address}, ` : ''}{property.city}</span>
                 </div>
-                <p className="text-purple-700 font-bold mt-1">€{property.monthly_rent}/mois</p>
+                <p className="text-purple-700 font-bold mt-1">€{property.monthly_rent}{t.perMonth[lang]}</p>
               </div>
             </div>
 
             {/* Visit Type */}
             <div>
-              <h3 className="text-lg font-semibold mb-3">Type de visite</h3>
+              <h3 className="text-lg font-semibold mb-3">{t.visitType.title[lang]}</h3>
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setVisitType('in_person')}
@@ -189,8 +389,8 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                   }`}
                 >
                   <MapPin className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                  <div className="font-semibold text-gray-900">En personne</div>
-                  <div className="text-xs text-gray-500 mt-1">Visiter la propriété</div>
+                  <div className="font-semibold text-gray-900">{t.visitType.inPerson[lang]}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t.visitType.inPersonDesc[lang]}</div>
                 </button>
                 <button
                   onClick={() => setVisitType('virtual')}
@@ -201,8 +401,8 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                   }`}
                 >
                   <Video className="h-6 w-6 mx-auto mb-2 text-purple-600" />
-                  <div className="font-semibold text-gray-900">Virtuelle</div>
-                  <div className="text-xs text-gray-500 mt-1">Appel vidéo</div>
+                  <div className="font-semibold text-gray-900">{t.visitType.virtual[lang]}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t.visitType.virtualDesc[lang]}</div>
                 </button>
               </div>
             </div>
@@ -211,7 +411,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
             <div>
               <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                 <CalendarIcon className="h-5 w-5" />
-                Sélectionner une date
+                {t.date.selectDate[lang]}
               </h3>
               <div className="grid grid-cols-7 gap-2">
                 {nextDays.map((day) => (
@@ -243,13 +443,13 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
               >
                 <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
                   <Clock className="h-5 w-5" />
-                  Créneaux disponibles
+                  {t.date.availableSlots[lang]}
                 </h3>
                 {availableSlots.length === 0 ? (
                   <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-xl">
                     <AlertCircle className="h-12 w-12 mx-auto mb-2 text-gray-400" />
-                    <p>Aucun créneau disponible pour cette date</p>
-                    <p className="text-sm mt-1">Essayez une autre date</p>
+                    <p>{t.date.noSlots[lang]}</p>
+                    <p className="text-sm mt-1">{t.date.tryAnother[lang]}</p>
                   </div>
                 ) : (
                   <div className="grid grid-cols-4 gap-2">
@@ -285,10 +485,10 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                 transition={{ duration: 0.3 }}
                 className="space-y-4"
               >
-                <h3 className="text-lg font-semibold">Vos coordonnées</h3>
+                <h3 className="text-lg font-semibold">{t.contact.title[lang]}</h3>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email
+                    {t.contact.email[lang]}
                   </label>
                   <Input
                     type="email"
@@ -300,7 +500,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Téléphone *
+                    {t.contact.phone[lang]}
                   </label>
                   <Input
                     type="tel"
@@ -312,12 +512,12 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Message au propriétaire (Optionnel)
+                    {t.contact.message[lang]}
                   </label>
                   <textarea
                     value={visitorNotes}
                     onChange={(e) => setVisitorNotes(e.target.value)}
-                    placeholder="Dites pourquoi vous êtes intéressé..."
+                    placeholder={t.contact.messagePlaceholder[lang]}
                     rows={3}
                     maxLength={500}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none transition"
@@ -337,11 +537,11 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-gray-900 mb-2">Résumé de la réservation</h4>
+                    <h4 className="font-semibold text-gray-900 mb-2">{t.summary.title[lang]}</h4>
                     <div className="space-y-1 text-sm text-gray-700">
                       <p>
-                        <strong>Date:</strong>{' '}
-                        {new Date(selectedDate).toLocaleDateString('fr-FR', {
+                        <strong>{t.summary.date[lang]}</strong>{' '}
+                        {new Date(selectedDate).toLocaleDateString(lang === 'en' ? 'en-GB' : lang === 'nl' ? 'nl-BE' : lang === 'de' ? 'de-DE' : 'fr-FR', {
                           weekday: 'long',
                           year: 'numeric',
                           month: 'long',
@@ -349,18 +549,18 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                         })}
                       </p>
                       <p>
-                        <strong>Heure:</strong>{' '}
-                        {new Date(selectedSlot).toLocaleTimeString('fr-FR', {
+                        <strong>{t.summary.time[lang]}</strong>{' '}
+                        {new Date(selectedSlot).toLocaleTimeString(lang === 'en' ? 'en-GB' : lang === 'nl' ? 'nl-BE' : lang === 'de' ? 'de-DE' : 'fr-FR', {
                           hour: '2-digit',
                           minute: '2-digit',
                         })}
                       </p>
                       <p>
-                        <strong>Type:</strong>{' '}
-                        {visitType === 'in_person' ? 'Visite en personne' : 'Visite virtuelle'}
+                        <strong>{t.summary.type[lang]}</strong>{' '}
+                        {visitType === 'in_person' ? t.summary.inPersonVisit[lang] : t.summary.virtualVisit[lang]}
                       </p>
                       <p>
-                        <strong>Durée:</strong> 30 minutes
+                        <strong>{t.summary.duration[lang]}</strong> {t.summary.thirtyMinutes[lang]}
                       </p>
                     </div>
                   </div>
@@ -377,14 +577,14 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
               className="flex-1 rounded-xl"
               disabled={booking}
             >
-              Annuler
+              {t.buttons.cancel[lang]}
             </Button>
             <Button
               onClick={handleBookVisit}
               disabled={booking || !selectedSlot || !visitorPhone.trim()}
               className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl shadow-lg"
             >
-              {booking ? 'Réservation...' : 'Confirmer la réservation'}
+              {booking ? t.buttons.booking[lang] : t.buttons.confirm[lang]}
             </Button>
           </div>
         </motion.div>

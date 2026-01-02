@@ -6,6 +6,106 @@ import { Upload, X, Loader2, ImagePlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useImageUpload } from '@/lib/hooks/use-image-upload';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const t = {
+  toasts: {
+    maxPhotos: {
+      fr: (max: number) => `Vous pouvez télécharger maximum ${max} photos`,
+      en: (max: number) => `You can upload a maximum of ${max} photos`,
+      nl: (max: number) => `U kunt maximaal ${max} foto's uploaden`,
+      de: (max: number) => `Sie können maximal ${max} Fotos hochladen`,
+    },
+    notAnImage: {
+      fr: (name: string) => `${name} n'est pas un fichier image`,
+      en: (name: string) => `${name} is not an image file`,
+      nl: (name: string) => `${name} is geen afbeeldingsbestand`,
+      de: (name: string) => `${name} ist keine Bilddatei`,
+    },
+    fileTooLarge: {
+      fr: (name: string) => `${name} doit faire moins de 10 Mo`,
+      en: (name: string) => `${name} must be smaller than 10MB`,
+      nl: (name: string) => `${name} moet kleiner zijn dan 10MB`,
+      de: (name: string) => `${name} muss kleiner als 10MB sein`,
+    },
+    uploadSuccess: {
+      fr: (num: number) => `Photo ${num} téléchargée !`,
+      en: (num: number) => `Photo ${num} uploaded successfully!`,
+      nl: (num: number) => `Foto ${num} succesvol geüpload!`,
+      de: (num: number) => `Foto ${num} erfolgreich hochgeladen!`,
+    },
+    uploadFailed: {
+      fr: (name: string) => `Échec du téléchargement de ${name}`,
+      en: (name: string) => `Failed to upload ${name}`,
+      nl: (name: string) => `Uploaden van ${name} mislukt`,
+      de: (name: string) => `Hochladen von ${name} fehlgeschlagen`,
+    },
+    removed: {
+      fr: 'Photo supprimée',
+      en: 'Photo removed',
+      nl: 'Foto verwijderd',
+      de: 'Foto entfernt',
+    },
+    maxAllowed: {
+      fr: (max: number) => `Maximum ${max} photos autorisées`,
+      en: (max: number) => `Maximum of ${max} photos allowed`,
+      nl: (max: number) => `Maximaal ${max} foto's toegestaan`,
+      de: (max: number) => `Maximal ${max} Fotos erlaubt`,
+    },
+  },
+  ui: {
+    title: {
+      fr: 'Photos du bien',
+      en: 'Property Photos',
+      nl: 'Foto\'s van het pand',
+      de: 'Immobilienfotos',
+    },
+    subtitle: {
+      fr: (max: number) => `Téléchargez jusqu'à ${max} photos (JPG, PNG ou GIF. Max 10 Mo chacune)`,
+      en: (max: number) => `Upload up to ${max} photos (JPG, PNG or GIF. Max 10MB each)`,
+      nl: (max: number) => `Upload tot ${max} foto's (JPG, PNG of GIF. Max 10MB per stuk)`,
+      de: (max: number) => `Laden Sie bis zu ${max} Fotos hoch (JPG, PNG oder GIF. Max 10MB pro Bild)`,
+    },
+    uploading: {
+      fr: 'Téléchargement...',
+      en: 'Uploading...',
+      nl: 'Uploaden...',
+      de: 'Hochladen...',
+    },
+    addPhotos: {
+      fr: 'Ajouter des photos',
+      en: 'Add Photos',
+      nl: 'Foto\'s toevoegen',
+      de: 'Fotos hinzufügen',
+    },
+    removePhoto: {
+      fr: 'Supprimer la photo',
+      en: 'Remove photo',
+      nl: 'Foto verwijderen',
+      de: 'Foto entfernen',
+    },
+    primary: {
+      fr: 'Principale',
+      en: 'Primary',
+      nl: 'Hoofd',
+      de: 'Haupt',
+    },
+    upload: {
+      fr: 'Télécharger',
+      en: 'Upload',
+      nl: 'Uploaden',
+      de: 'Hochladen',
+    },
+    photosCount: {
+      fr: (current: number, max: number) => `${current} / ${max} photos téléchargées`,
+      en: (current: number, max: number) => `${current} / ${max} photos uploaded`,
+      nl: (current: number, max: number) => `${current} / ${max} foto's geüpload`,
+      de: (current: number, max: number) => `${current} / ${max} Fotos hochgeladen`,
+    },
+  },
+};
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
 
 interface PropertyPhotosUploadProps {
   propertyId?: string;
@@ -20,6 +120,8 @@ export default function PropertyPhotosUpload({
   onPhotosChange,
   initialPhotos = [],
 }: PropertyPhotosUploadProps) {
+  const { language } = useLanguage();
+  const lang = language as Language;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [photos, setPhotos] = useState<string[]>(initialPhotos);
   const [uploadingIndex, setUploadingIndex] = useState<number | null>(null);
@@ -31,7 +133,7 @@ export default function PropertyPhotosUpload({
 
     // Check if adding these files would exceed the limit
     if (photos.length + files.length > maxPhotos) {
-      toast.error(`You can upload a maximum of ${maxPhotos} photos`);
+      toast.error(t.toasts.maxPhotos[lang](maxPhotos));
       return;
     }
 
@@ -41,13 +143,13 @@ export default function PropertyPhotosUpload({
 
       // Validate file type
       if (!file.type.startsWith('image/')) {
-        toast.error(`${file.name} is not an image file`);
+        toast.error(t.toasts.notAnImage[lang](file.name));
         continue;
       }
 
       // Validate file size (max 10MB)
       if (file.size > 10 * 1024 * 1024) {
-        toast.error(`${file.name} must be smaller than 10MB`);
+        toast.error(t.toasts.fileTooLarge[lang](file.name));
         continue;
       }
 
@@ -72,9 +174,9 @@ export default function PropertyPhotosUpload({
         setPhotos(newPhotos);
         onPhotosChange?.(newPhotos);
 
-        toast.success(`Photo ${i + 1} uploaded successfully!`);
+        toast.success(t.toasts.uploadSuccess[lang](i + 1));
       } catch (error: any) {
-        toast.error(error.message || `Failed to upload ${file.name}`);
+        toast.error(error.message || t.toasts.uploadFailed[lang](file.name));
       } finally {
         setUploadingIndex(null);
       }
@@ -90,12 +192,12 @@ export default function PropertyPhotosUpload({
     const newPhotos = photos.filter((_, i) => i !== index);
     setPhotos(newPhotos);
     onPhotosChange?.(newPhotos);
-    toast.success('Photo removed');
+    toast.success(t.toasts.removed[lang]);
   };
 
   const handleClick = () => {
     if (photos.length >= maxPhotos) {
-      toast.error(`Maximum of ${maxPhotos} photos allowed`);
+      toast.error(t.toasts.maxAllowed[lang](maxPhotos));
       return;
     }
     fileInputRef.current?.click();
@@ -106,9 +208,9 @@ export default function PropertyPhotosUpload({
       {/* Upload button */}
       <div className="flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-medium text-gray-700">Property Photos</h3>
+          <h3 className="text-sm font-medium text-gray-700">{t.ui.title[lang]}</h3>
           <p className="text-xs text-gray-500 mt-1">
-            Upload up to {maxPhotos} photos (JPG, PNG or GIF. Max 10MB each)
+            {t.ui.subtitle[lang](maxPhotos)}
           </p>
         </div>
         <Button
@@ -120,12 +222,12 @@ export default function PropertyPhotosUpload({
           {isUploading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Uploading...
+              {t.ui.uploading[lang]}
             </>
           ) : (
             <>
               <ImagePlus className="w-4 h-4 mr-2" />
-              Add Photos
+              {t.ui.addPhotos[lang]}
             </>
           )}
         </Button>
@@ -150,7 +252,7 @@ export default function PropertyPhotosUpload({
               <button
                 onClick={() => handleRemove(index)}
                 className="absolute top-2 right-2 p-1.5 bg-red-500 hover:bg-red-600 rounded-full text-white shadow-lg transition-colors opacity-0 group-hover:opacity-100"
-                title="Remove photo"
+                title={t.ui.removePhoto[lang]}
               >
                 <X className="w-4 h-4" />
               </button>
@@ -159,7 +261,7 @@ export default function PropertyPhotosUpload({
             {/* Primary badge for first photo */}
             {index === 0 && (
               <div className="absolute bottom-2 left-2 px-2 py-1 bg-[color:var(--easy-purple)] text-white text-xs font-semibold rounded">
-                Primary
+                {t.ui.primary[lang]}
               </div>
             )}
           </div>
@@ -190,7 +292,7 @@ export default function PropertyPhotosUpload({
             <div className="text-center">
               <Upload className="w-8 h-8 text-gray-400 group-hover:text-[color:var(--easy-purple)] mx-auto mb-2 transition-colors" />
               <span className="text-sm text-gray-500 group-hover:text-[color:var(--easy-purple)] font-medium transition-colors">
-                Upload
+                {t.ui.upload[lang]}
               </span>
             </div>
           </button>
@@ -199,7 +301,7 @@ export default function PropertyPhotosUpload({
 
       {/* Photo count */}
       <div className="text-center text-sm text-gray-500">
-        {photos.length} / {maxPhotos} photos uploaded
+        {t.ui.photosCount[lang](photos.length, maxPhotos)}
       </div>
 
       {/* Hidden file input */}

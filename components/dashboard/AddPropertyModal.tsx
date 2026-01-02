@@ -48,6 +48,127 @@ import type { PropertyType, PropertyAmenity } from '@/lib/types/property';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { cn } from '@/lib/utils';
 
+const translations = {
+  toasts: {
+    success: {
+      fr: 'Propriété créée avec succès !',
+      en: 'Property created successfully!',
+      nl: 'Eigendom succesvol aangemaakt!',
+      de: 'Immobilie erfolgreich erstellt!',
+    },
+    error: {
+      fr: 'Erreur lors de la création de la propriété',
+      en: 'Error creating property',
+      nl: 'Fout bij het aanmaken van eigendom',
+      de: 'Fehler beim Erstellen der Immobilie',
+    },
+  },
+  dialog: {
+    title: {
+      fr: 'Ajouter une propriété',
+      en: 'Add a property',
+      nl: 'Eigendom toevoegen',
+      de: 'Immobilie hinzufügen',
+    },
+    description: {
+      fr: 'Complétez les informations pour créer votre annonce',
+      en: 'Complete the information to create your listing',
+      nl: 'Vul de gegevens in om uw advertentie te maken',
+      de: 'Vervollständigen Sie die Angaben für Ihr Inserat',
+    },
+  },
+  buttons: {
+    cancel: {
+      fr: 'Annuler',
+      en: 'Cancel',
+      nl: 'Annuleren',
+      de: 'Abbrechen',
+    },
+    back: {
+      fr: 'Retour',
+      en: 'Back',
+      nl: 'Terug',
+      de: 'Zurück',
+    },
+    continue: {
+      fr: 'Continuer',
+      en: 'Continue',
+      nl: 'Doorgaan',
+      de: 'Weiter',
+    },
+    creating: {
+      fr: 'Création...',
+      en: 'Creating...',
+      nl: 'Aanmaken...',
+      de: 'Erstellen...',
+    },
+    createProperty: {
+      fr: 'Créer la propriété',
+      en: 'Create property',
+      nl: 'Eigendom aanmaken',
+      de: 'Immobilie erstellen',
+    },
+  },
+  steps: {
+    type: { fr: 'Type', en: 'Type', nl: 'Type', de: 'Typ' },
+    details: { fr: 'Détails', en: 'Details', nl: 'Details', de: 'Details' },
+    price: { fr: 'Prix', en: 'Price', nl: 'Prijs', de: 'Preis' },
+    amenities: { fr: 'Équipements', en: 'Amenities', nl: 'Voorzieningen', de: 'Ausstattung' },
+  },
+  propertyTypes: {
+    apartment: { fr: 'Appartement', en: 'Apartment', nl: 'Appartement', de: 'Wohnung' },
+    house: { fr: 'Maison', en: 'House', nl: 'Huis', de: 'Haus' },
+    studio: { fr: 'Studio', en: 'Studio', nl: 'Studio', de: 'Studio' },
+    coliving: { fr: 'Coliving', en: 'Coliving', nl: 'Coliving', de: 'Coliving' },
+  },
+  amenitiesLabels: {
+    wifi: { fr: 'WiFi', en: 'WiFi', nl: 'WiFi', de: 'WLAN' },
+    parking: { fr: 'Parking', en: 'Parking', nl: 'Parking', de: 'Parkplatz' },
+    garden: { fr: 'Jardin', en: 'Garden', nl: 'Tuin', de: 'Garten' },
+    gym: { fr: 'Salle de sport', en: 'Gym', nl: 'Sportschool', de: 'Fitnessstudio' },
+    washing_machine: { fr: 'Machine à laver', en: 'Washing machine', nl: 'Wasmachine', de: 'Waschmaschine' },
+    air_conditioning: { fr: 'Climatisation', en: 'Air conditioning', nl: 'Airconditioning', de: 'Klimaanlage' },
+    heating: { fr: 'Chauffage', en: 'Heating', nl: 'Verwarming', de: 'Heizung' },
+    kitchen: { fr: 'Cuisine équipée', en: 'Equipped kitchen', nl: 'Uitgeruste keuken', de: 'Einbauküche' },
+    furnished: { fr: 'Meublé', en: 'Furnished', nl: 'Gemeubileerd', de: 'Möbliert' },
+  },
+  form: {
+    listingTitle: { fr: 'Titre de l\'annonce', en: 'Listing title', nl: 'Advertentietitel', de: 'Inserattitel' },
+    listingPlaceholder: {
+      fr: 'Ex: Bel appartement lumineux en centre-ville',
+      en: 'E.g., Beautiful bright apartment in city center',
+      nl: 'Bijv. Mooi licht appartement in het centrum',
+      de: 'Z.B. Schöne helle Wohnung im Stadtzentrum',
+    },
+    propertyType: { fr: 'Type de bien', en: 'Property type', nl: 'Type eigendom', de: 'Immobilientyp' },
+    description: { fr: 'Description (optionnel)', en: 'Description (optional)', nl: 'Beschrijving (optioneel)', de: 'Beschreibung (optional)' },
+    descriptionPlaceholder: { fr: 'Décrivez votre bien...', en: 'Describe your property...', nl: 'Beschrijf uw eigendom...', de: 'Beschreiben Sie Ihre Immobilie...' },
+    address: { fr: 'Adresse', en: 'Address', nl: 'Adres', de: 'Adresse' },
+    addressPlaceholder: { fr: '123 Rue Principale', en: '123 Main Street', nl: '123 Hoofdstraat', de: '123 Hauptstraße' },
+    city: { fr: 'Ville', en: 'City', nl: 'Stad', de: 'Stadt' },
+    cityPlaceholder: { fr: 'Bruxelles', en: 'Brussels', nl: 'Brussel', de: 'Brüssel' },
+    postalCode: { fr: 'Code postal', en: 'Postal code', nl: 'Postcode', de: 'Postleitzahl' },
+    bedrooms: { fr: 'Chambres', en: 'Bedrooms', nl: 'Slaapkamers', de: 'Schlafzimmer' },
+    bathrooms: { fr: 'Salles de bain', en: 'Bathrooms', nl: 'Badkamers', de: 'Badezimmer' },
+    area: { fr: 'Surface (m²)', en: 'Area (m²)', nl: 'Oppervlakte (m²)', de: 'Fläche (m²)' },
+    availableFrom: { fr: 'Disponible à partir du', en: 'Available from', nl: 'Beschikbaar vanaf', de: 'Verfügbar ab' },
+    monthlyRent: { fr: 'Loyer mensuel (€)', en: 'Monthly rent (€)', nl: 'Maandelijkse huur (€)', de: 'Monatsmiete (€)' },
+    charges: { fr: 'Charges (€)', en: 'Charges (€)', nl: 'Kosten (€)', de: 'Nebenkosten (€)' },
+    deposit: { fr: 'Caution (€)', en: 'Security deposit (€)', nl: 'Borg (€)', de: 'Kaution (€)' },
+    minimumStay: { fr: 'Durée minimum (mois)', en: 'Minimum stay (months)', nl: 'Minimale verblijfsduur (maanden)', de: 'Mindestaufenthalt (Monate)' },
+    monthlySummary: { fr: 'Récapitulatif mensuel', en: 'Monthly summary', nl: 'Maandelijks overzicht', de: 'Monatliche Übersicht' },
+    rentAndCharges: { fr: 'Loyer + Charges', en: 'Rent + Charges', nl: 'Huur + Kosten', de: 'Miete + Nebenkosten' },
+    perMonth: { fr: '€/mois', en: '€/month', nl: '€/maand', de: '€/Monat' },
+    amenitiesLabel: { fr: 'Équipements', en: 'Amenities', nl: 'Voorzieningen', de: 'Ausstattung' },
+    houseRules: { fr: 'Règles de la maison', en: 'House rules', nl: 'Huisregels', de: 'Hausregeln' },
+    petsAllowed: { fr: 'Animaux acceptés', en: 'Pets allowed', nl: 'Huisdieren toegestaan', de: 'Haustiere erlaubt' },
+    smokingAllowed: { fr: 'Fumeurs acceptés', en: 'Smoking allowed', nl: 'Roken toegestaan', de: 'Rauchen erlaubt' },
+    couplesAllowed: { fr: 'Couples acceptés', en: 'Couples allowed', nl: 'Koppels toegestaan', de: 'Paare erlaubt' },
+  },
+};
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
 // V3 Owner gradient constants
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
 
@@ -87,7 +208,8 @@ const STEPS: { id: Step; title: string; icon: React.ReactNode }[] = [
 
 export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyModalProps) {
   const router = useRouter();
-  const { t } = useLanguage();
+  const { language } = useLanguage();
+  const lang = language as Language;
   const [currentStep, setCurrentStep] = useState<Step>('type');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -201,12 +323,12 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
         throw new Error(result.error || 'Error creating property');
       }
 
-      toast.success('Property created successfully!');
+      toast.success(translations.toasts.success[lang]);
       handleClose();
       onSuccess?.();
       router.refresh();
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Error creating property';
+      const errorMessage = error instanceof Error ? error.message : translations.toasts.error[lang];
       toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -223,10 +345,10 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
         >
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-white">
-              Add a property
+              {translations.dialog.title[lang]}
             </DialogTitle>
             <DialogDescription className="text-white/80">
-              Complete the information to create your listing
+              {translations.dialog.description[lang]}
             </DialogDescription>
           </DialogHeader>
 
@@ -251,7 +373,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                   ) : (
                     step.icon
                   )}
-                  <span className="hidden sm:inline">{step.title}</span>
+                  <span className="hidden sm:inline">{translations.steps[step.id as keyof typeof translations.steps]?.[lang] || step.title}</span>
                 </button>
                 {index < STEPS.length - 1 && (
                   <ChevronRight className="w-4 h-4 mx-1 text-white/40" />
@@ -274,16 +396,16 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 className="space-y-4"
               >
                 <Input
-                  label="Listing title"
+                  label={translations.form.listingTitle[lang]}
                   value={formData.title}
                   onChange={(e) => handleInputChange('title', e.target.value)}
-                  placeholder="E.g., Beautiful bright apartment in city center"
+                  placeholder={translations.form.listingPlaceholder[lang]}
                   required
                 />
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Property type
+                    {translations.form.propertyType[lang]}
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     {PROPERTY_TYPES.map((type) => (
@@ -312,7 +434,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                           "font-medium",
                           formData.property_type === type.value ? "text-purple-700" : "text-gray-700"
                         )}>
-                          {type.label}
+                          {translations.propertyTypes[type.value as keyof typeof translations.propertyTypes]?.[lang] || type.label}
                         </span>
                       </button>
                     ))}
@@ -320,10 +442,10 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 </div>
 
                 <Textarea
-                  label="Description (optional)"
+                  label={translations.form.description[lang]}
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
-                  placeholder="Describe your property..."
+                  placeholder={translations.form.descriptionPlaceholder[lang]}
                   rows={3}
                 />
               </motion.div>
@@ -339,23 +461,23 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 className="space-y-4"
               >
                 <Input
-                  label="Address"
+                  label={translations.form.address[lang]}
                   value={formData.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
-                  placeholder="123 Main Street"
+                  placeholder={translations.form.addressPlaceholder[lang]}
                   leftIcon={<MapPin className="w-4 h-4" />}
                 />
 
                 <div className="grid grid-cols-2 gap-4">
                   <Input
-                    label="City"
+                    label={translations.form.city[lang]}
                     value={formData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
-                    placeholder="Brussels"
+                    placeholder={translations.form.cityPlaceholder[lang]}
                     required
                   />
                   <Input
-                    label="Postal code"
+                    label={translations.form.postalCode[lang]}
                     value={formData.postal_code}
                     onChange={(e) => handleInputChange('postal_code', e.target.value)}
                     placeholder="1000"
@@ -365,7 +487,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
 
                 <div className="grid grid-cols-3 gap-4">
                   <Input
-                    label="Bedrooms"
+                    label={translations.form.bedrooms[lang]}
                     type="number"
                     min="0"
                     value={formData.bedrooms}
@@ -373,7 +495,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     leftIcon={<Bed className="w-4 h-4" />}
                   />
                   <Input
-                    label="Bathrooms"
+                    label={translations.form.bathrooms[lang]}
                     type="number"
                     min="0"
                     value={formData.bathrooms}
@@ -381,7 +503,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     leftIcon={<Bath className="w-4 h-4" />}
                   />
                   <Input
-                    label="Area (m²)"
+                    label={translations.form.area[lang]}
                     type="number"
                     min="0"
                     value={formData.surface_area || ''}
@@ -391,7 +513,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 </div>
 
                 <Input
-                  label="Available from"
+                  label={translations.form.availableFrom[lang]}
                   type="date"
                   value={formData.available_from}
                   onChange={(e) => handleInputChange('available_from', e.target.value)}
@@ -410,7 +532,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 className="space-y-4"
               >
                 <Input
-                  label="Monthly rent (€)"
+                  label={translations.form.monthlyRent[lang]}
                   type="number"
                   min="0"
                   value={formData.monthly_rent || ''}
@@ -421,7 +543,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
 
                 <div className="grid grid-cols-2 gap-4">
                   <Input
-                    label="Charges (€)"
+                    label={translations.form.charges[lang]}
                     type="number"
                     min="0"
                     value={formData.charges || ''}
@@ -429,7 +551,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     leftIcon={<Euro className="w-4 h-4" />}
                   />
                   <Input
-                    label="Security deposit (€)"
+                    label={translations.form.deposit[lang]}
                     type="number"
                     min="0"
                     value={formData.deposit || ''}
@@ -439,7 +561,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 </div>
 
                 <Input
-                  label="Minimum stay (months)"
+                  label={translations.form.minimumStay[lang]}
                   type="number"
                   min="1"
                   value={formData.minimum_stay_months}
@@ -448,11 +570,11 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
 
                 {/* Summary card */}
                 <div className="mt-4 p-4 rounded-xl bg-gray-50 border border-gray-200">
-                  <h4 className="font-medium text-gray-700 mb-2">Monthly summary</h4>
+                  <h4 className="font-medium text-gray-700 mb-2">{translations.form.monthlySummary[lang]}</h4>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Rent + Charges</span>
+                    <span className="text-gray-500">{translations.form.rentAndCharges[lang]}</span>
                     <span className="font-bold" style={{ color: '#9c5698' }}>
-                      {(formData.monthly_rent + formData.charges).toLocaleString('en-US')} €/month
+                      {(formData.monthly_rent + formData.charges).toLocaleString(lang === 'en' ? 'en-US' : lang === 'de' ? 'de-DE' : lang === 'nl' ? 'nl-NL' : 'fr-FR')} {translations.form.perMonth[lang]}
                     </span>
                   </div>
                 </div>
@@ -470,7 +592,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
               >
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Amenities
+                    {translations.form.amenitiesLabel[lang]}
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {AMENITIES_CONFIG.map((amenity) => (
@@ -499,7 +621,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                           "text-xs font-medium",
                           selectedAmenities.includes(amenity.value) ? "text-purple-700" : "text-gray-600"
                         )}>
-                          {amenity.label}
+                          {translations.amenitiesLabels[amenity.value as keyof typeof translations.amenitiesLabels]?.[lang] || amenity.label}
                         </span>
                       </button>
                     ))}
@@ -508,7 +630,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    House rules
+                    {translations.form.houseRules[lang]}
                   </label>
                   <div className="space-y-2">
                     <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
@@ -519,7 +641,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <PawPrint className="w-5 h-5 text-gray-400" />
-                      <span className="text-sm text-gray-700">Pets allowed</span>
+                      <span className="text-sm text-gray-700">{translations.form.petsAllowed[lang]}</span>
                     </label>
                     <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
                       <input
@@ -529,7 +651,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <Cigarette className="w-5 h-5 text-gray-400" />
-                      <span className="text-sm text-gray-700">Smoking allowed</span>
+                      <span className="text-sm text-gray-700">{translations.form.smokingAllowed[lang]}</span>
                     </label>
                     <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
                       <input
@@ -539,7 +661,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <Users className="w-5 h-5 text-gray-400" />
-                      <span className="text-sm text-gray-700">Couples allowed</span>
+                      <span className="text-sm text-gray-700">{translations.form.couplesAllowed[lang]}</span>
                     </label>
                   </div>
                 </div>
@@ -559,12 +681,12 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
             {currentStepIndex === 0 ? (
               <>
                 <X className="w-4 h-4 mr-2" />
-                Cancel
+                {translations.buttons.cancel[lang]}
               </>
             ) : (
               <>
                 <ChevronLeft className="w-4 h-4 mr-2" />
-                Back
+                {translations.buttons.back[lang]}
               </>
             )}
           </Button>
@@ -579,12 +701,12 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Creating...
+                  {translations.buttons.creating[lang]}
                 </>
               ) : (
                 <>
                   <Check className="w-4 h-4 mr-2" />
-                  Create property
+                  {translations.buttons.createProperty[lang]}
                 </>
               )}
             </Button>
@@ -595,7 +717,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
               className="text-white"
               style={{ background: canProceed() ? ownerGradient : undefined }}
             >
-              Continue
+              {translations.buttons.continue[lang]}
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
           )}

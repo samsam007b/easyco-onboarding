@@ -6,6 +6,88 @@ import { Camera, Upload, X, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useImageUpload } from '@/lib/hooks/use-image-upload';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const t = {
+  toasts: {
+    selectImage: {
+      fr: 'Veuillez sélectionner un fichier image',
+      en: 'Please select an image file',
+      nl: 'Selecteer een afbeelding',
+      de: 'Bitte wählen Sie eine Bilddatei',
+    },
+    imageTooLarge: {
+      fr: 'L\'image doit faire moins de 5 Mo',
+      en: 'Image must be smaller than 5MB',
+      nl: 'Afbeelding moet kleiner zijn dan 5MB',
+      de: 'Bild muss kleiner als 5MB sein',
+    },
+    uploadSuccess: {
+      fr: 'Photo de profil mise à jour !',
+      en: 'Profile picture updated successfully!',
+      nl: 'Profielfoto succesvol bijgewerkt!',
+      de: 'Profilbild erfolgreich aktualisiert!',
+    },
+    uploadFailed: {
+      fr: 'Échec du téléchargement de la photo',
+      en: 'Failed to upload profile picture',
+      nl: 'Uploaden van profielfoto mislukt',
+      de: 'Profilbild hochladen fehlgeschlagen',
+    },
+    removeSuccess: {
+      fr: 'Photo de profil supprimée',
+      en: 'Profile picture removed',
+      nl: 'Profielfoto verwijderd',
+      de: 'Profilbild entfernt',
+    },
+    removeFailed: {
+      fr: 'Échec de la suppression de la photo',
+      en: 'Failed to remove profile picture',
+      nl: 'Verwijderen van profielfoto mislukt',
+      de: 'Profilbild entfernen fehlgeschlagen',
+    },
+  },
+  ui: {
+    changeProfile: {
+      fr: 'Changer la photo de profil',
+      en: 'Change profile picture',
+      nl: 'Profielfoto wijzigen',
+      de: 'Profilbild ändern',
+    },
+    removeProfile: {
+      fr: 'Supprimer la photo',
+      en: 'Remove picture',
+      nl: 'Foto verwijderen',
+      de: 'Bild entfernen',
+    },
+    uploading: {
+      fr: 'Téléchargement...',
+      en: 'Uploading...',
+      nl: 'Uploaden...',
+      de: 'Hochladen...',
+    },
+    changePicture: {
+      fr: 'Changer la photo',
+      en: 'Change Picture',
+      nl: 'Foto wijzigen',
+      de: 'Bild ändern',
+    },
+    uploadPicture: {
+      fr: 'Télécharger une photo',
+      en: 'Upload Picture',
+      nl: 'Foto uploaden',
+      de: 'Bild hochladen',
+    },
+    fileTypes: {
+      fr: 'JPG, PNG ou GIF. Max 5 Mo.',
+      en: 'JPG, PNG or GIF. Max 5MB.',
+      nl: 'JPG, PNG of GIF. Max 5MB.',
+      de: 'JPG, PNG oder GIF. Max 5MB.',
+    },
+  },
+};
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
 
 interface ProfilePictureUploadProps {
   userId: string;
@@ -20,6 +102,8 @@ export default function ProfilePictureUpload({
   onUploadSuccess,
   compact = false,
 }: ProfilePictureUploadProps) {
+  const { language } = useLanguage();
+  const lang = language as Language;
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [preview, setPreview] = useState<string | null>(currentAvatarUrl || null);
   const [avatarPath, setAvatarPath] = useState<string | null>(null);
@@ -31,13 +115,13 @@ export default function ProfilePictureUpload({
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
+      toast.error(t.toasts.selectImage[lang]);
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image must be smaller than 5MB');
+      toast.error(t.toasts.imageTooLarge[lang]);
       return;
     }
 
@@ -69,13 +153,13 @@ export default function ProfilePictureUpload({
       // Then, update the user's avatar URL
       const success = await updateUserAvatar(userId, result.url);
       if (success) {
-        toast.success('Profile picture updated successfully!');
+        toast.success(t.toasts.uploadSuccess[lang]);
         onUploadSuccess?.(result.url);
       } else {
         throw new Error('Failed to update profile');
       }
     } catch (error: any) {
-      toast.error(error.message || 'Failed to upload profile picture');
+      toast.error(error.message || t.toasts.uploadFailed[lang]);
       // Revert preview on error
       setPreview(currentAvatarUrl || null);
     }
@@ -94,13 +178,13 @@ export default function ProfilePictureUpload({
 
         setPreview(null);
         setAvatarPath(null);
-        toast.success('Profile picture removed');
+        toast.success(t.toasts.removeSuccess[lang]);
         onUploadSuccess?.('');
       } else {
         throw new Error('Failed to remove avatar');
       }
     } catch (error: any) {
-      toast.error(error.message || 'Failed to remove profile picture');
+      toast.error(error.message || t.toasts.removeFailed[lang]);
     }
   };
 
@@ -116,7 +200,7 @@ export default function ProfilePictureUpload({
           onClick={handleClick}
           disabled={isUploading}
           className="p-3 bg-white hover:bg-gray-50 rounded-full shadow-lg border-2 border-gray-200 hover:border-gray-300 transition-all disabled:opacity-50"
-          title="Change profile picture"
+          title={t.ui.changeProfile[lang]}
         >
           {isUploading ? (
             <Loader2 className="w-5 h-5 text-gray-600 animate-spin" />
@@ -184,7 +268,7 @@ export default function ProfilePictureUpload({
           <button
             onClick={handleRemove}
             className="absolute top-0 right-0 p-1.5 bg-red-500 hover:bg-red-600 rounded-full text-white shadow-lg transition-colors"
-            title="Remove picture"
+            title={t.ui.removeProfile[lang]}
           >
             <X className="w-4 h-4" />
           </button>
@@ -202,18 +286,18 @@ export default function ProfilePictureUpload({
           {isUploading ? (
             <>
               <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-              Uploading...
+              {t.ui.uploading[lang]}
             </>
           ) : (
             <>
               <Upload className="w-4 h-4 mr-2" />
-              {preview ? 'Change Picture' : 'Upload Picture'}
+              {preview ? t.ui.changePicture[lang] : t.ui.uploadPicture[lang]}
             </>
           )}
         </Button>
 
         <p className="text-xs text-gray-500 mt-2">
-          JPG, PNG or GIF. Max 5MB.
+          {t.ui.fileTypes[lang]}
         </p>
       </div>
 
