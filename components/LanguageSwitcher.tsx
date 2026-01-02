@@ -14,10 +14,39 @@ const languageLabels: Record<Language, string> = {
   de: 'Deutsch',
 };
 
-// Gradient constants
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+// Role-based color themes
+type LanguageSwitcherVariant = 'hub' | 'owner' | 'searcher';
 
-export default function LanguageSwitcher() {
+const variantStyles = {
+  hub: {
+    gradient: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+    primary: '#ff651e',
+    hoverBg: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)',
+    activeBg: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)',
+    hoverBgLight: 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)',
+  },
+  owner: {
+    gradient: 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)',
+    primary: '#9c5698',
+    hoverBg: 'linear-gradient(135deg, rgba(156, 86, 152, 0.08) 0%, rgba(194, 86, 107, 0.08) 100%)',
+    activeBg: 'linear-gradient(135deg, rgba(156, 86, 152, 0.08) 0%, rgba(194, 86, 107, 0.08) 100%)',
+    hoverBgLight: 'linear-gradient(135deg, rgba(156, 86, 152, 0.05) 0%, rgba(194, 86, 107, 0.05) 100%)',
+  },
+  searcher: {
+    gradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
+    primary: '#f59e0b',
+    hoverBg: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(234, 179, 8, 0.08) 100%)',
+    activeBg: 'linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(234, 179, 8, 0.08) 100%)',
+    hoverBgLight: 'linear-gradient(135deg, rgba(245, 158, 11, 0.05) 0%, rgba(234, 179, 8, 0.05) 100%)',
+  },
+};
+
+interface LanguageSwitcherProps {
+  variant?: LanguageSwitcherVariant;
+}
+
+export default function LanguageSwitcher({ variant = 'hub' }: LanguageSwitcherProps) {
+  const styles = variantStyles[variant];
   const { language, setLanguage } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredLang, setHoveredLang] = useState<Language | null>(null);
@@ -53,17 +82,17 @@ export default function LanguageSwitcher() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition-all"
-        style={{ color: '#ff651e' }}
-        onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+        style={{ color: styles.primary }}
+        onMouseEnter={(e) => e.currentTarget.style.background = styles.hoverBg}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
         aria-label="Change language"
       >
-        <Globe className="w-4 h-4" style={{ color: '#ff651e' }} />
+        <Globe className="w-4 h-4" style={{ color: styles.primary }} />
         <span className="font-medium">{language.toUpperCase()}</span>
         <ChevronDown className={cn(
           "w-3 h-3 transition-transform",
           isOpen && "rotate-180"
-        )} style={{ color: '#ff651e' }} />
+        )} style={{ color: styles.primary }} />
       </button>
 
       {/* Dropdown */}
@@ -90,16 +119,16 @@ export default function LanguageSwitcher() {
                     className="w-full flex items-center justify-between px-4 py-3 text-sm transition-all group relative overflow-hidden"
                     style={{
                       background: isActive
-                        ? 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'
+                        ? styles.activeBg
                         : isHovered
-                        ? 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)'
+                        ? styles.hoverBgLight
                         : 'transparent'
                     }}
                   >
                     <span
                       className="font-medium transition-all duration-200"
                       style={{
-                        background: shouldShowGradient ? RESIDENT_GRADIENT : 'none',
+                        background: shouldShowGradient ? styles.gradient : 'none',
                         WebkitBackgroundClip: shouldShowGradient ? 'text' : 'unset',
                         WebkitTextFillColor: shouldShowGradient ? 'transparent' : 'unset',
                         backgroundClip: shouldShowGradient ? 'text' : 'unset',
@@ -111,7 +140,7 @@ export default function LanguageSwitcher() {
                       {label}
                     </span>
                     {isActive && (
-                      <span style={{ color: '#ff651e' }} className="text-xs">✓</span>
+                      <span style={{ color: styles.primary }} className="text-xs">✓</span>
                     )}
                   </button>
                   {index < Object.keys(languageLabels).length - 1 && (

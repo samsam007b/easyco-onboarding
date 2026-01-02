@@ -351,7 +351,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
 
             {/* Language Switcher */}
             <div className="hidden md:block">
-              <LanguageSwitcher />
+              <LanguageSwitcher variant="searcher" />
             </div>
 
             {/* Profile Menu - Always last (rightmost) */}

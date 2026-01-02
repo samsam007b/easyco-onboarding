@@ -539,7 +539,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
 
             {/* Language Switcher */}
             <div className="hidden md:block">
-              <LanguageSwitcher />
+              <LanguageSwitcher variant="owner" />
             </div>
 
             {/* Profile Menu */}
