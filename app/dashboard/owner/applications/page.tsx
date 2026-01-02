@@ -149,7 +149,7 @@ export default function OwnerApplicationsPage() {
       type: 'individual' as ApplicationType,
       status: app.status as ApplicationStatus,
       propertyId: app.property_id,
-      propertyTitle: app.property?.title || 'Propriété',
+      propertyTitle: app.property?.title || (t?.fallback?.property?.[language] || 'Property'),
       propertyCity: app.property?.city || '',
       applicantId: app.applicant_id,
       applicantName: app.applicant_name,
@@ -169,9 +169,9 @@ export default function OwnerApplicationsPage() {
       type: 'group' as ApplicationType,
       status: app.status as ApplicationStatus,
       propertyId: app.property_id,
-      propertyTitle: app.property?.title || 'Propriété',
+      propertyTitle: app.property?.title || (t?.fallback?.property?.[language] || 'Property'),
       propertyCity: app.property?.city || '',
-      applicantName: app.group?.name || 'Groupe',
+      applicantName: app.group?.name || (t?.fallback?.group?.[language] || 'Group'),
       monthlyIncome: app.combined_income || undefined,
       message: app.message || undefined,
       createdAt: new Date(app.created_at),
@@ -180,7 +180,7 @@ export default function OwnerApplicationsPage() {
     }));
 
     return [...individual, ...group];
-  }, [applications, groupApps]);
+  }, [applications, groupApps, t, language]);
 
   // Apply filters
   const filteredApplications = useMemo(() => {
@@ -234,20 +234,20 @@ export default function OwnerApplicationsPage() {
       }
 
       if (success) {
-        toast.success(`Candidature passée en "${getStatusLabel(newStatus)}"`);
+        toast.success(`${t?.toast?.statusChanged?.[language] || 'Application moved to'} "${getStatusLabel(newStatus)}"`);
         await loadApplications(true);
       }
     } catch (error) {
-      toast.error('Erreur lors du changement de statut');
+      toast.error(t?.toast?.statusChangeError?.[language] || 'Error changing status');
     }
   };
 
   const getStatusLabel = (status: ApplicationStatus) => {
     const labels: Record<ApplicationStatus, string> = {
-      pending: 'En attente',
-      reviewing: 'En cours',
-      approved: 'Approuvée',
-      rejected: 'Refusée',
+      pending: t?.status?.pending?.[language] || 'Pending',
+      reviewing: t?.status?.reviewing?.[language] || 'In review',
+      approved: t?.status?.approved?.[language] || 'Approved',
+      rejected: t?.status?.rejected?.[language] || 'Rejected',
     };
     return labels[status];
   };
@@ -356,10 +356,10 @@ export default function OwnerApplicationsPage() {
         {/* Header */}
         <OwnerPageHeader
           icon={FileText}
-          title={t?.header?.title?.[language] || 'Candidatures'}
-          subtitle={t?.header?.subtitle?.[language] || 'Gérez les candidatures pour vos biens'}
-          breadcrumb={{ label: 'Portfolio', href: '/dashboard/owner/portfolio' }}
-          currentPage="Candidatures"
+          title={t?.header?.title?.[language] || 'Applications'}
+          subtitle={t?.header?.subtitle?.[language] || 'Manage applications for your properties'}
+          breadcrumb={{ label: t?.breadcrumb?.portfolio?.[language] || 'Portfolio', href: '/dashboard/owner/portfolio' }}
+          currentPage={t?.breadcrumb?.applications?.[language] || 'Applications'}
           actions={
             <Button
               variant="outline"
@@ -369,7 +369,7 @@ export default function OwnerApplicationsPage() {
               className="rounded-full"
             >
               <RefreshCw className={cn('w-4 h-4 mr-2', isRefreshing && 'animate-spin')} />
-              Actualiser
+              {t?.actions?.refresh?.[language] || 'Refresh'}
             </Button>
           }
         />
@@ -382,13 +382,13 @@ export default function OwnerApplicationsPage() {
           className="mt-6 grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3"
         >
           {[
-            { label: 'Total', value: stats.total, color: '#9c5698' },
-            { label: 'Individuelles', value: stats.individual, color: '#3b82f6' },
-            { label: 'Groupes', value: stats.groups, color: '#c2566b' },
-            { label: 'En attente', value: stats.pending, color: '#f59e0b' },
-            { label: 'En cours', value: stats.reviewing, color: '#3b82f6' },
-            { label: 'Approuvées', value: stats.approved, color: '#10b981' },
-            { label: 'Refusées', value: stats.rejected, color: '#ef4444' },
+            { label: t?.stats?.total?.[language] || 'Total', value: stats.total, color: '#9c5698' },
+            { label: t?.stats?.individual?.[language] || 'Individual', value: stats.individual, color: '#3b82f6' },
+            { label: t?.stats?.groups?.[language] || 'Groups', value: stats.groups, color: '#c2566b' },
+            { label: t?.status?.pending?.[language] || 'Pending', value: stats.pending, color: '#f59e0b' },
+            { label: t?.status?.reviewing?.[language] || 'In review', value: stats.reviewing, color: '#3b82f6' },
+            { label: t?.status?.approved?.[language] || 'Approved', value: stats.approved, color: '#10b981' },
+            { label: t?.status?.rejected?.[language] || 'Rejected', value: stats.rejected, color: '#ef4444' },
           ].map((stat, idx) => (
             <motion.div
               key={stat.label}
@@ -424,11 +424,11 @@ export default function OwnerApplicationsPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" aria-hidden="true" />
               <Input
                 type="text"
-                placeholder="Rechercher un candidat..."
+                placeholder={t?.filters?.searchPlaceholder?.[language] || 'Search for an applicant...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 rounded-xl border-gray-200"
-                aria-label="Rechercher un candidat par nom, propriété ou profession"
+                aria-label={t?.filters?.searchAriaLabel?.[language] || 'Search applicant by name, property or profession'}
               />
             </div>
 
@@ -442,15 +442,19 @@ export default function OwnerApplicationsPage() {
                     filterType !== 'all' && 'border-purple-300 bg-purple-50'
                   )}
                 >
-                  {filterType === 'all' ? 'Tous types' : filterType === 'individual' ? 'Individuelles' : 'Groupes'}
+                  {filterType === 'all'
+                    ? (t?.filters?.allTypes?.[language] || 'All types')
+                    : filterType === 'individual'
+                      ? (t?.filters?.individual?.[language] || 'Individual')
+                      : (t?.filters?.groups?.[language] || 'Groups')}
                   <ChevronDown className="w-4 h-4 ml-2" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40">
                 {[
-                  { value: 'all', label: 'Tous types' },
-                  { value: 'individual', label: 'Individuelles' },
-                  { value: 'group', label: 'Groupes' },
+                  { value: 'all', label: t?.filters?.allTypes?.[language] || 'All types' },
+                  { value: 'individual', label: t?.filters?.individual?.[language] || 'Individual' },
+                  { value: 'group', label: t?.filters?.groups?.[language] || 'Groups' },
                 ].map((option) => (
                   <DropdownMenuItem
                     key={option.value}
@@ -473,17 +477,17 @@ export default function OwnerApplicationsPage() {
                     filterStatus !== 'all' && 'border-purple-300 bg-purple-50'
                   )}
                 >
-                  {filterStatus === 'all' ? 'Tous statuts' : getStatusLabel(filterStatus)}
+                  {filterStatus === 'all' ? (t?.filters?.allStatuses?.[language] || 'All statuses') : getStatusLabel(filterStatus)}
                   <ChevronDown className="w-4 h-4 ml-2" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-40">
                 {[
-                  { value: 'all', label: 'Tous statuts' },
-                  { value: 'pending', label: 'En attente' },
-                  { value: 'reviewing', label: 'En cours' },
-                  { value: 'approved', label: 'Approuvées' },
-                  { value: 'rejected', label: 'Refusées' },
+                  { value: 'all', label: t?.filters?.allStatuses?.[language] || 'All statuses' },
+                  { value: 'pending', label: t?.status?.pending?.[language] || 'Pending' },
+                  { value: 'reviewing', label: t?.status?.reviewing?.[language] || 'In review' },
+                  { value: 'approved', label: t?.status?.approved?.[language] || 'Approved' },
+                  { value: 'rejected', label: t?.status?.rejected?.[language] || 'Rejected' },
                 ].map((option) => (
                   <DropdownMenuItem
                     key={option.value}
@@ -509,8 +513,8 @@ export default function OwnerApplicationsPage() {
                   >
                     <span className="truncate max-w-[120px]">
                       {filterProperty === 'all'
-                        ? 'Toutes propriétés'
-                        : properties.find((p) => p.id === filterProperty)?.title || 'Propriété'}
+                        ? (t?.filters?.allProperties?.[language] || 'All properties')
+                        : properties.find((p) => p.id === filterProperty)?.title || (t?.filters?.property?.[language] || 'Property')}
                     </span>
                     <ChevronDown className="w-4 h-4 ml-2 flex-shrink-0" />
                   </Button>
@@ -520,7 +524,7 @@ export default function OwnerApplicationsPage() {
                     onClick={() => setFilterProperty('all')}
                     className={cn(filterProperty === 'all' && 'bg-purple-50')}
                   >
-                    Toutes les propriétés
+                    {t?.filters?.allProperties?.[language] || 'All properties'}
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   {properties.map((property) => (
@@ -549,7 +553,7 @@ export default function OwnerApplicationsPage() {
                 }}
                 className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-xl"
               >
-                Réinitialiser
+                {t?.filters?.reset?.[language] || 'Reset'}
               </Button>
             )}
           </div>
@@ -558,9 +562,9 @@ export default function OwnerApplicationsPage() {
           <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-sm">
             <span className="text-gray-600">
               {filteredApplications.length === allApplications.length ? (
-                <>{allApplications.length} candidature{allApplications.length > 1 ? 's' : ''}</>
+                <>{allApplications.length} {allApplications.length > 1 ? (t?.results?.applications?.[language] || 'applications') : (t?.results?.application?.[language] || 'application')}</>
               ) : (
-                <>{filteredApplications.length} sur {allApplications.length} candidature{allApplications.length > 1 ? 's' : ''}</>
+                <>{filteredApplications.length} {t?.results?.of?.[language] || 'of'} {allApplications.length} {allApplications.length > 1 ? (t?.results?.applications?.[language] || 'applications') : (t?.results?.application?.[language] || 'application')}</>
               )}
             </span>
           </div>

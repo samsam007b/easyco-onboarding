@@ -54,6 +54,9 @@ export function AddVendorModal({
   onVendorAdded,
   preselectedCategory,
 }: AddVendorModalProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerMaintenance');
+
   const [formData, setFormData] = useState<CreateVendorData>({
     name: '',
     companyName: '',
@@ -75,19 +78,19 @@ export function AddVendorModal({
     const newErrors: Record<string, string> = {};
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Le nom est requis';
+      newErrors.name = t?.nameRequired?.[language] || 'Name is required';
     }
 
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Email invalide';
+      newErrors.email = t?.invalidEmail?.[language] || 'Invalid email';
     }
 
     if (formData.phone && !/^[\d\s+()-]{10,}$/.test(formData.phone.replace(/\s/g, ''))) {
-      newErrors.phone = 'Numero de telephone invalide';
+      newErrors.phone = t?.invalidPhone?.[language] || 'Invalid phone number';
     }
 
     if (formData.siret && !/^\d{14}$/.test(formData.siret.replace(/\s/g, ''))) {
-      newErrors.siret = 'Le SIRET doit contenir 14 chiffres';
+      newErrors.siret = t?.invalidSiret?.[language] || 'SIRET must contain 14 digits';
     }
 
     setErrors(newErrors);
@@ -105,7 +108,7 @@ export function AddVendorModal({
       } = await (await import('@/lib/auth/supabase-client')).createClient().auth.getUser();
 
       if (!user) {
-        toast.error('Vous devez etre connecte');
+        toast.error(t?.mustBeLoggedIn?.[language] || 'You must be logged in');
         return;
       }
 
@@ -113,7 +116,7 @@ export function AddVendorModal({
 
       if (result) {
         setIsSubmitted(true);
-        toast.success('Prestataire ajoute');
+        toast.success(t?.vendorAdded?.[language] || 'Vendor added');
         setTimeout(() => {
           onVendorAdded?.();
           onClose();
@@ -134,11 +137,11 @@ export function AddVendorModal({
           setIsSubmitted(false);
         }, 1500);
       } else {
-        toast.error('Erreur lors de l\'ajout');
+        toast.error(t?.errorAddingVendor?.[language] || 'Error adding vendor');
       }
     } catch (error) {
       console.error('Error adding vendor:', error);
-      toast.error('Erreur lors de l\'ajout');
+      toast.error(t?.errorAddingVendor?.[language] || 'Error adding vendor');
     } finally {
       setIsSubmitting(false);
     }
@@ -193,8 +196,8 @@ export function AddVendorModal({
                   <UserPlus className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg">Ajouter un prestataire</h2>
-                  <p className="text-white/80 text-sm">Enregistrez un nouveau prestataire</p>
+                  <h2 className="font-bold text-lg">{t?.addVendor?.[language] || 'Add a vendor'}</h2>
+                  <p className="text-white/80 text-sm">{t?.registerNewVendor?.[language] || 'Register a new vendor'}</p>
                 </div>
               </div>
               <button
@@ -222,10 +225,10 @@ export function AddVendorModal({
                   <CheckCircle className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Prestataire ajoute!
+                  {t?.vendorAddedTitle?.[language] || 'Vendor added!'}
                 </h3>
                 <p className="text-gray-600">
-                  {formData.name} a ete ajoute a votre annuaire.
+                  {formData.name} {t?.addedToDirectory?.[language] || 'has been added to your directory.'}
                 </p>
               </motion.div>
             ) : (
@@ -234,7 +237,7 @@ export function AddVendorModal({
                 <div className="grid grid-cols-2 gap-4">
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Nom du prestataire <span className="text-red-500">*</span>
+                      {t?.vendorName?.[language] || 'Vendor name'} <span className="text-red-500">*</span>
                     </label>
                     <div className="relative">
                       <Wrench className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -242,7 +245,7 @@ export function AddVendorModal({
                         type="text"
                         value={formData.name}
                         onChange={(e) => updateField('name', e.target.value)}
-                        placeholder="Ex: Jean Dupont"
+                        placeholder={t?.vendorNamePlaceholder?.[language] || 'Ex: John Smith'}
                         className={cn(
                           'w-full pl-10 pr-4 py-2 border rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400',
                           errors.name ? 'border-red-300 bg-red-50' : 'border-gray-200'
@@ -254,7 +257,7 @@ export function AddVendorModal({
 
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Nom de l'entreprise
+                      {t?.companyName?.[language] || 'Company name'}
                     </label>
                     <div className="relative">
                       <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -262,7 +265,7 @@ export function AddVendorModal({
                         type="text"
                         value={formData.companyName || ''}
                         onChange={(e) => updateField('companyName', e.target.value)}
-                        placeholder="Ex: Plomberie Express SARL"
+                        placeholder={t?.companyNamePlaceholder?.[language] || 'Ex: Plumbing Express LLC'}
                         className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
                       />
                     </div>
@@ -272,7 +275,7 @@ export function AddVendorModal({
                 {/* Category */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Specialite <span className="text-red-500">*</span>
+                    {t?.specialty?.[language] || 'Specialty'} <span className="text-red-500">*</span>
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {categoryOptions.map((cat) => (
@@ -297,7 +300,7 @@ export function AddVendorModal({
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Telephone
+                      {t?.phone?.[language] || 'Phone'}
                     </label>
                     <div className="relative">
                       <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -317,7 +320,7 @@ export function AddVendorModal({
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Email
+                      {t?.email?.[language] || 'Email'}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -339,7 +342,7 @@ export function AddVendorModal({
                 {/* Address */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Adresse
+                    {t?.address?.[language] || 'Address'}
                   </label>
                   <div className="relative">
                     <MapPin className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
@@ -347,7 +350,7 @@ export function AddVendorModal({
                       type="text"
                       value={formData.address || ''}
                       onChange={(e) => updateField('address', e.target.value)}
-                      placeholder="123 rue Example"
+                      placeholder={t?.addressPlaceholder?.[language] || '123 Example Street'}
                       className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
                     />
                   </div>
@@ -356,19 +359,19 @@ export function AddVendorModal({
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Ville
+                      {t?.city?.[language] || 'City'}
                     </label>
                     <input
                       type="text"
                       value={formData.city || ''}
                       onChange={(e) => updateField('city', e.target.value)}
-                      placeholder="Paris"
+                      placeholder={t?.cityPlaceholder?.[language] || 'Paris'}
                       className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
                     />
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Code postal
+                      {t?.postalCode?.[language] || 'Postal code'}
                     </label>
                     <input
                       type="text"
@@ -383,7 +386,7 @@ export function AddVendorModal({
                 {/* Business Info */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    N SIRET
+                    {t?.siretNumber?.[language] || 'SIRET Number'}
                   </label>
                   <div className="relative">
                     <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
@@ -404,12 +407,12 @@ export function AddVendorModal({
                 {/* Notes */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Notes
+                    {t?.notes?.[language] || 'Notes'}
                   </label>
                   <textarea
                     value={formData.notes || ''}
                     onChange={(e) => updateField('notes', e.target.value)}
-                    placeholder="Notes personnelles sur ce prestataire..."
+                    placeholder={t?.notesPlaceholder?.[language] || 'Personal notes about this vendor...'}
                     rows={2}
                     className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 resize-none"
                   />
@@ -425,7 +428,7 @@ export function AddVendorModal({
                     className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                   />
                   <label htmlFor="isFavorite" className="text-sm text-gray-700">
-                    Ajouter aux favoris
+                    {t?.addToFavorites?.[language] || 'Add to favorites'}
                   </label>
                 </div>
               </>
@@ -441,7 +444,7 @@ export function AddVendorModal({
                 disabled={isSubmitting}
                 className="rounded-full"
               >
-                Annuler
+                {t?.cancel?.[language] || 'Cancel'}
               </Button>
               <Button
                 onClick={handleSubmit}
@@ -452,12 +455,12 @@ export function AddVendorModal({
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Ajout...
+                    {t?.adding?.[language] || 'Adding...'}
                   </>
                 ) : (
                   <>
                     <UserPlus className="w-4 h-4 mr-2" />
-                    Ajouter
+                    {t?.add?.[language] || 'Add'}
                   </>
                 )}
               </Button>

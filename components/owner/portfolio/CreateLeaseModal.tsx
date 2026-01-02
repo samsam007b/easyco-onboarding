@@ -18,8 +18,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
 import { format, addMonths } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de, type Locale } from 'date-fns/locale';
 import { ownerGradient } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { leaseManagementService, type CreateLeaseFromApplicationData } from '@/lib/services/lease-management-service';
 import { toast } from 'sonner';
 
@@ -41,19 +42,34 @@ export interface CreateLeaseModalProps {
   };
 }
 
-const LEASE_DURATIONS = [
-  { value: 6, label: '6 mois' },
-  { value: 12, label: '1 an' },
-  { value: 24, label: '2 ans' },
-  { value: 36, label: '3 ans' },
-];
-
 export function CreateLeaseModal({
   isOpen,
   onClose,
   onSuccess,
   applicationData,
 }: CreateLeaseModalProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerLeases');
+
+  // Date-fns locale mapping
+  const dateLocaleMap: Record<string, Locale> = {
+    fr, en: enUS, nl, de,
+  };
+  const dateLocale = dateLocaleMap[language] || fr;
+
+  // Locale mapping for number formatting
+  const localeMap: Record<string, string> = {
+    fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE',
+  };
+
+  // Dynamic lease durations with translations
+  const getLeaseDurations = () => [
+    { value: 6, label: t?.sixMonths?.[language] || '6 months' },
+    { value: 12, label: t?.oneYear?.[language] || '1 year' },
+    { value: 24, label: t?.twoYears?.[language] || '2 years' },
+    { value: 36, label: t?.threeYears?.[language] || '3 years' },
+  ];
+
   const [isCreating, setIsCreating] = useState(false);
 
   // Form state
@@ -89,12 +105,12 @@ export function CreateLeaseModal({
 
   const handleSubmit = async () => {
     if (!monthlyRent || Number(monthlyRent) <= 0) {
-      toast.error('Veuillez saisir un loyer mensuel valide');
+      toast.error(t?.pleaseEnterValidRent?.[language] || 'Please enter a valid monthly rent');
       return;
     }
 
     if (!applicationData.applicantId) {
-      toast.error('ID du candidat manquant');
+      toast.error(t?.applicantIdMissing?.[language] || 'Applicant ID missing');
       return;
     }
 
@@ -116,13 +132,13 @@ export function CreateLeaseModal({
     const result = await leaseManagementService.createLeaseFromApplication(leaseData);
 
     if (result.success) {
-      toast.success('Bail créé avec succès !', {
-        description: `${applicationData.applicantName} est maintenant locataire`
+      toast.success(t?.leaseCreatedSuccess?.[language] || 'Lease created successfully!', {
+        description: `${applicationData.applicantName} ${t?.isNowTenant?.[language] || 'is now a tenant'}`
       });
       onSuccess?.(result.leaseId || '');
       onClose();
     } else {
-      toast.error('Erreur lors de la création du bail', {
+      toast.error(t?.errorCreatingLease?.[language] || 'Error creating lease', {
         description: result.error
       });
     }
@@ -192,10 +208,10 @@ export function CreateLeaseModal({
             </motion.div>
 
             <h2 className="text-xl font-bold text-gray-900">
-              Créer un bail
+              {t?.createLease?.[language] || 'Create lease'}
             </h2>
             <p className="text-sm text-gray-600 mt-1">
-              Convertir la candidature approuvée en contrat de location
+              {t?.convertApplicationToLease?.[language] || 'Convert approved application to rental contract'}
             </p>
           </div>
 
@@ -206,7 +222,7 @@ export function CreateLeaseModal({
               <div className="bg-gray-50 rounded-xl p-3">
                 <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
                   <User className="w-3.5 h-3.5" />
-                  <span>Locataire</span>
+                  <span>{t?.tenant?.[language] || 'Tenant'}</span>
                 </div>
                 <p className="font-semibold text-gray-900 truncate">
                   {applicationData.applicantName}
@@ -215,7 +231,7 @@ export function CreateLeaseModal({
               <div className="bg-gray-50 rounded-xl p-3">
                 <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
                   <Home className="w-3.5 h-3.5" />
-                  <span>Propriété</span>
+                  <span>{t?.property?.[language] || 'Property'}</span>
                 </div>
                 <p className="font-semibold text-gray-900 truncate">
                   {applicationData.propertyTitle}
@@ -227,7 +243,7 @@ export function CreateLeaseModal({
             <div className="space-y-2">
               <Label htmlFor="moveInDate" className="flex items-center gap-2">
                 <Calendar className="w-4 h-4 text-gray-400" />
-                Date d'entrée
+                {t?.moveInDate?.[language] || 'Move-in date'}
               </Label>
               <Input
                 id="moveInDate"
@@ -242,10 +258,10 @@ export function CreateLeaseModal({
             <div className="space-y-2">
               <Label className="flex items-center gap-2">
                 <Clock className="w-4 h-4 text-gray-400" />
-                Durée du bail
+                {t?.leaseDuration?.[language] || 'Lease duration'}
               </Label>
               <div className="grid grid-cols-4 gap-2">
-                {LEASE_DURATIONS.map((duration) => (
+                {getLeaseDurations().map((duration) => (
                   <button
                     key={duration.value}
                     type="button"
@@ -267,7 +283,7 @@ export function CreateLeaseModal({
                 ))}
               </div>
               <p className="text-xs text-gray-500 mt-2">
-                Fin prévue: {format(endDate, 'd MMMM yyyy', { locale: fr })}
+                {t?.expectedEnd?.[language] || 'Expected end'}: {format(endDate, 'd MMMM yyyy', { locale: dateLocale })}
               </p>
             </div>
 
@@ -276,7 +292,7 @@ export function CreateLeaseModal({
               <div className="space-y-2">
                 <Label htmlFor="monthlyRent" className="flex items-center gap-2">
                   <Euro className="w-4 h-4 text-gray-400" />
-                  Loyer mensuel *
+                  {t?.monthlyRent?.[language] || 'Monthly rent'} *
                 </Label>
                 <div className="relative">
                   <Input
@@ -293,7 +309,7 @@ export function CreateLeaseModal({
               <div className="space-y-2">
                 <Label htmlFor="deposit" className="flex items-center gap-2">
                   <Euro className="w-4 h-4 text-gray-400" />
-                  Dépôt de garantie
+                  {t?.securityDeposit?.[language] || 'Security deposit'}
                 </Label>
                 <div className="relative">
                   <Input
@@ -314,17 +330,17 @@ export function CreateLeaseModal({
               className="rounded-xl p-4"
               style={{ background: `linear-gradient(135deg, rgba(156,86,152,0.08), rgba(194,86,107,0.08))` }}
             >
-              <h4 className="text-sm font-medium text-gray-700 mb-3">Récapitulatif</h4>
+              <h4 className="text-sm font-medium text-gray-700 mb-3">{t?.summary?.[language] || 'Summary'}</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Loyer annuel</span>
+                  <span className="text-gray-600">{t?.annualRent?.[language] || 'Annual rent'}</span>
                   <span className="font-semibold" style={{ color: '#9c5698' }}>
-                    {monthlyRent ? `${(Number(monthlyRent) * 12).toLocaleString('fr-FR')}€` : '—'}
+                    {monthlyRent ? `${(Number(monthlyRent) * 12).toLocaleString(localeMap[language] || 'en-US')}€` : '—'}
                   </span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Durée totale</span>
-                  <span className="font-medium text-gray-900">{leaseDuration} mois</span>
+                  <span className="text-gray-600">{t?.totalDuration?.[language] || 'Total duration'}</span>
+                  <span className="font-medium text-gray-900">{leaseDuration} {t?.months?.[language] || 'months'}</span>
                 </div>
               </div>
             </div>
@@ -338,7 +354,7 @@ export function CreateLeaseModal({
               disabled={isCreating}
               className="flex-1 rounded-xl"
             >
-              Annuler
+              {t?.cancel?.[language] || 'Cancel'}
             </Button>
             <Button
               onClick={handleSubmit}
@@ -349,12 +365,12 @@ export function CreateLeaseModal({
               {isCreating ? (
                 <>
                   <Clock className="w-4 h-4 mr-2 animate-spin" />
-                  Création...
+                  {t?.creating?.[language] || 'Creating...'}
                 </>
               ) : (
                 <>
                   <Check className="w-4 h-4 mr-2" />
-                  Créer le bail
+                  {t?.createLease?.[language] || 'Create lease'}
                 </>
               )}
             </Button>

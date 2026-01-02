@@ -41,7 +41,7 @@ import type {
   MaintenanceCategory,
 } from '@/types/maintenance.types';
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de, type Locale } from 'date-fns/locale';
 
 // Shared owner components
 import {
@@ -70,16 +70,16 @@ import { toast } from 'sonner';
 
 import { ownerGradient, ownerGradientLight } from '@/lib/constants/owner-theme';
 
-// Category config for display
-const CATEGORY_CONFIG: Record<MaintenanceCategory, { label: string; emoji: string; color: string }> = {
-  plumbing: { label: 'Plomberie', emoji: '🚰', color: 'bg-blue-100 text-blue-700 border-blue-200' },
-  electrical: { label: 'Électricité', emoji: '⚡', color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
-  heating: { label: 'Chauffage', emoji: '🔥', color: 'bg-orange-100 text-orange-700 border-orange-200' },
-  appliances: { label: 'Électroménager', emoji: '🔌', color: 'bg-purple-100 text-purple-700 border-purple-200' },
-  structural: { label: 'Structure', emoji: '🏗️', color: 'bg-gray-100 text-gray-700 border-gray-200' },
-  cleaning: { label: 'Nettoyage', emoji: '🧹', color: 'bg-green-100 text-green-700 border-green-200' },
-  pest_control: { label: 'Nuisibles', emoji: '🐛', color: 'bg-red-100 text-red-700 border-red-200' },
-  other: { label: 'Autre', emoji: '🔧', color: 'bg-indigo-100 text-indigo-700 border-indigo-200' },
+// Category config for display - now using emojis and colors only (labels translated dynamically)
+const CATEGORY_STYLES: Record<MaintenanceCategory, { emoji: string; color: string }> = {
+  plumbing: { emoji: '🚰', color: 'bg-blue-100 text-blue-700 border-blue-200' },
+  electrical: { emoji: '⚡', color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
+  heating: { emoji: '🔥', color: 'bg-orange-100 text-orange-700 border-orange-200' },
+  appliances: { emoji: '🔌', color: 'bg-purple-100 text-purple-700 border-purple-200' },
+  structural: { emoji: '🏗️', color: 'bg-gray-100 text-gray-700 border-gray-200' },
+  cleaning: { emoji: '🧹', color: 'bg-green-100 text-green-700 border-green-200' },
+  pest_control: { emoji: '🐛', color: 'bg-red-100 text-red-700 border-red-200' },
+  other: { emoji: '🔧', color: 'bg-indigo-100 text-indigo-700 border-indigo-200' },
 };
 
 // Map backend categories to Kanban categories
@@ -153,6 +153,26 @@ export default function MaintenancePage() {
   const { setActiveRole } = useRole();
   const { getSection, language } = useLanguage();
   const t = getSection('dashboard')?.owner?.maintenancePage;
+
+  // Date-fns locale mapping
+  const dateLocaleMap: Record<string, Locale> = { fr, en: enUS, nl, de };
+  const dateLocale = dateLocaleMap[language] || fr;
+
+  // Dynamic category config with translated labels
+  const getCategoryConfig = (category: MaintenanceCategory) => {
+    const style = CATEGORY_STYLES[category] || CATEGORY_STYLES.other;
+    const labels: Record<MaintenanceCategory, string> = {
+      plumbing: t?.categories?.plumbing?.[language] || 'Plumbing',
+      electrical: t?.categories?.electrical?.[language] || 'Electrical',
+      heating: t?.categories?.heating?.[language] || 'Heating',
+      appliances: t?.categories?.appliances?.[language] || 'Appliances',
+      structural: t?.categories?.structural?.[language] || 'Structural',
+      cleaning: t?.categories?.cleaning?.[language] || 'Cleaning',
+      pest_control: t?.categories?.pest_control?.[language] || 'Pest control',
+      other: t?.categories?.other?.[language] || 'Other',
+    };
+    return { ...style, label: labels[category] };
+  };
 
   const [isLoading, setIsLoading] = useState(true);
   const [isUpdating, setIsUpdating] = useState<string | null>(null);
@@ -409,25 +429,25 @@ export default function MaintenancePage() {
     const config = {
       low: {
         className: 'bg-gray-100 text-gray-700 border-gray-200',
-        label: 'Basse',
+        label: t?.priority?.low?.[language] || 'Low',
         icon: Activity,
         borderColor: '#9ca3af'
       },
       medium: {
         className: 'bg-blue-100 text-blue-700 border-blue-200',
-        label: 'Moyenne',
+        label: t?.priority?.medium?.[language] || 'Medium',
         icon: Clock,
         borderColor: '#3b82f6'
       },
       high: {
         className: 'bg-orange-100 text-orange-700 border-orange-200',
-        label: 'Haute',
+        label: t?.priority?.high?.[language] || 'High',
         icon: AlertTriangle,
         borderColor: '#f97316'
       },
       emergency: {
         className: 'bg-red-100 text-red-800 border-red-300',
-        label: 'Urgence',
+        label: t?.priority?.emergency?.[language] || 'Emergency',
         icon: AlertCircle,
         borderColor: '#ef4444'
       }
@@ -440,27 +460,27 @@ export default function MaintenancePage() {
     const config = {
       open: {
         className: 'bg-yellow-100 text-yellow-800 border-yellow-200',
-        label: 'Ouvert',
+        label: t?.status?.open?.[language] || 'Open',
         icon: Clock
       },
       in_progress: {
         className: 'bg-blue-100 text-blue-800 border-blue-200',
-        label: 'En cours',
+        label: t?.status?.in_progress?.[language] || 'In progress',
         icon: Settings
       },
       resolved: {
         className: 'bg-green-100 text-green-800 border-green-200',
-        label: 'Résolu',
+        label: t?.status?.resolved?.[language] || 'Resolved',
         icon: CheckCircle
       },
       closed: {
         className: 'bg-gray-100 text-gray-700 border-gray-200',
-        label: 'Fermé',
+        label: t?.status?.closed?.[language] || 'Closed',
         icon: XCircle
       },
       cancelled: {
         className: 'bg-red-100 text-red-700 border-red-200',
-        label: 'Annulé',
+        label: t?.status?.cancelled?.[language] || 'Cancelled',
         icon: XCircle
       }
     };
@@ -478,7 +498,7 @@ export default function MaintenancePage() {
     try {
       return formatDistanceToNow(new Date(dateString), {
         addSuffix: true,
-        locale: fr
+        locale: dateLocale
       });
     } catch {
       return dateString;
@@ -501,10 +521,10 @@ export default function MaintenancePage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Loading maintenance...
+            {t?.loading?.title?.[language] || 'Loading maintenance...'}
           </h3>
           <p className="text-gray-600">
-            Fetching requests from database
+            {t?.loading?.subtitle?.[language] || 'Fetching requests from database'}
           </p>
         </div>
       </div>
@@ -520,16 +540,19 @@ export default function MaintenancePage() {
         {/* Header */}
         <OwnerPageHeader
           icon={Wrench}
-          title="Maintenance"
+          title={t?.header?.title?.[language] || 'Maintenance'}
           subtitle={properties.length > 0
-            ? `${requests.length} demande${requests.length !== 1 ? 's' : ''} sur ${properties.length} propriété${properties.length !== 1 ? 's' : ''}`
-            : 'Aucune propriété trouvée'}
+            ? t?.header?.subtitle?.[language]
+                ?.replace('{requests}', String(requests.length))
+                ?.replace('{properties}', String(properties.length)) ||
+              `${requests.length} request(s) across ${properties.length} property(ies)`
+            : t?.header?.noProperties?.[language] || 'No properties found'}
           showSparkles
           breadcrumb={{
-            label: 'Gestion',
+            label: t?.breadcrumb?.parent?.[language] || 'Management',
             href: '/dashboard/owner/gestion',
           }}
-          currentPage="Maintenance"
+          currentPage={t?.breadcrumb?.current?.[language] || 'Maintenance'}
           actions={
             <div className="flex items-center gap-3">
               {/* View toggle */}
@@ -591,7 +614,7 @@ export default function MaintenancePage() {
                 }}
               >
                 <Plus className="w-5 h-5 mr-2" />
-                Nouvelle Demande
+                {t?.header?.newRequest?.[language] || 'New Request'}
               </Button>
             </div>
           }
@@ -601,25 +624,27 @@ export default function MaintenancePage() {
         <OwnerKPIGrid columns={4} className="mt-6 mb-6">
           <OwnerKPICard
             icon={Clock}
-            title="Ouvertes"
+            title={t?.kpi?.open?.[language] || 'Open'}
             value={stats.open}
             variant="warning"
           />
           <OwnerKPICard
             icon={Settings}
-            title="En cours"
+            title={t?.kpi?.inProgress?.[language] || 'In progress'}
             value={stats.in_progress}
             variant="info"
           />
           <OwnerKPICard
             icon={CheckCircle}
-            title="Résolues"
+            title={t?.kpi?.resolved?.[language] || 'Resolved'}
             value={stats.resolved}
             variant="success"
           />
           <OwnerKPICard
             icon={TrendingUp}
-            title={stats.avgResolutionHours > 0 ? `${stats.avgResolutionHours}h moy.` : "Performance"}
+            title={stats.avgResolutionHours > 0
+              ? `${stats.avgResolutionHours}h ${t?.kpi?.average?.[language] || 'avg.'}`
+              : t?.kpi?.performance?.[language] || 'Performance'}
             value={stats.totalCost > 0 ? `${stats.totalCost.toFixed(0)}€` : '-'}
             variant="primary"
           />
@@ -628,11 +653,12 @@ export default function MaintenancePage() {
         {/* Alert Banner for Urgent Requests */}
         <OwnerAlertBanner
           severity="critical"
-          title={`${urgentCount} demande${urgentCount > 1 ? 's' : ''} urgente${urgentCount > 1 ? 's' : ''} en attente`}
-          description="Ces demandes nécessitent une intervention rapide"
+          title={t?.alert?.urgentTitle?.[language]?.replace('{count}', String(urgentCount)) ||
+            `${urgentCount} urgent request(s) pending`}
+          description={t?.alert?.urgentDescription?.[language] || 'These requests require immediate action'}
           icon={AlertTriangle}
           action={{
-            label: "Voir les urgences",
+            label: t?.alert?.viewUrgent?.[language] || 'View urgent',
             onClick: () => setFilterStatus('open')
           }}
           show={urgentCount > 0}
@@ -667,10 +693,10 @@ export default function MaintenancePage() {
               {/* Filters */}
               <div className="mb-6 flex flex-wrap gap-2">
                 {[
-                  { value: 'all' as const, label: 'Toutes', count: stats.total },
-                  { value: 'open' as const, label: 'Ouvertes', count: stats.open },
-                  { value: 'in_progress' as const, label: 'En cours', count: stats.in_progress },
-                  { value: 'resolved' as const, label: 'Résolues', count: stats.resolved }
+                  { value: 'all' as const, label: t?.filters?.all?.[language] || 'All', count: stats.total },
+                  { value: 'open' as const, label: t?.filters?.open?.[language] || 'Open', count: stats.open },
+                  { value: 'in_progress' as const, label: t?.filters?.inProgress?.[language] || 'In progress', count: stats.in_progress },
+                  { value: 'resolved' as const, label: t?.filters?.resolved?.[language] || 'Resolved', count: stats.resolved }
                 ].map((filter) => (
                   <Button
                     key={filter.value}
@@ -710,13 +736,13 @@ export default function MaintenancePage() {
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">
                     {filterStatus === 'all'
-                      ? 'Aucune demande de maintenance'
-                      : 'Aucune demande avec ce statut'}
+                      ? t?.empty?.noRequests?.[language] || 'No maintenance requests'
+                      : t?.empty?.noStatusMatch?.[language] || 'No requests with this status'}
                   </h3>
                   <p className="text-gray-600 mb-4 max-w-md mx-auto">
                     {filterStatus === 'all'
-                      ? 'Vos propriétés sont en parfait état !'
-                      : 'Essayez un autre filtre'}
+                      ? t?.empty?.perfectCondition?.[language] || 'Your properties are in perfect condition!'
+                      : t?.empty?.tryOtherFilter?.[language] || 'Try another filter'}
                   </p>
                 </motion.div>
               ) : (
@@ -724,7 +750,7 @@ export default function MaintenancePage() {
                   {filteredRequests.map((request, index) => {
                     const statusConfig = getStatusConfig(request.status);
                     const priorityConfig = getPriorityConfig(request.priority);
-                    const categoryConfig = CATEGORY_CONFIG[request.category] || CATEGORY_CONFIG.other;
+                    const categoryConfig = getCategoryConfig(request.category);
                     const StatusIcon = statusConfig.icon;
                     const PriorityIcon = priorityConfig.icon;
                     const isBeingUpdated = isUpdating === request.id;
@@ -792,7 +818,7 @@ export default function MaintenancePage() {
 
                                   <div className="flex items-center gap-2 text-gray-700">
                                     <User className="w-4 h-4 text-gray-500" />
-                                    <span>Signalé par: <span className="font-medium">{request.creator_name}</span></span>
+                                    <span>{t?.list?.reportedBy?.[language] || 'Reported by'}: <span className="font-medium">{request.creator_name}</span></span>
                                   </div>
 
                                   <div className="flex items-center gap-4 text-gray-500">
@@ -819,10 +845,10 @@ export default function MaintenancePage() {
                               className="flex-1 rounded-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                toast.info(`${request.title} - ${request.description || 'Aucune description'}`);
+                                toast.info(`${request.title} - ${request.description || t?.list?.noDescription?.[language] || 'No description'}`);
                               }}
                             >
-                              Voir Détails
+                              {t?.list?.viewDetails?.[language] || 'View Details'}
                             </Button>
 
                             {request.status === 'open' && (
@@ -843,7 +869,7 @@ export default function MaintenancePage() {
                                 ) : (
                                   <>
                                     <Settings className="w-4 h-4 mr-2" />
-                                    Commencer
+                                    {t?.list?.start?.[language] || 'Start'}
                                   </>
                                 )}
                               </Button>
@@ -867,7 +893,7 @@ export default function MaintenancePage() {
                                 ) : (
                                   <>
                                     <CheckCircle className="w-4 h-4 mr-2" />
-                                    Résoudre
+                                    {t?.list?.resolve?.[language] || 'Resolve'}
                                   </>
                                 )}
                               </Button>

@@ -31,7 +31,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format, differenceInDays, addMonths, isPast, isFuture } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de, type Locale } from 'date-fns/locale';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Shared Owner Components
 import {
@@ -83,6 +84,12 @@ interface LeaseStats {
 export default function LeasesPage() {
   const router = useRouter();
   const { setActiveRole } = useRole();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.owner?.leasesPage;
+
+  // Date-fns locale mapping
+  const dateLocaleMap: Record<string, Locale> = { fr, en: enUS, nl, de };
+  const dateLocale = dateLocaleMap[language] || fr;
 
   const [isLoading, setIsLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | LeaseStatus>('all');
@@ -273,25 +280,25 @@ export default function LeasesPage() {
     const config = {
       active: {
         className: 'bg-green-100 text-green-700 border-green-200',
-        label: 'Actif',
+        label: t?.status?.active?.[language] || 'Active',
         icon: CheckCircle,
         color: '#22c55e',
       },
       ending_soon: {
         className: 'bg-amber-100 text-amber-700 border-amber-200',
-        label: 'Fin proche',
+        label: t?.status?.endingSoon?.[language] || 'Ending soon',
         icon: AlertTriangle,
         color: '#f59e0b',
       },
       expired: {
         className: 'bg-red-100 text-red-700 border-red-200',
-        label: 'Expiré',
+        label: t?.status?.expired?.[language] || 'Expired',
         icon: XCircle,
         color: '#ef4444',
       },
       future: {
         className: 'bg-blue-100 text-blue-700 border-blue-200',
-        label: 'À venir',
+        label: t?.status?.future?.[language] || 'Upcoming',
         icon: CalendarClock,
         color: '#3b82f6',
       },
@@ -345,10 +352,10 @@ export default function LeasesPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Loading leases...
+            {t?.loading?.title?.[language] || 'Loading leases...'}
           </h3>
           <p className="text-gray-600">
-            Analyzing rental contracts
+            {t?.loading?.subtitle?.[language] || 'Analyzing rental contracts'}
           </p>
         </div>
       </div>
@@ -372,17 +379,18 @@ export default function LeasesPage() {
             className="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
           >
             <ChevronLeft className="w-4 h-4" />
-            Gestion
+            {t?.breadcrumb?.parent?.[language] || 'Management'}
           </button>
           <span className="text-gray-300">/</span>
-          <span className="font-medium" style={{ color: '#9c5698' }}>Baux</span>
+          <span className="font-medium" style={{ color: '#9c5698' }}>{t?.breadcrumb?.current?.[language] || 'Leases'}</span>
         </motion.div>
 
         {/* Header using shared component */}
         <OwnerPageHeader
           icon={FileText}
-          title="Baux"
-          subtitle={`${stats.total} contrat${stats.total !== 1 ? 's' : ''} de location`}
+          title={t?.header?.title?.[language] || 'Leases'}
+          subtitle={t?.header?.subtitle?.[language]?.replace('{count}', String(stats.total)) ||
+            `${stats.total} rental contract(s)`}
           actions={
             <div className="flex items-center gap-3">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -406,7 +414,7 @@ export default function LeasesPage() {
                 <Button
                   onClick={() => {
                     // Navigate to applications page where leases can be created from approved applications
-                    toast.info('Pour créer un bail, acceptez une candidature depuis la page Candidatures');
+                    toast.info(t?.header?.newLeaseInfo?.[language] || 'To create a lease, accept an application from the Applications page');
                     router.push('/dashboard/owner/applications');
                   }}
                   className="rounded-full text-white border-0 shadow-md hover:shadow-lg transition-all"
@@ -416,7 +424,7 @@ export default function LeasesPage() {
                   }}
                 >
                   <FileSignature className="w-5 h-5 mr-2" />
-                  Nouveau Bail
+                  {t?.header?.newLease?.[language] || 'New Lease'}
                 </Button>
               </motion.div>
             </div>

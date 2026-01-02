@@ -13,7 +13,11 @@ import {
   CheckSquare,
   Archive,
   Upload,
-  Download,
+  Home,
+  Eye,
+  Users,
+  TrendingUp,
+  CheckCircle,
 } from 'lucide-react';
 import { toast } from 'sonner';
 import type { Property } from '@/types/property.types';
@@ -32,7 +36,7 @@ import {
   type PropertyFiltersState,
   type ViewMode,
 } from '@/components/owner/portfolio';
-import { ownerGradientLight, ownerPageBackground, ownerGradient, ownerPalette } from '@/lib/constants/owner-theme';
+import { ownerGradientLight, ownerPageBackground, ownerGradient, ownerPalette, semanticColors } from '@/lib/constants/owner-theme';
 
 export default function PropertiesManagement() {
   const router = useRouter();
@@ -169,6 +173,21 @@ export default function PropertiesManagement() {
     });
   }, [properties, rentedPropertyIds, applicationCounts]);
 
+  // Calculate stats for KPI cards
+  const stats = useMemo(() => {
+    const total = propertyCards.length;
+    const rented = propertyCards.filter(p => p.isRented).length;
+    const vacant = propertyCards.filter(p => !p.isRented && p.status === 'published').length;
+    const drafts = propertyCards.filter(p => p.status === 'draft').length;
+    const totalViews = propertyCards.reduce((sum, p) => sum + (p.views || 0), 0);
+    const totalApplications = propertyCards.reduce((sum, p) => sum + (p.applications || 0), 0);
+    const totalMonthlyRent = propertyCards
+      .filter(p => p.isRented)
+      .reduce((sum, p) => sum + (p.monthlyRent || 0), 0);
+
+    return { total, rented, vacant, drafts, totalViews, totalApplications, totalMonthlyRent };
+  }, [propertyCards]);
+
   // Handle property actions
   const handlePropertyClick = (property: PropertyCardData) => {
     router.push(`/properties/${property.id}`);
@@ -244,11 +263,14 @@ export default function PropertiesManagement() {
 
       if (error) throw error;
 
-      toast.success(`${selectedProperties.size} propriété(s) publiée(s)`);
+      toast.success(
+        t?.toast?.bulkPublishSuccess?.[language]?.replace('{count}', String(selectedProperties.size)) ||
+        `${selectedProperties.size} property(ies) published`
+      );
       setSelectedProperties(new Set());
       await loadData();
     } catch (error: unknown) {
-      toast.error('Erreur lors de la publication');
+      toast.error(t?.toast?.bulkPublishError?.[language] || 'Error publishing properties');
     }
   };
 
@@ -263,11 +285,14 @@ export default function PropertiesManagement() {
 
       if (error) throw error;
 
-      toast.success(`${selectedProperties.size} propriété(s) archivée(s)`);
+      toast.success(
+        t?.toast?.bulkArchiveSuccess?.[language]?.replace('{count}', String(selectedProperties.size)) ||
+        `${selectedProperties.size} property(ies) archived`
+      );
       setSelectedProperties(new Set());
       await loadData();
     } catch (error: unknown) {
-      toast.error('Erreur lors de l\'archivage');
+      toast.error(t?.toast?.bulkArchiveError?.[language] || 'Error archiving properties');
     }
   };
 
@@ -305,7 +330,7 @@ export default function PropertiesManagement() {
           title={t?.header?.title?.[language] || 'Mes Propriétés'}
           subtitle={t?.header?.subtitle?.[language] || 'Gérer et suivre toutes vos annonces immobilières'}
           breadcrumb={{ label: 'Portfolio', href: '/dashboard/owner/portfolio' }}
-          currentPage="Propriétés"
+          currentPage={t?.header?.currentPage?.[language] || 'Properties'}
           actions={
             <div className="flex items-center gap-2">
               <Button
@@ -316,7 +341,7 @@ export default function PropertiesManagement() {
                 className="rounded-full"
               >
                 <RefreshCw className={cn('w-4 h-4 mr-2', isRefreshing && 'animate-spin')} />
-                Actualiser
+                {t?.header?.refresh?.[language] || 'Refresh'}
               </Button>
               <Button
                 onClick={() => setShowAddPropertyModal(true)}
@@ -329,6 +354,174 @@ export default function PropertiesManagement() {
             </div>
           }
         />
+
+        {/* Bold KPI Cards Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1 }}
+          className="mt-6"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Card 1: Total Properties - PRIMARY solid color */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              style={{
+                background: ownerPalette.primary.main,
+                boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
+              }}
+            >
+              <div
+                className="absolute -top-10 -right-10 w-28 h-28 rounded-full opacity-15"
+                style={{ background: 'white' }}
+              />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(255,255,255,0.2)' }}
+                  >
+                    <Building2 className="w-6 h-6 text-white" />
+                  </div>
+                  {stats.drafts > 0 && (
+                    <span className="px-2.5 py-1 bg-white/25 rounded-full text-xs font-semibold text-white">
+                      {stats.drafts} brouillon{stats.drafts > 1 ? 's' : ''}
+                    </span>
+                  )}
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">{stats.total}</p>
+                <p className="text-white/90 text-sm font-medium">
+                  {t?.kpi?.totalProperties?.[language] || 'Total biens'}
+                </p>
+                <div className="mt-3 flex items-center gap-2 text-white/70 text-xs">
+                  <CheckCircle className="w-3.5 h-3.5" />
+                  <span>{stats.rented + stats.vacant} publiés</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 2: Rented - TERTIARY solid color */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              style={{
+                background: ownerPalette.tertiary.main,
+                boxShadow: `0 8px 32px ${ownerPalette.tertiary.shadow}`,
+              }}
+            >
+              <div
+                className="absolute -top-10 -right-10 w-28 h-28 rounded-full opacity-15"
+                style={{ background: 'white' }}
+              />
+              <div className="relative z-10">
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    style={{ background: 'rgba(255,255,255,0.2)' }}
+                  >
+                    <Home className="w-6 h-6 text-white" />
+                  </div>
+                  {stats.vacant > 0 && (
+                    <span
+                      className="px-2.5 py-1 rounded-full text-xs font-semibold text-white"
+                      style={{ background: semanticColors.warning.gradient }}
+                    >
+                      {stats.vacant} vacant{stats.vacant > 1 ? 's' : ''}
+                    </span>
+                  )}
+                </div>
+                <p className="text-3xl font-bold text-white mb-1">{stats.rented}</p>
+                <p className="text-white/90 text-sm font-medium">
+                  {t?.kpi?.rented?.[language] || 'Loués'}
+                </p>
+                <div className="mt-3 flex items-center gap-2 text-white/70 text-xs">
+                  <TrendingUp className="w-3.5 h-3.5" />
+                  <span>{stats.total > 0 ? Math.round((stats.rented / stats.total) * 100) : 0}% occupation</span>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Card 3: Views & Applications - White card with QUATERNARY icon */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              style={{
+                border: `1px solid ${ownerPalette.quaternary.border}`,
+                boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
+              }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  style={{ background: ownerPalette.quaternary.main }}
+                >
+                  <Eye className="w-6 h-6 text-white" />
+                </div>
+                <span
+                  className="px-2.5 py-1 rounded-full text-xs font-medium"
+                  style={{ background: ownerPalette.quaternary.light, color: ownerPalette.quaternary.text }}
+                >
+                  {stats.totalApplications} candidat{stats.totalApplications > 1 ? 's' : ''}
+                </span>
+              </div>
+              <p
+                className="text-3xl font-bold mb-1"
+                style={{ color: ownerPalette.quaternary.text }}
+              >
+                {stats.totalViews}
+              </p>
+              <p className="text-gray-600 text-sm font-medium">
+                {t?.kpi?.totalViews?.[language] || 'Vues totales'}
+              </p>
+              <div className="mt-3 flex items-center gap-2 text-gray-500 text-xs">
+                <Users className="w-3.5 h-3.5" />
+                <span>{stats.totalApplications} candidatures</span>
+              </div>
+            </motion.div>
+
+            {/* Card 4: Monthly Revenue - White card with green accent */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              style={{
+                border: `1px solid ${semanticColors.success.border}`,
+                boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
+              }}
+            >
+              <div className="flex items-center justify-between mb-3">
+                <div
+                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  style={{ background: semanticColors.success.gradient }}
+                >
+                  <TrendingUp className="w-6 h-6 text-white" />
+                </div>
+                <span
+                  className="px-2.5 py-1 rounded-full text-xs font-medium"
+                  style={{ background: semanticColors.success.bg, color: semanticColors.success.text }}
+                >
+                  /mois
+                </span>
+              </div>
+              <p
+                className="text-3xl font-bold mb-1"
+                style={{ color: semanticColors.success.text }}
+              >
+                {stats.totalMonthlyRent.toLocaleString()}€
+              </p>
+              <p className="text-gray-600 text-sm font-medium">
+                {t?.kpi?.monthlyRevenue?.[language] || 'Revenus mensuels'}
+              </p>
+              <div className="mt-3 text-xs text-gray-500">
+                ~{stats.rented > 0 ? Math.round(stats.totalMonthlyRent / stats.rented).toLocaleString() : 0}€ / bien loué
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
 
         {/* Bulk Actions Bar */}
         <AnimatePresence>
@@ -353,9 +546,10 @@ export default function PropertiesManagement() {
                 </div>
                 <div>
                   <p className="font-semibold text-gray-900">
-                    {selectedProperties.size} propriété{selectedProperties.size > 1 ? 's' : ''} sélectionnée{selectedProperties.size > 1 ? 's' : ''}
+                    {t?.bulkActions?.selected?.[language]?.replace('{count}', String(selectedProperties.size)) ||
+                     `${selectedProperties.size} property(ies) selected`}
                   </p>
-                  <p className="text-sm text-gray-600">Actions groupées disponibles</p>
+                  <p className="text-sm text-gray-600">{t?.bulkActions?.available?.[language] || 'Bulk actions available'}</p>
                 </div>
               </div>
 
@@ -367,7 +561,7 @@ export default function PropertiesManagement() {
                   className="rounded-full"
                 >
                   <Upload className="w-4 h-4 mr-2" />
-                  Publier
+                  {t?.bulkActions?.publish?.[language] || 'Publish'}
                 </Button>
                 <Button
                   variant="outline"
@@ -376,7 +570,7 @@ export default function PropertiesManagement() {
                   className="rounded-full"
                 >
                   <Archive className="w-4 h-4 mr-2" />
-                  Archiver
+                  {t?.bulkActions?.archive?.[language] || 'Archive'}
                 </Button>
                 <Button
                   variant="ghost"
@@ -384,7 +578,7 @@ export default function PropertiesManagement() {
                   onClick={() => setSelectedProperties(new Set())}
                   className="rounded-full text-gray-500"
                 >
-                  Annuler
+                  {t?.bulkActions?.cancel?.[language] || 'Cancel'}
                 </Button>
               </div>
             </motion.div>
