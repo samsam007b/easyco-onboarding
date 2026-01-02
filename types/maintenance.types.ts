@@ -49,6 +49,14 @@ export interface MaintenanceRequestWithCreator extends MaintenanceRequest {
   creator_avatar?: string;
 }
 
+/**
+ * Maintenance request with property information
+ * Used in owner dashboard to display property context
+ */
+export interface MaintenanceRequestWithProperty extends MaintenanceRequestWithCreator {
+  property_name: string;
+}
+
 // ============================================================================
 // FORM TYPES
 // ============================================================================
