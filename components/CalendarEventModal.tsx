@@ -255,26 +255,28 @@ export default function CalendarEventModal({
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
             <div
-              className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto pointer-events-auto relative border-2 border-orange-100"
+              className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden pointer-events-auto relative border-2 border-orange-100"
               style={{
                 boxShadow: `0 25px 80px ${ACCENT_SHADOW}`,
               }}
             >
-              {/* Decorative gradient circles */}
+              {/* Decorative gradient circles - positioned inside but clipped */}
               <div
-                className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
-                style={{ background: RESIDENT_GRADIENT }}
+                className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
+                style={{ background: RESIDENT_GRADIENT, transform: 'translate(30%, -30%)' }}
               />
               <div
-                className="absolute -left-12 -bottom-12 w-32 h-32 rounded-full opacity-15 pointer-events-none"
-                style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+                className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-8 pointer-events-none"
+                style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)', transform: 'translate(-30%, 30%)' }}
               />
 
-              {/* Header */}
-              <div
-                className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between rounded-t-3xl z-10"
-                style={{ background: CARD_BG_GRADIENT }}
-              >
+              {/* Scrollable content wrapper */}
+              <div className="max-h-[90vh] overflow-y-auto relative">
+                {/* Header - sticky with solid background */}
+                <div
+                  className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between z-30"
+                  style={{ background: '#FFF5F0' }}
+                >
                 <div className="flex items-center gap-4">
                   <motion.div
                     animate={{ scale: [1, 1.05, 1] }}
@@ -513,6 +515,7 @@ export default function CalendarEventModal({
                   </motion.div>
                 </div>
               </form>
+              </div>{/* End scrollable content wrapper */}
             </div>
           </motion.div>
         </>
