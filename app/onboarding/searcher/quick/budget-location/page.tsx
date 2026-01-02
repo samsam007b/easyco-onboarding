@@ -149,7 +149,7 @@ export default function QuickBudgetLocationPage() {
       progress={{
         current: 2,
         total: 5,
-        label: 'Étape 2 sur 5',
+        label: `${t('onboarding.progress.step')} 2 ${t('onboarding.progress.of')} 5`,
         stepName: t('quickOnboarding.budgetLocation.stepName'),
       }}
       isLoading={isPageLoading}

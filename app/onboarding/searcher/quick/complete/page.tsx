@@ -211,7 +211,7 @@ export default function QuickCompletePage() {
 
           {/* Auto-redirect Counter */}
           <p className="text-center text-sm text-gray-500">
-            Redirection automatique dans {countdown}s...
+            {`${t('quickOnboarding.complete.autoRedirect') || 'Redirection dans'} ${countdown}s...`}
           </p>
         </motion.div>
 

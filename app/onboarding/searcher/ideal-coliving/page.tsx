@@ -78,7 +78,7 @@ export default function IdealColivingPage() {
       progress={{
         current: 5,
         total: 6,
-        label: 'Étape 5 sur 6',
+        label: `${t('onboarding.progress.step')} 5 ${t('onboarding.progress.of')} 6`,
         stepName: t('onboarding.idealColiving.title'),
       }}
       isLoading={isLoading}

@@ -120,7 +120,7 @@ export default function QuickLifestylePage() {
       progress={{
         current: 3,
         total: 5,
-        label: 'Étape 3 sur 5',
+        label: `${t('onboarding.progress.step')} 3 ${t('onboarding.progress.of')} 5`,
         stepName: t('quickOnboarding.lifestyle.stepName'),
       }}
       isLoading={isPageLoading}

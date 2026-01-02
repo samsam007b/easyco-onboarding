@@ -98,9 +98,9 @@ export default function GestionHubPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Chargement...
+            Loading...
           </h3>
-          <p className="text-gray-600">Préparation de votre tableau de bord</p>
+          <p className="text-gray-600">Preparing your dashboard</p>
         </div>
       </div>
     );

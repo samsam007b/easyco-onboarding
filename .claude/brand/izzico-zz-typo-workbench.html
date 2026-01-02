@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco ZZ Typography Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent: #6366f1;
+
+            /* IzzIco Brand Colors */
+            --mauve: #9b6dff;
+            --orange: #ff914d;
+            --jaune: #ffde59;
+            --noir: #232323;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { font-family: 'Fredoka', sans-serif; font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .header p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .phase-badge {
+            display: inline-block;
+            background: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .preview-area { background: var(--bg-card); border-radius: 1rem; padding: 2rem; }
+
+        .preview-main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            background: linear-gradient(135deg, #1e1e3f 0%, #2d2d5a 100%);
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zz-container {
+            display: inline-block;
+            font-family: 'Fredoka', sans-serif;
+            line-height: 1;
+            transition: all 0.15s ease;
+        }
+
+        .zz-container span {
+            display: inline-block;
+            transition: all 0.15s ease;
+        }
+
+        /* Wordmark reference */
+        .wordmark-reference {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .wordmark-reference-label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .wordmark-display {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2.5rem;
+            color: white;
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .wordmark-display .l-i { font-weight: 600; opacity: 0.4; }
+        .wordmark-display .l-z { font-weight: 540; }
+        .wordmark-display .l-c { font-weight: 540; opacity: 0.4; }
+        .wordmark-display .l-o { font-weight: 540; opacity: 0.4; }
+        .wordmark-display .zz-space { letter-spacing: -0.18em; }
+        .wordmark-display .highlight { opacity: 1; }
+
+        /* Size previews */
+        .size-previews {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 0.75rem;
+        }
+
+        .size-preview { text-align: center; }
+        .size-preview-label { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+        .size-preview-box {
+            background: white;
+            border-radius: 22.5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .size-preview-box .zz-container {
+            color: var(--noir);
+        }
+
+        /* Control Panel */
+        .control-panel { background: var(--bg-card); border-radius: 1rem; padding: 1.5rem; height: fit-content; }
+
+        .control-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .control-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+        .control-section h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .slider-control { margin-bottom: 1.25rem; }
+        .slider-control:last-child { margin-bottom: 0; }
+
+        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .slider-label { font-size: 0.8rem; color: var(--text-secondary); }
+        .slider-value { font-size: 0.8rem; font-weight: 600; color: var(--accent); font-family: monospace; }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .locked-value {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 0.5rem;
+            font-size: 0.8rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .locked-value .lock-icon { color: var(--jaune); }
+        .locked-value .value { font-family: monospace; color: var(--accent); }
+
+        .color-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .color-picker-wrapper { flex: 1; }
+        .color-picker-wrapper label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
+
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        input[type="color"] { width: 32px; height: 32px; border: none; border-radius: 0.25rem; cursor: pointer; background: none; }
+        .color-hex { font-family: monospace; font-size: 0.75rem; color: var(--text-primary); }
+
+        .preset-colors { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; }
+
+        .preset-color {
+            width: 32px;
+            height: 32px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .preset-color:hover { transform: scale(1.1); }
+        .preset-color.active { border-color: white; }
+
+        .toggle-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-control:last-child { margin-bottom: 0; }
+        .toggle-label { font-size: 0.85rem; }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch.active { background: var(--accent); }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active::after { transform: translateX(20px); }
+
+        .reset-btn {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.75rem;
+        }
+
+        .reset-btn:hover { background: rgba(255,255,255,0.15); color: white; }
+
+        .export-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--mauve), var(--orange));
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .export-btn:hover { opacity: 0.9; }
+
+        .specs-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .specs-display pre { white-space: pre-wrap; color: var(--text-secondary); }
+
+        .validation-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .validation-icon { font-size: 1rem; }
+        .validation-text { font-size: 0.8rem; color: var(--text-secondary); }
+
+        .ios-frame {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.5);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="phase-badge">Phase 3: ZZ Typography</div>
+        <h1>IzzIco ZZ Workbench</h1>
+        <p>Les vrais Z de Fredoka - Pivote, espace, ajuste</p>
+    </div>
+
+    <div class="main-grid">
+        <div class="preview-area">
+            <div class="preview-main">
+                <div class="ios-frame">Preview Icon</div>
+                <div class="zz-container" id="mainZZ">
+                    <span id="z1">z</span><span id="z2">z</span>
+                </div>
+            </div>
+
+            <div class="wordmark-reference">
+                <div class="wordmark-reference-label">Référence: Wordmark complet</div>
+                <div class="wordmark-display">
+                    <span class="l-i">i</span><span class="l-z zz-space highlight" id="refZ1">z</span><span class="l-z highlight" id="refZ2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+            </div>
+
+            <div class="size-previews">
+                <div class="size-preview">
+                    <div class="size-preview-label">App Store</div>
+                    <div class="size-preview-box" style="width: 80px; height: 80px;" id="preview1024"></div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Home (60px)</div>
+                    <div class="size-preview-box" style="width: 60px; height: 60px;" id="preview60"></div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Spotlight</div>
+                    <div class="size-preview-box" style="width: 40px; height: 40px;" id="preview40"></div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Settings</div>
+                    <div class="size-preview-box" style="width: 29px; height: 29px;" id="preview29"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="control-section">
+                <h3>Transformation</h3>
+
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-label">Rotation globale</span>
+                        <span class="slider-value" id="rotationValue">0°</span>
+                    </div>
+                    <input type="range" id="rotation" min="-90" max="90" value="0">
+                </div>
+
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-label">Espacement ZZ</span>
+                        <span class="slider-value" id="spacingValue">-0.18em</span>
+                    </div>
+                    <input type="range" id="spacing" min="-50" max="20" value="-18">
+                </div>
+
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-label">Taille</span>
+                        <span class="slider-value" id="sizeValue">120px</span>
+                    </div>
+                    <input type="range" id="fontSize" min="60" max="200" value="120">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Poids (Fredoka Variable)</h3>
+
+                <div class="locked-value">
+                    <span class="lock-icon">🔒</span>
+                    <span>Poids wordmark:</span>
+                    <span class="value">540</span>
+                </div>
+
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-label">Poids icon (expérimental)</span>
+                        <span class="slider-value" id="weightValue">540</span>
+                    </div>
+                    <input type="range" id="fontWeight" min="300" max="700" value="540" step="10">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Couleur</h3>
+
+                <div class="color-row">
+                    <div class="color-picker-wrapper">
+                        <label>Couleur ZZ</label>
+                        <div class="color-picker-container">
+                            <input type="color" id="zzColor" value="#ffffff">
+                            <span class="color-hex" id="zzColorHex">#ffffff</span>
+                        </div>
+                    </div>
+                </div>
+
+                <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;">Présets</label>
+                <div class="preset-colors" id="presetColors"></div>
+            </div>
+
+            <div class="control-section">
+                <h3>Options</h3>
+                <div class="toggle-control">
+                    <span class="toggle-label">Fond blanc (iOS)</span>
+                    <div class="toggle-switch active" id="toggleBackground"></div>
+                </div>
+                <div class="toggle-control">
+                    <span class="toggle-label">Miroir horizontal</span>
+                    <div class="toggle-switch" id="toggleMirror"></div>
+                </div>
+            </div>
+
+            <button class="reset-btn" id="resetBtn">↺ Reset aux valeurs wordmark</button>
+            <button class="export-btn" id="exportBtn">📋 Copier les Specs</button>
+
+            <div class="validation-status">
+                <span class="validation-icon">⚡</span>
+                <span class="validation-text">Dis "je valide" quand c'est bon</span>
+            </div>
+
+            <div class="specs-display">
+                <pre id="specsOutput"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        var state = {
+            rotation: 0,
+            spacing: -0.18,
+            fontSize: 120,
+            fontWeight: 540,
+            color: '#ffffff',
+            whiteBackground: true,
+            mirror: false
+        };
+
+        // Color presets
+        var colorPresets = [
+            { color: '#ffffff', name: 'Blanc' },
+            { color: '#232323', name: 'Noir' },
+            { color: '#9b6dff', name: 'Mauve' },
+            { color: '#ff914d', name: 'Orange' },
+            { color: '#ffde59', name: 'Jaune' },
+            { color: '#3b82f6', name: 'Bleu' }
+        ];
+
+        // Update all displays
+        function updateDisplay() {
+            var mainZZ = document.getElementById('mainZZ');
+            var z1 = document.getElementById('z1');
+            var z2 = document.getElementById('z2');
+
+            // Main preview
+            var scaleX = state.mirror ? -1 : 1;
+            mainZZ.style.fontSize = state.fontSize + 'px';
+            mainZZ.style.fontWeight = state.fontWeight;
+            mainZZ.style.transform = 'rotate(' + state.rotation + 'deg) scaleX(' + scaleX + ')';
+            mainZZ.style.color = state.color;
+
+            z1.style.letterSpacing = state.spacing + 'em';
+
+            // Update reference wordmark ZZ color
+            var refZ1 = document.getElementById('refZ1');
+            var refZ2 = document.getElementById('refZ2');
+            refZ1.style.color = state.color;
+            refZ2.style.color = state.color;
+
+            // Size previews
+            updateSizePreview('preview1024', 80, 36);
+            updateSizePreview('preview60', 60, 28);
+            updateSizePreview('preview40', 40, 18);
+            updateSizePreview('preview29', 29, 13);
+
+            updateSpecs();
+        }
+
+        function updateSizePreview(containerId, containerSize, fontSize) {
+            var container = document.getElementById(containerId);
+            container.style.background = state.whiteBackground ? 'white' : 'transparent';
+
+            // Clear and rebuild
+            while (container.firstChild) container.removeChild(container.firstChild);
+
+            var zzDiv = document.createElement('div');
+            zzDiv.className = 'zz-container';
+            zzDiv.style.fontSize = fontSize + 'px';
+            zzDiv.style.fontWeight = state.fontWeight;
+            zzDiv.style.fontFamily = "'Fredoka', sans-serif";
+            zzDiv.style.lineHeight = '1';
+            zzDiv.style.color = state.whiteBackground ? '#232323' : state.color;
+
+            var scaleX = state.mirror ? -1 : 1;
+            zzDiv.style.transform = 'rotate(' + state.rotation + 'deg) scaleX(' + scaleX + ')';
+
+            var span1 = document.createElement('span');
+            span1.textContent = 'z';
+            span1.style.letterSpacing = state.spacing + 'em';
+            span1.style.display = 'inline-block';
+
+            var span2 = document.createElement('span');
+            span2.textContent = 'z';
+            span2.style.display = 'inline-block';
+
+            zzDiv.appendChild(span1);
+            zzDiv.appendChild(span2);
+            container.appendChild(zzDiv);
+        }
+
+        function updateSpecs() {
+            var specsText = '/* IzzIco ZZ Icon Specs */\n' +
+                'Font: Fredoka Variable\n' +
+                'Content: "zz"\n\n' +
+                '/* Transformation */\n' +
+                'Rotation: ' + state.rotation + '°\n' +
+                'Letter-spacing: ' + state.spacing + 'em\n' +
+                'Font-weight: ' + state.fontWeight + '\n' +
+                'Mirror: ' + (state.mirror ? 'Yes' : 'No') + '\n\n' +
+                '/* Colors */\n' +
+                'ZZ Color: ' + state.color + '\n' +
+                'Background: ' + (state.whiteBackground ? 'White' : 'Transparent') + '\n\n' +
+                '/* CSS */\n' +
+                '.zz-icon {\n' +
+                '  font-family: "Fredoka", sans-serif;\n' +
+                '  font-weight: ' + state.fontWeight + ';\n' +
+                '  letter-spacing: ' + state.spacing + 'em;\n' +
+                '  transform: rotate(' + state.rotation + 'deg)' + (state.mirror ? ' scaleX(-1)' : '') + ';\n' +
+                '  color: ' + state.color + ';\n' +
+                '}';
+
+            document.getElementById('specsOutput').textContent = specsText;
+        }
+
+        // Initialize color presets
+        function initColorPresets() {
+            var container = document.getElementById('presetColors');
+            colorPresets.forEach(function(preset, index) {
+                var el = document.createElement('div');
+                el.className = 'preset-color' + (index === 0 ? ' active' : '');
+                el.style.background = preset.color;
+                if (preset.color === '#ffffff') {
+                    el.style.border = '2px solid rgba(255,255,255,0.3)';
+                }
+                el.title = preset.name;
+
+                el.addEventListener('click', function() {
+                    state.color = preset.color;
+                    document.getElementById('zzColor').value = preset.color;
+                    document.getElementById('zzColorHex').textContent = preset.color;
+                    document.querySelectorAll('.preset-color').forEach(function(p) { p.classList.remove('active'); });
+                    el.classList.add('active');
+                    updateDisplay();
+                });
+
+                container.appendChild(el);
+            });
+        }
+
+        // Event listeners
+        function initEventListeners() {
+            document.getElementById('rotation').addEventListener('input', function(e) {
+                state.rotation = parseInt(e.target.value);
+                document.getElementById('rotationValue').textContent = e.target.value + '°';
+                updateDisplay();
+            });
+
+            document.getElementById('spacing').addEventListener('input', function(e) {
+                state.spacing = parseInt(e.target.value) / 100;
+                document.getElementById('spacingValue').textContent = state.spacing.toFixed(2) + 'em';
+                updateDisplay();
+            });
+
+            document.getElementById('fontSize').addEventListener('input', function(e) {
+                state.fontSize = parseInt(e.target.value);
+                document.getElementById('sizeValue').textContent = e.target.value + 'px';
+                updateDisplay();
+            });
+
+            document.getElementById('fontWeight').addEventListener('input', function(e) {
+                state.fontWeight = parseInt(e.target.value);
+                document.getElementById('weightValue').textContent = e.target.value;
+                updateDisplay();
+            });
+
+            document.getElementById('zzColor').addEventListener('input', function(e) {
+                state.color = e.target.value;
+                document.getElementById('zzColorHex').textContent = e.target.value;
+                document.querySelectorAll('.preset-color').forEach(function(p) { p.classList.remove('active'); });
+                updateDisplay();
+            });
+
+            document.getElementById('toggleBackground').addEventListener('click', function(e) {
+                e.currentTarget.classList.toggle('active');
+                state.whiteBackground = e.currentTarget.classList.contains('active');
+                updateDisplay();
+            });
+
+            document.getElementById('toggleMirror').addEventListener('click', function(e) {
+                e.currentTarget.classList.toggle('active');
+                state.mirror = e.currentTarget.classList.contains('active');
+                updateDisplay();
+            });
+
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                state = {
+                    rotation: 0,
+                    spacing: -0.18,
+                    fontSize: 120,
+                    fontWeight: 540,
+                    color: '#ffffff',
+                    whiteBackground: true,
+                    mirror: false
+                };
+
+                document.getElementById('rotation').value = 0;
+                document.getElementById('rotationValue').textContent = '0°';
+                document.getElementById('spacing').value = -18;
+                document.getElementById('spacingValue').textContent = '-0.18em';
+                document.getElementById('fontSize').value = 120;
+                document.getElementById('sizeValue').textContent = '120px';
+                document.getElementById('fontWeight').value = 540;
+                document.getElementById('weightValue').textContent = '540';
+                document.getElementById('zzColor').value = '#ffffff';
+                document.getElementById('zzColorHex').textContent = '#ffffff';
+                document.getElementById('toggleBackground').classList.add('active');
+                document.getElementById('toggleMirror').classList.remove('active');
+
+                document.querySelectorAll('.preset-color').forEach(function(p, i) {
+                    p.classList.toggle('active', i === 0);
+                });
+
+                updateDisplay();
+            });
+
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                var specs = document.getElementById('specsOutput').textContent;
+                navigator.clipboard.writeText(specs).then(function() {
+                    var btn = document.getElementById('exportBtn');
+                    var originalText = btn.textContent;
+                    btn.textContent = '✓ Copié !';
+                    setTimeout(function() { btn.textContent = originalText; }, 2000);
+                });
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            initColorPresets();
+            initEventListeners();
+            updateDisplay();
+        });
+    </script>
+</body>
+</html>

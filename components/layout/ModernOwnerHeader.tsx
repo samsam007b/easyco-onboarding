@@ -64,30 +64,30 @@ const navigationDomains = {
     id: 'portfolio',
     label: 'Portfolio',
     icon: Briefcase,
-    description: 'Gérez vos biens immobiliers',
+    description: 'Manage your real estate',
     items: [
       {
         id: 'hub',
         href: '/dashboard/owner/portfolio',
-        label: 'Vue d\'ensemble',
+        label: 'Overview',
         icon: LayoutDashboard,
-        description: 'Hub Portfolio',
+        description: 'Portfolio Hub',
         color: '#9c5698'
       },
       {
         id: 'properties',
         href: '/dashboard/owner/properties',
-        label: 'Propriétés',
+        label: 'Properties',
         icon: Building2,
-        description: 'Tous vos biens',
+        description: 'All your properties',
         color: '#a5568d'
       },
       {
         id: 'applications',
         href: '/dashboard/owner/applications',
-        label: 'Candidatures',
+        label: 'Applications',
         icon: UserCheck,
-        description: 'Demandes de location',
+        description: 'Rental requests',
         color: '#af5682',
         badgeKey: 'pendingApplications'
       }
@@ -97,30 +97,30 @@ const navigationDomains = {
     id: 'gestion',
     label: 'Gestion',
     icon: Users,
-    description: 'Gérez vos locataires',
+    description: 'Manage your tenants',
     items: [
       {
         id: 'hub',
         href: '/dashboard/owner/gestion',
-        label: 'Vue d\'ensemble',
+        label: 'Overview',
         icon: LayoutDashboard,
-        description: 'Hub de gestion opérationnelle',
+        description: 'Operational management hub',
         color: '#9c5698'
       },
       {
         id: 'tenants',
         href: '/dashboard/owner/tenants',
-        label: 'Locataires',
+        label: 'Tenants',
         icon: Users,
-        description: 'Vos résidents actuels',
+        description: 'Your current residents',
         color: '#a5568d'
       },
       {
         id: 'leases',
         href: '/dashboard/owner/leases',
-        label: 'Baux',
+        label: 'Leases',
         icon: FileText,
-        description: 'Contrats de location',
+        description: 'Rental contracts',
         color: '#af5682'
       },
       {
@@ -128,7 +128,7 @@ const navigationDomains = {
         href: '/dashboard/owner/maintenance',
         label: 'Maintenance',
         icon: Wrench,
-        description: 'Demandes & travaux',
+        description: 'Requests & repairs',
         color: '#b85676',
         badgeKey: 'openMaintenance'
       }
@@ -138,22 +138,22 @@ const navigationDomains = {
     id: 'finances',
     label: 'Finances',
     icon: Wallet,
-    description: 'Suivez vos revenus',
+    description: 'Track your income',
     items: [
       {
         id: 'hub',
         href: '/dashboard/owner/finances',
-        label: 'Vue d\'ensemble',
+        label: 'Overview',
         icon: LayoutDashboard,
-        description: 'Hub Finances',
+        description: 'Finances Hub',
         color: '#059669'
       },
       {
         id: 'analytics',
         href: '/dashboard/owner/finance',
-        label: 'Paiements & Analytics',
+        label: 'Payments & Analytics',
         icon: BarChart3,
-        description: 'Suivi détaillé des loyers',
+        description: 'Detailed rent tracking',
         color: '#10b981'
       }
     ]
@@ -193,15 +193,15 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
 
       if (error) {
         console.error('Logout error:', error);
-        toast.error('Erreur lors de la déconnexion');
+        toast.error('Error signing out');
         return;
       }
 
-      toast.success('Déconnexion réussie');
+      toast.success('Signed out successfully');
       window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
-      toast.error('Erreur lors de la déconnexion');
+      toast.error('Error signing out');
     }
   };
 
@@ -421,7 +421,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                   style={{ background: ownerGradient, boxShadow: '0 4px 14px rgba(156, 86, 152, 0.3)' }}
                 >
                   <Plus className="w-4 h-4 mr-1.5" />
-                  Ajouter
+                  Add
                 </Button>
               </motion.div>
             </Link>
@@ -464,9 +464,9 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
-                                {pendingApplications} candidature{pendingApplications > 1 ? 's' : ''} en attente
+                                {pendingApplications} pending application{pendingApplications > 1 ? 's' : ''}
                               </p>
-                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
+                              <p className="text-xs text-gray-500">Click to view</p>
                             </div>
                           </Link>
                         )}
@@ -481,9 +481,9 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
-                                {unreadMessages} message{unreadMessages > 1 ? 's' : ''} non lu{unreadMessages > 1 ? 's' : ''}
+                                {unreadMessages} unread message{unreadMessages > 1 ? 's' : ''}
                               </p>
-                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
+                              <p className="text-xs text-gray-500">Click to view</p>
                             </div>
                           </Link>
                         )}
@@ -498,16 +498,16 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
-                                {openMaintenance} ticket{openMaintenance > 1 ? 's' : ''} ouvert{openMaintenance > 1 ? 's' : ''}
+                                {openMaintenance} open ticket{openMaintenance > 1 ? 's' : ''}
                               </p>
-                              <p className="text-xs text-gray-500">Cliquez pour voir</p>
+                              <p className="text-xs text-gray-500">Click to view</p>
                             </div>
                           </Link>
                         )}
                         {pendingApplications === 0 && unreadMessages === 0 && openMaintenance === 0 && (
                           <div className="px-4 py-8 text-center text-gray-500">
                             <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                            <p className="text-sm">{notifications?.none || 'Aucune notification'}</p>
+                            <p className="text-sm">{notifications?.none || 'No notifications'}</p>
                           </div>
                         )}
                       </div>
@@ -579,7 +579,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
                               <DollarSign className="w-4 h-4 text-emerald-600" />
-                              <span className="text-sm text-gray-600">Revenus du mois</span>
+                              <span className="text-sm text-gray-600">Monthly income</span>
                             </div>
                             <span className="font-bold text-gray-900">€{monthlyRevenue.toLocaleString()}</span>
                           </div>
@@ -603,7 +603,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <User className="w-4 h-4 text-purple-600" />
-                          <span className="text-sm font-medium text-gray-900">{common?.myProfile || 'Mon Profil'}</span>
+                          <span className="text-sm font-medium text-gray-900">{common?.myProfile || 'My Profile'}</span>
                         </Link>
                         <Link
                           href="/settings"
@@ -611,7 +611,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <Settings className="w-4 h-4 text-blue-600" />
-                          <span className="text-sm font-medium text-gray-900">{common?.settings || 'Paramètres'}</span>
+                          <span className="text-sm font-medium text-gray-900">{common?.settings || 'Settings'}</span>
                         </Link>
                       </div>
 
@@ -622,7 +622,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                         className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition text-red-600"
                       >
                         <LogOut className="w-4 h-4" />
-                        <span className="text-sm font-medium">{common?.logout || 'Se déconnecter'}</span>
+                        <span className="text-sm font-medium">{common?.logout || 'Sign out'}</span>
                       </button>
                     </motion.div>
                   </>
@@ -755,7 +755,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                   <Link href="/dashboard/owner?addProperty=true" onClick={() => setMobileMenuOpen(false)}>
                     <Button className="w-full rounded-full text-white" style={{ background: ownerGradient }}>
                       <Plus className="w-4 h-4 mr-2" />
-                      Ajouter une propriété
+                      Add a property
                     </Button>
                   </Link>
                 </div>

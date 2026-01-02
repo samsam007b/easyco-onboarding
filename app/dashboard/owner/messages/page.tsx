@@ -274,9 +274,9 @@ function OwnerMessagesContent() {
         <div className="text-center">
           <LoadingHouse size={80} />
           <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-4">
-            Chargement des messages...
+            Loading messages...
           </h3>
-          <p className="text-gray-600">Préparation de vos conversations</p>
+          <p className="text-gray-600">Preparing your conversations</p>
         </div>
       </div>
     );
@@ -409,7 +409,7 @@ function MessagesFallback() {
     >
       <div className="text-center">
         <LoadingHouse size={80} />
-        <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+        <p className="text-gray-600 font-medium mt-4">Loading...</p>
       </div>
     </div>
   );

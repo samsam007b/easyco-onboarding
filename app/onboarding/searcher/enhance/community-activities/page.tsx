@@ -6,6 +6,7 @@ import { Dumbbell, Users, Coffee, PartyPopper } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function OnboardingCommunityActivitiesPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [sportFrequency, setSportFrequency] = useState('');
   const [openToMeetups, setOpenToMeetups] = useState(false);
@@ -72,33 +74,33 @@ export default function OnboardingCommunityActivitiesPage() {
   };
 
   const sportOptions = [
-    { value: 'never', label: 'Never', description: 'I don\'t exercise' },
-    { value: 'rarely', label: 'Rarely', description: 'Once in a while' },
-    { value: 'sometimes', label: 'Sometimes', description: 'Few times a month' },
-    { value: 'often', label: 'Often', description: 'Few times a week' },
-    { value: 'daily', label: 'Daily', description: 'Every day or almost' },
+    { value: 'never', labelKey: 'never', descKey: 'neverDesc' },
+    { value: 'rarely', labelKey: 'rarely', descKey: 'rarelyDesc' },
+    { value: 'sometimes', labelKey: 'sometimes', descKey: 'sometimesDesc' },
+    { value: 'often', labelKey: 'often', descKey: 'oftenDesc' },
+    { value: 'daily', labelKey: 'daily', descKey: 'dailyDesc' },
   ];
 
   const groupActivitiesOptions = [
-    { value: 'not_interested', label: 'Not Interested', description: 'I prefer solo activities' },
-    { value: 'occasionally', label: 'Occasionally', description: 'Once in a while is nice' },
-    { value: 'regularly', label: 'Regularly', description: 'I enjoy group activities' },
-    { value: 'very_active', label: 'Very Active', description: 'I love organizing events!' },
+    { value: 'not_interested', labelKey: 'notInterested', descKey: 'notInterestedDesc' },
+    { value: 'occasionally', labelKey: 'occasionally', descKey: 'occasionallyDesc' },
+    { value: 'regularly', labelKey: 'regularly', descKey: 'regularlyDesc' },
+    { value: 'very_active', labelKey: 'veryActive', descKey: 'veryActiveDesc' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your preferences..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Community Activities"
-        description="Share your interest in sports and group activities"
+        title={t('enhanceSearcher.communityActivities.title')}
+        description={t('enhanceSearcher.communityActivities.description')}
         icon={<Dumbbell className="w-8 h-8 text-orange-600" />}
       />
 
@@ -107,9 +109,9 @@ export default function OnboardingCommunityActivitiesPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Dumbbell className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Exercise & Sports Frequency</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.communityActivities.sport.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">How often do you exercise or play sports?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.communityActivities.sport.subtitle')}</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {sportOptions.map((option) => (
               <button
@@ -121,8 +123,8 @@ export default function OnboardingCommunityActivitiesPage() {
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <div className="font-medium text-sm">{option.label}</div>
-                <div className="text-xs text-gray-500 mt-1">{option.description}</div>
+                <div className="font-medium text-sm">{t(`enhanceSearcher.communityActivities.sport.${option.labelKey}`)}</div>
+                <div className="text-xs text-gray-500 mt-1">{t(`enhanceSearcher.communityActivities.sport.${option.descKey}`)}</div>
               </button>
             ))}
           </div>
@@ -137,8 +139,8 @@ export default function OnboardingCommunityActivitiesPage() {
                   <Coffee className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">Open to Flatmate Meetups</span>
-                  <span className="text-sm text-gray-500">Hang out, watch movies, game nights, etc.</span>
+                  <span className="font-medium text-gray-700 block">{t('enhanceSearcher.communityActivities.meetups.title')}</span>
+                  <span className="text-sm text-gray-500">{t('enhanceSearcher.communityActivities.meetups.description')}</span>
                 </div>
               </div>
               <button
@@ -161,9 +163,9 @@ export default function OnboardingCommunityActivitiesPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Users className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Group Activities Interest</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.communityActivities.group.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">How interested are you in group activities with flatmates?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.communityActivities.group.subtitle')}</p>
           <div className="space-y-2">
             {groupActivitiesOptions.map((option) => (
               <button
@@ -175,8 +177,8 @@ export default function OnboardingCommunityActivitiesPage() {
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <div className="font-medium">{option.label}</div>
-                <div className="text-xs text-gray-500 mt-1">{option.description}</div>
+                <div className="font-medium">{t(`enhanceSearcher.communityActivities.group.${option.labelKey}`)}</div>
+                <div className="text-xs text-gray-500 mt-1">{t(`enhanceSearcher.communityActivities.group.${option.descKey}`)}</div>
               </button>
             ))}
           </div>
@@ -185,27 +187,27 @@ export default function OnboardingCommunityActivitiesPage() {
         {/* Activity Examples */}
         <EnhanceProfileInfoBox role="searcher">
           <div>
-            <h3 className="font-semibold text-gray-900 mb-2">🎉 Examples of Community Activities</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">{t('enhanceSearcher.communityActivities.examples.title')}</h3>
             <ul className="space-y-1 text-sm text-gray-600">
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                Workout sessions together
+                {t('enhanceSearcher.communityActivities.examples.item1')}
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                Movie nights or game nights
+                {t('enhanceSearcher.communityActivities.examples.item2')}
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                Cooking together or potlucks
+                {t('enhanceSearcher.communityActivities.examples.item3')}
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                Exploring the city together
+                {t('enhanceSearcher.communityActivities.examples.item4')}
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                Study sessions or co-working
+                {t('enhanceSearcher.communityActivities.examples.item5')}
               </li>
             </ul>
           </div>
@@ -218,13 +220,13 @@ export default function OnboardingCommunityActivitiesPage() {
           onClick={handleSave}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

@@ -102,9 +102,9 @@ export default function LanguagePage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: t?.messages?.success?.[language] || 'Paramètres enregistrés avec succès' });
+      setMessage({ type: 'success', text: t?.messages?.success?.[language] || 'Settings saved successfully' });
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Erreur lors de l\'enregistrement') });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Error saving settings') });
     } finally {
       setIsSaving(false);
     }
@@ -115,7 +115,7 @@ export default function LanguagePage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50/30 via-white to-teal-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -136,7 +136,7 @@ export default function LanguagePage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {t?.back?.[language] || 'Retour aux paramètres'}
+            {t?.back?.[language] || 'Back to settings'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -144,8 +144,8 @@ export default function LanguagePage() {
               <Globe className="w-8 h-8 text-gray-700" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Langue & Région'}</h1>
-              <p className="text-gray-600">{t?.subtitle?.[language] || 'Personnaliser vos préférences régionales'}</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Language & Region'}</h1>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Customize your regional preferences'}</p>
             </div>
           </div>
         </motion.div>
@@ -177,8 +177,8 @@ export default function LanguagePage() {
               <Globe className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">{t?.interface?.title?.[language] || 'Langue de l\'interface'}</h2>
-              <p className="text-sm text-gray-600">{t?.interface?.subtitle?.[language] || 'Choisir votre langue préférée'}</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.interface?.title?.[language] || 'Interface language'}</h2>
+              <p className="text-sm text-gray-600">{t?.interface?.subtitle?.[language] || 'Choose your preferred language'}</p>
             </div>
           </div>
 
@@ -223,8 +223,8 @@ export default function LanguagePage() {
               <MapPin className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">{t?.timezone?.title?.[language] || 'Fuseau horaire'}</h2>
-              <p className="text-sm text-gray-600">{t?.timezone?.subtitle?.[language] || 'Définir votre fuseau horaire'}</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.timezone?.title?.[language] || 'Timezone'}</h2>
+              <p className="text-sm text-gray-600">{t?.timezone?.subtitle?.[language] || 'Set your timezone'}</p>
             </div>
           </div>
 
@@ -253,8 +253,8 @@ export default function LanguagePage() {
               <Calendar className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">{t?.dateFormat?.title?.[language] || 'Format de date'}</h2>
-              <p className="text-sm text-gray-600">{t?.dateFormat?.subtitle?.[language] || 'Choisir l\'affichage des dates'}</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.dateFormat?.title?.[language] || 'Date format'}</h2>
+              <p className="text-sm text-gray-600">{t?.dateFormat?.subtitle?.[language] || 'Choose date display format'}</p>
             </div>
           </div>
 
@@ -297,7 +297,7 @@ export default function LanguagePage() {
             disabled={isSaving}
             className="w-full rounded-xl bg-gradient-to-r from-emerald-200/70 to-teal-200/70 text-gray-900 hover:from-emerald-300/70 hover:to-teal-300/70"
           >
-            {isSaving ? (t?.buttons?.saving?.[language] || 'Enregistrement...') : (t?.buttons?.save?.[language] || 'Enregistrer les modifications')}
+            {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save changes')}
           </Button>
         </motion.div>
       </div>

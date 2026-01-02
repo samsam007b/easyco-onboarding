@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Icon Assembly Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --searcher: #FFB10B;
+            --owner: #9B59B6;
+            --resident: #E67E22;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .canvas-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-header h1 { font-size: 1.25rem; font-weight: 500; }
+
+        .canvas-actions { display: flex; gap: 0.5rem; }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+        .btn.primary:hover { opacity: 0.9; }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            background-size: 25px 25px;
+            background-image:
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px);
+            border-radius: 12px;
+            background-color: #1a1a2e;
+        }
+
+        .canvas.show-center::before,
+        .canvas.show-center::after {
+            content: '';
+            position: absolute;
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .canvas.show-center::before { width: 1px; height: 100%; left: 50%; }
+        .canvas.show-center::after { width: 100%; height: 1px; top: 50%; }
+
+        .icon-element {
+            position: absolute;
+            cursor: move;
+            transition: box-shadow 0.15s;
+        }
+
+        .icon-element.selected {
+            outline: 2px dashed var(--accent);
+            outline-offset: 4px;
+        }
+
+        .icon-element svg { display: block; }
+
+        .i-element {
+            font-family: 'Fredoka', sans-serif;
+            line-height: 1;
+            cursor: move;
+            user-select: none;
+        }
+
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-section:last-child { border-bottom: none; }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .element-card {
+            background: var(--bg-control);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .element-card:hover { border-color: var(--accent); }
+        .element-card.active { border-color: var(--accent); background: rgba(99, 102, 241, 0.1); }
+
+        .element-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .element-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .element-icon.searcher { background: var(--searcher); }
+        .element-icon.owner { background: var(--owner); }
+        .element-icon.resident { background: var(--resident); }
+        .element-icon.i-char {
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 18px;
+            color: white;
+        }
+
+        .element-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: white;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .element-name { font-size: 0.9rem; font-weight: 500; }
+        .element-source { font-size: 0.7rem; color: var(--text-muted); }
+
+        .element-toggle { margin-left: auto; }
+
+        .toggle-switch {
+            width: 36px;
+            height: 20px;
+            background: var(--border);
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch.on { background: var(--accent); }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.on::after { transform: translateX(16px); }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 60px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .preview-sizes {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+        }
+
+        .preview-item { text-align: center; }
+
+        .preview-box {
+            border-radius: 22%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preview-label { font-size: 0.65rem; color: var(--text-muted); }
+
+        .export-info {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .bg-buttons { margin-top: 0.75rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        @media (max-width: 900px) {
+            .app-layout { grid-template-columns: 1fr; }
+            .controls-panel { border-left: none; border-top: 1px solid var(--border); }
+            .canvas { width: 100%; max-width: 400px; height: 400px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div class="canvas-header">
+                <h1>Icon Assembly Workbench</h1>
+                <div class="canvas-actions">
+                    <button class="btn" id="toggle-grid">Grille</button>
+                    <button class="btn" id="toggle-center">Centre</button>
+                    <button class="btn" id="reset-all">Reset</button>
+                    <button class="btn primary" id="export-svg">Exporter SVG</button>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas show-center" id="canvas"></div>
+            </div>
+
+            <div style="margin-top: 1rem;">
+                <div class="preview-sizes" id="preview-container"></div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="panel-section">
+                <div class="section-title">Éléments</div>
+                <div id="element-cards"></div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Fond</div>
+                <div class="control-row">
+                    <span class="control-label">Couleur</span>
+                    <input type="color" value="#1a1a2e" id="bg-color">
+                    <span class="control-value" id="bg-color-display">#1a1a2e</span>
+                </div>
+                <div class="bg-buttons" id="bg-buttons"></div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Specs actuelles</div>
+                <div class="export-info" id="export-info">Cliquez sur un élément pour voir ses specs</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // SVG creation helpers
+        function createSVGElement(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(key => el.setAttribute(key, attrs[key]));
+            return el;
+        }
+
+        function createSearchIcon() {
+            const svg = createSVGElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+            svg.appendChild(createSVGElement('circle', { cx: '11', cy: '11', r: '8' }));
+            svg.appendChild(createSVGElement('path', { d: 'm21 21-4.3-4.3' }));
+            return svg;
+        }
+
+        function createKeyIcon() {
+            const svg = createSVGElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+            svg.appendChild(createSVGElement('circle', { cx: '7.5', cy: '15.5', r: '5.5' }));
+            svg.appendChild(createSVGElement('path', { d: 'm21 2-9.6 9.6' }));
+            svg.appendChild(createSVGElement('path', { d: 'm15.5 7.5 3 3L22 7l-3-3' }));
+            return svg;
+        }
+
+        function createUserIcon() {
+            const svg = createSVGElement('svg', { viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', 'stroke-width': '2', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+            svg.appendChild(createSVGElement('circle', { cx: '12', cy: '8', r: '5' }));
+            svg.appendChild(createSVGElement('path', { d: 'M20 21a8 8 0 0 0-16 0' }));
+            return svg;
+        }
+
+        // Element state
+        const elements = {
+            search: { visible: true, x: 100, y: 200, size: 80, rotation: 0, color: '#FFB10B', label: 'Loupe', source: 'Lucide: Search • Searcher', iconClass: 'searcher', createIcon: createSearchIcon },
+            key: { visible: true, x: 200, y: 200, size: 80, rotation: 0, color: '#9B59B6', label: 'Clé', source: 'Lucide: Key • Owner', iconClass: 'owner', createIcon: createKeyIcon },
+            user: { visible: true, x: 300, y: 200, size: 80, rotation: 0, color: '#E67E22', label: 'Personne', source: 'Lucide: User • Resident', iconClass: 'resident', createIcon: createUserIcon },
+            'i-char': { visible: true, x: 200, y: 320, size: 120, weight: 600, color: '#4361ee', label: 'Le "i" Fredoka', source: 'Wordmark: izzico', iconClass: 'i-char', isText: true }
+        };
+
+        const canvas = document.getElementById('canvas');
+        let selectedElement = null;
+        let isDragging = false;
+        let dragOffset = { x: 0, y: 0 };
+
+        // Build control cards
+        function buildControlCards() {
+            const container = document.getElementById('element-cards');
+            container.textContent = '';
+
+            Object.keys(elements).forEach(key => {
+                const el = elements[key];
+                const card = document.createElement('div');
+                card.className = 'element-card';
+                card.dataset.element = key;
+
+                // Header
+                const header = document.createElement('div');
+                header.className = 'element-header';
+
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'element-icon ' + el.iconClass;
+                if (el.isText) {
+                    iconDiv.textContent = 'i';
+                } else {
+                    const icon = el.createIcon();
+                    icon.style.width = '18px';
+                    icon.style.height = '18px';
+                    iconDiv.appendChild(icon);
+                }
+
+                const info = document.createElement('div');
+                const name = document.createElement('div');
+                name.className = 'element-name';
+                name.textContent = el.label;
+                const source = document.createElement('div');
+                source.className = 'element-source';
+                source.textContent = el.source;
+                info.appendChild(name);
+                info.appendChild(source);
+
+                const toggleDiv = document.createElement('div');
+                toggleDiv.className = 'element-toggle';
+                const toggle = document.createElement('div');
+                toggle.className = 'toggle-switch' + (el.visible ? ' on' : '');
+                toggle.dataset.toggle = key;
+                toggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    elements[key].visible = !elements[key].visible;
+                    toggle.classList.toggle('on', elements[key].visible);
+                    initCanvas();
+                });
+                toggleDiv.appendChild(toggle);
+
+                header.appendChild(iconDiv);
+                header.appendChild(info);
+                header.appendChild(toggleDiv);
+                card.appendChild(header);
+
+                // Controls
+                const controls = document.createElement('div');
+                controls.className = 'element-controls';
+                controls.dataset.controls = key;
+
+                const props = el.isText
+                    ? [['X', 'x', 0, 400], ['Y', 'y', 0, 400], ['Taille', 'size', 40, 300], ['Poids', 'weight', 300, 700]]
+                    : [['X', 'x', 0, 400], ['Y', 'y', 0, 400], ['Taille', 'size', 20, 200], ['Rotation', 'rotation', -180, 180]];
+
+                props.forEach(([label, prop, min, max]) => {
+                    const row = document.createElement('div');
+                    row.className = 'control-row';
+
+                    const lbl = document.createElement('span');
+                    lbl.className = 'control-label';
+                    lbl.textContent = label;
+
+                    const input = document.createElement('input');
+                    input.type = 'range';
+                    input.min = min;
+                    input.max = max;
+                    input.value = el[prop] || 0;
+                    if (prop === 'weight') input.step = 10;
+                    input.dataset.prop = prop;
+
+                    const val = document.createElement('span');
+                    val.className = 'control-value';
+                    val.dataset.display = prop;
+                    val.textContent = prop === 'rotation' ? (el[prop] || 0) + '°' : (el[prop] || 0);
+
+                    input.addEventListener('input', (e) => {
+                        const value = parseInt(e.target.value);
+                        elements[key][prop] = value;
+                        val.textContent = prop === 'rotation' ? value + '°' : value;
+                        initCanvas();
+                        updateExportInfo();
+                    });
+
+                    row.appendChild(lbl);
+                    row.appendChild(input);
+                    row.appendChild(val);
+                    controls.appendChild(row);
+                });
+
+                // Color control
+                const colorRow = document.createElement('div');
+                colorRow.className = 'control-row';
+                const colorLbl = document.createElement('span');
+                colorLbl.className = 'control-label';
+                colorLbl.textContent = 'Couleur';
+                const colorInput = document.createElement('input');
+                colorInput.type = 'color';
+                colorInput.value = el.color;
+                colorInput.dataset.prop = 'color';
+                const colorVal = document.createElement('span');
+                colorVal.className = 'control-value';
+                colorVal.dataset.display = 'color';
+                colorVal.textContent = el.color;
+                colorInput.addEventListener('input', (e) => {
+                    elements[key].color = e.target.value;
+                    colorVal.textContent = e.target.value;
+                    initCanvas();
+                    updateExportInfo();
+                });
+                colorRow.appendChild(colorLbl);
+                colorRow.appendChild(colorInput);
+                colorRow.appendChild(colorVal);
+                controls.appendChild(colorRow);
+
+                card.appendChild(controls);
+
+                card.addEventListener('click', () => selectElement(key));
+                container.appendChild(card);
+            });
+        }
+
+        // Build background buttons
+        function buildBgButtons() {
+            const container = document.getElementById('bg-buttons');
+            const bgs = [
+                ['Blanc', '#ffffff'],
+                ['Sombre', '#1a1a2e'],
+                ['Bleu', '#4361ee'],
+                ['Gradient', 'gradient']
+            ];
+
+            bgs.forEach(([label, value]) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn';
+                btn.textContent = label;
+                btn.addEventListener('click', () => {
+                    if (value === 'gradient') {
+                        canvas.style.backgroundColor = '';
+                        canvas.style.background = 'linear-gradient(135deg, #4361ee, #7209b7)';
+                        document.getElementById('bg-color-display').textContent = 'gradient';
+                    } else {
+                        canvas.style.background = '';
+                        canvas.style.backgroundColor = value;
+                        document.getElementById('bg-color').value = value;
+                        document.getElementById('bg-color-display').textContent = value;
+                    }
+                    updatePreviews();
+                });
+                container.appendChild(btn);
+            });
+        }
+
+        // Initialize canvas elements
+        function initCanvas() {
+            canvas.textContent = '';
+
+            Object.keys(elements).forEach(key => {
+                const el = elements[key];
+                if (!el.visible) return;
+
+                const div = document.createElement('div');
+                div.className = 'icon-element' + (selectedElement === key ? ' selected' : '');
+                div.dataset.element = key;
+
+                if (el.isText) {
+                    div.classList.add('i-element');
+                    div.textContent = 'i';
+                    div.style.fontWeight = el.weight;
+                    div.style.fontSize = el.size + 'px';
+                    div.style.color = el.color;
+                } else {
+                    const svg = el.createIcon();
+                    svg.style.width = el.size + 'px';
+                    svg.style.height = el.size + 'px';
+                    svg.style.color = el.color;
+                    div.appendChild(svg);
+                }
+
+                div.style.left = el.x + 'px';
+                div.style.top = el.y + 'px';
+                div.style.transform = 'translate(-50%, -50%) rotate(' + (el.rotation || 0) + 'deg)';
+
+                div.addEventListener('mousedown', startDrag);
+                div.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    selectElement(key);
+                });
+
+                canvas.appendChild(div);
+            });
+
+            updatePreviews();
+        }
+
+        function startDrag(e) {
+            const key = e.target.closest('.icon-element').dataset.element;
+            selectedElement = key;
+            isDragging = true;
+
+            const el = elements[key];
+            const rect = canvas.getBoundingClientRect();
+            dragOffset.x = e.clientX - rect.left - el.x;
+            dragOffset.y = e.clientY - rect.top - el.y;
+
+            selectElement(key);
+            e.preventDefault();
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging || !selectedElement) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = Math.max(0, Math.min(500, e.clientX - rect.left - dragOffset.x));
+            const y = Math.max(0, Math.min(500, e.clientY - rect.top - dragOffset.y));
+
+            elements[selectedElement].x = Math.round(x);
+            elements[selectedElement].y = Math.round(y);
+
+            updateControlValues(selectedElement);
+            initCanvas();
+        });
+
+        document.addEventListener('mouseup', () => { isDragging = false; });
+
+        function selectElement(key) {
+            selectedElement = key;
+            document.querySelectorAll('.element-card').forEach(card => {
+                card.classList.toggle('active', card.dataset.element === key);
+            });
+            document.querySelectorAll('.icon-element').forEach(el => {
+                el.classList.toggle('selected', el.dataset.element === key);
+            });
+            updateExportInfo();
+        }
+
+        function updateControlValues(key) {
+            const el = elements[key];
+            const controls = document.querySelector('[data-controls="' + key + '"]');
+            if (!controls) return;
+
+            controls.querySelectorAll('input[type="range"]').forEach(input => {
+                const prop = input.dataset.prop;
+                if (el[prop] !== undefined) {
+                    input.value = el[prop];
+                    const display = controls.querySelector('[data-display="' + prop + '"]');
+                    if (display) {
+                        display.textContent = prop === 'rotation' ? el[prop] + '°' : el[prop];
+                    }
+                }
+            });
+        }
+
+        function updateExportInfo() {
+            const info = document.getElementById('export-info');
+            if (!selectedElement) {
+                info.textContent = 'Cliquez sur un élément pour voir ses specs';
+                return;
+            }
+
+            const el = elements[selectedElement];
+            let specs = '/* ' + selectedElement.toUpperCase() + ' */\n';
+            specs += 'x: ' + el.x + 'px\n';
+            specs += 'y: ' + el.y + 'px\n';
+            specs += 'size: ' + el.size + 'px\n';
+            if (el.rotation) specs += 'rotation: ' + el.rotation + 'deg\n';
+            if (el.weight) specs += 'font-weight: ' + el.weight + '\n';
+            specs += 'color: ' + el.color;
+
+            info.textContent = specs;
+        }
+
+        function updatePreviews() {
+            const container = document.getElementById('preview-container');
+            container.textContent = '';
+
+            const sizes = [60, 120, 180];
+            const bgStyle = canvas.style.background || canvas.style.backgroundColor || '#1a1a2e';
+
+            sizes.forEach(size => {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+
+                const box = document.createElement('div');
+                box.className = 'preview-box';
+                box.style.width = size + 'px';
+                box.style.height = size + 'px';
+                box.style.background = bgStyle;
+
+                const inner = document.createElement('div');
+                inner.style.transform = 'scale(' + (size / 500) + ')';
+                inner.style.width = '500px';
+                inner.style.height = '500px';
+                inner.style.position = 'relative';
+
+                Object.keys(elements).forEach(key => {
+                    const el = elements[key];
+                    if (!el.visible) return;
+
+                    const div = document.createElement('div');
+                    div.style.position = 'absolute';
+                    div.style.left = el.x + 'px';
+                    div.style.top = el.y + 'px';
+                    div.style.transform = 'translate(-50%, -50%) rotate(' + (el.rotation || 0) + 'deg)';
+
+                    if (el.isText) {
+                        div.style.fontFamily = 'Fredoka';
+                        div.style.fontSize = el.size + 'px';
+                        div.style.fontWeight = el.weight;
+                        div.style.color = el.color;
+                        div.style.lineHeight = '1';
+                        div.textContent = 'i';
+                    } else {
+                        const svg = el.createIcon();
+                        svg.style.width = el.size + 'px';
+                        svg.style.height = el.size + 'px';
+                        svg.style.color = el.color;
+                        div.appendChild(svg);
+                    }
+
+                    inner.appendChild(div);
+                });
+
+                box.appendChild(inner);
+
+                const label = document.createElement('div');
+                label.className = 'preview-label';
+                label.textContent = size + 'px';
+
+                item.appendChild(box);
+                item.appendChild(label);
+                container.appendChild(item);
+            });
+        }
+
+        // Background color input
+        document.getElementById('bg-color').addEventListener('input', (e) => {
+            canvas.style.background = '';
+            canvas.style.backgroundColor = e.target.value;
+            document.getElementById('bg-color-display').textContent = e.target.value;
+            updatePreviews();
+        });
+
+        // Toggle grid/center
+        document.getElementById('toggle-center').addEventListener('click', () => {
+            canvas.classList.toggle('show-center');
+        });
+
+        document.getElementById('toggle-grid').addEventListener('click', () => {
+            if (canvas.style.backgroundImage === 'none') {
+                canvas.style.backgroundImage = '';
+            } else {
+                canvas.style.backgroundImage = 'none';
+            }
+        });
+
+        // Reset
+        document.getElementById('reset-all').addEventListener('click', () => {
+            elements.search.x = 100; elements.search.y = 200; elements.search.size = 80; elements.search.rotation = 0; elements.search.visible = true;
+            elements.key.x = 200; elements.key.y = 200; elements.key.size = 80; elements.key.rotation = 0; elements.key.visible = true;
+            elements.user.x = 300; elements.user.y = 200; elements.user.size = 80; elements.user.rotation = 0; elements.user.visible = true;
+            elements['i-char'].x = 200; elements['i-char'].y = 320; elements['i-char'].size = 120; elements['i-char'].weight = 600; elements['i-char'].visible = true;
+
+            document.querySelectorAll('.toggle-switch').forEach(t => t.classList.add('on'));
+            buildControlCards();
+            initCanvas();
+        });
+
+        // Export SVG
+        document.getElementById('export-svg').addEventListener('click', () => {
+            const svg = createSVGElement('svg', { xmlns: 'http://www.w3.org/2000/svg', viewBox: '0 0 500 500' });
+
+            // Background
+            const bg = canvas.style.background || canvas.style.backgroundColor || '#1a1a2e';
+            if (bg.includes('gradient')) {
+                const defs = createSVGElement('defs', {});
+                const grad = createSVGElement('linearGradient', { id: 'bg', x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+                grad.appendChild(createSVGElement('stop', { offset: '0%', 'stop-color': '#4361ee' }));
+                grad.appendChild(createSVGElement('stop', { offset: '100%', 'stop-color': '#7209b7' }));
+                defs.appendChild(grad);
+                svg.appendChild(defs);
+                svg.appendChild(createSVGElement('rect', { width: '500', height: '500', fill: 'url(#bg)' }));
+            } else {
+                svg.appendChild(createSVGElement('rect', { width: '500', height: '500', fill: bg }));
+            }
+
+            Object.keys(elements).forEach(key => {
+                const el = elements[key];
+                if (!el.visible) return;
+
+                if (el.isText) {
+                    const text = createSVGElement('text', {
+                        x: el.x, y: el.y,
+                        'font-family': 'Fredoka',
+                        'font-size': el.size,
+                        'font-weight': el.weight,
+                        fill: el.color,
+                        'text-anchor': 'middle',
+                        'dominant-baseline': 'middle'
+                    });
+                    text.textContent = 'i';
+                    svg.appendChild(text);
+                } else {
+                    const g = createSVGElement('g', {
+                        transform: 'translate(' + el.x + ', ' + el.y + ') rotate(' + (el.rotation || 0) + ') scale(' + (el.size / 24) + ') translate(-12, -12)',
+                        stroke: el.color,
+                        'stroke-width': '2',
+                        'stroke-linecap': 'round',
+                        'stroke-linejoin': 'round',
+                        fill: 'none'
+                    });
+
+                    if (key === 'search') {
+                        g.appendChild(createSVGElement('circle', { cx: '11', cy: '11', r: '8' }));
+                        g.appendChild(createSVGElement('path', { d: 'm21 21-4.3-4.3' }));
+                    } else if (key === 'key') {
+                        g.appendChild(createSVGElement('circle', { cx: '7.5', cy: '15.5', r: '5.5' }));
+                        g.appendChild(createSVGElement('path', { d: 'm21 2-9.6 9.6' }));
+                        g.appendChild(createSVGElement('path', { d: 'm15.5 7.5 3 3L22 7l-3-3' }));
+                    } else if (key === 'user') {
+                        g.appendChild(createSVGElement('circle', { cx: '12', cy: '8', r: '5' }));
+                        g.appendChild(createSVGElement('path', { d: 'M20 21a8 8 0 0 0-16 0' }));
+                    }
+
+                    svg.appendChild(g);
+                }
+            });
+
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(svg);
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'izzico-icon-assembly.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        canvas.addEventListener('click', (e) => {
+            if (e.target === canvas) {
+                selectedElement = null;
+                document.querySelectorAll('.element-card').forEach(c => c.classList.remove('active'));
+                document.querySelectorAll('.icon-element').forEach(el => el.classList.remove('selected'));
+                updateExportInfo();
+            }
+        });
+
+        // Init
+        buildControlCards();
+        buildBgButtons();
+        initCanvas();
+    </script>
+</body>
+</html>

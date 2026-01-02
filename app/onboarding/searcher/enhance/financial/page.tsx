@@ -6,6 +6,7 @@ import { Euro, Shield, Briefcase } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function OnboardingFinancialInfoPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [incomeRange, setIncomeRange] = useState('');
   const [hasGuarantor, setHasGuarantor] = useState(false);
@@ -86,15 +88,15 @@ export default function OnboardingFinancialInfoPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your information..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Financial Information"
-        description="Optional information to help landlords understand your financial situation"
+        title={t('enhanceSearcher.financial.title')}
+        description={t('enhanceSearcher.financial.description')}
         icon={<Euro className="w-8 h-8 text-orange-600" />}
       />
 
@@ -105,7 +107,7 @@ export default function OnboardingFinancialInfoPage() {
             <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
               <Euro className="w-4 h-4 text-green-600" />
             </div>
-            Monthly income range
+            {t('enhanceSearcher.financial.income.title')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {incomeRanges.map((range) => (
@@ -130,8 +132,8 @@ export default function OnboardingFinancialInfoPage() {
                   <Shield className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">I have a guarantor available</span>
-                  <span className="text-sm text-gray-500">Someone who can vouch for rent payments</span>
+                  <span className="font-medium text-gray-700 block">{t('enhanceSearcher.financial.guarantor.title')}</span>
+                  <span className="text-sm text-gray-500">{t('enhanceSearcher.financial.guarantor.description')}</span>
                 </div>
               </div>
               <button
@@ -156,17 +158,17 @@ export default function OnboardingFinancialInfoPage() {
             <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
               <Briefcase className="w-4 h-4 text-orange-600" />
             </div>
-            Employment type
+            {t('enhanceSearcher.financial.employment.title')}
           </label>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { value: 'full-time', label: 'Full-time' },
-              { value: 'part-time', label: 'Part-time' },
-              { value: 'freelance', label: 'Freelance' },
-              { value: 'contract', label: 'Contract' },
-              { value: 'internship', label: 'Internship' },
-              { value: 'student', label: 'Student' },
-              { value: 'unemployed', label: 'Unemployed' }
+              { value: 'full-time', labelKey: 'fullTime' },
+              { value: 'part-time', labelKey: 'partTime' },
+              { value: 'freelance', labelKey: 'freelance' },
+              { value: 'contract', labelKey: 'contract' },
+              { value: 'internship', labelKey: 'internship' },
+              { value: 'student', labelKey: 'student' },
+              { value: 'unemployed', labelKey: 'unemployed' }
             ].map((type) => (
               <EnhanceProfileSelectionCard
                 key={type.value}
@@ -174,7 +176,7 @@ export default function OnboardingFinancialInfoPage() {
                 selected={employmentType === type.value}
                 onClick={() => setEmploymentType(type.value)}
               >
-                {type.label}
+                {t(`enhanceSearcher.financial.employment.${type.labelKey}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -187,10 +189,9 @@ export default function OnboardingFinancialInfoPage() {
               <Shield className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 mb-1">Your privacy matters</h3>
+              <h3 className="font-medium text-gray-900 mb-1">{t('enhanceSearcher.financial.privacy.title')}</h3>
               <p className="text-sm text-gray-600">
-                This information is only shared with verified landlords when you express interest in their properties.
-                You can update or remove it anytime from your profile settings.
+                {t('enhanceSearcher.financial.privacy.description')}
               </p>
             </div>
           </div>
@@ -208,13 +209,13 @@ export default function OnboardingFinancialInfoPage() {
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

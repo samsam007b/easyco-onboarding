@@ -151,10 +151,10 @@ export default function ResidenceProfilePage() {
       });
 
       setIsEditing(false);
-      toast.success(t?.messages?.updated?.[language] || 'Résidence mise à jour!');
+      toast.success(t?.messages?.updated?.[language] || 'Residence updated!');
     } catch (error: any) {
       console.error('Error updating residence:', error);
-      toast.error(t?.messages?.error?.[language] || 'Erreur lors de la mise à jour');
+      toast.error(t?.messages?.error?.[language] || 'Error updating');
     } finally {
       setIsSaving(false);
     }
@@ -179,7 +179,7 @@ export default function ResidenceProfilePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -195,16 +195,16 @@ export default function ResidenceProfilePage() {
             onClick={() => router.back()}
             className="mb-4"
           >
-            ← {t?.back?.[language] || 'Retour'}
+            ← {t?.back?.[language] || 'Back'}
           </Button>
 
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                {t?.title?.[language] || 'Profil de la Résidence'}
+                {t?.title?.[language] || 'Residence Profile'}
               </h1>
               <p className="text-gray-600">
-                {t?.subtitle?.[language] || 'Gérez les informations de votre résidence'}
+                {t?.subtitle?.[language] || 'Manage your residence information'}
               </p>
             </div>
 
@@ -214,7 +214,7 @@ export default function ResidenceProfilePage() {
                 className="bg-gradient-to-r from-orange-500 to-red-600 hover:shadow-lg"
               >
                 <Edit2 className="w-4 h-4 mr-2" />
-                {t?.buttons?.edit?.[language] || 'Modifier'}
+                {t?.buttons?.edit?.[language] || 'Edit'}
               </Button>
             ) : (
               <div className="flex gap-2">
@@ -224,7 +224,7 @@ export default function ResidenceProfilePage() {
                   disabled={isSaving}
                 >
                   <X className="w-4 h-4 mr-2" />
-                  {t?.buttons?.cancel?.[language] || 'Annuler'}
+                  {t?.buttons?.cancel?.[language] || 'Cancel'}
                 </Button>
                 <Button
                   onClick={handleSave}
@@ -232,7 +232,7 @@ export default function ResidenceProfilePage() {
                   className="bg-gradient-to-r from-green-500 to-emerald-600"
                 >
                   <Save className="w-4 h-4 mr-2" />
-                  {isSaving ? (t?.buttons?.saving?.[language] || 'Enregistrement...') : (t?.buttons?.save?.[language] || 'Enregistrer')}
+                  {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save')}
                 </Button>
               </div>
             )}
@@ -243,12 +243,12 @@ export default function ResidenceProfilePage() {
         <Card className="p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Home className="w-5 h-5 text-orange-600" />
-            {t?.sections?.mainInfo?.[language] || 'Informations principales'}
+            {t?.sections?.mainInfo?.[language] || 'Main information'}
           </h2>
 
           <div className="space-y-4">
             <div>
-              <Label htmlFor="title">{t?.fields?.name?.[language] || 'Nom de la résidence'}</Label>
+              <Label htmlFor="title">{t?.fields?.name?.[language] || 'Residence name'}</Label>
               <Input
                 id="title"
                 value={editForm.title}
@@ -259,7 +259,7 @@ export default function ResidenceProfilePage() {
             </div>
 
             <div>
-              <Label htmlFor="address">{t?.fields?.address?.[language] || 'Adresse'}</Label>
+              <Label htmlFor="address">{t?.fields?.address?.[language] || 'Address'}</Label>
               <Input
                 id="address"
                 value={editForm.address}
@@ -271,7 +271,7 @@ export default function ResidenceProfilePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="city">{t?.fields?.city?.[language] || 'Ville'}</Label>
+                <Label htmlFor="city">{t?.fields?.city?.[language] || 'City'}</Label>
                 <Input
                   id="city"
                   value={editForm.city}
@@ -282,7 +282,7 @@ export default function ResidenceProfilePage() {
               </div>
 
               <div>
-                <Label htmlFor="postal_code">{t?.fields?.postalCode?.[language] || 'Code postal'}</Label>
+                <Label htmlFor="postal_code">{t?.fields?.postalCode?.[language] || 'Postal code'}</Label>
                 <Input
                   id="postal_code"
                   value={editForm.postal_code}
@@ -295,7 +295,7 @@ export default function ResidenceProfilePage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="country">{t?.fields?.country?.[language] || 'Pays'}</Label>
+                <Label htmlFor="country">{t?.fields?.country?.[language] || 'Country'}</Label>
                 <Input
                   id="country"
                   value={editForm.country}
@@ -306,7 +306,7 @@ export default function ResidenceProfilePage() {
               </div>
 
               <div>
-                <Label htmlFor="total_rooms">{t?.fields?.rooms?.[language] || 'Nombre de chambres'}</Label>
+                <Label htmlFor="total_rooms">{t?.fields?.rooms?.[language] || 'Number of rooms'}</Label>
                 <Input
                   id="total_rooms"
                   type="number"
@@ -324,20 +324,20 @@ export default function ResidenceProfilePage() {
         <Card className="p-6 mb-6">
           <h2 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-blue-600" />
-            {t?.sections?.stats?.[language] || 'Statistiques'}
+            {t?.sections?.stats?.[language] || 'Statistics'}
           </h2>
 
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
               <Users className="w-8 h-8 text-orange-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.memberCount}</div>
-              <div className="text-sm text-gray-600">{t?.stats?.roommates?.[language] || 'Colocataires'}</div>
+              <div className="text-sm text-gray-600">{t?.stats?.roommates?.[language] || 'Roommates'}</div>
             </div>
 
             <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl">
               <Home className="w-8 h-8 text-purple-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.total_rooms || 0}</div>
-              <div className="text-sm text-gray-600">{t?.stats?.rooms?.[language] || 'Chambres'}</div>
+              <div className="text-sm text-gray-600">{t?.stats?.rooms?.[language] || 'Rooms'}</div>
             </div>
 
             <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
@@ -353,7 +353,7 @@ export default function ResidenceProfilePage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2">
               <FileText className="w-5 h-5 text-indigo-600" />
-              {t?.sections?.documents?.[language] || 'Documents officiels'}
+              {t?.sections?.documents?.[language] || 'Official documents'}
             </h2>
           </div>
 
@@ -364,10 +364,10 @@ export default function ResidenceProfilePage() {
               </div>
               <div className="flex-1">
                 <h3 className="text-lg font-bold text-gray-900 mb-1">
-                  {t?.documents?.title?.[language] || 'Accédez à vos documents'}
+                  {t?.documents?.title?.[language] || 'Access your documents'}
                 </h3>
                 <p className="text-sm text-gray-600 mb-4">
-                  {t?.documents?.description?.[language] || 'Consultez et gérez tous les documents importants de votre résidence (baux, règlements, attestations, etc.)'}
+                  {t?.documents?.description?.[language] || 'View and manage all important documents of your residence (leases, regulations, certificates, etc.)'}
                 </p>
                 <Button
                   onClick={() => router.push('/hub/documents')}
@@ -375,7 +375,7 @@ export default function ResidenceProfilePage() {
                   style={{ background: 'linear-gradient(135deg, #6366f1 0%, #4f46e5 100%)' }}
                 >
                   <FileText className="w-4 h-4 mr-2" />
-                  {t?.documents?.button?.[language] || 'Voir les documents'}
+                  {t?.documents?.button?.[language] || 'View documents'}
                 </Button>
               </div>
             </div>

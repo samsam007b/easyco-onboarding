@@ -72,7 +72,7 @@ export default function PreferencesPage() {
       progress={{
         current: 6,
         total: 6,
-        label: 'Étape 6 sur 6',
+        label: `${t('onboarding.progress.step')} 6 ${t('onboarding.progress.of')} 6`,
         stepName: t('onboarding.preferences.title'),
       }}
       isLoading={isLoading}
@@ -154,7 +154,7 @@ export default function PreferencesPage() {
           {preferredDistrict && (
             <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
               <MapPin className="w-3 h-3" />
-              Quartier sélectionné: {preferredDistrict}
+              {t('onboarding.preferences.districtSelected')}: {preferredDistrict}
             </p>
           )}
           <p className="text-sm text-gray-500 mt-1">
@@ -182,14 +182,14 @@ export default function PreferencesPage() {
                 selected={!openToLivingWithPets}
                 onClick={() => setOpenToLivingWithPets(false)}
               >
-                <div className="text-center font-medium text-sm">Non</div>
+                <div className="text-center font-medium text-sm">{t('common.no')}</div>
               </OnboardingSelectionCard>
               <OnboardingSelectionCard
                 role="searcher"
                 selected={openToLivingWithPets}
                 onClick={() => setOpenToLivingWithPets(true)}
               >
-                <div className="text-center font-medium text-sm">Oui</div>
+                <div className="text-center font-medium text-sm">{t('common.yes')}</div>
               </OnboardingSelectionCard>
             </OnboardingGrid>
           </div>
@@ -210,14 +210,14 @@ export default function PreferencesPage() {
                 selected={!acceptSmokersInHouse}
                 onClick={() => setAcceptSmokersInHouse(false)}
               >
-                <div className="text-center font-medium text-sm">Non</div>
+                <div className="text-center font-medium text-sm">{t('common.no')}</div>
               </OnboardingSelectionCard>
               <OnboardingSelectionCard
                 role="searcher"
                 selected={acceptSmokersInHouse}
                 onClick={() => setAcceptSmokersInHouse(true)}
               >
-                <div className="text-center font-medium text-sm">Oui</div>
+                <div className="text-center font-medium text-sm">{t('common.yes')}</div>
               </OnboardingSelectionCard>
             </OnboardingGrid>
           </div>

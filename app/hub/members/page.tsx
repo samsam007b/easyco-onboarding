@@ -171,7 +171,7 @@ export default function HubMembersPage() {
           // Map real data to members
           const realMembers: Member[] = membersData.map((m: any) => ({
             id: m.user_id,
-            name: m.users?.full_name || 'Utilisateur',
+            name: m.users?.full_name || 'User',
             role: m.role as 'resident' | 'owner',
             email: m.users?.email || '',
             avatar: m.users?.avatar_url,
@@ -208,7 +208,7 @@ export default function HubMembersPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium">{hub.members?.loading || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium">{hub.members?.loading || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -233,7 +233,7 @@ export default function HubMembersPage() {
             variant="ghost"
             className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#ff9014]/10 font-semibold"
           >
-            ← {hub.members?.backToHub || 'Retour au hub'}
+            ← {hub.members?.backToHub || 'Back to hub'}
           </Button>
 
           <div className="flex items-center justify-between">
@@ -251,10 +251,10 @@ export default function HubMembersPage() {
               </motion.div>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">
-                  {hub.members?.title || 'Membres'}
+                  {hub.members?.title || 'Members'}
                 </h1>
                 <p className="text-sm text-gray-500">
-                  {currentProperty?.title || hub.members?.yourResidence || 'Votre résidence'} • {members.length} {members.length !== 1 ? (hub.members?.membersPlural || 'membres') : (hub.members?.memberSingular || 'membre')}
+                  {currentProperty?.title || hub.members?.yourResidence || 'Your residence'} • {members.length} {members.length !== 1 ? (hub.members?.membersPlural || 'members') : (hub.members?.memberSingular || 'member')}
                 </p>
               </div>
             </div>
@@ -269,7 +269,7 @@ export default function HubMembersPage() {
                 }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
-                {hub.members?.invite || 'Inviter'}
+                {hub.members?.invite || 'Invite'}
               </Button>
             </motion.div>
           </div>
@@ -306,7 +306,7 @@ export default function HubMembersPage() {
             </div>
             <p className="text-2xl font-bold text-gray-900">{members.length}</p>
             <p className="text-xs text-[#ff651e] font-medium mt-1">
-              {members.length !== 1 ? (hub.members?.stats?.activeMembersPlural || 'membres actifs') : (hub.members?.stats?.activeMemberSingular || 'membre actif')}
+              {members.length !== 1 ? (hub.members?.stats?.activeMembersPlural || 'active members') : (hub.members?.stats?.activeMemberSingular || 'active member')}
             </p>
           </motion.div>
 
@@ -324,7 +324,7 @@ export default function HubMembersPage() {
               style={{ background: 'linear-gradient(135deg, #f8572b, #ff7b19)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#f8572b]">{hub.members?.stats?.residents || 'Résidents'}</span>
+              <span className="text-sm font-medium text-[#f8572b]">{hub.members?.stats?.residents || 'Residents'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #f8572b, #ff7b19)' }}
@@ -363,7 +363,7 @@ export default function HubMembersPage() {
               style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-amber-700">{hub.members?.stats?.owners || 'Propriétaires'}</span>
+              <span className="text-sm font-medium text-amber-700">{hub.members?.stats?.owners || 'Owners'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
@@ -373,7 +373,7 @@ export default function HubMembersPage() {
             </div>
             <p className="text-2xl font-bold text-gray-900">{ownersCount}</p>
             <p className="text-xs text-amber-600 font-medium mt-1">
-              {ownersCount > 0 ? (hub.members?.stats?.activeManagement || 'gestion active') : (hub.members?.stats?.noOwner || 'aucun propriétaire')}
+              {ownersCount > 0 ? (hub.members?.stats?.activeManagement || 'active management') : (hub.members?.stats?.noOwner || 'no owner')}
             </p>
           </motion.div>
         </motion.div>
@@ -449,7 +449,7 @@ export default function HubMembersPage() {
                           color: 'white',
                         }}
                       >
-                        {isOwner ? (hub.members?.roles?.owner || 'Propriétaire') : (hub.members?.roles?.resident || 'Résident')}
+                        {isOwner ? (hub.members?.roles?.owner || 'Owner') : (hub.members?.roles?.resident || 'Resident')}
                       </Badge>
                     </div>
                   </div>
@@ -505,7 +505,7 @@ export default function HubMembersPage() {
                         <Calendar className="w-3.5 h-3.5 text-[#ff7b19]" />
                       </div>
                       <span className="text-gray-700 font-medium text-sm">
-                        {hub.members?.since || 'Depuis'}{' '}
+                        {hub.members?.since || 'Since'}{' '}
                         {new Date(member.moveInDate).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-NL' : language === 'de' ? 'de-DE' : 'en-GB', {
                           month: 'short',
                           year: 'numeric',
@@ -518,7 +518,7 @@ export default function HubMembersPage() {
                   {member.interests && member.interests.length > 0 && (
                     <div className="mb-4">
                       <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" style={{ color: cardGradient.accent }} /> {hub.members?.interests || 'Centres d\'intérêt'}
+                        <Sparkles className="w-3 h-3" style={{ color: cardGradient.accent }} /> {hub.members?.interests || 'Interests'}
                       </p>
                       <div className="flex flex-wrap gap-1.5">
                         {member.interests.map((interest, idx) => (
@@ -598,10 +598,10 @@ export default function HubMembersPage() {
               </motion.div>
             </motion.div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">
-              {hub.members?.emptyState?.title || 'Aucun colocataire pour le moment'}
+              {hub.members?.emptyState?.title || 'No roommates yet'}
             </h3>
             <p className="text-gray-500 mb-6">
-              {hub.members?.emptyState?.description || 'Invitez des personnes à rejoindre votre colocation !'}
+              {hub.members?.emptyState?.description || 'Invite people to join your coliving!'}
             </p>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
@@ -613,7 +613,7 @@ export default function HubMembersPage() {
                 }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
-                {hub.members?.emptyState?.inviteButton || 'Inviter des membres'}
+                {hub.members?.emptyState?.inviteButton || 'Invite members'}
               </Button>
             </motion.div>
           </motion.div>

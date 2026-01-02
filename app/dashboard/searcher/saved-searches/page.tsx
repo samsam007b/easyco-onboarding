@@ -165,7 +165,7 @@ export default function SavedSearchesPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center py-12">
             <LoadingHouse size={80} />
-            <p className="text-gray-600">{t?.loading?.[language] || 'Chargement...'}</p>
+            <p className="text-gray-600">{t?.loading?.[language] || 'Loading...'}</p>
           </div>
         </div>
       </div>
@@ -184,7 +184,7 @@ export default function SavedSearchesPage() {
               className="gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              {t?.back?.[language] || 'Retour'}
+              {t?.back?.[language] || 'Back'}
             </Button>
 
             <div>
@@ -192,7 +192,7 @@ export default function SavedSearchesPage() {
                 <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
                   <Search className="w-6 h-6 text-white" />
                 </div>
-                {t?.title?.[language] || 'Mes Recherches Sauvegardées'}
+                {t?.title?.[language] || 'My Saved Searches'}
               </h1>
               <p className="text-gray-600 mt-1">
                 {savedSearches.length} {savedSearches.length === 1

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco – Ajustement des Épaisseurs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mauve: #9c5698;
+            --orange: #FF5722;
+            --jaune: #FFB10B;
+            --dark: #1a1a2e;
+            --darker: #12121f;
+            --light: #f8f9fa;
+            --grid-color: rgba(156, 86, 152, 0.4);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        .sidebar {
+            width: 350px;
+            background: rgba(0,0,0,0.5);
+            padding: 24px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            overflow-y: auto;
+            height: 100vh;
+        }
+
+        .sidebar h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, var(--mauve), var(--orange), var(--jaune));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle { font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 24px; }
+
+        .section-header {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.3);
+            margin: 20px 0 12px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .weight-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .weight-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+        .weight-card.highlight {
+            border-color: var(--orange);
+            background: rgba(255, 87, 34, 0.1);
+        }
+        .weight-card .char {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        .weight-card .char.adjusted { color: var(--orange); }
+        .weight-card input[type="range"] {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+        .weight-card input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--orange);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .weight-card .weight-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--orange);
+            margin-top: 6px;
+        }
+
+        .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+        .preset-btn {
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            color: var(--light);
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+        .preset-btn:hover { border-color: var(--orange); }
+        .preset-btn.active { background: var(--orange); border-color: var(--orange); }
+
+        .global-controls { margin-bottom: 20px; }
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        .control-row label { font-size: 0.8rem; color: rgba(255,255,255,0.6); }
+        .control-row .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--orange);
+        }
+        .control-row input[type="range"] {
+            flex: 1;
+            margin: 0 12px;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+        }
+        .control-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--orange);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .toggle-row span { font-size: 0.8rem; }
+        .toggle {
+            width: 40px;
+            height: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            position: relative;
+            cursor: pointer;
+        }
+        .toggle.active { background: var(--mauve); }
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+        .toggle.active::after { transform: translateX(20px); }
+
+        .actions { display: flex; gap: 8px; margin-top: 20px; }
+        .btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn.primary { background: linear-gradient(90deg, var(--mauve), var(--orange)); color: white; }
+        .btn.secondary { background: rgba(255,255,255,0.1); color: var(--light); }
+
+        /* Main area */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--dark);
+        }
+
+        .comparison-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .logo-row {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .logo-version {
+            text-align: center;
+        }
+        .logo-version .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 16px;
+        }
+
+        .logo-container {
+            position: relative;
+            padding: 60px 100px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+        }
+
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 120px;
+            line-height: 1;
+            color: var(--light);
+            display: flex;
+            position: relative;
+            z-index: 2;
+        }
+
+        .wordmark .letter {
+            display: inline-block;
+            transition: font-weight 0.3s;
+        }
+
+        /* Grid overlay */
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .grid-line {
+            position: absolute;
+            background: var(--grid-color);
+        }
+        .grid-line.vertical { width: 1px; top: 0; bottom: 0; }
+        .grid-line.horizontal { height: 1px; left: 0; right: 0; }
+        .grid-line.major { background: rgba(156, 86, 152, 0.6); }
+
+        /* Bounds overlay */
+        .bounds-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .letter-bound {
+            position: absolute;
+            border: 2px solid rgba(255, 87, 34, 0.7);
+            background: rgba(255, 87, 34, 0.08);
+        }
+
+        /* Specs panel */
+        .specs-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.85);
+            border-radius: 10px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            min-width: 200px;
+        }
+        .specs-panel h3 {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--orange);
+            margin-bottom: 10px;
+        }
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .spec-row .label { color: rgba(255,255,255,0.4); }
+        .spec-row .val { color: var(--light); }
+        .spec-row .val.changed { color: var(--orange); }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--mauve);
+            color: white;
+            padding: 10px 24px;
+            border-radius: 8px;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+        .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>Ajustement Épaisseurs</h1>
+        <p class="subtitle">Réduire z, c, o pour uniformiser</p>
+
+        <div class="section-header">Poids par lettre (font-weight)</div>
+        <div class="weight-controls">
+            <div class="weight-card">
+                <div class="char">i</div>
+                <input type="range" min="300" max="700" step="10" value="600" data-letter="i1" disabled>
+                <div class="weight-value" id="w-i1">600</div>
+            </div>
+            <div class="weight-card highlight">
+                <div class="char adjusted">z</div>
+                <input type="range" min="300" max="700" step="10" value="600" data-letter="z">
+                <div class="weight-value" id="w-z">600</div>
+            </div>
+            <div class="weight-card">
+                <div class="char">i</div>
+                <input type="range" min="300" max="700" step="10" value="600" data-letter="i2" disabled>
+                <div class="weight-value" id="w-i2">600</div>
+            </div>
+            <div class="weight-card highlight">
+                <div class="char adjusted">c</div>
+                <input type="range" min="300" max="700" step="10" value="600" data-letter="c">
+                <div class="weight-value" id="w-c">600</div>
+            </div>
+            <div class="weight-card highlight">
+                <div class="char adjusted">o</div>
+                <input type="range" min="300" max="700" step="10" value="600" data-letter="o">
+                <div class="weight-value" id="w-o">600</div>
+            </div>
+        </div>
+
+        <div class="section-header">Presets rapides</div>
+        <div class="presets">
+            <button class="preset-btn active" data-preset="original">Original (600)</button>
+            <button class="preset-btn" data-preset="subtle">Subtil (580)</button>
+            <button class="preset-btn" data-preset="light">Léger (560)</button>
+            <button class="preset-btn" data-preset="medium">Moyen (540)</button>
+            <button class="preset-btn" data-preset="strong">Fort (520)</button>
+        </div>
+
+        <div class="section-header">Paramètres globaux</div>
+        <div class="global-controls">
+            <div class="control-row">
+                <label>Taille</label>
+                <input type="range" id="fontSize" min="80" max="200" value="120">
+                <span class="value" id="fontSizeVal">120px</span>
+            </div>
+            <div class="control-row">
+                <label>ZZ Spacing</label>
+                <input type="range" id="zzSpacing" min="-25" max="0" value="-15">
+                <span class="value" id="zzSpacingVal">-0.15em</span>
+            </div>
+        </div>
+
+        <div class="section-header">Affichage</div>
+        <div class="toggle-row">
+            <span>Grille</span>
+            <div class="toggle active" id="toggleGrid"></div>
+        </div>
+        <div class="toggle-row">
+            <span>Limites lettres</span>
+            <div class="toggle active" id="toggleBounds"></div>
+        </div>
+
+        <div class="actions">
+            <button class="btn secondary" id="copySpecs">Copier Specs</button>
+            <button class="btn primary" id="validate">✓ Valider</button>
+        </div>
+    </aside>
+
+    <main class="main">
+        <div class="comparison-area">
+            <div class="logo-row">
+                <div class="logo-version">
+                    <div class="label">Version ajustée</div>
+                    <div class="logo-container" id="logoContainer">
+                        <div class="grid-overlay" id="gridOverlay"></div>
+                        <div class="bounds-overlay" id="boundsOverlay"></div>
+                        <div class="wordmark" id="wordmark">
+                            <span class="letter" data-letter="i1">i</span>
+                            <span class="letter" data-letter="z1">z</span>
+                            <span class="letter" data-letter="z2">z</span>
+                            <span class="letter" data-letter="i2">i</span>
+                            <span class="letter" data-letter="c">c</span>
+                            <span class="letter" data-letter="o">o</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="specs-panel">
+                <h3>Poids appliqués</h3>
+                <div class="spec-row">
+                    <span class="label">i (×2)</span>
+                    <span class="val" id="spec-i">600</span>
+                </div>
+                <div class="spec-row">
+                    <span class="label">z (×2)</span>
+                    <span class="val" id="spec-z">600</span>
+                </div>
+                <div class="spec-row">
+                    <span class="label">c</span>
+                    <span class="val" id="spec-c">600</span>
+                </div>
+                <div class="spec-row">
+                    <span class="label">o</span>
+                    <span class="val" id="spec-o">600</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast">Copié!</div>
+
+    <script>
+        const state = {
+            weights: { i: 600, z: 600, c: 600, o: 600 },
+            fontSize: 120,
+            zzSpacing: -15
+        };
+
+        const presets = {
+            original: { z: 600, c: 600, o: 600 },
+            subtle: { z: 580, c: 580, o: 580 },
+            light: { z: 560, c: 560, o: 560 },
+            medium: { z: 540, c: 540, o: 540 },
+            strong: { z: 520, c: 520, o: 520 }
+        };
+
+        const wordmark = document.getElementById('wordmark');
+        const logoContainer = document.getElementById('logoContainer');
+
+        function updateWordmark() {
+            wordmark.style.fontSize = state.fontSize + 'px';
+
+            document.querySelectorAll('.wordmark .letter').forEach(el => {
+                const letter = el.dataset.letter;
+                if (letter === 'i1' || letter === 'i2') {
+                    el.style.fontWeight = state.weights.i;
+                } else if (letter === 'z1' || letter === 'z2') {
+                    el.style.fontWeight = state.weights.z;
+                    if (letter === 'z1') {
+                        el.style.letterSpacing = (state.zzSpacing / 100) + 'em';
+                    }
+                } else {
+                    el.style.fontWeight = state.weights[letter] || 600;
+                }
+            });
+
+            // Update displays
+            document.getElementById('fontSizeVal').textContent = state.fontSize + 'px';
+            document.getElementById('zzSpacingVal').textContent = (state.zzSpacing / 100).toFixed(2) + 'em';
+
+            ['z', 'c', 'o'].forEach(l => {
+                document.getElementById('w-' + l).textContent = state.weights[l];
+                const specEl = document.getElementById('spec-' + l);
+                specEl.textContent = state.weights[l];
+                specEl.className = 'val' + (state.weights[l] !== 600 ? ' changed' : '');
+            });
+
+            document.getElementById('spec-i').textContent = state.weights.i;
+
+            requestAnimationFrame(updateOverlays);
+        }
+
+        function getLetterBounds() {
+            const letters = wordmark.querySelectorAll('.letter');
+            const containerRect = logoContainer.getBoundingClientRect();
+            const bounds = [];
+            letters.forEach(letter => {
+                const rect = letter.getBoundingClientRect();
+                bounds.push({
+                    left: rect.left - containerRect.left,
+                    top: rect.top - containerRect.top,
+                    width: rect.width,
+                    height: rect.height,
+                    right: rect.right - containerRect.left,
+                    bottom: rect.bottom - containerRect.top
+                });
+            });
+            return bounds;
+        }
+
+        function updateOverlays() {
+            const bounds = getLetterBounds();
+            const gridOverlay = document.getElementById('gridOverlay');
+            const boundsOverlay = document.getElementById('boundsOverlay');
+
+            // Clear
+            gridOverlay.replaceChildren();
+            boundsOverlay.replaceChildren();
+
+            if (bounds.length === 0) return;
+            const first = bounds[0];
+
+            // Grid
+            if (document.getElementById('toggleGrid').classList.contains('active')) {
+                bounds.forEach((b, i) => {
+                    const left = document.createElement('div');
+                    left.className = 'grid-line vertical' + (i === 0 ? ' major' : '');
+                    left.style.left = b.left + 'px';
+                    gridOverlay.appendChild(left);
+
+                    const right = document.createElement('div');
+                    right.className = 'grid-line vertical' + (i === bounds.length - 1 ? ' major' : '');
+                    right.style.left = b.right + 'px';
+                    gridOverlay.appendChild(right);
+                });
+
+                [first.top, first.top + first.height / 2, first.bottom].forEach((y, i) => {
+                    const line = document.createElement('div');
+                    line.className = 'grid-line horizontal' + (i !== 1 ? ' major' : '');
+                    line.style.top = y + 'px';
+                    gridOverlay.appendChild(line);
+                });
+            }
+
+            // Bounds
+            if (document.getElementById('toggleBounds').classList.contains('active')) {
+                bounds.forEach(b => {
+                    const div = document.createElement('div');
+                    div.className = 'letter-bound';
+                    div.style.left = b.left + 'px';
+                    div.style.top = b.top + 'px';
+                    div.style.width = b.width + 'px';
+                    div.style.height = b.height + 'px';
+                    boundsOverlay.appendChild(div);
+                });
+            }
+        }
+
+        // Weight sliders
+        document.querySelectorAll('[data-letter]').forEach(slider => {
+            if (slider.disabled) return;
+            slider.addEventListener('input', function() {
+                const letter = this.dataset.letter;
+                state.weights[letter] = parseInt(this.value);
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                updateWordmark();
+            });
+        });
+
+        // Global controls
+        document.getElementById('fontSize').addEventListener('input', function() {
+            state.fontSize = parseInt(this.value);
+            updateWordmark();
+        });
+
+        document.getElementById('zzSpacing').addEventListener('input', function() {
+            state.zzSpacing = parseInt(this.value);
+            updateWordmark();
+        });
+
+        // Presets
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const preset = presets[this.dataset.preset];
+                if (!preset) return;
+
+                Object.keys(preset).forEach(letter => {
+                    state.weights[letter] = preset[letter];
+                    const slider = document.querySelector(`[data-letter="${letter}"]`);
+                    if (slider) slider.value = preset[letter];
+                });
+
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                updateWordmark();
+            });
+        });
+
+        // Toggles
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                updateOverlays();
+            });
+        });
+
+        // Copy specs
+        document.getElementById('copySpecs').addEventListener('click', function() {
+            const specs = `IzzIco Logo - Poids ajustés
+════════════════════════════
+
+Font: Fredoka (variable)
+Size: ${state.fontSize}px
+ZZ Spacing: ${(state.zzSpacing / 100).toFixed(2)}em
+
+Poids par lettre:
+  i: ${state.weights.i}
+  z: ${state.weights.z}${state.weights.z !== 600 ? ' (réduit de ' + (600 - state.weights.z) + ')' : ''}
+  c: ${state.weights.c}${state.weights.c !== 600 ? ' (réduit de ' + (600 - state.weights.c) + ')' : ''}
+  o: ${state.weights.o}${state.weights.o !== 600 ? ' (réduit de ' + (600 - state.weights.o) + ')' : ''}
+
+CSS:
+.letter-i { font-weight: ${state.weights.i}; }
+.letter-z { font-weight: ${state.weights.z}; }
+.letter-c { font-weight: ${state.weights.c}; }
+.letter-o { font-weight: ${state.weights.o}; }`;
+
+            navigator.clipboard.writeText(specs);
+            const toast = document.getElementById('toast');
+            toast.textContent = 'Specs copiées!';
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        });
+
+        // Validate
+        document.getElementById('validate').addEventListener('click', function() {
+            const toast = document.getElementById('toast');
+            toast.textContent = '✓ Configuration validée: z=' + state.weights.z + ', c=' + state.weights.c + ', o=' + state.weights.o;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        });
+
+        // Init
+        window.addEventListener('load', () => {
+            document.fonts.ready.then(updateWordmark);
+        });
+        window.addEventListener('resize', updateOverlays);
+    </script>
+</body>
+</html>

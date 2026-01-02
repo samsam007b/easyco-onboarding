@@ -302,7 +302,7 @@ export default function MyVisitsPage() {
       <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">{t?.loading?.[language] || 'Chargement de vos visites...'}</p>
+          <p className="text-gray-600">{t?.loading?.[language] || 'Loading your visits...'}</p>
         </div>
       </div>
     );

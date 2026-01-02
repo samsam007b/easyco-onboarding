@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Mood Boards | 4 Directions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --violet: #7B4ED8;
+            --orange: #FF8F3F;
+            --jaune: #FFD93D;
+            --gradient: linear-gradient(135deg, var(--violet) 0%, var(--orange) 50%, var(--jaune) 100%);
+            --dark: #0a0a14;
+            --darker: #050508;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        /* Hero */
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, var(--dark) 0%, var(--darker) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(123, 78, 216, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 50%, rgba(255, 215, 61, 0.1) 0%, transparent 40%);
+            animation: moveGradient 15s ease-in-out infinite;
+        }
+
+        @keyframes moveGradient {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-5%, 5%); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .logo-text span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero h1 {
+            font-size: 1.5rem;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            opacity: 0.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Stats */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Directions Grid */
+        .directions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .direction-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 24px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .direction-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(255, 143, 63, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .direction-preview {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Direction A - Le Lien */
+        .direction-a .direction-preview {
+            background: linear-gradient(135deg, rgba(123, 78, 216, 0.2) 0%, rgba(255, 143, 63, 0.1) 100%);
+        }
+
+        .direction-a .preview-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .preview-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        .preview-connector {
+            width: 30px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Direction B - Foyer Humain */
+        .direction-b .direction-preview {
+            background: linear-gradient(135deg, rgba(255, 143, 63, 0.2) 0%, rgba(123, 78, 216, 0.1) 100%);
+        }
+
+        .preview-house {
+            width: 100px;
+            height: 100px;
+            position: relative;
+        }
+
+        .preview-house .roof {
+            width: 0;
+            height: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+            border-bottom: 40px solid var(--violet);
+        }
+
+        .preview-house .walls {
+            width: 80px;
+            height: 50px;
+            background: var(--orange);
+            margin: 0 auto;
+            border-radius: 0 0 8px 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-house .heart {
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        /* Direction C - ZZ Connecteur */
+        .direction-c .direction-preview {
+            background: linear-gradient(90deg, rgba(123, 78, 216, 0.2) 0%, rgba(255, 215, 61, 0.1) 100%);
+        }
+
+        .preview-zz {
+            font-size: 5rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Direction D - Cercle Social */
+        .direction-d .direction-preview {
+            background: radial-gradient(circle at center, rgba(123, 78, 216, 0.2) 0%, transparent 70%);
+        }
+
+        .preview-main-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(from 180deg, var(--violet), var(--orange), var(--jaune), var(--violet));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: rotate 8s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .preview-main-circle-inner {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: var(--dark);
+        }
+
+        /* Card Info */
+        .direction-info {
+            padding: 1.5rem;
+        }
+
+        .direction-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .direction-letter {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .direction-score {
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.8;
+        }
+
+        .direction-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .direction-subtitle {
+            font-size: 0.85rem;
+            opacity: 0.6;
+            margin-bottom: 1rem;
+        }
+
+        .direction-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            padding: 0.35rem 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            opacity: 0.7;
+        }
+
+        .tag.strong {
+            background: rgba(123, 78, 216, 0.2);
+            opacity: 1;
+        }
+
+        /* CTA */
+        .view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient);
+            border-radius: 30px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .view-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(123, 78, 216, 0.3);
+        }
+
+        /* Brand Summary */
+        .brand-summary {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .summary-card h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+
+        .summary-card ul {
+            list-style: none;
+        }
+
+        .summary-card li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .summary-card li::before {
+            content: '→';
+            color: var(--orange);
+        }
+
+        /* Palette Preview */
+        .palette-preview {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .palette-swatch {
+            flex: 1;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .palette-swatch.violet { background: var(--violet); }
+        .palette-swatch.orange { background: var(--orange); }
+        .palette-swatch.jaune { background: var(--jaune); color: var(--dark); }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem;
+            opacity: 0.4;
+            font-size: 0.8rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .directions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="hero">
+        <div class="hero-content">
+            <div class="logo-text"><span>Izz</span>Ico</div>
+            <h1>Brand Discovery - Mood Boards</h1>
+            <p>4 directions exploratoires pour le nouveau logo IzzIco. Ouvre chaque mood board pour voir les concepts visuels en detail.</p>
+
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Directions</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Couleurs (Roles)</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">20/25</div>
+                    <div class="stat-label">Meilleur Score</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="directions-grid">
+        <!-- Direction A -->
+        <a href="direction-A-le-lien.html" class="direction-card direction-a">
+            <div class="direction-preview">
+                <div class="preview-content">
+                    <div class="preview-circle" style="background: var(--violet);"></div>
+                    <div class="preview-connector"></div>
+                    <div class="preview-circle" style="background: var(--orange);"></div>
+                    <div class="preview-connector"></div>
+                    <div class="preview-circle" style="background: var(--jaune);"></div>
+                </div>
+            </div>
+            <div class="direction-info">
+                <div class="direction-header">
+                    <div class="direction-letter">A</div>
+                    <div class="direction-score">19/25</div>
+                </div>
+                <h2 class="direction-title">Le Lien</h2>
+                <p class="direction-subtitle">Trois elements connectes symbolisant les 3 roles</p>
+                <div class="direction-tags">
+                    <span class="tag strong">Connexion ⭐⭐⭐⭐⭐</span>
+                    <span class="tag">Communaute ⭐⭐⭐⭐</span>
+                    <span class="tag">Slack-like</span>
+                </div>
+                <span class="view-btn">Voir le mood board →</span>
+            </div>
+        </a>
+
+        <!-- Direction B -->
+        <a href="direction-B-foyer-humain.html" class="direction-card direction-b">
+            <div class="direction-preview">
+                <div class="preview-house">
+                    <div class="roof"></div>
+                    <div class="walls">
+                        <span class="heart">♥</span>
+                    </div>
+                </div>
+            </div>
+            <div class="direction-info">
+                <div class="direction-header">
+                    <div class="direction-letter">B</div>
+                    <div class="direction-score">18/25</div>
+                </div>
+                <h2 class="direction-title">Le Foyer Humain</h2>
+                <p class="direction-subtitle">Maison abstraite avec element humain/social</p>
+                <div class="direction-tags">
+                    <span class="tag strong">Communaute ⭐⭐⭐⭐⭐</span>
+                    <span class="tag">Emotion ⭐⭐⭐⭐</span>
+                    <span class="tag">Airbnb-like</span>
+                </div>
+                <span class="view-btn">Voir le mood board →</span>
+            </div>
+        </a>
+
+        <!-- Direction C -->
+        <a href="direction-C-zz-connecteur.html" class="direction-card direction-c">
+            <div class="direction-preview">
+                <div class="preview-zz">ZZ</div>
+            </div>
+            <div class="direction-info">
+                <div class="direction-header">
+                    <div class="direction-letter">C</div>
+                    <div class="direction-score">20/25</div>
+                </div>
+                <h2 class="direction-title">Le ZZ Connecteur</h2>
+                <p class="direction-subtitle">Les deux Z comme pont/lien visuel</p>
+                <div class="direction-tags">
+                    <span class="tag strong">Differenciation ⭐⭐⭐⭐⭐</span>
+                    <span class="tag strong">Fun/Dynamique ⭐⭐⭐⭐⭐</span>
+                    <span class="tag">Notion-like</span>
+                </div>
+                <span class="view-btn">Voir le mood board →</span>
+            </div>
+        </a>
+
+        <!-- Direction D -->
+        <a href="direction-D-cercle-social.html" class="direction-card direction-d">
+            <div class="direction-preview">
+                <div class="preview-main-circle">
+                    <div class="preview-main-circle-inner"></div>
+                </div>
+            </div>
+            <div class="direction-info">
+                <div class="direction-header">
+                    <div class="direction-letter">D</div>
+                    <div class="direction-score">20/25</div>
+                </div>
+                <h2 class="direction-title">Le Cercle Social</h2>
+                <p class="direction-subtitle">Cercle/bulle avec dynamisme interne</p>
+                <div class="direction-tags">
+                    <span class="tag strong">Communaute ⭐⭐⭐⭐⭐</span>
+                    <span class="tag strong">Fun/Dynamique ⭐⭐⭐⭐⭐</span>
+                    <span class="tag">Spotify-like</span>
+                </div>
+                <span class="view-btn">Voir le mood board →</span>
+            </div>
+        </a>
+    </main>
+
+    <!-- Brand Summary -->
+    <section class="brand-summary">
+        <h2 class="summary-title">Resume Brand Canvas IzzIco</h2>
+        <div class="summary-grid">
+            <div class="summary-card">
+                <h3>Personnalite</h3>
+                <ul>
+                    <li>Le connecteur cool a une soiree</li>
+                    <li>Ton : Fun / Dynamique</li>
+                    <li>Fiable, Humain, Connecte</li>
+                    <li>Facile, Rapide, Fun</li>
+                </ul>
+            </div>
+            <div class="summary-card">
+                <h3>Les 3 Roles</h3>
+                <ul>
+                    <li>Searcher (Jaune) - Cherche un coliving</li>
+                    <li>Resident (Orange) - Vit deja en coliving</li>
+                    <li>Owner (Violet) - Possede/gere</li>
+                </ul>
+                <div class="palette-preview">
+                    <div class="palette-swatch violet">Owner</div>
+                    <div class="palette-swatch orange">Resident</div>
+                    <div class="palette-swatch jaune">Searcher</div>
+                </div>
+            </div>
+            <div class="summary-card">
+                <h3>Anti-Adjectifs</h3>
+                <ul>
+                    <li>Pas Cheap (pas low-cost)</li>
+                    <li>Pas Exclusif (pas snob)</li>
+                    <li>Pas Froid (pas corporate)</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>IzzIco Brand Discovery</p>
+        <p>Genere le 2 janvier 2026 via /logo-discover</p>
+    </footer>
+</body>
+</html>

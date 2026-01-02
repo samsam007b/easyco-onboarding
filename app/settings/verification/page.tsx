@@ -27,7 +27,7 @@ export default function VerificationPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {t?.back?.[language] || 'Retour aux paramètres'}
+            {t?.back?.[language] || 'Back to settings'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -36,10 +36,10 @@ export default function VerificationPage() {
             </div>
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
-                {t?.title?.[language] || 'Vérifications'}
+                {t?.title?.[language] || 'Verifications'}
               </h1>
               <p className="text-gray-600">
-                {t?.subtitle?.[language] || 'Renforcez la confiance de votre profil'}
+                {t?.subtitle?.[language] || 'Strengthen your profile trust'}
               </p>
             </div>
           </div>

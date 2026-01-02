@@ -205,7 +205,7 @@ export default function SubscriptionPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 mt-4">Chargement de votre abonnement...</p>
+          <p className="text-gray-600 mt-4">Loading your subscription...</p>
         </div>
       </div>
     );

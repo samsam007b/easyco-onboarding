@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Brand Identity Dossier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Brand Colors */
+            --mauve: #9c5698;
+            --orange: #FF5722;
+            --jaune: #FFB10B;
+
+            /* UI Colors - Dark Theme */
+            --bg-dark: #0a0a0a;
+            --bg-card: #141414;
+            --bg-elevated: #1a1a1a;
+            --border: #2a2a2a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-muted: #555555;
+
+            /* Construction Grid Colors */
+            --grid-line: rgba(255, 255, 255, 0.08);
+            --grid-accent: rgba(255, 87, 34, 0.4);
+            --anchor-fill: #ffffff;
+            --anchor-stroke: #FF5722;
+            --handle-line: rgba(255, 87, 34, 0.6);
+
+            /* Gradient */
+            --gradient-primary: linear-gradient(90deg, var(--mauve) 0%, var(--orange) 50%, var(--jaune) 100%);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ======================= */
+        /* LAYOUT */
+        /* ======================= */
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section {
+            margin-bottom: 8rem;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+        }
+
+        .section-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--orange);
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 3rem;
+            color: var(--text-primary);
+            line-height: 1.1;
+        }
+
+        .section-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            max-width: 600px;
+        }
+
+        /* Grid Layouts */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .card-dark {
+            background: var(--bg-dark);
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+        }
+
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* ======================= */
+        /* HERO / COVER */
+        /* ======================= */
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: var(--bg-dark);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px),
+                linear-gradient(var(--grid-line) 1px, transparent 1px);
+            background-size: 80px 80px;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 12rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 2rem;
+        }
+
+        .hero-logo .z-overlap {
+            letter-spacing: -0.15em;
+        }
+
+        .hero-tagline {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .hero-meta {
+            position: absolute;
+            bottom: 4rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 4rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* ======================= */
+        /* LOGO CONSTRUCTION GRID */
+        /* ======================= */
+
+        .construction-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            position: relative;
+        }
+
+        .construction-grid {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+        }
+
+        .construction-logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 10rem;
+            color: var(--text-primary);
+            position: relative;
+            z-index: 2;
+        }
+
+        .construction-logo .z-overlap {
+            letter-spacing: -0.15em;
+        }
+
+        /* Vertical Grid Lines */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            z-index: 1;
+        }
+
+        .grid-line-group {
+            display: flex;
+            position: relative;
+        }
+
+        .v-line {
+            width: 1px;
+            background: var(--grid-line);
+            height: 100%;
+        }
+
+        .v-line.accent {
+            background: var(--grid-accent);
+        }
+
+        /* Horizontal reference lines */
+        .h-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        .h-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--grid-line);
+        }
+
+        .h-line.cap-height { top: 15%; }
+        .h-line.x-height { top: 40%; }
+        .h-line.baseline { top: 85%; }
+
+        .h-line-label {
+            position: absolute;
+            right: 100%;
+            margin-right: 1rem;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            transform: translateY(-50%);
+        }
+
+        /* Spacing measurements */
+        .measurements {
+            position: absolute;
+            bottom: -3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        .measure-block {
+            text-align: center;
+            border-top: 1px solid var(--orange);
+            padding-top: 0.5rem;
+            margin: 0 2px;
+        }
+
+        /* ======================= */
+        /* SVG BLUEPRINT */
+        /* ======================= */
+
+        .blueprint-container {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 500px;
+        }
+
+        .blueprint-svg {
+            max-width: 100%;
+        }
+
+        /* ======================= */
+        /* ICON VERSIONS */
+        /* ======================= */
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .icon-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .icon-preview {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 1.5rem;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2.5rem;
+        }
+
+        .icon-preview.gradient {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .icon-preview.dark {
+            background: var(--bg-dark);
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        .icon-preview.light {
+            background: #ffffff;
+            color: var(--bg-dark);
+        }
+
+        .icon-preview.circle {
+            border-radius: 50%;
+        }
+
+        .icon-preview.squircle {
+            border-radius: 28%;
+        }
+
+        .icon-label {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .icon-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        /* ======================= */
+        /* COLOR PALETTE */
+        /* ======================= */
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .color-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .color-swatch {
+            height: 180px;
+            position: relative;
+        }
+
+        .color-swatch.mauve { background: var(--mauve); }
+        .color-swatch.orange { background: var(--orange); }
+        .color-swatch.jaune { background: var(--jaune); }
+        .color-swatch.gradient { background: var(--gradient-primary); }
+        .color-swatch.dark { background: var(--bg-dark); border-bottom: 1px solid var(--border); }
+        .color-swatch.light { background: #ffffff; }
+
+        .color-info {
+            padding: 1.5rem;
+        }
+
+        .color-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .color-values {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .color-value {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        .color-value-label {
+            color: var(--text-muted);
+        }
+
+        .color-value-data {
+            color: var(--text-secondary);
+        }
+
+        /* Opacity variations */
+        .opacity-row {
+            display: flex;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+        }
+
+        .opacity-block {
+            flex: 1;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+        }
+
+        /* ======================= */
+        /* CLEARSPACE */
+        /* ======================= */
+
+        .clearspace-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .clearspace-box {
+            position: relative;
+            padding: 4rem;
+            border: 2px dashed var(--orange);
+        }
+
+        .clearspace-logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 4rem;
+            color: var(--text-primary);
+        }
+
+        .clearspace-logo .z-overlap {
+            letter-spacing: -0.15em;
+        }
+
+        .clearspace-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--jaune);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.6rem;
+            font-weight: bold;
+            color: var(--bg-dark);
+        }
+
+        .clearspace-marker.top-left { top: -10px; left: -10px; }
+        .clearspace-marker.top-right { top: -10px; right: -10px; }
+        .clearspace-marker.bottom-left { bottom: -10px; left: -10px; }
+        .clearspace-marker.bottom-right { bottom: -10px; right: -10px; }
+
+        .clearspace-label {
+            position: absolute;
+            font-family: 'Space Mono', monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        .clearspace-label.top {
+            top: -2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .clearspace-label.left {
+            left: -4rem;
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+        }
+
+        /* ======================= */
+        /* TYPOGRAPHY */
+        /* ======================= */
+
+        .typo-showcase {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 4rem;
+        }
+
+        .typo-primary {
+            margin-bottom: 4rem;
+            padding-bottom: 4rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .typo-font-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 6rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .typo-alphabet {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1.5rem;
+            color: var(--text-secondary);
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .typo-weights {
+            display: flex;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .typo-weight {
+            text-align: center;
+        }
+
+        .typo-weight-sample {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .typo-weight-name {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* ======================= */
+        /* MOCKUPS */
+        /* ======================= */
+
+        .mockup-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .mockup-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .mockup-preview {
+            padding: 3rem;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mockup-preview.gradient-bg {
+            background: var(--gradient-primary);
+        }
+
+        .mockup-preview.dark-bg {
+            background: var(--bg-dark);
+        }
+
+        .mockup-label {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        /* App Store Card Mock */
+        .app-store-mock {
+            background: var(--jaune);
+            border-radius: 32px;
+            padding: 2rem;
+            width: 300px;
+            text-align: center;
+        }
+
+        .app-store-icon {
+            width: 100px;
+            height: 100px;
+            background: var(--bg-dark);
+            border-radius: 22px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .app-store-icon span {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .app-store-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: var(--bg-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .app-store-tagline {
+            font-size: 0.85rem;
+            color: var(--bg-dark);
+            opacity: 0.7;
+        }
+
+        /* Social Avatar */
+        .social-avatar-mock {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: var(--bg-elevated);
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+        }
+
+        .social-avatar-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .social-avatar-img span {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+        }
+
+        .social-avatar-info {
+            text-align: left;
+        }
+
+        .social-avatar-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--text-primary);
+        }
+
+        .social-avatar-handle {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* ======================= */
+        /* FOOTER */
+        /* ======================= */
+
+        .footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .footer-text {
+            font-family: 'Space Mono', monospace;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+        }
+
+        /* ======================= */
+        /* RESPONSIVE */
+        /* ======================= */
+
+        @media (max-width: 1024px) {
+            .grid-2, .grid-3, .color-grid, .icon-grid {
+                grid-template-columns: 1fr;
+            }
+            .mockup-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-logo {
+                font-size: 6rem;
+            }
+            .construction-logo {
+                font-size: 5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==================== -->
+    <!-- HERO / COVER -->
+    <!-- ==================== -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-tagline">Brand Identity System</div>
+            <div class="hero-logo">i<span class="z-overlap">z</span>zico</div>
+            <div class="hero-subtitle">Colocation made human</div>
+        </div>
+        <div class="hero-meta">
+            <span>Version 1.0</span>
+            <span>January 2026</span>
+            <span>Brussels, Belgium</span>
+        </div>
+    </section>
+
+    <div class="container">
+
+        <!-- ==================== -->
+        <!-- LOGO CONSTRUCTION -->
+        <!-- ==================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">01 / Logo Construction</div>
+                <h2 class="section-title">Wordmark Grid</h2>
+                <p class="section-subtitle">Le wordmark IzzIco est construit sur une grille precise qui definit les espacements entre chaque lettre et le chevauchement caracteristique des deux Z.</p>
+            </div>
+
+            <div class="construction-container">
+                <!-- Horizontal reference lines -->
+                <div class="h-lines">
+                    <div class="h-line cap-height">
+                        <span class="h-line-label">Cap Height</span>
+                    </div>
+                    <div class="h-line x-height">
+                        <span class="h-line-label">x-Height</span>
+                    </div>
+                    <div class="h-line baseline">
+                        <span class="h-line-label">Baseline</span>
+                    </div>
+                </div>
+
+                <div class="construction-grid">
+                    <!-- SVG Grid Lines Behind -->
+                    <svg class="grid-lines" viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" style="position: absolute; width: 100%; height: 100%;">
+                        <!-- Vertical lines for each letter boundary -->
+                        <line x1="100" y1="0" x2="100" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                        <line x1="160" y1="0" x2="160" y2="400" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+                        <line x1="220" y1="0" x2="220" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                        <line x1="300" y1="0" x2="300" y2="400" stroke="rgba(255,87,34,0.4)" stroke-width="1" stroke-dasharray="4,4"/>
+                        <line x1="380" y1="0" x2="380" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                        <line x1="440" y1="0" x2="440" y2="400" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+                        <line x1="520" y1="0" x2="520" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                        <line x1="620" y1="0" x2="620" y2="400" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                        <line x1="700" y1="0" x2="700" y2="400" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+
+                        <!-- ZZ Overlap zone highlight -->
+                        <rect x="260" y="60" width="80" height="280" fill="rgba(255,87,34,0.05)" stroke="rgba(255,87,34,0.3)" stroke-width="1" stroke-dasharray="4,4"/>
+
+                        <!-- Measurement annotations -->
+                        <text x="130" y="390" fill="#555" font-family="Space Mono, monospace" font-size="10">i</text>
+                        <text x="260" y="390" fill="#FF5722" font-family="Space Mono, monospace" font-size="10">zz</text>
+                        <text x="410" y="390" fill="#555" font-family="Space Mono, monospace" font-size="10">i</text>
+                        <text x="490" y="390" fill="#555" font-family="Space Mono, monospace" font-size="10">c</text>
+                        <text x="580" y="390" fill="#555" font-family="Space Mono, monospace" font-size="10">o</text>
+                    </svg>
+
+                    <!-- Logo -->
+                    <div class="construction-logo">i<span class="z-overlap">z</span>zico</div>
+                </div>
+
+                <!-- Measurements below -->
+                <div class="measurements">
+                    <div class="measure-block" style="width: 60px;">1x</div>
+                    <div class="measure-block" style="width: 120px; border-color: var(--orange);">-0.15em</div>
+                    <div class="measure-block" style="width: 60px;">1x</div>
+                    <div class="measure-block" style="width: 80px;">1.2x</div>
+                    <div class="measure-block" style="width: 100px;">1.5x</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- BLUEPRINT SVG -->
+        <!-- ==================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">02 / Blueprint</div>
+                <h2 class="section-title">Vector Construction</h2>
+                <p class="section-subtitle">Representation vectorielle avec points d'ancrage et courbes de Bezier.</p>
+            </div>
+
+            <div class="blueprint-container">
+                <svg class="blueprint-svg" viewBox="0 0 900 200" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; max-width: 900px;">
+                    <!-- Background grid -->
+                    <defs>
+                        <pattern id="smallGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                            <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect width="900" height="200" fill="url(#smallGrid)"/>
+
+                    <!-- Horizontal guidelines -->
+                    <line x1="0" y1="30" x2="900" y2="30" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                    <line x1="0" y1="170" x2="900" y2="170" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+
+                    <!-- Letter: i (dot) -->
+                    <circle cx="60" cy="45" r="15" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="50" y="40" width="6" height="6" fill="white" transform="rotate(45 53 43)"/>
+                    <circle cx="75" cy="45" r="3" fill="none" stroke="rgba(255,87,34,0.6)" stroke-width="1"/>
+                    <line x1="60" y1="45" x2="75" y2="45" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+
+                    <!-- Letter: i (stem) -->
+                    <rect x="45" y="70" width="30" height="100" rx="15" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="42" y="67" width="6" height="6" fill="white" transform="rotate(45 45 70)"/>
+                    <rect x="72" y="67" width="6" height="6" fill="white" transform="rotate(45 75 70)"/>
+                    <rect x="42" y="167" width="6" height="6" fill="white" transform="rotate(45 45 170)"/>
+                    <rect x="72" y="167" width="6" height="6" fill="white" transform="rotate(45 75 170)"/>
+
+                    <!-- Letter: z (first) -->
+                    <path d="M100 70 L180 70 L180 85 L125 155 L180 155 L180 170 L100 170 L100 155 L155 85 L100 85 Z" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="97" y="67" width="6" height="6" fill="white" transform="rotate(45 100 70)"/>
+                    <rect x="177" y="67" width="6" height="6" fill="white" transform="rotate(45 180 70)"/>
+                    <rect x="97" y="167" width="6" height="6" fill="white" transform="rotate(45 100 170)"/>
+                    <rect x="177" y="167" width="6" height="6" fill="white" transform="rotate(45 180 170)"/>
+                    <circle cx="125" cy="155" r="3" fill="none" stroke="rgba(255,87,34,0.6)" stroke-width="1"/>
+                    <circle cx="155" cy="85" r="3" fill="none" stroke="rgba(255,87,34,0.6)" stroke-width="1"/>
+
+                    <!-- Letter: z (second - overlapped) -->
+                    <path d="M160 70 L240 70 L240 85 L185 155 L240 155 L240 170 L160 170 L160 155 L215 85 L160 85 Z" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="157" y="67" width="6" height="6" fill="white" transform="rotate(45 160 70)"/>
+                    <rect x="237" y="67" width="6" height="6" fill="white" transform="rotate(45 240 70)"/>
+                    <rect x="157" y="167" width="6" height="6" fill="white" transform="rotate(45 160 170)"/>
+                    <rect x="237" y="167" width="6" height="6" fill="white" transform="rotate(45 240 170)"/>
+
+                    <!-- ZZ Overlap indicator -->
+                    <rect x="155" y="65" width="30" height="110" fill="rgba(255,87,34,0.1)" stroke="rgba(255,87,34,0.4)" stroke-width="1" stroke-dasharray="3,3"/>
+                    <text x="162" y="58" fill="#FF5722" font-family="Space Mono, monospace" font-size="8">-0.15em</text>
+
+                    <!-- Letter: i -->
+                    <circle cx="290" cy="45" r="15" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="280" y="40" width="6" height="6" fill="white" transform="rotate(45 283 43)"/>
+                    <rect x="275" y="70" width="30" height="100" rx="15" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="272" y="67" width="6" height="6" fill="white" transform="rotate(45 275 70)"/>
+                    <rect x="302" y="67" width="6" height="6" fill="white" transform="rotate(45 305 70)"/>
+                    <rect x="272" y="167" width="6" height="6" fill="white" transform="rotate(45 275 170)"/>
+                    <rect x="302" y="167" width="6" height="6" fill="white" transform="rotate(45 305 170)"/>
+
+                    <!-- Letter: c -->
+                    <path d="M380 120 C380 90 355 70 330 70 C305 70 330 70 330 70" fill="none" stroke="white" stroke-width="2"/>
+                    <ellipse cx="360" cy="120" rx="40" ry="50" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="357" y="67" width="6" height="6" fill="white" transform="rotate(45 360 70)"/>
+                    <rect x="317" y="117" width="6" height="6" fill="white" transform="rotate(45 320 120)"/>
+                    <circle cx="395" cy="85" r="3" fill="none" stroke="rgba(255,87,34,0.6)" stroke-width="1"/>
+                    <circle cx="395" cy="155" r="3" fill="none" stroke="rgba(255,87,34,0.6)" stroke-width="1"/>
+                    <line x1="360" y1="70" x2="395" y2="85" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+                    <line x1="360" y1="170" x2="395" y2="155" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+
+                    <!-- Letter: o -->
+                    <ellipse cx="470" cy="120" rx="45" ry="50" fill="none" stroke="white" stroke-width="2"/>
+                    <ellipse cx="470" cy="120" rx="20" ry="25" fill="none" stroke="white" stroke-width="2"/>
+                    <rect x="422" y="117" width="6" height="6" fill="white" transform="rotate(45 425 120)"/>
+                    <rect x="512" y="117" width="6" height="6" fill="white" transform="rotate(45 515 120)"/>
+                    <rect x="467" y="67" width="6" height="6" fill="white" transform="rotate(45 470 70)"/>
+                    <rect x="467" y="167" width="6" height="6" fill="white" transform="rotate(45 470 170)"/>
+                    <circle cx="425" cy="90" r="3" fill="none" stroke="rgba(255,87,34,0.6)" stroke-width="1"/>
+                    <circle cx="515" cy="150" r="3" fill="none" stroke="rgba(255,87,34,0.6)" stroke-width="1"/>
+                    <line x1="470" y1="70" x2="425" y2="90" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+                    <line x1="470" y1="170" x2="515" y2="150" stroke="rgba(255,87,34,0.4)" stroke-width="1"/>
+                </svg>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- ICON VERSIONS -->
+        <!-- ==================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">03 / Icon System</div>
+                <h2 class="section-title">Icon Versions</h2>
+                <p class="section-subtitle">Variations de l'icone pour differents contextes d'utilisation.</p>
+            </div>
+
+            <div class="icon-grid">
+                <div class="icon-card">
+                    <div class="icon-preview gradient squircle">
+                        <span>iz</span>
+                    </div>
+                    <div class="icon-label">Application</div>
+                    <div class="icon-name">App Icon</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-preview dark circle">
+                        <span style="background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">iz</span>
+                    </div>
+                    <div class="icon-label">Social Media</div>
+                    <div class="icon-name">Profile Avatar</div>
+                </div>
+                <div class="icon-card">
+                    <div class="icon-preview light squircle">
+                        <span>iz</span>
+                    </div>
+                    <div class="icon-label">Light Mode</div>
+                    <div class="icon-name">Alternative</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- COLOR PALETTE -->
+        <!-- ==================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">04 / Color System</div>
+                <h2 class="section-title">Color Palette</h2>
+                <p class="section-subtitle">Les trois couleurs representent les trois types d'utilisateurs de la plateforme.</p>
+            </div>
+
+            <div class="color-grid">
+                <div class="color-card">
+                    <div class="color-swatch mauve"></div>
+                    <div class="color-info">
+                        <div class="color-name">Mauve / Owner</div>
+                        <div class="color-values">
+                            <div class="color-value">
+                                <span class="color-value-label">HEX</span>
+                                <span class="color-value-data">#9c5698</span>
+                            </div>
+                            <div class="color-value">
+                                <span class="color-value-label">RGB</span>
+                                <span class="color-value-data">156, 86, 152</span>
+                            </div>
+                        </div>
+                        <div class="opacity-row">
+                            <div class="opacity-block" style="background: rgba(156, 86, 152, 0.25); color: #9c5698;">25%</div>
+                            <div class="opacity-block" style="background: rgba(156, 86, 152, 0.50); color: white;">50%</div>
+                            <div class="opacity-block" style="background: rgba(156, 86, 152, 0.75); color: white;">75%</div>
+                            <div class="opacity-block" style="background: #9c5698; color: white;">100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-swatch orange"></div>
+                    <div class="color-info">
+                        <div class="color-name">Orange / Resident</div>
+                        <div class="color-values">
+                            <div class="color-value">
+                                <span class="color-value-label">HEX</span>
+                                <span class="color-value-data">#FF5722</span>
+                            </div>
+                            <div class="color-value">
+                                <span class="color-value-label">RGB</span>
+                                <span class="color-value-data">255, 87, 34</span>
+                            </div>
+                        </div>
+                        <div class="opacity-row">
+                            <div class="opacity-block" style="background: rgba(255, 87, 34, 0.25); color: #FF5722;">25%</div>
+                            <div class="opacity-block" style="background: rgba(255, 87, 34, 0.50); color: white;">50%</div>
+                            <div class="opacity-block" style="background: rgba(255, 87, 34, 0.75); color: white;">75%</div>
+                            <div class="opacity-block" style="background: #FF5722; color: white;">100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="color-card">
+                    <div class="color-swatch jaune"></div>
+                    <div class="color-info">
+                        <div class="color-name">Jaune / Searcher</div>
+                        <div class="color-values">
+                            <div class="color-value">
+                                <span class="color-value-label">HEX</span>
+                                <span class="color-value-data">#FFB10B</span>
+                            </div>
+                            <div class="color-value">
+                                <span class="color-value-label">RGB</span>
+                                <span class="color-value-data">255, 177, 11</span>
+                            </div>
+                        </div>
+                        <div class="opacity-row">
+                            <div class="opacity-block" style="background: rgba(255, 177, 11, 0.25); color: #FFB10B;">25%</div>
+                            <div class="opacity-block" style="background: rgba(255, 177, 11, 0.50); color: #1a1a1a;">50%</div>
+                            <div class="opacity-block" style="background: rgba(255, 177, 11, 0.75); color: #1a1a1a;">75%</div>
+                            <div class="opacity-block" style="background: #FFB10B; color: #1a1a1a;">100%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gradient Card -->
+            <div class="color-card" style="margin-top: 2rem;">
+                <div class="color-swatch gradient" style="height: 120px;"></div>
+                <div class="color-info">
+                    <div class="color-name">Gradient Signature</div>
+                    <div class="color-values">
+                        <div class="color-value">
+                            <span class="color-value-label">CSS</span>
+                            <span class="color-value-data">linear-gradient(90deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- CLEARSPACE -->
+        <!-- ==================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">05 / Clearspace</div>
+                <h2 class="section-title">Protection Zone</h2>
+                <p class="section-subtitle">Zone de protection minimale autour du logo pour garantir sa lisibilite.</p>
+            </div>
+
+            <div class="clearspace-container">
+                <div class="clearspace-box">
+                    <span class="clearspace-label top">Clearspace = 1x hauteur du "i"</span>
+                    <span class="clearspace-label left">1x</span>
+                    <div class="clearspace-marker top-left">x</div>
+                    <div class="clearspace-marker top-right">x</div>
+                    <div class="clearspace-marker bottom-left">x</div>
+                    <div class="clearspace-marker bottom-right">x</div>
+                    <div class="clearspace-logo">i<span class="z-overlap">z</span>zico</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- TYPOGRAPHY -->
+        <!-- ==================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">06 / Typography</div>
+                <h2 class="section-title">Type System</h2>
+                <p class="section-subtitle">Systeme typographique base sur Fredoka (titres) et DM Sans (corps).</p>
+            </div>
+
+            <div class="typo-showcase">
+                <div class="typo-primary">
+                    <div class="typo-font-name">Fredoka</div>
+                    <div class="typo-alphabet">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+                    <div class="typo-alphabet">abcdefghijklmnopqrstuvwxyz</div>
+                    <div class="typo-alphabet">0123456789 !@#$%&*()</div>
+
+                    <div class="typo-weights">
+                        <div class="typo-weight">
+                            <div class="typo-weight-sample" style="font-weight: 300;">Aa</div>
+                            <div class="typo-weight-name">Light / 300</div>
+                        </div>
+                        <div class="typo-weight">
+                            <div class="typo-weight-sample" style="font-weight: 400;">Aa</div>
+                            <div class="typo-weight-name">Regular / 400</div>
+                        </div>
+                        <div class="typo-weight">
+                            <div class="typo-weight-sample" style="font-weight: 500;">Aa</div>
+                            <div class="typo-weight-name">Medium / 500</div>
+                        </div>
+                        <div class="typo-weight">
+                            <div class="typo-weight-sample" style="font-weight: 600;">Aa</div>
+                            <div class="typo-weight-name">SemiBold / 600</div>
+                        </div>
+                        <div class="typo-weight">
+                            <div class="typo-weight-sample" style="font-weight: 700;">Aa</div>
+                            <div class="typo-weight-name">Bold / 700</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <div class="typo-font-name" style="font-family: 'DM Sans', sans-serif; font-size: 4rem;">DM Sans</div>
+                    <div class="typo-alphabet" style="font-family: 'DM Sans', sans-serif;">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+                    <div class="typo-alphabet" style="font-family: 'DM Sans', sans-serif;">abcdefghijklmnopqrstuvwxyz</div>
+                    <div class="typo-alphabet" style="font-family: 'DM Sans', sans-serif;">0123456789 !@#$%&*()</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- MOCKUPS -->
+        <!-- ==================== -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">07 / Applications</div>
+                <h2 class="section-title">Mockups</h2>
+                <p class="section-subtitle">Applications de l'identite sur differents supports.</p>
+            </div>
+
+            <div class="mockup-grid">
+                <div class="mockup-card">
+                    <div class="mockup-preview gradient-bg">
+                        <div class="app-store-mock">
+                            <div class="app-store-icon">
+                                <span>iz</span>
+                            </div>
+                            <div class="app-store-name">IzzIco</div>
+                            <div class="app-store-tagline">Colocation made human</div>
+                        </div>
+                    </div>
+                    <div class="mockup-label">App Store Card</div>
+                </div>
+                <div class="mockup-card">
+                    <div class="mockup-preview dark-bg">
+                        <div class="social-avatar-mock">
+                            <div class="social-avatar-img">
+                                <span>iz</span>
+                            </div>
+                            <div class="social-avatar-info">
+                                <div class="social-avatar-name">IzzIco</div>
+                                <div class="social-avatar-handle">@izzico.be</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mockup-label">Social Profile</div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-logo">i<span style="letter-spacing: -0.15em;">z</span>zico</div>
+        <div class="footer-text">Brand Identity System / 2026</div>
+    </footer>
+
+</body>
+</html>

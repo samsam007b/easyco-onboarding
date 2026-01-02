@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Stroke Width Calibration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --success: #10b981;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .hint {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #a5b4fc;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-section {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+        }
+
+        .comparison-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .calibration-area {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            background: var(--bg-control);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .fredoka-reference {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: white;
+            line-height: 1;
+            position: relative;
+        }
+
+        .overlay-bar {
+            position: absolute;
+            background: rgba(99, 102, 241, 0.5);
+            pointer-events: none;
+        }
+
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .compare-box {
+            background: var(--bg-control);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .compare-box h4 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .compare-box.highlight {
+            border: 2px solid var(--accent);
+        }
+
+        .match-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            margin-top: 1rem;
+        }
+
+        .match-indicator.good {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+
+        .match-indicator.adjusting {
+            background: rgba(251, 191, 36, 0.15);
+            color: #fbbf24;
+        }
+
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.75rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.5rem;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+        .btn.success { background: var(--success); border-color: var(--success); }
+
+        .info-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            line-height: 1.5;
+        }
+
+        .specs-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+
+        .lockup-preview {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+        }
+
+        .lockup-preview .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 3rem;
+            color: white;
+            letter-spacing: -0.02em;
+        }
+
+        .lockup-preview .wordmark .l-z { font-weight: 540; }
+        .lockup-preview .wordmark .l-c { font-weight: 540; }
+        .lockup-preview .wordmark .l-o { font-weight: 540; }
+        .lockup-preview .wordmark .zz-space { margin-right: -0.18em; }
+
+        .ratio-display {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .ratio-display .value {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--accent);
+            font-family: monospace;
+        }
+
+        .ratio-display .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .visual-guide {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+
+        .guide-item {
+            text-align: center;
+        }
+
+        .guide-item span {
+            display: block;
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div>
+                <h1>Calibration Epaisseur des Traits</h1>
+                <div class="hint">
+                    <strong>Objectif :</strong> Faire correspondre l'epaisseur des traits de l'icone avec la largeur de la barre du "i" Fredoka 600.<br>
+                    <strong>Methode :</strong> Superposer une barre SVG sur le "i" jusqu'a correspondance parfaite.
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Superposition pour calibration</h3>
+                <div class="calibration-area" id="calibration-area">
+                    <div style="position: relative; display: inline-block;">
+                        <span class="fredoka-reference" id="fredoka-i" style="font-size: 300px;">i</span>
+                        <div id="overlay-container" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></div>
+                    </div>
+                </div>
+                <div class="match-indicator adjusting" id="match-indicator">
+                    Ajustez l'epaisseur jusqu'a ce que la barre violette recouvre exactement la barre du "i"
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Comparaison cote a cote</h3>
+                <div class="side-by-side">
+                    <div class="compare-box">
+                        <h4>Fredoka "i" (reference)</h4>
+                        <span class="fredoka-reference" style="font-size: 200px;">i</span>
+                    </div>
+                    <div class="compare-box highlight">
+                        <h4>Barre SVG calibree</h4>
+                        <div id="svg-bar-preview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Application a l'icone</h3>
+                <div class="side-by-side">
+                    <div class="compare-box">
+                        <h4>Icone avec nouvelles epaisseurs</h4>
+                        <div id="icon-preview"></div>
+                    </div>
+                    <div class="compare-box">
+                        <h4>Lockup final</h4>
+                        <div class="lockup-preview">
+                            <div id="lockup-icon"></div>
+                            <div class="wordmark">
+                                <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="panel-section">
+                <div class="section-title">Epaisseur globale</div>
+
+                <div class="control-row">
+                    <span class="control-label">Stroke width</span>
+                    <input type="range" id="stroke-width" min="4" max="12" step="0.1" value="7.5">
+                    <span class="control-value" id="stroke-width-val">7.5</span>
+                </div>
+
+                <div class="info-box">
+                    Cette valeur sera utilisee pour :<br>
+                    - Cercle (tete)<br>
+                    - Manche loupe<br>
+                    - Tige cle<br>
+                    - Arc du buste<br><br>
+                    <strong>Dents de cle :</strong> 50% de cette valeur
+                </div>
+
+                <div class="ratio-display">
+                    <div class="value" id="ratio-value">7.5</div>
+                    <div class="label">stroke-width pour viewBox 100x100</div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Alignement de l'overlay</div>
+
+                <div class="control-row">
+                    <span class="control-label">Position X</span>
+                    <input type="range" id="overlay-x" min="0" max="100" step="1" value="50">
+                    <span class="control-value" id="overlay-x-val">50%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Haut</span>
+                    <input type="range" id="overlay-top" min="20" max="60" step="1" value="38">
+                    <span class="control-value" id="overlay-top-val">38%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Bas</span>
+                    <input type="range" id="overlay-bottom" min="60" max="95" step="1" value="82">
+                    <span class="control-value" id="overlay-bottom-val">82%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Font-size</span>
+                    <input type="range" id="font-size" min="100" max="400" step="10" value="300">
+                    <span class="control-value" id="font-size-val">300px</span>
+                </div>
+
+                <div class="info-box">
+                    Ajustez la position de l'overlay pour qu'il recouvre exactement la barre du "i".
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Proportions (verrouillees)</div>
+                <div class="info-box">
+                    Cercle: cy=41, r=15<br>
+                    Loupe: len=21, angle=139deg<br>
+                    Cle: len=21, angle=36deg<br>
+                    Buste: gap=2, w=35, h=21<br>
+                    Terminaisons: 85% (squircle)
+                </div>
+            </div>
+
+            <div class="panel-section" style="border-bottom: none;">
+                <div class="section-title">Configuration finale</div>
+                <div class="specs-box" id="specs-display"></div>
+                <button class="btn primary" id="copy-specs" style="margin-top: 1rem;">Copier les specs</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LOCKED SPECS - Typography-matched to Fredoka 600
+        var globalStroke = 13;  // LOCKED: Fredoka 600 stem ratio = 13%
+        var fontSize = 300;
+        var capRoundness = 100; // LOCKED: stroke-linecap: round
+        var overlayX = 50;
+        var overlayTop = 38;
+        var overlayBottom = 82;
+
+        var SPECS = {
+            circle: { cy: 41, r: 15 },
+            loupe: { length: 21, angle: 139 },
+            key: { length: 21, angle: 36, teeth: 2, teethSize: 7, teethStroke: 6.5 },
+            bust: { gap: 2, width: 35, height: 21 }
+        };
+
+        function createSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(function(k) {
+                el.setAttribute(k, attrs[k]);
+            });
+            return el;
+        }
+
+        function clearElement(el) {
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+        }
+
+        function createStyledLine(x1, y1, x2, y2, strokeWidth, roundness, color) {
+            color = color || '#ffffff';
+            var dx = x2 - x1;
+            var dy = y2 - y1;
+            var len = Math.sqrt(dx * dx + dy * dy);
+            var angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            var hw = strokeWidth / 2;
+
+            if (roundness >= 95) {
+                return createSVG('line', {
+                    x1: x1, y1: y1, x2: x2, y2: y2,
+                    stroke: color,
+                    'stroke-width': strokeWidth,
+                    'stroke-linecap': 'round'
+                });
+            } else if (roundness <= 5) {
+                return createSVG('line', {
+                    x1: x1, y1: y1, x2: x2, y2: y2,
+                    stroke: color,
+                    'stroke-width': strokeWidth,
+                    'stroke-linecap': 'butt'
+                });
+            } else {
+                var radius = hw * (roundness / 100);
+                var g = createSVG('g', {});
+                var rect = createSVG('rect', {
+                    x: -len / 2,
+                    y: -hw,
+                    width: len,
+                    height: strokeWidth,
+                    rx: radius,
+                    ry: radius,
+                    fill: color
+                });
+                var cx = (x1 + x2) / 2;
+                var cy = (y1 + y2) / 2;
+                g.setAttribute('transform', 'translate(' + cx + ', ' + cy + ') rotate(' + angle + ')');
+                g.appendChild(rect);
+                return g;
+            }
+        }
+
+        function createStyledBust(cx, bustTop, bustWidth, bustHeight, strokeWidth, roundness, color) {
+            color = color || '#ffffff';
+            var linecap = roundness >= 50 ? 'round' : 'butt';
+            return createSVG('path', {
+                d: 'M ' + (cx - bustWidth / 2) + ' ' + (bustTop + bustHeight) + ' Q ' + cx + ' ' + bustTop + ' ' + (cx + bustWidth / 2) + ' ' + (bustTop + bustHeight),
+                fill: 'none',
+                stroke: color,
+                'stroke-width': strokeWidth,
+                'stroke-linecap': linecap
+            });
+        }
+
+        function createIcon(size, color, stroke) {
+            size = size || 200;
+            color = color || '#ffffff';
+            stroke = stroke || globalStroke;
+
+            var svg = createSVG('svg', {
+                viewBox: '0 0 100 100',
+                width: size,
+                height: size,
+                fill: 'none'
+            });
+
+            var cx = 50;
+            var cy = SPECS.circle.cy;
+            var r = SPECS.circle.r;
+
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: r,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': stroke
+            }));
+
+            var loupeAngleRad = (SPECS.loupe.angle * Math.PI) / 180;
+            var loupeStartX = cx + r * Math.cos(loupeAngleRad);
+            var loupeStartY = cy + r * Math.sin(loupeAngleRad);
+            var loupeEndX = loupeStartX + SPECS.loupe.length * Math.cos(loupeAngleRad);
+            var loupeEndY = loupeStartY + SPECS.loupe.length * Math.sin(loupeAngleRad);
+
+            svg.appendChild(createStyledLine(
+                loupeStartX, loupeStartY, loupeEndX, loupeEndY,
+                stroke, capRoundness, color
+            ));
+
+            var keyAngleRad = (SPECS.key.angle * Math.PI) / 180;
+            var keyStartX = cx + r * Math.cos(keyAngleRad);
+            var keyStartY = cy + r * Math.sin(keyAngleRad);
+            var keyEndX = keyStartX + SPECS.key.length * Math.cos(keyAngleRad);
+            var keyEndY = keyStartY + SPECS.key.length * Math.sin(keyAngleRad);
+
+            svg.appendChild(createStyledLine(
+                keyStartX, keyStartY, keyEndX, keyEndY,
+                stroke, capRoundness, color
+            ));
+
+            var teethStroke = stroke * 0.5;
+            var teethAngle = keyAngleRad + Math.PI / 2;
+            for (var i = 0; i < SPECS.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var toothX = keyStartX + (keyEndX - keyStartX) * t;
+                var toothY = keyStartY + (keyEndY - keyStartY) * t;
+                var toothEndX = toothX + SPECS.key.teethSize * Math.cos(teethAngle);
+                var toothEndY = toothY + SPECS.key.teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createStyledLine(
+                    toothX, toothY, toothEndX, toothEndY,
+                    teethStroke, capRoundness, color
+                ));
+            }
+
+            var bustTop = cy + r + SPECS.bust.gap;
+            svg.appendChild(createStyledBust(
+                cx, bustTop, SPECS.bust.width, SPECS.bust.height,
+                stroke, capRoundness, color
+            ));
+
+            return svg;
+        }
+
+        function createBarPreview(height, strokeWidth, color) {
+            color = color || '#ffffff';
+            var svg = createSVG('svg', {
+                viewBox: '0 0 40 100',
+                width: height * 0.4,
+                height: height
+            });
+
+            svg.appendChild(createStyledLine(20, 15, 20, 85, strokeWidth * (100 / 100), capRoundness, color));
+
+            return svg;
+        }
+
+        function updateOverlay() {
+            var container = document.getElementById('overlay-container');
+            clearElement(container);
+
+            var fredokaI = document.getElementById('fredoka-i');
+            var rect = fredokaI.getBoundingClientRect();
+
+            var barWidthRatio = globalStroke / 100;
+            var barWidth = rect.height * barWidthRatio;
+
+            var svg = createSVG('svg', {
+                width: '100%',
+                height: '100%',
+                style: 'position: absolute; top: 0; left: 0;'
+            });
+
+            var stemX = rect.width * (overlayX / 100);
+            var stemTopY = rect.height * (overlayTop / 100);
+            var stemBottomY = rect.height * (overlayBottom / 100);
+            var stemHeight = stemBottomY - stemTopY;
+
+            var hw = barWidth / 2;
+            var radius = hw * (capRoundness / 100);
+
+            var overlayRect = createSVG('rect', {
+                x: stemX - hw,
+                y: stemTopY,
+                width: barWidth,
+                height: stemHeight,
+                rx: radius,
+                ry: radius,
+                fill: 'rgba(99, 102, 241, 0.6)'
+            });
+
+            svg.appendChild(overlayRect);
+            container.appendChild(svg);
+        }
+
+        function render() {
+            document.getElementById('fredoka-i').style.fontSize = fontSize + 'px';
+
+            updateOverlay();
+
+            var svgBarPreview = document.getElementById('svg-bar-preview');
+            clearElement(svgBarPreview);
+            svgBarPreview.appendChild(createBarPreview(200, globalStroke, '#ffffff'));
+
+            var iconPreview = document.getElementById('icon-preview');
+            clearElement(iconPreview);
+            iconPreview.appendChild(createIcon(180, '#ffffff', globalStroke));
+
+            var lockupIcon = document.getElementById('lockup-icon');
+            clearElement(lockupIcon);
+            lockupIcon.appendChild(createIcon(60, '#ffffff', globalStroke));
+
+            document.getElementById('ratio-value').textContent = globalStroke.toFixed(1);
+
+            updateSpecs();
+        }
+
+        function updateSpecs() {
+            var display = document.getElementById('specs-display');
+            var teethStroke = (globalStroke * 0.5).toFixed(1);
+
+            display.textContent = '/* EPAISSEURS CALIBREES */\n' +
+                'stroke-global: ' + globalStroke.toFixed(1) + '\n' +
+                'stroke-teeth: ' + teethStroke + ' (50%)\n\n' +
+                '/* APPLICATION */\n' +
+                'circle.stroke: ' + globalStroke.toFixed(1) + '\n' +
+                'loupe.stroke: ' + globalStroke.toFixed(1) + '\n' +
+                'key.stroke: ' + globalStroke.toFixed(1) + '\n' +
+                'bust.stroke: ' + globalStroke.toFixed(1) + '\n' +
+                'teeth.stroke: ' + teethStroke + '\n\n' +
+                '/* TERMINAISONS */\n' +
+                'cap-roundness: ' + capRoundness + '%\n\n' +
+                '/* PROPORTIONS */\n' +
+                'circle: cy=41, r=15\n' +
+                'loupe: len=21, angle=139deg\n' +
+                'key: len=21, angle=36deg\n' +
+                'bust: gap=2, w=35, h=21';
+        }
+
+        document.getElementById('stroke-width').addEventListener('input', function(e) {
+            globalStroke = parseFloat(e.target.value);
+            document.getElementById('stroke-width-val').textContent = globalStroke.toFixed(1);
+            render();
+        });
+
+        document.getElementById('font-size').addEventListener('input', function(e) {
+            fontSize = parseInt(e.target.value);
+            document.getElementById('font-size-val').textContent = fontSize + 'px';
+            render();
+        });
+
+        document.getElementById('overlay-x').addEventListener('input', function(e) {
+            overlayX = parseInt(e.target.value);
+            document.getElementById('overlay-x-val').textContent = overlayX + '%';
+            updateOverlay();
+        });
+
+        document.getElementById('overlay-top').addEventListener('input', function(e) {
+            overlayTop = parseInt(e.target.value);
+            document.getElementById('overlay-top-val').textContent = overlayTop + '%';
+            updateOverlay();
+        });
+
+        document.getElementById('overlay-bottom').addEventListener('input', function(e) {
+            overlayBottom = parseInt(e.target.value);
+            document.getElementById('overlay-bottom-val').textContent = overlayBottom + '%';
+            updateOverlay();
+        });
+
+        document.getElementById('copy-specs').addEventListener('click', function() {
+            var specs = document.getElementById('specs-display').textContent;
+            navigator.clipboard.writeText(specs);
+            alert('Specs copiees !');
+        });
+
+        window.addEventListener('resize', function() {
+            updateOverlay();
+        });
+
+        render();
+    </script>
+</body>
+</html>

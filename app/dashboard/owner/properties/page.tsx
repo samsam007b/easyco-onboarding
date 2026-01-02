@@ -44,6 +44,8 @@ export default function PropertiesManagement() {
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [properties, setProperties] = useState<Property[]>([]);
+  const [rentedPropertyIds, setRentedPropertyIds] = useState<Set<string>>(new Set());
+  const [applicationCounts, setApplicationCounts] = useState<Map<string, number>>(new Map());
   const [showAddPropertyModal, setShowAddPropertyModal] = useState(false);
   const [selectedProperties, setSelectedProperties] = useState<Set<string>>(new Set());
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
@@ -94,6 +96,37 @@ export default function PropertiesManagement() {
       const result = await getMyProperties();
       if (result.success && result.data) {
         setProperties(result.data);
+
+        const propertyIds = result.data.map(p => p.id);
+
+        // Fetch rented status from property_residents
+        const { data: residents } = await supabase
+          .from('property_residents')
+          .select('property_id')
+          .in('property_id', propertyIds)
+          .eq('is_active', true);
+
+        const rentedIds = new Set(residents?.map(r => r.property_id) || []);
+        setRentedPropertyIds(rentedIds);
+
+        // Fetch applications count per property
+        const [{ data: individualApps }, { data: groupApps }] = await Promise.all([
+          supabase
+            .from('applications')
+            .select('property_id')
+            .in('property_id', propertyIds),
+          supabase
+            .from('group_applications')
+            .select('property_id')
+            .in('property_id', propertyIds),
+        ]);
+
+        const appCounts = new Map<string, number>();
+        [...(individualApps || []), ...(groupApps || [])].forEach(app => {
+          const current = appCounts.get(app.property_id) || 0;
+          appCounts.set(app.property_id, current + 1);
+        });
+        setApplicationCounts(appCounts);
       }
     } catch (error: unknown) {
       toast.error(t?.toast?.loadError?.[language] || 'Erreur lors du chargement');
@@ -110,28 +143,31 @@ export default function PropertiesManagement() {
 
   // Transform properties to PropertyCardData format
   const propertyCards: PropertyCardData[] = useMemo(() => {
-    return properties.map((p) => ({
-      id: p.id,
-      title: p.title,
-      city: p.city,
-      address: p.address,
-      status: p.status as 'published' | 'draft' | 'archived',
-      monthlyRent: p.monthly_rent || 0,
-      bedrooms: p.bedrooms || 0,
-      bathrooms: p.bathrooms,
-      surface: p.surface_area,
-      mainImage: typeof p.images?.[0] === 'string' ? p.images[0] : p.images?.[0]?.url,
-      images: p.images?.map(img => typeof img === 'string' ? img : img.url),
-      views: p.views_count || 0,
-      inquiries: p.inquiries_count || 0,
-      applications: 0, // Would need to fetch from applications table
-      daysVacant: p.status === 'published' && p.created_at
-        ? Math.floor((Date.now() - new Date(p.created_at).getTime()) / (1000 * 60 * 60 * 24))
-        : undefined,
-      isRented: false, // Would need to check property_residents
-      createdAt: p.created_at ? new Date(p.created_at) : undefined,
-    }));
-  }, [properties]);
+    return properties.map((p) => {
+      const isRented = rentedPropertyIds.has(p.id);
+      return {
+        id: p.id,
+        title: p.title,
+        city: p.city,
+        address: p.address,
+        status: p.status as 'published' | 'draft' | 'archived',
+        monthlyRent: p.monthly_rent || 0,
+        bedrooms: p.bedrooms || 0,
+        bathrooms: p.bathrooms,
+        surface: p.surface_area,
+        mainImage: typeof p.images?.[0] === 'string' ? p.images[0] : p.images?.[0]?.url,
+        images: p.images?.map(img => typeof img === 'string' ? img : img.url),
+        views: p.views_count || 0,
+        inquiries: p.inquiries_count || 0,
+        applications: applicationCounts.get(p.id) || 0,
+        daysVacant: p.status === 'published' && !isRented && p.created_at
+          ? Math.floor((Date.now() - new Date(p.created_at).getTime()) / (1000 * 60 * 60 * 24))
+          : undefined,
+        isRented,
+        createdAt: p.created_at ? new Date(p.created_at) : undefined,
+      };
+    });
+  }, [properties, rentedPropertyIds, applicationCounts]);
 
   // Handle property actions
   const handlePropertyClick = (property: PropertyCardData) => {
@@ -250,10 +286,10 @@ export default function PropertiesManagement() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            {t?.loading?.title?.[language] || 'Chargement des propriétés...'}
+            {t?.loading?.title?.[language] || 'Loading properties...'}
           </h3>
           <p className="text-gray-600">
-            {t?.loading?.subtitle?.[language] || 'Préparation de vos annonces'}
+            {t?.loading?.subtitle?.[language] || 'Preparing your listings'}
           </p>
         </motion.div>
       </div>

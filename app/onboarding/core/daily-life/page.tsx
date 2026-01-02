@@ -58,23 +58,23 @@ export default function CoreDailyLifePage() {
 
   const handleContinue = () => {
     if (!occupationStatus) {
-      toast.error('Occupation status is required');
+      toast.error(t('coreOnboarding.dailyLife.errors.occupationRequired'));
       return;
     }
     if (!wakeUpTime) {
-      toast.error('Wake up time is required');
+      toast.error(t('coreOnboarding.dailyLife.errors.wakeUpRequired'));
       return;
     }
     if (!sleepTime) {
-      toast.error('Sleep time is required');
+      toast.error(t('coreOnboarding.dailyLife.errors.sleepRequired'));
       return;
     }
     if (!workSchedule) {
-      toast.error('Work schedule is required');
+      toast.error(t('coreOnboarding.dailyLife.errors.workScheduleRequired'));
       return;
     }
     if (hasPets && !petType.trim()) {
-      toast.error('Please specify your pet type');
+      toast.error(t('coreOnboarding.dailyLife.errors.petTypeRequired'));
       return;
     }
 
@@ -95,33 +95,33 @@ export default function CoreDailyLifePage() {
   const canContinue = occupationStatus && wakeUpTime && sleepTime && workSchedule && (!hasPets || petType);
 
   const occupationOptions = [
-    { value: 'student', label: 'Student' },
-    { value: 'employee', label: 'Employee' },
-    { value: 'remote', label: 'Remote Worker' },
-    { value: 'freelance', label: 'Freelance' },
-    { value: 'intern', label: 'Intern' },
-    { value: 'job_seeker', label: 'Job Seeker' },
-    { value: 'other', label: 'Other' },
+    { value: 'student', labelKey: 'student' },
+    { value: 'employee', labelKey: 'employee' },
+    { value: 'remote', labelKey: 'remote' },
+    { value: 'freelance', labelKey: 'freelance' },
+    { value: 'intern', labelKey: 'intern' },
+    { value: 'job_seeker', labelKey: 'jobSeeker' },
+    { value: 'other', labelKey: 'other' },
   ];
 
   const wakeUpOptions = [
-    { value: 'early', label: 'Early Bird', icon: <Sun className="w-5 h-5" />, desc: 'Before 7am' },
-    { value: 'moderate', label: 'Moderate', icon: <Sun className="w-5 h-5" />, desc: '7am - 9am' },
-    { value: 'late', label: 'Late Riser', icon: <Moon className="w-5 h-5" />, desc: 'After 9am' },
+    { value: 'early', labelKey: 'earlyBird', icon: <Sun className="w-5 h-5" />, descKey: 'before7am' },
+    { value: 'moderate', labelKey: 'moderate', icon: <Sun className="w-5 h-5" />, descKey: '7amTo9am' },
+    { value: 'late', labelKey: 'lateRiser', icon: <Moon className="w-5 h-5" />, descKey: 'after9am' },
   ];
 
   const sleepOptions = [
-    { value: 'early', label: 'Early', icon: <Moon className="w-5 h-5" />, desc: 'Before 11pm' },
-    { value: 'moderate', label: 'Moderate', icon: <Moon className="w-5 h-5" />, desc: '11pm - 1am' },
-    { value: 'late', label: 'Late', icon: <Moon className="w-5 h-5" />, desc: 'After 1am' },
+    { value: 'early', labelKey: 'early', icon: <Moon className="w-5 h-5" />, descKey: 'before11pm' },
+    { value: 'moderate', labelKey: 'moderate', icon: <Moon className="w-5 h-5" />, descKey: '11pmTo1am' },
+    { value: 'late', labelKey: 'late', icon: <Moon className="w-5 h-5" />, descKey: 'after1am' },
   ];
 
   const workScheduleOptions = [
-    { value: 'office', label: 'Office (9-5)' },
-    { value: 'hybrid', label: 'Hybrid' },
-    { value: 'remote', label: 'Remote' },
-    { value: 'flexible', label: 'Flexible Hours' },
-    { value: 'student', label: 'Student Schedule' },
+    { value: 'office', labelKey: 'office' },
+    { value: 'hybrid', labelKey: 'hybrid' },
+    { value: 'remote', labelKey: 'remote' },
+    { value: 'flexible', labelKey: 'flexible' },
+    { value: 'student', labelKey: 'studentSchedule' },
   ];
 
   return (
@@ -132,22 +132,22 @@ export default function CoreDailyLifePage() {
       progress={{
         current: 2,
         total: 4,
-        label: 'Step 2 of 4',
-        stepName: 'Daily Life',
+        label: t('coreOnboarding.dailyLife.progress'),
+        stepName: t('coreOnboarding.dailyLife.stepName'),
       }}
       isLoading={isLoading}
       loadingText={common.loading}
     >
       <OnboardingHeading
         role={role}
-        title="Your Daily Routine"
-        description="Help us understand your lifestyle and habits"
+        title={t('coreOnboarding.dailyLife.title')}
+        description={t('coreOnboarding.dailyLife.description')}
       />
 
       <div className="space-y-6">
         {/* Occupation Status */}
         <div>
-          <OnboardingLabel required>Occupation Status</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.dailyLife.occupationStatus')}</OnboardingLabel>
           <OnboardingGrid columns={2}>
             {occupationOptions.map((option) => (
               <OnboardingSelectionCard
@@ -156,7 +156,7 @@ export default function CoreDailyLifePage() {
                 selected={occupationStatus === option.value}
                 onClick={() => setOccupationStatus(option.value)}
               >
-                {option.label}
+                {t(`coreOnboarding.dailyLife.occupations.${option.labelKey}`)}
               </OnboardingSelectionCard>
             ))}
           </OnboardingGrid>
@@ -164,7 +164,7 @@ export default function CoreDailyLifePage() {
 
         {/* Wake Up Time */}
         <div>
-          <OnboardingLabel required>Typical Wake-Up Time</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.dailyLife.wakeUpTime')}</OnboardingLabel>
           <OnboardingGrid columns={3}>
             {wakeUpOptions.map((option) => (
               <OnboardingSelectionCard
@@ -175,8 +175,8 @@ export default function CoreDailyLifePage() {
               >
                 <div className="text-center">
                   <div className="flex justify-center mb-2 text-gray-600">{option.icon}</div>
-                  <div className="font-medium text-sm">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium text-sm">{t(`coreOnboarding.dailyLife.wakeUpOptions.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`coreOnboarding.dailyLife.wakeUpOptions.${option.descKey}`)}</div>
                 </div>
               </OnboardingSelectionCard>
             ))}
@@ -185,7 +185,7 @@ export default function CoreDailyLifePage() {
 
         {/* Sleep Time */}
         <div>
-          <OnboardingLabel required>Typical Bedtime</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.dailyLife.bedtime')}</OnboardingLabel>
           <OnboardingGrid columns={3}>
             {sleepOptions.map((option) => (
               <OnboardingSelectionCard
@@ -196,8 +196,8 @@ export default function CoreDailyLifePage() {
               >
                 <div className="text-center">
                   <div className="flex justify-center mb-2 text-gray-600">{option.icon}</div>
-                  <div className="font-medium text-sm">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium text-sm">{t(`coreOnboarding.dailyLife.bedtimeOptions.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`coreOnboarding.dailyLife.bedtimeOptions.${option.descKey}`)}</div>
                 </div>
               </OnboardingSelectionCard>
             ))}
@@ -206,7 +206,7 @@ export default function CoreDailyLifePage() {
 
         {/* Work Schedule */}
         <div>
-          <OnboardingLabel required>Work Schedule</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.dailyLife.workSchedule')}</OnboardingLabel>
           <OnboardingGrid columns={2}>
             {workScheduleOptions.map((option) => (
               <OnboardingSelectionCard
@@ -215,7 +215,7 @@ export default function CoreDailyLifePage() {
                 selected={workSchedule === option.value}
                 onClick={() => setWorkSchedule(option.value)}
               >
-                {option.label}
+                {t(`coreOnboarding.dailyLife.workScheduleOptions.${option.labelKey}`)}
               </OnboardingSelectionCard>
             ))}
           </OnboardingGrid>
@@ -223,7 +223,7 @@ export default function CoreDailyLifePage() {
 
         {/* Smoking */}
         <div>
-          <OnboardingLabel required>Do you smoke?</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.dailyLife.smoking')}</OnboardingLabel>
           <OnboardingGrid columns={2}>
             <OnboardingSelectionCard
               role={role}
@@ -232,7 +232,7 @@ export default function CoreDailyLifePage() {
             >
               <div className="flex items-center justify-center gap-2">
                 <CigaretteOff className="w-5 h-5" />
-                <span>Non-smoker</span>
+                <span>{t('coreOnboarding.dailyLife.smokingOptions.nonSmoker')}</span>
               </div>
             </OnboardingSelectionCard>
             <OnboardingSelectionCard
@@ -242,7 +242,7 @@ export default function CoreDailyLifePage() {
             >
               <div className="flex items-center justify-center gap-2">
                 <Cigarette className="w-5 h-5" />
-                <span>Smoker</span>
+                <span>{t('coreOnboarding.dailyLife.smokingOptions.smoker')}</span>
               </div>
             </OnboardingSelectionCard>
           </OnboardingGrid>
@@ -250,14 +250,14 @@ export default function CoreDailyLifePage() {
 
         {/* Pets */}
         <div>
-          <OnboardingLabel required>Do you have pets?</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.dailyLife.pets')}</OnboardingLabel>
           <OnboardingGrid columns={2}>
             <OnboardingSelectionCard
               role={role}
               selected={!hasPets}
               onClick={() => { setHasPets(false); setPetType(''); }}
             >
-              No pets
+              {t('coreOnboarding.dailyLife.petsOptions.noPets')}
             </OnboardingSelectionCard>
             <OnboardingSelectionCard
               role={role}
@@ -266,7 +266,7 @@ export default function CoreDailyLifePage() {
             >
               <div className="flex items-center justify-center gap-2">
                 <PawPrint className="w-5 h-5" />
-                <span>Yes, I have pets</span>
+                <span>{t('coreOnboarding.dailyLife.petsOptions.yesPets')}</span>
               </div>
             </OnboardingSelectionCard>
           </OnboardingGrid>
@@ -276,10 +276,10 @@ export default function CoreDailyLifePage() {
               <OnboardingInput
                 role={role}
                 type="text"
-                label="Pet Type"
+                label={t('coreOnboarding.dailyLife.petType')}
                 value={petType}
                 onChange={(e) => setPetType(e.target.value)}
-                placeholder="e.g., Dog, Cat, etc."
+                placeholder={t('coreOnboarding.dailyLife.petTypePlaceholder')}
                 required
               />
             </div>
@@ -289,13 +289,13 @@ export default function CoreDailyLifePage() {
         {/* Cleanliness */}
         <OnboardingSlider
           role={role}
-          label="Cleanliness Level"
+          label={t('coreOnboarding.dailyLife.cleanlinessLevel')}
           value={cleanliness}
           onChange={setCleanliness}
           min={1}
           max={10}
-          minLabel="Relaxed"
-          maxLabel="Spotless"
+          minLabel={t('coreOnboarding.dailyLife.cleanlinessOptions.relaxed')}
+          maxLabel={t('coreOnboarding.dailyLife.cleanlinessOptions.spotless')}
         />
       </div>
 

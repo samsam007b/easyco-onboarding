@@ -53,7 +53,7 @@ export default function ReferralsSettingsPage() {
       }
     } catch (error) {
       console.error('Error loading referral data:', error);
-      toast.error(t?.messages?.error?.[language] || 'Erreur lors du chargement des données');
+      toast.error(t?.messages?.error?.[language] || 'Error loading data');
     } finally {
       setIsLoading(false);
     }
@@ -85,7 +85,7 @@ export default function ReferralsSettingsPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 to-white">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -109,7 +109,7 @@ export default function ReferralsSettingsPage() {
               className="mb-6 rounded-full"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {t?.back?.[language] || 'Retour aux paramètres'}
+              {t?.back?.[language] || 'Back to settings'}
             </Button>
 
             <div className="text-center">
@@ -121,9 +121,9 @@ export default function ReferralsSettingsPage() {
                   <Gift className="w-8 h-8 text-white" />
                 </div>
               </div>
-              <h1 className="text-4xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'Parrainage'}</h1>
+              <h1 className="text-4xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'Referrals'}</h1>
               <p className="text-gray-600 text-lg">
-                {t?.subtitle?.[language] || 'Invitez vos amis et gagnez des mois d\'abonnement gratuits'}
+                {t?.subtitle?.[language] || 'Invite your friends and earn free subscription months'}
               </p>
             </div>
           </motion.div>
@@ -144,7 +144,7 @@ export default function ReferralsSettingsPage() {
               <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
                 <Users className="w-5 h-5 text-blue-600" />
               </div>
-              <span className="text-sm font-medium text-gray-600">{t?.stats?.invitations?.[language] || 'Invitations'}</span>
+              <span className="text-sm font-medium text-gray-600">{t?.stats?.invitations?.[language] || 'Invitations sent'}</span>
             </div>
             <p className="text-3xl font-bold text-gray-900">
               {stats?.total_referrals || 0}
@@ -156,7 +156,7 @@ export default function ReferralsSettingsPage() {
               <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
                 <Award className="w-5 h-5 text-green-600" />
               </div>
-              <span className="text-sm font-medium text-gray-600">{t?.stats?.successful?.[language] || 'Réussies'}</span>
+              <span className="text-sm font-medium text-gray-600">{t?.stats?.successful?.[language] || 'Successful'}</span>
             </div>
             <p className="text-3xl font-bold text-gray-900">
               {stats?.successful_referrals || 0}
@@ -168,7 +168,7 @@ export default function ReferralsSettingsPage() {
               <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-purple-600" />
               </div>
-              <span className="text-sm font-medium text-gray-600">{t?.stats?.monthsWon?.[language] || 'Mois gagnés'}</span>
+              <span className="text-sm font-medium text-gray-600">{t?.stats?.monthsWon?.[language] || 'Months earned'}</span>
             </div>
             <p className="text-3xl font-bold text-gray-900">
               {stats?.credits_earned || 0}
@@ -219,7 +219,7 @@ export default function ReferralsSettingsPage() {
                    }}>
                 <Gift className="w-5 h-5 text-white" />
               </div>
-              {t?.howItWorks?.title?.[language] || 'Comment ça marche ?'}
+              {t?.howItWorks?.title?.[language] || 'How it works'}
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -227,9 +227,9 @@ export default function ReferralsSettingsPage() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-green-200">
                   <Share2 className="w-6 h-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step1?.title?.[language] || 'Partagez votre code'}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step1?.title?.[language] || 'Share your code'}</h3>
                 <p className="text-sm text-gray-600">
-                  {t?.howItWorks?.step1?.description?.[language] || 'Envoyez votre code unique à vos amis par WhatsApp, email ou autre'}
+                  {t?.howItWorks?.step1?.description?.[language] || 'Send your unique code to friends via WhatsApp, email or other'}
                 </p>
               </div>
 
@@ -237,9 +237,9 @@ export default function ReferralsSettingsPage() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-blue-200">
                   <UserPlus className="w-6 h-6 text-blue-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step2?.title?.[language] || 'Ils s\'inscrivent'}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step2?.title?.[language] || 'They sign up'}</h3>
                 <p className="text-sm text-gray-600">
-                  {t?.howItWorks?.step2?.description?.[language] || 'Vos amis créent leur compte en utilisant votre code de parrainage'}
+                  {t?.howItWorks?.step2?.description?.[language] || 'Your friends create their account using your referral code'}
                 </p>
               </div>
 
@@ -247,30 +247,30 @@ export default function ReferralsSettingsPage() {
                 <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-purple-200">
                   <Sparkles className="w-6 h-6 text-purple-600" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step3?.title?.[language] || 'Vous êtes récompensés'}</h3>
+                <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step3?.title?.[language] || 'You get rewarded'}</h3>
                 <p className="text-sm text-gray-600">
-                  {t?.howItWorks?.step3?.description?.[language] || 'Une fois leur inscription finalisée, vous recevez tous les deux des mois gratuits'}
+                  {t?.howItWorks?.step3?.description?.[language] || 'Once their registration is complete, you both receive free months'}
                 </p>
               </div>
             </div>
 
             {/* Rewards table */}
             <div className="mt-8 bg-gray-50 rounded-2xl p-6 border border-gray-200">
-              <h3 className="font-semibold text-gray-900 mb-4">{t?.rewards?.title?.[language] || 'Récompenses'}</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">{t?.rewards?.title?.[language] || 'Rewards'}</h3>
               <div className="space-y-3">
                 <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-orange-100">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
                       <Home className="w-5 h-5 text-orange-600" />
                     </div>
-                    <span className="font-medium text-gray-900">{t?.rewards?.inviteResident?.[language] || 'Inviter un résident'}</span>
+                    <span className="font-medium text-gray-900">{t?.rewards?.inviteResident?.[language] || 'Invite a resident'}</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm text-gray-600">{t?.rewards?.you?.[language] || 'Vous'}: </span>
-                    <span className="font-bold text-orange-600">+2 {t?.rewards?.months?.[language] || 'mois'}</span>
+                    <span className="text-sm text-gray-600">{t?.rewards?.you?.[language] || 'You'}: </span>
+                    <span className="font-bold text-orange-600">+2 {t?.rewards?.months?.[language] || 'months'}</span>
                     <span className="text-gray-300 mx-2">|</span>
-                    <span className="text-sm text-gray-600">{t?.rewards?.them?.[language] || 'Lui'}: </span>
-                    <span className="font-bold text-orange-600">+1 {t?.rewards?.month?.[language] || 'mois'}</span>
+                    <span className="text-sm text-gray-600">{t?.rewards?.them?.[language] || 'Them'}: </span>
+                    <span className="font-bold text-orange-600">+1 {t?.rewards?.month?.[language] || 'month'}</span>
                   </div>
                 </div>
 
@@ -279,20 +279,20 @@ export default function ReferralsSettingsPage() {
                     <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
                       <Building2 className="w-5 h-5 text-purple-600" />
                     </div>
-                    <span className="font-medium text-gray-900">{t?.rewards?.inviteOwner?.[language] || 'Inviter un propriétaire'}</span>
+                    <span className="font-medium text-gray-900">{t?.rewards?.inviteOwner?.[language] || 'Invite an owner'}</span>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm text-gray-600">{t?.rewards?.you?.[language] || 'Vous'}: </span>
-                    <span className="font-bold text-purple-600">+3 {t?.rewards?.months?.[language] || 'mois'}</span>
+                    <span className="text-sm text-gray-600">{t?.rewards?.you?.[language] || 'You'}: </span>
+                    <span className="font-bold text-purple-600">+3 {t?.rewards?.months?.[language] || 'months'}</span>
                     <span className="text-gray-300 mx-2">|</span>
-                    <span className="text-sm text-gray-600">{t?.rewards?.them?.[language] || 'Lui'}: </span>
-                    <span className="font-bold text-purple-600">+1 {t?.rewards?.month?.[language] || 'mois'}</span>
+                    <span className="text-sm text-gray-600">{t?.rewards?.them?.[language] || 'Them'}: </span>
+                    <span className="font-bold text-purple-600">+1 {t?.rewards?.month?.[language] || 'month'}</span>
                   </div>
                 </div>
               </div>
 
               <p className="text-xs text-gray-500 mt-4 text-center">
-                {t?.rewards?.maxCredits?.[language] || 'Maximum 24 mois de crédits accumulables'}
+                {t?.rewards?.maxCredits?.[language] || 'Maximum 24 months of credits can be accumulated'}
               </p>
             </div>
           </div>

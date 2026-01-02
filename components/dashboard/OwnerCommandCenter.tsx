@@ -294,7 +294,7 @@ export default function OwnerCommandCenter() {
             propertyId: property.id,
             severity: leaseExpiringDays <= 14 ? 'critical' : 'warning',
             actionLabel: 'Renouveler',
-            actionPath: `/properties/${property.id}/lease`,
+            actionPath: `/dashboard/owner/leases?property=${property.id}`,
           });
 
           deadlinesTemp.push({
@@ -475,9 +475,9 @@ export default function OwnerCommandCenter() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            {owner?.loadingDashboard || 'Chargement du Command Center...'}
+            {owner?.loadingDashboard || 'Loading Command Center...'}
           </h3>
-          <p className="text-gray-600">{owner?.preparingData || 'Analyse de vos propriétés'}</p>
+          <p className="text-gray-600">{owner?.preparingData || 'Analyzing your properties'}</p>
         </div>
       </div>
     );
@@ -619,11 +619,11 @@ export default function OwnerCommandCenter() {
                       Exporter rapport
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => router.push('/dashboard/owner/analytics')}
+                      onClick={() => router.push('/dashboard/owner/finances')}
                       className="cursor-pointer"
                     >
                       <PieChart className="w-4 h-4 mr-2" style={{ color: '#8b5cf6' }} />
-                      Analytics avancées
+                      Analytics & Finances
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
                 </DropdownMenuContent>

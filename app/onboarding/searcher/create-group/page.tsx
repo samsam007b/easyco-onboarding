@@ -10,9 +10,11 @@ import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/auth/supabase-client';
 import { showErrorToast, showSuccessToast } from '@/lib/toast-helpers';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function CreateGroupPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
 
   const [isLoading, setIsLoading] = useState(false);
@@ -25,7 +27,7 @@ export default function CreateGroupPage() {
 
   const handleCreateGroup = async () => {
     if (!formData.name.trim()) {
-      showErrorToast('Please enter a group name');
+      showErrorToast(t('createGroup.errors.nameRequired'));
       return;
     }
 
@@ -35,7 +37,7 @@ export default function CreateGroupPage() {
       // Get current user
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        showErrorToast('You must be logged in to create a group');
+        showErrorToast(t('createGroup.errors.loginRequired'));
         router.push('/login');
         return;
       }
@@ -70,14 +72,14 @@ export default function CreateGroupPage() {
       // Store group ID in localStorage
       localStorage.setItem('current_group_id', group.id);
 
-      showSuccessToast('Group created successfully!', 'You can invite members after completing your profile');
+      showSuccessToast(t('createGroup.success.title'), t('createGroup.success.description'));
 
       // Continue to onboarding
       router.push('/onboarding/searcher/basic-info');
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error creating group:', error);
-      showErrorToast('Failed to create group', error.message);
+      showErrorToast(t('createGroup.errors.createFailed'), error.message);
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +100,7 @@ export default function CreateGroupPage() {
           className="mb-6 flex items-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          {t('createGroup.back')}
         </Button>
 
         {/* Header */}
@@ -107,10 +109,10 @@ export default function CreateGroupPage() {
             <Users className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Create Your Group
+            {t('createGroup.title')}
           </h1>
           <p className="text-lg text-gray-600">
-            Set up your group and invite friends to search for coliving together
+            {t('createGroup.subtitle')}
           </p>
         </div>
 
@@ -118,38 +120,38 @@ export default function CreateGroupPage() {
         <div className="bg-white rounded-3xl shadow-xl p-8 space-y-6">
           {/* Group Name */}
           <div className="space-y-2">
-            <Label htmlFor="name">Group Name *</Label>
+            <Label htmlFor="name">{t('createGroup.form.name.label')} *</Label>
             <Input
               id="name"
-              placeholder="e.g., Tech Friends Looking for Place"
+              placeholder={t('createGroup.form.name.placeholder')}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               maxLength={100}
             />
             <p className="text-sm text-gray-500">
-              Choose a name that describes your group
+              {t('createGroup.form.name.hint')}
             </p>
           </div>
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description">Description (Optional)</Label>
+            <Label htmlFor="description">{t('createGroup.form.description.label')}</Label>
             <Textarea
               id="description"
-              placeholder="Tell potential members about your group..."
+              placeholder={t('createGroup.form.description.placeholder')}
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               maxLength={500}
               rows={4}
             />
             <p className="text-sm text-gray-500">
-              {formData.description.length}/500 characters
+              {formData.description.length}/500 {t('createGroup.form.description.characters')}
             </p>
           </div>
 
           {/* Max Members */}
           <div className="space-y-2">
-            <Label htmlFor="maxMembers">Maximum Members</Label>
+            <Label htmlFor="maxMembers">{t('createGroup.form.maxMembers.label')}</Label>
             <select
               id="maxMembers"
               value={formData.maxMembers}
@@ -157,11 +159,11 @@ export default function CreateGroupPage() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             >
               {[2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                <option key={num} value={num}>{num} members</option>
+                <option key={num} value={num}>{num} {t('createGroup.form.maxMembers.members')}</option>
               ))}
             </select>
             <p className="text-sm text-gray-500">
-              How many people can join your group (including you)
+              {t('createGroup.form.maxMembers.hint')}
             </p>
           </div>
 
@@ -177,10 +179,10 @@ export default function CreateGroupPage() {
               />
               <div className="flex-1">
                 <Label htmlFor="requiresApproval" className="cursor-pointer font-medium">
-                  Require approval for new members
+                  {t('createGroup.form.approval.label')}
                 </Label>
                 <p className="text-sm text-gray-500 mt-1">
-                  If enabled, you'll need to approve anyone who wants to join your group
+                  {t('createGroup.form.approval.hint')}
                 </p>
               </div>
             </div>
@@ -191,11 +193,11 @@ export default function CreateGroupPage() {
             <div className="flex gap-3">
               <Check className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-blue-900">
-                <p className="font-medium mb-1">What happens next?</p>
+                <p className="font-medium mb-1">{t('createGroup.info.title')}</p>
                 <ul className="space-y-1 text-blue-800">
-                  <li>Complete your personal profile</li>
-                  <li>Invite friends to join your group</li>
-                  <li>Search and apply for properties together</li>
+                  <li>{t('createGroup.info.step1')}</li>
+                  <li>{t('createGroup.info.step2')}</li>
+                  <li>{t('createGroup.info.step3')}</li>
                 </ul>
               </div>
             </div>
@@ -209,14 +211,14 @@ export default function CreateGroupPage() {
               className="flex-1"
               disabled={isLoading}
             >
-              Cancel
+              {t('createGroup.buttons.cancel')}
             </Button>
             <Button
               onClick={handleCreateGroup}
               disabled={!formData.name.trim() || isLoading}
               className="flex-1"
             >
-              {isLoading ? 'Creating...' : 'Create Group & Continue'}
+              {isLoading ? t('createGroup.buttons.creating') : t('createGroup.buttons.create')}
             </Button>
           </div>
         </div>

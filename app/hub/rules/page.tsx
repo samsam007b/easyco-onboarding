@@ -130,7 +130,7 @@ export default function RulesPage() {
     if (!propertyId || !userId) return;
 
     if (!createForm.title || !createForm.description) {
-      alert(t?.errors?.fillRequired?.[language] || 'Veuillez remplir tous les champs obligatoires');
+      alert(t?.errors?.fillRequired?.[language] || 'Please fill in all required fields');
       return;
     }
 
@@ -145,11 +145,11 @@ export default function RulesPage() {
         resetCreateForm();
         await loadData();
       } else {
-        alert(result.error || (t?.errors?.creationError?.[language] || 'Erreur lors de la création'));
+        alert(result.error || (t?.errors?.creationError?.[language] || 'Error during creation'));
       }
     } catch (error) {
       console.error('[Rules] Create error:', error);
-      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'An error occurred');
     } finally {
       setIsCreating(false);
     }
@@ -172,18 +172,18 @@ export default function RulesPage() {
         resetVoteModal();
         await loadData();
       } else {
-        alert(result.error || (t?.errors?.voteError?.[language] || 'Erreur lors du vote'));
+        alert(result.error || (t?.errors?.voteError?.[language] || 'Error during vote'));
       }
     } catch (error) {
       console.error('[Rules] Vote error:', error);
-      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'An error occurred');
     } finally {
       setIsVoting(false);
     }
   };
 
   const handleFinalizeVoting = async (ruleId: string) => {
-    if (!confirm(t?.voting?.finalizeConfirm?.[language] || 'Voulez-vous finaliser ce vote ?')) return;
+    if (!confirm(t?.voting?.finalizeConfirm?.[language] || 'Do you want to finalize this vote?')) return;
 
     try {
       const result = await rulesService.finalizeVoting(ruleId);
@@ -192,11 +192,11 @@ export default function RulesPage() {
         console.log('[Rules] ✅ Voting finalized');
         await loadData();
       } else {
-        alert(result.error || (t?.errors?.finalizeError?.[language] || 'Erreur lors de la finalisation'));
+        alert(result.error || (t?.errors?.finalizeError?.[language] || 'Error during finalization'));
       }
     } catch (error) {
       console.error('[Rules] Finalize error:', error);
-      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'An error occurred');
     }
   };
 
@@ -226,7 +226,7 @@ export default function RulesPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -245,7 +245,7 @@ export default function RulesPage() {
             onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
-            ← {t?.backToHub?.[language] || 'Retour au hub'}
+            ← {t?.backToHub?.[language] || 'Back to hub'}
           </Button>
 
           <div className="flex items-center justify-between mb-6">
@@ -255,9 +255,9 @@ export default function RulesPage() {
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                  {t?.title?.[language] || 'Règles de la maison'}
+                  {t?.title?.[language] || 'House rules'}
                 </h1>
-                <p className="text-gray-600">{t?.subtitle?.[language] || 'Créez et votez sur les règles de vie en commun'}</p>
+                <p className="text-gray-600">{t?.subtitle?.[language] || 'Create and vote on shared living rules'}</p>
               </div>
             </div>
 
@@ -267,7 +267,7 @@ export default function RulesPage() {
               style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
-              {t?.proposeRule?.[language] || 'Proposer une règle'}
+              {t?.proposeRule?.[language] || 'Propose a rule'}
             </Button>
           </div>
 
@@ -281,7 +281,7 @@ export default function RulesPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.all?.[language] || 'Toutes'}</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.all?.[language] || 'All'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {(stats?.total_active || 0) +
                       (stats?.total_voting || 0) +
@@ -302,7 +302,7 @@ export default function RulesPage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.voting?.[language] || 'En vote'}</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.voting?.[language] || 'Voting'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.total_voting || 0}
                   </p>
@@ -329,7 +329,7 @@ export default function RulesPage() {
               />
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-[#5A9A7A]">{t?.stats?.active?.[language] || 'Actives'}</p>
+                  <p className="text-sm font-medium text-[#5A9A7A]">{t?.stats?.active?.[language] || 'Active'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.total_active || 0}
                   </p>
@@ -359,7 +359,7 @@ export default function RulesPage() {
               />
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-[#B06060]">{t?.stats?.rejected?.[language] || 'Rejetées'}</p>
+                  <p className="text-sm font-medium text-[#B06060]">{t?.stats?.rejected?.[language] || 'Rejected'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.total_rejected || 0}
                   </p>
@@ -427,10 +427,10 @@ export default function RulesPage() {
 
               <h3 className="text-xl font-bold text-gray-900 mb-2">
                 {filter === 'all'
-                  ? (t?.emptyState?.noRules?.[language] || 'Aucune règle')
-                  : (t?.emptyState?.noRulesFiltered?.[language]?.replace('{filter}', filter) || `Aucune règle ${filter}`)}
+                  ? (t?.emptyState?.noRules?.[language] || 'No rules')
+                  : (t?.emptyState?.noRulesFiltered?.[language]?.replace('{filter}', filter) || `No ${filter} rules`)}
               </h3>
-              <p className="text-gray-500 mb-6 max-w-sm mx-auto">{t?.emptyState?.proposeFirst?.[language] || 'Proposez la première règle de la maison'}</p>
+              <p className="text-gray-500 mb-6 max-w-sm mx-auto">{t?.emptyState?.proposeFirst?.[language] || 'Propose the first house rule'}</p>
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -442,7 +442,7 @@ export default function RulesPage() {
                   }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  {t?.proposeRule?.[language] || 'Proposer une règle'}
+                  {t?.proposeRule?.[language] || 'Propose a rule'}
                 </Button>
               </motion.div>
             </motion.div>
@@ -488,7 +488,7 @@ export default function RulesPage() {
                         <div className="flex flex-wrap items-center gap-4 text-xs text-gray-600 mb-3">
                           <div className="flex items-center gap-1">
                             <Users className="w-3 h-3" />
-                            {t?.ruleCard?.proposedBy?.[language] || 'Proposé par'} {rule.proposer_name}
+                            {t?.ruleCard?.proposedBy?.[language] || 'Proposed by'} {rule.proposer_name}
                           </div>
                           <div className="flex items-center gap-1">
                             <Clock className="w-3 h-3" />
@@ -528,11 +528,11 @@ export default function RulesPage() {
                             <div className="flex items-center gap-4 text-xs">
                               <div className="flex items-center gap-1 text-green-700">
                                 <ThumbsUp className="w-3 h-3" />
-                                {rule.votes_for} {t?.voting?.for?.[language] || 'Pour'}
+                                {rule.votes_for} {t?.voting?.for?.[language] || 'For'}
                               </div>
                               <div className="flex items-center gap-1 text-red-700">
                                 <ThumbsDown className="w-3 h-3" />
-                                {rule.votes_against} {t?.voting?.against?.[language] || 'Contre'}
+                                {rule.votes_against} {t?.voting?.against?.[language] || 'Against'}
                               </div>
                               <div className="flex items-center gap-1 text-gray-600">
                                 <Users className="w-3 h-3" />
@@ -558,8 +558,8 @@ export default function RulesPage() {
                               >
                                 <Vote className="w-3 h-3 mr-1" />
                                 {rule.has_voted
-                                  ? (t?.voting?.changeVote?.[language] || 'Changer mon vote')
-                                  : (t?.voting?.vote?.[language] || 'Voter')}
+                                  ? (t?.voting?.changeVote?.[language] || 'Change my vote')
+                                  : (t?.voting?.vote?.[language] || 'Vote')}
                               </Button>
 
                               {progress.can_finalize && (
@@ -569,7 +569,7 @@ export default function RulesPage() {
                                   className="rounded-full text-xs"
                                   onClick={() => handleFinalizeVoting(rule.id)}
                                 >
-                                  {t?.voting?.finalize?.[language] || 'Finaliser le vote'}
+                                  {t?.voting?.finalize?.[language] || 'Finalize vote'}
                                 </Button>
                               )}
                             </>
@@ -577,7 +577,7 @@ export default function RulesPage() {
 
                           {rule.user_vote && (
                             <Badge className={getVoteTypeInfo(rule.user_vote).bgColor}>
-                              {getVoteTypeInfo(rule.user_vote).emoji} {t?.voting?.youVoted?.[language] || 'Vous avez voté'}{' '}
+                              {getVoteTypeInfo(rule.user_vote).emoji} {t?.voting?.youVoted?.[language] || 'You voted'}{' '}
                               {getVoteTypeInfo(rule.user_vote).label.toLowerCase()}
                             </Badge>
                           )}
@@ -629,11 +629,11 @@ export default function RulesPage() {
                   </motion.div>
                   <div>
                     <h2 className="text-xl font-bold text-gray-900">
-                      {t?.createModal?.title?.[language] || 'Proposer une règle'}
+                      {t?.createModal?.title?.[language] || 'Propose a rule'}
                     </h2>
                     <p className="text-sm text-gray-500 flex items-center gap-1">
                       <Sparkles className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
-                      Crée une règle pour ta coloc
+                      {t?.createModal?.subtitle?.[language] || 'Create a rule for your coliving'}
                     </p>
                   </div>
                 </div>
@@ -662,12 +662,12 @@ export default function RulesPage() {
                     >
                       <MessageSquare className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
                     </div>
-                    {t?.createModal?.ruleTitle?.[language] || 'Titre'} *
+                    {t?.createModal?.ruleTitle?.[language] || 'Title'} *
                   </Label>
                   <Input
                     value={createForm.title}
                     onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
-                    placeholder={t?.createModal?.titlePlaceholder?.[language] || 'Ex: Pas de bruit après 22h'}
+                    placeholder={t?.createModal?.titlePlaceholder?.[language] || 'E.g.: No noise after 10pm'}
                     className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </div>
@@ -686,7 +686,7 @@ export default function RulesPage() {
                   <Textarea
                     value={createForm.description}
                     onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                    placeholder={t?.createModal?.descriptionPlaceholder?.[language] || 'Expliquez la règle en détail...'}
+                    placeholder={t?.createModal?.descriptionPlaceholder?.[language] || 'Explain the rule in detail...'}
                     className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all min-h-[100px]"
                   />
                 </div>
@@ -700,7 +700,7 @@ export default function RulesPage() {
                     >
                       <Users className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
                     </div>
-                    {t?.createModal?.category?.[language] || 'Catégorie'} *
+                    {t?.createModal?.category?.[language] || 'Category'} *
                   </Label>
                   <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2">
                     {RULE_CATEGORIES.map((cat) => (
@@ -731,7 +731,7 @@ export default function RulesPage() {
                     >
                       <Clock className="w-3.5 h-3.5" style={{ color: '#a855f7' }} />
                     </div>
-                    {t?.createModal?.votingDuration?.[language] || 'Durée du vote (jours)'}
+                    {t?.createModal?.votingDuration?.[language] || 'Voting duration (days)'}
                   </Label>
                   <Input
                     type="number"
@@ -744,7 +744,7 @@ export default function RulesPage() {
                     className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                   <p className="text-xs text-gray-500 mt-2">
-                    {t?.createModal?.votingEndsIn?.[language]?.replace('{days}', String(createForm.voting_duration_days || 7)) || `Le vote se terminera dans ${createForm.voting_duration_days || 7} jours`}
+                    {t?.createModal?.votingEndsIn?.[language]?.replace('{days}', String(createForm.voting_duration_days || 7)) || `Voting will end in ${createForm.voting_duration_days || 7} days`}
                   </p>
                 </div>
 
@@ -761,7 +761,7 @@ export default function RulesPage() {
                       style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#ff651e' }}
                       disabled={isCreating}
                     >
-                      {t?.createModal?.cancel?.[language] || 'Annuler'}
+                      {t?.createModal?.cancel?.[language] || 'Cancel'}
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -777,12 +777,12 @@ export default function RulesPage() {
                       {isCreating ? (
                         <>
                           <LoadingHouse size={20} className="mr-2" />
-                          {t?.createModal?.creating?.[language] || 'Création...'}
+                          {t?.createModal?.creating?.[language] || 'Creating...'}
                         </>
                       ) : (
                         <>
                           <Plus className="w-4 h-4 mr-2" />
-                          {t?.createModal?.submit?.[language] || 'Proposer la règle'}
+                          {t?.createModal?.submit?.[language] || 'Propose rule'}
                         </>
                       )}
                     </Button>
@@ -803,7 +803,7 @@ export default function RulesPage() {
             className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t?.voteModal?.title?.[language] || 'Voter'}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t?.voteModal?.title?.[language] || 'Vote'}</h2>
               <button
                 onClick={() => {
                   setShowVoteModal(false);
@@ -823,7 +823,7 @@ export default function RulesPage() {
             <div className="space-y-4">
               {/* Vote Options */}
               <div>
-                <Label>{t?.voteModal?.yourVote?.[language] || 'Votre vote'} *</Label>
+                <Label>{t?.voteModal?.yourVote?.[language] || 'Your vote'} *</Label>
                 <div className="grid grid-cols-3 gap-2 mt-2">
                   {VOTE_TYPES.map((voteType) => (
                     <button
@@ -847,11 +847,11 @@ export default function RulesPage() {
 
               {/* Comment */}
               <div>
-                <Label>{t?.voteModal?.comment?.[language] || 'Commentaire (optionnel)'}</Label>
+                <Label>{t?.voteModal?.comment?.[language] || 'Comment (optional)'}</Label>
                 <Textarea
                   value={voteComment}
                   onChange={(e) => setVoteComment(e.target.value)}
-                  placeholder={t?.voteModal?.commentPlaceholder?.[language] || 'Expliquez votre vote...'}
+                  placeholder={t?.voteModal?.commentPlaceholder?.[language] || 'Explain your vote...'}
                   className="rounded-xl min-h-[80px]"
                 />
               </div>
@@ -871,7 +871,7 @@ export default function RulesPage() {
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                 disabled={isVoting}
               >
-                {t?.voteModal?.cancel?.[language] || 'Annuler'}
+                {t?.voteModal?.cancel?.[language] || 'Cancel'}
               </Button>
               <Button
                 onClick={handleVote}
@@ -882,12 +882,12 @@ export default function RulesPage() {
                 {isVoting ? (
                   <>
                     <LoadingHouse size={20} className="mr-2" />
-                    {t?.voteModal?.voting?.[language] || 'Vote en cours...'}
+                    {t?.voteModal?.voting?.[language] || 'Voting...'}
                   </>
                 ) : (
                   <>
                     <Vote className="w-4 h-4 mr-2" />
-                    {t?.voteModal?.confirm?.[language] || 'Confirmer mon vote'}
+                    {t?.voteModal?.confirm?.[language] || 'Confirm my vote'}
                   </>
                 )}
               </Button>

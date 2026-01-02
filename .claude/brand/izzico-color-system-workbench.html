@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Color System Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            overflow-y: auto;
+        }
+
+        h1 { font-size: 1.25rem; font-weight: 500; }
+        h2 { font-size: 1rem; font-weight: 500; margin-bottom: 1rem; color: var(--text-muted); }
+
+        .role-colors-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+
+        .role-card {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .role-main-color {
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .role-shades { display: grid; grid-template-columns: repeat(5, 1fr); }
+
+        .shade {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .shade:hover { transform: scale(1.1); z-index: 1; border-radius: 4px; }
+
+        .role-info { padding: 1rem; border-top: 1px solid var(--border); }
+        .role-info .name { font-weight: 600; margin-bottom: 0.25rem; }
+        .role-info .hex { font-family: monospace; font-size: 0.8rem; color: var(--text-muted); }
+
+        .gradient-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+
+        .gradient-card {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .gradient-preview {
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gradient-preview svg { filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3)); }
+
+        .gradient-info { padding: 1rem; border-top: 1px solid var(--border); }
+        .gradient-info .name { font-weight: 600; margin-bottom: 0.5rem; }
+        .gradient-info code {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            display: block;
+            background: var(--bg-control);
+            padding: 0.5rem;
+            border-radius: 6px;
+            word-break: break-all;
+        }
+
+        .bg-section { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+        .bg-card {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .bg-preview {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .bg-info { padding: 0.75rem; border-top: 1px solid var(--border); text-align: center; }
+        .bg-info .name { font-size: 0.75rem; font-weight: 500; }
+        .bg-info .hex { font-family: monospace; font-size: 0.65rem; color: var(--text-muted); }
+
+        .text-section { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+
+        .text-card {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .text-preview { padding: 1.5rem; }
+        .text-preview h3 { font-family: 'Fredoka', sans-serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .text-preview p { font-size: 0.9rem; line-height: 1.5; }
+
+        .text-info { padding: 0.75rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .text-info .name { font-size: 0.75rem; }
+        .text-info .values { font-family: monospace; font-size: 0.65rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem; }
+
+        .logo-apps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+        .logo-app-card {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .logo-app-card .label {
+            position: absolute;
+            bottom: 0.5rem;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.7);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .control-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .panel-header h2 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; color: var(--text); }
+        .panel-header p { font-size: 0.75rem; color: var(--text-muted); }
+
+        .panel-section { margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+
+        .section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .color-picker-row { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+
+        .color-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 2px solid var(--border);
+            cursor: pointer;
+        }
+
+        .color-swatch:hover { border-color: white; }
+
+        .color-input {
+            flex: 1;
+            background: var(--bg-control);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.5rem;
+            color: var(--text);
+            font-family: monospace;
+            font-size: 0.8rem;
+        }
+
+        .color-label { width: 70px; font-size: 0.8rem; }
+
+        .info-box {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            margin-bottom: 1rem;
+        }
+
+        .specs-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            white-space: pre-wrap;
+            color: var(--text-muted);
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .btn {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .btn.primary { background: #6366f1; color: white; }
+        .btn.success { background: #10b981; color: white; }
+
+        .contrast-badge { font-size: 0.6rem; padding: 0.15rem 0.4rem; border-radius: 4px; }
+        .contrast-badge.pass { background: #10b981; color: white; }
+        .contrast-badge.fail { background: #ef4444; color: white; }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div><h1>Systeme de Couleurs - IzzIco</h1></div>
+
+            <section>
+                <h2>Couleurs des Roles</h2>
+                <div class="role-colors-grid" id="role-colors"></div>
+            </section>
+
+            <section>
+                <h2>Degrades</h2>
+                <div class="gradient-section" id="gradients"></div>
+            </section>
+
+            <section>
+                <h2>Fonds</h2>
+                <div class="bg-section" id="backgrounds"></div>
+            </section>
+
+            <section>
+                <h2>Texte et Contraste</h2>
+                <div class="text-section" id="text-samples"></div>
+            </section>
+
+            <section>
+                <h2>Applications du Logo</h2>
+                <div class="logo-apps" id="logo-apps"></div>
+            </section>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h2>Palette de Couleurs</h2>
+                <p>Ajustez les couleurs de la marque IzzIco</p>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Couleurs de Role</div>
+                <div class="info-box">Chaque role a une couleur distinctive pour une identification rapide.</div>
+
+                <div class="color-picker-row">
+                    <div class="color-label">Searcher</div>
+                    <input type="color" class="color-swatch" id="color-searcher" value="#FFB10B">
+                    <input type="text" class="color-input" id="hex-searcher" value="#FFB10B">
+                </div>
+
+                <div class="color-picker-row">
+                    <div class="color-label">Owner</div>
+                    <input type="color" class="color-swatch" id="color-owner" value="#9B59B6">
+                    <input type="text" class="color-input" id="hex-owner" value="#9B59B6">
+                </div>
+
+                <div class="color-picker-row">
+                    <div class="color-label">Resident</div>
+                    <input type="color" class="color-swatch" id="color-resident" value="#E67E22">
+                    <input type="text" class="color-input" id="hex-resident" value="#E67E22">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Fonds</div>
+
+                <div class="color-picker-row">
+                    <div class="color-label">Dark</div>
+                    <input type="color" class="color-swatch" id="color-bg-dark" value="#1a1a2e">
+                    <input type="text" class="color-input" id="hex-bg-dark" value="#1a1a2e">
+                </div>
+
+                <div class="color-picker-row">
+                    <div class="color-label">Light</div>
+                    <input type="color" class="color-swatch" id="color-bg-light" value="#f8f9fa">
+                    <input type="text" class="color-input" id="hex-bg-light" value="#f8f9fa">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Texte</div>
+
+                <div class="color-picker-row">
+                    <div class="color-label">Sur dark</div>
+                    <input type="color" class="color-swatch" id="color-text-dark" value="#ffffff">
+                    <input type="text" class="color-input" id="hex-text-dark" value="#ffffff">
+                </div>
+
+                <div class="color-picker-row">
+                    <div class="color-label">Sur light</div>
+                    <input type="color" class="color-swatch" id="color-text-light" value="#1a1a2e">
+                    <input type="text" class="color-input" id="hex-text-light" value="#1a1a2e">
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Configuration CSS</div>
+                <div class="specs-box" id="specs-display"></div>
+                <button class="btn primary" id="copy-specs">Copier CSS</button>
+            </div>
+
+            <button class="btn success" id="lock-colors">Verrouiller ces couleurs</button>
+        </div>
+    </div>
+
+    <script>
+        var colors = {
+            searcher: '#FFB10B',
+            owner: '#9B59B6',
+            resident: '#E67E22',
+            bgDark: '#1a1a2e',
+            bgLight: '#f8f9fa',
+            textDark: '#ffffff',
+            textLight: '#1a1a2e'
+        };
+
+        var ICON_SPECS = {
+            circle: { cy: 41, r: 15, stroke: 13 },
+            loupe: { length: 21, angle: 139, stroke: 13 },
+            key: { length: 21, angle: 36, stroke: 13, teeth: 2, teethSize: 7, teethStroke: 6.5 },
+            bust: { gap: 2, width: 35, height: 21, stroke: 13 }
+        };
+
+        function parseHex(hex) {
+            var match = hex.match(/^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i);
+            if (!match) return null;
+            return { r: parseInt(match[1], 16), g: parseInt(match[2], 16), b: parseInt(match[3], 16) };
+        }
+
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;
+            if (max === min) { h = s = 0; }
+            else {
+                var d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return { h: h * 360, s: s * 100, l: l * 100 };
+        }
+
+        function hslToHex(h, s, l) {
+            h /= 360; s /= 100; l /= 100;
+            var r, g, b;
+            if (s === 0) { r = g = b = l; }
+            else {
+                function hue2rgb(p, q, t) {
+                    if (t < 0) t += 1; if (t > 1) t -= 1;
+                    if (t < 1/6) return p + (q - p) * 6 * t;
+                    if (t < 1/2) return q;
+                    if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+                    return p;
+                }
+                var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                var p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1/3); g = hue2rgb(p, q, h); b = hue2rgb(p, q, h - 1/3);
+            }
+            return '#' + [r, g, b].map(function(x) {
+                var hex = Math.round(x * 255).toString(16);
+                return hex.length === 1 ? '0' + hex : hex;
+            }).join('');
+        }
+
+        function generateShades(hex, count) {
+            var rgb = parseHex(hex);
+            var hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+            var shades = [];
+            var lightnesses = [90, 70, 50, 35, 20];
+            for (var i = 0; i < count; i++) { shades.push(hslToHex(hsl.h, hsl.s, lightnesses[i])); }
+            return shades;
+        }
+
+        function getLuminance(hex) {
+            var rgb = parseHex(hex);
+            var a = [rgb.r, rgb.g, rgb.b].map(function(v) {
+                v /= 255;
+                return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+            });
+            return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+        }
+
+        function getContrastRatio(hex1, hex2) {
+            var l1 = getLuminance(hex1), l2 = getLuminance(hex2);
+            return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+        }
+
+        function createSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(function(k) { el.setAttribute(k, attrs[k]); });
+            return el;
+        }
+
+        function createIcon(size, color) {
+            var svg = createSVG('svg', { width: size, height: size, viewBox: '0 0 100 100' });
+            var cx = 50, cy = ICON_SPECS.circle.cy, r = ICON_SPECS.circle.r;
+
+            svg.appendChild(createSVG('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: color, 'stroke-width': ICON_SPECS.circle.stroke, 'stroke-linecap': 'round' }));
+
+            var loupeAngle = ICON_SPECS.loupe.angle * Math.PI / 180;
+            var lsx = cx + r * Math.cos(loupeAngle), lsy = cy + r * Math.sin(loupeAngle);
+            var lex = lsx + ICON_SPECS.loupe.length * Math.cos(loupeAngle), ley = lsy + ICON_SPECS.loupe.length * Math.sin(loupeAngle);
+            svg.appendChild(createSVG('line', { x1: lsx, y1: lsy, x2: lex, y2: ley, stroke: color, 'stroke-width': ICON_SPECS.loupe.stroke, 'stroke-linecap': 'round' }));
+
+            var keyAngle = ICON_SPECS.key.angle * Math.PI / 180;
+            var ksx = cx + r * Math.cos(keyAngle), ksy = cy - r * Math.sin(keyAngle);
+            var kex = ksx + ICON_SPECS.key.length * Math.cos(keyAngle), keyY = ksy - ICON_SPECS.key.length * Math.sin(keyAngle);
+            svg.appendChild(createSVG('line', { x1: ksx, y1: ksy, x2: kex, y2: keyY, stroke: color, 'stroke-width': ICON_SPECS.key.stroke, 'stroke-linecap': 'round' }));
+
+            var teethAngle = keyAngle + Math.PI / 2;
+            for (var i = 0; i < ICON_SPECS.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var tx = ksx + (kex - ksx) * t, ty = ksy + (keyY - ksy) * t;
+                var tex = tx + ICON_SPECS.key.teethSize * Math.cos(teethAngle), tey = ty - ICON_SPECS.key.teethSize * Math.sin(teethAngle);
+                svg.appendChild(createSVG('line', { x1: tx, y1: ty, x2: tex, y2: tey, stroke: color, 'stroke-width': ICON_SPECS.key.teethStroke, 'stroke-linecap': 'round' }));
+            }
+
+            var bustTop = cy + r + ICON_SPECS.bust.gap;
+            var bustPath = 'M ' + (cx - ICON_SPECS.bust.width/2) + ' ' + (bustTop + ICON_SPECS.bust.height) + ' Q ' + cx + ' ' + bustTop + ' ' + (cx + ICON_SPECS.bust.width/2) + ' ' + (bustTop + ICON_SPECS.bust.height);
+            svg.appendChild(createSVG('path', { d: bustPath, fill: 'none', stroke: color, 'stroke-width': ICON_SPECS.bust.stroke, 'stroke-linecap': 'round' }));
+
+            return svg;
+        }
+
+        function createMultiColorIcon(size) {
+            var svg = createSVG('svg', { width: size, height: size, viewBox: '0 0 100 100' });
+            var defs = createSVG('defs', {});
+            var gradient = createSVG('linearGradient', { id: 'circle-gradient', x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+            gradient.appendChild(createSVG('stop', { offset: '0%', 'stop-color': colors.searcher }));
+            gradient.appendChild(createSVG('stop', { offset: '50%', 'stop-color': colors.resident }));
+            gradient.appendChild(createSVG('stop', { offset: '100%', 'stop-color': colors.owner }));
+            defs.appendChild(gradient);
+            svg.appendChild(defs);
+
+            var cx = 50, cy = ICON_SPECS.circle.cy, r = ICON_SPECS.circle.r;
+
+            var loupeAngle = ICON_SPECS.loupe.angle * Math.PI / 180;
+            var lsx = cx + r * Math.cos(loupeAngle), lsy = cy + r * Math.sin(loupeAngle);
+            var lex = lsx + ICON_SPECS.loupe.length * Math.cos(loupeAngle), ley = lsy + ICON_SPECS.loupe.length * Math.sin(loupeAngle);
+            svg.appendChild(createSVG('line', { x1: lsx, y1: lsy, x2: lex, y2: ley, stroke: colors.searcher, 'stroke-width': ICON_SPECS.loupe.stroke, 'stroke-linecap': 'round' }));
+
+            var keyAngle = ICON_SPECS.key.angle * Math.PI / 180;
+            var ksx = cx + r * Math.cos(keyAngle), ksy = cy - r * Math.sin(keyAngle);
+            var kex = ksx + ICON_SPECS.key.length * Math.cos(keyAngle), keyY = ksy - ICON_SPECS.key.length * Math.sin(keyAngle);
+            svg.appendChild(createSVG('line', { x1: ksx, y1: ksy, x2: kex, y2: keyY, stroke: colors.owner, 'stroke-width': ICON_SPECS.key.stroke, 'stroke-linecap': 'round' }));
+
+            var teethAngle = keyAngle + Math.PI / 2;
+            for (var i = 0; i < ICON_SPECS.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var tx = ksx + (kex - ksx) * t, ty = ksy + (keyY - ksy) * t;
+                var tex = tx + ICON_SPECS.key.teethSize * Math.cos(teethAngle), tey = ty - ICON_SPECS.key.teethSize * Math.sin(teethAngle);
+                svg.appendChild(createSVG('line', { x1: tx, y1: ty, x2: tex, y2: tey, stroke: colors.owner, 'stroke-width': ICON_SPECS.key.teethStroke, 'stroke-linecap': 'round' }));
+            }
+
+            var bustTop = cy + r + ICON_SPECS.bust.gap;
+            var bustPath = 'M ' + (cx - ICON_SPECS.bust.width/2) + ' ' + (bustTop + ICON_SPECS.bust.height) + ' Q ' + cx + ' ' + bustTop + ' ' + (cx + ICON_SPECS.bust.width/2) + ' ' + (bustTop + ICON_SPECS.bust.height);
+            svg.appendChild(createSVG('path', { d: bustPath, fill: 'none', stroke: colors.resident, 'stroke-width': ICON_SPECS.bust.stroke, 'stroke-linecap': 'round' }));
+
+            svg.appendChild(createSVG('circle', { cx: cx, cy: cy, r: r, fill: 'none', stroke: 'url(#circle-gradient)', 'stroke-width': ICON_SPECS.circle.stroke, 'stroke-linecap': 'round' }));
+
+            return svg;
+        }
+
+        function clearElement(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+
+        function render() {
+            renderRoleColors();
+            renderGradients();
+            renderBackgrounds();
+            renderTextSamples();
+            renderLogoApps();
+            updateSpecs();
+        }
+
+        function renderRoleColors() {
+            var container = document.getElementById('role-colors');
+            clearElement(container);
+
+            var roles = [
+                { name: 'Searcher', key: 'searcher', desc: 'Chercheurs de logement' },
+                { name: 'Owner', key: 'owner', desc: 'Proprietaires' },
+                { name: 'Resident', key: 'resident', desc: 'Residents actuels' }
+            ];
+
+            roles.forEach(function(role) {
+                var card = document.createElement('div');
+                card.className = 'role-card';
+
+                var mainColor = document.createElement('div');
+                mainColor.className = 'role-main-color';
+                mainColor.style.background = colors[role.key];
+                mainColor.textContent = role.name;
+
+                var shades = document.createElement('div');
+                shades.className = 'role-shades';
+                var shadeColors = generateShades(colors[role.key], 5);
+                shadeColors.forEach(function(shade, i) {
+                    var shadeEl = document.createElement('div');
+                    shadeEl.className = 'shade';
+                    shadeEl.style.background = shade;
+                    shadeEl.style.color = i < 2 ? '#333' : '#fff';
+                    shadeEl.textContent = String((i + 1) * 100);
+                    shadeEl.title = shade;
+                    shadeEl.onclick = function() { navigator.clipboard.writeText(shade); };
+                    shades.appendChild(shadeEl);
+                });
+
+                var info = document.createElement('div');
+                info.className = 'role-info';
+                var nameEl = document.createElement('div');
+                nameEl.className = 'name';
+                nameEl.textContent = role.name;
+                var hexEl = document.createElement('div');
+                hexEl.className = 'hex';
+                hexEl.textContent = colors[role.key] + ' - ' + role.desc;
+                info.appendChild(nameEl);
+                info.appendChild(hexEl);
+
+                card.appendChild(mainColor);
+                card.appendChild(shades);
+                card.appendChild(info);
+                container.appendChild(card);
+            });
+        }
+
+        function renderGradients() {
+            var container = document.getElementById('gradients');
+            clearElement(container);
+
+            var gradients = [
+                { name: 'Signature', css: 'linear-gradient(135deg, ' + colors.searcher + ', ' + colors.resident + ', ' + colors.owner + ')' },
+                { name: 'Horizontal', css: 'linear-gradient(90deg, ' + colors.searcher + ', ' + colors.resident + ', ' + colors.owner + ')' },
+                { name: 'Radial', css: 'radial-gradient(circle, ' + colors.searcher + ', ' + colors.resident + ', ' + colors.owner + ')' },
+                { name: 'Searcher-Resident', css: 'linear-gradient(135deg, ' + colors.searcher + ', ' + colors.resident + ')' }
+            ];
+
+            gradients.forEach(function(grad) {
+                var card = document.createElement('div');
+                card.className = 'gradient-card';
+
+                var preview = document.createElement('div');
+                preview.className = 'gradient-preview';
+                preview.style.background = grad.css;
+                preview.appendChild(createIcon(50, '#ffffff'));
+
+                var info = document.createElement('div');
+                info.className = 'gradient-info';
+                var nameEl = document.createElement('div');
+                nameEl.className = 'name';
+                nameEl.textContent = grad.name;
+                var codeEl = document.createElement('code');
+                codeEl.textContent = grad.css;
+                info.appendChild(nameEl);
+                info.appendChild(codeEl);
+
+                card.appendChild(preview);
+                card.appendChild(info);
+                container.appendChild(card);
+            });
+        }
+
+        function renderBackgrounds() {
+            var container = document.getElementById('backgrounds');
+            clearElement(container);
+
+            var bgs = [
+                { name: 'Dark', color: colors.bgDark, text: colors.textDark },
+                { name: 'Light', color: colors.bgLight, text: colors.textLight },
+                { name: 'Searcher', color: colors.searcher, text: '#fff' },
+                { name: 'Owner', color: colors.owner, text: '#fff' }
+            ];
+
+            bgs.forEach(function(bg) {
+                var card = document.createElement('div');
+                card.className = 'bg-card';
+
+                var preview = document.createElement('div');
+                preview.className = 'bg-preview';
+                preview.style.background = bg.color;
+                preview.style.color = bg.text;
+                preview.textContent = 'izzico';
+
+                var info = document.createElement('div');
+                info.className = 'bg-info';
+                var nameEl = document.createElement('div');
+                nameEl.className = 'name';
+                nameEl.textContent = bg.name;
+                var hexEl = document.createElement('div');
+                hexEl.className = 'hex';
+                hexEl.textContent = bg.color;
+                info.appendChild(nameEl);
+                info.appendChild(hexEl);
+
+                card.appendChild(preview);
+                card.appendChild(info);
+                container.appendChild(card);
+            });
+        }
+
+        function renderTextSamples() {
+            var container = document.getElementById('text-samples');
+            clearElement(container);
+
+            var samples = [
+                { bg: colors.bgDark, text: colors.textDark, name: 'Mode sombre' },
+                { bg: colors.bgLight, text: colors.textLight, name: 'Mode clair' }
+            ];
+
+            samples.forEach(function(sample) {
+                var card = document.createElement('div');
+                card.className = 'text-card';
+
+                var preview = document.createElement('div');
+                preview.className = 'text-preview';
+                preview.style.background = sample.bg;
+                preview.style.color = sample.text;
+                var h3 = document.createElement('h3');
+                h3.textContent = 'Trouvez votre coliving ideal';
+                var p = document.createElement('p');
+                p.textContent = 'Izzico connecte chercheurs, proprietaires et residents pour creer des espaces de vie partages harmonieux.';
+                preview.appendChild(h3);
+                preview.appendChild(p);
+
+                var contrast = getContrastRatio(sample.bg, sample.text);
+
+                var info = document.createElement('div');
+                info.className = 'text-info';
+                var nameSpan = document.createElement('span');
+                nameSpan.className = 'name';
+                nameSpan.textContent = sample.name;
+                var valuesSpan = document.createElement('span');
+                valuesSpan.className = 'values';
+                valuesSpan.textContent = sample.bg + ' / ' + sample.text + ' ';
+                var badge = document.createElement('span');
+                badge.className = 'contrast-badge ' + (contrast >= 4.5 ? 'pass' : 'fail');
+                badge.textContent = (contrast >= 4.5 ? 'AA ' : '') + contrast.toFixed(1);
+                valuesSpan.appendChild(badge);
+                info.appendChild(nameSpan);
+                info.appendChild(valuesSpan);
+
+                card.appendChild(preview);
+                card.appendChild(info);
+                container.appendChild(card);
+            });
+        }
+
+        function renderLogoApps() {
+            var container = document.getElementById('logo-apps');
+            clearElement(container);
+
+            var apps = [
+                { bg: colors.bgDark, label: 'Fond sombre' },
+                { bg: 'linear-gradient(135deg, ' + colors.searcher + ', ' + colors.resident + ', ' + colors.owner + ')', label: 'Gradient signature' },
+                { bg: colors.bgLight, icon: 'dark', label: 'Fond clair' },
+                { bg: colors.searcher, label: 'Searcher' },
+                { bg: colors.owner, label: 'Owner' },
+                { bg: colors.resident, label: 'Resident' }
+            ];
+
+            apps.forEach(function(app) {
+                var card = document.createElement('div');
+                card.className = 'logo-app-card';
+                card.style.background = app.bg;
+                var iconColor = app.icon === 'dark' ? colors.textLight : '#ffffff';
+                card.appendChild(createIcon(60, iconColor));
+                var label = document.createElement('div');
+                label.className = 'label';
+                label.textContent = app.label;
+                card.appendChild(label);
+                container.appendChild(card);
+            });
+
+            var multiCard = document.createElement('div');
+            multiCard.className = 'logo-app-card';
+            multiCard.style.background = colors.bgDark;
+            multiCard.appendChild(createMultiColorIcon(60));
+            var multiLabel = document.createElement('div');
+            multiLabel.className = 'label';
+            multiLabel.textContent = 'Multicolore';
+            multiCard.appendChild(multiLabel);
+            container.appendChild(multiCard);
+        }
+
+        function updateSpecs() {
+            var shS = generateShades(colors.searcher, 5);
+            var shO = generateShades(colors.owner, 5);
+            var shR = generateShades(colors.resident, 5);
+
+            var specsText =
+                ':root {\n' +
+                '  /* Role Colors */\n' +
+                '  --searcher: ' + colors.searcher + ';\n' +
+                '  --owner: ' + colors.owner + ';\n' +
+                '  --resident: ' + colors.resident + ';\n\n' +
+                '  /* Searcher Scale */\n' +
+                '  --searcher-100: ' + shS[0] + ';\n' +
+                '  --searcher-300: ' + shS[1] + ';\n' +
+                '  --searcher-500: ' + shS[2] + ';\n' +
+                '  --searcher-700: ' + shS[3] + ';\n' +
+                '  --searcher-900: ' + shS[4] + ';\n\n' +
+                '  /* Owner Scale */\n' +
+                '  --owner-100: ' + shO[0] + ';\n' +
+                '  --owner-300: ' + shO[1] + ';\n' +
+                '  --owner-500: ' + shO[2] + ';\n' +
+                '  --owner-700: ' + shO[3] + ';\n' +
+                '  --owner-900: ' + shO[4] + ';\n\n' +
+                '  /* Resident Scale */\n' +
+                '  --resident-100: ' + shR[0] + ';\n' +
+                '  --resident-300: ' + shR[1] + ';\n' +
+                '  --resident-500: ' + shR[2] + ';\n' +
+                '  --resident-700: ' + shR[3] + ';\n' +
+                '  --resident-900: ' + shR[4] + ';\n\n' +
+                '  /* Backgrounds */\n' +
+                '  --bg-dark: ' + colors.bgDark + ';\n' +
+                '  --bg-light: ' + colors.bgLight + ';\n\n' +
+                '  /* Text */\n' +
+                '  --text-on-dark: ' + colors.textDark + ';\n' +
+                '  --text-on-light: ' + colors.textLight + ';\n\n' +
+                '  /* Gradients */\n' +
+                '  --gradient-signature: linear-gradient(135deg, ' + colors.searcher + ', ' + colors.resident + ', ' + colors.owner + ');\n' +
+                '}';
+
+            document.getElementById('specs-display').textContent = specsText;
+        }
+
+        ['searcher', 'owner', 'resident'].forEach(function(role) {
+            var swatch = document.getElementById('color-' + role);
+            var input = document.getElementById('hex-' + role);
+            swatch.addEventListener('input', function(e) { colors[role] = e.target.value; input.value = e.target.value; render(); });
+            input.addEventListener('input', function(e) { if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) { colors[role] = e.target.value; swatch.value = e.target.value; render(); } });
+        });
+
+        ['bg-dark', 'bg-light', 'text-dark', 'text-light'].forEach(function(key) {
+            var colorKey = key.replace(/-([a-z])/g, function(g) { return g[1].toUpperCase(); });
+            var swatch = document.getElementById('color-' + key);
+            var input = document.getElementById('hex-' + key);
+            swatch.addEventListener('input', function(e) { colors[colorKey] = e.target.value; input.value = e.target.value; render(); });
+            input.addEventListener('input', function(e) { if (/^#[0-9A-Fa-f]{6}$/.test(e.target.value)) { colors[colorKey] = e.target.value; swatch.value = e.target.value; render(); } });
+        });
+
+        document.getElementById('copy-specs').addEventListener('click', function() {
+            navigator.clipboard.writeText(document.getElementById('specs-display').textContent);
+            alert('CSS copie !');
+        });
+
+        document.getElementById('lock-colors').addEventListener('click', function() {
+            var summary = 'Couleurs a verrouiller:\n\nROLES:\n  Searcher: ' + colors.searcher + '\n  Owner: ' + colors.owner + '\n  Resident: ' + colors.resident + '\n\nFONDS:\n  Dark: ' + colors.bgDark + '\n  Light: ' + colors.bgLight + '\n\nTEXTE:\n  Sur dark: ' + colors.textDark + '\n  Sur light: ' + colors.textLight + '\n\nConfirmer ?';
+            if (confirm(summary)) { alert('Couleurs validees ! Demandez a Claude de les ajouter dans locked-specs.md'); }
+        });
+
+        render();
+    </script>
+</body>
+</html>

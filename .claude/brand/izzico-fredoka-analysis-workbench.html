@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Fredoka Analysis Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #FFB10B, #9B59B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .canvas-area {
+            background: #1a1a2e;
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .analysis-item {
+            background: #252540;
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .analysis-item h3 {
+            font-size: 0.85rem;
+            color: #FFB10B;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .fredoka-display {
+            background: #fff;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .fredoka-char {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 150px;
+            color: #1a1a2e;
+            line-height: 1;
+        }
+
+        .svg-display {
+            background: #fff;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .comparison-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .comp-item {
+            text-align: center;
+        }
+
+        .comp-label {
+            font-size: 0.7rem;
+            color: #888;
+            margin-bottom: 0.5rem;
+        }
+
+        .overlay-container {
+            position: relative;
+            display: inline-block;
+            background: #fff;
+            border-radius: 0.5rem;
+        }
+
+        .overlay-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .panel {
+            background: #1a1a2e;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #FFB10B;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            min-width: 100px;
+        }
+
+        .control-row input[type="range"] {
+            flex: 1;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            -webkit-appearance: none;
+        }
+
+        .control-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #9B59B6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .control-value {
+            font-size: 0.75rem;
+            color: #9B59B6;
+            min-width: 50px;
+            text-align: right;
+            font-family: monospace;
+        }
+
+        .info-box {
+            background: #252540;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        .specs-box {
+            background: #0a0a15;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #9B59B6;
+            white-space: pre-wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #FFB10B, #E67E22);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 177, 11, 0.3);
+        }
+
+        .match-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: #252540;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .match-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .match-dot.excellent { background: #2ecc71; }
+        .match-dot.good { background: #f39c12; }
+        .match-dot.poor { background: #e74c3c; }
+
+        .match-text {
+            font-size: 0.8rem;
+            color: #e0e0e0;
+        }
+
+        .icon-preview {
+            background: #1a1a2e;
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        .icon-preview h3 {
+            color: #9B59B6;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .icon-row {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .icon-item {
+            text-align: center;
+        }
+
+        .icon-label {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+
+        .measurement {
+            position: absolute;
+            font-size: 10px;
+            color: #e74c3c;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Fredoka Analysis Workbench</h1>
+    <p class="subtitle">Extraction des specs exactes pour l'icône IzzIco</p>
+
+    <div class="main-container">
+        <div class="canvas-area">
+            <div class="analysis-grid">
+                <!-- Tittle Analysis -->
+                <div class="analysis-item">
+                    <h3>Tittle du "i" (point)</h3>
+                    <div class="fredoka-display">
+                        <span class="fredoka-char" style="font-size: 200px;">i</span>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comp-item">
+                            <div class="comp-label">Cercle parfait</div>
+                            <svg width="60" height="60" viewBox="0 0 60 60">
+                                <circle cx="30" cy="30" r="25" fill="#1a1a2e"/>
+                            </svg>
+                        </div>
+                        <div class="comp-item">
+                            <div class="comp-label">Squircle Fredoka</div>
+                            <svg width="60" height="60" viewBox="0 0 60 60">
+                                <rect id="tittle-squircle" x="5" y="5" width="50" height="50" rx="20" ry="20" fill="#1a1a2e"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stem Terminal Analysis -->
+                <div class="analysis-item">
+                    <h3>Terminaison tige "i"</h3>
+                    <div class="fredoka-display" style="padding: 2rem;">
+                        <svg id="stem-analysis" width="100" height="200" viewBox="0 0 100 200">
+                            <!-- Reference Fredoka stem will be overlaid -->
+                        </svg>
+                    </div>
+                    <div class="comparison-row">
+                        <div class="comp-item">
+                            <div class="comp-label">stroke-linecap: round</div>
+                            <svg width="40" height="80" viewBox="0 0 40 80">
+                                <line x1="20" y1="10" x2="20" y2="70" stroke="#1a1a2e" stroke-width="20" stroke-linecap="round"/>
+                            </svg>
+                        </div>
+                        <div class="comp-item">
+                            <div class="comp-label">Rect rx/ry</div>
+                            <svg width="40" height="80" viewBox="0 0 40 80">
+                                <rect id="stem-rect" x="5" y="5" width="30" height="70" rx="10" ry="10" fill="#1a1a2e"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Z corner analysis -->
+                <div class="analysis-item">
+                    <h3>Coins du "z"</h3>
+                    <div class="fredoka-display">
+                        <span class="fredoka-char" style="font-size: 150px; font-weight: 540;">z</span>
+                    </div>
+                    <div class="info-box">
+                        Les coins du Z ont un arrondi specifique qui n'est pas un quart de cercle parfait.
+                    </div>
+                </div>
+
+                <!-- C terminal analysis -->
+                <div class="analysis-item">
+                    <h3>Terminaisons du "c"</h3>
+                    <div class="fredoka-display">
+                        <span class="fredoka-char" style="font-size: 150px; font-weight: 540;">c</span>
+                    </div>
+                    <div class="info-box">
+                        Les extremites du C montrent le meme style de terminaison que le tittle.
+                    </div>
+                </div>
+            </div>
+
+            <!-- Icon Preview with matched specs -->
+            <div class="icon-preview">
+                <h3>Icone avec specs Fredoka</h3>
+                <div class="icon-row">
+                    <div class="icon-item">
+                        <svg id="icon-round" width="120" height="120" viewBox="0 0 100 100">
+                            <rect width="100" height="100" fill="#1a1a2e" rx="8"/>
+                        </svg>
+                        <div class="icon-label">stroke-linecap: round</div>
+                    </div>
+                    <div class="icon-item">
+                        <svg id="icon-fredoka" width="120" height="120" viewBox="0 0 100 100">
+                            <rect width="100" height="100" fill="#1a1a2e" rx="8"/>
+                        </svg>
+                        <div class="icon-label">Style Fredoka (rx/ry)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-section">
+                <div class="section-title">Mesures Fredoka</div>
+
+                <div class="info-box" style="margin-bottom: 1rem;">
+                    <strong>Observation cle:</strong><br>
+                    Le tittle (point du i) de Fredoka est un CARRE ARRONDI, pas un cercle.
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Tittle rx ratio</span>
+                    <input type="range" id="tittle-rx" min="30" max="100" step="1" value="70">
+                    <span class="control-value" id="tittle-rx-val">70%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Stem rx ratio</span>
+                    <input type="range" id="stem-rx" min="30" max="100" step="1" value="65">
+                    <span class="control-value" id="stem-rx-val">65%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Stem ry ratio</span>
+                    <input type="range" id="stem-ry" min="30" max="100" step="1" value="75">
+                    <span class="control-value" id="stem-ry-val">75%</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Application a l'icone</div>
+
+                <div class="control-row">
+                    <span class="control-label">Stroke width</span>
+                    <input type="range" id="icon-stroke" min="8" max="18" step="0.5" value="13">
+                    <span class="control-value" id="icon-stroke-val">13</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Cap rx %</span>
+                    <input type="range" id="cap-rx" min="30" max="100" step="1" value="65">
+                    <span class="control-value" id="cap-rx-val">65%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Cap ry %</span>
+                    <input type="range" id="cap-ry" min="30" max="100" step="1" value="75">
+                    <span class="control-value" id="cap-ry-val">75%</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Correspondance</div>
+                <div class="match-indicator">
+                    <div class="match-dot" id="match-dot"></div>
+                    <span class="match-text" id="match-text">Ajustez les ratios</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Specs derivees</div>
+                <div class="specs-box" id="specs-display">
+Chargement...
+                </div>
+                <button class="btn primary" id="lock-specs" style="margin-top: 1rem;">Verrouiller ces specs</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LOCKED base specs
+        var STROKE_WIDTH = 13;
+        var SPECS = {
+            circle: { cy: 41, r: 15 },
+            loupe: { length: 21, angle: 139 },
+            key: { length: 21, angle: 36, teeth: 2, teethSize: 7, teethStroke: 6.5 },
+            bust: { gap: 2, width: 35, height: 21 }
+        };
+
+        // Adjustable terminal specs
+        var tittleRx = 70;
+        var stemRx = 65;
+        var stemRy = 75;
+        var iconStroke = 13;
+        var capRx = 65;
+        var capRy = 75;
+
+        function createSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(function(k) {
+                el.setAttribute(k, attrs[k]);
+            });
+            return el;
+        }
+
+        function clearElement(el) {
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+        }
+
+        // Create a line with custom terminal caps (not stroke-linecap)
+        function createCustomLine(x1, y1, x2, y2, strokeWidth, rxRatio, ryRatio, color) {
+            var group = createSVG('g', {});
+
+            var dx = x2 - x1;
+            var dy = y2 - y1;
+            var length = Math.sqrt(dx * dx + dy * dy);
+            var angle = Math.atan2(dy, dx);
+
+            var hw = strokeWidth / 2;
+            var rx = hw * (rxRatio / 100);
+            var ry = hw * (ryRatio / 100);
+
+            // Create path for custom-capped line
+            // This creates a rounded rectangle rotated along the line
+            var cos = Math.cos(angle);
+            var sin = Math.sin(angle);
+
+            // Perpendicular offset
+            var px = -sin * hw;
+            var py = cos * hw;
+
+            // Points of the rectangle
+            var p1x = x1 + px;
+            var p1y = y1 + py;
+            var p2x = x1 - px;
+            var p2y = y1 - py;
+            var p3x = x2 - px;
+            var p3y = y2 - py;
+            var p4x = x2 + px;
+            var p4y = y2 + py;
+
+            // For simplicity, use a rect with rx/ry for the stem visualization
+            // and position it correctly
+
+            // Main body
+            group.appendChild(createSVG('line', {
+                x1: x1, y1: y1,
+                x2: x2, y2: y2,
+                stroke: color,
+                'stroke-width': strokeWidth,
+                'stroke-linecap': 'butt'
+            }));
+
+            // Custom end caps as ellipses/rounded rects
+            // Start cap
+            var capSize = strokeWidth;
+            var startCapRx = rx;
+            var startCapRy = Math.min(ry, hw);
+
+            // End cap
+            group.appendChild(createSVG('ellipse', {
+                cx: x1,
+                cy: y1,
+                rx: hw,
+                ry: hw * (ryRatio / 100),
+                fill: color,
+                transform: 'rotate(' + (angle * 180 / Math.PI) + ' ' + x1 + ' ' + y1 + ')'
+            }));
+
+            group.appendChild(createSVG('ellipse', {
+                cx: x2,
+                cy: y2,
+                rx: hw,
+                ry: hw * (ryRatio / 100),
+                fill: color,
+                transform: 'rotate(' + (angle * 180 / Math.PI) + ' ' + x2 + ' ' + y2 + ')'
+            }));
+
+            return group;
+        }
+
+        // Draw stem analysis
+        function drawStemAnalysis() {
+            var svg = document.getElementById('stem-analysis');
+            clearElement(svg);
+
+            var hw = 15; // half stroke width scaled
+            var rx = hw * (stemRx / 100);
+            var ry = hw * (stemRy / 100);
+
+            // Background
+            svg.appendChild(createSVG('rect', {
+                x: 0, y: 0, width: 100, height: 200,
+                fill: '#f5f5f5'
+            }));
+
+            // Fredoka-style stem (rounded rect)
+            svg.appendChild(createSVG('rect', {
+                x: 50 - hw,
+                y: 20,
+                width: hw * 2,
+                height: 160,
+                rx: rx,
+                ry: ry,
+                fill: '#1a1a2e'
+            }));
+
+            // Reference circle at top (what stroke-linecap: round would be)
+            svg.appendChild(createSVG('circle', {
+                cx: 50,
+                cy: 20 + hw,
+                r: hw,
+                fill: 'none',
+                stroke: '#e74c3c',
+                'stroke-width': 1,
+                'stroke-dasharray': '3,3'
+            }));
+
+            // Measurement lines
+            svg.appendChild(createSVG('line', {
+                x1: 50 - hw, y1: 10,
+                x2: 50 + hw, y2: 10,
+                stroke: '#9B59B6',
+                'stroke-width': 1
+            }));
+            svg.appendChild(createSVG('line', {
+                x1: 50 - hw, y1: 8,
+                x2: 50 - hw, y2: 12,
+                stroke: '#9B59B6',
+                'stroke-width': 1
+            }));
+            svg.appendChild(createSVG('line', {
+                x1: 50 + hw, y1: 8,
+                x2: 50 + hw, y2: 12,
+                stroke: '#9B59B6',
+                'stroke-width': 1
+            }));
+
+            // Width label
+            var label = createSVG('text', {
+                x: 50,
+                y: 7,
+                'text-anchor': 'middle',
+                fill: '#9B59B6',
+                'font-size': '8',
+                'font-family': 'monospace'
+            });
+            label.textContent = 'w=' + (hw * 2);
+            svg.appendChild(label);
+
+            // rx label
+            var rxLabel = createSVG('text', {
+                x: 85,
+                y: 35,
+                fill: '#FFB10B',
+                'font-size': '8',
+                'font-family': 'monospace'
+            });
+            rxLabel.textContent = 'rx=' + rx.toFixed(1);
+            svg.appendChild(rxLabel);
+
+            var ryLabel = createSVG('text', {
+                x: 85,
+                y: 45,
+                fill: '#FFB10B',
+                'font-size': '8',
+                'font-family': 'monospace'
+            });
+            ryLabel.textContent = 'ry=' + ry.toFixed(1);
+            svg.appendChild(ryLabel);
+        }
+
+        // Update tittle squircle
+        function updateTittleSquircle() {
+            var rect = document.getElementById('tittle-squircle');
+            var size = 50;
+            var r = size * (tittleRx / 100) / 2;
+            rect.setAttribute('rx', r);
+            rect.setAttribute('ry', r);
+        }
+
+        // Update stem rect
+        function updateStemRect() {
+            var rect = document.getElementById('stem-rect');
+            var hw = 15;
+            var rx = hw * (stemRx / 100);
+            var ry = hw * (stemRy / 100);
+            rect.setAttribute('rx', rx);
+            rect.setAttribute('ry', ry);
+        }
+
+        // Draw icon with stroke-linecap: round
+        function drawIconRound() {
+            var svg = document.getElementById('icon-round');
+            clearElement(svg);
+
+            var cx = 50;
+            var cy = SPECS.circle.cy;
+            var r = SPECS.circle.r;
+
+            // Background
+            svg.appendChild(createSVG('rect', {
+                width: 100, height: 100,
+                fill: '#1a1a2e',
+                rx: 8
+            }));
+
+            // Circle
+            svg.appendChild(createSVG('circle', {
+                cx: cx, cy: cy, r: r,
+                fill: 'none',
+                stroke: '#fff',
+                'stroke-width': iconStroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Loupe
+            var loupeAngle = SPECS.loupe.angle * Math.PI / 180;
+            var loupeStartX = cx + r * Math.cos(loupeAngle);
+            var loupeStartY = cy + r * Math.sin(loupeAngle);
+            var loupeEndX = loupeStartX + SPECS.loupe.length * Math.cos(loupeAngle);
+            var loupeEndY = loupeStartY + SPECS.loupe.length * Math.sin(loupeAngle);
+
+            svg.appendChild(createSVG('line', {
+                x1: loupeStartX, y1: loupeStartY,
+                x2: loupeEndX, y2: loupeEndY,
+                stroke: '#fff',
+                'stroke-width': iconStroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Key
+            var keyAngle = SPECS.key.angle * Math.PI / 180;
+            var keyStartX = cx + r * Math.cos(keyAngle);
+            var keyStartY = cy - r * Math.sin(keyAngle);
+            var keyEndX = keyStartX + SPECS.key.length * Math.cos(keyAngle);
+            var keyEndY = keyStartY - SPECS.key.length * Math.sin(keyAngle);
+
+            svg.appendChild(createSVG('line', {
+                x1: keyStartX, y1: keyStartY,
+                x2: keyEndX, y2: keyEndY,
+                stroke: '#fff',
+                'stroke-width': iconStroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Key teeth
+            var teethAngle = keyAngle + Math.PI / 2;
+            for (var i = 0; i < SPECS.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var toothX = keyStartX + (keyEndX - keyStartX) * t;
+                var toothY = keyStartY + (keyEndY - keyStartY) * t;
+                var toothEndX = toothX + SPECS.key.teethSize * Math.cos(teethAngle);
+                var toothEndY = toothY - SPECS.key.teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('line', {
+                    x1: toothX, y1: toothY,
+                    x2: toothEndX, y2: toothEndY,
+                    stroke: '#fff',
+                    'stroke-width': SPECS.key.teethStroke,
+                    'stroke-linecap': 'round'
+                }));
+            }
+
+            // Bust
+            var bustTop = cy + r + SPECS.bust.gap;
+            var bustPath = 'M ' + (cx - SPECS.bust.width/2) + ' ' + (bustTop + SPECS.bust.height) +
+                          ' Q ' + cx + ' ' + bustTop + ' ' + (cx + SPECS.bust.width/2) + ' ' + (bustTop + SPECS.bust.height);
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: '#fff',
+                'stroke-width': iconStroke,
+                'stroke-linecap': 'round'
+            }));
+        }
+
+        // Draw icon with Fredoka-style terminals
+        function drawIconFredoka() {
+            var svg = document.getElementById('icon-fredoka');
+            clearElement(svg);
+
+            var cx = 50;
+            var cy = SPECS.circle.cy;
+            var r = SPECS.circle.r;
+            var hw = iconStroke / 2;
+
+            // Background
+            svg.appendChild(createSVG('rect', {
+                width: 100, height: 100,
+                fill: '#1a1a2e',
+                rx: 8
+            }));
+
+            // For Fredoka style, we need to use paths with custom caps
+            // Circle (stays the same - it's a closed shape)
+            svg.appendChild(createSVG('circle', {
+                cx: cx, cy: cy, r: r,
+                fill: 'none',
+                stroke: '#fff',
+                'stroke-width': iconStroke
+            }));
+
+            // Loupe with custom terminal
+            var loupeAngle = SPECS.loupe.angle * Math.PI / 180;
+            var loupeStartX = cx + r * Math.cos(loupeAngle);
+            var loupeStartY = cy + r * Math.sin(loupeAngle);
+            var loupeEndX = loupeStartX + SPECS.loupe.length * Math.cos(loupeAngle);
+            var loupeEndY = loupeStartY + SPECS.loupe.length * Math.sin(loupeAngle);
+
+            // Main line with butt cap
+            svg.appendChild(createSVG('line', {
+                x1: loupeStartX, y1: loupeStartY,
+                x2: loupeEndX, y2: loupeEndY,
+                stroke: '#fff',
+                'stroke-width': iconStroke,
+                'stroke-linecap': 'butt'
+            }));
+
+            // Custom end cap (rounded rect style)
+            var loupeCapRx = hw * (capRx / 100);
+            var loupeCapRy = hw * (capRy / 100);
+
+            // End cap as rotated rounded rect
+            var capWidth = iconStroke;
+            var capHeight = iconStroke;
+
+            svg.appendChild(createSVG('rect', {
+                x: loupeEndX - hw,
+                y: loupeEndY - hw,
+                width: capWidth,
+                height: capHeight,
+                rx: loupeCapRx,
+                ry: loupeCapRy,
+                fill: '#fff',
+                transform: 'rotate(' + (SPECS.loupe.angle) + ' ' + loupeEndX + ' ' + loupeEndY + ')'
+            }));
+
+            // Key with custom terminal
+            var keyAngle = SPECS.key.angle * Math.PI / 180;
+            var keyStartX = cx + r * Math.cos(keyAngle);
+            var keyStartY = cy - r * Math.sin(keyAngle);
+            var keyEndX = keyStartX + SPECS.key.length * Math.cos(keyAngle);
+            var keyEndY = keyStartY - SPECS.key.length * Math.sin(keyAngle);
+
+            svg.appendChild(createSVG('line', {
+                x1: keyStartX, y1: keyStartY,
+                x2: keyEndX, y2: keyEndY,
+                stroke: '#fff',
+                'stroke-width': iconStroke,
+                'stroke-linecap': 'butt'
+            }));
+
+            // Key end cap
+            svg.appendChild(createSVG('rect', {
+                x: keyEndX - hw,
+                y: keyEndY - hw,
+                width: capWidth,
+                height: capHeight,
+                rx: loupeCapRx,
+                ry: loupeCapRy,
+                fill: '#fff',
+                transform: 'rotate(' + (-SPECS.key.angle) + ' ' + keyEndX + ' ' + keyEndY + ')'
+            }));
+
+            // Key teeth
+            var teethAngle = keyAngle + Math.PI / 2;
+            var teethHw = SPECS.key.teethStroke / 2;
+            var teethCapRx = teethHw * (capRx / 100);
+            var teethCapRy = teethHw * (capRy / 100);
+
+            for (var i = 0; i < SPECS.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var toothX = keyStartX + (keyEndX - keyStartX) * t;
+                var toothY = keyStartY + (keyEndY - keyStartY) * t;
+                var toothEndX = toothX + SPECS.key.teethSize * Math.cos(teethAngle);
+                var toothEndY = toothY - SPECS.key.teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('line', {
+                    x1: toothX, y1: toothY,
+                    x2: toothEndX, y2: toothEndY,
+                    stroke: '#fff',
+                    'stroke-width': SPECS.key.teethStroke,
+                    'stroke-linecap': 'butt'
+                }));
+
+                // Tooth end cap
+                svg.appendChild(createSVG('rect', {
+                    x: toothEndX - teethHw,
+                    y: toothEndY - teethHw,
+                    width: SPECS.key.teethStroke,
+                    height: SPECS.key.teethStroke,
+                    rx: teethCapRx,
+                    ry: teethCapRy,
+                    fill: '#fff',
+                    transform: 'rotate(' + (90 - SPECS.key.angle) + ' ' + toothEndX + ' ' + toothEndY + ')'
+                }));
+            }
+
+            // Bust
+            var bustTop = cy + r + SPECS.bust.gap;
+            var bustPath = 'M ' + (cx - SPECS.bust.width/2) + ' ' + (bustTop + SPECS.bust.height) +
+                          ' Q ' + cx + ' ' + bustTop + ' ' + (cx + SPECS.bust.width/2) + ' ' + (bustTop + SPECS.bust.height);
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: '#fff',
+                'stroke-width': iconStroke,
+                'stroke-linecap': 'butt'
+            }));
+
+            // Bust end caps
+            var bustLeftX = cx - SPECS.bust.width/2;
+            var bustLeftY = bustTop + SPECS.bust.height;
+            var bustRightX = cx + SPECS.bust.width/2;
+            var bustRightY = bustTop + SPECS.bust.height;
+
+            svg.appendChild(createSVG('rect', {
+                x: bustLeftX - hw,
+                y: bustLeftY - hw,
+                width: capWidth,
+                height: capHeight,
+                rx: loupeCapRx,
+                ry: loupeCapRy,
+                fill: '#fff',
+                transform: 'rotate(-60 ' + bustLeftX + ' ' + bustLeftY + ')'
+            }));
+
+            svg.appendChild(createSVG('rect', {
+                x: bustRightX - hw,
+                y: bustRightY - hw,
+                width: capWidth,
+                height: capHeight,
+                rx: loupeCapRx,
+                ry: loupeCapRy,
+                fill: '#fff',
+                transform: 'rotate(60 ' + bustRightX + ' ' + bustRightY + ')'
+            }));
+        }
+
+        // Update specs display
+        function updateSpecs() {
+            var hw = iconStroke / 2;
+            var rx = hw * (capRx / 100);
+            var ry = hw * (capRy / 100);
+
+            var text = 'FREDOKA-STYLE TERMINAL SPECS\n';
+            text += '============================\n\n';
+            text += 'stroke-width: ' + iconStroke + '\n';
+            text += 'stroke-linecap: butt (custom caps)\n\n';
+            text += 'Terminal cap specs:\n';
+            text += '  rx ratio: ' + capRx + '%\n';
+            text += '  ry ratio: ' + capRy + '%\n';
+            text += '  rx value: ' + rx.toFixed(2) + '\n';
+            text += '  ry value: ' + ry.toFixed(2) + '\n\n';
+            text += 'Note: Pas de stroke-linecap: round\n';
+            text += 'Utiliser des <rect rx ry> aux extremites';
+
+            document.getElementById('specs-display').textContent = text;
+        }
+
+        // Update match indicator
+        function updateMatchIndicator() {
+            var dot = document.getElementById('match-dot');
+            var text = document.getElementById('match-text');
+
+            // Fredoka appears to use approximately 65-70% rx ratio
+            var idealRx = 67;
+            var idealRy = 75;
+            var diffRx = Math.abs(capRx - idealRx);
+            var diffRy = Math.abs(capRy - idealRy);
+            var avgDiff = (diffRx + diffRy) / 2;
+
+            if (avgDiff < 5) {
+                dot.className = 'match-dot excellent';
+                text.textContent = 'Excellent match Fredoka';
+            } else if (avgDiff < 15) {
+                dot.className = 'match-dot good';
+                text.textContent = 'Proche de Fredoka';
+            } else {
+                dot.className = 'match-dot poor';
+                text.textContent = 'A ajuster';
+            }
+        }
+
+        // Main render
+        function render() {
+            drawStemAnalysis();
+            updateTittleSquircle();
+            updateStemRect();
+            drawIconRound();
+            drawIconFredoka();
+            updateSpecs();
+            updateMatchIndicator();
+        }
+
+        // Event listeners
+        document.getElementById('tittle-rx').addEventListener('input', function(e) {
+            tittleRx = parseInt(e.target.value);
+            document.getElementById('tittle-rx-val').textContent = tittleRx + '%';
+            render();
+        });
+
+        document.getElementById('stem-rx').addEventListener('input', function(e) {
+            stemRx = parseInt(e.target.value);
+            document.getElementById('stem-rx-val').textContent = stemRx + '%';
+            render();
+        });
+
+        document.getElementById('stem-ry').addEventListener('input', function(e) {
+            stemRy = parseInt(e.target.value);
+            document.getElementById('stem-ry-val').textContent = stemRy + '%';
+            render();
+        });
+
+        document.getElementById('icon-stroke').addEventListener('input', function(e) {
+            iconStroke = parseFloat(e.target.value);
+            document.getElementById('icon-stroke-val').textContent = iconStroke;
+            render();
+        });
+
+        document.getElementById('cap-rx').addEventListener('input', function(e) {
+            capRx = parseInt(e.target.value);
+            document.getElementById('cap-rx-val').textContent = capRx + '%';
+            render();
+        });
+
+        document.getElementById('cap-ry').addEventListener('input', function(e) {
+            capRy = parseInt(e.target.value);
+            document.getElementById('cap-ry-val').textContent = capRy + '%';
+            render();
+        });
+
+        document.getElementById('lock-specs').addEventListener('click', function() {
+            var specs = document.getElementById('specs-display').textContent;
+            alert('Specs Fredoka-style :\n\nCapRx: ' + capRx + '%\nCapRy: ' + capRy + '%\n\nDemandez a Claude de verrouiller ces specs.');
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

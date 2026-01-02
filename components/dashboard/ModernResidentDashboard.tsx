@@ -366,7 +366,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={64} />
-          <p className="text-gray-600 font-medium">{resident?.loadingHub || 'Chargement du hub...'}</p>
+          <p className="text-gray-600 font-medium">{resident?.loadingHub || 'Loading hub...'}</p>
         </div>
       </div>
     );

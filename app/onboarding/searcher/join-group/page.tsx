@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { createClient } from '@/lib/auth/supabase-client';
 import { showErrorToast, showSuccessToast, showInfoToast } from '@/lib/toast-helpers';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface GroupInvitation {
   id: string;
@@ -36,6 +37,7 @@ interface GroupInvitation {
 export default function JoinGroupPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useLanguage();
 
   const [inviteCode, setInviteCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -98,7 +100,7 @@ export default function JoinGroupPage() {
           return {
             ...inv,
             member_count: count || 0,
-            inviter: inviterData || { full_name: 'Someone' },
+            inviter: inviterData || { full_name: t('joinGroup.someone') || 'Someone' },
           };
         })
       );
@@ -113,7 +115,7 @@ export default function JoinGroupPage() {
 
   const handleJoinWithCode = async () => {
     if (!inviteCode.trim()) {
-      showErrorToast('Please enter an invite code');
+      showErrorToast(t('joinGroup.errors.enterCode') || 'Please enter an invite code');
       return;
     }
 
@@ -122,7 +124,7 @@ export default function JoinGroupPage() {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        showErrorToast('You must be logged in');
+        showErrorToast(t('joinGroup.errors.loginRequired') || 'You must be logged in');
         router.push('/login');
         return;
       }
@@ -136,7 +138,7 @@ export default function JoinGroupPage() {
         .single();
 
       if (invError || !invitation) {
-        showErrorToast('Invalid or expired invite code');
+        showErrorToast(t('joinGroup.errors.invalidCode') || 'Invalid or expired invite code');
         return;
       }
 
@@ -148,7 +150,7 @@ export default function JoinGroupPage() {
         .eq('status', 'active');
 
       if (memberCount && memberCount >= invitation.groups.max_members) {
-        showErrorToast('This group is full');
+        showErrorToast(t('joinGroup.errors.groupFull') || 'This group is full');
         return;
       }
 
@@ -161,7 +163,7 @@ export default function JoinGroupPage() {
         .single();
 
       if (existingMember) {
-        showInfoToast('You are already a member of this group');
+        showInfoToast(t('joinGroup.errors.alreadyMember') || 'You are already a member of this group');
         return;
       }
 
@@ -187,9 +189,15 @@ export default function JoinGroupPage() {
       localStorage.setItem('current_group_id', invitation.group_id);
 
       if (invitation.groups.requires_approval) {
-        showSuccessToast('Join request sent!', 'The group admin will review your request');
+        showSuccessToast(
+          t('joinGroup.success.requestSent') || 'Join request sent!',
+          t('joinGroup.success.adminReview') || 'The group admin will review your request'
+        );
       } else {
-        showSuccessToast('Joined group successfully!', `Welcome to ${invitation.groups.name}`);
+        showSuccessToast(
+          t('joinGroup.success.joined') || 'Joined group successfully!',
+          `${t('joinGroup.success.welcome') || 'Welcome to'} ${invitation.groups.name}`
+        );
       }
 
       // Continue to onboarding
@@ -197,7 +205,7 @@ export default function JoinGroupPage() {
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error joining group:', error);
-      showErrorToast('Failed to join group', error.message);
+      showErrorToast(t('joinGroup.errors.joinFailed') || 'Failed to join group', error.message);
     } finally {
       setIsLoading(false);
     }
@@ -212,7 +220,7 @@ export default function JoinGroupPage() {
 
       // Check if group is full
       if (invitation.member_count >= invitation.groups.max_members) {
-        showErrorToast('This group is full');
+        showErrorToast(t('joinGroup.errors.groupFull') || 'This group is full');
         return;
       }
 
@@ -237,14 +245,17 @@ export default function JoinGroupPage() {
       // Store group ID
       localStorage.setItem('current_group_id', invitation.group_id);
 
-      showSuccessToast('Joined group successfully!', `Welcome to ${invitation.groups.name}`);
+      showSuccessToast(
+        t('joinGroup.success.joined') || 'Joined group successfully!',
+        `${t('joinGroup.success.welcome') || 'Welcome to'} ${invitation.groups.name}`
+      );
 
       // Continue to onboarding
       router.push('/onboarding/searcher/basic-info');
 
     } catch (error: any) {
       // FIXME: Use logger.error('Error accepting invitation:', error);
-      showErrorToast('Failed to join group', error.message);
+      showErrorToast(t('joinGroup.errors.joinFailed') || 'Failed to join group', error.message);
     } finally {
       setIsLoading(false);
     }
@@ -258,7 +269,7 @@ export default function JoinGroupPage() {
         .eq('id', invitationId);
 
       setPendingInvitations(prev => prev.filter(inv => inv.id !== invitationId));
-      showInfoToast('Invitation declined');
+      showInfoToast(t('joinGroup.invitationDeclined') || 'Invitation declined');
     } catch (error) {
       // FIXME: Use logger.error('Error declining invitation:', error);
     }
@@ -279,7 +290,7 @@ export default function JoinGroupPage() {
           className="mb-6 flex items-center gap-2"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          {t('common.back') || 'Back'}
         </Button>
 
         {/* Header */}
@@ -288,17 +299,17 @@ export default function JoinGroupPage() {
             <UserPlus className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
-            Join a Group
+            {t('joinGroup.title') || 'Join a Group'}
           </h1>
           <p className="text-lg text-gray-600">
-            Enter an invite code or accept a pending invitation
+            {t('joinGroup.subtitle') || 'Enter an invite code or accept a pending invitation'}
           </p>
         </div>
 
         {/* Pending Invitations */}
         {!loadingInvitations && pendingInvitations.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Pending Invitations</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('joinGroup.pendingInvitations') || 'Pending Invitations'}</h2>
             <div className="space-y-4">
               {pendingInvitations.map((invitation) => (
                 <div key={invitation.id} className="bg-white rounded-2xl shadow-lg p-6">
@@ -306,7 +317,7 @@ export default function JoinGroupPage() {
                     <div>
                       <h3 className="text-lg font-bold text-gray-900">{invitation.groups.name}</h3>
                       <p className="text-sm text-gray-600">
-                        Invited by {invitation.inviter.full_name}
+                        {t('joinGroup.invitedBy') || 'Invited by'} {invitation.inviter.full_name}
                       </p>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-600">
@@ -339,8 +350,8 @@ export default function JoinGroupPage() {
                   <div className="flex gap-3">
                     {invitation.member_count >= invitation.groups.max_members ? (
                       <div className="flex-1 bg-gray-100 border border-gray-300 rounded-lg p-3 text-center">
-                        <p className="text-sm text-gray-600 font-medium">Group is Full</p>
-                        <p className="text-xs text-gray-500 mt-1">This group has reached its maximum capacity</p>
+                        <p className="text-sm text-gray-600 font-medium">{t('joinGroup.groupIsFull') || 'Group is Full'}</p>
+                        <p className="text-xs text-gray-500 mt-1">{t('joinGroup.maxCapacity') || 'This group has reached its maximum capacity'}</p>
                       </div>
                     ) : (
                       <Button
@@ -349,7 +360,7 @@ export default function JoinGroupPage() {
                         className="flex-1 flex items-center justify-center gap-2"
                       >
                         <Check className="w-4 h-4" />
-                        Accept
+                        {t('joinGroup.accept') || 'Accept'}
                       </Button>
                     )}
                     <Button
@@ -359,7 +370,7 @@ export default function JoinGroupPage() {
                       className="flex items-center justify-center gap-2"
                     >
                       <X className="w-4 h-4" />
-                      Decline
+                      {t('joinGroup.decline') || 'Decline'}
                     </Button>
                   </div>
                 </div>
@@ -371,22 +382,24 @@ export default function JoinGroupPage() {
         {/* Invite Code Form */}
         <div className="bg-white rounded-3xl shadow-xl p-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">
-            {pendingInvitations.length > 0 ? 'Or join with invite code' : 'Join with invite code'}
+            {pendingInvitations.length > 0
+              ? (t('joinGroup.orJoinWithCode') || 'Or join with invite code')
+              : (t('joinGroup.joinWithCode') || 'Join with invite code')}
           </h2>
 
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="inviteCode">Invite Code</Label>
+              <Label htmlFor="inviteCode">{t('joinGroup.inviteCodeLabel') || 'Invite Code'}</Label>
               <Input
                 id="inviteCode"
-                placeholder="Enter 8-character code"
+                placeholder={t('joinGroup.codePlaceholder') || 'Enter 8-character code'}
                 value={inviteCode}
                 onChange={(e) => setInviteCode(e.target.value.toUpperCase())}
                 maxLength={8}
                 className="text-center text-lg tracking-wider font-mono"
               />
               <p className="text-sm text-gray-500">
-                Ask the group creator for an invite code
+                {t('joinGroup.askCreator') || 'Ask the group creator for an invite code'}
               </p>
             </div>
 
@@ -395,7 +408,9 @@ export default function JoinGroupPage() {
               disabled={!inviteCode.trim() || isLoading}
               className="w-full"
             >
-              {isLoading ? 'Joining...' : 'Join Group'}
+              {isLoading
+                ? (t('joinGroup.joining') || 'Joining...')
+                : (t('joinGroup.joinButton') || 'Join Group')}
             </Button>
           </div>
 
@@ -409,7 +424,7 @@ export default function JoinGroupPage() {
               }}
               className="w-full"
             >
-              Skip and search alone for now
+              {t('joinGroup.skipAlone') || 'Skip and search alone for now'}
             </Button>
           </div>
         </div>

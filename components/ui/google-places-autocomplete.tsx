@@ -67,8 +67,8 @@ export default function GooglePlacesAutocomplete({
 
   // Determine placeholder text based on loading state
   const getPlaceholder = () => {
-    if (error) return common?.loadingError || 'Erreur de chargement';
-    if (!loaded) return common?.loading || 'Chargement...';
+    if (error) return common?.loadingError || 'Loading error';
+    if (!loaded) return common?.loading || 'Loading...';
     return defaultPlaceholder;
   };
 

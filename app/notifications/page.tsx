@@ -81,10 +81,10 @@ export default function NotificationsPage() {
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (minutes < 1) return 'À l\'instant';
-    if (minutes < 60) return `Il y a ${minutes} min`;
-    if (hours < 24) return `Il y a ${hours}h`;
-    if (days < 7) return `Il y a ${days}j`;
+    if (minutes < 1) return 'Just now';
+    if (minutes < 60) return `${minutes} min ago`;
+    if (hours < 24) return `${hours}h ago`;
+    if (days < 7) return `${days}d ago`;
 
     return date.toLocaleDateString('fr-FR', {
       day: 'numeric',
@@ -106,18 +106,18 @@ export default function NotificationsPage() {
   const handleMarkAllAsRead = async () => {
     const success = await markAllAsRead();
     if (success) {
-      toast.success('Toutes les notifications ont été marquées comme lues');
+      toast.success('All notifications marked as read');
     } else {
-      toast.error('Erreur lors du marquage des notifications');
+      toast.error('Error marking notifications');
     }
   };
 
   const handleClearRead = async () => {
     const success = await clearReadNotifications();
     if (success) {
-      toast.success('Notifications lues supprimées');
+      toast.success('Read notifications deleted');
     } else {
-      toast.error('Erreur lors de la suppression');
+      toast.error('Error deleting notifications');
     }
   };
 
@@ -125,9 +125,9 @@ export default function NotificationsPage() {
     e.stopPropagation();
     const success = await deleteNotification(notificationId);
     if (success) {
-      toast.success('Notification supprimée');
+      toast.success('Notification deleted');
     } else {
-      toast.error('Erreur lors de la suppression');
+      toast.error('Error deleting');
     }
   };
 
@@ -151,7 +151,7 @@ export default function NotificationsPage() {
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">Chargement des notifications...</p>
+          <p className="text-gray-600">Loading notifications...</p>
         </div>
       </div>
     );
@@ -174,7 +174,7 @@ export default function NotificationsPage() {
                 className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
-                <span>Retour</span>
+                <span>Back</span>
               </button>
 
               <div className="h-6 w-px bg-gray-300" />
@@ -198,7 +198,7 @@ export default function NotificationsPage() {
                 className="flex items-center gap-2"
               >
                 <Filter className="w-4 h-4" />
-                Filtres
+                Filters
               </Button>
 
               {unreadCount > 0 && (
@@ -209,7 +209,7 @@ export default function NotificationsPage() {
                   className="flex items-center gap-2"
                 >
                   <CheckCheck className="w-4 h-4" />
-                  Tout marquer comme lu
+                  Mark all as read
                 </Button>
               )}
 
@@ -221,7 +221,7 @@ export default function NotificationsPage() {
                   className="flex items-center gap-2 text-red-600 hover:text-red-700"
                 >
                   <Trash2 className="w-4 h-4" />
-                  Supprimer les lues
+                  Delete read
                 </Button>
               )}
             </div>
@@ -233,7 +233,7 @@ export default function NotificationsPage() {
               <div className="flex items-center gap-6">
                 {/* Read Status Filter */}
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-700">Statut:</span>
+                  <span className="text-sm font-medium text-gray-700">Status:</span>
                   <div className="flex gap-2">
                     {(['all', 'unread', 'read'] as const).map((f) => (
                       <button
@@ -245,9 +245,9 @@ export default function NotificationsPage() {
                             : 'bg-white text-gray-700 hover:bg-gray-100'
                         }`}
                       >
-                        {f === 'all' && 'Toutes'}
-                        {f === 'unread' && 'Non lues'}
-                        {f === 'read' && 'Lues'}
+                        {f === 'all' && 'All'}
+                        {f === 'unread' && 'Unread'}
+                        {f === 'read' && 'Read'}
                       </button>
                     ))}
                   </div>
@@ -268,7 +268,7 @@ export default function NotificationsPage() {
                               : 'bg-white text-gray-700 hover:bg-gray-100'
                           }`}
                         >
-                          Tous
+                          All
                         </button>
                         {notificationTypes.map((type) => (
                           <button
@@ -299,14 +299,14 @@ export default function NotificationsPage() {
           <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
             <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              {filter === 'unread' && 'Aucune notification non lue'}
-              {filter === 'read' && 'Aucune notification lue'}
-              {filter === 'all' && 'Aucune notification'}
+              {filter === 'unread' && 'No unread notifications'}
+              {filter === 'read' && 'No read notifications'}
+              {filter === 'all' && 'No notifications'}
             </h2>
             <p className="text-gray-600">
-              {filter === 'unread' && 'Toutes vos notifications ont été lues'}
-              {filter === 'read' && 'Vous n\'avez pas encore lu de notifications'}
-              {filter === 'all' && 'Vous recevrez vos notifications ici'}
+              {filter === 'unread' && 'All your notifications have been read'}
+              {filter === 'read' && 'You haven\'t read any notifications yet'}
+              {filter === 'all' && 'You will receive your notifications here'}
             </p>
           </div>
         ) : (
@@ -346,7 +346,7 @@ export default function NotificationsPage() {
                           {!notification.read && (
                             <span className="inline-flex items-center gap-1 text-xs font-medium text-[#4A148C]">
                               <div className="w-2 h-2 bg-[#4A148C] rounded-full" />
-                              Non lu
+                              Unread
                             </span>
                           )}
                         </div>
@@ -361,7 +361,7 @@ export default function NotificationsPage() {
                               markAsRead(notification.id);
                             }}
                             className="p-2 hover:bg-green-100 rounded-lg transition-colors group"
-                            title="Marquer comme lu"
+                            title="Mark as read"
                           >
                             <Check className="w-4 h-4 text-gray-400 group-hover:text-green-600" />
                           </button>
@@ -369,7 +369,7 @@ export default function NotificationsPage() {
                         <button
                           onClick={(e) => handleDelete(e, notification.id)}
                           className="p-2 hover:bg-red-100 rounded-lg transition-colors group"
-                          title="Supprimer"
+                          title="Delete"
                         >
                           <Trash2 className="w-4 h-4 text-gray-400 group-hover:text-red-600" />
                         </button>
@@ -386,7 +386,7 @@ export default function NotificationsPage() {
         {filteredNotifications.length >= 50 && (
           <div className="mt-6 text-center">
             <Button variant="outline" className="w-full sm:w-auto">
-              Charger plus
+              Load more
             </Button>
           </div>
         )}

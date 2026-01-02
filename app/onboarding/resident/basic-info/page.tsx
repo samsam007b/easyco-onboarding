@@ -149,14 +149,14 @@ export default function ResidentBasicInfoPage() {
   const handleInvitationAccepted = () => {
     setShowInvitationModal(false);
     setPendingInvitation(null);
-    toast.success('Invitation acceptée ! Bienvenue dans la colocation.');
+    toast.success(t('resident.basicInfo.invitationAccepted'));
     router.push('/onboarding/core/daily-life?role=resident');
   };
 
   const handleInvitationRefused = () => {
     setShowInvitationModal(false);
     setPendingInvitation(null);
-    toast.info('Invitation refusée. Vous pouvez la retrouver dans vos paramètres.');
+    toast.info(t('resident.basicInfo.invitationRefused'));
     router.push('/onboarding/core/daily-life?role=resident');
   };
 

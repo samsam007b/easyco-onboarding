@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Optical Balance Workbench v2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --searcher: #FFB10B;
+            --owner: #9B59B6;
+            --resident: #E67E22;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .hint {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #fcd34d;
+        }
+
+        /* Angle presets grid */
+        .angle-presets-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .angle-preset-card {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .angle-preset-card:hover {
+            border-color: var(--accent);
+        }
+
+        .angle-preset-card.active {
+            border-color: var(--success);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+        }
+
+        .angle-preset-preview {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a2e;
+            padding: 1rem;
+        }
+
+        .angle-preset-label {
+            padding: 0.5rem;
+            font-size: 0.7rem;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border);
+        }
+
+        /* Main preview */
+        .main-preview-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .preview-card {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .preview-area {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a2e;
+        }
+
+        .preview-area.gradient {
+            background: linear-gradient(135deg, var(--searcher), var(--resident), var(--owner));
+        }
+
+        .preview-label {
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-align: center;
+            border-top: 1px solid var(--border);
+        }
+
+        .small-previews {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        /* Comparison with wordmark */
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            padding: 1.5rem;
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3.5rem;
+            color: white;
+        }
+
+        .wordmark .l-i { font-weight: 600; }
+        .wordmark .l-z { font-weight: 540; }
+        .wordmark .l-c { font-weight: 540; }
+        .wordmark .l-o { font-weight: 540; }
+        .wordmark .zz-space { margin-right: -0.18em; }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-header {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header h2 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .panel-header p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title .badge {
+            background: var(--accent);
+            color: white;
+            padding: 0.15rem 0.4rem;
+            border-radius: 4px;
+            font-size: 0.6rem;
+        }
+
+        .section-title .badge.success {
+            background: var(--success);
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 50px;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label {
+            font-size: 0.8rem;
+            color: var(--text);
+        }
+
+        .control-label small {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--bg-control);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+        }
+
+        .control-value {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        .info-box {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            color: #a5b4fc;
+            margin-top: 0.5rem;
+        }
+
+        .stroke-display {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .stroke-item {
+            background: var(--bg-control);
+            padding: 0.5rem;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stroke-item .value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+
+        .stroke-item .label {
+            font-size: 0.55rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .presets {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .preset-btn {
+            padding: 0.4rem 0.75rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .preset-btn.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+
+        .specs-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            white-space: pre-wrap;
+            color: var(--text-muted);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .btn {
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .btn.primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn.primary:hover {
+            background: #4f46e5;
+        }
+
+        .btn.success {
+            background: var(--success);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div>
+                <h1>Corrections Optiques - IzzIco Icon v2</h1>
+                <div class="hint">
+                    <strong>Nouveautes:</strong> Controle des dents independant + Presets d'angles (aligne, decale, miroir) + Terminaisons Fredoka
+                </div>
+            </div>
+
+            <!-- Angle presets -->
+            <div class="angle-presets-grid" id="angle-presets"></div>
+
+            <!-- Main preview -->
+            <div class="main-preview-row">
+                <div class="preview-card">
+                    <div class="preview-area" id="main-preview"></div>
+                    <div class="preview-label">Apercu principal - Configuration actuelle</div>
+                </div>
+                <div class="small-previews">
+                    <div class="preview-card">
+                        <div class="preview-area gradient" id="gradient-preview"></div>
+                        <div class="preview-label">Fond gradient</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison with wordmark -->
+            <div class="comparison-row">
+                <div class="comparison-item">
+                    <div id="icon-comparison"></div>
+                    <div class="label">Icon (corrige)</div>
+                </div>
+                <div class="comparison-item">
+                    <span class="wordmark">
+                        <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                    <div class="label">Wordmark (Fredoka 600)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="panel-header">
+                <h2>Balance Optique v2</h2>
+                <p>Ajustez les ratios par rapport a Fredoka 600</p>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">
+                    Presets epaisseur
+                </div>
+                <div class="presets">
+                    <button class="preset-btn" data-preset="uniform">100% uniforme</button>
+                    <button class="preset-btn active" data-preset="balanced">Balance optique</button>
+                    <button class="preset-btn" data-preset="light">Tiges legeres</button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">
+                    Reference <span class="badge">LOCKED</span>
+                </div>
+                <div class="info-box">
+                    Stroke Fredoka 600 = <strong>13</strong><br>
+                    stroke-linecap: <strong>round</strong> (terminaisons 100% arrondies)
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Elements principaux (corps)</div>
+
+                <div class="control-row">
+                    <div class="control-label">
+                        Cercle (tete)
+                        <small>Element central</small>
+                    </div>
+                    <input type="range" id="circle-ratio" min="50" max="100" step="5" value="100">
+                    <span class="control-value" id="circle-ratio-val">100%</span>
+                </div>
+
+                <div class="control-row">
+                    <div class="control-label">
+                        Buste
+                        <small>Partie basse</small>
+                    </div>
+                    <input type="range" id="bust-ratio" min="50" max="100" step="5" value="100">
+                    <span class="control-value" id="bust-ratio-val">100%</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Elements secondaires (tiges)</div>
+
+                <div class="control-row">
+                    <div class="control-label">
+                        Manche loupe
+                        <small>Searcher</small>
+                    </div>
+                    <input type="range" id="loupe-ratio" min="40" max="100" step="5" value="70">
+                    <span class="control-value" id="loupe-ratio-val">70%</span>
+                </div>
+
+                <div class="control-row">
+                    <div class="control-label">
+                        Tige cle
+                        <small>Owner</small>
+                    </div>
+                    <input type="range" id="key-ratio" min="40" max="100" step="5" value="70">
+                    <span class="control-value" id="key-ratio-val">70%</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Dents de cle <span class="badge success">NOUVEAU</span></div>
+
+                <div class="control-row">
+                    <div class="control-label">
+                        Epaisseur dents
+                        <small>% de la tige cle</small>
+                    </div>
+                    <input type="range" id="teeth-ratio" min="30" max="70" step="5" value="50">
+                    <span class="control-value" id="teeth-ratio-val">50%</span>
+                </div>
+
+                <div class="control-row">
+                    <div class="control-label">
+                        Longueur dents
+                        <small>En unites viewBox</small>
+                    </div>
+                    <input type="range" id="teeth-size" min="3" max="12" step="1" value="7">
+                    <span class="control-value" id="teeth-size-val">7</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Valeurs calculees</div>
+                <div class="stroke-display">
+                    <div class="stroke-item">
+                        <div class="value" id="calc-circle">13</div>
+                        <div class="label">Cercle</div>
+                    </div>
+                    <div class="stroke-item">
+                        <div class="value" id="calc-bust">13</div>
+                        <div class="label">Buste</div>
+                    </div>
+                    <div class="stroke-item">
+                        <div class="value" id="calc-loupe">9.1</div>
+                        <div class="label">Loupe</div>
+                    </div>
+                    <div class="stroke-item">
+                        <div class="value" id="calc-key">9.1</div>
+                        <div class="label">Cle</div>
+                    </div>
+                    <div class="stroke-item">
+                        <div class="value" id="calc-teeth">4.55</div>
+                        <div class="label">Dents</div>
+                    </div>
+                    <div class="stroke-item">
+                        <div class="value" id="calc-teeth-size">7</div>
+                        <div class="label">Long. dents</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Configuration finale</div>
+                <div class="specs-box" id="specs-display"></div>
+                <button class="btn primary" id="copy-specs" style="margin-top: 0.75rem;">Copier les specs</button>
+            </div>
+
+            <button class="btn success" id="lock-specs">Verrouiller ces specs</button>
+        </div>
+    </div>
+
+    <script>
+        // Base reference (Fredoka 600)
+        var FREDOKA_STROKE = 13;
+
+        // Stroke ratios (percentage of Fredoka stroke)
+        var circleRatio = 100;
+        var bustRatio = 100;
+        var loupeRatio = 70;
+        var keyRatio = 70;
+        var teethRatio = 50; // % of key stroke
+        var teethSize = 7;
+
+        // Angle configuration
+        var currentAnglePreset = 'original';
+
+        // Angle presets - loupe angle (from positive X axis, counterclockwise)
+        // and key angle (from positive X axis, counterclockwise going up)
+        var ANGLE_PRESETS = {
+            original: {
+                name: 'Original',
+                desc: 'Config initiale',
+                loupe: 139,  // bottom-left
+                key: 36      // top-right
+            },
+            bas: {
+                name: 'Bas',
+                desc: 'Tiges vers le buste',
+                loupe: 135,  // down-left at 45deg
+                key: 315     // down-right at 45deg (V shape pointing down)
+            },
+            basLarge: {
+                name: 'Bas Large',
+                desc: 'V plus ouvert',
+                loupe: 120,  // down-left wider
+                key: 300     // down-right wider
+            },
+            aligned: {
+                name: 'Aligne Haut',
+                desc: 'Ligne diagonale vers haut',
+                loupe: 225,  // top-left at 45deg
+                key: 45      // top-right at 45deg
+            }
+        };
+
+        // Fixed geometry specs
+        var GEOMETRY = {
+            circle: { cy: 41, r: 15 },
+            loupe: { length: 21 },
+            key: { length: 21, teeth: 2 },
+            bust: { gap: 2, width: 35, height: 21 }
+        };
+
+        // Stroke presets
+        var STROKE_PRESETS = {
+            uniform: { circle: 100, bust: 100, loupe: 100, key: 100, teeth: 50 },
+            balanced: { circle: 100, bust: 100, loupe: 70, key: 70, teeth: 50 },
+            light: { circle: 100, bust: 100, loupe: 50, key: 50, teeth: 50 }
+        };
+
+        function getStrokes() {
+            var circleStroke = FREDOKA_STROKE * (circleRatio / 100);
+            var bustStroke = FREDOKA_STROKE * (bustRatio / 100);
+            var loupeStroke = FREDOKA_STROKE * (loupeRatio / 100);
+            var keyStroke = FREDOKA_STROKE * (keyRatio / 100);
+            var teethStroke = keyStroke * (teethRatio / 100);
+
+            return {
+                circle: circleStroke,
+                bust: bustStroke,
+                loupe: loupeStroke,
+                key: keyStroke,
+                teeth: teethStroke
+            };
+        }
+
+        function getAngles() {
+            var preset = ANGLE_PRESETS[currentAnglePreset];
+            return {
+                loupe: preset.loupe,
+                key: preset.key
+            };
+        }
+
+        function createSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(function(k) {
+                el.setAttribute(k, attrs[k]);
+            });
+            return el;
+        }
+
+        function clearElement(el) {
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+        }
+
+        function createIcon(size, color, angles, strokes) {
+            var iconColor = color || '#ffffff';
+            var s = strokes || getStrokes();
+            var a = angles || getAngles();
+
+            var svg = createSVG('svg', {
+                width: size,
+                height: size,
+                viewBox: '0 0 100 100'
+            });
+
+            var cx = 50;
+            var cy = GEOMETRY.circle.cy;
+            var r = GEOMETRY.circle.r;
+
+            // Circle (head) - stroke-linecap: round for Fredoka match
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: r,
+                fill: 'none',
+                stroke: iconColor,
+                'stroke-width': s.circle,
+                'stroke-linecap': 'round'
+            }));
+
+            // Loupe handle - with round linecap for Fredoka terminals
+            var loupeAngleRad = a.loupe * Math.PI / 180;
+            var loupeStartX = cx + r * Math.cos(loupeAngleRad);
+            var loupeStartY = cy + r * Math.sin(loupeAngleRad);
+            var loupeEndX = loupeStartX + GEOMETRY.loupe.length * Math.cos(loupeAngleRad);
+            var loupeEndY = loupeStartY + GEOMETRY.loupe.length * Math.sin(loupeAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: loupeStartX,
+                y1: loupeStartY,
+                x2: loupeEndX,
+                y2: loupeEndY,
+                stroke: iconColor,
+                'stroke-width': s.loupe,
+                'stroke-linecap': 'round'  // Fredoka-style rounded terminals
+            }));
+
+            // Key stem - with round linecap
+            var keyAngleRad = a.key * Math.PI / 180;
+            var keyStartX = cx + r * Math.cos(keyAngleRad);
+            var keyStartY = cy - r * Math.sin(keyAngleRad);
+            var keyEndX = keyStartX + GEOMETRY.key.length * Math.cos(keyAngleRad);
+            var keyEndY = keyStartY - GEOMETRY.key.length * Math.sin(keyAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: keyStartX,
+                y1: keyStartY,
+                x2: keyEndX,
+                y2: keyEndY,
+                stroke: iconColor,
+                'stroke-width': s.key,
+                'stroke-linecap': 'round'  // Fredoka-style rounded terminals
+            }));
+
+            // Key teeth - with round linecap
+            var teethAngle = keyAngleRad + Math.PI / 2;
+            for (var i = 0; i < GEOMETRY.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var toothX = keyStartX + (keyEndX - keyStartX) * t;
+                var toothY = keyStartY + (keyEndY - keyStartY) * t;
+                var toothEndX = toothX + teethSize * Math.cos(teethAngle);
+                var toothEndY = toothY - teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('line', {
+                    x1: toothX,
+                    y1: toothY,
+                    x2: toothEndX,
+                    y2: toothEndY,
+                    stroke: iconColor,
+                    'stroke-width': s.teeth,
+                    'stroke-linecap': 'round'  // Fredoka-style rounded terminals
+                }));
+            }
+
+            // Bust - using stroke with round linecap for consistent terminals
+            var bustTop = cy + r + GEOMETRY.bust.gap;
+            var bustPath = 'M ' + (cx - GEOMETRY.bust.width/2) + ' ' + (bustTop + GEOMETRY.bust.height) +
+                           ' Q ' + cx + ' ' + bustTop + ' ' +
+                           (cx + GEOMETRY.bust.width/2) + ' ' + (bustTop + GEOMETRY.bust.height);
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: iconColor,
+                'stroke-width': s.bust,
+                'stroke-linecap': 'round'  // Fredoka-style rounded terminals
+            }));
+
+            return svg;
+        }
+
+        function renderAnglePresets() {
+            var container = document.getElementById('angle-presets');
+            clearElement(container);
+
+            Object.keys(ANGLE_PRESETS).forEach(function(key) {
+                var preset = ANGLE_PRESETS[key];
+                var card = document.createElement('div');
+                card.className = 'angle-preset-card' + (key === currentAnglePreset ? ' active' : '');
+                card.dataset.preset = key;
+
+                var preview = document.createElement('div');
+                preview.className = 'angle-preset-preview';
+
+                var angles = { loupe: preset.loupe, key: preset.key };
+                var strokes = getStrokes();
+                preview.appendChild(createIcon(60, '#ffffff', angles, strokes));
+
+                var label = document.createElement('div');
+                label.className = 'angle-preset-label';
+                label.textContent = preset.name;
+
+                card.appendChild(preview);
+                card.appendChild(label);
+                container.appendChild(card);
+
+                card.addEventListener('click', function() {
+                    currentAnglePreset = key;
+                    render();
+                });
+            });
+        }
+
+        function render() {
+            var strokes = getStrokes();
+            var angles = getAngles();
+
+            // Update calculated values display
+            document.getElementById('calc-circle').textContent = strokes.circle.toFixed(1);
+            document.getElementById('calc-bust').textContent = strokes.bust.toFixed(1);
+            document.getElementById('calc-loupe').textContent = strokes.loupe.toFixed(1);
+            document.getElementById('calc-key').textContent = strokes.key.toFixed(1);
+            document.getElementById('calc-teeth').textContent = strokes.teeth.toFixed(2);
+            document.getElementById('calc-teeth-size').textContent = teethSize;
+
+            // Main preview
+            var mainPreview = document.getElementById('main-preview');
+            clearElement(mainPreview);
+            mainPreview.appendChild(createIcon(180, '#ffffff', angles, strokes));
+
+            // Gradient preview
+            var gradientPreview = document.getElementById('gradient-preview');
+            clearElement(gradientPreview);
+            gradientPreview.appendChild(createIcon(80, '#ffffff', angles, strokes));
+
+            // Comparison icon
+            var iconComparison = document.getElementById('icon-comparison');
+            clearElement(iconComparison);
+            iconComparison.appendChild(createIcon(90, '#ffffff', angles, strokes));
+
+            // Angle presets
+            renderAnglePresets();
+
+            // Specs display
+            updateSpecs();
+        }
+
+        function updateSpecs() {
+            var strokes = getStrokes();
+            var angles = getAngles();
+            var preset = ANGLE_PRESETS[currentAnglePreset];
+
+            var specsText =
+                '// OPTICAL BALANCE SPECS\n' +
+                '// Base: Fredoka 600 = ' + FREDOKA_STROKE + '\n' +
+                '// Angle preset: ' + preset.name + '\n\n' +
+                'SPECS = {\n' +
+                '  circle: {\n' +
+                '    cy: ' + GEOMETRY.circle.cy + ', r: ' + GEOMETRY.circle.r + ',\n' +
+                '    stroke: ' + strokes.circle.toFixed(1) + ' // ' + circleRatio + '% Fredoka\n' +
+                '  },\n' +
+                '  loupe: {\n' +
+                '    length: ' + GEOMETRY.loupe.length + ',\n' +
+                '    angle: ' + angles.loupe + ', // ' + preset.name + '\n' +
+                '    stroke: ' + strokes.loupe.toFixed(1) + ' // ' + loupeRatio + '% Fredoka\n' +
+                '  },\n' +
+                '  key: {\n' +
+                '    length: ' + GEOMETRY.key.length + ',\n' +
+                '    angle: ' + angles.key + ', // ' + preset.name + '\n' +
+                '    stroke: ' + strokes.key.toFixed(1) + ', // ' + keyRatio + '% Fredoka\n' +
+                '    teeth: ' + GEOMETRY.key.teeth + ',\n' +
+                '    teethSize: ' + teethSize + ',\n' +
+                '    teethStroke: ' + strokes.teeth.toFixed(2) + ' // ' + teethRatio + '% of key\n' +
+                '  },\n' +
+                '  bust: {\n' +
+                '    gap: ' + GEOMETRY.bust.gap + ', width: ' + GEOMETRY.bust.width + ',\n' +
+                '    height: ' + GEOMETRY.bust.height + ',\n' +
+                '    stroke: ' + strokes.bust.toFixed(1) + ' // ' + bustRatio + '% Fredoka\n' +
+                '  },\n' +
+                '  linecap: "round" // Fredoka terminals\n' +
+                '}';
+
+            document.getElementById('specs-display').textContent = specsText;
+        }
+
+        function applyStrokePreset(presetName) {
+            var preset = STROKE_PRESETS[presetName];
+            if (!preset) return;
+
+            circleRatio = preset.circle;
+            bustRatio = preset.bust;
+            loupeRatio = preset.loupe;
+            keyRatio = preset.key;
+            teethRatio = preset.teeth;
+
+            document.getElementById('circle-ratio').value = circleRatio;
+            document.getElementById('bust-ratio').value = bustRatio;
+            document.getElementById('loupe-ratio').value = loupeRatio;
+            document.getElementById('key-ratio').value = keyRatio;
+            document.getElementById('teeth-ratio').value = teethRatio;
+
+            document.getElementById('circle-ratio-val').textContent = circleRatio + '%';
+            document.getElementById('bust-ratio-val').textContent = bustRatio + '%';
+            document.getElementById('loupe-ratio-val').textContent = loupeRatio + '%';
+            document.getElementById('key-ratio-val').textContent = keyRatio + '%';
+            document.getElementById('teeth-ratio-val').textContent = teethRatio + '%';
+
+            // Update active button
+            document.querySelectorAll('.preset-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+                if (btn.dataset.preset === presetName) {
+                    btn.classList.add('active');
+                }
+            });
+
+            render();
+        }
+
+        // Event listeners for stroke controls
+        document.getElementById('circle-ratio').addEventListener('input', function(e) {
+            circleRatio = parseInt(e.target.value);
+            document.getElementById('circle-ratio-val').textContent = circleRatio + '%';
+            render();
+        });
+
+        document.getElementById('bust-ratio').addEventListener('input', function(e) {
+            bustRatio = parseInt(e.target.value);
+            document.getElementById('bust-ratio-val').textContent = bustRatio + '%';
+            render();
+        });
+
+        document.getElementById('loupe-ratio').addEventListener('input', function(e) {
+            loupeRatio = parseInt(e.target.value);
+            document.getElementById('loupe-ratio-val').textContent = loupeRatio + '%';
+            render();
+        });
+
+        document.getElementById('key-ratio').addEventListener('input', function(e) {
+            keyRatio = parseInt(e.target.value);
+            document.getElementById('key-ratio-val').textContent = keyRatio + '%';
+            render();
+        });
+
+        document.getElementById('teeth-ratio').addEventListener('input', function(e) {
+            teethRatio = parseInt(e.target.value);
+            document.getElementById('teeth-ratio-val').textContent = teethRatio + '%';
+            render();
+        });
+
+        document.getElementById('teeth-size').addEventListener('input', function(e) {
+            teethSize = parseInt(e.target.value);
+            document.getElementById('teeth-size-val').textContent = teethSize;
+            render();
+        });
+
+        // Stroke preset buttons
+        document.querySelectorAll('.preset-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                applyStrokePreset(btn.dataset.preset);
+            });
+        });
+
+        // Copy specs
+        document.getElementById('copy-specs').addEventListener('click', function() {
+            var specs = document.getElementById('specs-display').textContent;
+            navigator.clipboard.writeText(specs);
+            alert('Specs copiees dans le presse-papier !');
+        });
+
+        // Lock specs
+        document.getElementById('lock-specs').addEventListener('click', function() {
+            var strokes = getStrokes();
+            var angles = getAngles();
+            var preset = ANGLE_PRESETS[currentAnglePreset];
+
+            var summary =
+                'Valeurs a verrouiller:\n\n' +
+                'ANGLES: ' + preset.name + '\n' +
+                '  Loupe: ' + angles.loupe + 'deg\n' +
+                '  Cle: ' + angles.key + 'deg\n\n' +
+                'STROKES:\n' +
+                '  Cercle: ' + strokes.circle.toFixed(1) + ' (' + circleRatio + '% Fredoka)\n' +
+                '  Buste: ' + strokes.bust.toFixed(1) + ' (' + bustRatio + '% Fredoka)\n' +
+                '  Loupe: ' + strokes.loupe.toFixed(1) + ' (' + loupeRatio + '% Fredoka)\n' +
+                '  Cle: ' + strokes.key.toFixed(1) + ' (' + keyRatio + '% Fredoka)\n' +
+                '  Dents: ' + strokes.teeth.toFixed(2) + ' (' + teethRatio + '% cle)\n' +
+                '  Long. dents: ' + teethSize + '\n\n' +
+                'Confirmer le verrouillage ?';
+
+            if (confirm(summary)) {
+                alert('Specs validees ! Copiez-les et demandez a Claude de les verrouiller dans locked-specs.md');
+            }
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

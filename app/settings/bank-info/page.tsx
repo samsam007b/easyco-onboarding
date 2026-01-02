@@ -265,7 +265,7 @@ export default function BankInfoPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50/30 via-white to-purple-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );

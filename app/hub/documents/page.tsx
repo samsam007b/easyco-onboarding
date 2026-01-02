@@ -182,7 +182,7 @@ export default function DocumentsPage() {
     if (!propertyId || !userId || !selectedFile) return;
 
     if (!uploadForm.title) {
-      alert(t?.errors?.titleRequired?.[language] || 'Veuillez donner un titre au document');
+      alert(t?.errors?.titleRequired?.[language] || 'Please give the document a title');
       return;
     }
 
@@ -200,18 +200,18 @@ export default function DocumentsPage() {
         resetUploadForm();
         await loadData();
       } else {
-        alert(result.error || (t?.errors?.uploadError?.[language] || 'Erreur lors de l\'upload'));
+        alert(result.error || (t?.errors?.uploadError?.[language] || 'Error uploading'));
       }
     } catch (error) {
       console.error('[Documents] Upload error:', error);
-      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'An error occurred');
     } finally {
       setIsUploading(false);
     }
   };
 
   const handleDelete = async (documentId: string) => {
-    if (!confirm(t?.deleteConfirm?.[language] || 'Voulez-vous vraiment supprimer ce document ?')) return;
+    if (!confirm(t?.deleteConfirm?.[language] || 'Are you sure you want to delete this document?')) return;
 
     try {
       const result = await documentService.deleteDocument(documentId);
@@ -221,11 +221,11 @@ export default function DocumentsPage() {
         setShowViewModal(false);
         await loadData();
       } else {
-        alert(result.error || (t?.errors?.deleteError?.[language] || 'Erreur lors de la suppression'));
+        alert(result.error || (t?.errors?.deleteError?.[language] || 'Error deleting'));
       }
     } catch (error) {
       console.error('[Documents] Delete error:', error);
-      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'An error occurred');
     }
   };
 
@@ -254,7 +254,7 @@ export default function DocumentsPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -273,7 +273,7 @@ export default function DocumentsPage() {
             onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
-            ← {t?.backToHub?.[language] || 'Retour au hub'}
+            ← {t?.backToHub?.[language] || 'Back to hub'}
           </Button>
 
           <div className="flex items-center justify-between mb-6">
@@ -283,9 +283,9 @@ export default function DocumentsPage() {
               </div>
               <div>
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                  {t?.title?.[language] || 'Coffre-fort documents'}
+                  {t?.title?.[language] || 'Document vault'}
                 </h1>
-                <p className="text-gray-600">{t?.subtitle?.[language] || 'Stockez et partagez vos documents importants'}</p>
+                <p className="text-gray-600">{t?.subtitle?.[language] || 'Store and share your important documents'}</p>
               </div>
             </div>
 
@@ -339,7 +339,7 @@ export default function DocumentsPage() {
                 style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
               />
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-orange-600">{t?.stats?.storageUsed?.[language] || 'Stockage utilisé'}</span>
+                <span className="text-sm font-medium text-orange-600">{t?.stats?.storageUsed?.[language] || 'Storage used'}</span>
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}
@@ -348,7 +348,7 @@ export default function DocumentsPage() {
                 </div>
               </div>
               <p className="text-2xl font-bold text-gray-900">{formatFileSize(stats?.total_size_bytes)}</p>
-              <p className="text-xs text-orange-500 font-medium mt-2">{t?.stats?.usedLabel?.[language] || 'utilisé'}</p>
+              <p className="text-xs text-orange-500 font-medium mt-2">{t?.stats?.usedLabel?.[language] || 'used'}</p>
             </motion.div>
 
             {/* Expiring Soon - Amber Pastel (Semantic Warning) */}
@@ -364,7 +364,7 @@ export default function DocumentsPage() {
                 style={{ background: 'linear-gradient(135deg, #D97706, #F59E0B)' }}
               />
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-amber-700">{t?.stats?.expiringSoon?.[language] || 'Expirent bientôt'}</span>
+                <span className="text-sm font-medium text-amber-700">{t?.stats?.expiringSoon?.[language] || 'Expiring soon'}</span>
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)' }}
@@ -373,7 +373,7 @@ export default function DocumentsPage() {
                 </div>
               </div>
               <p className="text-2xl font-bold text-gray-900">{stats?.expiring_soon || 0}</p>
-              <p className="text-xs text-amber-600 font-medium mt-2">{t?.stats?.attentionLabel?.[language] || 'à surveiller'}</p>
+              <p className="text-xs text-amber-600 font-medium mt-2">{t?.stats?.attentionLabel?.[language] || 'to watch'}</p>
             </motion.div>
 
             {/* Expired - Red Pastel (Semantic Error) */}
@@ -389,7 +389,7 @@ export default function DocumentsPage() {
                 style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
               />
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-[#B06060]">{t?.stats?.expired?.[language] || 'Expirés'}</span>
+                <span className="text-sm font-medium text-[#B06060]">{t?.stats?.expired?.[language] || 'Expired'}</span>
                 <div
                   className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)' }}
@@ -398,7 +398,7 @@ export default function DocumentsPage() {
                 </div>
               </div>
               <p className="text-2xl font-bold text-gray-900">{stats?.expired || 0}</p>
-              <p className="text-xs text-[#C07070] font-medium mt-2">{t?.stats?.toRenewLabel?.[language] || 'à renouveler'}</p>
+              <p className="text-xs text-[#C07070] font-medium mt-2">{t?.stats?.toRenewLabel?.[language] || 'to renew'}</p>
             </motion.div>
           </div>
 
@@ -409,7 +409,7 @@ export default function DocumentsPage() {
               <Input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder={t?.searchPlaceholder?.[language] || 'Rechercher un document...'}
+                placeholder={t?.searchPlaceholder?.[language] || 'Search for a document...'}
                 className="pl-10 rounded-full"
               />
             </div>
@@ -422,7 +422,7 @@ export default function DocumentsPage() {
                 className="rounded-full flex-shrink-0 text-white border-none"
                 style={filterCategory === 'all' ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
               >
-                {t?.filters?.all?.[language] || 'Tous'}
+                {t?.filters?.all?.[language] || 'All'}
               </Button>
               {DOCUMENT_CATEGORIES.slice(0, 5).map((cat) => {
                 const Icon = getCategoryIcon(cat.icon);
@@ -494,8 +494,8 @@ export default function DocumentsPage() {
                 </motion.div>
               </motion.div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.emptyState?.noDocuments?.[language] || 'Aucun document'}</h3>
-              <p className="text-gray-500 mb-6 max-w-sm mx-auto">{t?.emptyState?.uploadFirst?.[language] || 'Uploadez votre premier document'}</p>
+              <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.emptyState?.noDocuments?.[language] || 'No documents'}</h3>
+              <p className="text-gray-500 mb-6 max-w-sm mx-auto">{t?.emptyState?.uploadFirst?.[language] || 'Upload your first document'}</p>
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
@@ -562,7 +562,7 @@ export default function DocumentsPage() {
                     {doc.is_expiring_soon && !doc.is_expired && (
                       <div className="flex items-center gap-1 text-xs text-yellow-700 bg-yellow-50 px-2 py-1 rounded-full mb-2">
                         <AlertTriangle className="w-3 h-3" />
-                        {t?.expiresOn?.[language] || 'Expire le'}{' '}
+                        {t?.expiresOn?.[language] || 'Expires on'}{' '}
                         {new Date(doc.expires_at!).toLocaleDateString(
                           language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE',
                           { day: 'numeric', month: 'short' }
@@ -573,14 +573,14 @@ export default function DocumentsPage() {
                     {doc.is_expired && (
                       <div className="flex items-center gap-1 text-xs text-red-700 bg-red-50 px-2 py-1 rounded-full mb-2">
                         <Calendar className="w-3 h-3" />
-                        {t?.expiredLabel?.[language] || 'Expiré'}
+                        {t?.expiredLabel?.[language] || 'Expired'}
                       </div>
                     )}
 
                     {/* Private Badge */}
                     {doc.is_private && (
                       <Badge variant="secondary" className="text-xs">
-                        🔒 {t?.privateLabel?.[language] || 'Privé'}
+                        🔒 {t?.privateLabel?.[language] || 'Private'}
                       </Badge>
                     )}
                   </motion.div>
@@ -622,11 +622,11 @@ export default function DocumentsPage() {
                     </motion.div>
                     <div>
                       <h2 className="text-xl font-bold text-gray-900">
-                        {t?.uploadModal?.title?.[language] || 'Upload un document'}
+                        {t?.uploadModal?.title?.[language] || 'Upload a document'}
                       </h2>
                       <p className="text-sm text-gray-500 flex items-center gap-1">
                         <Sparkles className="w-3 h-3" style={{ color: '#ff651e' }} />
-                        {t?.uploadModal?.subtitle?.[language] || 'Ajoutez un nouveau fichier'}
+                        {t?.uploadModal?.subtitle?.[language] || 'Add a new file'}
                       </p>
                     </div>
                   </div>
@@ -650,7 +650,7 @@ export default function DocumentsPage() {
                     <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
                       <FileText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
                     </div>
-                    {t?.uploadModal?.file?.[language] || 'Fichier'} *
+                    {t?.uploadModal?.file?.[language] || 'File'} *
                   </Label>
                   <div
                     onDragEnter={handleDrag}
@@ -676,7 +676,7 @@ export default function DocumentsPage() {
                           }}
                           className="rounded-full border-2 border-orange-200 hover:border-orange-400"
                         >
-                          {t?.uploadModal?.changeFile?.[language] || 'Changer de fichier'}
+                          {t?.uploadModal?.changeFile?.[language] || 'Change file'}
                         </Button>
                       </div>
                     ) : (
@@ -685,7 +685,7 @@ export default function DocumentsPage() {
                           <Upload className="w-8 h-8" style={{ color: '#ff651e' }} />
                         </div>
                         <p className="text-gray-600 mb-1 font-medium">
-                          {t?.uploadModal?.dragDropText?.[language] || 'Glissez un fichier ici ou cliquez pour sélectionner'}
+                          {t?.uploadModal?.dragDropText?.[language] || 'Drag a file here or click to select'}
                         </p>
                         <p className="text-xs text-gray-500">{t?.uploadModal?.fileTypes?.[language] || 'PDF, Images, Documents (Max 50MB)'}</p>
                         <input
@@ -705,12 +705,12 @@ export default function DocumentsPage() {
                     <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
                       <ScrollText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
                     </div>
-                    {t?.uploadModal?.docTitle?.[language] || 'Titre'} *
+                    {t?.uploadModal?.docTitle?.[language] || 'Title'} *
                   </Label>
                   <Input
                     value={uploadForm.title}
                     onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
-                    placeholder={t?.uploadModal?.titlePlaceholder?.[language] || 'Ex: Contrat de bail 2024'}
+                    placeholder={t?.uploadModal?.titlePlaceholder?.[language] || 'E.g.: Lease agreement 2024'}
                     className="rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors"
                   />
                 </div>
@@ -721,12 +721,12 @@ export default function DocumentsPage() {
                     <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
                       <FileSignature className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
                     </div>
-                    {t?.uploadModal?.description?.[language] || 'Description (optionnel)'}
+                    {t?.uploadModal?.description?.[language] || 'Description (optional)'}
                   </Label>
                   <Textarea
                     value={uploadForm.description}
                     onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
-                    placeholder={t?.uploadModal?.descriptionPlaceholder?.[language] || 'Ajoutez des détails sur ce document...'}
+                    placeholder={t?.uploadModal?.descriptionPlaceholder?.[language] || 'Add details about this document...'}
                     className="rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors min-h-[80px]"
                   />
                 </div>
@@ -737,7 +737,7 @@ export default function DocumentsPage() {
                     <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
                       <FolderOpen className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
                     </div>
-                    {t?.uploadModal?.category?.[language] || 'Catégorie'} *
+                    {t?.uploadModal?.category?.[language] || 'Category'} *
                   </Label>
                   <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
                     {DOCUMENT_CATEGORIES.map((cat) => {
@@ -769,7 +769,7 @@ export default function DocumentsPage() {
                     <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
                       <Calendar className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
                     </div>
-                    {t?.uploadModal?.expirationDate?.[language] || "Date d'expiration (optionnel)"}
+                    {t?.uploadModal?.expirationDate?.[language] || 'Expiration date (optional)'}
                   </Label>
                   <Input
                     type="date"
@@ -786,9 +786,9 @@ export default function DocumentsPage() {
                   </div>
                   <div className="flex-1">
                     <Label htmlFor="is_private" className="cursor-pointer font-semibold text-gray-700">
-                      {t?.uploadModal?.privateLabel?.[language] || 'Document privé'}
+                      {t?.uploadModal?.privateLabel?.[language] || 'Private document'}
                     </Label>
-                    <p className="text-xs text-gray-500">{t?.uploadModal?.privateDescription?.[language] || 'Visible uniquement par moi'}</p>
+                    <p className="text-xs text-gray-500">{t?.uploadModal?.privateDescription?.[language] || 'Visible only to me'}</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -818,7 +818,7 @@ export default function DocumentsPage() {
                       className="w-full rounded-2xl py-6 font-bold border-2 border-gray-200 hover:border-orange-200"
                       disabled={isUploading}
                     >
-                      {t?.uploadModal?.cancel?.[language] || 'Annuler'}
+                      {t?.uploadModal?.cancel?.[language] || 'Cancel'}
                     </Button>
                   </motion.div>
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -831,12 +831,12 @@ export default function DocumentsPage() {
                       {isUploading ? (
                         <>
                           <LoadingHouse size={20} className="mr-2" />
-                          {t?.uploadModal?.uploading?.[language] || 'Upload...'}
+                          {t?.uploadModal?.uploading?.[language] || 'Uploading...'}
                         </>
                       ) : (
                         <>
                           <Upload className="w-5 h-5 mr-2" />
-                          {t?.uploadModal?.upload?.[language] || 'Uploader'}
+                          {t?.uploadModal?.upload?.[language] || 'Upload'}
                         </>
                       )}
                     </Button>
@@ -857,7 +857,7 @@ export default function DocumentsPage() {
             className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t?.viewModal?.title?.[language] || 'Détails du document'}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t?.viewModal?.title?.[language] || 'Document details'}</h2>
               <button
                 onClick={() => {
                   setShowViewModal(false);
@@ -896,11 +896,11 @@ export default function DocumentsPage() {
               {/* Meta Info */}
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
-                  <Label>{t?.viewModal?.uploadedBy?.[language] || 'Uploadé par'}</Label>
+                  <Label>{t?.viewModal?.uploadedBy?.[language] || 'Uploaded by'}</Label>
                   <p className="text-gray-700 mt-1">{selectedDocument.uploader_name}</p>
                 </div>
                 <div>
-                  <Label>{t?.viewModal?.uploadDate?.[language] || "Date d'upload"}</Label>
+                  <Label>{t?.viewModal?.uploadDate?.[language] || 'Upload date'}</Label>
                   <p className="text-gray-700 mt-1">
                     {new Date(selectedDocument.created_at).toLocaleDateString(
                       language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE',
@@ -910,7 +910,7 @@ export default function DocumentsPage() {
                 </div>
                 {selectedDocument.expires_at && (
                   <div className="col-span-2">
-                    <Label>{t?.viewModal?.expirationDate?.[language] || "Date d'expiration"}</Label>
+                    <Label>{t?.viewModal?.expirationDate?.[language] || 'Expiration date'}</Label>
                     <p
                       className={cn(
                         'mt-1',
@@ -925,10 +925,10 @@ export default function DocumentsPage() {
                         language === 'fr' ? 'fr-FR' : language === 'en' ? 'en-US' : language === 'nl' ? 'nl-NL' : 'de-DE',
                         { day: 'numeric', month: 'long', year: 'numeric' }
                       )}
-                      {selectedDocument.is_expired && ` (${t?.expiredLabel?.[language] || 'Expiré'})`}
+                      {selectedDocument.is_expired && ` (${t?.expiredLabel?.[language] || 'Expired'})`}
                       {selectedDocument.is_expiring_soon &&
                         !selectedDocument.is_expired &&
-                        ` (${t?.expiresSoon?.[language] || 'Expire bientôt'})`}
+                        ` (${t?.expiresSoon?.[language] || 'Expires soon'})`}
                     </p>
                   </div>
                 )}
@@ -943,7 +943,7 @@ export default function DocumentsPage() {
                 variant="outline"
               >
                 <Download className="w-4 h-4 mr-2" />
-                {t?.viewModal?.download?.[language] || 'Télécharger'}
+                {t?.viewModal?.download?.[language] || 'Download'}
               </Button>
               {selectedDocument.uploaded_by === userId && (
                 <Button
@@ -951,7 +951,7 @@ export default function DocumentsPage() {
                   className="flex-1 rounded-full bg-red-500 hover:bg-red-600 text-white"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
-                  {t?.viewModal?.delete?.[language] || 'Supprimer'}
+                  {t?.viewModal?.delete?.[language] || 'Delete'}
                 </Button>
               )}
             </div>

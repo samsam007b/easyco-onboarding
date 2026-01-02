@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - "i" Person/Stickman Exploration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --accent: #4361ee;
+            --accent-light: #7209b7;
+            --text: #edf2f4;
+            --text-muted: #8d99ae;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Preview Area */
+        .preview-section {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .preview-box {
+            aspect-ratio: 1;
+            border-radius: 20%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .preview-box.light {
+            background: #ffffff;
+        }
+
+        .preview-box.dark {
+            background: #1a1a2e;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .preview-box.gradient {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .preview-box.blue {
+            background: #4361ee;
+        }
+
+        .preview-label {
+            position: absolute;
+            bottom: -1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        /* The "i" character */
+        .i-character {
+            font-family: 'Fredoka', sans-serif;
+            font-size: var(--i-size, 120px);
+            font-weight: var(--i-weight, 600);
+            line-height: 1;
+            position: relative;
+            display: inline-block;
+        }
+
+        .i-character.colored {
+            background: linear-gradient(135deg, var(--color-start, #4361ee) 0%, var(--color-end, #7209b7) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .i-character.solid-dark {
+            color: #1a1a2e;
+        }
+
+        .i-character.solid-white {
+            color: #ffffff;
+        }
+
+        /* Variations section */
+        .variations-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .variations-section h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .variations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .variation-item {
+            text-align: center;
+        }
+
+        .variation-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 48px;
+            font-weight: var(--i-weight, 600);
+        }
+
+        .variation-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Anatomy section */
+        .anatomy-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .anatomy-section h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .anatomy-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+        }
+
+        .anatomy-i {
+            position: relative;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 180px;
+            font-weight: var(--i-weight, 600);
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .anatomy-label {
+            position: absolute;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .anatomy-label.head {
+            top: 0;
+            right: -80px;
+        }
+
+        .anatomy-label.body {
+            bottom: 30%;
+            right: -80px;
+        }
+
+        .anatomy-label::before {
+            content: '';
+            position: absolute;
+            right: 100%;
+            top: 50%;
+            width: 30px;
+            height: 1px;
+            background: var(--text-muted);
+            margin-right: 8px;
+        }
+
+        .anatomy-interpretation {
+            text-align: left;
+            max-width: 300px;
+        }
+
+        .anatomy-interpretation h4 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+
+        .anatomy-interpretation ul {
+            list-style: none;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .anatomy-interpretation li {
+            margin-bottom: 0.75rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .anatomy-interpretation li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        /* Controls Panel */
+        .controls-panel {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 1.5rem;
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .control-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .control-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .control-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+        }
+
+        .control-label span:first-child {
+            color: var(--text-muted);
+        }
+
+        .control-value {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.8rem;
+            color: var(--accent);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .color-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+
+        .color-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .color-input-group label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        /* Presets */
+        .presets-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .presets-title {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+        }
+
+        .preset-btn {
+            padding: 0.6rem 0.75rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: var(--accent);
+        }
+
+        /* Export */
+        .export-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 0.875rem;
+            background: var(--accent);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+
+        .export-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* Comparison section */
+        .comparison-section {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-section h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item .label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .comparison-i {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 60px;
+            line-height: 1;
+        }
+
+        .arrow {
+            color: var(--text-muted);
+            font-size: 1.5rem;
+        }
+
+        /* Size simulation */
+        .size-simulation {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .size-simulation h3 {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .device-mockups {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+        }
+
+        .device-mockup {
+            text-align: center;
+        }
+
+        .device-mockup .device-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+        }
+
+        .app-icon-sim {
+            border-radius: 22%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .app-icon-sim.size-60 {
+            width: 60px;
+            height: 60px;
+            font-size: 36px;
+        }
+
+        .app-icon-sim.size-120 {
+            width: 120px;
+            height: 120px;
+            font-size: 72px;
+        }
+
+        .app-icon-sim.size-180 {
+            width: 180px;
+            height: 180px;
+            font-size: 108px;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .controls-panel {
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Exploration du "i" comme Logo</h1>
+    <p class="subtitle">Le "i" de Fredoka : un personnage naturel, une identité unique</p>
+
+    <div class="main-container">
+        <div class="preview-section">
+            <!-- Main Previews -->
+            <div class="preview-grid">
+                <div class="preview-box light">
+                    <span class="i-character solid-dark" id="preview-light">i</span>
+                    <span class="preview-label">Sur fond clair</span>
+                </div>
+                <div class="preview-box dark">
+                    <span class="i-character colored" id="preview-dark">i</span>
+                    <span class="preview-label">Sur fond sombre</span>
+                </div>
+                <div class="preview-box gradient">
+                    <span class="i-character solid-white" id="preview-gradient">i</span>
+                    <span class="preview-label">Sur gradient</span>
+                </div>
+                <div class="preview-box blue">
+                    <span class="i-character solid-white" id="preview-blue">i</span>
+                    <span class="preview-label">Sur couleur</span>
+                </div>
+            </div>
+
+            <!-- Anatomy Section -->
+            <div class="anatomy-section">
+                <h3>Anatomie du "i" - Lecture Stickman</h3>
+                <div class="anatomy-display">
+                    <div class="anatomy-i">
+                        i
+                        <span class="anatomy-label head">← Tête (tittle)</span>
+                        <span class="anatomy-label body">← Corps (stem)</span>
+                    </div>
+                    <div class="anatomy-interpretation">
+                        <h4>Pourquoi ça fonctionne :</h4>
+                        <ul>
+                            <li>Le point rond = une tête humaine naturelle</li>
+                            <li>La barre = un corps stylisé, minimaliste</li>
+                            <li>Fredoka arrondi = chaleur, accessibilité</li>
+                            <li>Évoque "individu" dans "coliving"</li>
+                            <li>Simple = mémorable à 60px</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Weight Comparison -->
+            <div class="comparison-section">
+                <h3>Comparaison des poids</h3>
+                <div class="comparison-row">
+                    <div class="comparison-item">
+                        <span class="comparison-i" style="font-weight: 300; color: #666;">i</span>
+                        <div class="label">Light (300)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="comparison-item">
+                        <span class="comparison-i" style="font-weight: 400; color: #888;">i</span>
+                        <div class="label">Regular (400)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="comparison-item">
+                        <span class="comparison-i" style="font-weight: 500; color: #aaa;">i</span>
+                        <div class="label">Medium (500)</div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="comparison-item">
+                        <span class="comparison-i" style="font-weight: 600; color: var(--accent);">i</span>
+                        <div class="label">SemiBold (600) ★</div>
+                    </div>
+                    <span class="arrow">→</span>
+                    <div class="comparison-item">
+                        <span class="comparison-i" style="font-weight: 700; color: #ccc;">i</span>
+                        <div class="label">Bold (700)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Size Simulation -->
+            <div class="size-simulation">
+                <h3>Simulation Tailles App Icon</h3>
+                <div class="device-mockups">
+                    <div class="device-mockup">
+                        <div class="app-icon-sim size-60" id="sim-60" style="background: linear-gradient(135deg, #4361ee, #7209b7); color: white; font-weight: 600;">i</div>
+                        <div class="device-label">60px (iOS home)</div>
+                    </div>
+                    <div class="device-mockup">
+                        <div class="app-icon-sim size-120" id="sim-120" style="background: linear-gradient(135deg, #4361ee, #7209b7); color: white; font-weight: 600;">i</div>
+                        <div class="device-label">120px (2x)</div>
+                    </div>
+                    <div class="device-mockup">
+                        <div class="app-icon-sim size-180" id="sim-180" style="background: linear-gradient(135deg, #4361ee, #7209b7); color: white; font-weight: 600;">i</div>
+                        <div class="device-label">180px (3x)</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Variations -->
+            <div class="variations-section">
+                <h3>Variations possibles (déclinaisons autorisées)</h3>
+                <div class="variations-grid">
+                    <div class="variation-item">
+                        <div class="variation-preview" style="background: linear-gradient(135deg, #4361ee, #7209b7); color: white;">i</div>
+                        <div class="variation-label">Gradient principal</div>
+                    </div>
+                    <div class="variation-item">
+                        <div class="variation-preview" style="background: #4361ee; color: white;">i</div>
+                        <div class="variation-label">Bleu solide</div>
+                    </div>
+                    <div class="variation-item">
+                        <div class="variation-preview" style="background: white; color: #1a1a2e; border: 1px solid #eee;">i</div>
+                        <div class="variation-label">Sur blanc</div>
+                    </div>
+                    <div class="variation-item">
+                        <div class="variation-preview" style="background: #1a1a2e; color: white;">i</div>
+                        <div class="variation-label">Sur sombre</div>
+                    </div>
+                    <div class="variation-item">
+                        <div class="variation-preview" style="background: linear-gradient(135deg, #f72585, #7209b7); color: white;">i</div>
+                        <div class="variation-label">Gradient rose</div>
+                    </div>
+                    <div class="variation-item">
+                        <div class="variation-preview" style="background: linear-gradient(135deg, #06d6a0, #118ab2); color: white;">i</div>
+                        <div class="variation-label">Gradient nature</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls Panel -->
+        <div class="controls-panel">
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Taille (px)</span>
+                    <span class="control-value" id="size-value">120</span>
+                </div>
+                <input type="range" id="size-slider" min="60" max="200" value="120">
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Poids</span>
+                    <span class="control-value" id="weight-value">600</span>
+                </div>
+                <input type="range" id="weight-slider" min="300" max="700" step="10" value="600">
+            </div>
+
+            <div class="control-group">
+                <div class="control-label">
+                    <span>Couleurs gradient</span>
+                </div>
+                <div class="color-inputs">
+                    <div class="color-input-group">
+                        <label>Début</label>
+                        <input type="color" id="color-start" value="#4361ee">
+                    </div>
+                    <div class="color-input-group">
+                        <label>Fin</label>
+                        <input type="color" id="color-end" value="#7209b7">
+                    </div>
+                </div>
+            </div>
+
+            <div class="presets-section">
+                <div class="presets-title">Presets couleurs</div>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-start="#4361ee" data-end="#7209b7">Bleu → Violet</button>
+                    <button class="preset-btn" data-start="#f72585" data-end="#7209b7">Rose → Violet</button>
+                    <button class="preset-btn" data-start="#06d6a0" data-end="#118ab2">Vert → Bleu</button>
+                    <button class="preset-btn" data-start="#ff6b6b" data-end="#feca57">Rouge → Jaune</button>
+                    <button class="preset-btn" data-start="#5f27cd" data-end="#341f97">Violet deep</button>
+                    <button class="preset-btn" data-start="#00cec9" data-end="#6c5ce7">Cyan → Violet</button>
+                </div>
+            </div>
+
+            <div class="export-section">
+                <button class="export-btn" id="export-btn">📋 Copier les specs</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const sizeSlider = document.getElementById('size-slider');
+        const weightSlider = document.getElementById('weight-slider');
+        const colorStart = document.getElementById('color-start');
+        const colorEnd = document.getElementById('color-end');
+        const sizeValue = document.getElementById('size-value');
+        const weightValue = document.getElementById('weight-value');
+        const exportBtn = document.getElementById('export-btn');
+
+        // All preview elements
+        const previewLight = document.getElementById('preview-light');
+        const previewDark = document.getElementById('preview-dark');
+        const previewGradient = document.getElementById('preview-gradient');
+        const previewBlue = document.getElementById('preview-blue');
+
+        // Simulation elements
+        const sim60 = document.getElementById('sim-60');
+        const sim120 = document.getElementById('sim-120');
+        const sim180 = document.getElementById('sim-180');
+
+        function updatePreviews() {
+            const size = sizeSlider.value;
+            const weight = weightSlider.value;
+            const startColor = colorStart.value;
+            const endColor = colorEnd.value;
+
+            // Update CSS variables
+            document.documentElement.style.setProperty('--i-size', size + 'px');
+            document.documentElement.style.setProperty('--i-weight', weight);
+            document.documentElement.style.setProperty('--color-start', startColor);
+            document.documentElement.style.setProperty('--color-end', endColor);
+
+            // Update value displays
+            sizeValue.textContent = size;
+            weightValue.textContent = weight;
+
+            // Update simulations
+            const gradient = 'linear-gradient(135deg, ' + startColor + ', ' + endColor + ')';
+            sim60.style.background = gradient;
+            sim60.style.fontWeight = weight;
+            sim120.style.background = gradient;
+            sim120.style.fontWeight = weight;
+            sim180.style.background = gradient;
+            sim180.style.fontWeight = weight;
+
+            // Update variation previews
+            const variations = document.querySelectorAll('.variation-preview');
+            variations.forEach(v => {
+                v.style.fontWeight = weight;
+            });
+            // Update first variation with current gradient
+            if (variations[0]) {
+                variations[0].style.background = gradient;
+            }
+        }
+
+        // Event listeners
+        sizeSlider.addEventListener('input', updatePreviews);
+        weightSlider.addEventListener('input', updatePreviews);
+        colorStart.addEventListener('input', updatePreviews);
+        colorEnd.addEventListener('input', updatePreviews);
+
+        // Preset buttons
+        document.querySelectorAll('.preset-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                colorStart.value = btn.dataset.start;
+                colorEnd.value = btn.dataset.end;
+                updatePreviews();
+            });
+        });
+
+        // Export specs
+        exportBtn.addEventListener('click', () => {
+            const specs = `/* IzzIco "i" Logo - Specs */
+/* Generated: ${new Date().toISOString()} */
+
+/* Typography */
+--logo-font: 'Fredoka', sans-serif;
+--logo-weight: ${weightSlider.value};
+--logo-character: 'i';
+
+/* Colors */
+--gradient-start: ${colorStart.value};
+--gradient-end: ${colorEnd.value};
+--gradient: linear-gradient(135deg, ${colorStart.value} 0%, ${colorEnd.value} 100%);
+
+/* App Icon CSS */
+.app-icon {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: ${weightSlider.value};
+    background: linear-gradient(135deg, ${colorStart.value} 0%, ${colorEnd.value} 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 22%;
+}
+
+/* Cohérence avec wordmark */
+/* Note: Le wordmark utilise --weight-i: 600 */
+/* Recommandé: garder le même poids pour cohérence */
+`;
+
+            navigator.clipboard.writeText(specs).then(() => {
+                const originalText = exportBtn.textContent;
+                exportBtn.textContent = '✓ Copié !';
+                setTimeout(() => {
+                    exportBtn.textContent = originalText;
+                }, 2000);
+            });
+        });
+
+        // Initial update
+        updatePreviews();
+    </script>
+</body>
+</html>

@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import MainResidentWelcome from '@/components/onboarding/MainResidentWelcome';
 import ResidentWelcome from '@/components/onboarding/ResidentWelcome';
@@ -36,6 +37,7 @@ interface PropertyCreatedData {
 
 export default function ResidentPropertySetupPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const supabase = createClient();
   const [isLoading, setIsLoading] = useState(true);
   const [mode, setMode] = useState<SetupMode>('choice');
@@ -97,7 +99,7 @@ export default function ResidentPropertySetupPage() {
   const createProperty = async () => {
     if (!currentUserId) return;
     if (!createForm.name || !createForm.address || !createForm.city) {
-      toast.error('Veuillez remplir tous les champs obligatoires');
+      toast.error(t('residentOnboarding.propertySetup.errors.requiredFields'));
       return;
     }
 
@@ -156,7 +158,7 @@ export default function ResidentPropertySetupPage() {
       // Set flag to prevent redirect loop (expires in 5 seconds)
       sessionStorage.setItem('justCreatedProperty', Date.now().toString());
 
-      toast.success('Résidence créée avec succès! 🎉');
+      toast.success(t('residentOnboarding.propertySetup.success.created'));
 
       // Store created property data for welcome modal
       setPropertyCreatedData({
@@ -171,7 +173,7 @@ export default function ResidentPropertySetupPage() {
       setShowMainResidentWelcome(true);
     } catch (error: any) {
       console.error('❌ Error creating property:', error);
-      toast.error(`Erreur: ${error.message || 'Erreur inconnue'}`);
+      toast.error(`${t('residentOnboarding.propertySetup.errors.error')}: ${error.message || t('residentOnboarding.propertySetup.errors.unknown')}`);
       setIsSubmitting(false);
     }
   };
@@ -179,7 +181,7 @@ export default function ResidentPropertySetupPage() {
   const joinProperty = async () => {
     if (!currentUserId) return;
     if (!joinCode.trim()) {
-      toast.error('Veuillez entrer un code d\'invitation');
+      toast.error(t('residentOnboarding.propertySetup.errors.invitationCodeRequired'));
       return;
     }
 
@@ -193,7 +195,7 @@ export default function ResidentPropertySetupPage() {
         .single();
 
       if (propertyError || !property) {
-        toast.error('Code d\'invitation invalide');
+        toast.error(t('residentOnboarding.propertySetup.errors.invalidCode'));
         setIsSubmitting(false);
         return;
       }
@@ -229,7 +231,7 @@ export default function ResidentPropertySetupPage() {
         is_creator: false, // Not the creator
       }));
 
-      toast.success('Vous avez rejoint la résidence! 🎉');
+      toast.success(t('residentOnboarding.propertySetup.success.joined'));
 
       // Store property data for welcome modal
       setPropertyCreatedData({
@@ -244,7 +246,7 @@ export default function ResidentPropertySetupPage() {
       setShowResidentWelcome(true);
     } catch (error: any) {
       console.error('❌ Error joining property:', error);
-      toast.error(`Erreur: ${error.message || 'Erreur inconnue'}`);
+      toast.error(`${t('residentOnboarding.propertySetup.errors.error')}: ${error.message || t('residentOnboarding.propertySetup.errors.unknown')}`);
       setIsSubmitting(false);
     }
   };
@@ -259,7 +261,7 @@ export default function ResidentPropertySetupPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">Chargement...</p>
+          <p className="text-gray-600 font-medium mt-4">{t('common.loading')}</p>
         </div>
       </div>
     );
@@ -286,16 +288,16 @@ export default function ResidentPropertySetupPage() {
             <Home className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Dernière étape !
+            {t('residentOnboarding.propertySetup.title')}
           </h1>
           <p className="text-gray-600 mb-4">
-            Configurez votre colocation pour débloquer toutes les fonctionnalités
+            {t('residentOnboarding.propertySetup.description')}
           </p>
           <button
             onClick={skipForNow}
             className="text-sm text-gray-500 hover:text-gray-700 underline"
           >
-            Passer pour le moment
+            {t('residentOnboarding.propertySetup.skipForNow')}
           </button>
         </motion.div>
 
@@ -319,13 +321,13 @@ export default function ResidentPropertySetupPage() {
                   <Plus className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Créer une colocation
+                  {t('residentOnboarding.propertySetup.choice.create.title')}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Vous êtes le premier ? Créez une nouvelle colocation et invitez vos colocataires
+                  {t('residentOnboarding.propertySetup.choice.create.description')}
                 </p>
                 <Button className="w-full rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]">
-                  Créer
+                  {t('residentOnboarding.propertySetup.choice.create.button')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
@@ -341,13 +343,13 @@ export default function ResidentPropertySetupPage() {
                   <LogIn className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Rejoindre une colocation
+                  {t('residentOnboarding.propertySetup.choice.join.title')}
                 </h3>
                 <p className="text-gray-600 mb-4">
-                  Vos colocataires vous ont invité ? Utilisez le code d'invitation
+                  {t('residentOnboarding.propertySetup.choice.join.description')}
                 </p>
                 <Button className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600">
-                  Rejoindre
+                  {t('residentOnboarding.propertySetup.choice.join.button')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>
@@ -367,19 +369,19 @@ export default function ResidentPropertySetupPage() {
                 onClick={() => setMode('choice')}
                 className="mb-6"
               >
-                ← Retour
+                ← {t('common.back')}
               </Button>
 
               <h2 className="text-2xl font-bold text-gray-900 mb-6">
-                Créer votre colocation
+                {t('residentOnboarding.propertySetup.createForm.title')}
               </h2>
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Nom de la colocation *</Label>
+                  <Label htmlFor="name">{t('residentOnboarding.propertySetup.createForm.name')} *</Label>
                   <Input
                     id="name"
-                    placeholder="Ex: Appart du centre-ville"
+                    placeholder={t('residentOnboarding.propertySetup.createForm.namePlaceholder')}
                     value={createForm.name}
                     onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
                     className="rounded-xl mt-2"
@@ -387,12 +389,12 @@ export default function ResidentPropertySetupPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="address">Adresse *</Label>
+                  <Label htmlFor="address">{t('residentOnboarding.propertySetup.createForm.address')} *</Label>
                   <div className="relative mt-2">
                     <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <Input
                       id="address"
-                      placeholder="Ex: 123 Rue de la Paix"
+                      placeholder={t('residentOnboarding.propertySetup.createForm.addressPlaceholder')}
                       value={createForm.address}
                       onChange={(e) => setCreateForm({ ...createForm, address: e.target.value })}
                       className="rounded-xl pl-10"
@@ -402,10 +404,10 @@ export default function ResidentPropertySetupPage() {
 
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
-                    <Label htmlFor="city">Ville *</Label>
+                    <Label htmlFor="city">{t('residentOnboarding.propertySetup.createForm.city')} *</Label>
                     <Input
                       id="city"
-                      placeholder="Ex: Paris"
+                      placeholder={t('residentOnboarding.propertySetup.createForm.cityPlaceholder')}
                       value={createForm.city}
                       onChange={(e) => setCreateForm({ ...createForm, city: e.target.value })}
                       className="rounded-xl mt-2"
@@ -413,10 +415,10 @@ export default function ResidentPropertySetupPage() {
                   </div>
 
                   <div>
-                    <Label htmlFor="postal_code">Code postal</Label>
+                    <Label htmlFor="postal_code">{t('residentOnboarding.propertySetup.createForm.postalCode')}</Label>
                     <Input
                       id="postal_code"
-                      placeholder="Ex: 75001"
+                      placeholder={t('residentOnboarding.propertySetup.createForm.postalCodePlaceholder')}
                       value={createForm.postal_code}
                       onChange={(e) => setCreateForm({ ...createForm, postal_code: e.target.value })}
                       className="rounded-xl mt-2"
@@ -425,7 +427,7 @@ export default function ResidentPropertySetupPage() {
                 </div>
 
                 <div>
-                  <Label htmlFor="total_rooms">Nombre de chambres</Label>
+                  <Label htmlFor="total_rooms">{t('residentOnboarding.propertySetup.createForm.totalRooms')}</Label>
                   <div className="relative mt-2">
                     <Hash className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <Input
@@ -445,7 +447,7 @@ export default function ResidentPropertySetupPage() {
                   disabled={isSubmitting}
                   className="w-full rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:shadow-lg transition-shadow mt-6"
                 >
-                  {isSubmitting ? 'Création...' : 'Créer et continuer'}
+                  {isSubmitting ? t('residentOnboarding.propertySetup.createForm.creating') : t('residentOnboarding.propertySetup.createForm.submit')}
                 </Button>
               </div>
             </Card>
@@ -464,7 +466,7 @@ export default function ResidentPropertySetupPage() {
                 onClick={() => setMode('choice')}
                 className="mb-6"
               >
-                ← Retour
+                ← {t('common.back')}
               </Button>
 
               <div className="text-center mb-8">
@@ -472,19 +474,19 @@ export default function ResidentPropertySetupPage() {
                   <Key className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Rejoindre une colocation
+                  {t('residentOnboarding.propertySetup.joinForm.title')}
                 </h2>
                 <p className="text-gray-600">
-                  Entrez le code d'invitation fourni par votre colocataire
+                  {t('residentOnboarding.propertySetup.joinForm.description')}
                 </p>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="joinCode">Code d'invitation</Label>
+                  <Label htmlFor="joinCode">{t('residentOnboarding.propertySetup.joinForm.codeLabel')}</Label>
                   <Input
                     id="joinCode"
-                    placeholder="Entrez le code d'invitation"
+                    placeholder={t('residentOnboarding.propertySetup.joinForm.codePlaceholder')}
                     value={joinCode}
                     onChange={(e) => setJoinCode(e.target.value)}
                     className="rounded-xl mt-2 text-center text-lg font-mono"
@@ -496,7 +498,7 @@ export default function ResidentPropertySetupPage() {
                   disabled={isSubmitting}
                   className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-shadow"
                 >
-                  {isSubmitting ? 'Connexion...' : 'Rejoindre et continuer'}
+                  {isSubmitting ? t('residentOnboarding.propertySetup.joinForm.connecting') : t('residentOnboarding.propertySetup.joinForm.submit')}
                 </Button>
               </div>
             </Card>

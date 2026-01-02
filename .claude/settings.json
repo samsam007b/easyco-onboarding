@@ -13,6 +13,28 @@
             "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/team-git-guard.sh"
           }
         ]
+      },
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/brand-guidelines-guard.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/english-code-guard.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/english-code-guard.sh"
+          }
+        ]
       }
     ],
     "SessionStart": [

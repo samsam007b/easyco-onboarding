@@ -216,8 +216,8 @@ export default function ModernOwnerDashboard() {
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <h3 className="text-xl font-semibold text-gray-900 mb-2">{owner?.loadingDashboard || 'Chargement du dashboard...'}</h3>
-          <p className="text-gray-600">{owner?.preparingData || 'Préparation de vos données'}</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">{owner?.loadingDashboard || 'Loading dashboard...'}</h3>
+          <p className="text-gray-600">{owner?.preparingData || 'Preparing your data'}</p>
         </div>
       </div>
     );

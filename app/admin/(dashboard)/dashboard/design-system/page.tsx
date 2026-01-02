@@ -5486,7 +5486,7 @@ function ChoicesSection() {
         {loadingChoices ? (
           <div className="text-center py-8 text-slate-400">
             <Loader2 className="w-6 h-6 animate-spin mx-auto mb-2" />
-            Chargement des choix...
+            Loading choices...
           </div>
         ) : savedChoices.length === 0 ? (
           <div className="text-center py-8 text-slate-400">

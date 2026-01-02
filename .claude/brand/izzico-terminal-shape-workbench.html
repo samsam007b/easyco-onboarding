@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Terminal Shape Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #FFB10B, #9B59B6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .canvas-area {
+            background: #1a1a2e;
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-item {
+            background: #252540;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .comparison-item h3 {
+            font-size: 0.9rem;
+            color: #9B59B6;
+            margin-bottom: 1rem;
+        }
+
+        .terminal-display {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .fredoka-sample {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 120px;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .zoom-view {
+            background: #1a1a2e;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .zoom-label {
+            font-size: 0.75rem;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .side-item {
+            background: #252540;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .side-item h4 {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .panel {
+            background: #1a1a2e;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            height: fit-content;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #FFB10B;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label {
+            font-size: 0.8rem;
+            color: #aaa;
+            min-width: 80px;
+        }
+
+        .control-row input[type="range"] {
+            flex: 1;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            -webkit-appearance: none;
+        }
+
+        .control-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: #9B59B6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .control-value {
+            font-size: 0.75rem;
+            color: #9B59B6;
+            min-width: 40px;
+            text-align: right;
+            font-family: monospace;
+        }
+
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .preset-btn {
+            padding: 0.5rem;
+            background: #252540;
+            border: 1px solid #333;
+            border-radius: 0.5rem;
+            color: #e0e0e0;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: #333;
+            border-color: #9B59B6;
+        }
+
+        .preset-btn.active {
+            background: #9B59B6;
+            border-color: #9B59B6;
+        }
+
+        .info-box {
+            background: #252540;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            font-size: 0.75rem;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        .specs-box {
+            background: #0a0a15;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #9B59B6;
+            white-space: pre-wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.85rem;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .btn.primary {
+            background: linear-gradient(135deg, #FFB10B, #E67E22);
+            color: #000;
+            font-weight: 600;
+        }
+
+        .btn.primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 177, 11, 0.3);
+        }
+
+        .match-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #252540;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .match-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .match-dot.good { background: #2ecc71; }
+        .match-dot.medium { background: #f39c12; }
+        .match-dot.poor { background: #e74c3c; }
+
+        .match-text {
+            font-size: 0.75rem;
+            color: #aaa;
+        }
+
+        .overlay-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .overlay-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Terminal Shape Workbench</h1>
+    <p class="subtitle">Comparaison des terminaisons : Fredoka vs SVG stroke-linecap vs Superellipse</p>
+
+    <div class="main-container">
+        <div class="canvas-area">
+            <div class="comparison-grid">
+                <!-- Fredoka Reference -->
+                <div class="comparison-item">
+                    <h3>Fredoka 600 - Référence</h3>
+                    <div class="terminal-display">
+                        <span class="fredoka-sample">i</span>
+                    </div>
+                    <div class="zoom-view">
+                        <div class="zoom-label">Zoom sur la terminaison du i</div>
+                        <svg id="fredoka-zoom" width="100%" height="80" viewBox="0 0 200 80"></svg>
+                    </div>
+                </div>
+
+                <!-- SVG stroke-linecap: round -->
+                <div class="comparison-item">
+                    <h3>SVG stroke-linecap: round</h3>
+                    <div class="terminal-display">
+                        <svg width="40" height="120" viewBox="0 0 40 120">
+                            <line x1="20" y1="30" x2="20" y2="100"
+                                  stroke="#fff" stroke-width="13" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="zoom-view">
+                        <div class="zoom-label">Terminaison = demi-cercle parfait</div>
+                        <svg width="100%" height="80" viewBox="0 0 200 80">
+                            <circle cx="100" cy="40" r="32.5" fill="none" stroke="#444" stroke-width="1" stroke-dasharray="4"/>
+                            <path d="M 67.5 40 A 32.5 32.5 0 0 1 132.5 40" fill="#fff"/>
+                            <rect x="67.5" y="40" width="65" height="30" fill="#fff"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Superellipse (Squircle) -->
+                <div class="comparison-item">
+                    <h3>Superellipse (Squircle)</h3>
+                    <div class="terminal-display">
+                        <svg id="squircle-preview" width="40" height="120" viewBox="0 0 40 120"></svg>
+                    </div>
+                    <div class="zoom-view">
+                        <div class="zoom-label">Exposant n ajustable</div>
+                        <svg id="squircle-zoom" width="100%" height="80" viewBox="0 0 200 80"></svg>
+                    </div>
+                </div>
+
+                <!-- Custom terminal -->
+                <div class="comparison-item">
+                    <h3>Terminaison Personnalisée</h3>
+                    <div class="terminal-display">
+                        <svg id="custom-preview" width="40" height="120" viewBox="0 0 40 120"></svg>
+                    </div>
+                    <div class="zoom-view">
+                        <div class="zoom-label">rx/ry ajustables</div>
+                        <svg id="custom-zoom" width="100%" height="80" viewBox="0 0 200 80"></svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side by side comparison -->
+            <div class="side-by-side">
+                <div class="side-item">
+                    <h4>Overlay : Fredoka + Forme actuelle</h4>
+                    <div class="overlay-container">
+                        <span class="fredoka-sample" id="overlay-fredoka">i</span>
+                        <svg id="overlay-svg" class="overlay-svg" width="100" height="150"></svg>
+                    </div>
+                </div>
+                <div class="side-item">
+                    <h4>Icône complète avec terminaisons</h4>
+                    <svg id="icon-preview" width="150" height="150" viewBox="0 0 100 100"></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-section">
+                <div class="section-title">Type de terminaison</div>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-type="round">Rond (SVG)</button>
+                    <button class="preset-btn active" data-type="squircle">Squircle</button>
+                    <button class="preset-btn" data-type="rect">Rect arrondi</button>
+                    <button class="preset-btn" data-type="custom">Personnalisé</button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Paramètres Squircle</div>
+
+                <div class="control-row">
+                    <span class="control-label">Exposant n</span>
+                    <input type="range" id="squircle-n" min="2" max="8" step="0.1" value="4">
+                    <span class="control-value" id="squircle-n-val">4.0</span>
+                </div>
+
+                <div class="info-box">
+                    <strong>Superellipse:</strong> |x/a|^n + |y/b|^n = 1<br>
+                    n=2 → cercle parfait<br>
+                    n=4 → squircle (iOS style)<br>
+                    n→∞ → carré parfait
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Rect arrondi (alternative)</div>
+
+                <div class="control-row">
+                    <span class="control-label">rx</span>
+                    <input type="range" id="rect-rx" min="0" max="100" step="5" value="60">
+                    <span class="control-value" id="rect-rx-val">60%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">ry</span>
+                    <input type="range" id="rect-ry" min="0" max="100" step="5" value="100">
+                    <span class="control-value" id="rect-ry-val">100%</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Presets Fredoka-like</div>
+                <div class="preset-buttons">
+                    <button class="preset-btn" data-preset="fredoka-approx">Fredoka ≈</button>
+                    <button class="preset-btn" data-preset="ios">iOS Style</button>
+                    <button class="preset-btn" data-preset="sharp">Plus carré</button>
+                    <button class="preset-btn" data-preset="round">Cercle</button>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Correspondance</div>
+                <div class="match-indicator">
+                    <div class="match-dot" id="match-dot"></div>
+                    <span class="match-text" id="match-text">Évaluation...</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Specs actuelles</div>
+                <div class="specs-box" id="specs-display"></div>
+                <button class="btn primary" id="validate-btn" style="margin-top: 1rem;">Valider cette forme</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        var terminalType = 'squircle';
+        var squircleN = 4.0;
+        var rectRx = 60;
+        var rectRy = 100;
+        var strokeWidth = 13;
+
+        // LOCKED GEOMETRY
+        var SPECS = {
+            circle: { cy: 41, r: 15 },
+            loupe: { length: 21, angle: 139 },
+            key: { length: 21, angle: 36, teeth: 2, teethSize: 7, teethStroke: 6.5 },
+            bust: { gap: 2, width: 35, height: 21 }
+        };
+
+        function createSVG(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(function(k) {
+                el.setAttribute(k, attrs[k]);
+            });
+            return el;
+        }
+
+        function clearElement(el) {
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+        }
+
+        // Generate superellipse path
+        function superellipsePath(cx, cy, a, b, n, startAngle, endAngle, steps) {
+            steps = steps || 50;
+            var points = [];
+
+            for (var i = 0; i <= steps; i++) {
+                var theta = startAngle + (endAngle - startAngle) * (i / steps);
+                var cosT = Math.cos(theta);
+                var sinT = Math.sin(theta);
+
+                // Superellipse formula
+                var x = cx + a * Math.sign(cosT) * Math.pow(Math.abs(cosT), 2/n);
+                var y = cy + b * Math.sign(sinT) * Math.pow(Math.abs(sinT), 2/n);
+
+                points.push({x: x, y: y});
+            }
+
+            var d = 'M ' + points[0].x + ' ' + points[0].y;
+            for (var j = 1; j < points.length; j++) {
+                d += ' L ' + points[j].x + ' ' + points[j].y;
+            }
+
+            return d;
+        }
+
+        // Generate terminal cap path (top of stroke)
+        function terminalCapPath(cx, topY, halfWidth, type, n, rx, ry) {
+            if (type === 'round') {
+                // Perfect semicircle
+                return 'M ' + (cx - halfWidth) + ' ' + topY +
+                       ' A ' + halfWidth + ' ' + halfWidth + ' 0 0 1 ' + (cx + halfWidth) + ' ' + topY;
+            } else if (type === 'squircle') {
+                // Superellipse cap
+                return superellipsePath(cx, topY, halfWidth, halfWidth, n, Math.PI, 0, 30);
+            } else if (type === 'rect') {
+                // Rounded rect cap
+                var radiusX = halfWidth * (rx / 100);
+                var radiusY = halfWidth * (ry / 100);
+                radiusY = Math.min(radiusY, halfWidth); // Cap at half height
+
+                return 'M ' + (cx - halfWidth) + ' ' + topY +
+                       ' L ' + (cx - halfWidth) + ' ' + (topY - halfWidth + radiusY) +
+                       ' Q ' + (cx - halfWidth) + ' ' + (topY - halfWidth) + ' ' + (cx - halfWidth + radiusX) + ' ' + (topY - halfWidth) +
+                       ' L ' + (cx + halfWidth - radiusX) + ' ' + (topY - halfWidth) +
+                       ' Q ' + (cx + halfWidth) + ' ' + (topY - halfWidth) + ' ' + (cx + halfWidth) + ' ' + (topY - halfWidth + radiusY) +
+                       ' L ' + (cx + halfWidth) + ' ' + topY;
+            }
+
+            return superellipsePath(cx, topY, halfWidth, halfWidth, n, Math.PI, 0, 30);
+        }
+
+        // Draw squircle preview
+        function drawSquirclePreview() {
+            var svg = document.getElementById('squircle-preview');
+            clearElement(svg);
+
+            var hw = strokeWidth / 2;
+            var topY = 30;
+            var bottomY = 100;
+
+            // Create stroke with squircle ends
+            var capTop = terminalCapPath(20, topY, hw, 'squircle', squircleN);
+            var capBottom = terminalCapPath(20, bottomY, hw, 'squircle', squircleN);
+
+            // Full path: top cap + sides + bottom cap
+            var fullPath = capTop +
+                          ' L ' + (20 + hw) + ' ' + bottomY +
+                          superellipsePath(20, bottomY, hw, hw, squircleN, 0, Math.PI, 30).substring(1) +
+                          ' L ' + (20 - hw) + ' ' + topY + ' Z';
+
+            svg.appendChild(createSVG('path', {
+                d: fullPath,
+                fill: '#fff'
+            }));
+        }
+
+        // Draw squircle zoom
+        function drawSquircleZoom() {
+            var svg = document.getElementById('squircle-zoom');
+            clearElement(svg);
+
+            var scale = 5;
+            var cx = 100;
+            var cy = 50;
+            var hw = (strokeWidth / 2) * scale;
+
+            // Reference circle (dashed)
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: hw,
+                fill: 'none',
+                stroke: '#444',
+                'stroke-width': 1,
+                'stroke-dasharray': '4'
+            }));
+
+            // Squircle cap
+            var capPath = superellipsePath(cx, cy, hw, hw, squircleN, Math.PI, 0, 50);
+            capPath += ' L ' + (cx + hw) + ' ' + (cy + hw * 0.5);
+            capPath += ' L ' + (cx - hw) + ' ' + (cy + hw * 0.5);
+            capPath += ' Z';
+
+            svg.appendChild(createSVG('path', {
+                d: capPath,
+                fill: '#fff'
+            }));
+
+            // Label
+            var label = createSVG('text', {
+                x: cx,
+                y: 75,
+                'text-anchor': 'middle',
+                fill: '#888',
+                'font-size': '10'
+            });
+            label.textContent = 'n = ' + squircleN.toFixed(1);
+            svg.appendChild(label);
+        }
+
+        // Draw custom preview
+        function drawCustomPreview() {
+            var svg = document.getElementById('custom-preview');
+            clearElement(svg);
+
+            var hw = strokeWidth / 2;
+            var topY = 30;
+            var bottomY = 100;
+
+            var capTop = terminalCapPath(20, topY, hw, 'rect', squircleN, rectRx, rectRy);
+
+            var fullPath = 'M ' + (20 - hw) + ' ' + topY +
+                          ' L ' + (20 - hw) + ' ' + (topY - hw * (rectRy/100)) +
+                          ' Q ' + (20 - hw) + ' ' + (topY - hw) + ' ' + (20 - hw + hw * (rectRx/100)) + ' ' + (topY - hw) +
+                          ' L ' + (20 + hw - hw * (rectRx/100)) + ' ' + (topY - hw) +
+                          ' Q ' + (20 + hw) + ' ' + (topY - hw) + ' ' + (20 + hw) + ' ' + (topY - hw * (rectRy/100)) +
+                          ' L ' + (20 + hw) + ' ' + bottomY +
+                          ' A ' + hw + ' ' + hw + ' 0 0 1 ' + (20 - hw) + ' ' + bottomY +
+                          ' Z';
+
+            svg.appendChild(createSVG('path', {
+                d: fullPath,
+                fill: '#fff'
+            }));
+        }
+
+        // Draw custom zoom
+        function drawCustomZoom() {
+            var svg = document.getElementById('custom-zoom');
+            clearElement(svg);
+
+            var scale = 5;
+            var cx = 100;
+            var topY = 50;
+            var hw = (strokeWidth / 2) * scale;
+
+            // Reference circle
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: topY,
+                r: hw,
+                fill: 'none',
+                stroke: '#444',
+                'stroke-width': 1,
+                'stroke-dasharray': '4'
+            }));
+
+            // Rounded rect cap
+            var radiusX = hw * (rectRx / 100);
+            var radiusY = hw * (rectRy / 100);
+            radiusY = Math.min(radiusY, hw);
+
+            var rectPath = 'M ' + (cx - hw) + ' ' + topY +
+                          ' L ' + (cx - hw) + ' ' + (topY - hw + radiusY) +
+                          ' Q ' + (cx - hw) + ' ' + (topY - hw) + ' ' + (cx - hw + radiusX) + ' ' + (topY - hw) +
+                          ' L ' + (cx + hw - radiusX) + ' ' + (topY - hw) +
+                          ' Q ' + (cx + hw) + ' ' + (topY - hw) + ' ' + (cx + hw) + ' ' + (topY - hw + radiusY) +
+                          ' L ' + (cx + hw) + ' ' + topY +
+                          ' Z';
+
+            svg.appendChild(createSVG('path', {
+                d: rectPath,
+                fill: '#fff'
+            }));
+
+            // Label
+            var label = createSVG('text', {
+                x: cx,
+                y: 75,
+                'text-anchor': 'middle',
+                fill: '#888',
+                'font-size': '10'
+            });
+            label.textContent = 'rx=' + rectRx + '% ry=' + rectRy + '%';
+            svg.appendChild(label);
+        }
+
+        // Draw Fredoka zoom (visual representation)
+        function drawFredokaZoom() {
+            var svg = document.getElementById('fredoka-zoom');
+            clearElement(svg);
+
+            // This is a visual approximation - in reality we'd need to
+            // extract the actual glyph outline
+            var cx = 100;
+            var cy = 50;
+            var hw = 32.5;
+
+            // Fredoka appears to use n ≈ 3.5-4 for its terminals
+            var fredokaN = 3.5;
+
+            // Reference circle
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: hw,
+                fill: 'none',
+                stroke: '#FFB10B',
+                'stroke-width': 1,
+                'stroke-dasharray': '4'
+            }));
+
+            // Approximate Fredoka terminal shape
+            var capPath = superellipsePath(cx, cy, hw, hw * 0.9, fredokaN, Math.PI, 0, 50);
+            capPath += ' L ' + (cx + hw) + ' ' + (cy + hw * 0.5);
+            capPath += ' L ' + (cx - hw) + ' ' + (cy + hw * 0.5);
+            capPath += ' Z';
+
+            svg.appendChild(createSVG('path', {
+                d: capPath,
+                fill: '#FFB10B',
+                opacity: '0.5'
+            }));
+
+            // Label
+            var label = createSVG('text', {
+                x: cx,
+                y: 75,
+                'text-anchor': 'middle',
+                fill: '#FFB10B',
+                'font-size': '10'
+            });
+            label.textContent = 'Fredoka ≈ n=3.5';
+            svg.appendChild(label);
+        }
+
+        // Draw overlay comparison
+        function drawOverlay() {
+            var fredokaEl = document.getElementById('overlay-fredoka');
+            var svg = document.getElementById('overlay-svg');
+
+            var rect = fredokaEl.getBoundingClientRect();
+            svg.setAttribute('width', rect.width);
+            svg.setAttribute('height', rect.height);
+
+            clearElement(svg);
+
+            // Calculate stem position (approximate)
+            var stemX = rect.width * 0.5;
+            var stemTop = rect.height * 0.38;
+            var stemBottom = rect.height * 0.82;
+            var hw = (strokeWidth / 100) * rect.height * 0.44;
+
+            // Draw current terminal type
+            var capPath;
+            if (terminalType === 'round') {
+                capPath = 'M ' + (stemX - hw) + ' ' + stemTop +
+                         ' A ' + hw + ' ' + hw + ' 0 0 1 ' + (stemX + hw) + ' ' + stemTop;
+            } else if (terminalType === 'squircle') {
+                capPath = superellipsePath(stemX, stemTop, hw, hw, squircleN, Math.PI, 0, 30);
+            } else {
+                var radiusX = hw * (rectRx / 100);
+                var radiusY = hw * (rectRy / 100);
+                radiusY = Math.min(radiusY, hw);
+
+                capPath = 'M ' + (stemX - hw) + ' ' + stemTop +
+                         ' L ' + (stemX - hw) + ' ' + (stemTop - hw + radiusY) +
+                         ' Q ' + (stemX - hw) + ' ' + (stemTop - hw) + ' ' + (stemX - hw + radiusX) + ' ' + (stemTop - hw) +
+                         ' L ' + (stemX + hw - radiusX) + ' ' + (stemTop - hw) +
+                         ' Q ' + (stemX + hw) + ' ' + (stemTop - hw) + ' ' + (stemX + hw) + ' ' + (stemTop - hw + radiusY);
+            }
+
+            // Full stem path
+            var fullPath = capPath +
+                          ' L ' + (stemX + hw) + ' ' + stemBottom +
+                          superellipsePath(stemX, stemBottom, hw, hw, squircleN, 0, Math.PI, 30).substring(1) +
+                          ' L ' + (stemX - hw) + ' ' + stemTop + ' Z';
+
+            svg.appendChild(createSVG('path', {
+                d: fullPath,
+                fill: 'rgba(155, 89, 182, 0.6)',
+                stroke: '#9B59B6',
+                'stroke-width': '1'
+            }));
+        }
+
+        // Draw icon preview with current terminal style
+        function drawIconPreview() {
+            var svg = document.getElementById('icon-preview');
+            clearElement(svg);
+
+            var cx = 50;
+            var cy = SPECS.circle.cy;
+            var r = SPECS.circle.r;
+            var hw = strokeWidth / 2;
+
+            // Background
+            svg.appendChild(createSVG('rect', {
+                x: 0, y: 0, width: 100, height: 100,
+                fill: '#1a1a2e',
+                rx: 8
+            }));
+
+            // For now, draw with stroke-linecap: round as reference
+            // In the real implementation, we'd use custom paths
+
+            // Circle (head)
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: r,
+                fill: 'none',
+                stroke: '#fff',
+                'stroke-width': strokeWidth,
+                'stroke-linecap': 'round'
+            }));
+
+            // Loupe handle
+            var loupeAngle = SPECS.loupe.angle * Math.PI / 180;
+            var loupeStartX = cx + r * Math.cos(loupeAngle);
+            var loupeStartY = cy + r * Math.sin(loupeAngle);
+            var loupeEndX = loupeStartX + SPECS.loupe.length * Math.cos(loupeAngle);
+            var loupeEndY = loupeStartY + SPECS.loupe.length * Math.sin(loupeAngle);
+
+            svg.appendChild(createSVG('line', {
+                x1: loupeStartX,
+                y1: loupeStartY,
+                x2: loupeEndX,
+                y2: loupeEndY,
+                stroke: '#fff',
+                'stroke-width': strokeWidth,
+                'stroke-linecap': 'round'
+            }));
+
+            // Key stem
+            var keyAngle = SPECS.key.angle * Math.PI / 180;
+            var keyStartX = cx + r * Math.cos(keyAngle);
+            var keyStartY = cy - r * Math.sin(keyAngle);
+            var keyEndX = keyStartX + SPECS.key.length * Math.cos(keyAngle);
+            var keyEndY = keyStartY - SPECS.key.length * Math.sin(keyAngle);
+
+            svg.appendChild(createSVG('line', {
+                x1: keyStartX,
+                y1: keyStartY,
+                x2: keyEndX,
+                y2: keyEndY,
+                stroke: '#fff',
+                'stroke-width': strokeWidth,
+                'stroke-linecap': 'round'
+            }));
+
+            // Key teeth
+            var teethAngle = keyAngle + Math.PI / 2;
+            for (var i = 0; i < SPECS.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var toothX = keyStartX + (keyEndX - keyStartX) * t;
+                var toothY = keyStartY + (keyEndY - keyStartY) * t;
+                var toothEndX = toothX + SPECS.key.teethSize * Math.cos(teethAngle);
+                var toothEndY = toothY - SPECS.key.teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('line', {
+                    x1: toothX,
+                    y1: toothY,
+                    x2: toothEndX,
+                    y2: toothEndY,
+                    stroke: '#fff',
+                    'stroke-width': SPECS.key.teethStroke,
+                    'stroke-linecap': 'round'
+                }));
+            }
+
+            // Bust
+            var bustTop = cy + r + SPECS.bust.gap;
+            var bustPath = 'M ' + (cx - SPECS.bust.width/2) + ' ' + (bustTop + SPECS.bust.height) +
+                          ' Q ' + cx + ' ' + bustTop + ' ' + (cx + SPECS.bust.width/2) + ' ' + (bustTop + SPECS.bust.height);
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: '#fff',
+                'stroke-width': strokeWidth,
+                'stroke-linecap': 'round'
+            }));
+        }
+
+        // Update match indicator
+        function updateMatchIndicator() {
+            var dot = document.getElementById('match-dot');
+            var text = document.getElementById('match-text');
+
+            // Fredoka appears to use approximately n=3.5
+            var fredokaN = 3.5;
+            var diff = Math.abs(squircleN - fredokaN);
+
+            if (terminalType === 'squircle') {
+                if (diff < 0.3) {
+                    dot.className = 'match-dot good';
+                    text.textContent = 'Excellent match avec Fredoka';
+                } else if (diff < 0.8) {
+                    dot.className = 'match-dot medium';
+                    text.textContent = 'Proche de Fredoka (ajustez n)';
+                } else {
+                    dot.className = 'match-dot poor';
+                    text.textContent = 'Trop different de Fredoka';
+                }
+            } else if (terminalType === 'round') {
+                dot.className = 'match-dot poor';
+                text.textContent = 'Trop rond vs Fredoka';
+            } else {
+                dot.className = 'match-dot medium';
+                text.textContent = 'A ajuster manuellement';
+            }
+        }
+
+        // Update specs display
+        function updateSpecs() {
+            var specs = document.getElementById('specs-display');
+            var text = '';
+
+            if (terminalType === 'round') {
+                text = 'stroke-linecap: round\n(demi-cercle parfait)';
+            } else if (terminalType === 'squircle') {
+                text = 'Terminal: superellipse\n';
+                text += 'n = ' + squircleN.toFixed(1) + '\n';
+                text += '\n// Path formula:\n';
+                text += '|x/a|^' + squircleN.toFixed(1) + ' + |y/b|^' + squircleN.toFixed(1) + ' = 1';
+            } else {
+                text = 'Terminal: rect arrondi\n';
+                text += 'rx = ' + rectRx + '%\n';
+                text += 'ry = ' + rectRy + '%';
+            }
+
+            specs.textContent = text;
+        }
+
+        // Main render
+        function render() {
+            drawSquirclePreview();
+            drawSquircleZoom();
+            drawCustomPreview();
+            drawCustomZoom();
+            drawFredokaZoom();
+            drawOverlay();
+            drawIconPreview();
+            updateMatchIndicator();
+            updateSpecs();
+        }
+
+        // Event listeners
+        document.getElementById('squircle-n').addEventListener('input', function(e) {
+            squircleN = parseFloat(e.target.value);
+            document.getElementById('squircle-n-val').textContent = squircleN.toFixed(1);
+            render();
+        });
+
+        document.getElementById('rect-rx').addEventListener('input', function(e) {
+            rectRx = parseInt(e.target.value);
+            document.getElementById('rect-rx-val').textContent = rectRx + '%';
+            render();
+        });
+
+        document.getElementById('rect-ry').addEventListener('input', function(e) {
+            rectRy = parseInt(e.target.value);
+            document.getElementById('rect-ry-val').textContent = rectRy + '%';
+            render();
+        });
+
+        // Type buttons
+        document.querySelectorAll('.preset-btn[data-type]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.preset-btn[data-type]').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                this.classList.add('active');
+                terminalType = this.getAttribute('data-type');
+                render();
+            });
+        });
+
+        // Preset buttons
+        document.querySelectorAll('.preset-btn[data-preset]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                var preset = this.getAttribute('data-preset');
+
+                if (preset === 'fredoka-approx') {
+                    terminalType = 'squircle';
+                    squircleN = 3.5;
+                } else if (preset === 'ios') {
+                    terminalType = 'squircle';
+                    squircleN = 4.0;
+                } else if (preset === 'sharp') {
+                    terminalType = 'squircle';
+                    squircleN = 5.0;
+                } else if (preset === 'round') {
+                    terminalType = 'round';
+                    squircleN = 2.0;
+                }
+
+                document.getElementById('squircle-n').value = squircleN;
+                document.getElementById('squircle-n-val').textContent = squircleN.toFixed(1);
+
+                document.querySelectorAll('.preset-btn[data-type]').forEach(function(b) {
+                    b.classList.remove('active');
+                    if (b.getAttribute('data-type') === terminalType) {
+                        b.classList.add('active');
+                    }
+                });
+
+                render();
+            });
+        });
+
+        // Validate button
+        document.getElementById('validate-btn').addEventListener('click', function() {
+            var specs = 'TERMINAL SHAPE SPECS\n';
+            specs += '====================\n\n';
+
+            if (terminalType === 'round') {
+                specs += 'Type: stroke-linecap: round\n';
+                specs += 'Shape: Perfect semicircle\n';
+            } else if (terminalType === 'squircle') {
+                specs += 'Type: Superellipse\n';
+                specs += 'Exponent n: ' + squircleN.toFixed(1) + '\n';
+                specs += 'Formula: |x/a|^n + |y/b|^n = 1\n';
+            } else {
+                specs += 'Type: Rounded rectangle\n';
+                specs += 'rx: ' + rectRx + '%\n';
+                specs += 'ry: ' + rectRy + '%\n';
+            }
+
+            alert('Specs validees !\n\n' + specs + '\n\nCopiez et demandez a Claude de verrouiller.');
+        });
+
+        // Window resize
+        window.addEventListener('resize', function() {
+            drawOverlay();
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

@@ -82,9 +82,9 @@ export default function PrivacyPage() {
 
       if (error) throw error;
 
-      setMessage({ type: 'success', text: t?.messages?.success?.[language] || 'Paramètres de confidentialité enregistrés' });
+      setMessage({ type: 'success', text: t?.messages?.success?.[language] || 'Privacy settings saved' });
     } catch (error: any) {
-      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Erreur lors de l\'enregistrement') });
+      setMessage({ type: 'error', text: error.message || (t?.messages?.error?.[language] || 'Error saving settings') });
     } finally {
       setIsSaving(false);
     }
@@ -95,7 +95,7 @@ export default function PrivacyPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50/30 via-white to-sky-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -116,7 +116,7 @@ export default function PrivacyPage() {
             className="mb-4 rounded-full"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
-            {t?.back?.[language] || 'Retour aux paramètres'}
+            {t?.back?.[language] || 'Back to settings'}
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
@@ -124,8 +124,8 @@ export default function PrivacyPage() {
               <Eye className="w-8 h-8 text-gray-700" />
             </div>
             <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Confidentialité'}</h1>
-              <p className="text-gray-600">{t?.subtitle?.[language] || 'Contrôler la visibilité de votre profil'}</p>
+              <h1 className="text-3xl md:text-4xl font-bold text-gray-900">{t?.title?.[language] || 'Privacy'}</h1>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Control your profile visibility'}</p>
             </div>
           </div>
         </motion.div>
@@ -157,8 +157,8 @@ export default function PrivacyPage() {
               <Users className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">{t?.visibility?.title?.[language] || 'Visibilité du profil'}</h2>
-              <p className="text-sm text-gray-600">{t?.visibility?.subtitle?.[language] || 'Qui peut voir votre profil'}</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.visibility?.title?.[language] || 'Profile visibility'}</h2>
+              <p className="text-sm text-gray-600">{t?.visibility?.subtitle?.[language] || 'Who can see your profile'}</p>
             </div>
           </div>
 
@@ -182,7 +182,7 @@ export default function PrivacyPage() {
                   <Globe className="w-5 h-5 text-gray-600" />
                   <p className="font-semibold text-gray-900">{t?.visibility?.public?.title?.[language] || 'Public'}</p>
                 </div>
-                <p className="text-sm text-gray-600">{t?.visibility?.public?.description?.[language] || 'Visible par tous les utilisateurs'}</p>
+                <p className="text-sm text-gray-600">{t?.visibility?.public?.description?.[language] || 'Visible by all users'}</p>
               </div>
             </label>
 
@@ -203,9 +203,9 @@ export default function PrivacyPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <Users className="w-5 h-5 text-gray-600" />
-                  <p className="font-semibold text-gray-900">{t?.visibility?.residents?.title?.[language] || 'Résidents uniquement'}</p>
+                  <p className="font-semibold text-gray-900">{t?.visibility?.residents?.title?.[language] || 'Residents only'}</p>
                 </div>
-                <p className="text-sm text-gray-600">{t?.visibility?.residents?.description?.[language] || 'Visible par les membres de votre résidence'}</p>
+                <p className="text-sm text-gray-600">{t?.visibility?.residents?.description?.[language] || 'Visible by members of your residence'}</p>
               </div>
             </label>
 
@@ -226,9 +226,9 @@ export default function PrivacyPage() {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <Lock className="w-5 h-5 text-gray-600" />
-                  <p className="font-semibold text-gray-900">{t?.visibility?.private?.title?.[language] || 'Privé'}</p>
+                  <p className="font-semibold text-gray-900">{t?.visibility?.private?.title?.[language] || 'Private'}</p>
                 </div>
-                <p className="text-sm text-gray-600">{t?.visibility?.private?.description?.[language] || 'Profil invisible aux autres'}</p>
+                <p className="text-sm text-gray-600">{t?.visibility?.private?.description?.[language] || 'Profile hidden from others'}</p>
               </div>
             </label>
           </div>
@@ -246,16 +246,16 @@ export default function PrivacyPage() {
               <Shield className="w-6 h-6 text-gray-700" />
             </div>
             <div>
-              <h2 className="text-xl font-bold text-gray-900">{t?.contact?.title?.[language] || 'Informations de contact'}</h2>
-              <p className="text-sm text-gray-600">{t?.contact?.subtitle?.[language] || 'Contrôler ce qui est visible'}</p>
+              <h2 className="text-xl font-bold text-gray-900">{t?.contact?.title?.[language] || 'Contact information'}</h2>
+              <p className="text-sm text-gray-600">{t?.contact?.subtitle?.[language] || 'Control what is visible'}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">{t?.contact?.showEmail?.title?.[language] || 'Afficher mon email'}</p>
-                <p className="text-sm text-gray-600">{t?.contact?.showEmail?.description?.[language] || 'Visible sur votre profil public'}</p>
+                <p className="font-semibold text-gray-900">{t?.contact?.showEmail?.title?.[language] || 'Show my email'}</p>
+                <p className="text-sm text-gray-600">{t?.contact?.showEmail?.description?.[language] || 'Visible on your public profile'}</p>
               </div>
               <input
                 type="checkbox"
@@ -267,8 +267,8 @@ export default function PrivacyPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">{t?.contact?.showPhone?.title?.[language] || 'Afficher mon téléphone'}</p>
-                <p className="text-sm text-gray-600">{t?.contact?.showPhone?.description?.[language] || 'Visible sur votre profil public'}</p>
+                <p className="font-semibold text-gray-900">{t?.contact?.showPhone?.title?.[language] || 'Show my phone'}</p>
+                <p className="text-sm text-gray-600">{t?.contact?.showPhone?.description?.[language] || 'Visible on your public profile'}</p>
               </div>
               <input
                 type="checkbox"
@@ -280,8 +280,8 @@ export default function PrivacyPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">{t?.contact?.allowMessages?.title?.[language] || 'Autoriser les messages'}</p>
-                <p className="text-sm text-gray-600">{t?.contact?.allowMessages?.description?.[language] || 'Les autres peuvent vous contacter'}</p>
+                <p className="font-semibold text-gray-900">{t?.contact?.allowMessages?.title?.[language] || 'Allow messages'}</p>
+                <p className="text-sm text-gray-600">{t?.contact?.allowMessages?.description?.[language] || 'Others can contact you'}</p>
               </div>
               <input
                 type="checkbox"
@@ -293,8 +293,8 @@ export default function PrivacyPage() {
 
             <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
-                <p className="font-semibold text-gray-900">{t?.contact?.showOnline?.title?.[language] || 'Afficher le statut en ligne'}</p>
-                <p className="text-sm text-gray-600">{t?.contact?.showOnline?.description?.[language] || 'Montrer quand vous êtes connecté'}</p>
+                <p className="font-semibold text-gray-900">{t?.contact?.showOnline?.title?.[language] || 'Show online status'}</p>
+                <p className="text-sm text-gray-600">{t?.contact?.showOnline?.description?.[language] || 'Show when you are online'}</p>
               </div>
               <input
                 type="checkbox"
@@ -317,7 +317,7 @@ export default function PrivacyPage() {
             disabled={isSaving}
             className="w-full rounded-xl bg-gradient-to-r from-blue-200/70 to-sky-200/70 text-gray-900 hover:from-blue-300/70 hover:to-sky-300/70"
           >
-            {isSaving ? (t?.buttons?.saving?.[language] || 'Enregistrement...') : (t?.buttons?.save?.[language] || 'Enregistrer les modifications')}
+            {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save changes')}
           </Button>
         </motion.div>
       </div>

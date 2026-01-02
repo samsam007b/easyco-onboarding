@@ -79,7 +79,7 @@ export default function NotificationsPage() {
       }
     } catch (error) {
       console.error('[NotificationsPage] Error loading:', error);
-      toast.error('Erreur lors du chargement');
+      toast.error('Error loading notifications');
     } finally {
       setIsLoading(false);
     }
@@ -99,7 +99,7 @@ export default function NotificationsPage() {
   const failedCount = notifications.filter(n => !n.success).length;
 
   const channelFilters: { key: ChannelFilter; label: string }[] = [
-    { key: 'all', label: 'Tous' },
+    { key: 'all', label: 'All' },
     { key: 'email', label: 'Email' },
     { key: 'slack', label: 'Slack' },
     { key: 'in_app', label: 'In-App' },
@@ -107,9 +107,9 @@ export default function NotificationsPage() {
   ];
 
   const statusFilters: { key: StatusFilter; label: string }[] = [
-    { key: 'all', label: 'Tous' },
-    { key: 'success', label: 'Succes' },
-    { key: 'failed', label: 'Echecs' },
+    { key: 'all', label: 'All' },
+    { key: 'success', label: 'Success' },
+    { key: 'failed', label: 'Failures' },
   ];
 
   return (
@@ -126,10 +126,10 @@ export default function NotificationsPage() {
           <div>
             <h1 className="text-2xl font-bold text-white flex items-center gap-2">
               <Bell className="w-6 h-6 text-purple-400" />
-              Historique des Notifications
+              Notification History
             </h1>
             <p className="text-slate-400 text-sm mt-1">
-              {totalCount} notifications au total
+              {totalCount} total notifications
             </p>
           </div>
         </div>
@@ -141,7 +141,7 @@ export default function NotificationsPage() {
           className="gap-2"
         >
           <RefreshCw className={cn('w-4 h-4', isLoading && 'animate-spin')} />
-          Actualiser
+          Refresh
         </Button>
       </div>
 
@@ -153,7 +153,7 @@ export default function NotificationsPage() {
               <CheckCircle className="w-6 h-6 text-green-400" />
             </div>
             <div>
-              <p className="text-sm text-slate-400">Envoyees avec succes</p>
+              <p className="text-sm text-slate-400">Sent successfully</p>
               <p className="text-2xl font-bold text-green-400">{successCount}</p>
             </div>
           </CardContent>
@@ -164,7 +164,7 @@ export default function NotificationsPage() {
               <XCircle className="w-6 h-6 text-red-400" />
             </div>
             <div>
-              <p className="text-sm text-slate-400">Echecs d'envoi</p>
+              <p className="text-sm text-slate-400">Send failures</p>
               <p className="text-2xl font-bold text-red-400">{failedCount}</p>
             </div>
           </CardContent>
@@ -177,7 +177,7 @@ export default function NotificationsPage() {
           <div className="flex items-center gap-4 flex-wrap">
             {/* Channel Filter */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-slate-400">Canal:</span>
+              <span className="text-sm text-slate-400">Channel:</span>
               <div className="flex gap-1">
                 {channelFilters.map((f) => (
                   <Button
@@ -200,7 +200,7 @@ export default function NotificationsPage() {
 
             {/* Status Filter */}
             <div className="flex items-center gap-2">
-              <span className="text-sm text-slate-400">Statut:</span>
+              <span className="text-sm text-slate-400">Status:</span>
               <div className="flex gap-1">
                 {statusFilters.map((f) => (
                   <Button
@@ -242,9 +242,9 @@ export default function NotificationsPage() {
           ) : notifications.length === 0 ? (
             <div className="text-center py-12">
               <Bell className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">Aucune notification trouvee</p>
+              <p className="text-slate-400">No notifications found</p>
               <p className="text-slate-500 text-sm mt-1">
-                Essayez de modifier les filtres
+                Try adjusting the filters
               </p>
             </div>
           ) : (
@@ -284,7 +284,7 @@ export default function NotificationsPage() {
                             </span>
                             {notification.recipients?.length > 0 && (
                               <span className="text-xs text-slate-500">
-                                {notification.recipients.length} destinataire(s)
+                                {notification.recipients.length} recipient(s)
                               </span>
                             )}
                           </div>
@@ -295,7 +295,7 @@ export default function NotificationsPage() {
                           )}
                           {notification.recipients?.length > 0 && (
                             <div className="mt-2 text-xs text-slate-500">
-                              <span className="font-medium">Destinataires: </span>
+                              <span className="font-medium">Recipients: </span>
                               {notification.recipients.join(', ')}
                             </div>
                           )}
@@ -324,7 +324,7 @@ export default function NotificationsPage() {
       {totalPages > 1 && (
         <div className="flex items-center justify-between">
           <p className="text-sm text-slate-400">
-            Page {page + 1} sur {totalPages} ({totalCount} resultats)
+            Page {page + 1} of {totalPages} ({totalCount} results)
           </p>
           <div className="flex items-center gap-2">
             <Button
@@ -335,7 +335,7 @@ export default function NotificationsPage() {
               className="text-slate-400 hover:text-white"
             >
               <ChevronLeft className="w-4 h-4 mr-1" />
-              Precedent
+              Previous
             </Button>
             <Button
               variant="ghost"
@@ -344,7 +344,7 @@ export default function NotificationsPage() {
               disabled={page >= totalPages - 1 || isLoading}
               className="text-slate-400 hover:text-white"
             >
-              Suivant
+              Next
               <ChevronRight className="w-4 h-4 ml-1" />
             </Button>
           </div>

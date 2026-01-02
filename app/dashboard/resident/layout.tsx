@@ -140,7 +140,7 @@ export default function ResidentLayout({ children }: { children: React.ReactNode
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 to-white">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium">Chargement...</p>
+          <p className="text-gray-600 font-medium">Loading...</p>
         </div>
       </div>
     );

@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Typography Match Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --warning: #f59e0b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .canvas-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-header h1 { font-size: 1.25rem; font-weight: 500; }
+
+        .hint-banner {
+            background: rgba(245, 158, 11, 0.15);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.8rem;
+            color: var(--warning);
+        }
+
+        .comparison-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .comparison-row {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+        }
+
+        .comparison-row h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Side by side comparison */
+        .side-by-side {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+        }
+
+        /* Wordmark reference */
+        .wordmark-ref {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: white;
+        }
+
+        .wordmark-ref .l-i { font-weight: 600; }
+        .wordmark-ref .l-z { font-weight: 540; }
+        .wordmark-ref .l-c { font-weight: 540; }
+        .wordmark-ref .l-o { font-weight: 540; }
+        .wordmark-ref .zz-space { margin-right: -0.18em; }
+
+        /* Just the "i" for comparison */
+        .letter-i-ref {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: white;
+            line-height: 1;
+        }
+
+        /* Lockup previews */
+        .lockup-row {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .lockup-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+        }
+
+        .lockup-item.light {
+            background: white;
+        }
+
+        .lockup-item.light .wordmark-ref {
+            color: #1a1a2e;
+        }
+
+        /* Size grid */
+        .size-grid {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .size-item {
+            text-align: center;
+        }
+
+        .size-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Controls panel */
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .locked-badge {
+            display: inline-block;
+            padding: 0.15rem 0.5rem;
+            background: rgba(34, 197, 94, 0.2);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 4px;
+            font-size: 0.6rem;
+            color: #22c55e;
+            margin-left: 0.5rem;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 45px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .control-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+
+        .preset-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+        }
+
+        .info-box strong {
+            color: var(--text);
+        }
+
+        .specs-display {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+
+        /* Visual reference overlay */
+        .overlay-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .overlay-toggle input {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div class="canvas-header">
+                <h1>Typography Match - Calibration</h1>
+            </div>
+
+            <div class="hint-banner">
+                Objectif : Ajuster les epaisseurs (strokes) de l'icone pour correspondre au poids de Fredoka 600
+            </div>
+
+            <div class="comparison-container">
+                <!-- Direct comparison with "i" -->
+                <div class="comparison-row">
+                    <h3>Comparaison directe : Icone vs Lettre "i"</h3>
+                    <div class="side-by-side" id="direct-comparison"></div>
+                </div>
+
+                <!-- Lockup comparison -->
+                <div class="comparison-row">
+                    <h3>Lockup : Logo + Wordmark</h3>
+                    <div class="lockup-row" id="lockup-comparison"></div>
+                </div>
+
+                <!-- Size tests -->
+                <div class="comparison-row">
+                    <h3>Test multi-tailles</h3>
+                    <div class="size-grid" id="size-grid"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <!-- Stroke weights -->
+            <div class="panel-section">
+                <div class="section-title">
+                    Epaisseurs (a ajuster)
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Cercle</span>
+                    <input type="range" id="stroke-circle" min="3" max="12" step="0.5" value="7">
+                    <span class="control-value" id="stroke-circle-val">7</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Loupe</span>
+                    <input type="range" id="stroke-loupe" min="3" max="12" step="0.5" value="6">
+                    <span class="control-value" id="stroke-loupe-val">6</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Cle</span>
+                    <input type="range" id="stroke-key" min="3" max="12" step="0.5" value="5.5">
+                    <span class="control-value" id="stroke-key-val">5.5</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Buste</span>
+                    <input type="range" id="stroke-bust" min="3" max="12" step="0.5" value="6">
+                    <span class="control-value" id="stroke-bust-val">6</span>
+                </div>
+
+                <div class="preset-row">
+                    <button class="btn" id="preset-thin">Fin (original)</button>
+                    <button class="btn" id="preset-medium">Medium</button>
+                    <button class="btn" id="preset-thick">Epais</button>
+                    <button class="btn" id="preset-fredoka">Match Fredoka</button>
+                </div>
+            </div>
+
+            <!-- Proportions (locked) -->
+            <div class="panel-section">
+                <div class="section-title">
+                    Proportions <span class="locked-badge">LOCKED</span>
+                </div>
+
+                <div class="info-box">
+                    <strong>Cercle:</strong> cy=41, r=15<br>
+                    <strong>Loupe:</strong> len=21, angle=139°<br>
+                    <strong>Cle:</strong> len=21, angle=36°, teeth=2<br>
+                    <strong>Buste:</strong> gap=2, w=35, h=21<br>
+                    <br>
+                    <em>Ces proportions sont verrouillees et ne peuvent pas etre modifiees ici.</em>
+                </div>
+            </div>
+
+            <!-- Global scale -->
+            <div class="panel-section">
+                <div class="section-title">Echelle globale</div>
+
+                <div class="control-row">
+                    <span class="control-label">Taille icone</span>
+                    <input type="range" id="icon-scale" min="60" max="150" value="100">
+                    <span class="control-value" id="icon-scale-val">100%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Taille typo</span>
+                    <input type="range" id="typo-scale" min="60" max="150" value="100">
+                    <span class="control-value" id="typo-scale-val">100%</span>
+                </div>
+            </div>
+
+            <!-- Stroke linecap -->
+            <div class="panel-section">
+                <div class="section-title">Terminaison des traits</div>
+                <div class="preset-row">
+                    <button class="btn active" id="cap-round">Rond (Fredoka)</button>
+                    <button class="btn" id="cap-square">Carre</button>
+                </div>
+                <div class="info-box" style="margin-top: 0.75rem;">
+                    Fredoka utilise des terminaisons arrondies. Le mode "Rond" est recommande.
+                </div>
+            </div>
+
+            <!-- Current specs -->
+            <div class="panel-section" style="border-bottom: none;">
+                <div class="section-title">Specs actuelles</div>
+                <div class="specs-display" id="specs-display"></div>
+                <button class="btn primary" id="export-specs" style="margin-top: 1rem;">Copier les specs</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LOCKED PROPORTIONS (from approved config)
+        const PROPORTIONS = {
+            circle: { cy: 41, r: 15 },
+            loupe: { length: 21, angle: 139 },
+            key: { length: 21, angle: 36, teeth: 2, teethSize: 7 },
+            bust: { gap: 2, width: 35, height: 21 }
+        };
+
+        // Adjustable strokes (what we're calibrating)
+        const state = {
+            strokes: {
+                circle: 7,
+                loupe: 6,
+                key: 5.5,
+                bust: 6
+            },
+            linecap: 'round',
+            iconScale: 100,
+            typoScale: 100
+        };
+
+        // SVG helper
+        function createSVG(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+            return el;
+        }
+
+        // Create icon with current stroke settings
+        function createIcon(size = 80, color = '#ffffff') {
+            const svg = createSVG('svg', {
+                viewBox: '0 0 100 100',
+                width: size,
+                height: size,
+                fill: 'none'
+            });
+
+            const cx = 50;
+            const cy = PROPORTIONS.circle.cy;
+            const r = PROPORTIONS.circle.r;
+
+            // Circle
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: r,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': state.strokes.circle,
+                'stroke-linecap': state.linecap
+            }));
+
+            // Loupe handle
+            const loupeAngleRad = (PROPORTIONS.loupe.angle * Math.PI) / 180;
+            const loupeStartX = cx + r * Math.cos(loupeAngleRad);
+            const loupeStartY = cy + r * Math.sin(loupeAngleRad);
+            const loupeEndX = loupeStartX + PROPORTIONS.loupe.length * Math.cos(loupeAngleRad);
+            const loupeEndY = loupeStartY + PROPORTIONS.loupe.length * Math.sin(loupeAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: loupeStartX,
+                y1: loupeStartY,
+                x2: loupeEndX,
+                y2: loupeEndY,
+                stroke: color,
+                'stroke-width': state.strokes.loupe,
+                'stroke-linecap': state.linecap
+            }));
+
+            // Key stem
+            const keyAngleRad = (PROPORTIONS.key.angle * Math.PI) / 180;
+            const keyStartX = cx + r * Math.cos(keyAngleRad);
+            const keyStartY = cy + r * Math.sin(keyAngleRad);
+            const keyEndX = keyStartX + PROPORTIONS.key.length * Math.cos(keyAngleRad);
+            const keyEndY = keyStartY + PROPORTIONS.key.length * Math.sin(keyAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: keyStartX,
+                y1: keyStartY,
+                x2: keyEndX,
+                y2: keyEndY,
+                stroke: color,
+                'stroke-width': state.strokes.key,
+                'stroke-linecap': state.linecap
+            }));
+
+            // Key teeth
+            const teethAngle = keyAngleRad + Math.PI / 2;
+            for (let i = 0; i < PROPORTIONS.key.teeth; i++) {
+                const t = 0.5 + (i * 0.3);
+                const toothX = keyStartX + (keyEndX - keyStartX) * t;
+                const toothY = keyStartY + (keyEndY - keyStartY) * t;
+                const toothEndX = toothX + PROPORTIONS.key.teethSize * Math.cos(teethAngle);
+                const toothEndY = toothY + PROPORTIONS.key.teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('line', {
+                    x1: toothX,
+                    y1: toothY,
+                    x2: toothEndX,
+                    y2: toothEndY,
+                    stroke: color,
+                    'stroke-width': state.strokes.key * 0.8,
+                    'stroke-linecap': state.linecap
+                }));
+            }
+
+            // Bust
+            const bustTop = cy + r + PROPORTIONS.bust.gap;
+            const bustWidth = PROPORTIONS.bust.width;
+            const bustHeight = PROPORTIONS.bust.height;
+            const bustPath = `M ${cx - bustWidth/2} ${bustTop + bustHeight} Q ${cx} ${bustTop} ${cx + bustWidth/2} ${bustTop + bustHeight}`;
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': state.strokes.bust,
+                'stroke-linecap': state.linecap
+            }));
+
+            return svg;
+        }
+
+        // Create wordmark
+        function createWordmark(size = '3rem', color = '#ffffff') {
+            const span = document.createElement('span');
+            span.className = 'wordmark-ref';
+            span.style.fontSize = size;
+            span.style.color = color;
+
+            const letters = [
+                { char: 'i', class: 'l-i' },
+                { char: 'z', class: 'l-z zz-space' },
+                { char: 'z', class: 'l-z' },
+                { char: 'i', class: 'l-i' },
+                { char: 'c', class: 'l-c' },
+                { char: 'o', class: 'l-o' }
+            ];
+
+            letters.forEach(l => {
+                const s = document.createElement('span');
+                s.className = l.class;
+                s.textContent = l.char;
+                span.appendChild(s);
+            });
+
+            return span;
+        }
+
+        // Create just the letter "i" for comparison
+        function createLetterI(size = '120px', color = '#ffffff') {
+            const span = document.createElement('span');
+            span.className = 'letter-i-ref';
+            span.style.fontSize = size;
+            span.style.color = color;
+            span.textContent = 'i';
+            return span;
+        }
+
+        // Render all sections
+        function render() {
+            renderDirectComparison();
+            renderLockupComparison();
+            renderSizeGrid();
+            updateSpecs();
+        }
+
+        function renderDirectComparison() {
+            const container = document.getElementById('direct-comparison');
+            container.textContent = '';
+
+            // Scale factor for icon
+            const iconSize = 120 * (state.iconScale / 100);
+            const typoSize = (120 * (state.typoScale / 100)) + 'px';
+
+            // Letter i
+            const letterI = createLetterI(typoSize, '#ffffff');
+
+            // Icon
+            const icon = createIcon(iconSize, '#ffffff');
+
+            // Add labels
+            const iWrapper = document.createElement('div');
+            iWrapper.style.textAlign = 'center';
+            iWrapper.appendChild(letterI);
+            const iLabel = document.createElement('div');
+            iLabel.style.fontSize = '0.7rem';
+            iLabel.style.color = '#8888a0';
+            iLabel.style.marginTop = '0.5rem';
+            iLabel.textContent = 'Fredoka "i" (600)';
+            iWrapper.appendChild(iLabel);
+
+            const iconWrapper = document.createElement('div');
+            iconWrapper.style.textAlign = 'center';
+            iconWrapper.appendChild(icon);
+            const iconLabel = document.createElement('div');
+            iconLabel.style.fontSize = '0.7rem';
+            iconLabel.style.color = '#8888a0';
+            iconLabel.style.marginTop = '0.5rem';
+            iconLabel.textContent = 'Unified Icon';
+            iconWrapper.appendChild(iconLabel);
+
+            container.appendChild(iWrapper);
+            container.appendChild(iconWrapper);
+        }
+
+        function renderLockupComparison() {
+            const container = document.getElementById('lockup-comparison');
+            container.textContent = '';
+
+            // Dark lockup
+            const darkLockup = document.createElement('div');
+            darkLockup.className = 'lockup-item';
+            darkLockup.appendChild(createIcon(50, '#ffffff'));
+            darkLockup.appendChild(createWordmark('1.8rem', '#ffffff'));
+            container.appendChild(darkLockup);
+
+            // Light lockup
+            const lightLockup = document.createElement('div');
+            lightLockup.className = 'lockup-item light';
+            lightLockup.appendChild(createIcon(50, '#1a1a2e'));
+            lightLockup.appendChild(createWordmark('1.8rem', '#1a1a2e'));
+            container.appendChild(lightLockup);
+        }
+
+        function renderSizeGrid() {
+            const container = document.getElementById('size-grid');
+            container.textContent = '';
+
+            const sizes = [32, 48, 64, 96, 128];
+
+            sizes.forEach(size => {
+                const item = document.createElement('div');
+                item.className = 'size-item';
+
+                const iconBox = document.createElement('div');
+                iconBox.style.width = size + 'px';
+                iconBox.style.height = size + 'px';
+                iconBox.style.borderRadius = '22%';
+                iconBox.style.background = '#1a1a2e';
+                iconBox.style.display = 'flex';
+                iconBox.style.alignItems = 'center';
+                iconBox.style.justifyContent = 'center';
+                iconBox.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+
+                iconBox.appendChild(createIcon(size * 0.7, '#ffffff'));
+
+                const label = document.createElement('div');
+                label.className = 'size-label';
+                label.textContent = size + 'px';
+
+                item.appendChild(iconBox);
+                item.appendChild(label);
+                container.appendChild(item);
+            });
+        }
+
+        function updateSpecs() {
+            const display = document.getElementById('specs-display');
+            display.textContent = `/* TYPOGRAPHY-MATCHED STROKES */
+circle: ${state.strokes.circle}
+loupe: ${state.strokes.loupe}
+key: ${state.strokes.key}
+bust: ${state.strokes.bust}
+linecap: ${state.linecap}
+
+/* LOCKED PROPORTIONS */
+circle: cy=41, r=15
+loupe: len=21, angle=139°
+key: len=21, angle=36°
+bust: gap=2, w=35, h=21`;
+        }
+
+        // Bind controls
+        function bindControls() {
+            // Stroke controls
+            ['circle', 'loupe', 'key', 'bust'].forEach(part => {
+                const input = document.getElementById('stroke-' + part);
+                const display = document.getElementById('stroke-' + part + '-val');
+
+                input.addEventListener('input', e => {
+                    state.strokes[part] = parseFloat(e.target.value);
+                    display.textContent = e.target.value;
+                    render();
+                });
+            });
+
+            // Scale controls
+            document.getElementById('icon-scale').addEventListener('input', e => {
+                state.iconScale = parseInt(e.target.value);
+                document.getElementById('icon-scale-val').textContent = e.target.value + '%';
+                render();
+            });
+
+            document.getElementById('typo-scale').addEventListener('input', e => {
+                state.typoScale = parseInt(e.target.value);
+                document.getElementById('typo-scale-val').textContent = e.target.value + '%';
+                render();
+            });
+
+            // Linecap buttons
+            document.getElementById('cap-round').addEventListener('click', () => {
+                state.linecap = 'round';
+                document.getElementById('cap-round').classList.add('active');
+                document.getElementById('cap-square').classList.remove('active');
+                render();
+            });
+
+            document.getElementById('cap-square').addEventListener('click', () => {
+                state.linecap = 'square';
+                document.getElementById('cap-square').classList.add('active');
+                document.getElementById('cap-round').classList.remove('active');
+                render();
+            });
+
+            // Presets
+            document.getElementById('preset-thin').addEventListener('click', () => {
+                setStrokes(4.5, 3, 3, 4);
+            });
+
+            document.getElementById('preset-medium').addEventListener('click', () => {
+                setStrokes(6, 5, 4.5, 5);
+            });
+
+            document.getElementById('preset-thick').addEventListener('click', () => {
+                setStrokes(8, 7, 6.5, 7);
+            });
+
+            document.getElementById('preset-fredoka').addEventListener('click', () => {
+                // Calibrated to match Fredoka 600 visual weight
+                setStrokes(7.5, 6.5, 6, 6.5);
+            });
+
+            // Export
+            document.getElementById('export-specs').addEventListener('click', () => {
+                const specs = `/* TYPOGRAPHY-MATCHED ICON STROKES */
+circle.stroke: ${state.strokes.circle}
+loupe.stroke: ${state.strokes.loupe}
+key.stroke: ${state.strokes.key}
+bust.stroke: ${state.strokes.bust}
+stroke-linecap: ${state.linecap}`;
+                navigator.clipboard.writeText(specs);
+                alert('Specs copiees dans le presse-papier !');
+            });
+        }
+
+        function setStrokes(circle, loupe, key, bust) {
+            state.strokes = { circle, loupe, key, bust };
+            document.getElementById('stroke-circle').value = circle;
+            document.getElementById('stroke-loupe').value = loupe;
+            document.getElementById('stroke-key').value = key;
+            document.getElementById('stroke-bust').value = bust;
+            document.getElementById('stroke-circle-val').textContent = circle;
+            document.getElementById('stroke-loupe-val').textContent = loupe;
+            document.getElementById('stroke-key-val').textContent = key;
+            document.getElementById('stroke-bust-val').textContent = bust;
+            render();
+        }
+
+        // Init
+        bindControls();
+        render();
+    </script>
+</body>
+</html>

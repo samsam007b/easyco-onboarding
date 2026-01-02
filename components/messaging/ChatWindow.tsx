@@ -183,7 +183,7 @@ export function ChatWindow({
               size="icon"
               onClick={onBack}
               className="md:hidden rounded-full hover:bg-white/50"
-              aria-label={messaging?.back || "Retour"}
+              aria-label={messaging?.back || "Back"}
             >
               <ArrowLeft className="h-5 w-5" />
             </Button>

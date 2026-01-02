@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Brand Variations</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --searcher: #FFB10B;
+            --owner: #9B59B6;
+            --resident: #E67E22;
+            --dark: #1a1a2e;
+            --light: #ffffff;
+            --bg-page: #0a0a12;
+            --bg-card: #12121a;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-page);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .card-preview {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .card-info {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .card-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Wordmark styles */
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 3rem;
+            letter-spacing: -0.02em;
+        }
+
+        .wordmark .l-i { font-weight: 600; }
+        .wordmark .l-z { font-weight: 540; }
+        .wordmark .l-c { font-weight: 540; }
+        .wordmark .l-o { font-weight: 540; }
+        .wordmark .zz-space { margin-right: -0.18em; }
+
+        /* Logo + wordmark horizontal */
+        .logo-wordmark {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-wordmark .wordmark {
+            font-size: 2.5rem;
+        }
+
+        /* App icon preview */
+        .app-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 27%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        /* Gradient backgrounds */
+        .bg-dark { background: var(--dark); }
+        .bg-light { background: var(--light); }
+        .bg-gradient-signature {
+            background: linear-gradient(135deg, var(--searcher), var(--resident), var(--owner));
+        }
+        .bg-gradient-blue {
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+        }
+        .bg-searcher { background: var(--searcher); }
+        .bg-owner { background: var(--owner); }
+        .bg-resident { background: var(--resident); }
+
+        /* Color variations grid */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+            padding: 1rem;
+        }
+
+        .color-swatch {
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.6rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Sizes preview */
+        .sizes-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+
+        .size-item {
+            text-align: center;
+        }
+
+        .size-label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        /* Lockup section */
+        .lockup-preview {
+            padding: 2rem;
+        }
+
+        .lockup-horizontal {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .lockup-vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .footer p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .specs-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 20px;
+            font-size: 0.7rem;
+            color: #818cf8;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IzzIco Brand Variations</h1>
+        <p>Toutes les declinaisons du logo unifie</p>
+        <span class="specs-badge">SPECS LOCKED - 2026-01-02</span>
+    </div>
+
+    <!-- Section 1: Logo + Wordmark Lockups -->
+    <div class="section">
+        <div class="section-title">Logo + Wordmark</div>
+        <div class="grid" id="lockups-grid"></div>
+    </div>
+
+    <!-- Section 2: App Icons -->
+    <div class="section">
+        <div class="section-title">App Icons</div>
+        <div class="grid" id="appicons-grid"></div>
+    </div>
+
+    <!-- Section 3: Color Variations -->
+    <div class="section">
+        <div class="section-title">Variations Couleur</div>
+        <div class="grid" id="colors-grid"></div>
+    </div>
+
+    <!-- Section 4: Multi-color Role Version -->
+    <div class="section">
+        <div class="section-title">Version Multi-Roles</div>
+        <div class="grid" id="multirole-grid"></div>
+    </div>
+
+    <!-- Section 5: Size Tests -->
+    <div class="section">
+        <div class="section-title">Test Tailles</div>
+        <div class="card">
+            <div class="card-preview bg-dark" id="sizes-preview"></div>
+            <div class="card-info">
+                <div class="card-title">App Icon Sizes</div>
+                <div class="card-desc">29px, 40px, 60px, 76px, 120px, 180px</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>IzzIco Brand Guidelines - Configuration Verrouillée</p>
+    </div>
+
+    <script>
+        // LOCKED SPECS - TYPOGRAPHY-MATCHED (Fredoka 600)
+        // Global stroke = 13 (Fredoka 600 stem ratio: 13% of em-square)
+        // Teeth stroke = 6.5 (50% of global)
+        const GLOBAL_STROKE = 13;
+        const SPECS = {
+            circle: { cy: 41, r: 15, stroke: GLOBAL_STROKE },
+            loupe: { length: 21, angle: 139, stroke: GLOBAL_STROKE },
+            key: { length: 21, angle: 36, stroke: GLOBAL_STROKE, teeth: 2, teethSize: 7, teethStroke: GLOBAL_STROKE * 0.5 },
+            bust: { gap: 2, width: 35, height: 21, stroke: GLOBAL_STROKE },
+            linecap: 'round'
+        };
+
+        const COLORS = {
+            searcher: '#FFB10B',
+            owner: '#9B59B6',
+            resident: '#E67E22',
+            dark: '#1a1a2e',
+            light: '#ffffff'
+        };
+
+        // SVG helper
+        function createSVG(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+            return el;
+        }
+
+        // Create unified icon SVG
+        function createIcon(options = {}) {
+            const {
+                color = COLORS.light,
+                loupeColor = null,
+                keyColor = null,
+                bustColor = null,
+                circleColor = null,
+                circleGradient = false,
+                size = 80
+            } = options;
+
+            const svg = createSVG('svg', {
+                viewBox: '0 0 100 100',
+                width: size,
+                height: size,
+                fill: 'none'
+            });
+
+            const cx = 50;
+            const cy = SPECS.circle.cy;
+            const r = SPECS.circle.r;
+
+            // Defs for gradient
+            if (circleGradient) {
+                const defs = createSVG('defs', {});
+                const grad = createSVG('linearGradient', { id: 'circleGrad', x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+                const stop1 = createSVG('stop', { offset: '0%', 'stop-color': COLORS.searcher });
+                const stop2 = createSVG('stop', { offset: '50%', 'stop-color': COLORS.resident });
+                const stop3 = createSVG('stop', { offset: '100%', 'stop-color': COLORS.owner });
+                grad.appendChild(stop1);
+                grad.appendChild(stop2);
+                grad.appendChild(stop3);
+                defs.appendChild(grad);
+                svg.appendChild(defs);
+            }
+
+            // Circle
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: r,
+                fill: 'none',
+                stroke: circleGradient ? 'url(#circleGrad)' : (circleColor || color),
+                'stroke-width': SPECS.circle.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Loupe handle
+            const loupeAngleRad = (SPECS.loupe.angle * Math.PI) / 180;
+            const loupeStartX = cx + r * Math.cos(loupeAngleRad);
+            const loupeStartY = cy + r * Math.sin(loupeAngleRad);
+            const loupeEndX = loupeStartX + SPECS.loupe.length * Math.cos(loupeAngleRad);
+            const loupeEndY = loupeStartY + SPECS.loupe.length * Math.sin(loupeAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: loupeStartX,
+                y1: loupeStartY,
+                x2: loupeEndX,
+                y2: loupeEndY,
+                stroke: loupeColor || color,
+                'stroke-width': SPECS.loupe.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Key stem
+            const keyAngleRad = (SPECS.key.angle * Math.PI) / 180;
+            const keyStartX = cx + r * Math.cos(keyAngleRad);
+            const keyStartY = cy + r * Math.sin(keyAngleRad);
+            const keyEndX = keyStartX + SPECS.key.length * Math.cos(keyAngleRad);
+            const keyEndY = keyStartY + SPECS.key.length * Math.sin(keyAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: keyStartX,
+                y1: keyStartY,
+                x2: keyEndX,
+                y2: keyEndY,
+                stroke: keyColor || color,
+                'stroke-width': SPECS.key.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Key teeth
+            const teethAngle = keyAngleRad + Math.PI / 2;
+            for (let i = 0; i < SPECS.key.teeth; i++) {
+                const t = 0.5 + (i * 0.3);
+                const toothX = keyStartX + (keyEndX - keyStartX) * t;
+                const toothY = keyStartY + (keyEndY - keyStartY) * t;
+                const toothEndX = toothX + SPECS.key.teethSize * Math.cos(teethAngle);
+                const toothEndY = toothY + SPECS.key.teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('line', {
+                    x1: toothX,
+                    y1: toothY,
+                    x2: toothEndX,
+                    y2: toothEndY,
+                    stroke: keyColor || color,
+                    'stroke-width': SPECS.key.teethStroke,
+                    'stroke-linecap': 'round'
+                }));
+            }
+
+            // Bust
+            const bustTop = cy + r + SPECS.bust.gap;
+            const bustWidth = SPECS.bust.width;
+            const bustHeight = SPECS.bust.height;
+            const bustPath = `M ${cx - bustWidth/2} ${bustTop + bustHeight} Q ${cx} ${bustTop} ${cx + bustWidth/2} ${bustTop + bustHeight}`;
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: bustColor || color,
+                'stroke-width': SPECS.bust.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            return svg;
+        }
+
+        // Create wordmark
+        function createWordmark(color = COLORS.light, size = '2.5rem') {
+            const span = document.createElement('span');
+            span.className = 'wordmark';
+            span.style.color = color;
+            span.style.fontSize = size;
+
+            const letters = [
+                { char: 'i', class: 'l-i' },
+                { char: 'z', class: 'l-z zz-space' },
+                { char: 'z', class: 'l-z' },
+                { char: 'i', class: 'l-i' },
+                { char: 'c', class: 'l-c' },
+                { char: 'o', class: 'l-o' }
+            ];
+
+            letters.forEach(l => {
+                const s = document.createElement('span');
+                s.className = l.class;
+                s.textContent = l.char;
+                span.appendChild(s);
+            });
+
+            return span;
+        }
+
+        // Create a card
+        function createCard(preview, title, desc, bgClass = 'bg-dark') {
+            const card = document.createElement('div');
+            card.className = 'card';
+
+            const previewDiv = document.createElement('div');
+            previewDiv.className = 'card-preview ' + bgClass;
+            if (typeof preview === 'function') {
+                preview(previewDiv);
+            } else {
+                previewDiv.appendChild(preview);
+            }
+
+            const infoDiv = document.createElement('div');
+            infoDiv.className = 'card-info';
+
+            const titleDiv = document.createElement('div');
+            titleDiv.className = 'card-title';
+            titleDiv.textContent = title;
+
+            const descDiv = document.createElement('div');
+            descDiv.className = 'card-desc';
+            descDiv.textContent = desc;
+
+            infoDiv.appendChild(titleDiv);
+            infoDiv.appendChild(descDiv);
+
+            card.appendChild(previewDiv);
+            card.appendChild(infoDiv);
+
+            return card;
+        }
+
+        // Build sections
+        function buildLockups() {
+            const grid = document.getElementById('lockups-grid');
+
+            // Horizontal lockup - dark bg
+            grid.appendChild(createCard(
+                (container) => {
+                    const lockup = document.createElement('div');
+                    lockup.className = 'lockup-horizontal';
+                    lockup.appendChild(createIcon({ color: COLORS.light, size: 60 }));
+                    lockup.appendChild(createWordmark(COLORS.light, '2rem'));
+                    container.appendChild(lockup);
+                },
+                'Lockup Horizontal - Fond Sombre',
+                'Logo + wordmark alignes horizontalement',
+                'bg-dark'
+            ));
+
+            // Horizontal lockup - light bg
+            grid.appendChild(createCard(
+                (container) => {
+                    const lockup = document.createElement('div');
+                    lockup.className = 'lockup-horizontal';
+                    lockup.appendChild(createIcon({ color: COLORS.dark, size: 60 }));
+                    lockup.appendChild(createWordmark(COLORS.dark, '2rem'));
+                    container.appendChild(lockup);
+                },
+                'Lockup Horizontal - Fond Clair',
+                'Version pour fonds blancs',
+                'bg-light'
+            ));
+
+            // Vertical lockup
+            grid.appendChild(createCard(
+                (container) => {
+                    const lockup = document.createElement('div');
+                    lockup.className = 'lockup-vertical';
+                    lockup.appendChild(createIcon({ color: COLORS.light, size: 70 }));
+                    lockup.appendChild(createWordmark(COLORS.light, '1.5rem'));
+                    container.appendChild(lockup);
+                },
+                'Lockup Vertical',
+                'Logo au-dessus du wordmark',
+                'bg-dark'
+            ));
+
+            // Gradient background lockup
+            grid.appendChild(createCard(
+                (container) => {
+                    const lockup = document.createElement('div');
+                    lockup.className = 'lockup-horizontal';
+                    lockup.appendChild(createIcon({ color: COLORS.light, size: 60 }));
+                    lockup.appendChild(createWordmark(COLORS.light, '2rem'));
+                    container.appendChild(lockup);
+                },
+                'Lockup - Degrade Signature',
+                'Sur fond degrade de marque',
+                'bg-gradient-signature'
+            ));
+        }
+
+        function buildAppIcons() {
+            const grid = document.getElementById('appicons-grid');
+
+            // White on dark
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-dark';
+                    icon.appendChild(createIcon({ color: COLORS.light, size: 70 }));
+                    container.appendChild(icon);
+                },
+                'Blanc sur Sombre',
+                'Version principale pour app stores',
+                'bg-dark'
+            ));
+
+            // Dark on light
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-light';
+                    icon.appendChild(createIcon({ color: COLORS.dark, size: 70 }));
+                    container.appendChild(icon);
+                },
+                'Sombre sur Blanc',
+                'Version claire alternative',
+                'bg-light'
+            ));
+
+            // Gradient background
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-gradient-signature';
+                    icon.appendChild(createIcon({ color: COLORS.light, size: 70 }));
+                    container.appendChild(icon);
+                },
+                'Degrade Signature',
+                'Fond avec gradient Jaune-Orange-Violet',
+                'bg-dark'
+            ));
+
+            // Blue gradient
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-gradient-blue';
+                    icon.appendChild(createIcon({ color: COLORS.light, size: 70 }));
+                    container.appendChild(icon);
+                },
+                'Degrade Bleu-Violet',
+                'Variation moderne',
+                'bg-dark'
+            ));
+        }
+
+        function buildColorVariations() {
+            const grid = document.getElementById('colors-grid');
+
+            // Searcher yellow bg
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-searcher';
+                    icon.appendChild(createIcon({ color: COLORS.light, size: 70 }));
+                    container.appendChild(icon);
+                },
+                'Fond Searcher (Jaune)',
+                'Pour contexte recherche de logement',
+                'bg-dark'
+            ));
+
+            // Owner purple bg
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-owner';
+                    icon.appendChild(createIcon({ color: COLORS.light, size: 70 }));
+                    container.appendChild(icon);
+                },
+                'Fond Owner (Mauve)',
+                'Pour contexte proprietaires',
+                'bg-dark'
+            ));
+
+            // Resident orange bg
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-resident';
+                    icon.appendChild(createIcon({ color: COLORS.light, size: 70 }));
+                    container.appendChild(icon);
+                },
+                'Fond Resident (Orange)',
+                'Pour contexte residents actuels',
+                'bg-dark'
+            ));
+
+            // Gradient icon on dark
+            grid.appendChild(createCard(
+                (container) => {
+                    // This one uses gradient strokes - need special handling
+                    const wrapper = document.createElement('div');
+                    wrapper.style.position = 'relative';
+
+                    // Create SVG with gradient definitions
+                    const svg = createSVG('svg', {
+                        viewBox: '0 0 100 100',
+                        width: '100',
+                        height: '100',
+                        fill: 'none'
+                    });
+
+                    const defs = createSVG('defs', {});
+                    const grad = createSVG('linearGradient', { id: 'iconGrad', x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+                    grad.appendChild(createSVG('stop', { offset: '0%', 'stop-color': COLORS.searcher }));
+                    grad.appendChild(createSVG('stop', { offset: '50%', 'stop-color': COLORS.resident }));
+                    grad.appendChild(createSVG('stop', { offset: '100%', 'stop-color': COLORS.owner }));
+                    defs.appendChild(grad);
+                    svg.appendChild(defs);
+
+                    const cx = 50, cy = SPECS.circle.cy, r = SPECS.circle.r;
+
+                    // All elements with gradient stroke
+                    svg.appendChild(createSVG('circle', {
+                        cx: cx, cy: cy, r: r,
+                        fill: 'none', stroke: 'url(#iconGrad)', 'stroke-width': SPECS.circle.stroke
+                    }));
+
+                    const loupeAngleRad = (SPECS.loupe.angle * Math.PI) / 180;
+                    svg.appendChild(createSVG('line', {
+                        x1: cx + r * Math.cos(loupeAngleRad),
+                        y1: cy + r * Math.sin(loupeAngleRad),
+                        x2: cx + r * Math.cos(loupeAngleRad) + SPECS.loupe.length * Math.cos(loupeAngleRad),
+                        y2: cy + r * Math.sin(loupeAngleRad) + SPECS.loupe.length * Math.sin(loupeAngleRad),
+                        stroke: 'url(#iconGrad)', 'stroke-width': SPECS.loupe.stroke, 'stroke-linecap': 'round'
+                    }));
+
+                    const keyAngleRad = (SPECS.key.angle * Math.PI) / 180;
+                    const keyStartX = cx + r * Math.cos(keyAngleRad);
+                    const keyStartY = cy + r * Math.sin(keyAngleRad);
+                    const keyEndX = keyStartX + SPECS.key.length * Math.cos(keyAngleRad);
+                    const keyEndY = keyStartY + SPECS.key.length * Math.sin(keyAngleRad);
+
+                    svg.appendChild(createSVG('line', {
+                        x1: keyStartX, y1: keyStartY, x2: keyEndX, y2: keyEndY,
+                        stroke: 'url(#iconGrad)', 'stroke-width': SPECS.key.stroke, 'stroke-linecap': 'round'
+                    }));
+
+                    const teethAngle = keyAngleRad + Math.PI / 2;
+                    for (let i = 0; i < SPECS.key.teeth; i++) {
+                        const t = 0.5 + (i * 0.3);
+                        svg.appendChild(createSVG('line', {
+                            x1: keyStartX + (keyEndX - keyStartX) * t,
+                            y1: keyStartY + (keyEndY - keyStartY) * t,
+                            x2: keyStartX + (keyEndX - keyStartX) * t + SPECS.key.teethSize * Math.cos(teethAngle),
+                            y2: keyStartY + (keyEndY - keyStartY) * t + SPECS.key.teethSize * Math.sin(teethAngle),
+                            stroke: 'url(#iconGrad)', 'stroke-width': SPECS.key.teethStroke, 'stroke-linecap': 'round'
+                        }));
+                    }
+
+                    const bustTop = cy + r + SPECS.bust.gap;
+                    svg.appendChild(createSVG('path', {
+                        d: `M ${cx - SPECS.bust.width/2} ${bustTop + SPECS.bust.height} Q ${cx} ${bustTop} ${cx + SPECS.bust.width/2} ${bustTop + SPECS.bust.height}`,
+                        fill: 'none', stroke: 'url(#iconGrad)', 'stroke-width': SPECS.bust.stroke, 'stroke-linecap': 'round'
+                    }));
+
+                    container.appendChild(svg);
+                },
+                'Icon en Degrade',
+                'Traits en gradient signature sur fond sombre',
+                'bg-dark'
+            ));
+        }
+
+        function buildMultiroleVariations() {
+            const grid = document.getElementById('multirole-grid');
+
+            // Multi-color with gradient circle
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-dark';
+                    icon.appendChild(createIcon({
+                        loupeColor: COLORS.searcher,
+                        keyColor: COLORS.owner,
+                        bustColor: COLORS.resident,
+                        circleGradient: true,
+                        size: 80
+                    }));
+                    container.appendChild(icon);
+                },
+                'Multi-Roles - Cercle Gradient',
+                'Loupe jaune, Cle mauve, Buste orange, Cercle en degrade',
+                'bg-dark'
+            ));
+
+            // Multi-color with orange circle
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-dark';
+                    icon.appendChild(createIcon({
+                        loupeColor: COLORS.searcher,
+                        keyColor: COLORS.owner,
+                        bustColor: COLORS.resident,
+                        circleColor: COLORS.resident,
+                        size: 80
+                    }));
+                    container.appendChild(icon);
+                },
+                'Multi-Roles - Cercle Orange',
+                'Cercle orange assorti au buste',
+                'bg-dark'
+            ));
+
+            // Multi-color with yellow circle
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-dark';
+                    icon.appendChild(createIcon({
+                        loupeColor: COLORS.searcher,
+                        keyColor: COLORS.owner,
+                        bustColor: COLORS.resident,
+                        circleColor: COLORS.searcher,
+                        size: 80
+                    }));
+                    container.appendChild(icon);
+                },
+                'Multi-Roles - Cercle Jaune',
+                'Cercle jaune assorti a la loupe',
+                'bg-dark'
+            ));
+
+            // Multi-color on light bg
+            grid.appendChild(createCard(
+                (container) => {
+                    const icon = document.createElement('div');
+                    icon.className = 'app-icon bg-light';
+                    icon.appendChild(createIcon({
+                        loupeColor: COLORS.searcher,
+                        keyColor: COLORS.owner,
+                        bustColor: COLORS.resident,
+                        circleGradient: true,
+                        size: 80
+                    }));
+                    container.appendChild(icon);
+                },
+                'Multi-Roles sur Fond Clair',
+                'Version pour fonds blancs',
+                'bg-light'
+            ));
+        }
+
+        function buildSizesPreview() {
+            const container = document.getElementById('sizes-preview');
+            const row = document.createElement('div');
+            row.className = 'sizes-row';
+
+            const sizes = [29, 40, 60, 76, 120, 180];
+
+            sizes.forEach(size => {
+                const item = document.createElement('div');
+                item.className = 'size-item';
+
+                const iconBox = document.createElement('div');
+                iconBox.style.width = size + 'px';
+                iconBox.style.height = size + 'px';
+                iconBox.style.borderRadius = '22%';
+                iconBox.style.background = 'linear-gradient(135deg, #4361ee, #7209b7)';
+                iconBox.style.display = 'flex';
+                iconBox.style.alignItems = 'center';
+                iconBox.style.justifyContent = 'center';
+                iconBox.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+
+                iconBox.appendChild(createIcon({ color: COLORS.light, size: size * 0.65 }));
+
+                const label = document.createElement('div');
+                label.className = 'size-label';
+                label.textContent = size + 'px';
+
+                item.appendChild(iconBox);
+                item.appendChild(label);
+                row.appendChild(item);
+            });
+
+            container.appendChild(row);
+        }
+
+        // Initialize
+        buildLockups();
+        buildAppIcons();
+        buildColorVariations();
+        buildMultiroleVariations();
+        buildSizesPreview();
+    </script>
+</body>
+</html>

@@ -231,7 +231,7 @@ export default function ReviewPage() {
         safeLocalStorage.remove('preferences');
         safeLocalStorage.remove('verification');
 
-        toast.success(`Profil pour ${data.coreBasicInfo.profileName} enregistré avec succès !`);
+        toast.success(`${t('onboarding.review.dependentProfileSaved') || 'Profile saved'}: ${data.coreBasicInfo.profileName}`);
         router.push('/dashboard/searcher');
       } else {
         const result = await saveOnboardingData(user.id, onboardingData, 'searcher');

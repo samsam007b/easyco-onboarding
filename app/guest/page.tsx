@@ -115,25 +115,25 @@ function GuestPageContent() {
   const viewTabs = [
     {
       id: 'searcher' as GuestView,
-      label: 'Je cherche',
+      label: 'I\'m searching',
       icon: Search,
-      description: 'Trouve ta colocation idéale',
+      description: 'Find your ideal coliving',
       color: '#ff9811',
       bgColor: 'bg-orange-50',
     },
     {
       id: 'resident' as GuestView,
-      label: 'Je vis en coloc',
+      label: 'I\'m a resident',
       icon: Home,
-      description: 'Gère ta vie en colocation',
+      description: 'Manage your coliving life',
       color: '#ff651e',
       bgColor: 'bg-orange-50',
     },
     {
       id: 'owner' as GuestView,
-      label: 'Je suis proprio',
+      label: 'I\'m an owner',
       icon: Building2,
-      description: 'Gère tes propriétés',
+      description: 'Manage your properties',
       color: '#ad5684',
       bgColor: 'bg-purple-50',
     },
@@ -158,7 +158,7 @@ function GuestPageContent() {
                 <span style={{ color: '#ff9811' }}>co</span>
               </span>
               <Badge variant="warning" size="sm" className="ml-2">
-                Mode Découverte
+                Discovery Mode
               </Badge>
             </div>
 
@@ -170,7 +170,7 @@ function GuestPageContent() {
                 onClick={() => router.push('/auth?mode=login')}
               >
                 <LogIn className="w-4 h-4 mr-2" />
-                Connexion
+                Login
               </Button>
               <Button
                 size="sm"
@@ -179,7 +179,7 @@ function GuestPageContent() {
                 style={{ background: '#ff9811' }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
-                Créer un compte
+                Create account
               </Button>
             </div>
           </div>
@@ -276,8 +276,8 @@ function GuestPageContent() {
       <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-4 z-50">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="hidden sm:block">
-            <p className="font-semibold text-gray-900">Prêt à commencer ?</p>
-            <p className="text-sm text-gray-600">Crée ton compte gratuitement en 2 minutes</p>
+            <p className="font-semibold text-gray-900">Ready to start?</p>
+            <p className="text-sm text-gray-600">Create your account for free in 2 minutes</p>
           </div>
           <div className="flex gap-3 w-full sm:w-auto">
             <Button
@@ -287,7 +287,7 @@ function GuestPageContent() {
               size="lg"
             >
               <UserPlus className="w-5 h-5 mr-2" />
-              Créer mon compte
+              Create my account
             </Button>
           </div>
         </div>
@@ -325,18 +325,18 @@ function GuestPageContent() {
                   <Lock className="w-8 h-8" style={{ color: '#ff9811' }} />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  Fonctionnalité Premium
+                  Premium Feature
                 </h3>
                 <p className="text-gray-600 mb-6">
-                  {lockedFeatureMessage || 'Crée un compte gratuit pour débloquer cette fonctionnalité et bien plus encore !'}
+                  {lockedFeatureMessage || 'Create a free account to unlock this feature and much more!'}
                 </p>
 
                 <div className="space-y-3 mb-6 text-left">
                   {[
-                    'Matching intelligent avec colocataires',
-                    'Messagerie avec propriétaires',
-                    'Sauvegarder tes favoris',
-                    'Alertes personnalisées',
+                    'Smart matching with roommates',
+                    'Messaging with property owners',
+                    'Save your favorites',
+                    'Personalized alerts',
                   ].map((benefit, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm">
                       <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
@@ -353,14 +353,14 @@ function GuestPageContent() {
                     size="lg"
                   >
                     <UserPlus className="w-5 h-5 mr-2" />
-                    Créer mon compte gratuit
+                    Create my free account
                   </Button>
                   <Button
                     onClick={() => router.push('/auth?mode=login')}
                     variant="outline"
                     className="w-full"
                   >
-                    J'ai déjà un compte
+                    I already have an account
                   </Button>
                 </div>
               </div>
@@ -417,7 +417,7 @@ function SearcherGuestView({
             >
               <Search className="w-4 h-4 text-white" />
             </div>
-            <h3 className="font-semibold text-gray-900">Ta recherche</h3>
+            <h3 className="font-semibold text-gray-900">Your search</h3>
           </div>
           <div className="flex flex-wrap gap-2">
             {searchCriteria.location && (
@@ -446,7 +446,7 @@ function SearcherGuestView({
           </div>
           <p className="text-sm text-gray-500 mt-3">
             <Sparkles className="w-4 h-4 inline mr-1" style={{ color: '#ff9811' }} />
-            Crée un compte pour sauvegarder ta recherche et recevoir des alertes
+            Create an account to save your search and receive alerts
           </p>
         </motion.div>
       )}
@@ -466,12 +466,12 @@ function SearcherGuestView({
               </div>
               <div>
                 <h1 className="text-base font-bold text-white drop-shadow-md">
-                  {hasSearchCriteria ? 'Résultats de recherche' : 'Bienvenue !'}
+                  {hasSearchCriteria ? 'Search results' : 'Welcome!'}
                 </h1>
                 <p className="text-xs text-white/90 drop-shadow-sm">
                   {hasSearchCriteria
-                    ? `${mockProperties.length} propriétés correspondent`
-                    : 'Découvre Izzico en mode invité'
+                    ? `${mockProperties.length} matching properties`
+                    : 'Discover Izzico in guest mode'
                   }
                 </p>
               </div>
@@ -481,16 +481,16 @@ function SearcherGuestView({
           {/* KPI Grid */}
           <div className="grid grid-cols-4 gap-2 mb-3">
             {[
-              { icon: Users, label: 'Groupes', value: '?', locked: true },
-              { icon: Bookmark, label: 'Favoris', value: '?', locked: true },
+              { icon: Users, label: 'Groups', value: '?', locked: true },
+              { icon: Bookmark, label: 'Favorites', value: '?', locked: true },
               { icon: MessageCircle, label: 'Messages', value: '?', locked: true },
-              { icon: Target, label: 'Profil', value: '0%', locked: false },
+              { icon: Target, label: 'Profile', value: '0%', locked: false },
             ].map((item, idx) => {
               const Icon = item.icon;
               return (
                 <button
                   key={idx}
-                  onClick={() => item.locked && onLockedFeature('Crée ton compte pour accéder à cette fonctionnalité')}
+                  onClick={() => item.locked && onLockedFeature('Create your account to access this feature')}
                   className={cn(
                     "bg-white/25 backdrop-blur-sm rounded-xl py-2.5 px-2 transition text-center shadow-sm relative",
                     item.locked && "cursor-pointer hover:bg-white/35"
@@ -515,20 +515,20 @@ function SearcherGuestView({
               <div className="flex items-center gap-2.5">
                 <Target className="w-4 h-4 text-white drop-shadow-sm" />
                 <div className="text-left">
-                  <p className="text-sm font-semibold text-white drop-shadow-md">Ma Recherche</p>
+                  <p className="text-sm font-semibold text-white drop-shadow-md">My Search</p>
                   <p className="text-xs text-white/90 font-medium drop-shadow-sm">
-                    {hasSearchCriteria ? 'Critères actifs' : 'Configure tes préférences'}
+                    {hasSearchCriteria ? 'Active criteria' : 'Configure your preferences'}
                   </p>
                 </div>
               </div>
               <Button
                 size="sm"
                 variant="ghost"
-                onClick={() => onLockedFeature('Crée ton compte pour configurer tes préférences de recherche')}
+                onClick={() => onLockedFeature('Create your account to configure your search preferences')}
                 className="text-white hover:bg-white/20"
               >
                 <Lock className="w-3 h-3 mr-1" />
-                {hasSearchCriteria ? 'Modifier' : 'Configurer'}
+                {hasSearchCriteria ? 'Edit' : 'Configure'}
               </Button>
             </div>
           </div>
@@ -538,9 +538,9 @@ function SearcherGuestView({
       {/* Properties Section */}
       <div>
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-900">Propriétés disponibles</h2>
+          <h2 className="text-xl font-bold text-gray-900">Available properties</h2>
           <Badge variant="default" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
-            Aperçu limité
+            Limited preview
           </Badge>
         </div>
 
@@ -563,7 +563,7 @@ function SearcherGuestView({
                   <div
                     className="px-3 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer"
                     style={{ background: '#ff9811' }}
-                    onClick={() => onLockedFeature('Crée ton compte pour voir ton score de compatibilité')}
+                    onClick={() => onLockedFeature('Create your account to see your compatibility score')}
                   >
                     <Sparkles className="w-3.5 h-3.5 text-white" />
                     <span className="text-white font-bold text-sm blur-[3px]">{property.compatibility_score}%</span>
@@ -602,18 +602,18 @@ function SearcherGuestView({
                     variant="outline"
                     size="sm"
                     className="flex-1"
-                    onClick={() => onLockedFeature('Crée ton compte pour sauvegarder des favoris')}
+                    onClick={() => onLockedFeature('Create your account to save favorites')}
                   >
                     <Heart className="w-4 h-4 mr-1" />
-                    Favori
+                    Favorite
                   </Button>
                   <Button
                     size="sm"
                     className="flex-1 text-white hover:brightness-110"
                     style={{ background: '#ff9811' }}
-                    onClick={() => onLockedFeature('Crée ton compte pour contacter le propriétaire')}
+                    onClick={() => onLockedFeature('Create your account to contact the owner')}
                   >
-                    Contacter
+                    Contact
                   </Button>
                 </div>
               </div>
@@ -633,20 +633,20 @@ function SearcherGuestView({
               >
                 <Users className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Trouve tes colocataires idéaux</h3>
+              <h3 className="text-xl font-bold text-gray-900">Find your ideal roommates</h3>
               <Lock className="w-5 h-5" style={{ color: '#ff9811' }} />
             </div>
             <p className="text-gray-600 mb-4">
-              Notre algorithme de matching te connecte avec des personnes qui partagent ton style de vie,
-              tes horaires et tes valeurs. Swipe pour créer ton groupe parfait !
+              Our matching algorithm connects you with people who share your lifestyle,
+              your schedule and your values. Swipe to create your perfect group!
             </p>
             <Button
-              onClick={() => onLockedFeature('Crée ton compte pour accéder au matching intelligent')}
+              onClick={() => onLockedFeature('Create your account to access smart matching')}
               className="text-white font-semibold hover:brightness-110"
               style={{ background: 'linear-gradient(135deg, #ff651e, #ff9811)' }}
             >
               <Sparkles className="w-4 h-4 mr-2" />
-              Découvrir le matching
+              Discover matching
             </Button>
           </div>
 
@@ -676,7 +676,7 @@ function SearcherGuestView({
                 </div>
                 <div className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full w-fit blur-[2px]">
                   <Sparkles className="w-3 h-3" />
-                  <span>{mate.score}% compatible</span>
+                  <span>{mate.score}% match</span>
                 </div>
               </div>
             ))}
@@ -696,32 +696,32 @@ function ResidentGuestView({
   router: any;
 }) {
   const kpiCards = [
-    { title: 'Loyer du Mois', value: '€???/???', icon: Home, locked: true },
-    { title: 'Dépenses Partagées', value: '€???', icon: DollarSign, locked: true },
-    { title: 'Ton Solde', value: '€???', icon: TrendingUp, locked: true },
-    { title: 'Colocataires', value: '?', icon: Users, locked: true },
+    { title: 'Monthly Rent', value: '€???/???', icon: Home, locked: true },
+    { title: 'Shared Expenses', value: '€???', icon: DollarSign, locked: true },
+    { title: 'Your Balance', value: '€???', icon: TrendingUp, locked: true },
+    { title: 'Roommates', value: '?', icon: Users, locked: true },
   ];
 
   const features = [
     {
       icon: DollarSign,
-      title: 'Gestion des dépenses',
-      description: 'Partage équitable des courses, factures et loyer avec tes colocs',
+      title: 'Expense management',
+      description: 'Fair sharing of groceries, bills and rent with your roommates',
     },
     {
       icon: Calendar,
-      title: 'Planning partagé',
-      description: 'Coordonne les tâches ménagères et événements de la maison',
+      title: 'Shared calendar',
+      description: 'Coordinate household chores and house events',
     },
     {
       icon: MessageCircle,
-      title: 'Chat de groupe',
-      description: 'Communique facilement avec tous tes colocataires',
+      title: 'Group chat',
+      description: 'Easily communicate with all your roommates',
     },
     {
       icon: Wrench,
       title: 'Maintenance',
-      description: 'Signale et suis les réparations avec ton propriétaire',
+      description: 'Report and track repairs with your landlord',
     },
   ];
 
@@ -736,10 +736,10 @@ function ResidentGuestView({
       {/* Intro */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Simplifie ta vie en colocation
+          Simplify your coliving life
         </h2>
         <p className="text-gray-600">
-          Gère les dépenses, planifie les tâches et communique avec tes colocs en un seul endroit
+          Manage expenses, plan tasks and communicate with your roommates in one place
         </p>
       </div>
 
@@ -753,7 +753,7 @@ function ResidentGuestView({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              onClick={() => onLockedFeature('Crée ton compte pour accéder au dashboard résident')}
+              onClick={() => onLockedFeature('Create your account to access the resident dashboard')}
               className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
             >
               <div className="absolute top-2 right-2">
@@ -781,7 +781,7 @@ function ResidentGuestView({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + idx * 0.1 }}
-              onClick={() => onLockedFeature(`Crée ton compte pour accéder à "${feature.title}"`)}
+              onClick={() => onLockedFeature(`Create your account to access "${feature.title}"`)}
               className="bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
               style={{ borderColor: '#ff651e40' }}
             >
@@ -811,13 +811,13 @@ function ResidentGuestView({
           </div>
 
           <div className="flex-1 text-center md:text-left">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Ta future résidence</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Your future residence</h3>
             <p className="text-gray-600 mb-4">
-              Une fois que tu auras rejoint une colocation, tu pourras gérer toute ta vie
-              de coloc depuis ce dashboard : dépenses, tâches, communications...
+              Once you have joined a coliving, you will be able to manage your entire
+              coliving life from this dashboard: expenses, tasks, communications...
             </p>
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              {['Gestion loyer', 'Tâches partagées', 'Chat groupe', 'Événements'].map((tag) => (
+              {['Rent management', 'Shared tasks', 'Group chat', 'Events'].map((tag) => (
                 <Badge key={tag} variant="default" style={{ background: '#ff651e20', color: '#ff651e', borderColor: '#ff651e40' }}>
                   {tag}
                 </Badge>
@@ -839,32 +839,32 @@ function OwnerGuestView({
   router: any;
 }) {
   const kpiCards = [
-    { title: 'Revenus Mensuels', value: '€???', change: '+??%', icon: DollarSign },
-    { title: 'Propriétés', value: '?', subtitle: '? publiées', icon: Building2 },
-    { title: "Taux d'Occupation", value: '??%', change: '+?%', icon: TrendingUp },
-    { title: 'Candidatures', value: '?', subtitle: 'En attente', icon: Users },
+    { title: 'Monthly Revenue', value: '€???', change: '+??%', icon: DollarSign },
+    { title: 'Properties', value: '?', subtitle: '? published', icon: Building2 },
+    { title: 'Occupancy Rate', value: '??%', change: '+?%', icon: TrendingUp },
+    { title: 'Applications', value: '?', subtitle: 'Pending', icon: Users },
   ];
 
   const features = [
     {
       icon: Building2,
-      title: 'Gestion des propriétés',
-      description: 'Publie et gère toutes tes annonces de coliving en un seul endroit',
+      title: 'Property management',
+      description: 'Publish and manage all your coliving listings in one place',
     },
     {
       icon: Users,
-      title: 'Sélection des locataires',
-      description: 'Reçois des candidatures de profils compatibles et pré-qualifiés',
+      title: 'Tenant selection',
+      description: 'Receive applications from compatible and pre-qualified profiles',
     },
     {
       icon: DollarSign,
-      title: 'Suivi financier',
-      description: 'Visualise tes revenus, dépenses et rentabilité en temps réel',
+      title: 'Financial tracking',
+      description: 'View your revenue, expenses and profitability in real time',
     },
     {
       icon: MessageCircle,
       title: 'Communication',
-      description: 'Échange facilement avec tes locataires actuels et potentiels',
+      description: 'Easily exchange with your current and potential tenants',
     },
   ];
 
@@ -879,10 +879,10 @@ function OwnerGuestView({
       {/* Intro */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Gérez votre portefeuille coliving
+          Manage your coliving portfolio
         </h2>
         <p className="text-gray-600">
-          Publiez vos annonces, trouvez les meilleurs locataires et suivez vos performances
+          Publish your listings, find the best tenants and track your performance
         </p>
       </div>
 
@@ -896,7 +896,7 @@ function OwnerGuestView({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              onClick={() => onLockedFeature('Créez votre compte propriétaire pour accéder au dashboard')}
+              onClick={() => onLockedFeature('Create your owner account to access the dashboard')}
               className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
             >
               <div className="absolute top-2 right-2">
@@ -930,7 +930,7 @@ function OwnerGuestView({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + idx * 0.1 }}
-              onClick={() => onLockedFeature(`Créez votre compte pour accéder à "${feature.title}"`)}
+              onClick={() => onLockedFeature(`Create your account to access "${feature.title}"`)}
               className="bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
               style={{ borderColor: '#ad568440' }}
             >
@@ -958,11 +958,11 @@ function OwnerGuestView({
             <Plus className="w-8 h-8 text-white" />
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">
-            Commencez à publier vos propriétés
+            Start publishing your properties
           </h3>
           <p className="text-gray-600 mb-6">
-            Créez votre compte propriétaire et publiez votre première annonce gratuitement.
-            Atteignez des milliers de colocataires potentiels.
+            Create your owner account and publish your first listing for free.
+            Reach thousands of potential roommates.
           </p>
           <Button
             onClick={() => router.push('/auth?mode=signup&role=owner')}
@@ -971,7 +971,7 @@ function OwnerGuestView({
             style={{ background: '#ad5684' }}
           >
             <Building2 className="w-5 h-5 mr-2" />
-            Créer mon compte propriétaire
+            Create my owner account
           </Button>
         </div>
       </div>
@@ -981,14 +981,14 @@ function OwnerGuestView({
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-gray-900 flex items-center gap-2">
             <TrendingUp className="w-5 h-5" style={{ color: '#ad5684' }} />
-            Évolution des revenus
+            Revenue trends
           </h3>
           <Lock className="w-5 h-5" style={{ color: '#ad5684' }} />
         </div>
         <div className="h-48 rounded-xl flex items-center justify-center border border-dashed" style={{ background: '#ad568410', borderColor: '#ad568440' }}>
           <div className="text-center">
             <Eye className="w-10 h-10 mx-auto mb-2" style={{ color: '#ad568460' }} />
-            <p className="text-sm text-gray-500">Graphiques disponibles après inscription</p>
+            <p className="text-sm text-gray-500">Charts available after registration</p>
           </div>
         </div>
       </div>
@@ -1003,7 +1003,7 @@ export default function GuestPage() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#ff9811', borderTopColor: 'transparent' }} />
-          <p className="text-gray-600">Chargement...</p>
+          <p className="text-gray-600">Loading...</p>
         </div>
       </div>
     }>

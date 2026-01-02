@@ -103,23 +103,23 @@ export default function CoreBasicInfoPage() {
 
   const handleContinue = () => {
     if (!firstName.trim()) {
-      toast.error('First name is required');
+      toast.error(t('coreOnboarding.basicInfo.errors.firstNameRequired'));
       return;
     }
     if (!lastName.trim()) {
-      toast.error('Last name is required');
+      toast.error(t('coreOnboarding.basicInfo.errors.lastNameRequired'));
       return;
     }
     if (!dateOfBirth) {
-      toast.error('Date of birth is required');
+      toast.error(t('coreOnboarding.basicInfo.errors.dateOfBirthRequired'));
       return;
     }
     if (!nationality.trim()) {
-      toast.error('Nationality is required');
+      toast.error(t('coreOnboarding.basicInfo.errors.nationalityRequired'));
       return;
     }
     if (languages.length === 0) {
-      toast.error('At least one language is required');
+      toast.error(t('coreOnboarding.basicInfo.errors.languageRequired'));
       return;
     }
 
@@ -149,16 +149,16 @@ export default function CoreBasicInfoPage() {
       progress={{
         current: 1,
         total: 4,
-        label: 'Step 1 of 4',
-        stepName: 'Basic Info',
+        label: t('coreOnboarding.basicInfo.progress'),
+        stepName: t('coreOnboarding.basicInfo.stepName'),
       }}
       isLoading={isLoading}
       loadingText={common.loading}
     >
       <OnboardingHeading
         role={role}
-        title="Tell us about yourself"
-        description="Let's start with the basics"
+        title={t('coreOnboarding.basicInfo.title')}
+        description={t('coreOnboarding.basicInfo.description')}
       />
 
       <div className="space-y-6">
@@ -166,10 +166,10 @@ export default function CoreBasicInfoPage() {
         <OnboardingInput
           role={role}
           type="text"
-          label="First Name"
+          label={t('coreOnboarding.basicInfo.firstName')}
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
-          placeholder="John"
+          placeholder={t('coreOnboarding.basicInfo.firstNamePlaceholder')}
           icon={User}
           required
         />
@@ -178,10 +178,10 @@ export default function CoreBasicInfoPage() {
         <OnboardingInput
           role={role}
           type="text"
-          label="Last Name"
+          label={t('coreOnboarding.basicInfo.lastName')}
           value={lastName}
           onChange={(e) => setLastName(e.target.value)}
-          placeholder="Doe"
+          placeholder={t('coreOnboarding.basicInfo.lastNamePlaceholder')}
           icon={User}
           required
         />
@@ -190,7 +190,7 @@ export default function CoreBasicInfoPage() {
         <OnboardingInput
           role={role}
           type="date"
-          label="Date of Birth"
+          label={t('coreOnboarding.basicInfo.dateOfBirth')}
           value={dateOfBirth}
           onChange={(e) => setDateOfBirth(e.target.value)}
           max={new Date().toISOString().split('T')[0]}
@@ -202,22 +202,22 @@ export default function CoreBasicInfoPage() {
         <OnboardingInput
           role={role}
           type="text"
-          label="Nationality"
+          label={t('coreOnboarding.basicInfo.nationality')}
           value={nationality}
           onChange={(e) => setNationality(e.target.value)}
-          placeholder="French, American, etc."
+          placeholder={t('coreOnboarding.basicInfo.nationalityPlaceholder')}
           icon={Globe}
           required
         />
 
         {/* Languages */}
         <div>
-          <OnboardingLabel required>Languages Spoken</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.basicInfo.languagesSpoken')}</OnboardingLabel>
           <LanguagesChipInput
             value={languages}
             onChange={setLanguages}
             maxLanguages={10}
-            placeholder="Start typing a language..."
+            placeholder={t('coreOnboarding.basicInfo.languagesPlaceholder')}
           />
         </div>
       </div>

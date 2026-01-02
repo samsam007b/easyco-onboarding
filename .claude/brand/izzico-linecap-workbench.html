@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Line Cap Calibration v2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .hint {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #a5b4fc;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-section {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+        }
+
+        .comparison-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .fredoka-letter {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: white;
+            line-height: 1;
+        }
+
+        .side-by-side {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .compare-box {
+            background: var(--bg-control);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .compare-box h4 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .compare-box.highlight {
+            border: 2px solid var(--accent);
+        }
+
+        .terminal-zoom {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .terminal-item {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .terminal-item span {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.75rem;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 0.5rem;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .info-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            line-height: 1.5;
+        }
+
+        .specs-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-family: monospace;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+
+        .lockup-preview {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+        }
+
+        .lockup-preview .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 3rem;
+            color: white;
+            letter-spacing: -0.02em;
+        }
+
+        .lockup-preview .wordmark .l-z { font-weight: 540; }
+        .lockup-preview .wordmark .l-c { font-weight: 540; }
+        .lockup-preview .wordmark .l-o { font-weight: 540; }
+        .lockup-preview .wordmark .zz-space { margin-right: -0.18em; }
+
+        .warning-box {
+            background: rgba(251, 191, 36, 0.15);
+            border: 1px solid rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: #fbbf24;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div>
+                <h1>Calibration des Terminaisons v2</h1>
+                <div class="hint">
+                    <strong>Objectif :</strong> Reproduire exactement les terminaisons de Fredoka 600 dans l'icone.<br>
+                    <strong>Methode :</strong> Comparer visuellement les extremites de la barre du "i" avec celles de l'icone.
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Comparaison a grande echelle</h3>
+                <div class="side-by-side">
+                    <div class="compare-box">
+                        <h4>Fredoka "i" - Barre (reference)</h4>
+                        <div class="fredoka-letter" style="font-size: 280px;">i</div>
+                    </div>
+                    <div class="compare-box highlight">
+                        <h4>Icone avec terminaisons ajustees</h4>
+                        <div id="icon-large"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Zoom sur les terminaisons (extremites)</h3>
+                <div class="terminal-zoom">
+                    <div class="terminal-item">
+                        <svg viewBox="0 0 40 80" width="80" height="160">
+                            <text x="20" y="65" font-family="Fredoka" font-weight="600" font-size="80" fill="white" text-anchor="middle">i</text>
+                        </svg>
+                        <span>Fredoka (font)</span>
+                    </div>
+                    <div class="terminal-item" id="terminal-icon"></div>
+                    <div class="terminal-item" id="terminal-butt"></div>
+                    <div class="terminal-item" id="terminal-round"></div>
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Buste - Terminaisons de l'arc</h3>
+                <div class="side-by-side">
+                    <div class="compare-box">
+                        <h4>Buste actuel</h4>
+                        <div id="bust-preview"></div>
+                    </div>
+                    <div class="compare-box">
+                        <h4>Reference: arc Fredoka</h4>
+                        <svg viewBox="0 0 100 60" width="200" height="120">
+                            <path d="M 15 50 Q 50 10 85 50" fill="none" stroke="white" stroke-width="8" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Lockup Final</h3>
+                <div class="lockup-preview">
+                    <div id="lockup-icon"></div>
+                    <div class="wordmark">
+                        <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="panel-section">
+                <div class="section-title">Roundness des terminaisons</div>
+
+                <div class="control-row">
+                    <span class="control-label">Arrondi</span>
+                    <input type="range" id="cap-roundness" min="0" max="100" value="100">
+                    <span class="control-value" id="cap-roundness-val">100%</span>
+                </div>
+
+                <div class="info-box">
+                    <strong>0%</strong> = Carre parfait (butt)<br>
+                    <strong>100%</strong> = Demi-cercle parfait (round)<br><br>
+                    <strong>Note:</strong> Fredoka 600 utilise probablement des terminaisons <strong>round</strong> (100%) ou tres proches.
+                </div>
+
+                <div class="preset-grid">
+                    <button class="btn" data-roundness="0">Carre (0%)</button>
+                    <button class="btn" data-roundness="50">Squircle (50%)</button>
+                    <button class="btn" data-roundness="85">~Fredoka (85%)</button>
+                    <button class="btn primary" data-roundness="100">Round (100%)</button>
+                </div>
+
+                <div class="warning-box">
+                    <strong>Analyse Fredoka:</strong> En observant le "i", les terminaisons semblent etre des demi-cercles parfaits (stroke-linecap: round). Testez 100% d'abord.
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Epaisseurs (verrouillees)</div>
+                <div class="info-box">
+                    Cercle: 7.5<br>
+                    Loupe: 6.5<br>
+                    Cle: 6<br>
+                    Buste: 6.5
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Proportions (verrouillees)</div>
+                <div class="info-box">
+                    Cercle: cy=41, r=15<br>
+                    Loupe: len=21, angle=139deg<br>
+                    Cle: len=21, angle=36deg<br>
+                    Buste: gap=2, w=35, h=21
+                </div>
+            </div>
+
+            <div class="panel-section" style="border-bottom: none;">
+                <div class="section-title">Configuration actuelle</div>
+                <div class="specs-box" id="specs-display"></div>
+                <button class="btn primary" id="copy-specs" style="margin-top: 1rem;">Copier les specs</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // LOCKED SPECS - Typography-matched to Fredoka 600
+        const GLOBAL_STROKE = 13; // Fredoka 600 stem ratio = 13%
+        const SPECS = {
+            circle: { cy: 41, r: 15, stroke: GLOBAL_STROKE },
+            loupe: { length: 21, angle: 139, stroke: GLOBAL_STROKE },
+            key: { length: 21, angle: 36, stroke: GLOBAL_STROKE, teeth: 2, teethSize: 7, teethStroke: GLOBAL_STROKE * 0.5 },
+            bust: { gap: 2, width: 35, height: 21, stroke: GLOBAL_STROKE }
+        };
+
+        // LOCKED: stroke-linecap: round (100%)
+        let capRoundness = 100;
+
+        function createSVG(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+            return el;
+        }
+
+        function clearElement(el) {
+            while (el.firstChild) {
+                el.removeChild(el.firstChild);
+            }
+        }
+
+        function createStyledLine(x1, y1, x2, y2, strokeWidth, roundness, color) {
+            color = color || '#ffffff';
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const len = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            const hw = strokeWidth / 2;
+
+            if (roundness >= 95) {
+                return createSVG('line', {
+                    x1: x1, y1: y1, x2: x2, y2: y2,
+                    stroke: color,
+                    'stroke-width': strokeWidth,
+                    'stroke-linecap': 'round'
+                });
+            } else if (roundness <= 5) {
+                return createSVG('line', {
+                    x1: x1, y1: y1, x2: x2, y2: y2,
+                    stroke: color,
+                    'stroke-width': strokeWidth,
+                    'stroke-linecap': 'butt'
+                });
+            } else {
+                const radius = hw * (roundness / 100);
+                const g = createSVG('g', {});
+                const rect = createSVG('rect', {
+                    x: -len / 2,
+                    y: -hw,
+                    width: len,
+                    height: strokeWidth,
+                    rx: radius,
+                    ry: radius,
+                    fill: color
+                });
+                const cx = (x1 + x2) / 2;
+                const cy = (y1 + y2) / 2;
+                g.setAttribute('transform', 'translate(' + cx + ', ' + cy + ') rotate(' + angle + ')');
+                g.appendChild(rect);
+                return g;
+            }
+        }
+
+        function createStyledBust(cx, bustTop, bustWidth, bustHeight, strokeWidth, roundness, color) {
+            color = color || '#ffffff';
+            const g = createSVG('g', {});
+            const leftX = cx - bustWidth / 2;
+            const rightX = cx + bustWidth / 2;
+            const endY = bustTop + bustHeight;
+
+            // Use round for Fredoka-style (>=50%), butt for square
+            var linecap = roundness >= 50 ? 'round' : 'butt';
+            g.appendChild(createSVG('path', {
+                d: 'M ' + leftX + ' ' + endY + ' Q ' + cx + ' ' + bustTop + ' ' + rightX + ' ' + endY,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': strokeWidth,
+                'stroke-linecap': linecap
+            }));
+
+            return g;
+        }
+
+        function createIcon(size, color) {
+            size = size || 200;
+            color = color || '#ffffff';
+
+            const svg = createSVG('svg', {
+                viewBox: '0 0 100 100',
+                width: size,
+                height: size,
+                fill: 'none'
+            });
+
+            const cx = 50;
+            const cy = SPECS.circle.cy;
+            const r = SPECS.circle.r;
+
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: r,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': SPECS.circle.stroke
+            }));
+
+            const loupeAngleRad = (SPECS.loupe.angle * Math.PI) / 180;
+            const loupeStartX = cx + r * Math.cos(loupeAngleRad);
+            const loupeStartY = cy + r * Math.sin(loupeAngleRad);
+            const loupeEndX = loupeStartX + SPECS.loupe.length * Math.cos(loupeAngleRad);
+            const loupeEndY = loupeStartY + SPECS.loupe.length * Math.sin(loupeAngleRad);
+
+            svg.appendChild(createStyledLine(
+                loupeStartX, loupeStartY, loupeEndX, loupeEndY,
+                SPECS.loupe.stroke, capRoundness, color
+            ));
+
+            const keyAngleRad = (SPECS.key.angle * Math.PI) / 180;
+            const keyStartX = cx + r * Math.cos(keyAngleRad);
+            const keyStartY = cy + r * Math.sin(keyAngleRad);
+            const keyEndX = keyStartX + SPECS.key.length * Math.cos(keyAngleRad);
+            const keyEndY = keyStartY + SPECS.key.length * Math.sin(keyAngleRad);
+
+            svg.appendChild(createStyledLine(
+                keyStartX, keyStartY, keyEndX, keyEndY,
+                SPECS.key.stroke, capRoundness, color
+            ));
+
+            const teethAngle = keyAngleRad + Math.PI / 2;
+            for (var i = 0; i < SPECS.key.teeth; i++) {
+                var t = 0.5 + (i * 0.3);
+                var toothX = keyStartX + (keyEndX - keyStartX) * t;
+                var toothY = keyStartY + (keyEndY - keyStartY) * t;
+                var toothEndX = toothX + SPECS.key.teethSize * Math.cos(teethAngle);
+                var toothEndY = toothY + SPECS.key.teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createStyledLine(
+                    toothX, toothY, toothEndX, toothEndY,
+                    SPECS.key.teethStroke, capRoundness, color
+                ));
+            }
+
+            var bustTop = cy + r + SPECS.bust.gap;
+            svg.appendChild(createStyledBust(
+                cx, bustTop, SPECS.bust.width, SPECS.bust.height,
+                SPECS.bust.stroke, capRoundness, color
+            ));
+
+            return svg;
+        }
+
+        function createTerminalDemo(roundness, width, height) {
+            width = width || 80;
+            height = height || 160;
+            var svg = createSVG('svg', { viewBox: '0 0 40 80', width: width, height: height });
+            svg.appendChild(createStyledLine(20, 15, 20, 65, 8, roundness, '#ffffff'));
+            return svg;
+        }
+
+        function render() {
+            var iconLarge = document.getElementById('icon-large');
+            clearElement(iconLarge);
+            iconLarge.appendChild(createIcon(250, '#ffffff'));
+
+            var terminalIcon = document.getElementById('terminal-icon');
+            clearElement(terminalIcon);
+            terminalIcon.appendChild(createTerminalDemo(capRoundness));
+            var labelIcon = document.createElement('span');
+            labelIcon.textContent = 'Icon (' + capRoundness + '%)';
+            terminalIcon.appendChild(labelIcon);
+
+            var terminalButt = document.getElementById('terminal-butt');
+            clearElement(terminalButt);
+            terminalButt.appendChild(createTerminalDemo(0));
+            var labelButt = document.createElement('span');
+            labelButt.textContent = 'Carre (butt)';
+            terminalButt.appendChild(labelButt);
+
+            var terminalRound = document.getElementById('terminal-round');
+            clearElement(terminalRound);
+            terminalRound.appendChild(createTerminalDemo(100));
+            var labelRound = document.createElement('span');
+            labelRound.textContent = 'Rond (round)';
+            terminalRound.appendChild(labelRound);
+
+            var bustPreview = document.getElementById('bust-preview');
+            clearElement(bustPreview);
+            var bustSvg = createSVG('svg', { viewBox: '0 0 100 60', width: 200, height: 120 });
+            bustSvg.appendChild(createStyledBust(50, 10, 70, 40, 8, capRoundness, '#ffffff'));
+            bustPreview.appendChild(bustSvg);
+
+            var lockup = document.getElementById('lockup-icon');
+            clearElement(lockup);
+            lockup.appendChild(createIcon(80, '#ffffff'));
+
+            updateSpecs();
+        }
+
+        function updateSpecs() {
+            var display = document.getElementById('specs-display');
+            var linecapValue;
+            if (capRoundness >= 95) {
+                linecapValue = 'round';
+            } else if (capRoundness <= 5) {
+                linecapValue = 'butt';
+            } else {
+                linecapValue = 'custom (rx: ' + (capRoundness / 100).toFixed(2) + ' * stroke/2)';
+            }
+
+            display.textContent = '/* TERMINAISONS */\n' +
+                'stroke-linecap: ' + linecapValue + '\n' +
+                'cap-roundness: ' + capRoundness + '%\n\n' +
+                '/* STROKES VERROUILLES */\n' +
+                'circle: 7.5\n' +
+                'loupe: 6.5\n' +
+                'key: 6\n' +
+                'bust: 6.5\n\n' +
+                '/* PROPORTIONS VERROUILLEES */\n' +
+                'circle: cy=41, r=15\n' +
+                'loupe: len=21, angle=139deg\n' +
+                'key: len=21, angle=36deg\n' +
+                'bust: gap=2, w=35, h=21';
+        }
+
+        document.getElementById('cap-roundness').addEventListener('input', function(e) {
+            capRoundness = parseInt(e.target.value);
+            document.getElementById('cap-roundness-val').textContent = capRoundness + '%';
+            render();
+        });
+
+        document.querySelectorAll('[data-roundness]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                capRoundness = parseInt(btn.dataset.roundness);
+                document.getElementById('cap-roundness').value = capRoundness;
+                document.getElementById('cap-roundness-val').textContent = capRoundness + '%';
+                render();
+            });
+        });
+
+        document.getElementById('copy-specs').addEventListener('click', function() {
+            var specs = document.getElementById('specs-display').textContent;
+            navigator.clipboard.writeText(specs);
+            alert('Specs copiees !');
+        });
+
+        render();
+    </script>
+</body>
+</html>

@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco – Branding Workbench Pro</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mauve: #9c5698;
+            --orange: #FF5722;
+            --jaune: #FFB10B;
+            --dark: #1a1a2e;
+            --darker: #12121f;
+            --light: #f8f9fa;
+            --grid-color: rgba(156, 86, 152, 0.4);
+            --measure-color: #FF5722;
+            --bound-color: rgba(255, 87, 34, 0.8);
+            --spacing-line: #FFB10B;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 380px;
+            background: rgba(0,0,0,0.5);
+            padding: 20px;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            overflow-y: auto;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        .sidebar h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, var(--mauve), var(--orange), var(--jaune));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sidebar .subtitle {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.05);
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            background: var(--mauve);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Section headers */
+        .section-header {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: rgba(255,255,255,0.3);
+            margin: 16px 0 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Control group */
+        .control-group {
+            margin-bottom: 14px;
+        }
+
+        .control-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 6px;
+        }
+
+        .control-group .value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            color: var(--orange);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--orange);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Letter controls grid */
+        .letter-controls {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .letter-control {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .letter-control.active {
+            border-color: var(--orange);
+            background: rgba(255, 87, 34, 0.1);
+        }
+
+        .letter-control .char {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--light);
+            margin-bottom: 4px;
+        }
+
+        .letter-control .char.z1 { color: var(--mauve); }
+        .letter-control .char.z2 { color: var(--orange); }
+
+        .letter-control input[type="range"] {
+            width: 100%;
+            height: 3px;
+            margin: 4px 0;
+        }
+
+        .letter-control input[type="range"]::-webkit-slider-thumb {
+            width: 10px;
+            height: 10px;
+        }
+
+        .letter-control .spacing-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.5);
+        }
+
+        /* Presets */
+        .presets {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
+            margin-bottom: 16px;
+        }
+
+        .preset-btn {
+            padding: 8px 6px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 6px;
+            color: var(--light);
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--orange);
+        }
+
+        .preset-btn.active {
+            background: var(--orange);
+            border-color: var(--orange);
+        }
+
+        /* Toggle switches */
+        .toggles {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 10px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+        }
+
+        .toggle-item span {
+            font-size: 0.7rem;
+        }
+
+        .toggle {
+            width: 36px;
+            height: 18px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 9px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle.active {
+            background: var(--mauve);
+        }
+
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 14px;
+            height: 14px;
+            background: white;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.3s;
+        }
+
+        .toggle.active::after {
+            transform: translateX(18px);
+        }
+
+        /* Background & color options */
+        .options-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .option-circle {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .option-circle:hover, .option-circle.active {
+            border-color: white;
+            transform: scale(1.1);
+        }
+
+        .option-circle.dark { background: var(--dark); }
+        .option-circle.light { background: var(--light); }
+        .option-circle.mauve { background: var(--mauve); }
+        .option-circle.gradient {
+            background: linear-gradient(135deg, var(--mauve), var(--orange), var(--jaune));
+        }
+        .option-circle.white { background: #fff; border: 1px solid rgba(0,0,0,0.1); }
+        .option-circle.black { background: #1a1a2e; }
+        .option-circle.orange { background: var(--orange); }
+
+        /* Unit toggle */
+        .unit-toggle {
+            display: inline-flex;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-left: 8px;
+        }
+
+        .unit-btn {
+            padding: 2px 8px;
+            background: transparent;
+            border: none;
+            color: rgba(255,255,255,0.4);
+            font-size: 0.65rem;
+            cursor: pointer;
+        }
+
+        .unit-btn.active {
+            background: var(--mauve);
+            color: white;
+        }
+
+        /* Action buttons */
+        .actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .action-btn.primary {
+            background: linear-gradient(90deg, var(--mauve), var(--orange));
+            color: white;
+        }
+
+        .action-btn.secondary {
+            background: rgba(255,255,255,0.1);
+            color: var(--light);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .action-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* Main canvas area */
+        .canvas-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            background: var(--dark);
+        }
+
+        .canvas-area.light-bg { background: var(--light); }
+        .canvas-area.mauve-bg { background: var(--mauve); }
+        .canvas-area.gradient-bg {
+            background: linear-gradient(135deg, var(--mauve) 0%, var(--orange) 50%, var(--jaune) 100%);
+        }
+
+        /* Logo container */
+        .logo-container {
+            position: relative;
+            padding: 100px 150px;
+        }
+
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 120px;
+            line-height: 1;
+            color: var(--light);
+            white-space: nowrap;
+            position: relative;
+            z-index: 2;
+            display: flex;
+        }
+
+        .wordmark .letter {
+            display: inline-block;
+            position: relative;
+        }
+
+        .canvas-area.light-bg .wordmark,
+        .canvas-area.gradient-bg .wordmark {
+            color: var(--dark);
+        }
+
+        .canvas-area.mauve-bg .wordmark {
+            color: white;
+        }
+
+        .wordmark.gradient-text .letter {
+            background: linear-gradient(90deg, var(--mauve) 0%, var(--orange) 50%, var(--jaune) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Overlays */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        .overlay.visible {
+            display: block;
+        }
+
+        /* Grid lines */
+        .grid-overlay {
+            z-index: 1;
+        }
+
+        .grid-line {
+            position: absolute;
+            background: var(--grid-color);
+        }
+
+        .grid-line.vertical {
+            width: 1px;
+            top: 0;
+            bottom: 0;
+        }
+
+        .grid-line.horizontal {
+            height: 1px;
+            left: 0;
+            right: 0;
+        }
+
+        .grid-line.major {
+            background: rgba(156, 86, 152, 0.6);
+        }
+
+        /* Letter bounds */
+        .bounds-overlay {
+            z-index: 3;
+        }
+
+        .letter-bound {
+            position: absolute;
+            border: 2px solid var(--bound-color);
+            background: rgba(255, 87, 34, 0.08);
+        }
+
+        .letter-bound::before {
+            content: attr(data-letter);
+            position: absolute;
+            top: -22px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--bound-color);
+            font-weight: 600;
+            background: var(--dark);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .canvas-area.light-bg .letter-bound::before {
+            background: var(--light);
+        }
+
+        /* Measurements */
+        .measurements-overlay {
+            z-index: 4;
+        }
+
+        .measurement {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .measurement.horizontal {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .measurement.horizontal .line {
+            position: absolute;
+            height: 1px;
+            background: var(--spacing-line);
+            left: 0;
+            right: 0;
+            top: 50%;
+        }
+
+        .measurement.horizontal .cap {
+            position: absolute;
+            width: 1px;
+            height: 12px;
+            background: var(--spacing-line);
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .measurement.horizontal .cap.left { left: 0; }
+        .measurement.horizontal .cap.right { right: 0; }
+
+        .measurement .value {
+            background: var(--dark);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 9px;
+            color: var(--spacing-line);
+            position: relative;
+            z-index: 1;
+            white-space: nowrap;
+        }
+
+        .canvas-area.light-bg .measurement .value {
+            background: rgba(255,255,255,0.95);
+        }
+
+        .measurement.negative .value {
+            color: #ff4757;
+            background: rgba(255, 71, 87, 0.15);
+        }
+
+        .measurement.total {
+            border: 1px dashed var(--mauve);
+            border-left: none;
+            border-right: none;
+        }
+
+        .measurement.total .value {
+            background: var(--mauve);
+            color: white;
+            font-size: 10px;
+            padding: 3px 8px;
+        }
+
+        /* Vertical measurements */
+        .measurement.vertical {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .measurement.vertical .line {
+            position: absolute;
+            width: 1px;
+            background: var(--spacing-line);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+        }
+
+        .measurement.vertical .cap {
+            position: absolute;
+            height: 1px;
+            width: 12px;
+            background: var(--spacing-line);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .measurement.vertical .cap.top { top: 0; }
+        .measurement.vertical .cap.bottom { bottom: 0; }
+
+        /* Detailed spacing lines */
+        .spacing-lines-overlay {
+            z-index: 5;
+        }
+
+        .spacing-line-marker {
+            position: absolute;
+            width: 2px;
+            background: linear-gradient(180deg, transparent, var(--jaune), transparent);
+            opacity: 0.8;
+        }
+
+        /* Specs panel */
+        .specs-panel {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            min-width: 220px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .canvas-area.light-bg .specs-panel {
+            background: rgba(255,255,255,0.95);
+            color: var(--dark);
+        }
+
+        .specs-panel h3 {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--orange);
+            margin-bottom: 10px;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            padding: 3px 0;
+        }
+
+        .spec-row .label {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .canvas-area.light-bg .spec-row .label {
+            color: rgba(0,0,0,0.4);
+        }
+
+        .spec-row .val {
+            font-weight: 500;
+        }
+
+        .spec-divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 8px 0;
+        }
+
+        .canvas-area.light-bg .spec-divider {
+            background: rgba(0,0,0,0.1);
+        }
+
+        /* Detailed measurements table */
+        .measurements-table {
+            margin-top: 10px;
+        }
+
+        .measurements-table .row {
+            display: grid;
+            grid-template-columns: 40px 1fr 1fr;
+            gap: 8px;
+            font-size: 9px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .measurements-table .row.header {
+            color: rgba(255,255,255,0.4);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 4px;
+        }
+
+        .measurements-table .row .pair {
+            color: var(--mauve);
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--mauve);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <h1>IzzIco Workbench</h1>
+        <p class="subtitle">Contrôle précis de chaque lettre</p>
+
+        <div class="tabs">
+            <button class="tab active" data-tab="letters">Lettres</button>
+            <button class="tab" data-tab="global">Global</button>
+            <button class="tab" data-tab="display">Affichage</button>
+        </div>
+
+        <!-- TAB: Letters -->
+        <div class="tab-content active" id="tab-letters">
+            <div class="section-header">Espacement individuel</div>
+            <div class="letter-controls">
+                <div class="letter-control" data-letter="i1">
+                    <div class="char">i</div>
+                    <input type="range" min="-20" max="20" value="0" data-spacing="i1">
+                    <div class="spacing-value" id="val-i1">0</div>
+                </div>
+                <div class="letter-control active" data-letter="z1">
+                    <div class="char z1">z</div>
+                    <input type="range" min="-30" max="10" value="-15" data-spacing="z1">
+                    <div class="spacing-value" id="val-z1">-15</div>
+                </div>
+                <div class="letter-control" data-letter="z2">
+                    <div class="char z2">z</div>
+                    <input type="range" min="-20" max="20" value="0" data-spacing="z2">
+                    <div class="spacing-value" id="val-z2">0</div>
+                </div>
+                <div class="letter-control" data-letter="i2">
+                    <div class="char">i</div>
+                    <input type="range" min="-20" max="20" value="0" data-spacing="i2">
+                    <div class="spacing-value" id="val-i2">0</div>
+                </div>
+                <div class="letter-control" data-letter="c">
+                    <div class="char">c</div>
+                    <input type="range" min="-20" max="20" value="0" data-spacing="c">
+                    <div class="spacing-value" id="val-c">0</div>
+                </div>
+                <div class="letter-control" data-letter="o">
+                    <div class="char">o</div>
+                    <input type="range" min="-20" max="20" value="0" data-spacing="o">
+                    <div class="spacing-value" id="val-o">0</div>
+                </div>
+            </div>
+
+            <div class="section-header">Presets</div>
+            <div class="presets">
+                <button class="preset-btn" data-preset="standard">Standard</button>
+                <button class="preset-btn" data-preset="tight">Serré</button>
+                <button class="preset-btn" data-preset="fused">Fusionné</button>
+                <button class="preset-btn" data-preset="spaced">Espacé</button>
+            </div>
+
+            <div class="section-header">Reset</div>
+            <button class="preset-btn" style="width: 100%;" id="resetAll">Réinitialiser tout</button>
+        </div>
+
+        <!-- TAB: Global -->
+        <div class="tab-content" id="tab-global">
+            <div class="section-header">Typographie</div>
+
+            <div class="control-group">
+                <label>Taille <span class="value" id="sizeValue">120px</span></label>
+                <input type="range" id="fontSize" min="48" max="250" value="120">
+            </div>
+
+            <div class="control-group">
+                <label>Graisse <span class="value" id="weightValue">600</span></label>
+                <input type="range" id="fontWeight" min="300" max="700" step="100" value="600">
+            </div>
+
+            <div class="control-group">
+                <label>Espacement global <span class="value" id="globalValue">0em</span></label>
+                <input type="range" id="globalSpacing" min="-10" max="30" value="0">
+            </div>
+
+            <div class="section-header">Apparence</div>
+
+            <div class="control-group">
+                <label>Fond</label>
+                <div class="options-row">
+                    <div class="option-circle dark active" data-bg="dark"></div>
+                    <div class="option-circle light" data-bg="light"></div>
+                    <div class="option-circle mauve" data-bg="mauve"></div>
+                    <div class="option-circle gradient" data-bg="gradient"></div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label>Couleur texte</label>
+                <div class="options-row">
+                    <div class="option-circle white active" data-color="white"></div>
+                    <div class="option-circle black" data-color="black"></div>
+                    <div class="option-circle mauve" data-color="mauve"></div>
+                    <div class="option-circle orange" data-color="orange"></div>
+                    <div class="option-circle gradient" data-color="gradient"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TAB: Display -->
+        <div class="tab-content" id="tab-display">
+            <div class="section-header">
+                Unité de mesure
+                <div class="unit-toggle">
+                    <button class="unit-btn active" data-unit="px">px</button>
+                    <button class="unit-btn" data-unit="mm">mm</button>
+                    <button class="unit-btn" data-unit="em">em</button>
+                </div>
+            </div>
+
+            <div class="section-header">Calques</div>
+            <div class="toggles">
+                <div class="toggle-item">
+                    <span>Grille</span>
+                    <div class="toggle active" id="toggleGrid"></div>
+                </div>
+                <div class="toggle-item">
+                    <span>Limites</span>
+                    <div class="toggle active" id="toggleBounds"></div>
+                </div>
+                <div class="toggle-item">
+                    <span>Mesures H</span>
+                    <div class="toggle active" id="toggleMeasuresH"></div>
+                </div>
+                <div class="toggle-item">
+                    <span>Mesures V</span>
+                    <div class="toggle" id="toggleMeasuresV"></div>
+                </div>
+                <div class="toggle-item">
+                    <span>Lignes esp.</span>
+                    <div class="toggle active" id="toggleSpacingLines"></div>
+                </div>
+                <div class="toggle-item">
+                    <span>Specs</span>
+                    <div class="toggle active" id="toggleSpecs"></div>
+                </div>
+            </div>
+
+            <div class="section-header">Précision</div>
+            <div class="control-group">
+                <label>Décimales <span class="value" id="precisionValue">1</span></label>
+                <input type="range" id="precision" min="0" max="3" value="1">
+            </div>
+        </div>
+
+        <div class="actions">
+            <button class="action-btn primary" id="exportSVG">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+                SVG
+            </button>
+            <button class="action-btn secondary" id="copySpecs">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                Specs
+            </button>
+            <button class="action-btn secondary" id="copyCSS">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 18l6-6-6-6"/>
+                    <path d="M8 6l-6 6 6 6"/>
+                </svg>
+                CSS
+            </button>
+        </div>
+    </aside>
+
+    <main class="canvas-area">
+        <div class="logo-container" id="logoContainer">
+            <div class="overlay grid-overlay visible" id="gridOverlay"></div>
+            <div class="overlay bounds-overlay visible" id="boundsOverlay"></div>
+            <div class="overlay measurements-overlay visible" id="measurementsOverlay"></div>
+            <div class="overlay spacing-lines-overlay visible" id="spacingLinesOverlay"></div>
+
+            <div class="wordmark" id="wordmark">
+                <span class="letter" data-letter="i1">i</span>
+                <span class="letter" data-letter="z1">z</span>
+                <span class="letter" data-letter="z2">z</span>
+                <span class="letter" data-letter="i2">i</span>
+                <span class="letter" data-letter="c">c</span>
+                <span class="letter" data-letter="o">o</span>
+            </div>
+        </div>
+
+        <div class="specs-panel" id="specsPanel">
+            <h3>Spécifications</h3>
+            <div class="spec-row">
+                <span class="label">Font</span>
+                <span class="val">Fredoka</span>
+            </div>
+            <div class="spec-row">
+                <span class="label">Weight</span>
+                <span class="val" id="specWeight">600</span>
+            </div>
+            <div class="spec-row">
+                <span class="label">Size</span>
+                <span class="val" id="specSize">120px</span>
+            </div>
+            <div class="spec-divider"></div>
+            <div class="spec-row">
+                <span class="label">Largeur totale</span>
+                <span class="val" id="specTotal">—</span>
+            </div>
+            <div class="spec-row">
+                <span class="label">Hauteur</span>
+                <span class="val" id="specHeight">—</span>
+            </div>
+            <div class="spec-divider"></div>
+            <h3 style="margin-top: 8px;">Espacements</h3>
+            <div class="measurements-table" id="measurementsTable">
+                <div class="row header">
+                    <span>Paire</span>
+                    <span>px</span>
+                    <span>em</span>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="toast" id="toast">Copié !</div>
+
+    <script>
+        // State
+        const state = {
+            fontSize: 120,
+            fontWeight: 600,
+            globalSpacing: 0,
+            letterSpacing: {
+                i1: 0,
+                z1: -15,
+                z2: 0,
+                i2: 0,
+                c: 0,
+                o: 0
+            },
+            unit: 'px',
+            precision: 1,
+            dpi: 96 // standard screen DPI
+        };
+
+        // Presets
+        const presets = {
+            standard: { i1: 0, z1: -15, z2: 0, i2: 0, c: 0, o: 0, global: 0 },
+            tight: { i1: -3, z1: -20, z2: -3, i2: -3, c: -3, o: 0, global: 0 },
+            fused: { i1: -5, z1: -25, z2: -5, i2: -5, c: -5, o: 0, global: 0 },
+            spaced: { i1: 5, z1: -10, z2: 5, i2: 5, c: 5, o: 0, global: 5 }
+        };
+
+        // Elements
+        const wordmark = document.getElementById('wordmark');
+        const logoContainer = document.getElementById('logoContainer');
+        const canvasArea = document.querySelector('.canvas-area');
+
+        // Convert px to other units
+        function convertUnit(px) {
+            const precision = state.precision;
+            switch(state.unit) {
+                case 'mm':
+                    return (px * 25.4 / state.dpi).toFixed(precision) + 'mm';
+                case 'em':
+                    return (px / state.fontSize).toFixed(precision + 2) + 'em';
+                default:
+                    return px.toFixed(precision) + 'px';
+            }
+        }
+
+        // Update wordmark styles
+        function updateWordmark() {
+            wordmark.style.fontSize = state.fontSize + 'px';
+            wordmark.style.fontWeight = state.fontWeight;
+            wordmark.style.letterSpacing = (state.globalSpacing / 100) + 'em';
+
+            // Apply individual letter spacing
+            document.querySelectorAll('.wordmark .letter').forEach(letter => {
+                const key = letter.dataset.letter;
+                const spacing = state.letterSpacing[key] || 0;
+                letter.style.letterSpacing = (spacing / 100) + 'em';
+            });
+
+            // Update displays
+            document.getElementById('sizeValue').textContent = state.fontSize + 'px';
+            document.getElementById('weightValue').textContent = state.fontWeight;
+            document.getElementById('globalValue').textContent = (state.globalSpacing / 100).toFixed(2) + 'em';
+
+            document.getElementById('specWeight').textContent = state.fontWeight;
+            document.getElementById('specSize').textContent = state.fontSize + 'px';
+
+            // Update letter control values
+            Object.keys(state.letterSpacing).forEach(key => {
+                const valEl = document.getElementById('val-' + key);
+                if (valEl) valEl.textContent = state.letterSpacing[key];
+            });
+
+            requestAnimationFrame(updateOverlays);
+        }
+
+        // Get letter bounds
+        function getLetterBounds() {
+            const letters = wordmark.querySelectorAll('.letter');
+            const containerRect = logoContainer.getBoundingClientRect();
+            const bounds = [];
+
+            letters.forEach(letter => {
+                const rect = letter.getBoundingClientRect();
+                bounds.push({
+                    key: letter.dataset.letter,
+                    char: letter.textContent,
+                    left: rect.left - containerRect.left,
+                    top: rect.top - containerRect.top,
+                    width: rect.width,
+                    height: rect.height,
+                    right: rect.right - containerRect.left,
+                    bottom: rect.bottom - containerRect.top
+                });
+            });
+
+            return bounds;
+        }
+
+        // Update all overlays
+        function updateOverlays() {
+            const bounds = getLetterBounds();
+            updateGridOverlay(bounds);
+            updateBoundsOverlay(bounds);
+            updateMeasurementsOverlay(bounds);
+            updateSpacingLinesOverlay(bounds);
+            updateSpecsPanel(bounds);
+        }
+
+        // Grid overlay
+        function updateGridOverlay(bounds) {
+            const overlay = document.getElementById('gridOverlay');
+            overlay.innerHTML = '';
+
+            if (bounds.length === 0) return;
+
+            const first = bounds[0];
+
+            // Vertical lines at each letter edge
+            bounds.forEach((b, i) => {
+                // Left edge
+                const left = document.createElement('div');
+                left.className = 'grid-line vertical' + (i === 0 ? ' major' : '');
+                left.style.left = b.left + 'px';
+                overlay.appendChild(left);
+
+                // Right edge
+                const right = document.createElement('div');
+                right.className = 'grid-line vertical' + (i === bounds.length - 1 ? ' major' : '');
+                right.style.left = b.right + 'px';
+                overlay.appendChild(right);
+            });
+
+            // Horizontal lines
+            const hLines = [
+                { pos: first.top, major: true },
+                { pos: first.top + first.height * 0.25, major: false },
+                { pos: first.top + first.height * 0.5, major: false },
+                { pos: first.top + first.height * 0.75, major: false },
+                { pos: first.bottom, major: true }
+            ];
+
+            hLines.forEach(line => {
+                const el = document.createElement('div');
+                el.className = 'grid-line horizontal' + (line.major ? ' major' : '');
+                el.style.top = line.pos + 'px';
+                overlay.appendChild(el);
+            });
+        }
+
+        // Bounds overlay
+        function updateBoundsOverlay(bounds) {
+            const overlay = document.getElementById('boundsOverlay');
+            overlay.innerHTML = '';
+
+            bounds.forEach(b => {
+                const div = document.createElement('div');
+                div.className = 'letter-bound';
+                div.setAttribute('data-letter', b.char);
+                div.style.left = b.left + 'px';
+                div.style.top = b.top + 'px';
+                div.style.width = b.width + 'px';
+                div.style.height = b.height + 'px';
+                overlay.appendChild(div);
+            });
+        }
+
+        // Measurements overlay
+        function updateMeasurementsOverlay(bounds) {
+            const overlay = document.getElementById('measurementsOverlay');
+            overlay.innerHTML = '';
+
+            if (bounds.length === 0) return;
+
+            const showH = document.getElementById('toggleMeasuresH').classList.contains('active');
+            const showV = document.getElementById('toggleMeasuresV').classList.contains('active');
+
+            // Horizontal measurements between letters
+            if (showH) {
+                for (let i = 0; i < bounds.length - 1; i++) {
+                    const curr = bounds[i];
+                    const next = bounds[i + 1];
+                    const gap = next.left - curr.right;
+
+                    const div = document.createElement('div');
+                    div.className = 'measurement horizontal' + (gap < 0 ? ' negative' : '');
+
+                    const startX = gap >= 0 ? curr.right : next.left;
+                    const width = Math.abs(gap);
+
+                    div.style.left = startX + 'px';
+                    div.style.top = (curr.bottom + 25 + (i % 2) * 20) + 'px';
+                    div.style.width = Math.max(width, 30) + 'px';
+                    div.style.height = '16px';
+
+                    div.innerHTML = `
+                        <div class="line"></div>
+                        <div class="cap left"></div>
+                        <div class="cap right"></div>
+                        <span class="value">${gap >= 0 ? '' : '−'}${convertUnit(Math.abs(gap))}</span>
+                    `;
+                    overlay.appendChild(div);
+                }
+
+                // Total width
+                const first = bounds[0];
+                const last = bounds[bounds.length - 1];
+                const total = last.right - first.left;
+
+                const totalDiv = document.createElement('div');
+                totalDiv.className = 'measurement horizontal total';
+                totalDiv.style.left = first.left + 'px';
+                totalDiv.style.top = (first.top - 35) + 'px';
+                totalDiv.style.width = total + 'px';
+                totalDiv.style.height = '20px';
+                totalDiv.innerHTML = `
+                    <div class="line"></div>
+                    <div class="cap left"></div>
+                    <div class="cap right"></div>
+                    <span class="value">Total: ${convertUnit(total)}</span>
+                `;
+                overlay.appendChild(totalDiv);
+            }
+
+            // Vertical measurements
+            if (showV && bounds.length > 0) {
+                const first = bounds[0];
+                const height = first.height;
+
+                const vDiv = document.createElement('div');
+                vDiv.className = 'measurement vertical';
+                vDiv.style.left = (first.left - 40) + 'px';
+                vDiv.style.top = first.top + 'px';
+                vDiv.style.width = '20px';
+                vDiv.style.height = height + 'px';
+                vDiv.innerHTML = `
+                    <div class="line"></div>
+                    <div class="cap top"></div>
+                    <div class="cap bottom"></div>
+                    <span class="value">${convertUnit(height)}</span>
+                `;
+                overlay.appendChild(vDiv);
+            }
+        }
+
+        // Spacing lines overlay
+        function updateSpacingLinesOverlay(bounds) {
+            const overlay = document.getElementById('spacingLinesOverlay');
+            overlay.innerHTML = '';
+
+            if (bounds.length === 0) return;
+
+            const first = bounds[0];
+
+            // Draw vertical lines at spacing points between letters
+            for (let i = 0; i < bounds.length - 1; i++) {
+                const curr = bounds[i];
+                const next = bounds[i + 1];
+
+                // Line at gap midpoint
+                const midX = (curr.right + next.left) / 2;
+
+                const line = document.createElement('div');
+                line.className = 'spacing-line-marker';
+                line.style.left = midX + 'px';
+                line.style.top = (first.top - 20) + 'px';
+                line.style.height = (first.height + 40) + 'px';
+                overlay.appendChild(line);
+            }
+        }
+
+        // Update specs panel
+        function updateSpecsPanel(bounds) {
+            if (bounds.length === 0) return;
+
+            const first = bounds[0];
+            const last = bounds[bounds.length - 1];
+            const total = last.right - first.left;
+
+            document.getElementById('specTotal').textContent = convertUnit(total);
+            document.getElementById('specHeight').textContent = convertUnit(first.height);
+
+            // Update measurements table
+            const table = document.getElementById('measurementsTable');
+            // Keep header
+            const header = table.querySelector('.row.header');
+            table.innerHTML = '';
+            table.appendChild(header);
+
+            for (let i = 0; i < bounds.length - 1; i++) {
+                const curr = bounds[i];
+                const next = bounds[i + 1];
+                const gap = next.left - curr.right;
+                const emValue = gap / state.fontSize;
+
+                const row = document.createElement('div');
+                row.className = 'row';
+                row.innerHTML = `
+                    <span class="pair">${curr.char}→${next.char}</span>
+                    <span>${gap.toFixed(state.precision)}px</span>
+                    <span>${emValue.toFixed(state.precision + 2)}em</span>
+                `;
+                table.appendChild(row);
+            }
+        }
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                this.classList.add('active');
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Letter spacing sliders
+        document.querySelectorAll('[data-spacing]').forEach(slider => {
+            slider.addEventListener('input', function() {
+                const key = this.dataset.spacing;
+                state.letterSpacing[key] = parseInt(this.value);
+                updateWordmark();
+            });
+        });
+
+        // Global sliders
+        document.getElementById('fontSize').addEventListener('input', function() {
+            state.fontSize = parseInt(this.value);
+            updateWordmark();
+        });
+
+        document.getElementById('fontWeight').addEventListener('input', function() {
+            state.fontWeight = parseInt(this.value);
+            updateWordmark();
+        });
+
+        document.getElementById('globalSpacing').addEventListener('input', function() {
+            state.globalSpacing = parseInt(this.value);
+            updateWordmark();
+        });
+
+        // Presets
+        document.querySelectorAll('.preset-btn[data-preset]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const preset = presets[this.dataset.preset];
+                if (!preset) return;
+
+                Object.keys(preset).forEach(key => {
+                    if (key === 'global') {
+                        state.globalSpacing = preset.global;
+                        document.getElementById('globalSpacing').value = preset.global;
+                    } else {
+                        state.letterSpacing[key] = preset[key];
+                        const slider = document.querySelector(`[data-spacing="${key}"]`);
+                        if (slider) slider.value = preset[key];
+                    }
+                });
+
+                document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                updateWordmark();
+            });
+        });
+
+        // Reset
+        document.getElementById('resetAll').addEventListener('click', function() {
+            const preset = presets.standard;
+            Object.keys(preset).forEach(key => {
+                if (key === 'global') {
+                    state.globalSpacing = preset.global;
+                    document.getElementById('globalSpacing').value = preset.global;
+                } else {
+                    state.letterSpacing[key] = preset[key];
+                    const slider = document.querySelector(`[data-spacing="${key}"]`);
+                    if (slider) slider.value = preset[key];
+                }
+            });
+            state.fontSize = 120;
+            state.fontWeight = 600;
+            document.getElementById('fontSize').value = 120;
+            document.getElementById('fontWeight').value = 600;
+            updateWordmark();
+        });
+
+        // Toggle switches
+        document.querySelectorAll('.toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+
+                const id = this.id;
+                if (id === 'toggleGrid') {
+                    document.getElementById('gridOverlay').classList.toggle('visible', this.classList.contains('active'));
+                } else if (id === 'toggleBounds') {
+                    document.getElementById('boundsOverlay').classList.toggle('visible', this.classList.contains('active'));
+                } else if (id === 'toggleMeasuresH' || id === 'toggleMeasuresV') {
+                    updateOverlays();
+                } else if (id === 'toggleSpacingLines') {
+                    document.getElementById('spacingLinesOverlay').classList.toggle('visible', this.classList.contains('active'));
+                } else if (id === 'toggleSpecs') {
+                    document.getElementById('specsPanel').style.display = this.classList.contains('active') ? 'block' : 'none';
+                }
+            });
+        });
+
+        // Unit toggle
+        document.querySelectorAll('.unit-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.unit-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                state.unit = this.dataset.unit;
+                updateOverlays();
+            });
+        });
+
+        // Precision
+        document.getElementById('precision').addEventListener('input', function() {
+            state.precision = parseInt(this.value);
+            document.getElementById('precisionValue').textContent = this.value;
+            updateOverlays();
+        });
+
+        // Background options
+        document.querySelectorAll('.option-circle[data-bg]').forEach(opt => {
+            opt.addEventListener('click', function() {
+                const bg = this.dataset.bg;
+                canvasArea.className = 'canvas-area';
+                if (bg !== 'dark') canvasArea.classList.add(bg + '-bg');
+
+                document.querySelectorAll('.option-circle[data-bg]').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Color options
+        document.querySelectorAll('.option-circle[data-color]').forEach(opt => {
+            opt.addEventListener('click', function() {
+                const color = this.dataset.color;
+                wordmark.classList.remove('gradient-text');
+
+                const colors = {
+                    white: '#f8f9fa',
+                    black: '#1a1a2e',
+                    mauve: '#9c5698',
+                    orange: '#FF5722'
+                };
+
+                if (color === 'gradient') {
+                    wordmark.classList.add('gradient-text');
+                } else {
+                    wordmark.style.color = colors[color] || colors.white;
+                }
+
+                document.querySelectorAll('.option-circle[data-color]').forEach(o => o.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Toast
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2000);
+        }
+
+        // Copy specs
+        document.getElementById('copySpecs').addEventListener('click', function() {
+            const bounds = getLetterBounds();
+            const first = bounds[0];
+            const last = bounds[bounds.length - 1];
+            const total = last.right - first.left;
+
+            let spacingDetails = '';
+            for (let i = 0; i < bounds.length - 1; i++) {
+                const curr = bounds[i];
+                const next = bounds[i + 1];
+                const gap = next.left - curr.right;
+                spacingDetails += `  ${curr.char}→${next.char}: ${gap.toFixed(1)}px (${(gap / state.fontSize).toFixed(3)}em)\n`;
+            }
+
+            const specs = `IzzIco Logo Specifications
+═══════════════════════════════════════
+
+TYPOGRAPHY
+  Font: Fredoka
+  Weight: ${state.fontWeight}
+  Size: ${state.fontSize}px
+
+DIMENSIONS
+  Total Width: ${total.toFixed(1)}px
+  Height: ${first.height.toFixed(1)}px
+
+LETTER SPACING (per letter)
+  i₁: ${(state.letterSpacing.i1 / 100).toFixed(2)}em
+  z₁: ${(state.letterSpacing.z1 / 100).toFixed(2)}em (ZZ overlap)
+  z₂: ${(state.letterSpacing.z2 / 100).toFixed(2)}em
+  i₂: ${(state.letterSpacing.i2 / 100).toFixed(2)}em
+  c:  ${(state.letterSpacing.c / 100).toFixed(2)}em
+  o:  ${(state.letterSpacing.o / 100).toFixed(2)}em
+  Global: ${(state.globalSpacing / 100).toFixed(2)}em
+
+MEASURED GAPS
+${spacingDetails}
+COLORS
+  Mauve: #9c5698
+  Orange: #FF5722
+  Jaune: #FFB10B
+  Gradient: linear-gradient(90deg, #9c5698, #FF5722, #FFB10B)`;
+
+            navigator.clipboard.writeText(specs).then(() => showToast('Spécifications copiées !'));
+        });
+
+        // Copy CSS
+        document.getElementById('copyCSS').addEventListener('click', function() {
+            const css = `.izzico-wordmark {
+  font-family: 'Fredoka', sans-serif;
+  font-weight: ${state.fontWeight};
+  font-size: ${state.fontSize}px;
+  letter-spacing: ${(state.globalSpacing / 100).toFixed(2)}em;
+  display: flex;
+}
+
+.izzico-wordmark .letter-i1 { letter-spacing: ${(state.letterSpacing.i1 / 100).toFixed(2)}em; }
+.izzico-wordmark .letter-z1 { letter-spacing: ${(state.letterSpacing.z1 / 100).toFixed(2)}em; } /* ZZ overlap */
+.izzico-wordmark .letter-z2 { letter-spacing: ${(state.letterSpacing.z2 / 100).toFixed(2)}em; }
+.izzico-wordmark .letter-i2 { letter-spacing: ${(state.letterSpacing.i2 / 100).toFixed(2)}em; }
+.izzico-wordmark .letter-c  { letter-spacing: ${(state.letterSpacing.c / 100).toFixed(2)}em; }
+.izzico-wordmark .letter-o  { letter-spacing: ${(state.letterSpacing.o / 100).toFixed(2)}em; }
+
+/* Gradient variant */
+.izzico-wordmark.gradient .letter {
+  background: linear-gradient(90deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* HTML Structure:
+<div class="izzico-wordmark">
+  <span class="letter letter-i1">i</span>
+  <span class="letter letter-z1">z</span>
+  <span class="letter letter-z2">z</span>
+  <span class="letter letter-i2">i</span>
+  <span class="letter letter-c">c</span>
+  <span class="letter letter-o">o</span>
+</div>
+*/`;
+
+            navigator.clipboard.writeText(css).then(() => showToast('CSS copié !'));
+        });
+
+        // Export SVG
+        document.getElementById('exportSVG').addEventListener('click', function() {
+            const bounds = getLetterBounds();
+            if (bounds.length === 0) return;
+
+            const first = bounds[0];
+            const last = bounds[bounds.length - 1];
+            const width = last.right - first.left + 40;
+            const height = first.height + 40;
+
+            const svg = `<?xml version="1.0" encoding="UTF-8"?>
+<svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="brandGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#9c5698"/>
+      <stop offset="50%" style="stop-color:#FF5722"/>
+      <stop offset="100%" style="stop-color:#FFB10B"/>
+    </linearGradient>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@${state.fontWeight}');
+      .wordmark { font-family: 'Fredoka', sans-serif; font-weight: ${state.fontWeight}; font-size: ${state.fontSize}px; }
+    </style>
+  </defs>
+  <!-- Letter spacing specs:
+       i1: ${(state.letterSpacing.i1 / 100).toFixed(2)}em
+       z1: ${(state.letterSpacing.z1 / 100).toFixed(2)}em (ZZ overlap)
+       z2: ${(state.letterSpacing.z2 / 100).toFixed(2)}em
+       i2: ${(state.letterSpacing.i2 / 100).toFixed(2)}em
+       c:  ${(state.letterSpacing.c / 100).toFixed(2)}em
+       o:  ${(state.letterSpacing.o / 100).toFixed(2)}em
+       Global: ${(state.globalSpacing / 100).toFixed(2)}em
+  -->
+  <text x="20" y="${height - 20}" class="wordmark" fill="currentColor">
+    <tspan style="letter-spacing:${(state.letterSpacing.i1 / 100).toFixed(2)}em">i</tspan><tspan style="letter-spacing:${(state.letterSpacing.z1 / 100).toFixed(2)}em">z</tspan><tspan style="letter-spacing:${(state.letterSpacing.z2 / 100).toFixed(2)}em">z</tspan><tspan style="letter-spacing:${(state.letterSpacing.i2 / 100).toFixed(2)}em">i</tspan><tspan style="letter-spacing:${(state.letterSpacing.c / 100).toFixed(2)}em">c</tspan><tspan>o</tspan>
+  </text>
+</svg>`;
+
+            const blob = new Blob([svg], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'izzico-logo.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('SVG exporté !');
+        });
+
+        // Initialize
+        window.addEventListener('load', function() {
+            document.fonts.ready.then(() => {
+                updateWordmark();
+            });
+        });
+
+        window.addEventListener('resize', updateOverlays);
+    </script>
+</body>
+</html>

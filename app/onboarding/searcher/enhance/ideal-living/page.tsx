@@ -6,6 +6,7 @@ import { Home, Users, Building2, Calendar, Volume2 } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import IconBadge from '@/components/IconBadge';
 import {
   EnhanceProfileLayout,
@@ -18,6 +19,7 @@ import {
 
 export default function OnboardingIdealLivingPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [colivingSize, setColivingSize] = useState('');
   const [genderMix, setGenderMix] = useState('');
@@ -85,32 +87,32 @@ export default function OnboardingIdealLivingPage() {
   };
 
   const colivingSizes = [
-    { value: 'small', label: '2-3 People', icon: Users, variant: 'purple' as const, description: 'Intimate & Quiet' },
-    { value: 'medium', label: '4-6 People', icon: Users, variant: 'blue' as const, description: 'Perfect Balance' },
-    { value: 'large', label: '7-10 People', icon: Users, variant: 'green' as const, description: 'Vibrant Community' },
-    { value: 'xlarge', label: '10+ People', icon: Building2, variant: 'orange' as const, description: 'Large Community' },
+    { value: 'small', labelKey: 'small', icon: Users, variant: 'purple' as const, descKey: 'smallDesc' },
+    { value: 'medium', labelKey: 'medium', icon: Users, variant: 'blue' as const, descKey: 'mediumDesc' },
+    { value: 'large', labelKey: 'large', icon: Users, variant: 'green' as const, descKey: 'largeDesc' },
+    { value: 'xlarge', labelKey: 'xlarge', icon: Building2, variant: 'orange' as const, descKey: 'xlargeDesc' },
   ];
 
   const genderMixOptions = [
-    { value: 'male-only', label: 'Male Only' },
-    { value: 'female-only', label: 'Female Only' },
-    { value: 'mixed', label: 'Mixed Gender' },
-    { value: 'no-preference', label: 'No Preference' },
+    { value: 'male-only', labelKey: 'maleOnly' },
+    { value: 'female-only', labelKey: 'femaleOnly' },
+    { value: 'mixed', labelKey: 'mixed' },
+    { value: 'no-preference', labelKey: 'noPreference' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your preferences..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Ideal Living Situation"
-        description="Tell us about your ideal coliving environment"
+        title={t('enhanceSearcher.idealLiving.title')}
+        description={t('enhanceSearcher.idealLiving.description')}
         icon={<Home className="w-8 h-8 text-orange-600" />}
       />
 
@@ -119,9 +121,9 @@ export default function OnboardingIdealLivingPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Home className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Preferred Community Size</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.idealLiving.communitySize.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">How many people would you like to live with?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.idealLiving.communitySize.subtitle')}</p>
           <div className="grid grid-cols-2 gap-3">
             {colivingSizes.map((size) => (
               <button
@@ -140,9 +142,9 @@ export default function OnboardingIdealLivingPage() {
                   <div className={`font-semibold text-sm mb-1 ${
                     colivingSize === size.value ? 'text-orange-600' : 'text-gray-900'
                   }`}>
-                    {size.label}
+                    {t(`enhanceSearcher.idealLiving.communitySize.${size.labelKey}`)}
                   </div>
-                  <div className="text-xs text-gray-500">{size.description}</div>
+                  <div className="text-xs text-gray-500">{t(`enhanceSearcher.idealLiving.communitySize.${size.descKey}`)}</div>
                 </div>
               </button>
             ))}
@@ -153,9 +155,9 @@ export default function OnboardingIdealLivingPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Users className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Gender Mix Preference</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.idealLiving.genderMix.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">What gender mix do you prefer?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.idealLiving.genderMix.subtitle')}</p>
           <div className="grid grid-cols-2 gap-3">
             {genderMixOptions.map((option) => (
               <EnhanceProfileSelectionCard
@@ -164,7 +166,7 @@ export default function OnboardingIdealLivingPage() {
                 selected={genderMix === option.value}
                 onClick={() => setGenderMix(option.value)}
               >
-                {option.label}
+                {t(`enhanceSearcher.idealLiving.genderMix.${option.labelKey}`)}
               </EnhanceProfileSelectionCard>
             ))}
           </div>
@@ -174,15 +176,15 @@ export default function OnboardingIdealLivingPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Calendar className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Preferred Age Range</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.idealLiving.ageRange.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">What age range are you comfortable with?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.idealLiving.ageRange.subtitle')}</p>
 
           <div className="space-y-4">
             {/* Min Age */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Minimum Age: <span className="text-orange-600 font-bold">{minAge}</span>
+                {t('enhanceSearcher.idealLiving.ageRange.minAge')}: <span className="text-orange-600 font-bold">{minAge}</span>
               </label>
               <input
                 type="range"
@@ -197,7 +199,7 @@ export default function OnboardingIdealLivingPage() {
             {/* Max Age */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Maximum Age: <span className="text-orange-600 font-bold">{maxAge}</span>
+                {t('enhanceSearcher.idealLiving.ageRange.maxAge')}: <span className="text-orange-600 font-bold">{maxAge}</span>
               </label>
               <input
                 type="range"
@@ -215,9 +217,9 @@ export default function OnboardingIdealLivingPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Building2 className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Shared Spaces Importance</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.idealLiving.sharedSpaces.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">How important are shared common areas to you?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.idealLiving.sharedSpaces.subtitle')}</p>
 
           <div className="space-y-3">
             <input
@@ -229,9 +231,9 @@ export default function OnboardingIdealLivingPage() {
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
             />
             <div className="flex justify-between items-center">
-              <span className="text-sm text-gray-500">Not Important</span>
+              <span className="text-sm text-gray-500">{t('enhanceSearcher.idealLiving.sharedSpaces.notImportant')}</span>
               <span className="text-2xl font-bold text-orange-600">{sharedSpaceImportance}</span>
-              <span className="text-sm text-gray-500">Very Important</span>
+              <span className="text-sm text-gray-500">{t('enhanceSearcher.idealLiving.sharedSpaces.veryImportant')}</span>
             </div>
           </div>
         </EnhanceProfileSection>
@@ -245,8 +247,8 @@ export default function OnboardingIdealLivingPage() {
                   <Volume2 className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">Quiet Hours Preference</span>
-                  <span className="text-sm text-gray-500">Do you prefer established quiet hours?</span>
+                  <span className="font-medium text-gray-700 block">{t('enhanceSearcher.idealLiving.quietHours.title')}</span>
+                  <span className="text-sm text-gray-500">{t('enhanceSearcher.idealLiving.quietHours.description')}</span>
                 </div>
               </div>
               <button
@@ -268,7 +270,7 @@ export default function OnboardingIdealLivingPage() {
         {/* Info box */}
         <EnhanceProfileInfoBox role="searcher">
           <p className="text-sm text-gray-600">
-            💡 These preferences help us match you with properties and communities that fit your ideal living situation.
+            💡 {t('enhanceSearcher.idealLiving.infoBox')}
           </p>
         </EnhanceProfileInfoBox>
       </div>
@@ -279,13 +281,13 @@ export default function OnboardingIdealLivingPage() {
           onClick={handleSave}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

@@ -6,6 +6,7 @@ import { Sparkles, ThumbsUp, AlertTriangle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -16,6 +17,7 @@ import {
 
 export default function OnboardingEnhanceValuesPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [coreValues, setCoreValues] = useState<string[]>([]);
   const [importantQualities, setImportantQualities] = useState<string[]>([]);
@@ -110,15 +112,15 @@ export default function OnboardingEnhanceValuesPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your values..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Your Values & Preferences"
-        description="Help us understand what matters most to you"
+        title={t('enhanceSearcher.values.title')}
+        description={t('enhanceSearcher.values.description')}
         icon={<Sparkles className="w-8 h-8 text-orange-600" />}
       />
 
@@ -127,9 +129,9 @@ export default function OnboardingEnhanceValuesPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Sparkles className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Core Values</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.values.coreValues.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">Select what matters most to you (choose up to 5):</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.values.coreValues.subtitle')}</p>
           <div className="flex flex-wrap gap-2">
             {valueOptions.map((value) => (
               <EnhanceProfileTag
@@ -139,20 +141,20 @@ export default function OnboardingEnhanceValuesPage() {
                 onClick={() => handleToggleValue(value)}
                 disabled={!coreValues.includes(value) && coreValues.length >= 5}
               >
-                {value}
+                {t(`enhanceSearcher.values.coreValues.options.${value.toLowerCase()}`)}
               </EnhanceProfileTag>
             ))}
           </div>
-          <p className="text-xs text-gray-500 mt-3">{coreValues.length}/5 selected</p>
+          <p className="text-xs text-gray-500 mt-3">{coreValues.length}/5 {t('enhanceSearcher.values.selected')}</p>
         </EnhanceProfileSection>
 
         {/* Important Qualities */}
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <ThumbsUp className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Important Qualities in a Roommate</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.values.qualities.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">What qualities do you value in a roommate?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.values.qualities.subtitle')}</p>
           <div className="flex flex-wrap gap-2">
             {qualityOptions.map((quality) => (
               <EnhanceProfileTag
@@ -161,12 +163,12 @@ export default function OnboardingEnhanceValuesPage() {
                 selected={importantQualities.includes(quality)}
                 onClick={() => handleToggleQuality(quality)}
               >
-                {quality}
+                {t(`enhanceSearcher.values.qualities.options.${quality.toLowerCase()}`)}
               </EnhanceProfileTag>
             ))}
           </div>
           {importantQualities.length > 0 && (
-            <p className="text-xs text-gray-500 mt-3">{importantQualities.length} selected</p>
+            <p className="text-xs text-gray-500 mt-3">{importantQualities.length} {t('enhanceSearcher.values.selected')}</p>
           )}
         </EnhanceProfileSection>
 
@@ -175,11 +177,11 @@ export default function OnboardingEnhanceValuesPage() {
           <div className="bg-white p-6 rounded-2xl border-2 border-orange-200">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="w-5 h-5 text-orange-600" />
-              <h2 className="text-lg font-semibold text-orange-600">Deal Breakers</h2>
+              <h2 className="text-lg font-semibold text-orange-600">{t('enhanceSearcher.values.dealBreakers.title')}</h2>
             </div>
-            <p className="text-sm text-gray-600 mb-4">Select behaviors or situations you absolutely cannot tolerate:</p>
+            <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.values.dealBreakers.subtitle')}</p>
             <div className="flex flex-wrap gap-2">
-              {dealBreakerOptions.map((dealBreaker) => (
+              {dealBreakerOptions.map((dealBreaker, index) => (
                 <button
                   key={dealBreaker}
                   onClick={() => handleToggleDealBreaker(dealBreaker)}
@@ -189,12 +191,12 @@ export default function OnboardingEnhanceValuesPage() {
                       : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
-                  {dealBreaker}
+                  {t(`enhanceSearcher.values.dealBreakers.options.option${index + 1}`)}
                 </button>
               ))}
             </div>
             {dealBreakers.length > 0 && (
-              <p className="text-xs text-gray-500 mt-3">{dealBreakers.length} selected</p>
+              <p className="text-xs text-gray-500 mt-3">{dealBreakers.length} {t('enhanceSearcher.values.selected')}</p>
             )}
           </div>
         </EnhanceProfileSection>
@@ -206,13 +208,13 @@ export default function OnboardingEnhanceValuesPage() {
           onClick={handleNext}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

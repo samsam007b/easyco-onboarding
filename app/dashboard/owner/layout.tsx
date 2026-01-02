@@ -150,7 +150,7 @@ export default function OwnerLayout({ children }: { children: React.ReactNode })
           <div className="flex justify-center mb-6">
             <LoadingHouse size={80} />
           </div>
-          <p className="text-gray-600 font-medium">Chargement...</p>
+          <p className="text-gray-600 font-medium">Loading...</p>
         </div>
       </div>
     );

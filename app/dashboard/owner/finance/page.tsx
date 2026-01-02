@@ -1,5 +1,10 @@
 'use client';
 
+/**
+ * Owner Finance Analytics Page - V2 Data-Rich Design
+ * Inspired by Resident Finances with Owner 5-color palette
+ */
+
 import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -11,6 +16,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import {
   TrendingUp,
+  TrendingDown,
   BarChart3,
   RefreshCw,
   Download,
@@ -23,15 +29,24 @@ import {
   FileText,
   FileSpreadsheet,
   ChevronDown,
+  Wallet,
+  PieChart as PieChartIcon,
+  Calendar,
+  Users,
+  ArrowUpRight,
+  Sparkles,
 } from 'lucide-react';
 import {
-  BarChart,
-  Bar,
+  AreaChart,
+  Area,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  PieChart,
+  Pie,
+  Cell,
   Legend,
 } from 'recharts';
 import { cn } from '@/lib/utils';
@@ -43,11 +58,46 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { OwnerPageHeader, OwnerKPICard, OwnerKPIGrid } from '@/components/owner';
 import { exportFinanceToCSV, exportFinanceToPDF, type FinanceExportData } from '@/lib/services/export-service';
-import { PaymentTable, MonthlyComparison, FinanceAlerts, DocumentsModal, type PaymentRecord, type FinanceAlertData } from '@/components/owner/finances';
+import { PaymentTable, FinanceAlerts, DocumentsModal, type PaymentRecord, type FinanceAlertData } from '@/components/owner/finances';
 import { financesService, type FinancesOverview, type RentPaymentRecord } from '@/lib/services/finances-service';
-import { ownerGradient, ownerGradientLight, ownerPageBackground, semanticColors } from '@/lib/constants/owner-theme';
+import {
+  ownerGradient,
+  ownerGradientLight,
+  ownerPageBackground,
+  ownerPalette,
+  ownerColors,
+  semanticColors
+} from '@/lib/constants/owner-theme';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 },
+  },
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: { type: 'spring' as const, stiffness: 300, damping: 24 },
+  },
+};
+
+// Property colors for pie chart (using owner palette)
+const PROPERTY_COLORS = [
+  ownerColors.primary,
+  ownerColors.secondary,
+  ownerColors.tertiary,
+  ownerColors.quaternary,
+  ownerColors.accent,
+  '#6B7280', // gray for overflow
+];
 
 interface PropertyFinance {
   id: string;
@@ -55,10 +105,101 @@ interface PropertyFinance {
   city: string;
   monthlyRent: number;
   status: string;
-  mainImage?: string;
   collected: number;
   pending: number;
   overdue: number;
+}
+
+// Mini Sparkline Component
+function MiniSparkline({ data, color }: { data: number[]; color: string }) {
+  if (!data || data.length < 2) return null;
+
+  const max = Math.max(...data);
+  const min = Math.min(...data);
+  const range = max - min || 1;
+  const width = 60;
+  const height = 24;
+  const padding = 2;
+
+  const points = data.map((value, i) => {
+    const x = padding + (i / (data.length - 1)) * (width - padding * 2);
+    const y = height - padding - ((value - min) / range) * (height - padding * 2);
+    return `${x},${y}`;
+  }).join(' ');
+
+  return (
+    <svg width={width} height={height} className="opacity-60">
+      <polyline
+        fill="none"
+        stroke={color}
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        points={points}
+      />
+    </svg>
+  );
+}
+
+// Progress Bar Component
+function ProgressBar({
+  value,
+  max,
+  color,
+  bgColor,
+  showLabel = true
+}: {
+  value: number;
+  max: number;
+  color: string;
+  bgColor: string;
+  showLabel?: boolean;
+}) {
+  const percent = max > 0 ? Math.min(100, (value / max) * 100) : 0;
+
+  return (
+    <div className="flex items-center gap-2 mt-2">
+      <div className="flex-1 h-2 rounded-full overflow-hidden" style={{ backgroundColor: bgColor }}>
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: `${percent}%` }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
+          className="h-full rounded-full"
+          style={{ backgroundColor: color }}
+        />
+      </div>
+      {showLabel && (
+        <span className="text-xs font-medium" style={{ color }}>{Math.round(percent)}%</span>
+      )}
+    </div>
+  );
+}
+
+// Custom Tooltip for Area Chart
+function CustomAreaTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-white/95 backdrop-blur-md p-3 rounded-xl border border-gray-200 shadow-lg">
+      <p className="text-sm font-semibold text-gray-900 mb-1">{label}</p>
+      {payload.map((entry: any, i: number) => (
+        <p key={i} className="text-sm" style={{ color: entry.color }}>
+          {entry.name}: {entry.value?.toLocaleString()}€
+        </p>
+      ))}
+    </div>
+  );
+}
+
+// Custom Tooltip for Pie Chart
+function CustomPieTooltip({ active, payload }: any) {
+  if (!active || !payload?.length) return null;
+  const data = payload[0];
+  return (
+    <div className="bg-white/95 backdrop-blur-md p-3 rounded-xl border border-gray-200 shadow-lg">
+      <p className="text-sm font-semibold text-gray-900">{data.name}</p>
+      <p className="text-sm text-gray-600">{data.value?.toLocaleString()}€</p>
+    </div>
+  );
 }
 
 export default function FinanceAnalyticsPage() {
@@ -95,7 +236,6 @@ export default function FinanceAnalyticsPage() {
       setActiveRole('owner');
       setCurrentUserId(user.id);
 
-      // Fetch owner's profile name
       const { data: profile } = await supabase
         .from('profiles')
         .select('full_name')
@@ -106,7 +246,6 @@ export default function FinanceAnalyticsPage() {
         setOwnerName(profile.full_name);
       }
 
-      // Fetch all data in parallel
       const [overviewData, paymentsData, comparisonData] = await Promise.all([
         financesService.getFinancesOverview(user.id),
         financesService.getRecentPayments(user.id, 20),
@@ -117,7 +256,7 @@ export default function FinanceAnalyticsPage() {
       setRecentPayments(paymentsData);
       setComparison(comparisonData);
 
-      // Also load property breakdown
+      // Load property breakdown
       const { data: propertiesData } = await supabase
         .from('properties')
         .select('*')
@@ -149,7 +288,6 @@ export default function FinanceAnalyticsPage() {
             city: property.city || '',
             monthlyRent: property.monthly_rent || 0,
             status: property.status,
-            mainImage: property.main_image,
             collected,
             pending,
             overdue,
@@ -160,7 +298,7 @@ export default function FinanceAnalyticsPage() {
       }
     } catch (error) {
       console.error('Error loading finance data:', error);
-      toast.error('Erreur lors du chargement des donnees');
+      toast.error('Erreur lors du chargement des données');
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -203,6 +341,20 @@ export default function FinanceAnalyticsPage() {
     }));
   }, [overview?.alerts]);
 
+  // Data for property pie chart
+  const propertyChartData = useMemo(() => {
+    return properties.slice(0, 5).map((p) => ({
+      name: p.title.length > 15 ? p.title.substring(0, 15) + '...' : p.title,
+      value: p.collected + p.pending,
+    }));
+  }, [properties]);
+
+  // Trend sparkline data
+  const trendSparkline = useMemo(() => {
+    if (!overview?.trend) return [];
+    return overview.trend.map(t => t.collected);
+  }, [overview?.trend]);
+
   // Handle payment actions
   const handleMarkPaid = async (paymentId: string) => {
     try {
@@ -213,11 +365,11 @@ export default function FinanceAnalyticsPage() {
 
       if (error) throw error;
 
-      toast.success('Paiement marque comme paye');
+      toast.success('Paiement marqué comme payé');
       await loadData(true);
     } catch (error) {
       console.error('Error marking payment as paid:', error);
-      toast.error('Erreur lors de la mise a jour');
+      toast.error('Erreur lors de la mise à jour');
     }
   };
 
@@ -234,10 +386,10 @@ export default function FinanceAnalyticsPage() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Echec de l\'envoi');
+        throw new Error(result.error || 'Échec de l\'envoi');
       }
 
-      toast.success(`Relance envoyee a ${result.sentTo}`, { id: 'reminder' });
+      toast.success(`Relance envoyée à ${result.sentTo}`, { id: 'reminder' });
     } catch (error) {
       console.error('Error sending reminder:', error);
       toast.error(
@@ -254,7 +406,7 @@ export default function FinanceAnalyticsPage() {
 
   const handleExportCSV = useCallback(() => {
     if (!overview || recentPayments.length === 0) {
-      toast.error('Aucune donnee a exporter');
+      toast.error('Aucune donnée à exporter');
       return;
     }
 
@@ -277,12 +429,12 @@ export default function FinanceAnalyticsPage() {
     };
 
     exportFinanceToCSV(exportData);
-    toast.success('Export CSV telecharge');
+    toast.success('Export CSV téléchargé');
   }, [overview, recentPayments]);
 
   const handleExportPDF = useCallback(() => {
     if (!overview || recentPayments.length === 0) {
-      toast.error('Aucune donnee a exporter');
+      toast.error('Aucune donnée à exporter');
       return;
     }
 
@@ -305,7 +457,7 @@ export default function FinanceAnalyticsPage() {
     };
 
     exportFinanceToPDF(exportData);
-    toast.success('Preparation du PDF pour impression...');
+    toast.success('Préparation du PDF pour impression...');
   }, [overview, recentPayments]);
 
   if (isLoading) {
@@ -333,204 +485,492 @@ export default function FinanceAnalyticsPage() {
     );
   }
 
-  const formatCurrency = (amount: number) => `${amount.toLocaleString()}e`;
+  const totalExpected = (overview?.paymentSummary.paid || 0) +
+                        (overview?.paymentSummary.pending || 0) +
+                        (overview?.paymentSummary.overdue || 0);
 
   return (
     <div className="min-h-screen" style={{ background: ownerPageBackground }}>
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
-        {/* Header */}
-        <OwnerPageHeader
-          icon={BarChart3}
-          title={t?.header?.title?.[language] || 'Paiements & Analytics'}
-          subtitle={t?.header?.subtitle?.[language] || 'Suivi detaille des loyers et revenus'}
-          breadcrumb={{ label: 'Finances', href: '/dashboard/owner/finances' }}
-          currentPage="Analytics"
-          actions={
-            <div className="flex items-center gap-2">
+      <motion.main
+        variants={containerVariants}
+        initial="hidden"
+        animate="visible"
+        className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8"
+      >
+        {/* Header with individual colors */}
+        <motion.div variants={itemVariants} className="flex items-center justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <motion.div
+              whileHover={{ scale: 1.1, rotate: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+              style={{
+                backgroundColor: ownerPalette.primary.main,
+                boxShadow: `0 8px 24px ${ownerPalette.primary.shadow}`,
+              }}
+            >
+              <Wallet className="w-6 h-6 text-white" />
+            </motion.div>
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Finances</h1>
+              <p className="text-sm text-gray-500">
+                {properties.length} propriétés • {overview?.kpis.monthlyRevenue?.toLocaleString() || 0}€/mois
+              </p>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
+                onClick={() => loadData(true)}
                 variant="outline"
                 size="sm"
-                onClick={() => loadData(true)}
                 disabled={isRefreshing}
-                className="rounded-full"
+                className="h-9 text-sm rounded-xl border-2 font-medium shadow-sm"
+                style={{
+                  borderColor: ownerPalette.secondary.border,
+                  color: ownerPalette.secondary.main,
+                }}
               >
                 <RefreshCw className={cn('w-4 h-4 mr-2', isRefreshing && 'animate-spin')} />
                 Actualiser
               </Button>
+            </motion.div>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
+                onClick={() => setShowDocumentsModal(true)}
                 variant="outline"
                 size="sm"
-                onClick={() => setShowDocumentsModal(true)}
-                className="rounded-full"
+                className="h-9 text-sm rounded-xl border-2 font-medium shadow-sm"
+                style={{
+                  borderColor: ownerPalette.tertiary.border,
+                  color: ownerPalette.tertiary.main,
+                }}
               >
                 <FileText className="w-4 h-4 mr-2" />
                 Documents
               </Button>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="sm" className="rounded-full">
+            </motion.div>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button
+                    size="sm"
+                    className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
+                    style={{
+                      background: ownerGradient,
+                      boxShadow: `0 4px 14px ${ownerPalette.primary.shadow}`,
+                    }}
+                  >
                     <Download className="w-4 h-4 mr-2" />
-                    Export
-                    <ChevronDown className="w-3 h-3 ml-1" />
+                    Exporter
+                    <Sparkles className="w-3.5 h-3.5 ml-1.5 text-white/80" />
                   </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={handleExportCSV} className="cursor-pointer">
-                    <FileSpreadsheet className="w-4 h-4 mr-2 text-green-600" />
-                    Export CSV (Excel)
-                  </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleExportPDF} className="cursor-pointer">
-                    <FileText className="w-4 h-4 mr-2 text-red-600" />
-                    Export PDF
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-          }
-        />
-
-        {/* KPIs */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mt-6"
-        >
-          <OwnerKPIGrid columns={4}>
-            <OwnerKPICard
-              title="Encaisse"
-              value={formatCurrency(overview?.paymentSummary.paid || 0)}
-              icon={CheckCircle2}
-              variant="success"
-              subtext={`${overview?.paymentSummary.paidCount || 0} paiements`}
-            />
-            <OwnerKPICard
-              title="En attente"
-              value={formatCurrency(overview?.paymentSummary.pending || 0)}
-              icon={Clock}
-              variant={overview?.paymentSummary.pending ? 'warning' : 'success'}
-              badge={
-                overview?.paymentSummary.pendingCount
-                  ? { label: `${overview.paymentSummary.pendingCount} paiement(s)`, variant: 'warning' }
-                  : undefined
-              }
-            />
-            <OwnerKPICard
-              title="Impayes"
-              value={formatCurrency(overview?.paymentSummary.overdue || 0)}
-              icon={AlertTriangle}
-              variant={(overview?.paymentSummary.overdue || 0) > 0 ? 'danger' : 'success'}
-              badge={
-                overview?.paymentSummary.overdueCount
-                  ? { label: `${overview.paymentSummary.overdueCount} en retard`, variant: 'danger' }
-                  : undefined
-              }
-            />
-            <OwnerKPICard
-              title="Taux d'encaissement"
-              value={`${overview?.kpis.collectionRate || 100}%`}
-              icon={Percent}
-              variant={
-                (overview?.kpis.collectionRate || 100) >= 90
-                  ? 'success'
-                  : (overview?.kpis.collectionRate || 100) >= 70
-                  ? 'warning'
-                  : 'danger'
-              }
-              subtext="sur les 3 derniers mois"
-            />
-          </OwnerKPIGrid>
+                </motion.div>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="rounded-xl">
+                <DropdownMenuItem onClick={handleExportCSV} className="cursor-pointer rounded-lg">
+                  <FileSpreadsheet className="w-4 h-4 mr-2 text-green-600" />
+                  Export CSV (Excel)
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={handleExportPDF} className="cursor-pointer rounded-lg">
+                  <FileText className="w-4 h-4 mr-2 text-red-600" />
+                  Export PDF
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
         </motion.div>
 
-        {/* Chart & Comparison Row */}
-        <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Chart */}
+        {/* Colorful KPI Cards - Each with different color */}
+        <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {/* Revenue Card - Primary Color */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="md:col-span-2"
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: ownerPalette.primary.bg,
+              boxShadow: `0 8px 24px ${ownerPalette.primary.shadow}`,
+            }}
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6">
-              <div className="flex items-center justify-between mb-6">
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-                    style={{ background: semanticColors.success.gradient }}
-                  >
-                    <TrendingUp className="w-5 h-5 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="font-bold text-gray-900">Evolution des revenus</h2>
-                    <p className="text-sm text-gray-500">6 derniers mois</p>
-                  </div>
-                </div>
+            <div
+              className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ backgroundColor: ownerPalette.primary.main }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium" style={{ color: ownerPalette.primary.text }}>
+                Revenus totaux
+              </span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ backgroundColor: ownerPalette.primary.main }}
+              >
+                <TrendingUp className="w-4 h-4 text-white" />
               </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">
+              €{(overview?.kpis.monthlyRevenue || 0).toLocaleString()}
+            </p>
+            <div className="flex items-center gap-2 mt-2">
+              <MiniSparkline data={trendSparkline} color={ownerPalette.primary.main} />
+              <span className="text-xs font-medium" style={{ color: ownerPalette.primary.main }}>
+                Ce mois
+              </span>
+            </div>
+          </motion.div>
 
-              {overview?.trend && overview.trend.length > 0 ? (
-                <ResponsiveContainer width="100%" height={280}>
-                  <BarChart data={overview.trend} barGap={8}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                    <XAxis dataKey="monthLabel" stroke="#999" style={{ fontSize: '12px' }} />
-                    <YAxis stroke="#999" style={{ fontSize: '12px' }} tickFormatter={(value) => `${value}e`} />
-                    <Tooltip
-                      contentStyle={{
-                        backgroundColor: 'rgba(255,255,255,0.95)',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid #e5e7eb',
-                        borderRadius: '12px',
-                        padding: '12px',
-                      }}
-                      formatter={(value: number | undefined) => [`${(value ?? 0).toLocaleString()}e`, '']}
-                    />
-                    <Legend />
-                    <Bar dataKey="collected" name="Encaisse" fill="#10B981" radius={[8, 8, 0, 0]} />
-                    <Bar dataKey="pending" name="En attente" fill="#F59E0B" radius={[8, 8, 0, 0]} />
-                    <Bar dataKey="overdue" name="Impaye" fill="#EF4444" radius={[8, 8, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-              ) : (
-                <div className="h-[280px] flex items-center justify-center text-gray-500">
-                  Aucune donnee disponible
-                </div>
+          {/* Collected Card - Tertiary Color */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: ownerPalette.tertiary.bg,
+              boxShadow: `0 8px 24px ${ownerPalette.tertiary.shadow}`,
+            }}
+          >
+            <div
+              className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ backgroundColor: ownerPalette.tertiary.main }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium" style={{ color: ownerPalette.tertiary.text }}>
+                Encaissé
+              </span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ backgroundColor: ownerPalette.tertiary.main }}
+              >
+                <CheckCircle2 className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">
+              €{(overview?.paymentSummary.paid || 0).toLocaleString()}
+            </p>
+            <ProgressBar
+              value={overview?.paymentSummary.paid || 0}
+              max={totalExpected}
+              color={ownerPalette.tertiary.main}
+              bgColor={ownerPalette.tertiary.light}
+            />
+          </motion.div>
+
+          {/* Pending Card - Quaternary Color */}
+          <motion.div
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: ownerPalette.quaternary.bg,
+              boxShadow: `0 8px 24px ${ownerPalette.quaternary.shadow}`,
+            }}
+          >
+            <div
+              className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{ backgroundColor: ownerPalette.quaternary.main }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium" style={{ color: ownerPalette.quaternary.text }}>
+                En attente
+              </span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{ backgroundColor: ownerPalette.quaternary.main }}
+              >
+                <Clock className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">
+              €{(overview?.paymentSummary.pending || 0).toLocaleString()}
+            </p>
+            <div className="flex items-center gap-1 mt-2">
+              {(overview?.paymentSummary.pendingCount || 0) > 0 && (
+                <Badge
+                  className="text-xs"
+                  style={{
+                    backgroundColor: ownerPalette.quaternary.light,
+                    color: ownerPalette.quaternary.main,
+                    border: `1px solid ${ownerPalette.quaternary.border}`,
+                  }}
+                >
+                  {overview?.paymentSummary.pendingCount} paiement(s)
+                </Badge>
               )}
             </div>
           </motion.div>
 
-          {/* Monthly Comparison */}
+          {/* Overdue Card - Accent Color (or semantic danger) */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            whileHover={{ scale: 1.03, y: -4 }}
+            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            style={{
+              background: (overview?.paymentSummary.overdue || 0) > 0
+                ? semanticColors.danger.light
+                : ownerPalette.accent.bg,
+              boxShadow: (overview?.paymentSummary.overdue || 0) > 0
+                ? '0 8px 24px rgba(220, 38, 38, 0.15)'
+                : `0 8px 24px ${ownerPalette.accent.shadow}`,
+            }}
           >
-            {comparison && (
-              <MonthlyComparison
-                data={{
-                  currentMonth: {
-                    collected: comparison.currentMonth.collected,
-                    expected: comparison.currentMonth.expected,
-                    label: 'Ce mois',
-                  },
-                  previousMonth: {
-                    collected: comparison.previousMonth.collected,
-                    expected: comparison.previousMonth.expected,
-                    label: 'Mois precedent',
-                  },
-                  changePercent: comparison.changePercent,
+            <div
+              className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+              style={{
+                backgroundColor: (overview?.paymentSummary.overdue || 0) > 0
+                  ? '#EF4444'
+                  : ownerPalette.accent.main
+              }}
+            />
+            <div className="flex items-center justify-between mb-2">
+              <span
+                className="text-sm font-medium"
+                style={{
+                  color: (overview?.paymentSummary.overdue || 0) > 0
+                    ? semanticColors.danger.text
+                    : ownerPalette.accent.text
                 }}
-              />
+              >
+                Impayés
+              </span>
+              <div
+                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                style={{
+                  background: (overview?.paymentSummary.overdue || 0) > 0
+                    ? semanticColors.danger.gradient
+                    : ownerPalette.accent.main
+                }}
+              >
+                <AlertTriangle className="w-4 h-4 text-white" />
+              </div>
+            </div>
+            <p className="text-2xl font-bold text-gray-900">
+              €{(overview?.paymentSummary.overdue || 0).toLocaleString()}
+            </p>
+            <div className="flex items-center gap-1 mt-2">
+              {(overview?.paymentSummary.overdueCount || 0) > 0 ? (
+                <Badge variant="error" className="text-xs">
+                  {overview?.paymentSummary.overdueCount} en retard
+                </Badge>
+              ) : (
+                <span className="text-xs text-green-600 font-medium flex items-center gap-1">
+                  <CheckCircle2 className="w-3 h-3" /> Aucun impayé
+                </span>
+              )}
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Charts Row */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Area Chart - Progression */}
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: ownerPalette.primary.main }}
+              >
+                <BarChart3 className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-gray-900">Progression</h2>
+                <p className="text-sm text-gray-500">6 derniers mois</p>
+              </div>
+              {comparison && (
+                <div className="ml-auto flex items-center gap-1">
+                  {comparison.changePercent >= 0 ? (
+                    <TrendingUp className="w-4 h-4 text-green-500" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 text-red-500" />
+                  )}
+                  <span className={cn(
+                    'text-sm font-semibold',
+                    comparison.changePercent >= 0 ? 'text-green-600' : 'text-red-600'
+                  )}>
+                    {comparison.changePercent >= 0 ? '+' : ''}{comparison.changePercent}%
+                  </span>
+                </div>
+              )}
+            </div>
+
+            {overview?.trend && overview.trend.length > 0 ? (
+              <ResponsiveContainer width="100%" height={280}>
+                <AreaChart data={overview.trend}>
+                  <defs>
+                    <linearGradient id="ownerAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={ownerPalette.tertiary.main} stopOpacity={0.3} />
+                      <stop offset="95%" stopColor={ownerPalette.tertiary.main} stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis
+                    dataKey="monthLabel"
+                    stroke="#999"
+                    style={{ fontSize: '12px' }}
+                    tickLine={false}
+                  />
+                  <YAxis
+                    stroke="#999"
+                    style={{ fontSize: '12px' }}
+                    tickLine={false}
+                    tickFormatter={(value) => `${value}€`}
+                  />
+                  <Tooltip content={<CustomAreaTooltip />} />
+                  <Area
+                    type="monotone"
+                    dataKey="collected"
+                    name="Encaissé"
+                    stroke={ownerPalette.tertiary.main}
+                    strokeWidth={3}
+                    fill="url(#ownerAreaGradient)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-[280px] flex items-center justify-center text-gray-500">
+                <div className="text-center">
+                  <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-30" />
+                  <p>Aucune donnée disponible</p>
+                </div>
+              </div>
             )}
+          </motion.div>
+
+          {/* Pie Chart - Par propriété */}
+          <motion.div
+            variants={itemVariants}
+            className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: ownerPalette.secondary.main }}
+              >
+                <PieChartIcon className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-gray-900">Par propriété</h2>
+                <p className="text-sm text-gray-500">Répartition revenus</p>
+              </div>
+            </div>
+
+            {propertyChartData.length > 0 ? (
+              <div className="relative">
+                <ResponsiveContainer width="100%" height={200}>
+                  <PieChart>
+                    <Pie
+                      data={propertyChartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={50}
+                      outerRadius={80}
+                      paddingAngle={3}
+                      dataKey="value"
+                    >
+                      {propertyChartData.map((_, index) => (
+                        <Cell
+                          key={`cell-${index}`}
+                          fill={PROPERTY_COLORS[index % PROPERTY_COLORS.length]}
+                          stroke="white"
+                          strokeWidth={2}
+                        />
+                      ))}
+                    </Pie>
+                    <Tooltip content={<CustomPieTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+                {/* Center label */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
+                  <p className="text-xs text-gray-500">Total</p>
+                  <p className="text-lg font-bold text-gray-900">
+                    €{propertyChartData.reduce((s, p) => s + p.value, 0).toLocaleString()}
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="h-[200px] flex items-center justify-center text-gray-500">
+                <div className="text-center">
+                  <Building2 className="w-12 h-12 mx-auto mb-2 opacity-30" />
+                  <p>Aucune propriété</p>
+                </div>
+              </div>
+            )}
+
+            {/* Legend */}
+            <div className="mt-4 space-y-2">
+              {propertyChartData.slice(0, 4).map((item, index) => (
+                <div key={index} className="flex items-center justify-between text-sm">
+                  <div className="flex items-center gap-2">
+                    <div
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: PROPERTY_COLORS[index] }}
+                    />
+                    <span className="text-gray-600 truncate max-w-[120px]">{item.name}</span>
+                  </div>
+                  <span className="font-semibold text-gray-900">€{item.value.toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </div>
 
+        {/* Summary Cards Row */}
+        <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          {/* Collection Rate Card */}
+          <div
+            className="rounded-2xl p-5 border"
+            style={{
+              background: 'linear-gradient(135deg, #FFFFFF 0%, #F8F0F7 100%)',
+              borderColor: ownerPalette.primary.border,
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 mb-1">Taux d'encaissement</p>
+                <p className="text-3xl font-bold" style={{ color: ownerPalette.primary.main }}>
+                  {overview?.kpis.collectionRate || 100}%
+                </p>
+                <p className="text-xs text-gray-500 mt-1">{overview?.paymentSummary.paidCount || 0} paiements reçus</p>
+              </div>
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                style={{ backgroundColor: ownerPalette.primary.light }}
+              >
+                <Percent className="w-7 h-7" style={{ color: ownerPalette.primary.main }} />
+              </div>
+            </div>
+          </div>
+
+          {/* This Month Card */}
+          <div
+            className="rounded-2xl p-5 border"
+            style={{
+              background: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F8 100%)',
+              borderColor: ownerPalette.tertiary.border,
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-gray-500 mb-1">Ce mois</p>
+                <p className="text-3xl font-bold" style={{ color: ownerPalette.tertiary.main }}>
+                  €{comparison?.currentMonth.collected.toLocaleString() || 0}
+                </p>
+                <p className="text-xs text-gray-500 mt-1">
+                  sur €{comparison?.currentMonth.expected.toLocaleString() || 0} attendus
+                </p>
+              </div>
+              <div
+                className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                style={{ backgroundColor: ownerPalette.tertiary.light }}
+              >
+                <Calendar className="w-7 h-7" style={{ color: ownerPalette.tertiary.main }} />
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Alerts Section */}
         {alertsData.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="mt-6"
-          >
+          <motion.div variants={itemVariants} className="mb-8">
             <FinanceAlerts
               alerts={alertsData}
               onAlertClick={(alert) => router.push(alert.href)}
@@ -540,143 +980,33 @@ export default function FinanceAnalyticsPage() {
         )}
 
         {/* Payment Table */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="mt-8"
-        >
+        <motion.div variants={itemVariants}>
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-            <Clock className="w-5 h-5" style={{ color: '#9c5698' }} />
+            <Users className="w-5 h-5" style={{ color: ownerPalette.secondary.main }} />
             Derniers paiements
+            {tablePayments.length > 0 && (
+              <Badge
+                className="ml-2"
+                style={{
+                  backgroundColor: ownerPalette.secondary.light,
+                  color: ownerPalette.secondary.main,
+                }}
+              >
+                {tablePayments.length}
+              </Badge>
+            )}
           </h2>
           <PaymentTable
             payments={tablePayments}
             onMarkPaid={handleMarkPaid}
             onSendReminder={handleSendReminder}
-            onPaymentClick={(payment) => router.push(`/properties/${payment.propertyId}`)}
+            isLoading={isRefreshing}
           />
         </motion.div>
-
-        {/* Properties Breakdown */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mt-8"
-        >
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
-                  style={{ background: ownerGradient }}
-                >
-                  <Building2 className="w-5 h-5 text-white" />
-                </div>
-                <div>
-                  <h2 className="font-bold text-gray-900">Par propriete</h2>
-                  <p className="text-sm text-gray-500">{properties.length} proprietes</p>
-                </div>
-              </div>
-            </div>
-
-            {properties.length === 0 ? (
-              <div className="text-center py-12" style={{ background: ownerGradientLight }}>
-                <div
-                  className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center"
-                  style={{ background: ownerGradient }}
-                >
-                  <Building2 className="w-8 h-8 text-white" />
-                </div>
-                <h4 className="font-semibold text-gray-900 mb-2">Aucune propriete</h4>
-                <p className="text-gray-600">Ajoutez votre premiere propriete pour voir les finances</p>
-              </div>
-            ) : (
-              <div className="space-y-3">
-                {properties.map((property, idx) => (
-                  <motion.div
-                    key={property.id}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    whileHover={{ scale: 1.01, x: 4 }}
-                    transition={{ delay: 0.5 + idx * 0.03 }}
-                    onClick={() => router.push(`/properties/${property.id}`)}
-                    className={cn(
-                      'relative overflow-hidden flex flex-col sm:flex-row items-start sm:items-center justify-between p-5 rounded-xl border shadow-sm cursor-pointer transition-all',
-                      property.overdue > 0
-                        ? 'border-red-200 bg-red-50/50'
-                        : 'border-purple-200/30'
-                    )}
-                    style={
-                      property.overdue === 0
-                        ? { background: ownerGradientLight, borderLeftWidth: '4px', borderLeftColor: '#9c5698' }
-                        : { borderLeftWidth: '4px', borderLeftColor: '#DC2626' }
-                    }
-                  >
-                    <div className="absolute -top-4 -right-4 w-12 h-12 rounded-full opacity-10" style={{ background: ownerGradient }} />
-
-                    {/* Property Info */}
-                    <div className="relative flex items-center gap-3 flex-1 mb-3 sm:mb-0">
-                      <div
-                        className="w-12 h-12 rounded-xl overflow-hidden flex-shrink-0"
-                        style={{ background: ownerGradientLight }}
-                      >
-                        {property.mainImage ? (
-                          <img src={property.mainImage} alt={property.title} className="w-full h-full object-cover" />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Building2 className="w-6 h-6" style={{ color: '#9c5698' }} />
-                          </div>
-                        )}
-                      </div>
-                      <div>
-                        <h4 className="font-bold text-gray-900">{property.title}</h4>
-                        <p className="text-sm text-gray-500">{property.city}</p>
-                      </div>
-                    </div>
-
-                    {/* Finance Stats */}
-                    <div className="relative flex flex-wrap gap-6 items-center">
-                      <div className="text-left sm:text-right">
-                        <p className="text-xs text-gray-500 mb-1">Loyer mensuel</p>
-                        <p className="font-bold" style={{ color: '#9c5698' }}>
-                          {property.monthlyRent.toLocaleString()}e
-                        </p>
-                      </div>
-
-                      <div className="text-left sm:text-right">
-                        <p className="text-xs text-gray-500 mb-1">Encaisse</p>
-                        <p className="font-bold text-green-700">{property.collected.toLocaleString()}e</p>
-                      </div>
-
-                      {property.overdue > 0 && (
-                        <div className="text-left sm:text-right">
-                          <p className="text-xs text-red-600 mb-1 font-medium">Impaye</p>
-                          <p className="font-bold text-red-700">{property.overdue.toLocaleString()}e</p>
-                        </div>
-                      )}
-
-                      <Badge
-                        variant={
-                          property.status === 'rented' ? 'success' : property.status === 'published' ? 'warning' : 'secondary'
-                        }
-                      >
-                        {property.status === 'rented' ? 'Louee' : property.status === 'published' ? 'Vacante' : property.status}
-                      </Badge>
-
-                      <ChevronRight className="w-5 h-5 text-gray-400" />
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            )}
-          </div>
-        </motion.div>
-      </main>
+      </motion.main>
 
       {/* Documents Modal */}
-      {currentUserId && (
+      {showDocumentsModal && currentUserId && (
         <DocumentsModal
           open={showDocumentsModal}
           onClose={() => setShowDocumentsModal(false)}

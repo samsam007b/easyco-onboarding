@@ -340,10 +340,10 @@ export default function OwnerApplicationsPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            {t?.loading?.title?.[language] || 'Chargement des candidatures...'}
+            {t?.loading?.title?.[language] || 'Loading applications...'}
           </h3>
           <p className="text-gray-600">
-            {t?.loading?.subtitle?.[language] || 'Préparation de vos données'}
+            {t?.loading?.subtitle?.[language] || 'Preparing your data'}
           </p>
         </motion.div>
       </div>

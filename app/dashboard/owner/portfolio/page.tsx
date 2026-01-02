@@ -111,9 +111,9 @@ export default function PortfolioHubPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Chargement...
+            Loading...
           </h3>
-          <p className="text-gray-600">Préparation de votre portfolio</p>
+          <p className="text-gray-600">Preparing your portfolio</p>
         </div>
       </div>
     );
@@ -352,7 +352,7 @@ export default function PortfolioHubPage() {
                     variant="outline"
                     size="sm"
                     className="mt-4"
-                    onClick={() => router.push('/property/create')}
+                    onClick={() => router.push('/properties/add')}
                   >
                     Ajouter un bien
                   </Button>
@@ -365,7 +365,7 @@ export default function PortfolioHubPage() {
                       initial={{ opacity: 0, x: 10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      onClick={() => router.push(`/property/${property.id}`)}
+                      onClick={() => router.push(`/properties/${property.id}`)}
                       className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-all"
                     >
                       {/* Property Image or Placeholder */}

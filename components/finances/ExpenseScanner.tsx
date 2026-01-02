@@ -1033,7 +1033,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   style={{ color: '#ff651e' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  {scanner?.back || 'Retour'}
+                  {scanner?.back || 'Back'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -1155,7 +1155,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   style={{ color: '#ff651e' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  {scanner?.back || 'Retour'}
+                  {scanner?.back || 'Back'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -1328,7 +1328,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   style={{ color: '#ff651e' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
-                  {scanner?.back || 'Retour'}
+                  {scanner?.back || 'Back'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} className="flex-1">

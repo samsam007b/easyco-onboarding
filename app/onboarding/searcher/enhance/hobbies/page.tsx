@@ -6,6 +6,7 @@ import { Heart } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,15 +18,18 @@ import {
 
 export default function OnboardingEnhanceHobbiesPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [hobbies, setHobbies] = useState<string[]>([]);
   const [newHobby, setNewHobby] = useState('');
 
-  const commonHobbies = [
-    'Reading', 'Sports', 'Cooking', 'Music', 'Movies', 'Gaming',
-    'Hiking', 'Photography', 'Travel', 'Art', 'Yoga', 'Dancing',
-    'Cycling', 'Running', 'Swimming', 'Drawing', 'Writing', 'Gardening'
+  const commonHobbiesKeys = [
+    'reading', 'sports', 'cooking', 'music', 'movies', 'gaming',
+    'hiking', 'photography', 'travel', 'art', 'yoga', 'dancing',
+    'cycling', 'running', 'swimming', 'drawing', 'writing', 'gardening'
   ];
+
+  const getHobbyLabel = (key: string) => t(`enhanceSearcher.hobbies.items.${key}`) || key.charAt(0).toUpperCase() + key.slice(1);
 
   useEffect(() => {
     const loadData = async () => {
@@ -91,31 +95,31 @@ export default function OnboardingEnhanceHobbiesPage() {
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your hobbies..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Your Hobbies & Interests"
-        description="Help us find roommates who share your passions"
+        title={t('enhanceSearcher.hobbies.title')}
+        description={t('enhanceSearcher.hobbies.description')}
         icon={<Heart className="w-8 h-8 text-orange-600" />}
       />
 
       <div className="space-y-6">
         {/* Common Hobbies */}
         <EnhanceProfileSection>
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Select from common hobbies:</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">{t('enhanceSearcher.hobbies.common.title')}</h2>
           <div className="flex flex-wrap gap-2">
-            {commonHobbies.map((hobby) => (
+            {commonHobbiesKeys.map((hobby) => (
               <EnhanceProfileTag
                 key={hobby}
                 role="searcher"
                 selected={hobbies.includes(hobby)}
                 onClick={() => handleToggleCommonHobby(hobby)}
               >
-                {hobby}
+                {getHobbyLabel(hobby)}
               </EnhanceProfileTag>
             ))}
           </div>
@@ -123,7 +127,7 @@ export default function OnboardingEnhanceHobbiesPage() {
 
         {/* Custom Hobbies */}
         <EnhanceProfileSection>
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">Add your own hobbies:</h2>
+          <h2 className="text-lg font-semibold text-gray-800 mb-4">{t('enhanceSearcher.hobbies.custom.title')}</h2>
           <div className="flex gap-2">
             <input
               type="text"
@@ -131,7 +135,7 @@ export default function OnboardingEnhanceHobbiesPage() {
               onChange={(e) => setNewHobby(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleAddHobby()}
               className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
-              placeholder="Add a hobby..."
+              placeholder={t('enhanceSearcher.hobbies.custom.placeholder')}
             />
             <EnhanceProfileButton
               role="searcher"
@@ -139,15 +143,15 @@ export default function OnboardingEnhanceHobbiesPage() {
               onClick={handleAddHobby}
               className="px-6"
             >
-              Add
+              {t('enhanceSearcher.hobbies.custom.add')}
             </EnhanceProfileButton>
           </div>
 
-          {hobbies.filter(h => !commonHobbies.includes(h)).length > 0 && (
+          {hobbies.filter(h => !commonHobbiesKeys.includes(h)).length > 0 && (
             <div className="mt-4">
-              <p className="text-sm text-gray-600 mb-2">Your custom hobbies:</p>
+              <p className="text-sm text-gray-600 mb-2">{t('enhanceSearcher.hobbies.custom.yourHobbies')}</p>
               <div className="flex flex-wrap gap-2">
-                {hobbies.filter(h => !commonHobbies.includes(h)).map((hobby) => (
+                {hobbies.filter(h => !commonHobbiesKeys.includes(h)).map((hobby) => (
                   <EnhanceProfileTag
                     key={hobby}
                     role="searcher"
@@ -166,7 +170,7 @@ export default function OnboardingEnhanceHobbiesPage() {
         {hobbies.length > 0 && (
           <EnhanceProfileInfoBox role="searcher">
             <p className="text-sm font-medium">
-              {hobbies.length} {hobbies.length === 1 ? 'hobby' : 'hobbies'} selected
+              {hobbies.length} {hobbies.length === 1 ? t('enhanceSearcher.hobbies.count.singular') : t('enhanceSearcher.hobbies.count.plural')}
             </p>
           </EnhanceProfileInfoBox>
         )}
@@ -178,13 +182,13 @@ export default function OnboardingEnhanceHobbiesPage() {
           onClick={handleNext}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

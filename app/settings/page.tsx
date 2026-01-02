@@ -305,7 +305,7 @@ export default function SettingsPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium">{settings.loading || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium">{settings.loading || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -340,7 +340,7 @@ export default function SettingsPage() {
               onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              {settings.back || 'Retour'}
+              {settings.back || 'Back'}
             </Button>
 
             <div className="text-center">

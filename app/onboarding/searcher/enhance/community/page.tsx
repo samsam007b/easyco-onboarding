@@ -6,6 +6,7 @@ import { PartyPopper, Users, UtensilsCrossed, Sparkles } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function OnboardingCommunityEventsPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [eventInterest, setEventInterest] = useState<'low' | 'medium' | 'high' | ''>('');
   const [enjoySharedMeals, setEnjoySharedMeals] = useState(false);
@@ -74,24 +76,24 @@ export default function OnboardingCommunityEventsPage() {
   const canContinue = eventInterest !== '';
 
   const interestLevels = [
-    { value: 'low' as const, emoji: '😐', label: 'Low', description: 'Prefer quiet independence' },
-    { value: 'medium' as const, emoji: '😊', label: 'Medium', description: 'Occasional socializing' },
-    { value: 'high' as const, emoji: '🎉', label: 'High', description: 'Love community events!' },
+    { value: 'low' as const, emoji: '😐', labelKey: 'low', descKey: 'lowDesc' },
+    { value: 'medium' as const, emoji: '😊', labelKey: 'medium', descKey: 'mediumDesc' },
+    { value: 'high' as const, emoji: '🎉', labelKey: 'high', descKey: 'highDesc' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your preferences..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Community & Events"
-        description="How interested are you in community events, parties, and social gatherings?"
+        title={t('enhanceSearcher.community.title')}
+        description={t('enhanceSearcher.community.description')}
         icon={<PartyPopper className="w-8 h-8 text-orange-600" />}
       />
 
@@ -102,7 +104,7 @@ export default function OnboardingCommunityEventsPage() {
             <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
               <PartyPopper className="w-4 h-4 text-orange-600" />
             </div>
-            Event participation interest
+            {t('enhanceSearcher.community.eventInterest.label')}
           </label>
           <div className="grid grid-cols-3 gap-3">
             {interestLevels.map((level) => (
@@ -116,11 +118,11 @@ export default function OnboardingCommunityEventsPage() {
                 }`}
               >
                 <span className="text-3xl">{level.emoji}</span>
-                <span className="font-semibold text-sm">{level.label}</span>
+                <span className="font-semibold text-sm">{t(`enhanceSearcher.community.eventInterest.${level.labelKey}`)}</span>
                 <span className={`text-xs text-center ${
                   eventInterest === level.value ? 'text-orange-100' : 'text-gray-500'
                 }`}>
-                  {level.description}
+                  {t(`enhanceSearcher.community.eventInterest.${level.descKey}`)}
                 </span>
               </button>
             ))}
@@ -136,8 +138,8 @@ export default function OnboardingCommunityEventsPage() {
                   <UtensilsCrossed className="w-4 h-4 text-orange-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">I'd enjoy shared meals</span>
-                  <span className="text-sm text-gray-500">Cook and eat together with flatmates</span>
+                  <span className="font-medium text-gray-700 block">{t('enhanceSearcher.community.sharedMeals.title')}</span>
+                  <span className="text-sm text-gray-500">{t('enhanceSearcher.community.sharedMeals.description')}</span>
                 </div>
               </div>
               <button
@@ -165,8 +167,8 @@ export default function OnboardingCommunityEventsPage() {
                   <Users className="w-4 h-4 text-blue-600" />
                 </div>
                 <div>
-                  <span className="font-medium text-gray-700 block">Open to flatmate meetups</span>
-                  <span className="text-sm text-gray-500">Hang out, watch movies, game nights</span>
+                  <span className="font-medium text-gray-700 block">{t('enhanceSearcher.community.meetups.title')}</span>
+                  <span className="text-sm text-gray-500">{t('enhanceSearcher.community.meetups.description')}</span>
                 </div>
               </div>
               <button
@@ -192,19 +194,19 @@ export default function OnboardingCommunityEventsPage() {
               <Sparkles className="w-5 h-5 text-orange-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 mb-2">Community Perks</h3>
+              <h3 className="font-semibold text-gray-900 mb-2">{t('enhanceSearcher.community.perks.title')}</h3>
               <ul className="space-y-1 text-sm text-gray-600">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                  Find flatmates with similar social energy
+                  {t('enhanceSearcher.community.perks.socialEnergy')}
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                  Get matched with compatible living styles
+                  {t('enhanceSearcher.community.perks.compatible')}
                 </li>
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
-                  Discover coliving spaces that fit your vibe
+                  {t('enhanceSearcher.community.perks.coliving')}
                 </li>
               </ul>
             </div>
@@ -223,13 +225,13 @@ export default function OnboardingCommunityEventsPage() {
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
           }`}
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

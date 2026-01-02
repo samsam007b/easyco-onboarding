@@ -119,8 +119,8 @@ export default function SettleDebtModal({
         // Check for rate limit error
         if (error.message?.includes('Rate limit')) {
           setRateLimitError(true);
-          toast.error('Trop de requêtes', {
-            description: 'Veuillez patienter avant de réessayer.',
+          toast.error('Too many requests', {
+            description: 'Please wait before trying again.',
           });
           return;
         }
@@ -179,7 +179,7 @@ export default function SettleDebtModal({
         }
       } catch (error) {
         console.error('Error loading full IBAN:', error);
-        toast.error('Erreur lors du chargement');
+        toast.error('Error loading data');
       } finally {
         setIsLoadingFullIBAN(false);
       }
@@ -206,10 +206,10 @@ export default function SettleDebtModal({
     try {
       await navigator.clipboard.writeText(payeeInfo.iban);
       setCopiedIBAN(true);
-      toast.success('IBAN copié !');
+      toast.success('IBAN copied!');
       setTimeout(() => setCopiedIBAN(false), 3000);
     } catch {
-      toast.error('Erreur lors de la copie');
+      toast.error('Error copying');
     }
   };
 
@@ -217,10 +217,10 @@ export default function SettleDebtModal({
     try {
       await navigator.clipboard.writeText(Math.abs(amount).toFixed(2));
       setCopiedAmount(true);
-      toast.success('Montant copié !');
+      toast.success('Amount copied!');
       setTimeout(() => setCopiedAmount(false), 3000);
     } catch {
-      toast.error('Erreur lors de la copie');
+      toast.error('Error copying');
     }
   };
 
@@ -248,19 +248,19 @@ export default function SettleDebtModal({
         p_payee_id: payeeId,
         p_property_id: propertyId,
         p_amount: Math.abs(amount),
-        p_description: `Règlement via ${selectedMethod === 'payconiq' ? 'Payconiq' : selectedMethod === 'revolut' ? 'Revolut' : 'virement bancaire'}`,
+        p_description: `Payment via ${selectedMethod === 'payconiq' ? 'Payconiq' : selectedMethod === 'revolut' ? 'Revolut' : 'bank transfer'}`,
         p_payment_method: selectedMethod === 'payconiq' ? 'payconiq' : selectedMethod === 'revolut' ? 'revolut' : 'bank_transfer',
       });
 
       if (error) throw error;
 
-      toast.success('Paiement signalé !', {
-        description: `${payeeName} recevra une notification pour confirmer`,
+      toast.success('Payment reported!', {
+        description: `${payeeName} will receive a notification to confirm`,
       });
       onClose();
     } catch (error: any) {
       console.error('Error marking as paid:', error);
-      toast.error('Erreur', { description: error.message });
+      toast.error('Error', { description: error.message });
     }
   };
 
@@ -278,14 +278,14 @@ export default function SettleDebtModal({
               <Smartphone className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-lg">Régler ma dette</span>
+              <span className="text-lg">Settle my debt</span>
               <Badge className="ml-2 bg-red-100 text-red-700 border-none">
                 €{Math.abs(amount).toFixed(2)}
               </Badge>
             </div>
           </DialogTitle>
           <DialogDescription>
-            Envoie €{Math.abs(amount).toFixed(2)} à {payeeName}
+            Send €{Math.abs(amount).toFixed(2)} to {payeeName}
           </DialogDescription>
         </DialogHeader>
 
@@ -299,7 +299,7 @@ export default function SettleDebtModal({
               className="py-12 text-center"
             >
               <div className="w-8 h-8 border-2 border-gray-300 border-t-[#7CB89B] rounded-full animate-spin mx-auto" />
-              <p className="text-sm text-gray-500 mt-3">Chargement des informations...</p>
+              <p className="text-sm text-gray-500 mt-3">Loading information...</p>
             </motion.div>
           ) : hasNoPaymentMethods ? (
             <motion.div
@@ -313,14 +313,14 @@ export default function SettleDebtModal({
                 <AlertCircle className="w-8 h-8 text-yellow-600" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                Aucune coordonnée disponible
+                No payment details available
               </h3>
               <p className="text-sm text-gray-500 mb-4">
-                {payeeName} n'a pas encore renseigné ses coordonnées bancaires.
-                Demande-lui d'ajouter son IBAN dans ses paramètres !
+                {payeeName} hasn't added their bank details yet.
+                Ask them to add their IBAN in their settings!
               </p>
               <Button variant="outline" onClick={onClose}>
-                Fermer
+                Close
               </Button>
             </motion.div>
           ) : showConfirmation ? (
@@ -341,11 +341,11 @@ export default function SettleDebtModal({
                   <Sparkles className="w-8 h-8 text-green-600" />
                 </motion.div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  Paiement effectué ?
+                  Payment completed?
                 </h3>
                 <p className="text-sm text-gray-500">
-                  Si tu as bien envoyé €{Math.abs(amount).toFixed(2)} à {payeeName},
-                  signale-le pour qu'il puisse confirmer la réception.
+                  If you've sent €{Math.abs(amount).toFixed(2)} to {payeeName},
+                  report it so they can confirm receipt.
                 </p>
               </div>
 
@@ -356,14 +356,14 @@ export default function SettleDebtModal({
                   style={{ background: 'linear-gradient(135deg, #7CB89B, #6BA888)' }}
                 >
                   <Check className="w-5 h-5 mr-2" />
-                  J'ai payé - Notifier {payeeName}
+                  I've paid - Notify {payeeName}
                 </Button>
                 <Button
                   variant="outline"
                   onClick={() => setShowConfirmation(false)}
                   className="w-full"
                 >
-                  Retour aux options
+                  Back to options
                 </Button>
               </div>
             </motion.div>
@@ -396,11 +396,11 @@ export default function SettleDebtModal({
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-gray-900">Payconiq</span>
                         <Badge className="bg-[#FF4785]/20 text-[#FF4785] border-none text-xs">
-                          Recommandé
+                          Recommended
                         </Badge>
                       </div>
                       <p className="text-sm text-gray-500">
-                        {isLoadingFullIBAN ? 'Chargement...' : "Ouvre l'app et paye en 2 clics"}
+                        {isLoadingFullIBAN ? 'Loading...' : "Open the app and pay in 2 clicks"}
                       </p>
                     </div>
                     <ArrowRight className="w-5 h-5 text-gray-400 group-hover:text-[#FF4785] transition-colors" />
@@ -422,9 +422,9 @@ export default function SettleDebtModal({
                       <Building2 className="w-6 h-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <span className="font-bold text-gray-900">Virement bancaire</span>
+                      <span className="font-bold text-gray-900">Bank transfer</span>
                       <p className="text-sm text-gray-500">
-                        {showFullIBAN ? "Copie l'IBAN et fais un virement" : "Révèle l'IBAN complet pour copier"}
+                        {showFullIBAN ? "Copy the IBAN and make a transfer" : "Reveal the full IBAN to copy"}
                       </p>
                     </div>
                   </div>
@@ -460,7 +460,7 @@ export default function SettleDebtModal({
                           {isLoadingFullIBAN ? (
                             <div className="w-4 h-4 border-2 border-indigo-200 border-t-indigo-600 rounded-full animate-spin" />
                           ) : (
-                            'Révéler'
+                            'Reveal'
                           )}
                         </Button>
                       )}
@@ -469,7 +469,7 @@ export default function SettleDebtModal({
                     {/* Amount */}
                     <div className="flex items-center gap-2">
                       <div className="flex-1 px-3 py-2 bg-white rounded-lg border border-gray-200 text-sm">
-                        <span className="text-gray-500">Montant:</span>{' '}
+                        <span className="text-gray-500">Amount:</span>{' '}
                         <span className="font-semibold">€{Math.abs(amount).toFixed(2)}</span>
                       </div>
                       <Button
@@ -502,7 +502,7 @@ export default function SettleDebtModal({
                       variant="outline"
                       className="w-full mt-2 border-indigo-200 text-indigo-700 hover:bg-indigo-50"
                     >
-                      J'ai fait le virement
+                      I've made the transfer
                     </Button>
                   </div>
                 </motion.div>
@@ -535,8 +535,8 @@ export default function SettleDebtModal({
               <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-xl border border-blue-100">
                 <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-blue-800">
-                  Ces paiements sont effectués directement entre vous, en dehors de l'application.
-                  Izzico facilite simplement l'échange d'informations.
+                  These payments are made directly between you, outside of the app.
+                  Izzico simply facilitates the exchange of information.
                 </p>
               </div>
             </motion.div>

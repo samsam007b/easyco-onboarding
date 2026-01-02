@@ -1,0 +1,1004 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Exploration Typographique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800;900&family=Montserrat:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700;800;900&family=Quicksand:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Sora:wght@300;400;500;600;700;800&family=Manrope:wght@300;400;500;600;700;800&family=Rubik:wght@300;400;500;600;700;800;900&family=Work+Sans:wght@300;400;500;600;700;800;900&family=Urbanist:wght@300;400;500;600;700;800;900&family=Lexend:wght@300;400;500;600;700;800;900&family=Geologica:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Playfair+Display:wght@400;500;600;700;800;900&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* GRADIENT SIGNATURE OFFICIEL IZZICO - Version verrouillée 9 déc 2025 */
+            --mauve: #9c5698;
+            --orange: #FF5722;
+            --jaune: #FFB10B;
+            --gradient: linear-gradient(90deg, var(--mauve) 0%, var(--orange) 50%, var(--jaune) 100%);
+
+            --dark: #0a0a14;
+            --darker: #050508;
+            --light: #f8f9fa;
+            --gray: #6b7280;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--darker);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            opacity: 0.6;
+            font-size: 0.9rem;
+        }
+
+        /* Gradient Reference */
+        .gradient-reference {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .gradient-reference h2 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--orange);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gradient-bar {
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+
+        .gradient-stops {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            font-family: monospace;
+        }
+
+        .gradient-stops span {
+            opacity: 0.7;
+        }
+
+        /* Section */
+        .section {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--orange);
+            margin-bottom: 2rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Typography Grid */
+        .typo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .typo-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .typo-card:hover {
+            border-color: rgba(255, 87, 34, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .typo-card.highlight {
+            border-color: var(--orange);
+            background: rgba(255, 87, 34, 0.05);
+        }
+
+        .font-name {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gray);
+            margin-bottom: 1rem;
+        }
+
+        .font-category {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            font-size: 0.6rem;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        /* Wordmark Styles */
+        .wordmark-row {
+            margin-bottom: 1.5rem;
+        }
+
+        .wordmark {
+            font-size: 3rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .wordmark.gradient {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .wordmark.white {
+            color: var(--light);
+        }
+
+        .wordmark.black {
+            color: var(--dark);
+            background: var(--light);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .wordmark-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+            margin-bottom: 0.25rem;
+        }
+
+        /* Font Families */
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .font-montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-dm-sans { font-family: 'DM Sans', sans-serif; }
+        .font-nunito { font-family: 'Nunito', sans-serif; }
+        .font-quicksand { font-family: 'Quicksand', sans-serif; }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+        .font-sora { font-family: 'Sora', sans-serif; }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+        .font-rubik { font-family: 'Rubik', sans-serif; }
+        .font-work { font-family: 'Work Sans', sans-serif; }
+        .font-urbanist { font-family: 'Urbanist', sans-serif; }
+        .font-lexend { font-family: 'Lexend', sans-serif; }
+        .font-geologica { font-family: 'Geologica', sans-serif; }
+        .font-bricolage { font-family: 'Bricolage Grotesque', sans-serif; }
+        .font-fraunces { font-family: 'Fraunces', serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+        .font-baskerville { font-family: 'Libre Baskerville', serif; }
+
+        /* Weight Variations */
+        .weight-300 { font-weight: 300; }
+        .weight-400 { font-weight: 400; }
+        .weight-500 { font-weight: 500; }
+        .weight-600 { font-weight: 600; }
+        .weight-700 { font-weight: 700; }
+        .weight-800 { font-weight: 800; }
+        .weight-900 { font-weight: 900; }
+
+        /* Weight Row */
+        .weight-variations {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .weight-item {
+            text-align: center;
+        }
+
+        .weight-item .wordmark {
+            font-size: 1.8rem;
+        }
+
+        .weight-label {
+            font-size: 0.6rem;
+            color: var(--gray);
+            margin-top: 0.25rem;
+        }
+
+        /* Case Variations */
+        .case-row {
+            display: flex;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .case-item {
+            flex: 1;
+        }
+
+        .case-item .wordmark {
+            font-size: 2rem;
+        }
+
+        /* Comparison Section */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .comparison-item {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-item .wordmark {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-item .font-label {
+            font-size: 0.65rem;
+            color: var(--gray);
+        }
+
+        /* Black & White Section */
+        .bw-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .bw-card {
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .bw-card.on-dark {
+            background: var(--dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .bw-card.on-light {
+            background: var(--light);
+        }
+
+        .bw-card .wordmark {
+            font-size: 3.5rem;
+        }
+
+        .bw-card.on-dark .wordmark {
+            color: var(--light);
+        }
+
+        .bw-card.on-light .wordmark {
+            color: var(--dark);
+        }
+
+        .bw-label {
+            font-size: 0.7rem;
+            margin-top: 1rem;
+            opacity: 0.6;
+        }
+
+        .bw-card.on-light .bw-label {
+            color: var(--dark);
+        }
+
+        /* Gradient Variations */
+        .gradient-variations {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .gradient-var-card {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .gradient-var-card .wordmark {
+            font-size: 2.5rem;
+        }
+
+        .partial-gradient .izz {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .partial-gradient .ico {
+            color: var(--light);
+        }
+
+        /* Characteristics */
+        .characteristics {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .char-tag {
+            padding: 0.25rem 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            font-size: 0.65rem;
+            color: var(--gray);
+        }
+
+        /* Recommended Badge */
+        .recommended {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            background: rgba(255, 87, 34, 0.2);
+            border-radius: 4px;
+            font-size: 0.6rem;
+            color: var(--orange);
+            margin-left: 0.5rem;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem;
+            opacity: 0.4;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Exploration Typographique - IzzIco</h1>
+        <p>Etude des polices pour le wordmark. Focus sur la lisibilite, le caractere et la coherence avec la marque.</p>
+    </header>
+
+    <!-- Gradient Reference -->
+    <section class="gradient-reference">
+        <h2>🔒 Gradient Signature Officiel (Version verrouillee 9 dec 2025)</h2>
+        <div class="gradient-bar"></div>
+        <div class="gradient-stops">
+            <span>0% Mauve #9c5698</span>
+            <span>50% Orange #FF5722</span>
+            <span>100% Jaune #FFB10B</span>
+        </div>
+    </section>
+
+    <!-- Sans-Serif Geometriques -->
+    <section class="section">
+        <h2 class="section-title">Sans-Serif Geometriques</h2>
+        <div class="typo-grid">
+            <!-- Poppins -->
+            <div class="typo-card highlight">
+                <div class="font-name">Poppins <span class="font-category">Geometrique</span> <span class="recommended">⭐ Recommandee</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-poppins weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-poppins weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-poppins weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-poppins weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-poppins weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Moderne</span>
+                    <span class="char-tag">Accessible</span>
+                    <span class="char-tag">Geometrique</span>
+                    <span class="char-tag">Arrondi</span>
+                </div>
+            </div>
+
+            <!-- Montserrat -->
+            <div class="typo-card">
+                <div class="font-name">Montserrat <span class="font-category">Geometrique</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-montserrat weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-montserrat weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-montserrat weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-montserrat weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-montserrat weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Structure</span>
+                    <span class="char-tag">Pro</span>
+                    <span class="char-tag">Geometrique pur</span>
+                </div>
+            </div>
+
+            <!-- Outfit -->
+            <div class="typo-card">
+                <div class="font-name">Outfit <span class="font-category">Geometrique</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-outfit weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-outfit weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-outfit weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-outfit weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-outfit weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Moderne</span>
+                    <span class="char-tag">Clean</span>
+                    <span class="char-tag">Variable</span>
+                </div>
+            </div>
+
+            <!-- Urbanist -->
+            <div class="typo-card">
+                <div class="font-name">Urbanist <span class="font-category">Geometrique</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-urbanist weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-urbanist weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-urbanist weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-urbanist weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-urbanist weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Contemporain</span>
+                    <span class="char-tag">Elegant</span>
+                    <span class="char-tag">Tech</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sans-Serif Humanistes / Arrondies -->
+    <section class="section">
+        <h2 class="section-title">Sans-Serif Arrondies / Friendly</h2>
+        <div class="typo-grid">
+            <!-- Nunito -->
+            <div class="typo-card highlight">
+                <div class="font-name">Nunito <span class="font-category">Arrondie</span> <span class="recommended">⭐ Recommandee</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-nunito weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-nunito weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-nunito weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-nunito weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-nunito weight-900">IzzIco</div>
+                        <div class="weight-label">Black 900</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Chaleureux</span>
+                    <span class="char-tag">Friendly</span>
+                    <span class="char-tag">Accessible</span>
+                </div>
+            </div>
+
+            <!-- Quicksand -->
+            <div class="typo-card">
+                <div class="font-name">Quicksand <span class="font-category">Arrondie</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-quicksand weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-quicksand weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-quicksand weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-quicksand weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Doux</span>
+                    <span class="char-tag">Ludique</span>
+                    <span class="char-tag">Jeune</span>
+                </div>
+            </div>
+
+            <!-- Rubik -->
+            <div class="typo-card">
+                <div class="font-name">Rubik <span class="font-category">Arrondie</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-rubik weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-rubik weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-rubik weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-rubik weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-rubik weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Equilibre</span>
+                    <span class="char-tag">Solide</span>
+                    <span class="char-tag">Confiance</span>
+                </div>
+            </div>
+
+            <!-- Lexend -->
+            <div class="typo-card">
+                <div class="font-name">Lexend <span class="font-category">Lisibilite</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-lexend weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-lexend weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-lexend weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-lexend weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-lexend weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Optimise lecture</span>
+                    <span class="char-tag">Accessible</span>
+                    <span class="char-tag">Clair</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sans-Serif Modernes / Tech -->
+    <section class="section">
+        <h2 class="section-title">Sans-Serif Modernes / Tech</h2>
+        <div class="typo-grid">
+            <!-- Inter -->
+            <div class="typo-card">
+                <div class="font-name">Inter <span class="font-category">Neutre</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-inter weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-inter weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-inter weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-inter weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-inter weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Neutre</span>
+                    <span class="char-tag">Pro</span>
+                    <span class="char-tag">UI standard</span>
+                </div>
+            </div>
+
+            <!-- Plus Jakarta Sans -->
+            <div class="typo-card highlight">
+                <div class="font-name">Plus Jakarta Sans <span class="font-category">Moderne</span> <span class="recommended">⭐ Recommandee</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-jakarta weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-jakarta weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-jakarta weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-jakarta weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-jakarta weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Premium</span>
+                    <span class="char-tag">Moderne</span>
+                    <span class="char-tag">Elegant</span>
+                </div>
+            </div>
+
+            <!-- Space Grotesk -->
+            <div class="typo-card">
+                <div class="font-name">Space Grotesk <span class="font-category">Tech</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-space weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-space weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-space weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-space weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Tech</span>
+                    <span class="char-tag">Futuriste</span>
+                    <span class="char-tag">Distinctif</span>
+                </div>
+            </div>
+
+            <!-- Sora -->
+            <div class="typo-card">
+                <div class="font-name">Sora <span class="font-category">Moderne</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-sora weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-sora weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-sora weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-sora weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-sora weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Clean</span>
+                    <span class="char-tag">Startup</span>
+                    <span class="char-tag">Aere</span>
+                </div>
+            </div>
+
+            <!-- Manrope -->
+            <div class="typo-card">
+                <div class="font-name">Manrope <span class="font-category">Semi-geometrique</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-manrope weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-manrope weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-manrope weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-manrope weight-600">IzzIco</div>
+                        <div class="weight-label">SemiBold 600</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-manrope weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Polyvalent</span>
+                    <span class="char-tag">Equilibre</span>
+                    <span class="char-tag">Professionnel</span>
+                </div>
+            </div>
+
+            <!-- Bricolage Grotesque -->
+            <div class="typo-card">
+                <div class="font-name">Bricolage Grotesque <span class="font-category">Display</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-bricolage weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-bricolage weight-700">IzzIco</div>
+                </div>
+                <div class="weight-variations">
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-bricolage weight-500">IzzIco</div>
+                        <div class="weight-label">Medium 500</div>
+                    </div>
+                    <div class="weight-item">
+                        <div class="wordmark gradient font-bricolage weight-800">IzzIco</div>
+                        <div class="weight-label">ExtraBold 800</div>
+                    </div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Unique</span>
+                    <span class="char-tag">Expressif</span>
+                    <span class="char-tag">Artisanal</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serif (pour contraste) -->
+    <section class="section">
+        <h2 class="section-title">Serif (pour contraste / option alternative)</h2>
+        <div class="typo-grid">
+            <!-- Fraunces -->
+            <div class="typo-card">
+                <div class="font-name">Fraunces <span class="font-category">Serif Variable</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-fraunces weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-fraunces weight-700">IzzIco</div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Confiance</span>
+                    <span class="char-tag">Etabli</span>
+                    <span class="char-tag">Elegant</span>
+                </div>
+            </div>
+
+            <!-- Playfair Display -->
+            <div class="typo-card">
+                <div class="font-name">Playfair Display <span class="font-category">Serif Classique</span></div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Gradient</div>
+                    <div class="wordmark gradient font-playfair weight-700">IzzIco</div>
+                </div>
+                <div class="wordmark-row">
+                    <div class="wordmark-label">Blanc</div>
+                    <div class="wordmark white font-playfair weight-700">IzzIco</div>
+                </div>
+                <div class="characteristics">
+                    <span class="char-tag">Luxe</span>
+                    <span class="char-tag">Premium</span>
+                    <span class="char-tag">Sophistique</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Noir & Blanc -->
+    <section class="section">
+        <h2 class="section-title">Versions Noir & Blanc</h2>
+        <div class="bw-section">
+            <div class="bw-card on-dark">
+                <div class="wordmark white font-poppins weight-700">IzzIco</div>
+                <div class="bw-label">Blanc sur fond sombre</div>
+            </div>
+            <div class="bw-card on-light">
+                <div class="wordmark font-poppins weight-700">IzzIco</div>
+                <div class="bw-label">Noir sur fond clair</div>
+            </div>
+        </div>
+
+        <div class="bw-section" style="margin-top: 1.5rem;">
+            <div class="bw-card on-dark">
+                <div class="wordmark white font-jakarta weight-700">IzzIco</div>
+                <div class="bw-label">Plus Jakarta Sans - Blanc</div>
+            </div>
+            <div class="bw-card on-light">
+                <div class="wordmark font-jakarta weight-700">IzzIco</div>
+                <div class="bw-label">Plus Jakarta Sans - Noir</div>
+            </div>
+        </div>
+
+        <div class="bw-section" style="margin-top: 1.5rem;">
+            <div class="bw-card on-dark">
+                <div class="wordmark white font-nunito weight-800">IzzIco</div>
+                <div class="bw-label">Nunito ExtraBold - Blanc</div>
+            </div>
+            <div class="bw-card on-light">
+                <div class="wordmark font-nunito weight-800">IzzIco</div>
+                <div class="bw-label">Nunito ExtraBold - Noir</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Variations de Gradient -->
+    <section class="section">
+        <h2 class="section-title">Application du Gradient</h2>
+        <div class="gradient-variations">
+            <div class="gradient-var-card">
+                <div class="wordmark gradient font-poppins weight-700">IzzIco</div>
+                <div class="bw-label" style="margin-top: 1rem;">Gradient complet</div>
+            </div>
+            <div class="gradient-var-card">
+                <div class="wordmark font-poppins weight-700 partial-gradient">
+                    <span class="izz">Izz</span><span class="ico">Ico</span>
+                </div>
+                <div class="bw-label" style="margin-top: 1rem;">Gradient partiel (Izz)</div>
+            </div>
+            <div class="gradient-var-card">
+                <div class="wordmark white font-poppins weight-700">
+                    <span style="color: var(--orange);">Izz</span>Ico
+                </div>
+                <div class="bw-label" style="margin-top: 1rem;">Accent couleur unique</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparaison Rapide -->
+    <section class="section">
+        <h2 class="section-title">Comparaison Rapide - Top 6</h2>
+        <div class="comparison-grid">
+            <div class="comparison-item">
+                <div class="wordmark gradient font-poppins weight-700">IzzIco</div>
+                <div class="font-label">Poppins Bold</div>
+            </div>
+            <div class="comparison-item">
+                <div class="wordmark gradient font-jakarta weight-700">IzzIco</div>
+                <div class="font-label">Plus Jakarta Sans Bold</div>
+            </div>
+            <div class="comparison-item">
+                <div class="wordmark gradient font-nunito weight-800">IzzIco</div>
+                <div class="font-label">Nunito ExtraBold</div>
+            </div>
+            <div class="comparison-item">
+                <div class="wordmark gradient font-montserrat weight-700">IzzIco</div>
+                <div class="font-label">Montserrat Bold</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>IzzIco - Exploration Typographique</p>
+        <p>Gradient Signature: #9c5698 → #FF5722 → #FFB10B</p>
+        <p>Genere le 2 janvier 2026</p>
+    </footer>
+</body>
+</html>

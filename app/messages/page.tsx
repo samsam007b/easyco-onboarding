@@ -34,5 +34,5 @@ export default function MessagesRedirectPage() {
   }, [router, supabase]);
 
   // Show loading state
-  return <LoadingView message="Chargement de vos messages" fullScreen />;
+  return <LoadingView message="Loading your messages" fullScreen />;
 }

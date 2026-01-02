@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco Icon Workbench - Community Abstract</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #1a1a2e;
+            --bg-card: #16213e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent: #6366f1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { font-family: 'Fredoka', sans-serif; font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .header p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .phase-badge {
+            display: inline-block;
+            background: var(--accent);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .preview-area { background: var(--bg-card); border-radius: 1rem; padding: 2rem; }
+
+        .preview-main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 400px;
+            background: linear-gradient(135deg, #1e1e3f 0%, #2d2d5a 100%);
+            border-radius: 0.75rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .main-icon-container { width: 200px; height: 200px; }
+        .main-icon-container svg { width: 100%; height: 100%; }
+
+        .size-previews {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            align-items: flex-end;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 0.75rem;
+        }
+
+        .size-preview { text-align: center; }
+        .size-preview-label { font-size: 0.7rem; color: var(--text-secondary); margin-bottom: 0.5rem; }
+
+        .size-preview-box {
+            background: white;
+            border-radius: 22.5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .size-preview-box svg { width: 70%; height: 70%; }
+
+        .control-panel { background: var(--bg-card); border-radius: 1rem; padding: 1.5rem; height: fit-content; }
+
+        .control-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .control-section:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+        .control-section h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .shape-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
+
+        .shape-option {
+            aspect-ratio: 1;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid transparent;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0.75rem;
+        }
+
+        .shape-option:hover { background: rgba(255,255,255,0.1); }
+        .shape-option.active { border-color: var(--accent); background: rgba(99, 102, 241, 0.2); }
+        .shape-option svg { width: 80%; height: 80%; }
+
+        .slider-control { margin-bottom: 1rem; }
+        .slider-control:last-child { margin-bottom: 0; }
+
+        .slider-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; }
+        .slider-label { font-size: 0.8rem; color: var(--text-secondary); }
+        .slider-value { font-size: 0.8rem; font-weight: 600; color: var(--accent); font-family: monospace; }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .color-row { display: flex; gap: 0.75rem; margin-bottom: 0.75rem; }
+        .color-picker-wrapper { flex: 1; }
+        .color-picker-wrapper label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem; }
+
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.05);
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+        }
+
+        input[type="color"] { width: 32px; height: 32px; border: none; border-radius: 0.25rem; cursor: pointer; background: none; }
+        .color-hex { font-family: monospace; font-size: 0.75rem; color: var(--text-primary); }
+
+        .preset-colors { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+
+        .preset-color {
+            width: 32px;
+            height: 32px;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .preset-color:hover { transform: scale(1.1); }
+        .preset-color.active { border-color: white; }
+
+        .toggle-control {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .toggle-control:last-child { margin-bottom: 0; }
+        .toggle-label { font-size: 0.85rem; }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.2s;
+        }
+
+        .toggle-switch.active { background: var(--accent); }
+
+        .toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: transform 0.2s;
+        }
+
+        .toggle-switch.active::after { transform: translateX(20px); }
+
+        .export-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 1rem;
+        }
+
+        .export-btn:hover { opacity: 0.9; }
+
+        .specs-display {
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.75rem;
+            margin-top: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .specs-display pre { white-space: pre-wrap; color: var(--text-secondary); }
+
+        .ios-frame {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(0,0,0,0.5);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .validation-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .validation-icon { font-size: 1rem; }
+        .validation-text { font-size: 0.8rem; color: var(--text-secondary); }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="phase-badge">Phase 3: Outil Interactif</div>
+        <h1>IzzIco Icon Workbench</h1>
+        <p>Direction A: Community Abstract - Ajuste les paramètres et expérimente</p>
+    </div>
+
+    <div class="main-grid">
+        <div class="preview-area">
+            <div class="preview-main">
+                <div class="ios-frame">Preview iOS App Icon</div>
+                <div class="main-icon-container" id="mainIcon"></div>
+            </div>
+
+            <div class="size-previews">
+                <div class="size-preview">
+                    <div class="size-preview-label">App Store (1024px)</div>
+                    <div class="size-preview-box" style="width: 80px; height: 80px;" id="preview1024"></div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Home Screen (60px)</div>
+                    <div class="size-preview-box" style="width: 60px; height: 60px;" id="preview60"></div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Spotlight (40px)</div>
+                    <div class="size-preview-box" style="width: 40px; height: 40px;" id="preview40"></div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Settings (29px)</div>
+                    <div class="size-preview-box" style="width: 29px; height: 29px;" id="preview29"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="control-panel">
+            <div class="control-section">
+                <h3>Forme de Base</h3>
+                <div class="shape-grid" id="shapeSelector"></div>
+            </div>
+
+            <div class="control-section">
+                <h3>Couleurs</h3>
+                <div class="color-row">
+                    <div class="color-picker-wrapper">
+                        <label>Couleur 1</label>
+                        <div class="color-picker-container">
+                            <input type="color" id="color1" value="#3b82f6">
+                            <span class="color-hex" id="color1Hex">#3b82f6</span>
+                        </div>
+                    </div>
+                    <div class="color-picker-wrapper">
+                        <label>Couleur 2</label>
+                        <div class="color-picker-container">
+                            <input type="color" id="color2" value="#06b6d4">
+                            <span class="color-hex" id="color2Hex">#06b6d4</span>
+                        </div>
+                    </div>
+                </div>
+
+                <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.5rem; display: block;">Présets</label>
+                <div class="preset-colors" id="presetColors"></div>
+            </div>
+
+            <div class="control-section">
+                <h3>Paramètres</h3>
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-label">Angle du Gradient</span>
+                        <span class="slider-value" id="angleValue">135°</span>
+                    </div>
+                    <input type="range" id="gradientAngle" min="0" max="360" value="135">
+                </div>
+
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-label">Épaisseur Traits</span>
+                        <span class="slider-value" id="strokeValue">3px</span>
+                    </div>
+                    <input type="range" id="strokeWidth" min="1" max="8" value="3" step="0.5">
+                </div>
+
+                <div class="slider-control">
+                    <div class="slider-header">
+                        <span class="slider-label">Taille des Cercles</span>
+                        <span class="slider-value" id="sizeValue">100%</span>
+                    </div>
+                    <input type="range" id="circleSize" min="50" max="150" value="100">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Options</h3>
+                <div class="toggle-control">
+                    <span class="toggle-label">Utiliser Gradient</span>
+                    <div class="toggle-switch active" id="toggleGradient"></div>
+                </div>
+                <div class="toggle-control">
+                    <span class="toggle-label">Fond Blanc (iOS)</span>
+                    <div class="toggle-switch active" id="toggleBackground"></div>
+                </div>
+            </div>
+
+            <button class="export-btn" id="exportBtn">📋 Copier les Specs</button>
+
+            <div class="validation-status">
+                <span class="validation-icon">⏳</span>
+                <span class="validation-text">Mode Exploration - Dis "je valide" quand tu as trouvé</span>
+            </div>
+
+            <div class="specs-display">
+                <pre id="specsOutput"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SVG_NS = 'http://www.w3.org/2000/svg';
+
+        // State
+        const state = {
+            shape: 'trio',
+            color1: '#3b82f6',
+            color2: '#06b6d4',
+            gradientAngle: 135,
+            strokeWidth: 3,
+            circleSize: 100,
+            useGradient: true,
+            whiteBackground: true
+        };
+
+        // Color presets
+        const colorPresets = [
+            { colors: ['#3b82f6', '#06b6d4'], name: 'Bleu Cyan' },
+            { colors: ['#8b5cf6', '#ec4899'], name: 'Violet Rose' },
+            { colors: ['#10b981', '#06b6d4'], name: 'Vert Cyan' },
+            { colors: ['#f59e0b', '#ef4444'], name: 'Orange Rouge' },
+            { colors: ['#6366f1', '#8b5cf6'], name: 'Indigo Violet' }
+        ];
+
+        // Shape definitions
+        const shapeConfigs = [
+            { id: 'trio', name: 'Trio Connecté' },
+            { id: 'quad', name: 'Quartet' },
+            { id: 'house-community', name: 'Maison + Communauté' },
+            { id: 'organic', name: 'Organique' }
+        ];
+
+        // Create SVG element helper
+        function createSvgElement(tag, attrs) {
+            const el = document.createElementNS(SVG_NS, tag);
+            for (const [key, value] of Object.entries(attrs)) {
+                el.setAttribute(key, value);
+            }
+            return el;
+        }
+
+        // Build gradient definition
+        function createGradient(id, angle, color1, color2) {
+            const grad = createSvgElement('linearGradient', {
+                id: id,
+                x1: '0%', y1: '0%', x2: '100%', y2: '100%',
+                gradientTransform: `rotate(${angle - 45})`
+            });
+            const stop1 = createSvgElement('stop', { offset: '0%', 'stop-color': color1 });
+            const stop2 = createSvgElement('stop', { offset: '100%', 'stop-color': color2 });
+            grad.appendChild(stop1);
+            grad.appendChild(stop2);
+            return grad;
+        }
+
+        // Shape builders using DOM methods
+        const shapeBuilders = {
+            trio: function(svg, s, gradId) {
+                const fill = s.useGradient ? `url(#${gradId})` : s.color1;
+                const stroke = fill;
+                const scale = s.circleSize / 100;
+                const r = 12 * scale;
+
+                svg.appendChild(createSvgElement('circle', { cx: '50', cy: '22', r: r, fill: fill }));
+                svg.appendChild(createSvgElement('circle', { cx: '22', cy: '72', r: r, fill: fill }));
+                svg.appendChild(createSvgElement('circle', { cx: '78', cy: '72', r: r, fill: fill }));
+                svg.appendChild(createSvgElement('path', {
+                    d: 'M50 34 L28 60 M50 34 L72 60 M34 72 L66 72',
+                    stroke: stroke,
+                    'stroke-width': s.strokeWidth,
+                    'stroke-linecap': 'round',
+                    fill: 'none'
+                }));
+            },
+            quad: function(svg, s, gradId) {
+                const fill = s.useGradient ? `url(#${gradId})` : s.color1;
+                const stroke = fill;
+                const scale = s.circleSize / 100;
+                const r = 10 * scale;
+
+                svg.appendChild(createSvgElement('circle', { cx: '28', cy: '28', r: r, fill: fill }));
+                svg.appendChild(createSvgElement('circle', { cx: '72', cy: '28', r: r, fill: fill }));
+                svg.appendChild(createSvgElement('circle', { cx: '28', cy: '72', r: r, fill: fill }));
+                svg.appendChild(createSvgElement('circle', { cx: '72', cy: '72', r: r, fill: fill }));
+                svg.appendChild(createSvgElement('path', {
+                    d: 'M28 40 L28 60 M72 40 L72 60 M40 28 L60 28 M40 72 L60 72',
+                    stroke: stroke,
+                    'stroke-width': s.strokeWidth,
+                    'stroke-linecap': 'round',
+                    fill: 'none'
+                }));
+            },
+            'house-community': function(svg, s, gradId) {
+                const fill = s.useGradient ? `url(#${gradId})` : s.color1;
+                const stroke = fill;
+                const scale = s.circleSize / 100;
+
+                svg.appendChild(createSvgElement('path', {
+                    d: 'M50 12 L12 42 L12 88 L88 88 L88 42 Z',
+                    stroke: stroke,
+                    'stroke-width': s.strokeWidth,
+                    'stroke-linecap': 'round',
+                    'stroke-linejoin': 'round',
+                    fill: 'none'
+                }));
+                svg.appendChild(createSvgElement('circle', { cx: '50', cy: '48', r: 9 * scale, fill: fill }));
+                svg.appendChild(createSvgElement('circle', { cx: '32', cy: '68', r: 7 * scale, fill: fill }));
+                svg.appendChild(createSvgElement('circle', { cx: '68', cy: '68', r: 7 * scale, fill: fill }));
+                svg.appendChild(createSvgElement('path', {
+                    d: 'M50 57 L37 62 M50 57 L63 62 M38 68 L62 68',
+                    stroke: stroke,
+                    'stroke-width': s.strokeWidth * 0.7,
+                    'stroke-linecap': 'round',
+                    fill: 'none'
+                }));
+            },
+            organic: function(svg, s, gradId) {
+                const fill1 = s.useGradient ? `url(#${gradId})` : s.color1;
+                const fill2 = s.useGradient ? `url(#${gradId})` : s.color2;
+                const scale = s.circleSize / 100;
+
+                const e1 = createSvgElement('ellipse', {
+                    cx: '32', cy: '38', rx: 18 * scale, ry: 22 * scale,
+                    fill: fill1, opacity: '0.9', transform: 'rotate(-15 32 38)'
+                });
+                const e2 = createSvgElement('ellipse', {
+                    cx: '68', cy: '38', rx: 18 * scale, ry: 22 * scale,
+                    fill: fill2, opacity: '0.9', transform: 'rotate(15 68 38)'
+                });
+                const e3 = createSvgElement('ellipse', {
+                    cx: '50', cy: '70', rx: 20 * scale, ry: 18 * scale,
+                    fill: fill1, opacity: '0.9'
+                });
+                svg.appendChild(e1);
+                svg.appendChild(e2);
+                svg.appendChild(e3);
+            }
+        };
+
+        // Build complete SVG
+        function buildIconSvg(s, uniqueId) {
+            const svg = createSvgElement('svg', { viewBox: '0 0 100 100', fill: 'none' });
+            const defs = createSvgElement('defs', {});
+            const gradId = 'grad_' + uniqueId;
+            defs.appendChild(createGradient(gradId, s.gradientAngle, s.color1, s.color2));
+            svg.appendChild(defs);
+
+            if (shapeBuilders[s.shape]) {
+                shapeBuilders[s.shape](svg, s, gradId);
+            }
+
+            return svg;
+        }
+
+        // Build thumbnail SVG for shape selector
+        function buildThumbnailSvg(shapeId) {
+            const svg = createSvgElement('svg', { viewBox: '0 0 100 100', fill: 'none' });
+            const tempState = { ...state, shape: shapeId, useGradient: false, color1: 'currentColor' };
+
+            if (shapeBuilders[shapeId]) {
+                shapeBuilders[shapeId](svg, tempState, 'none');
+            }
+
+            return svg;
+        }
+
+        // Update all icons
+        function updateIcon() {
+            const containers = [
+                { el: document.getElementById('mainIcon'), id: 'main' },
+                { el: document.getElementById('preview1024'), id: 'p1024' },
+                { el: document.getElementById('preview60'), id: 'p60' },
+                { el: document.getElementById('preview40'), id: 'p40' },
+                { el: document.getElementById('preview29'), id: 'p29' }
+            ];
+
+            containers.forEach(({ el, id }) => {
+                if (el) {
+                    while (el.firstChild) el.removeChild(el.firstChild);
+                    el.appendChild(buildIconSvg(state, id));
+                    el.style.background = state.whiteBackground ? 'white' : 'transparent';
+                }
+            });
+
+            updateSpecs();
+        }
+
+        // Update specs display
+        function updateSpecs() {
+            const specsText = `/* IzzIco Icon Specs */
+Shape: ${state.shape}
+Colors: ${state.color1} → ${state.color2}
+Gradient: ${state.useGradient ? 'Yes' : 'No'}
+Gradient Angle: ${state.gradientAngle}°
+Stroke Width: ${state.strokeWidth}px
+Circle Size: ${state.circleSize}%
+Background: ${state.whiteBackground ? 'White' : 'Transparent'}
+
+/* CSS Variables */
+--icon-color-1: ${state.color1};
+--icon-color-2: ${state.color2};
+--icon-gradient-angle: ${state.gradientAngle}deg;
+--icon-stroke-width: ${state.strokeWidth}px;`;
+
+            document.getElementById('specsOutput').textContent = specsText;
+        }
+
+        // Initialize shape selector
+        function initShapeSelector() {
+            const container = document.getElementById('shapeSelector');
+            shapeConfigs.forEach((config, index) => {
+                const option = document.createElement('div');
+                option.className = 'shape-option' + (index === 0 ? ' active' : '');
+                option.dataset.shape = config.id;
+                option.title = config.name;
+                option.appendChild(buildThumbnailSvg(config.id));
+
+                option.addEventListener('click', () => {
+                    document.querySelectorAll('.shape-option').forEach(o => o.classList.remove('active'));
+                    option.classList.add('active');
+                    state.shape = config.id;
+                    updateIcon();
+                });
+
+                container.appendChild(option);
+            });
+        }
+
+        // Initialize color presets
+        function initColorPresets() {
+            const container = document.getElementById('presetColors');
+            colorPresets.forEach((preset, index) => {
+                const el = document.createElement('div');
+                el.className = 'preset-color' + (index === 0 ? ' active' : '');
+                el.style.background = `linear-gradient(135deg, ${preset.colors[0]}, ${preset.colors[1]})`;
+                el.title = preset.name;
+
+                el.addEventListener('click', () => {
+                    state.color1 = preset.colors[0];
+                    state.color2 = preset.colors[1];
+                    document.getElementById('color1').value = preset.colors[0];
+                    document.getElementById('color2').value = preset.colors[1];
+                    document.getElementById('color1Hex').textContent = preset.colors[0];
+                    document.getElementById('color2Hex').textContent = preset.colors[1];
+                    document.querySelectorAll('.preset-color').forEach(p => p.classList.remove('active'));
+                    el.classList.add('active');
+                    updateIcon();
+                });
+
+                container.appendChild(el);
+            });
+        }
+
+        // Event listeners
+        function initEventListeners() {
+            document.getElementById('color1').addEventListener('input', (e) => {
+                state.color1 = e.target.value;
+                document.getElementById('color1Hex').textContent = e.target.value;
+                document.querySelectorAll('.preset-color').forEach(p => p.classList.remove('active'));
+                updateIcon();
+            });
+
+            document.getElementById('color2').addEventListener('input', (e) => {
+                state.color2 = e.target.value;
+                document.getElementById('color2Hex').textContent = e.target.value;
+                document.querySelectorAll('.preset-color').forEach(p => p.classList.remove('active'));
+                updateIcon();
+            });
+
+            document.getElementById('gradientAngle').addEventListener('input', (e) => {
+                state.gradientAngle = parseInt(e.target.value);
+                document.getElementById('angleValue').textContent = e.target.value + '°';
+                updateIcon();
+            });
+
+            document.getElementById('strokeWidth').addEventListener('input', (e) => {
+                state.strokeWidth = parseFloat(e.target.value);
+                document.getElementById('strokeValue').textContent = e.target.value + 'px';
+                updateIcon();
+            });
+
+            document.getElementById('circleSize').addEventListener('input', (e) => {
+                state.circleSize = parseInt(e.target.value);
+                document.getElementById('sizeValue').textContent = e.target.value + '%';
+                updateIcon();
+            });
+
+            document.getElementById('toggleGradient').addEventListener('click', (e) => {
+                e.currentTarget.classList.toggle('active');
+                state.useGradient = e.currentTarget.classList.contains('active');
+                updateIcon();
+            });
+
+            document.getElementById('toggleBackground').addEventListener('click', (e) => {
+                e.currentTarget.classList.toggle('active');
+                state.whiteBackground = e.currentTarget.classList.contains('active');
+                updateIcon();
+            });
+
+            document.getElementById('exportBtn').addEventListener('click', () => {
+                const specs = document.getElementById('specsOutput').textContent;
+                navigator.clipboard.writeText(specs).then(() => {
+                    const btn = document.getElementById('exportBtn');
+                    const originalText = btn.textContent;
+                    btn.textContent = '✓ Copié !';
+                    setTimeout(() => btn.textContent = originalText, 2000);
+                });
+            });
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            initShapeSelector();
+            initColorPresets();
+            initEventListeners();
+            updateIcon();
+        });
+    </script>
+</body>
+</html>

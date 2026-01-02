@@ -84,7 +84,7 @@ export default function SocialVibePage() {
       progress={{
         current: 4,
         total: 6,
-        label: 'Étape 4 sur 6',
+        label: `${t('onboarding.progress.step')} 4 ${t('onboarding.progress.of')} 6`,
         stepName: t('onboarding.socialVibe.title'),
       }}
       isLoading={isLoading}

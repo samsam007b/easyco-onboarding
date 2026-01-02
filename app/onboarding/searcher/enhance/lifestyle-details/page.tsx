@@ -6,6 +6,7 @@ import { Music, ChefHat, Apple, MessageCircle } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
+import { useLanguage } from '@/lib/i18n/use-language';
 import {
   EnhanceProfileLayout,
   EnhanceProfileHeading,
@@ -17,6 +18,7 @@ import {
 
 export default function OnboardingLifestyleDetailsPage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(true);
   const [musicHabits, setMusicHabits] = useState('');
   const [cookingFrequency, setCookingFrequency] = useState('');
@@ -76,49 +78,49 @@ export default function OnboardingLifestyleDetailsPage() {
   };
 
   const musicOptions = [
-    { value: 'none', label: 'Silence', description: 'I prefer quiet environments' },
-    { value: 'headphones_only', label: 'Headphones Only', description: 'Music is for me alone' },
-    { value: 'headphones_mostly', label: 'Mostly Headphones', description: 'Sometimes play softly' },
-    { value: 'quiet_background', label: 'Quiet Background', description: 'Low volume music' },
-    { value: 'social_listening', label: 'Social Listening', description: 'Love sharing music' },
+    { value: 'none', labelKey: 'silence', descKey: 'silenceDesc' },
+    { value: 'headphones_only', labelKey: 'headphonesOnly', descKey: 'headphonesOnlyDesc' },
+    { value: 'headphones_mostly', labelKey: 'headphonesMostly', descKey: 'headphonesMostlyDesc' },
+    { value: 'quiet_background', labelKey: 'quietBackground', descKey: 'quietBackgroundDesc' },
+    { value: 'social_listening', labelKey: 'socialListening', descKey: 'socialListeningDesc' },
   ];
 
   const cookingOptions = [
-    { value: 'never', label: 'Never', description: 'I eat out or order' },
-    { value: 'rarely', label: 'Rarely', description: 'Once in a while' },
-    { value: 'sometimes', label: 'Sometimes', description: 'Few times a week' },
-    { value: 'often', label: 'Often', description: 'Most days' },
-    { value: 'daily', label: 'Daily', description: 'I love cooking!' },
+    { value: 'never', labelKey: 'never', descKey: 'neverDesc' },
+    { value: 'rarely', labelKey: 'rarely', descKey: 'rarelyDesc' },
+    { value: 'sometimes', labelKey: 'sometimes', descKey: 'sometimesDesc' },
+    { value: 'often', labelKey: 'often', descKey: 'oftenDesc' },
+    { value: 'daily', labelKey: 'daily', descKey: 'dailyDesc' },
   ];
 
   const dietOptions = [
-    { value: 'omnivore', label: 'Omnivore', description: 'I eat everything' },
-    { value: 'vegetarian', label: 'Vegetarian', description: 'No meat' },
-    { value: 'vegan', label: 'Vegan', description: 'No animal products' },
-    { value: 'pescatarian', label: 'Pescatarian', description: 'Fish but no meat' },
-    { value: 'flexitarian', label: 'Flexitarian', description: 'Mostly plant-based' },
+    { value: 'omnivore', labelKey: 'omnivore', descKey: 'omnivoreDesc' },
+    { value: 'vegetarian', labelKey: 'vegetarian', descKey: 'vegetarianDesc' },
+    { value: 'vegan', labelKey: 'vegan', descKey: 'veganDesc' },
+    { value: 'pescatarian', labelKey: 'pescatarian', descKey: 'pescatarianDesc' },
+    { value: 'flexitarian', labelKey: 'flexitarian', descKey: 'flexitarianDesc' },
   ];
 
   const communicationOptions = [
-    { value: 'direct', label: 'Direct & Straightforward', description: 'I say what I mean' },
-    { value: 'diplomatic', label: 'Diplomatic & Tactful', description: 'I consider feelings' },
-    { value: 'casual', label: 'Casual & Friendly', description: 'Laid-back communication' },
-    { value: 'formal', label: 'Formal & Professional', description: 'Structured communication' },
+    { value: 'direct', labelKey: 'direct', descKey: 'directDesc' },
+    { value: 'diplomatic', labelKey: 'diplomatic', descKey: 'diplomaticDesc' },
+    { value: 'casual', labelKey: 'casual', descKey: 'casualDesc' },
+    { value: 'formal', labelKey: 'formal', descKey: 'formalDesc' },
   ];
 
   return (
     <EnhanceProfileLayout
       role="searcher"
       backUrl="/onboarding/searcher/enhance"
-      backLabel="Back to Menu"
+      backLabel={t('enhanceSearcher.common.backToMenu')}
       progress={undefined}
       isLoading={isLoading}
-      loadingText="Loading your preferences..."
+      loadingText={t('enhanceSearcher.common.loading')}
     >
       <EnhanceProfileHeading
         role="searcher"
-        title="Lifestyle Details"
-        description="Share more about your daily habits and preferences"
+        title={t('enhanceSearcher.lifestyleDetails.title')}
+        description={t('enhanceSearcher.lifestyleDetails.description')}
         icon={<Music className="w-8 h-8 text-orange-600" />}
       />
 
@@ -127,9 +129,9 @@ export default function OnboardingLifestyleDetailsPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Music className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Music Habits at Home</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.lifestyleDetails.music.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">How do you enjoy music at home?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.lifestyleDetails.music.subtitle')}</p>
           <div className="space-y-2">
             {musicOptions.map((option) => (
               <EnhanceProfileSelectionCard
@@ -139,8 +141,8 @@ export default function OnboardingLifestyleDetailsPage() {
                 onClick={() => setMusicHabits(option.value)}
               >
                 <div className="flex flex-col">
-                  <span className="font-medium">{option.label}</span>
-                  <span className="text-xs text-gray-500 mt-1">{option.description}</span>
+                  <span className="font-medium">{t(`enhanceSearcher.lifestyleDetails.music.${option.labelKey}`)}</span>
+                  <span className="text-xs text-gray-500 mt-1">{t(`enhanceSearcher.lifestyleDetails.music.${option.descKey}`)}</span>
                 </div>
               </EnhanceProfileSelectionCard>
             ))}
@@ -151,9 +153,9 @@ export default function OnboardingLifestyleDetailsPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <ChefHat className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Cooking Frequency</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.lifestyleDetails.cooking.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">How often do you cook at home?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.lifestyleDetails.cooking.subtitle')}</p>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {cookingOptions.map((option) => (
               <button
@@ -165,8 +167,8 @@ export default function OnboardingLifestyleDetailsPage() {
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <div className="font-medium text-sm">{option.label}</div>
-                <div className="text-xs text-gray-500 mt-1">{option.description}</div>
+                <div className="font-medium text-sm">{t(`enhanceSearcher.lifestyleDetails.cooking.${option.labelKey}`)}</div>
+                <div className="text-xs text-gray-500 mt-1">{t(`enhanceSearcher.lifestyleDetails.cooking.${option.descKey}`)}</div>
               </button>
             ))}
           </div>
@@ -176,9 +178,9 @@ export default function OnboardingLifestyleDetailsPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <Apple className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Dietary Preferences</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.lifestyleDetails.diet.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">What best describes your diet?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.lifestyleDetails.diet.subtitle')}</p>
           <div className="space-y-2">
             {dietOptions.map((option) => (
               <button
@@ -190,8 +192,8 @@ export default function OnboardingLifestyleDetailsPage() {
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <div className="font-medium">{option.label}</div>
-                <div className="text-xs text-gray-500 mt-1">{option.description}</div>
+                <div className="font-medium">{t(`enhanceSearcher.lifestyleDetails.diet.${option.labelKey}`)}</div>
+                <div className="text-xs text-gray-500 mt-1">{t(`enhanceSearcher.lifestyleDetails.diet.${option.descKey}`)}</div>
               </button>
             ))}
           </div>
@@ -201,9 +203,9 @@ export default function OnboardingLifestyleDetailsPage() {
         <EnhanceProfileSection>
           <div className="flex items-center gap-2 mb-3">
             <MessageCircle className="w-5 h-5 text-orange-600" />
-            <h2 className="text-lg font-semibold text-gray-800">Communication Style</h2>
+            <h2 className="text-lg font-semibold text-gray-800">{t('enhanceSearcher.lifestyleDetails.communication.title')}</h2>
           </div>
-          <p className="text-sm text-gray-600 mb-4">How do you prefer to communicate with flatmates?</p>
+          <p className="text-sm text-gray-600 mb-4">{t('enhanceSearcher.lifestyleDetails.communication.subtitle')}</p>
           <div className="space-y-2">
             {communicationOptions.map((option) => (
               <button
@@ -215,8 +217,8 @@ export default function OnboardingLifestyleDetailsPage() {
                     : 'border-gray-300 hover:border-gray-400'
                 }`}
               >
-                <div className="font-medium">{option.label}</div>
-                <div className="text-xs text-gray-500 mt-1">{option.description}</div>
+                <div className="font-medium">{t(`enhanceSearcher.lifestyleDetails.communication.${option.labelKey}`)}</div>
+                <div className="text-xs text-gray-500 mt-1">{t(`enhanceSearcher.lifestyleDetails.communication.${option.descKey}`)}</div>
               </button>
             ))}
           </div>
@@ -225,7 +227,7 @@ export default function OnboardingLifestyleDetailsPage() {
         {/* Info box */}
         <EnhanceProfileInfoBox role="searcher">
           <p className="text-sm text-gray-600">
-            💡 These details help us find flatmates with compatible lifestyles and communication preferences.
+            💡 {t('enhanceSearcher.lifestyleDetails.infoBox')}
           </p>
         </EnhanceProfileInfoBox>
       </div>
@@ -236,13 +238,13 @@ export default function OnboardingLifestyleDetailsPage() {
           onClick={handleSave}
           className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
-          Save & Continue
+          {t('enhanceSearcher.common.saveAndContinue')}
         </button>
         <button
           onClick={handleSkip}
           className="w-full text-center text-sm text-transparent hover:text-gray-600 transition-colors duration-200 py-2"
         >
-          Skip for now
+          {t('enhanceSearcher.common.skipForNow')}
         </button>
       </div>
     </EnhanceProfileLayout>

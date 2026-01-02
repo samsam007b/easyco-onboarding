@@ -163,7 +163,7 @@ export function InvitePopup({
           {isLoading ? (
             <div className="p-8 text-center">
               <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-              <p className="text-gray-500 text-sm">Chargement...</p>
+              <p className="text-gray-500 text-sm">Loading...</p>
             </div>
           ) : (
             <div className="p-6 space-y-6">

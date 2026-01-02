@@ -88,7 +88,7 @@ export default function HomeLifestylePage() {
       progress={{
         current: 3,
         total: 6,
-        label: 'Étape 3 sur 6',
+        label: `${t('onboarding.progress.step')} 3 ${t('onboarding.progress.of')} 6`,
         stepName: t('onboarding.homeLifestyle.title'),
       }}
       isLoading={isLoading}
@@ -186,14 +186,14 @@ export default function HomeLifestylePage() {
               selected={!hasPets}
               onClick={() => setHasPets(false)}
             >
-              <div className="text-center font-medium text-sm">Non</div>
+              <div className="text-center font-medium text-sm">{t('common.no')}</div>
             </OnboardingSelectionCard>
             <OnboardingSelectionCard
               role="searcher"
               selected={hasPets}
               onClick={() => setHasPets(true)}
             >
-              <div className="text-center font-medium text-sm">Oui</div>
+              <div className="text-center font-medium text-sm">{t('common.yes')}</div>
             </OnboardingSelectionCard>
           </OnboardingGrid>
 

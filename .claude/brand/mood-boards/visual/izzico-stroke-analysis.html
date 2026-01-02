@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco – Analyse des Épaisseurs de Trait</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --mauve: #9c5698;
+            --orange: #FF5722;
+            --jaune: #FFB10B;
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 8px;
+            background: linear-gradient(90deg, var(--mauve), var(--orange), var(--jaune));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .subtitle { color: rgba(255,255,255,0.5); margin-bottom: 40px; }
+        .section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        .section h2 { font-size: 1.2rem; margin-bottom: 20px; color: var(--orange); }
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(90deg, var(--mauve), var(--orange));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn:hover { transform: translateY(-2px); }
+        .visual-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .visual-card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+        .visual-card canvas { display: block; margin: 0 auto 10px; }
+        .visual-card .title { font-weight: 600; color: var(--dark); font-size: 0.9rem; }
+        .visual-card .value { font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; color: var(--orange); font-weight: 600; }
+        .results-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .results-table th, .results-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .results-table th {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.4);
+        }
+        .results-table td { font-family: 'JetBrains Mono', monospace; }
+        .results-table .letter-col { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.5rem; }
+        .highlight { color: var(--orange); font-weight: 600; }
+        .warning { color: #ff6b6b; }
+        .ok { color: #51cf66; }
+        .bar-container { margin: 10px 0; display: flex; align-items: center; gap: 10px; }
+        .bar-label { width: 30px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.5rem; }
+        .bar { height: 24px; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
+        .bar span { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: white; }
+        .explanation {
+            background: rgba(156, 86, 152, 0.1);
+            border-left: 4px solid var(--mauve);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        .explanation h3 { color: var(--mauve); margin-bottom: 10px; }
+        .explanation p { color: rgba(255,255,255,0.7); line-height: 1.6; }
+        #status { color: rgba(255,255,255,0.5); margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>Analyse des Épaisseurs de Trait</h1>
+    <p class="subtitle">Mesure pixel par pixel des largeurs de trait pour "izzico" en Fredoka 600</p>
+
+    <div class="section">
+        <h2>📐 Lancer l'Analyse</h2>
+        <button class="btn" id="analyzeBtn">Analyser les Épaisseurs</button>
+        <p id="status">Cliquez pour démarrer l'analyse...</p>
+    </div>
+
+    <div class="section">
+        <h2>🔬 Visualisation par Lettre</h2>
+        <div class="visual-grid" id="visualGrid"></div>
+    </div>
+
+    <div class="section">
+        <h2>📊 Comparaison des Épaisseurs</h2>
+        <div id="comparisonBars"></div>
+    </div>
+
+    <div class="section">
+        <h2>📋 Résultats Détaillés</h2>
+        <div id="resultsTable"></div>
+    </div>
+
+    <div class="section">
+        <h2>💡 Analyse et Recommandations</h2>
+        <div id="recommendations"></div>
+    </div>
+
+    <script>
+        const FONT_SIZE = 300;
+        const LETTERS = ['i', 'z', 'z', 'i', 'c', 'o'];
+        const NAMES = ['i₁', 'z₁', 'z₂', 'i₂', 'c', 'o'];
+
+        function measureStroke(ctx, canvas, y) {
+            const data = ctx.getImageData(0, y, canvas.width, 1).data;
+            let strokes = [], inStroke = false, start = 0;
+            for (let x = 0; x < canvas.width; x++) {
+                const opaque = data[x * 4 + 3] > 128;
+                if (opaque && !inStroke) { inStroke = true; start = x; }
+                else if (!opaque && inStroke) { inStroke = false; strokes.push({ start, end: x, width: x - start }); }
+            }
+            if (inStroke) strokes.push({ start, end: canvas.width, width: canvas.width - start });
+            return strokes;
+        }
+
+        function analyzeLetter(letter, idx) {
+            const canvas = document.createElement('canvas');
+            canvas.width = FONT_SIZE * 1.2;
+            canvas.height = FONT_SIZE * 1.4;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.font = '600 ' + FONT_SIZE + 'px Fredoka';
+            ctx.fillStyle = 'black';
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'center';
+            ctx.fillText(letter, canvas.width / 2, canvas.height / 2);
+
+            const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            let topY = canvas.height, botY = 0;
+            for (let y = 0; y < canvas.height; y++) {
+                for (let x = 0; x < canvas.width; x++) {
+                    if (imgData.data[(y * canvas.width + x) * 4 + 3] > 128) {
+                        topY = Math.min(topY, y);
+                        botY = Math.max(botY, y);
+                    }
+                }
+            }
+            const h = botY - topY;
+
+            const points = letter === 'i'
+                ? [{ y: topY + h * 0.5, label: 'stem' }]
+                : letter === 'z'
+                ? [{ y: topY + h * 0.1, label: 'top' }, { y: topY + h * 0.9, label: 'bot' }]
+                : [{ y: topY + h * 0.5, label: 'mid' }];
+
+            const widths = points.map(p => {
+                const strokes = measureStroke(ctx, canvas, Math.round(p.y));
+                return { label: p.label, strokes, max: Math.max(...strokes.map(s => s.width), 0) };
+            });
+
+            let primary;
+            if (letter === 'i') {
+                primary = widths[0].strokes.length === 1 ? widths[0].max : widths[0].strokes[0]?.width || 0;
+            } else if (letter === 'z') {
+                primary = widths[0].strokes.reduce((sum, s) => sum + s.width, 0);
+            } else {
+                primary = widths[0].max;
+            }
+
+            return { letter, name: NAMES[idx], canvas, primary, widths, topY, botY, h };
+        }
+
+        function createVisCard(r) {
+            const card = document.createElement('div');
+            card.className = 'visual-card';
+
+            const visCanvas = document.createElement('canvas');
+            visCanvas.width = 120;
+            visCanvas.height = 150;
+            const ctx = visCanvas.getContext('2d');
+            const scale = 100 / FONT_SIZE;
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, visCanvas.width, visCanvas.height);
+            ctx.save();
+            ctx.scale(scale, scale);
+            ctx.drawImage(r.canvas, (visCanvas.width / scale - r.canvas.width) / 2, (visCanvas.height / scale - r.canvas.height) / 2);
+            ctx.restore();
+
+            const offsetY = (visCanvas.height - r.canvas.height * scale) / 2;
+            r.widths.forEach(w => {
+                const y = offsetY + (r.topY + r.h * 0.5) * scale;
+                ctx.strokeStyle = 'rgba(255, 87, 34, 0.8)';
+                ctx.setLineDash([2, 2]);
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(visCanvas.width, y);
+                ctx.stroke();
+            });
+
+            card.appendChild(visCanvas);
+            const title = document.createElement('div');
+            title.className = 'title';
+            title.textContent = r.name;
+            card.appendChild(title);
+            const value = document.createElement('div');
+            value.className = 'value';
+            value.textContent = r.primary + 'px';
+            card.appendChild(value);
+            return card;
+        }
+
+        function createBar(r, max, isRef) {
+            const container = document.createElement('div');
+            container.className = 'bar-container';
+            const label = document.createElement('div');
+            label.className = 'bar-label';
+            label.textContent = r.letter;
+            const bar = document.createElement('div');
+            bar.className = 'bar';
+            bar.style.width = (r.primary / max * 300) + 'px';
+            bar.style.background = isRef ? 'var(--mauve)' : 'var(--orange)';
+            const span = document.createElement('span');
+            span.textContent = r.primary + 'px';
+            bar.appendChild(span);
+            container.appendChild(label);
+            container.appendChild(bar);
+            return container;
+        }
+
+        function createTable(results, iStroke) {
+            const table = document.createElement('table');
+            table.className = 'results-table';
+            const thead = document.createElement('thead');
+            const headerRow = document.createElement('tr');
+            ['Lettre', 'Épaisseur', 'Écart vs "i"', 'Status'].forEach(t => {
+                const th = document.createElement('th');
+                th.textContent = t;
+                headerRow.appendChild(th);
+            });
+            thead.appendChild(headerRow);
+            table.appendChild(thead);
+
+            const tbody = document.createElement('tbody');
+            results.forEach(r => {
+                const row = document.createElement('tr');
+                const diff = r.primary - iStroke;
+                const pct = ((diff / iStroke) * 100).toFixed(1);
+
+                const tdLetter = document.createElement('td');
+                tdLetter.className = 'letter-col';
+                tdLetter.textContent = r.letter;
+                row.appendChild(tdLetter);
+
+                const tdWidth = document.createElement('td');
+                tdWidth.className = 'highlight';
+                tdWidth.textContent = r.primary + 'px';
+                row.appendChild(tdWidth);
+
+                const tdDiff = document.createElement('td');
+                tdDiff.textContent = (diff > 0 ? '+' : '') + diff + 'px (' + (diff > 0 ? '+' : '') + pct + '%)';
+                tdDiff.className = Math.abs(diff) < 3 ? 'ok' : 'warning';
+                row.appendChild(tdDiff);
+
+                const tdStatus = document.createElement('td');
+                tdStatus.textContent = Math.abs(diff) < 3 ? '✓ OK' : (diff > 0 ? '⚠ Plus épais' : '⚠ Plus fin');
+                tdStatus.className = Math.abs(diff) < 3 ? 'ok' : 'warning';
+                row.appendChild(tdStatus);
+
+                tbody.appendChild(row);
+            });
+            table.appendChild(tbody);
+            return table;
+        }
+
+        async function runAnalysis() {
+            const status = document.getElementById('status');
+            status.textContent = 'Analyse en cours...';
+
+            await document.fonts.ready;
+            await new Promise(r => setTimeout(r, 300));
+
+            const results = LETTERS.map((l, i) => analyzeLetter(l, i));
+            const iStroke = results[0].primary;
+            const max = Math.max(...results.map(r => r.primary));
+
+            // Visual grid
+            const grid = document.getElementById('visualGrid');
+            grid.replaceChildren();
+            results.forEach(r => grid.appendChild(createVisCard(r)));
+
+            // Bars
+            const bars = document.getElementById('comparisonBars');
+            bars.replaceChildren();
+            results.forEach(r => bars.appendChild(createBar(r, max, r.letter === 'i')));
+
+            // Table
+            const tableDiv = document.getElementById('resultsTable');
+            tableDiv.replaceChildren(createTable(results, iStroke));
+
+            // Recommendations
+            const avgI = (results[0].primary + results[3].primary) / 2;
+            const avgOther = (results[1].primary + results[2].primary + results[4].primary + results[5].primary) / 4;
+            const diff = avgOther - avgI;
+            const pct = ((diff / avgI) * 100).toFixed(1);
+
+            const recDiv = document.getElementById('recommendations');
+            recDiv.replaceChildren();
+
+            const summary = document.createElement('div');
+            summary.style.marginBottom = '20px';
+            summary.style.fontFamily = 'JetBrains Mono, monospace';
+            const line1 = document.createElement('div');
+            line1.innerHTML = 'Épaisseur moyenne "i" : <span style="color:var(--mauve)">' + avgI.toFixed(1) + 'px</span>';
+            const line2 = document.createElement('div');
+            line2.innerHTML = 'Épaisseur moyenne z/c/o : <span style="color:var(--orange)">' + avgOther.toFixed(1) + 'px</span>';
+            const line3 = document.createElement('div');
+            line3.innerHTML = 'Différence : <span style="color:' + (Math.abs(diff) < 3 ? '#51cf66' : '#ff6b6b') + '">' + (diff > 0 ? '+' : '') + diff.toFixed(1) + 'px (' + (diff > 0 ? '+' : '') + pct + '%)</span>';
+            summary.appendChild(line1);
+            summary.appendChild(line2);
+            summary.appendChild(line3);
+            recDiv.appendChild(summary);
+
+            const box = document.createElement('div');
+            box.className = 'explanation';
+            const h3 = document.createElement('h3');
+            const p = document.createElement('p');
+
+            if (Math.abs(diff) < 3) {
+                h3.textContent = '✅ Épaisseurs équilibrées';
+                p.textContent = 'Les traits sont mathématiquement très proches (< 3px de différence). La différence visuelle que vous percevez est un effet d\'optique classique en typographie : les courbes et diagonales paraissent plus fines que les verticales même à épaisseur égale.';
+            } else if (diff > 0) {
+                h3.textContent = '⚠️ Compensation optique détectée';
+                p.innerHTML = 'Fredoka applique une <strong>compensation optique</strong> : les traits courbes (c, o) et diagonaux (z) sont <strong>' + diff.toFixed(1) + 'px plus épais</strong> que les traits droits (i). C\'est une pratique typographique standard pour que les lettres <em>paraissent</em> uniformes. Votre œil perçoit cette différence car elle est peut-être trop prononcée pour un usage logo.';
+            } else {
+                h3.textContent = '⚠️ Les "i" apparaissent plus épais';
+                p.textContent = 'Situation inhabituelle où les traits verticaux sont plus épais que les courbes.';
+            }
+
+            box.appendChild(h3);
+            box.appendChild(p);
+            recDiv.appendChild(box);
+
+            if (Math.abs(diff) >= 3) {
+                const solutions = document.createElement('div');
+                solutions.className = 'explanation';
+                solutions.style.borderColor = 'var(--orange)';
+                const h3s = document.createElement('h3');
+                h3s.style.color = 'var(--orange)';
+                h3s.textContent = '🎯 Solutions possibles';
+                const ul = document.createElement('ul');
+                ul.style.marginLeft = '20px';
+                ul.style.color = 'rgba(255,255,255,0.7)';
+                ['Créer un SVG personnalisé avec des traits uniformes (recommandé pour un logo)', 'Utiliser un poids différent pour certaines lettres', 'Tester une autre police géométrique (Poppins, Nunito, Quicksand)', 'Accepter cette compensation car elle est standard en typographie pro'].forEach(t => {
+                    const li = document.createElement('li');
+                    li.textContent = t;
+                    li.style.marginBottom = '8px';
+                    ul.appendChild(li);
+                });
+                solutions.appendChild(h3s);
+                solutions.appendChild(ul);
+                recDiv.appendChild(solutions);
+            }
+
+            status.textContent = 'Analyse terminée ✓';
+        }
+
+        document.getElementById('analyzeBtn').addEventListener('click', runAnalysis);
+        window.addEventListener('load', () => document.fonts.ready.then(() => setTimeout(runAnalysis, 500)));
+    </script>
+</body>
+</html>

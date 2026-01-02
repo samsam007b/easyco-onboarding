@@ -161,16 +161,16 @@ export default function ResidentLifestylePage() {
             {/* Occupation Status */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Occupation Status <span className="text-red-500">*</span>
+                {resident.lifestyle.occupationStatus} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: 'student', label: 'Student', icon: GraduationCap, variant: 'blue' as const },
-                  { value: 'employee', label: 'Employee', icon: Briefcase, variant: 'purple' as const },
-                  { value: 'self-employed', label: 'Self-Employed', icon: Rocket, variant: 'orange' as const },
-                  { value: 'intern', label: 'Intern', icon: FileText, variant: 'green' as const },
-                  { value: 'job_seeker', label: 'Job Seeker', icon: Search, variant: 'yellow' as const },
-                  { value: 'other', label: 'Other', icon: Plus, variant: 'indigo' as const },
+                  { value: 'student', labelKey: 'student', icon: GraduationCap, variant: 'blue' as const },
+                  { value: 'employee', labelKey: 'employee', icon: Briefcase, variant: 'purple' as const },
+                  { value: 'self-employed', labelKey: 'selfEmployed', icon: Rocket, variant: 'orange' as const },
+                  { value: 'intern', labelKey: 'intern', icon: FileText, variant: 'green' as const },
+                  { value: 'job_seeker', labelKey: 'jobSeeker', icon: Search, variant: 'yellow' as const },
+                  { value: 'other', labelKey: 'other', icon: Plus, variant: 'indigo' as const },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -184,7 +184,7 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="flex items-center gap-3">
                       <IconBadge icon={option.icon} variant={option.variant} size="md" />
-                      <span className="font-medium">{option.label}</span>
+                      <span className="font-medium">{resident.lifestyle.occupations[option.labelKey]}</span>
                     </div>
                   </button>
                 ))}
@@ -194,13 +194,13 @@ export default function ResidentLifestylePage() {
             {/* Wake Up Time */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Typical Wake-Up Time <span className="text-red-500">*</span>
+                {resident.lifestyle.wakeUpTime} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'early', label: 'Early Bird', icon: <Sun className="w-5 h-5" />, desc: 'Before 7am' },
-                  { value: 'average', label: 'Average', icon: <Sun className="w-5 h-5" />, desc: '7am - 9am' },
-                  { value: 'late', label: 'Night Owl', icon: <Moon className="w-5 h-5" />, desc: 'After 9am' },
+                  { value: 'early', labelKey: 'earlyBird', icon: <Sun className="w-5 h-5" />, descKey: 'before7am' },
+                  { value: 'average', labelKey: 'average', icon: <Sun className="w-5 h-5" />, descKey: '7amTo9am' },
+                  { value: 'late', labelKey: 'nightOwl', icon: <Moon className="w-5 h-5" />, descKey: 'after9am' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -214,8 +214,8 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="text-center">
                       <div className="flex justify-center mb-2 text-gray-600">{option.icon}</div>
-                      <div className="font-medium text-sm">{option.label}</div>
-                      <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                      <div className="font-medium text-sm">{resident.lifestyle.wakeUpOptions[option.labelKey]}</div>
+                      <div className="text-xs text-gray-500 mt-1">{resident.lifestyle.wakeUpOptions[option.descKey]}</div>
                     </div>
                   </button>
                 ))}
@@ -225,13 +225,13 @@ export default function ResidentLifestylePage() {
             {/* Sleep Time */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Typical Bedtime <span className="text-red-500">*</span>
+                {resident.lifestyle.bedtime} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'before_23h', label: 'Before 11pm', icon: <Moon className="w-5 h-5" /> },
-                  { value: '23h_01h', label: '11pm - 1am', icon: <Moon className="w-5 h-5" /> },
-                  { value: 'after_01h', label: 'After 1am', icon: <Moon className="w-5 h-5" /> },
+                  { value: 'before_23h', labelKey: 'before11pm', icon: <Moon className="w-5 h-5" /> },
+                  { value: '23h_01h', labelKey: '11pmTo1am', icon: <Moon className="w-5 h-5" /> },
+                  { value: 'after_01h', labelKey: 'after1am', icon: <Moon className="w-5 h-5" /> },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -245,7 +245,7 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="text-center">
                       <div className="flex justify-center mb-2 text-gray-600">{option.icon}</div>
-                      <div className="font-medium text-sm">{option.label}</div>
+                      <div className="font-medium text-sm">{resident.lifestyle.bedtimeOptions[option.labelKey]}</div>
                     </div>
                   </button>
                 ))}
@@ -255,12 +255,12 @@ export default function ResidentLifestylePage() {
             {/* Smoking */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Do you smoke? <span className="text-red-500">*</span>
+                {resident.lifestyle.smoking} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-2 gap-3">
                 {[
-                  { value: false, label: 'Non-smoker', icon: CigaretteOff, variant: 'green' as const },
-                  { value: true, label: 'Smoker', icon: Cigarette, variant: 'red' as const },
+                  { value: false, labelKey: 'nonSmoker', icon: CigaretteOff, variant: 'green' as const },
+                  { value: true, labelKey: 'smoker', icon: Cigarette, variant: 'red' as const },
                 ].map((option) => (
                   <button
                     key={option.value.toString()}
@@ -274,7 +274,7 @@ export default function ResidentLifestylePage() {
                   >
                     <div className="flex items-center gap-3 justify-center">
                       <IconBadge icon={option.icon} variant={option.variant} size="md" />
-                      <span className="font-medium">{option.label}</span>
+                      <span className="font-medium">{resident.lifestyle.smokingOptions[option.labelKey]}</span>
                     </div>
                   </button>
                 ))}
@@ -284,7 +284,7 @@ export default function ResidentLifestylePage() {
             {/* Cleanliness Preference */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Cleanliness Level (1 = Relaxed, 10 = Very Tidy)
+                {resident.lifestyle.cleanlinessLevel}
               </label>
               <div className="space-y-3">
                 <input
@@ -296,9 +296,9 @@ export default function ResidentLifestylePage() {
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">Relaxed</span>
+                  <span className="text-sm text-gray-500">{resident.lifestyle.cleanlinessOptions.relaxed}</span>
                   <span className="text-2xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent">{cleanlinessPreference}</span>
-                  <span className="text-sm text-gray-500">Very Tidy</span>
+                  <span className="text-sm text-gray-500">{resident.lifestyle.cleanlinessOptions.veryTidy}</span>
                 </div>
               </div>
             </div>

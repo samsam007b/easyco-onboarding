@@ -60,7 +60,7 @@ export default function PropertyMatchesPage() {
         .single();
 
       if (profile?.user_type !== 'searcher') {
-        toast.error(matching.properties?.toasts?.searcherOnly || 'Cette page est réservée aux chercheurs');
+        toast.error(matching.properties?.toasts?.searcherOnly || 'This page is for searchers only');
         router.push('/');
         return;
       }
@@ -101,7 +101,7 @@ export default function PropertyMatchesPage() {
       }
     } catch (error) {
       console.error('Failed to load matches:', error);
-      toast.error(matching.properties?.toasts?.loadError || 'Impossible de charger les matches');
+      toast.error(matching.properties?.toasts?.loadError || 'Unable to load matches');
     } finally {
       setIsLoading(false);
     }
@@ -110,7 +110,7 @@ export default function PropertyMatchesPage() {
   const generateMatches = async () => {
     try {
       setIsGenerating(true);
-      toast.info(matching.properties?.toasts?.generatingNew || 'Génération des nouveaux matches...');
+      toast.info(matching.properties?.toasts?.generatingNew || 'Generating new matches...');
 
       const response = await fetch('/api/matching/generate', {
         method: 'POST',
@@ -126,11 +126,11 @@ export default function PropertyMatchesPage() {
         throw new Error(data.error || 'Failed to generate matches');
       }
 
-      toast.success(`${data.matchesGenerated} ${matching.properties?.toasts?.newMatchesGenerated || 'nouveaux matches générés !'}`);
+      toast.success(`${data.matchesGenerated} ${matching.properties?.toasts?.newMatchesGenerated || 'new matches generated!'}`);
       await loadMatches();
     } catch (error) {
       console.error('Failed to generate matches:', error);
-      toast.error(matching.properties?.toasts?.generateError || 'Impossible de générer les matches');
+      toast.error(matching.properties?.toasts?.generateError || 'Unable to generate matches');
     } finally {
       setIsGenerating(false);
     }
@@ -161,11 +161,11 @@ export default function PropertyMatchesPage() {
         throw new Error('Failed to contact');
       }
 
-      toast.success(matching.properties?.toasts?.contactSent || 'Demande de contact envoyée !');
+      toast.success(matching.properties?.toasts?.contactSent || 'Contact request sent!');
       await loadMatches(false);
     } catch (error) {
       console.error('Failed to contact:', error);
-      toast.error(matching.properties?.toasts?.contactError || 'Impossible de contacter le propriétaire');
+      toast.error(matching.properties?.toasts?.contactError || 'Unable to contact owner');
     }
   };
 
@@ -179,11 +179,11 @@ export default function PropertyMatchesPage() {
         throw new Error('Failed to hide match');
       }
 
-      toast.success(matching.properties?.toasts?.matchHidden || 'Match masqué');
+      toast.success(matching.properties?.toasts?.matchHidden || 'Match hidden');
       setMatches(matches.filter((m) => m.id !== matchId));
     } catch (error) {
       console.error('Failed to hide match:', error);
-      toast.error(matching.properties?.toasts?.hideError || 'Impossible de masquer ce match');
+      toast.error(matching.properties?.toasts?.hideError || 'Unable to hide this match');
     }
   };
 
@@ -192,7 +192,7 @@ export default function PropertyMatchesPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-yellow-50">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600">{matching.common?.loadingMatches || 'Chargement de vos matches...'}</p>
+          <p className="text-gray-600">{matching.common?.loadingMatches || 'Loading your matches...'}</p>
         </div>
       </div>
     );
@@ -210,12 +210,12 @@ export default function PropertyMatchesPage() {
             <div>
               <h1 className="text-3xl font-bold text-[#4A148C] flex items-center gap-2">
                 <Sparkles className="w-8 h-8" />
-                {matching.properties?.title || 'Vos Matches'}
+                {matching.properties?.title || 'Your Matches'}
               </h1>
               <p className="text-gray-600">
                 {matches.length} {matches.length === 1
-                  ? (matching.properties?.propertySingular || 'bien trouvé')
-                  : (matching.properties?.propertiesPlural || 'biens trouvés')}
+                  ? (matching.properties?.propertySingular || 'property found')
+                  : (matching.properties?.propertiesPlural || 'properties found')}
               </p>
             </div>
           </div>
@@ -228,7 +228,7 @@ export default function PropertyMatchesPage() {
               size="sm"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`} />
-              {matching.properties?.refresh || 'Actualiser'}
+              {matching.properties?.refresh || 'Refresh'}
             </Button>
             <Button
               variant="default"
@@ -238,8 +238,8 @@ export default function PropertyMatchesPage() {
             >
               <TrendingUp className={`w-4 h-4 mr-2 ${isGenerating ? 'animate-pulse' : ''}`} />
               {isGenerating
-                ? (matching.properties?.generating || 'Génération...')
-                : (matching.properties?.generateNew || 'Générer nouveaux matches')}
+                ? (matching.properties?.generating || 'Generating...')
+                : (matching.properties?.generateNew || 'Generate new matches')}
             </Button>
           </div>
         </div>
@@ -258,7 +258,7 @@ export default function PropertyMatchesPage() {
             <Card>
               <CardContent className="p-4 text-center">
                 <div className="text-2xl font-bold text-blue-600">{statistics.viewed_matches}</div>
-                <div className="text-sm text-gray-600">{matching.properties?.stats?.viewed || 'Vus'}</div>
+                <div className="text-sm text-gray-600">{matching.properties?.stats?.viewed || 'Viewed'}</div>
               </CardContent>
             </Card>
             <Card>
@@ -266,7 +266,7 @@ export default function PropertyMatchesPage() {
                 <div className="text-2xl font-bold text-green-600">
                   {statistics.contacted_matches}
                 </div>
-                <div className="text-sm text-gray-600">{matching.properties?.stats?.contacted || 'Contactés'}</div>
+                <div className="text-sm text-gray-600">{matching.properties?.stats?.contacted || 'Contacted'}</div>
               </CardContent>
             </Card>
             <Card>
@@ -274,7 +274,7 @@ export default function PropertyMatchesPage() {
                 <div className="text-2xl font-bold text-orange-600">
                   {Math.round(statistics.average_match_score)}%
                 </div>
-                <div className="text-sm text-gray-600">{matching.properties?.stats?.averageScore || 'Score moyen'}</div>
+                <div className="text-sm text-gray-600">{matching.properties?.stats?.averageScore || 'Average score'}</div>
               </CardContent>
             </Card>
             <Card>
@@ -282,7 +282,7 @@ export default function PropertyMatchesPage() {
                 <div className="text-2xl font-bold text-green-600">
                   {Math.round(statistics.top_match_score)}%
                 </div>
-                <div className="text-sm text-gray-600">{matching.properties?.stats?.topScore || 'Meilleur score'}</div>
+                <div className="text-sm text-gray-600">{matching.properties?.stats?.topScore || 'Top score'}</div>
               </CardContent>
             </Card>
           </div>
@@ -294,11 +294,11 @@ export default function PropertyMatchesPage() {
             <div className="flex items-center gap-4 flex-wrap">
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-gray-600" />
-                <span className="text-sm font-medium text-gray-700">{matching.properties?.filters?.title || 'Filtres'}:</span>
+                <span className="text-sm font-medium text-gray-700">{matching.properties?.filters?.title || 'Filters'}:</span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">{matching.properties?.filters?.minScore || 'Score minimum'}:</span>
+                <span className="text-sm text-gray-600">{matching.properties?.filters?.minScore || 'Minimum score'}:</span>
                 <div className="flex gap-2">
                   {[50, 60, 70, 80].map((score) => (
                     <Badge
@@ -317,12 +317,12 @@ export default function PropertyMatchesPage() {
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-sm text-gray-600">{matching.properties?.filters?.status || 'Statut'}:</span>
+                <span className="text-sm text-gray-600">{matching.properties?.filters?.status || 'Status'}:</span>
                 <div className="flex gap-2">
                   {[
-                    { value: 'active', label: matching.properties?.filters?.active || 'Actifs' },
-                    { value: 'viewed', label: matching.properties?.filters?.viewed || 'Vus' },
-                    { value: 'contacted', label: matching.properties?.filters?.contacted || 'Contactés' },
+                    { value: 'active', label: matching.properties?.filters?.active || 'Active' },
+                    { value: 'viewed', label: matching.properties?.filters?.viewed || 'Viewed' },
+                    { value: 'contacted', label: matching.properties?.filters?.contacted || 'Contacted' },
                   ].map((status) => (
                     <Badge
                       key={status.value}
@@ -351,11 +351,11 @@ export default function PropertyMatchesPage() {
             <div className="text-6xl mb-4">
               <Home className="w-24 h-24 mx-auto text-gray-300" />
             </div>
-            <h3 className="text-2xl font-bold text-[#4A148C] mb-2">{matching.properties?.empty?.title || 'Aucun match trouvé'}</h3>
+            <h3 className="text-2xl font-bold text-[#4A148C] mb-2">{matching.properties?.empty?.title || 'No matches found'}</h3>
             <p className="text-gray-600 mb-6">
               {statusFilter.length === 0
-                ? (matching.properties?.empty?.noFilter || 'Sélectionnez au moins un filtre de statut')
-                : (matching.properties?.empty?.suggestion || 'Essayez de baisser le score minimum ou de générer de nouveaux matches')}
+                ? (matching.properties?.empty?.noFilter || 'Select at least one status filter')
+                : (matching.properties?.empty?.suggestion || 'Try lowering the minimum score or generating new matches')}
             </p>
             <div className="flex gap-3 justify-center">
               {minScore > 50 && (
@@ -367,14 +367,14 @@ export default function PropertyMatchesPage() {
                   }}
                 >
                   <Filter className="w-4 h-4 mr-2" />
-                  {matching.properties?.empty?.lowerScore || 'Baisser le score minimum'}
+                  {matching.properties?.empty?.lowerScore || 'Lower minimum score'}
                 </Button>
               )}
               <Button variant="default" onClick={generateMatches} disabled={isGenerating}>
                 <TrendingUp className="w-4 h-4 mr-2" />
                 {isGenerating
-                  ? (matching.properties?.generating || 'Génération...')
-                  : (matching.properties?.empty?.generate || 'Générer des matches')}
+                  ? (matching.properties?.generating || 'Generating...')
+                  : (matching.properties?.empty?.generate || 'Generate matches')}
               </Button>
             </div>
           </Card>
@@ -385,7 +385,7 @@ export default function PropertyMatchesPage() {
               <AlertCircle className="w-5 h-5 text-blue-600 mt-0.5" />
               <div className="flex-1">
                 <p className="text-sm text-blue-900">
-                  <strong>{matching.properties?.info?.title || 'Comment ça marche ?'}</strong> {matching.properties?.info?.description || 'Les matches sont calculés en fonction de votre budget (30%), localisation (25%), style de vie (20%), disponibilité (15%) et préférences (10%). Plus le score est élevé, plus le bien correspond à vos critères.'}
+                  <strong>{matching.properties?.info?.title || 'How does it work?'}</strong> {matching.properties?.info?.description || 'Matches are calculated based on your budget (30%), location (25%), lifestyle (20%), availability (15%) and preferences (10%). The higher the score, the better the property matches your criteria.'}
                 </p>
               </div>
             </div>

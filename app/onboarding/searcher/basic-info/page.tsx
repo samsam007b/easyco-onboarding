@@ -157,7 +157,7 @@ export default function BasicInfoPage() {
       progress={{
         current: 1,
         total: 6,
-        label: onboarding.basicInfo.progress || 'Étape 1 sur 6',
+        label: `${t('onboarding.progress.step')} 1 ${t('onboarding.progress.of')} 6`,
         stepName: onboarding.basicInfo.title,
       }}
       isLoading={isLoading}

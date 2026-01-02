@@ -136,7 +136,7 @@ export default function MaintenancePage() {
     if (!propertyId || !userId) return;
 
     if (!createForm.title || !createForm.description) {
-      alert(t?.errors?.fillRequired?.[language] || 'Veuillez remplir tous les champs obligatoires');
+      alert(t?.errors?.fillRequired?.[language] || 'Please fill in all required fields');
       return;
     }
 
@@ -154,11 +154,11 @@ export default function MaintenancePage() {
         resetForm();
         await loadData();
       } else {
-        alert(result.error || (t?.errors?.creationError?.[language] || 'Erreur lors de la création'));
+        alert(result.error || (t?.errors?.creationError?.[language] || 'Error creating request'));
       }
     } catch (error) {
       console.error('[Maintenance] Create error:', error);
-      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'An error occurred');
     } finally {
       setIsCreating(false);
     }
@@ -172,11 +172,11 @@ export default function MaintenancePage() {
         console.log('[Maintenance] ✅ Status updated');
         await loadData();
       } else {
-        alert(result.error || (t?.errors?.updateError?.[language] || 'Erreur lors de la mise à jour'));
+        alert(result.error || (t?.errors?.updateError?.[language] || 'Error updating status'));
       }
     } catch (error) {
       console.error('[Maintenance] Update error:', error);
-      alert(t?.errors?.genericError?.[language] || 'Une erreur est survenue');
+      alert(t?.errors?.genericError?.[language] || 'An error occurred');
     }
   };
 
@@ -207,7 +207,7 @@ export default function MaintenancePage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -227,7 +227,7 @@ export default function MaintenancePage() {
             variant="ghost"
             className="mb-4 rounded-full"
           >
-            ← {t?.backToHub?.[language] || 'Retour au hub'}
+            ← {t?.backToHub?.[language] || 'Back to hub'}
           </Button>
 
           <div className="flex items-center justify-between mb-6">
@@ -235,7 +235,7 @@ export default function MaintenancePage() {
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                 🔧 {t?.title?.[language] || 'Maintenance'}
               </h1>
-              <p className="text-gray-600">{t?.subtitle?.[language] || 'Signalez et suivez les problèmes techniques'}</p>
+              <p className="text-gray-600">{t?.subtitle?.[language] || 'Report and track technical issues'}</p>
             </div>
 
             <Button
@@ -243,7 +243,7 @@ export default function MaintenancePage() {
               className="rounded-full bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90"
             >
               <Plus className="w-4 h-4 mr-2" />
-              {t?.newTicket?.[language] || 'Nouveau ticket'}
+              {t?.newTicket?.[language] || 'New ticket'}
             </Button>
           </div>
 
@@ -287,7 +287,7 @@ export default function MaintenancePage() {
               />
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-amber-700">{t?.stats?.open?.[language] || 'Ouverts'}</p>
+                  <p className="text-sm font-medium text-amber-700">{t?.stats?.open?.[language] || 'Open'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.open_count || 0}
                   </p>
@@ -312,7 +312,7 @@ export default function MaintenancePage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.inProgress?.[language] || 'En cours'}</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.inProgress?.[language] || 'In progress'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.in_progress_count || 0}
                   </p>
@@ -334,7 +334,7 @@ export default function MaintenancePage() {
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.resolved?.[language] || 'Résolus'}</p>
+                  <p className="text-sm font-medium text-gray-600">{t?.stats?.resolved?.[language] || 'Resolved'}</p>
                   <p className="text-3xl font-bold text-gray-900 mt-1">
                     {stats?.resolved_count || 0}
                   </p>
@@ -399,11 +399,11 @@ export default function MaintenancePage() {
 
               <h3 className="text-xl font-bold text-gray-900 mb-2">
                 {filter === 'all'
-                  ? (t?.empty?.noRequests?.[language] || 'Aucune demande')
-                  : (t?.empty?.noRequestsFiltered?.[language] || `Aucune demande ${filter}`)}
+                  ? (t?.empty?.noRequests?.[language] || 'No requests')
+                  : (t?.empty?.noRequestsFiltered?.[language] || `No ${filter} requests`)}
               </h3>
               <p className="text-gray-500 mb-6 max-w-sm mx-auto">
-                {t?.empty?.createFirst?.[language] || 'Créez votre première demande de maintenance'}
+                {t?.empty?.createFirst?.[language] || 'Create your first maintenance request'}
               </p>
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -416,7 +416,7 @@ export default function MaintenancePage() {
                   }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
-                  {t?.empty?.newRequest?.[language] || 'Nouvelle demande'}
+                  {t?.empty?.newRequest?.[language] || 'New request'}
                 </Button>
               </motion.div>
             </motion.div>
@@ -487,13 +487,13 @@ export default function MaintenancePage() {
                           {request.estimated_cost && (
                             <div className="flex items-center gap-1">
                               <DollarSign className="w-3 h-3" />
-                              €{request.estimated_cost.toFixed(2)} ({t?.cost?.estimated?.[language] || 'estimé'})
+                              €{request.estimated_cost.toFixed(2)} ({t?.cost?.estimated?.[language] || 'estimated'})
                             </div>
                           )}
                           {request.actual_cost && (
                             <div className="flex items-center gap-1 font-bold text-green-700">
                               <DollarSign className="w-3 h-3" />
-                              €{request.actual_cost.toFixed(2)} ({t?.cost?.actual?.[language] || 'réel'})
+                              €{request.actual_cost.toFixed(2)} ({t?.cost?.actual?.[language] || 'actual'})
                             </div>
                           )}
                         </div>
@@ -512,7 +512,7 @@ export default function MaintenancePage() {
                               className="rounded-full text-xs"
                               onClick={() => handleUpdateStatus(request.id, 'in_progress')}
                             >
-                              {t?.actions?.start?.[language] || 'Commencer'}
+                              {t?.actions?.start?.[language] || 'Start'}
                             </Button>
                           )}
                           {request.status === 'in_progress' && (
@@ -522,7 +522,7 @@ export default function MaintenancePage() {
                               className="rounded-full text-xs"
                               onClick={() => handleUpdateStatus(request.id, 'resolved')}
                             >
-                              {t?.actions?.markResolved?.[language] || 'Marquer résolu'}
+                              {t?.actions?.markResolved?.[language] || 'Mark as resolved'}
                             </Button>
                           )}
                         </div>
@@ -559,7 +559,7 @@ export default function MaintenancePage() {
             className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t?.modal?.title?.[language] || 'Nouvelle demande'}</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t?.modal?.title?.[language] || 'New request'}</h2>
               <button
                 onClick={() => {
                   setShowCreateModal(false);
@@ -574,11 +574,11 @@ export default function MaintenancePage() {
             <div className="space-y-4">
               {/* Title */}
               <div>
-                <Label>{t?.modal?.requestTitle?.[language] || 'Titre'} *</Label>
+                <Label>{t?.modal?.requestTitle?.[language] || 'Title'} *</Label>
                 <Input
                   value={createForm.title}
                   onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
-                  placeholder={t?.modal?.titlePlaceholder?.[language] || "Ex: Fuite d'eau dans la salle de bain"}
+                  placeholder={t?.modal?.titlePlaceholder?.[language] || "e.g., Water leak in the bathroom"}
                   className="rounded-xl"
                 />
               </div>
@@ -591,14 +591,14 @@ export default function MaintenancePage() {
                   onChange={(e) =>
                     setCreateForm({ ...createForm, description: e.target.value })
                   }
-                  placeholder={t?.modal?.descriptionPlaceholder?.[language] || 'Décrivez le problème en détail...'}
+                  placeholder={t?.modal?.descriptionPlaceholder?.[language] || 'Describe the issue in detail...'}
                   className="rounded-xl min-h-[100px]"
                 />
               </div>
 
               {/* Category */}
               <div>
-                <Label>{t?.modal?.category?.[language] || 'Catégorie'} *</Label>
+                <Label>{t?.modal?.category?.[language] || 'Category'} *</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
                   {MAINTENANCE_CATEGORIES.map((cat) => (
                     <button
@@ -620,7 +620,7 @@ export default function MaintenancePage() {
 
               {/* Priority */}
               <div>
-                <Label>{t?.modal?.priority?.[language] || 'Priorité'} *</Label>
+                <Label>{t?.modal?.priority?.[language] || 'Priority'} *</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
                   {MAINTENANCE_PRIORITIES.map((pri) => (
                     <button
@@ -641,18 +641,18 @@ export default function MaintenancePage() {
 
               {/* Location */}
               <div>
-                <Label>{t?.modal?.location?.[language] || 'Localisation'} ({t?.modal?.optional?.[language] || 'optionnel'})</Label>
+                <Label>{t?.modal?.location?.[language] || 'Location'} ({t?.modal?.optional?.[language] || 'optional'})</Label>
                 <Input
                   value={createForm.location || ''}
                   onChange={(e) => setCreateForm({ ...createForm, location: e.target.value })}
-                  placeholder={t?.modal?.locationPlaceholder?.[language] || 'Ex: Cuisine, Salle de bain'}
+                  placeholder={t?.modal?.locationPlaceholder?.[language] || 'e.g., Kitchen, Bathroom'}
                   className="rounded-xl"
                 />
               </div>
 
               {/* Estimated Cost */}
               <div>
-                <Label>{t?.modal?.estimatedCost?.[language] || 'Coût estimé'} ({t?.modal?.optional?.[language] || 'optionnel'})</Label>
+                <Label>{t?.modal?.estimatedCost?.[language] || 'Estimated cost'} ({t?.modal?.optional?.[language] || 'optional'})</Label>
                 <div className="relative">
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <Input
@@ -675,7 +675,7 @@ export default function MaintenancePage() {
                   <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-resident-500 cursor-pointer transition-colors">
                     <Camera className="w-5 h-5 text-gray-400" />
                     <span className="text-sm text-gray-600">
-                      {t?.modal?.addPhotos?.[language] || 'Cliquez pour ajouter des photos'}
+                      {t?.modal?.addPhotos?.[language] || 'Click to add photos'}
                     </span>
                     <input
                       type="file"
@@ -721,7 +721,7 @@ export default function MaintenancePage() {
                 className="flex-1 rounded-full"
                 disabled={isCreating}
               >
-                {t?.modal?.cancel?.[language] || 'Annuler'}
+                {t?.modal?.cancel?.[language] || 'Cancel'}
               </Button>
               <Button
                 onClick={handleCreateRequest}
@@ -731,12 +731,12 @@ export default function MaintenancePage() {
                 {isCreating ? (
                   <>
                     <LoadingHouse size={20} className="mr-2" />
-                    {t?.modal?.creating?.[language] || 'Création...'}
+                    {t?.modal?.creating?.[language] || 'Creating...'}
                   </>
                 ) : (
                   <>
                     <Plus className="w-4 h-4 mr-2" />
-                    {t?.modal?.submit?.[language] || 'Créer la demande'}
+                    {t?.modal?.submit?.[language] || 'Create request'}
                   </>
                 )}
               </Button>

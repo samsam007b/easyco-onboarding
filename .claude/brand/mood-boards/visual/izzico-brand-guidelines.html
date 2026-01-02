@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Charte Graphique</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Couleurs Principales */
+            --mauve: #9c5698;
+            --orange: #FF5722;
+            --jaune: #FFB10B;
+
+            /* Couleurs Neutres */
+            --noir: #1a1a1a;
+            --gris-fonce: #4a4a4a;
+            --gris: #888888;
+            --gris-clair: #e5e5e5;
+            --blanc-casse: #FAF9F7;
+            --blanc: #FFFFFF;
+
+            /* Gradient */
+            --gradient-primary: linear-gradient(90deg, var(--mauve) 0%, var(--orange) 50%, var(--jaune) 100%);
+            --gradient-diagonal: linear-gradient(135deg, var(--mauve) 0%, var(--orange) 50%, var(--jaune) 100%);
+
+            /* Wordmark Weight System - Optical Balance */
+            --weight-i: 600;
+            --weight-z: 540;
+            --weight-c: 540;
+            --weight-o: 540;
+            --zz-spacing: -0.18em;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--blanc-casse);
+            color: var(--noir);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background: var(--noir);
+            padding: 2rem;
+            overflow-y: auto;
+            z-index: 100;
+        }
+
+        .nav-logo {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .nav-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-title {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gris);
+            margin-bottom: 0.75rem;
+        }
+
+        .nav-link {
+            display: block;
+            color: var(--gris-clair);
+            text-decoration: none;
+            font-size: 0.85rem;
+            padding: 0.5rem 0;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: white;
+        }
+
+        /* Main Content */
+        .main {
+            margin-left: 250px;
+            padding: 3rem;
+        }
+
+        /* Section */
+        .section {
+            max-width: 1100px;
+            margin: 0 auto 5rem;
+            scroll-margin-top: 2rem;
+        }
+
+        .section-header {
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gris-clair);
+        }
+
+        .section-number {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: var(--orange);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2rem;
+            color: var(--noir);
+        }
+
+        .section-intro {
+            color: var(--gris-fonce);
+            font-size: 1rem;
+            margin-top: 1rem;
+            max-width: 700px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--blanc);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--noir);
+            margin-bottom: 1rem;
+        }
+
+        .card-label {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gris);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Grid */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        /* ======================= */
+        /* LOGO SECTION */
+        /* ======================= */
+
+        .logo-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+        }
+
+        .logo-display.dark {
+            background: var(--noir);
+        }
+
+        .logo-display.light {
+            background: var(--blanc);
+            border: 1px solid var(--gris-clair);
+        }
+
+        .logo-display.gradient {
+            background: var(--gradient-diagonal);
+        }
+
+        .logo-display.mauve {
+            background: var(--mauve);
+        }
+
+        .logo-display.orange {
+            background: var(--orange);
+        }
+
+        .logo-display.jaune {
+            background: var(--jaune);
+        }
+
+        /* Wordmark Standard */
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 4rem;
+            letter-spacing: 0;
+            line-height: 1;
+        }
+
+        .wordmark.white { color: white; }
+        .wordmark.black { color: var(--noir); }
+
+        .wordmark.gradient-text {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Wordmark avec poids optiquement equilibres */
+        .wordmark-balanced {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 4rem;
+            line-height: 1;
+            display: inline;
+        }
+        .wordmark-balanced.white span { color: white; }
+        .wordmark-balanced.black span { color: var(--noir); }
+        .wordmark-balanced.gradient-text span {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .wordmark-balanced .l-i { font-weight: var(--weight-i); }
+        .wordmark-balanced .l-z { font-weight: var(--weight-z); }
+        .wordmark-balanced .l-c { font-weight: var(--weight-c); }
+        .wordmark-balanced .l-o { font-weight: var(--weight-o); }
+        .wordmark-balanced .zz-space { letter-spacing: var(--zz-spacing); }
+
+        /* Wordmark ZZ Superposes - Version Speciale */
+        .wordmark-zz-overlap {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 4rem;
+            line-height: 1;
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .wordmark-zz-overlap .part-i { }
+        .wordmark-zz-overlap .part-zz {
+            display: inline-flex;
+            letter-spacing: -0.15em; /* Les Z se chevauchent */
+        }
+        .wordmark-zz-overlap .part-ico { }
+
+        /* Version SVG pour ZZ parfaitement superposes */
+        .logo-svg-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-svg-container svg {
+            height: 80px;
+            width: auto;
+        }
+
+        /* ======================= */
+        /* COLORS SECTION */
+        /* ======================= */
+
+        .color-card {
+            background: var(--blanc);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .color-swatch {
+            height: 120px;
+        }
+
+        .color-swatch.mauve { background: var(--mauve); }
+        .color-swatch.orange { background: var(--orange); }
+        .color-swatch.jaune { background: var(--jaune); }
+        .color-swatch.noir { background: var(--noir); }
+        .color-swatch.gris { background: var(--gris); }
+        .color-swatch.blanc { background: var(--blanc); border: 1px solid var(--gris-clair); }
+        .color-swatch.gradient { background: var(--gradient-primary); }
+
+        .color-info {
+            padding: 1rem;
+        }
+
+        .color-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--noir);
+            margin-bottom: 0.5rem;
+        }
+
+        .color-hex {
+            font-family: 'DM Sans', monospace;
+            font-size: 0.8rem;
+            color: var(--gris);
+        }
+
+        .color-role {
+            font-size: 0.75rem;
+            color: var(--gris);
+            margin-top: 0.5rem;
+        }
+
+        /* ======================= */
+        /* TYPOGRAPHY SECTION */
+        /* ======================= */
+
+        .typo-sample {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--gris-clair);
+        }
+
+        .typo-sample:last-child {
+            border-bottom: none;
+        }
+
+        .typo-meta {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .typo-meta-item {
+            font-size: 0.7rem;
+            color: var(--gris);
+        }
+
+        .typo-meta-label {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-right: 0.5rem;
+        }
+
+        .typo-meta-value {
+            color: var(--noir);
+            font-weight: 500;
+        }
+
+        /* Typography Styles */
+        .typo-display {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 4rem;
+            color: var(--noir);
+            line-height: 1.1;
+        }
+
+        .typo-h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2.5rem;
+            color: var(--noir);
+            line-height: 1.2;
+        }
+
+        .typo-h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1.75rem;
+            color: var(--noir);
+            line-height: 1.3;
+        }
+
+        .typo-h3 {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1.25rem;
+            color: var(--noir);
+            line-height: 1.4;
+        }
+
+        .typo-body {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            font-size: 1rem;
+            color: var(--gris-fonce);
+            line-height: 1.6;
+        }
+
+        .typo-body-small {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 400;
+            font-size: 0.875rem;
+            color: var(--gris);
+            line-height: 1.5;
+        }
+
+        .typo-caption {
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 500;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gris);
+        }
+
+        .typo-button {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--noir);
+        }
+
+        /* ======================= */
+        /* USAGE EXAMPLES */
+        /* ======================= */
+
+        .example-card {
+            background: var(--blanc);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .example-preview {
+            padding: 2rem;
+            min-height: 300px;
+        }
+
+        .example-preview.dark {
+            background: var(--noir);
+        }
+
+        .example-info {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gris-clair);
+        }
+
+        /* Mock UI Elements */
+        .mock-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: var(--blanc);
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .mock-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .mock-nav-item {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--gris-fonce);
+        }
+
+        .mock-button {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.6rem 1.25rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .mock-button.primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+
+        .mock-button.secondary {
+            background: var(--blanc);
+            color: var(--noir);
+            border: 1px solid var(--gris-clair);
+        }
+
+        .mock-card {
+            background: var(--blanc);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+
+        .mock-card-title {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: var(--noir);
+            margin-bottom: 0.5rem;
+        }
+
+        .mock-card-text {
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.9rem;
+            color: var(--gris-fonce);
+        }
+
+        /* Social Post Mock */
+        .social-post {
+            background: var(--blanc);
+            border-radius: 12px;
+            padding: 1.5rem;
+            max-width: 400px;
+        }
+
+        .social-post-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .social-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gradient-diagonal);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .social-name {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: var(--noir);
+        }
+
+        .social-handle {
+            font-size: 0.8rem;
+            color: var(--gris);
+        }
+
+        /* ======================= */
+        /* DO'S AND DON'TS */
+        /* ======================= */
+
+        .do-dont-card {
+            background: var(--blanc);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .do-dont-preview {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+            background: var(--blanc-casse);
+        }
+
+        .do-dont-label {
+            padding: 1rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .do-dont-label.do {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .do-dont-label.dont {
+            background: #FFEBEE;
+            color: #C62828;
+        }
+
+        /* ======================= */
+        /* ZZ OVERLAP VARIATIONS */
+        /* ======================= */
+
+        .zz-variations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .zz-card {
+            background: var(--blanc);
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+
+        .zz-card.featured {
+            border: 3px solid var(--orange);
+        }
+
+        .zz-preview {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .zz-name {
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--gris);
+            margin-bottom: 0.5rem;
+        }
+
+        .zz-value {
+            font-size: 0.75rem;
+            color: var(--gris);
+            font-family: monospace;
+        }
+
+        /* ZZ Custom Letter Spacing - applique uniquement au premier Z */
+        .z-overlap-10 { letter-spacing: -0.10em; }
+        .z-overlap-15 { letter-spacing: -0.15em; }
+        .z-overlap-18 { letter-spacing: -0.18em; }
+        .z-overlap-20 { letter-spacing: -0.20em; }
+        .z-overlap-25 { letter-spacing: -0.25em; }
+
+        /* ======================= */
+        /* RESPONSIVE */
+        /* ======================= */
+
+        @media (max-width: 1024px) {
+            .nav {
+                width: 200px;
+            }
+            .main {
+                margin-left: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+            .main {
+                margin-left: 0;
+            }
+            .grid-2, .grid-3, .grid-4 {
+                grid-template-columns: 1fr;
+            }
+            .typo-display { font-size: 2.5rem; }
+            .wordmark { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo">izzico</div>
+
+        <div class="nav-section">
+            <div class="nav-title">Identite</div>
+            <a href="#logo" class="nav-link">Logo & Wordmark</a>
+            <a href="#zz-special" class="nav-link">Version ZZ Superposes</a>
+            <a href="#colors" class="nav-link">Couleurs</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Typographie</div>
+            <a href="#typography" class="nav-link">Systeme Typographique</a>
+            <a href="#hierarchy" class="nav-link">Hierarchie</a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Application</div>
+            <a href="#usage" class="nav-link">Exemples d'Usage</a>
+            <a href="#dos-donts" class="nav-link">Do's & Don'ts</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!-- ==================== -->
+        <!-- SECTION: LOGO -->
+        <!-- ==================== -->
+        <section id="logo" class="section">
+            <div class="section-header">
+                <div class="section-number">01</div>
+                <h1 class="section-title">Logo & Wordmark</h1>
+                <p class="section-intro">Le wordmark IzzIco utilise la police Fredoka avec des poids optiquement equilibres. Les lettres i restent a 600 tandis que z, c, o sont reduites a 540 pour compenser l'epaisseur visuelle des courbes.</p>
+            </div>
+
+            <!-- Logo Principal -->
+            <div class="card">
+                <div class="card-title">Logo Principal</div>
+                <div class="grid-2">
+                    <div>
+                        <div class="card-label">Sur fond sombre</div>
+                        <div class="logo-display dark">
+                            <span class="wordmark-balanced white"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-label">Sur fond clair</div>
+                        <div class="logo-display light">
+                            <span class="wordmark-balanced black"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Logo avec Gradient -->
+            <div class="card">
+                <div class="card-title">Version Gradient</div>
+                <div class="grid-2">
+                    <div>
+                        <div class="card-label">Texte en gradient</div>
+                        <div class="logo-display light">
+                            <span class="wordmark-balanced gradient-text"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-label">Sur fond gradient</div>
+                        <div class="logo-display gradient">
+                            <span class="wordmark-balanced white"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Versions Monochromes -->
+            <div class="card">
+                <div class="card-title">Versions sur Couleurs de Marque</div>
+                <div class="grid-3">
+                    <div>
+                        <div class="card-label">Sur Mauve (Owner)</div>
+                        <div class="logo-display mauve">
+                            <span class="wordmark-balanced white"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-label">Sur Orange (Resident)</div>
+                        <div class="logo-display orange">
+                            <span class="wordmark-balanced white"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-label">Sur Jaune (Searcher)</div>
+                        <div class="logo-display jaune">
+                            <span class="wordmark-balanced black"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specifications Techniques des Poids -->
+            <div class="card">
+                <div class="card-title">Specifications Techniques - Equilibrage Optique</div>
+                <p style="color: var(--gris); font-size: 0.85rem; margin-bottom: 1.5rem;">Les lettres courbes (z, c, o) sont reduites en poids pour compenser leur epaisseur visuelle naturelle par rapport aux lettres droites (i).</p>
+                <div class="grid-4">
+                    <div style="text-align: center; padding: 1.5rem; background: var(--blanc-casse); border-radius: 12px;">
+                        <div style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 4rem; color: var(--noir);">i</div>
+                        <div style="font-family: monospace; font-size: 0.8rem; color: var(--orange); margin-top: 0.5rem;">font-weight: 600</div>
+                        <div style="font-size: 0.7rem; color: var(--gris); margin-top: 0.25rem;">Lettres droites</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: var(--blanc-casse); border-radius: 12px;">
+                        <div style="font-family: 'Fredoka', sans-serif; font-weight: 540; font-size: 4rem; color: var(--noir);">z</div>
+                        <div style="font-family: monospace; font-size: 0.8rem; color: var(--mauve); margin-top: 0.5rem;">font-weight: 540</div>
+                        <div style="font-size: 0.7rem; color: var(--gris); margin-top: 0.25rem;">Diagonales</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: var(--blanc-casse); border-radius: 12px;">
+                        <div style="font-family: 'Fredoka', sans-serif; font-weight: 540; font-size: 4rem; color: var(--noir);">c</div>
+                        <div style="font-family: monospace; font-size: 0.8rem; color: var(--mauve); margin-top: 0.5rem;">font-weight: 540</div>
+                        <div style="font-size: 0.7rem; color: var(--gris); margin-top: 0.25rem;">Courbes ouvertes</div>
+                    </div>
+                    <div style="text-align: center; padding: 1.5rem; background: var(--blanc-casse); border-radius: 12px;">
+                        <div style="font-family: 'Fredoka', sans-serif; font-weight: 540; font-size: 4rem; color: var(--noir);">o</div>
+                        <div style="font-family: monospace; font-size: 0.8rem; color: var(--mauve); margin-top: 0.5rem;">font-weight: 540</div>
+                        <div style="font-size: 0.7rem; color: var(--gris); margin-top: 0.25rem;">Courbes fermees</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: var(--noir); border-radius: 8px; font-family: monospace; font-size: 0.75rem; color: var(--gris-clair);">
+                    <div style="color: var(--gris); margin-bottom: 0.5rem;">/* CSS Variables */</div>
+                    <div>--weight-i: <span style="color: var(--orange);">600</span>;</div>
+                    <div>--weight-z: <span style="color: var(--mauve);">540</span>;</div>
+                    <div>--weight-c: <span style="color: var(--mauve);">540</span>;</div>
+                    <div>--weight-o: <span style="color: var(--mauve);">540</span>;</div>
+                    <div>--zz-spacing: <span style="color: var(--jaune);">-0.18em</span>;</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION: ZZ SPECIAL -->
+        <!-- ==================== -->
+        <section id="zz-special" class="section">
+            <div class="section-header">
+                <div class="section-number">02</div>
+                <h1 class="section-title">Version ZZ Superposes</h1>
+                <p class="section-intro">Une version speciale ou les deux Z se chevauchent legerement, creant une ligature unique qui symbolise la connexion entre les utilisateurs.</p>
+            </div>
+
+            <!-- ZZ Overlap Variations -->
+            <div class="card">
+                <div class="card-title">Variations de Chevauchement</div>
+                <div class="zz-variations">
+                    <div class="zz-card">
+                        <div class="zz-name">Standard</div>
+                        <div class="zz-preview">
+                            <span class="wordmark-balanced black" style="font-size: 3.5rem;"><span class="l-i">i</span><span class="l-z">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                        <div class="zz-value">letter-spacing: 0</div>
+                    </div>
+                    <div class="zz-card">
+                        <div class="zz-name">Leger (-0.10em)</div>
+                        <div class="zz-preview">
+                            <span class="wordmark-balanced black" style="font-size: 3.5rem;"><span class="l-i">i</span><span class="l-z z-overlap-10">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                        <div class="zz-value">letter-spacing: -0.10em</div>
+                    </div>
+                    <div class="zz-card featured">
+                        <div class="zz-name">Recommande (-0.18em)</div>
+                        <div class="zz-preview">
+                            <span class="wordmark-balanced black" style="font-size: 3.5rem;"><span class="l-i">i</span><span class="l-z z-overlap-18">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                        <div class="zz-value">letter-spacing: -0.18em</div>
+                    </div>
+                    <div class="zz-card">
+                        <div class="zz-name">Prononce (-0.20em)</div>
+                        <div class="zz-preview">
+                            <span class="wordmark-balanced black" style="font-size: 3.5rem;"><span class="l-i">i</span><span class="l-z z-overlap-20">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                        <div class="zz-value">letter-spacing: -0.20em</div>
+                    </div>
+                    <div class="zz-card">
+                        <div class="zz-name">Extreme (-0.25em)</div>
+                        <div class="zz-preview">
+                            <span class="wordmark-balanced black" style="font-size: 3.5rem;"><span class="l-i">i</span><span class="l-z z-overlap-25">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        </div>
+                        <div class="zz-value">letter-spacing: -0.25em</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version ZZ SVG Custom -->
+            <div class="card">
+                <div class="card-title">Version SVG - ZZ Fusionnes</div>
+                <p style="color: var(--gris); font-size: 0.85rem; margin-bottom: 1.5rem;">Version vectorielle ou les Z partagent une partie commune, creant une vraie fusion.</p>
+
+                <div class="grid-2">
+                    <div>
+                        <div class="card-label">ZZ Connectes - Fond clair</div>
+                        <div class="logo-display light">
+                            <svg viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 60px; width: auto;">
+                                <!-- i -->
+                                <circle cx="18" cy="12" r="8" fill="#1a1a1a"/>
+                                <rect x="10" y="28" width="16" height="42" rx="8" fill="#1a1a1a"/>
+                                <!-- zz fusionnes -->
+                                <path d="M45 28 L95 28 L95 36 L62 62 L95 62 L95 70 L45 70 L45 62 L78 36 L45 36 Z" fill="#1a1a1a"/>
+                                <path d="M80 28 L130 28 L130 36 L97 62 L130 62 L130 70 L80 70 L80 62 L113 36 L80 36 Z" fill="#1a1a1a"/>
+                                <!-- i -->
+                                <circle cx="158" cy="12" r="8" fill="#1a1a1a"/>
+                                <rect x="150" y="28" width="16" height="42" rx="8" fill="#1a1a1a"/>
+                                <!-- c -->
+                                <path d="M205 49 C205 37 195 28 183 28 C171 28 161 38 161 50 C161 62 171 72 183 72 C195 72 205 63 205 51 L205 49 L189 49 C189 55 186 58 183 58 C180 58 177 55 177 50 C177 45 180 42 183 42 C186 42 189 45 189 49 L205 49 Z" fill="#1a1a1a"/>
+                                <!-- o -->
+                                <ellipse cx="230" cy="50" rx="20" ry="22" fill="#1a1a1a"/>
+                                <ellipse cx="230" cy="50" rx="10" ry="11" fill="#FAF9F7"/>
+                            </svg>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-label">ZZ Connectes - Fond sombre</div>
+                        <div class="logo-display dark">
+                            <svg viewBox="0 0 320 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="height: 60px; width: auto;">
+                                <!-- i -->
+                                <circle cx="18" cy="12" r="8" fill="white"/>
+                                <rect x="10" y="28" width="16" height="42" rx="8" fill="white"/>
+                                <!-- zz fusionnes -->
+                                <path d="M45 28 L95 28 L95 36 L62 62 L95 62 L95 70 L45 70 L45 62 L78 36 L45 36 Z" fill="white"/>
+                                <path d="M80 28 L130 28 L130 36 L97 62 L130 62 L130 70 L80 70 L80 62 L113 36 L80 36 Z" fill="white"/>
+                                <!-- i -->
+                                <circle cx="158" cy="12" r="8" fill="white"/>
+                                <rect x="150" y="28" width="16" height="42" rx="8" fill="white"/>
+                                <!-- c -->
+                                <path d="M205 49 C205 37 195 28 183 28 C171 28 161 38 161 50 C161 62 171 72 183 72 C195 72 205 63 205 51 L205 49 L189 49 C189 55 186 58 183 58 C180 58 177 55 177 50 C177 45 180 42 183 42 C186 42 189 45 189 49 L205 49 Z" fill="white"/>
+                                <!-- o -->
+                                <ellipse cx="230" cy="50" rx="20" ry="22" fill="white"/>
+                                <ellipse cx="230" cy="50" rx="10" ry="11" fill="#1a1a1a"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Version ZZ avec Gradient -->
+            <div class="card">
+                <div class="card-title">ZZ Superposes avec Gradient</div>
+                <div class="logo-display" style="background: var(--noir); min-height: 250px;">
+                    <span class="wordmark-balanced gradient-text" style="font-size: 6rem;"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION: COLORS -->
+        <!-- ==================== -->
+        <section id="colors" class="section">
+            <div class="section-header">
+                <div class="section-number">03</div>
+                <h1 class="section-title">Couleurs</h1>
+                <p class="section-intro">La palette IzzIco est composee de trois couleurs principales representant les trois types d'utilisateurs, plus des neutres pour l'equilibre.</p>
+            </div>
+
+            <!-- Couleurs Principales -->
+            <div class="card">
+                <div class="card-title">Couleurs Principales</div>
+                <div class="grid-3">
+                    <div class="color-card">
+                        <div class="color-swatch mauve"></div>
+                        <div class="color-info">
+                            <div class="color-name">Mauve</div>
+                            <div class="color-hex">#9c5698</div>
+                            <div class="color-role">Owner / Proprietaire</div>
+                        </div>
+                    </div>
+                    <div class="color-card">
+                        <div class="color-swatch orange"></div>
+                        <div class="color-info">
+                            <div class="color-name">Orange</div>
+                            <div class="color-hex">#FF5722</div>
+                            <div class="color-role">Resident / Colocataire</div>
+                        </div>
+                    </div>
+                    <div class="color-card">
+                        <div class="color-swatch jaune"></div>
+                        <div class="color-info">
+                            <div class="color-name">Jaune</div>
+                            <div class="color-hex">#FFB10B</div>
+                            <div class="color-role">Searcher / Chercheur</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gradient -->
+            <div class="card">
+                <div class="card-title">Gradient Signature</div>
+                <div class="color-card">
+                    <div class="color-swatch gradient" style="height: 150px;"></div>
+                    <div class="color-info">
+                        <div class="color-name">Gradient IzzIco</div>
+                        <div class="color-hex">linear-gradient(90deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)</div>
+                        <div class="color-role">Utilise pour les CTAs, accents et elements de marque forts</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Neutres -->
+            <div class="card">
+                <div class="card-title">Couleurs Neutres</div>
+                <div class="grid-4">
+                    <div class="color-card">
+                        <div class="color-swatch noir"></div>
+                        <div class="color-info">
+                            <div class="color-name">Noir</div>
+                            <div class="color-hex">#1a1a1a</div>
+                        </div>
+                    </div>
+                    <div class="color-card">
+                        <div class="color-swatch gris"></div>
+                        <div class="color-info">
+                            <div class="color-name">Gris</div>
+                            <div class="color-hex">#888888</div>
+                        </div>
+                    </div>
+                    <div class="color-card">
+                        <div class="color-swatch" style="background: #e5e5e5;"></div>
+                        <div class="color-info">
+                            <div class="color-name">Gris Clair</div>
+                            <div class="color-hex">#e5e5e5</div>
+                        </div>
+                    </div>
+                    <div class="color-card">
+                        <div class="color-swatch blanc"></div>
+                        <div class="color-info">
+                            <div class="color-name">Blanc Casse</div>
+                            <div class="color-hex">#FAF9F7</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION: TYPOGRAPHY -->
+        <!-- ==================== -->
+        <section id="typography" class="section">
+            <div class="section-header">
+                <div class="section-number">04</div>
+                <h1 class="section-title">Systeme Typographique</h1>
+                <p class="section-intro">IzzIco utilise deux polices complementaires: Fredoka pour les titres et elements de marque, DM Sans pour le corps de texte.</p>
+            </div>
+
+            <!-- Polices -->
+            <div class="card">
+                <div class="card-title">Polices de la Marque</div>
+                <div class="grid-2">
+                    <div style="padding: 2rem; background: var(--blanc-casse); border-radius: 12px;">
+                        <div class="card-label">Police Principale - Titres</div>
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 3rem; font-weight: 600; color: var(--noir); margin: 1rem 0;">Fredoka</div>
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 1rem; color: var(--gris);">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 1rem; color: var(--gris);">abcdefghijklmnopqrstuvwxyz</div>
+                        <div style="font-family: 'Fredoka', sans-serif; font-size: 1rem; color: var(--gris);">0123456789</div>
+                    </div>
+                    <div style="padding: 2rem; background: var(--blanc-casse); border-radius: 12px;">
+                        <div class="card-label">Police Secondaire - Corps</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 3rem; font-weight: 600; color: var(--noir); margin: 1rem 0;">DM Sans</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--gris);">ABCDEFGHIJKLMNOPQRSTUVWXYZ</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--gris);">abcdefghijklmnopqrstuvwxyz</div>
+                        <div style="font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--gris);">0123456789</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hierarchie -->
+            <div id="hierarchy" class="card">
+                <div class="card-title">Hierarchie Typographique</div>
+
+                <div class="typo-sample">
+                    <div class="typo-meta">
+                        <div class="typo-meta-item"><span class="typo-meta-label">Style:</span><span class="typo-meta-value">Display</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Police:</span><span class="typo-meta-value">Fredoka SemiBold</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Taille:</span><span class="typo-meta-value">4rem / 64px</span></div>
+                    </div>
+                    <div class="typo-display">Trouvez votre colocation ideale</div>
+                </div>
+
+                <div class="typo-sample">
+                    <div class="typo-meta">
+                        <div class="typo-meta-item"><span class="typo-meta-label">Style:</span><span class="typo-meta-value">Heading 1</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Police:</span><span class="typo-meta-value">Fredoka SemiBold</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Taille:</span><span class="typo-meta-value">2.5rem / 40px</span></div>
+                    </div>
+                    <div class="typo-h1">Connectez avec votre communaute</div>
+                </div>
+
+                <div class="typo-sample">
+                    <div class="typo-meta">
+                        <div class="typo-meta-item"><span class="typo-meta-label">Style:</span><span class="typo-meta-value">Heading 2</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Police:</span><span class="typo-meta-value">Fredoka Medium</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Taille:</span><span class="typo-meta-value">1.75rem / 28px</span></div>
+                    </div>
+                    <div class="typo-h2">Comment ca fonctionne</div>
+                </div>
+
+                <div class="typo-sample">
+                    <div class="typo-meta">
+                        <div class="typo-meta-item"><span class="typo-meta-label">Style:</span><span class="typo-meta-value">Heading 3</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Police:</span><span class="typo-meta-value">Fredoka Medium</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Taille:</span><span class="typo-meta-value">1.25rem / 20px</span></div>
+                    </div>
+                    <div class="typo-h3">Creez votre profil en quelques minutes</div>
+                </div>
+
+                <div class="typo-sample">
+                    <div class="typo-meta">
+                        <div class="typo-meta-item"><span class="typo-meta-label">Style:</span><span class="typo-meta-value">Body</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Police:</span><span class="typo-meta-value">DM Sans Regular</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Taille:</span><span class="typo-meta-value">1rem / 16px</span></div>
+                    </div>
+                    <div class="typo-body">IzzIco vous aide a trouver la colocation parfaite en connectant proprietaires, residents et chercheurs. Notre plateforme facilite la mise en relation et la gestion de votre vie en communaute.</div>
+                </div>
+
+                <div class="typo-sample">
+                    <div class="typo-meta">
+                        <div class="typo-meta-item"><span class="typo-meta-label">Style:</span><span class="typo-meta-value">Caption</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Police:</span><span class="typo-meta-value">DM Sans Medium</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Taille:</span><span class="typo-meta-value">0.75rem / 12px</span></div>
+                    </div>
+                    <div class="typo-caption">Derniere mise a jour: Janvier 2026</div>
+                </div>
+
+                <div class="typo-sample">
+                    <div class="typo-meta">
+                        <div class="typo-meta-item"><span class="typo-meta-label">Style:</span><span class="typo-meta-value">Button</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Police:</span><span class="typo-meta-value">Fredoka Medium</span></div>
+                        <div class="typo-meta-item"><span class="typo-meta-label">Taille:</span><span class="typo-meta-value">1rem / 16px</span></div>
+                    </div>
+                    <button class="mock-button primary">Commencer maintenant</button>
+                    <button class="mock-button secondary" style="margin-left: 1rem;">En savoir plus</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION: USAGE -->
+        <!-- ==================== -->
+        <section id="usage" class="section">
+            <div class="section-header">
+                <div class="section-number">05</div>
+                <h1 class="section-title">Exemples d'Usage</h1>
+                <p class="section-intro">Voici comment appliquer l'identite IzzIco sur differents supports.</p>
+            </div>
+
+            <!-- Header Example -->
+            <div class="card">
+                <div class="card-title">Header de Site Web</div>
+                <div class="example-preview" style="background: var(--blanc-casse);">
+                    <div class="mock-header">
+                        <span class="wordmark-balanced gradient-text" style="font-size: 1.5rem;"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                        <div class="mock-nav">
+                            <span class="mock-nav-item">Accueil</span>
+                            <span class="mock-nav-item">Comment ca marche</span>
+                            <span class="mock-nav-item">Annonces</span>
+                            <span class="mock-nav-item">Contact</span>
+                        </div>
+                        <button class="mock-button primary">Se connecter</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card Example -->
+            <div class="card">
+                <div class="card-title">Carte de Contenu</div>
+                <div class="grid-2">
+                    <div class="example-preview" style="background: var(--blanc-casse); display: flex; align-items: center; justify-content: center;">
+                        <div class="mock-card" style="max-width: 320px;">
+                            <div style="height: 150px; background: var(--gradient-diagonal); border-radius: 8px; margin-bottom: 1rem;"></div>
+                            <div class="mock-card-title">Appartement a Bruxelles</div>
+                            <div class="mock-card-text">Chambre disponible dans une colocation de 3 personnes. Ambiance conviviale et proche du centre.</div>
+                            <div style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                                <span style="font-family: 'Fredoka'; font-weight: 500; font-size: 1.25rem; color: var(--orange);">650 EUR/mois</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="example-preview dark" style="display: flex; align-items: center; justify-content: center;">
+                        <div class="social-post">
+                            <div class="social-post-header">
+                                <div class="social-avatar">iz</div>
+                                <div>
+                                    <div class="social-name">IzzIco</div>
+                                    <div class="social-handle">@izzico.be</div>
+                                </div>
+                            </div>
+                            <div style="font-family: 'DM Sans'; font-size: 0.9rem; color: var(--gris-fonce);">
+                                Nouvelle annonce disponible a Ixelles ! Une colocation de reve vous attend.
+                                <span style="color: var(--orange);">#colocation #bruxelles</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SECTION: DO'S & DON'TS -->
+        <!-- ==================== -->
+        <section id="dos-donts" class="section">
+            <div class="section-header">
+                <div class="section-number">06</div>
+                <h1 class="section-title">Do's & Don'ts</h1>
+                <p class="section-intro">Regles d'utilisation du logo et de l'identite visuelle.</p>
+            </div>
+
+            <div class="grid-2">
+                <div class="do-dont-card">
+                    <div class="do-dont-preview">
+                        <span class="wordmark-balanced gradient-text" style="font-size: 2.5rem;"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                    </div>
+                    <div class="do-dont-label do">Utiliser le gradient sur fond clair</div>
+                </div>
+                <div class="do-dont-card">
+                    <div class="do-dont-preview" style="background: var(--gris-clair);">
+                        <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 2.5rem; color: var(--gris);">izzico</span>
+                    </div>
+                    <div class="do-dont-label dont">Utiliser le logo en gris sur fond gris</div>
+                </div>
+                <div class="do-dont-card">
+                    <div class="do-dont-preview" style="background: var(--noir);">
+                        <span class="wordmark-balanced white" style="font-size: 2.5rem;"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                    </div>
+                    <div class="do-dont-label do">Version blanche sur fond sombre</div>
+                </div>
+                <div class="do-dont-card">
+                    <div class="do-dont-preview">
+                        <span style="font-family: 'Arial', sans-serif; font-weight: bold; font-size: 2.5rem; color: var(--noir);">izzico</span>
+                    </div>
+                    <div class="do-dont-label dont">Changer la police du logo</div>
+                </div>
+                <div class="do-dont-card">
+                    <div class="do-dont-preview">
+                        <span class="wordmark-balanced black" style="font-size: 2.5rem;"><span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span></span>
+                    </div>
+                    <div class="do-dont-label do">Respecter le chevauchement ZZ et les poids</div>
+                </div>
+                <div class="do-dont-card">
+                    <div class="do-dont-preview">
+                        <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 2.5rem; color: var(--noir); transform: skewX(-10deg); display: inline-block;">izzico</span>
+                    </div>
+                    <div class="do-dont-label dont">Deformer ou incliner le logo</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

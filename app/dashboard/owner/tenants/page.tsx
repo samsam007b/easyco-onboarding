@@ -309,10 +309,10 @@ export default function TenantsPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Chargement des locataires...
+            Loading tenants...
           </h3>
           <p className="text-gray-600">
-            Récupération des données depuis Supabase
+            Fetching data from database
           </p>
         </div>
       </div>

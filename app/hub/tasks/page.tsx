@@ -67,19 +67,19 @@ import type { TaskWithDetails, CreateTaskForm, CompleteTaskForm } from '@/types/
 
 // Catégories - Toutes en nuances d'orange pour cohérence interface Resident
 const CATEGORY_OPTIONS = [
-  { value: 'cleaning', label: 'Nettoyage', icon: Brush, color: 'bg-[#FFF5F0] text-[#e05747]' },
-  { value: 'groceries', label: 'Courses', icon: ShoppingCart, color: 'bg-[#FFEDE5] text-[#f8572b]' },
-  { value: 'maintenance', label: 'Entretien', icon: Wrench, color: 'bg-[#FFD9C7] text-[#ff651e]' },
-  { value: 'admin', label: 'Administratif', icon: ClipboardList, color: 'bg-[#fff5f0] text-[#ff7b19]' },
-  { value: 'other', label: 'Autre', icon: Package, color: 'bg-gray-100 text-gray-600' },
+  { value: 'cleaning', label: 'Cleaning', icon: Brush, color: 'bg-[#FFF5F0] text-[#e05747]' },
+  { value: 'groceries', label: 'Groceries', icon: ShoppingCart, color: 'bg-[#FFEDE5] text-[#f8572b]' },
+  { value: 'maintenance', label: 'Maintenance', icon: Wrench, color: 'bg-[#FFD9C7] text-[#ff651e]' },
+  { value: 'admin', label: 'Admin', icon: ClipboardList, color: 'bg-[#fff5f0] text-[#ff7b19]' },
+  { value: 'other', label: 'Other', icon: Package, color: 'bg-gray-100 text-gray-600' },
 ];
 
 // Priorités - Orange dominant + Rouge pastel uniquement pour urgent (sémantique)
 const PRIORITY_OPTIONS = [
-  { value: 'low', label: 'Basse', color: 'bg-gray-100 text-gray-500' },
-  { value: 'medium', label: 'Moyenne', color: 'bg-[#FFF5F0] text-[#ff7b19]' },
-  { value: 'high', label: 'Haute', color: 'bg-[#FFEDE5] text-[#f8572b]' },
-  { value: 'urgent', label: 'Urgente', color: 'bg-[#FDF5F5] text-[#D08080]' }, // Rouge pastel sémantique
+  { value: 'low', label: 'Low', color: 'bg-gray-100 text-gray-500' },
+  { value: 'medium', label: 'Medium', color: 'bg-[#FFF5F0] text-[#ff7b19]' },
+  { value: 'high', label: 'High', color: 'bg-[#FFEDE5] text-[#f8572b]' },
+  { value: 'urgent', label: 'Urgent', color: 'bg-[#FDF5F5] text-[#D08080]' }, // Rouge pastel sémantique
 ];
 
 export default function ModernTasksPage() {
@@ -168,10 +168,10 @@ export default function ModernTasksPage() {
         });
         await loadData();
       } else {
-        alert(`Erreur: ${result.error}`);
+        alert(`Error: ${result.error}`);
       }
     } catch (error: any) {
-      alert(`Erreur: ${error.message}`);
+      alert(`Error: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -194,10 +194,10 @@ export default function ModernTasksPage() {
         setCompleteForm({ task_id: '', completion_notes: '' });
         await loadData();
       } else {
-        alert(`Erreur: ${result.error}`);
+        alert(`Error: ${result.error}`);
       }
     } catch (error: any) {
-      alert(`Erreur: ${error.message}`);
+      alert(`Error: ${error.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -208,13 +208,13 @@ export default function ModernTasksPage() {
       const result = await taskService.rotateTask(taskId);
 
       if (result.success) {
-        alert(`Tâche assignée à ${result.new_assignee_name}`);
+        alert(`Task assigned to ${result.new_assignee_name}`);
         await loadData();
       } else {
-        alert(`Erreur: ${result.message}`);
+        alert(`Error: ${result.message}`);
       }
     } catch (error: any) {
-      alert(`Erreur: ${error.message}`);
+      alert(`Error: ${error.message}`);
     }
   };
 
@@ -254,9 +254,9 @@ export default function ModernTasksPage() {
               <CheckCircle2 className="w-6 h-6 text-white" />
             </motion.div>
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">{hub.tasks?.title || 'Tâches'}</h1>
+              <h1 className="text-2xl font-bold text-gray-900">{hub.tasks?.title || 'Tasks'}</h1>
               <p className="text-sm text-gray-500">
-                {pendingTasks.length} {hub.tasks?.pending || 'en attente'} • {myTasks.length} {hub.tasks?.forMe || 'pour moi'}
+                {pendingTasks.length} {hub.tasks?.pending || 'pending'} • {myTasks.length} {hub.tasks?.forMe || 'for me'}
               </p>
             </div>
           </div>
@@ -272,7 +272,7 @@ export default function ModernTasksPage() {
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
-              {hub.tasks?.newTask || 'Nouvelle tâche'}
+              {hub.tasks?.newTask || 'New task'}
             </Button>
           </motion.div>
         </motion.div>
@@ -292,7 +292,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-700">{hub.tasks?.stats?.myTasks || 'Mes tâches'}</span>
+              <span className="text-sm font-medium text-orange-700">{hub.tasks?.stats?.myTasks || 'My tasks'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
@@ -301,7 +301,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{myTasks.length}</p>
-            <p className="text-xs text-orange-600 font-medium mt-2">{hub.tasks?.stats?.toDo || 'à faire'}</p>
+            <p className="text-xs text-orange-600 font-medium mt-2">{hub.tasks?.stats?.toDo || 'to do'}</p>
           </motion.div>
 
           {/* Pending Card - Gris neutre (pas de couleur sémantique) */}
@@ -317,7 +317,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #9CA3AF, #D1D5DB)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-600">{hub.tasks?.stats?.pendingLabel || 'En attente'}</span>
+              <span className="text-sm font-medium text-gray-600">{hub.tasks?.stats?.pendingLabel || 'Pending'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #9CA3AF, #D1D5DB)' }}
@@ -326,7 +326,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{pendingTasks.length}</p>
-            <p className="text-xs text-gray-500 font-medium mt-2">{pendingTasks.length !== 1 ? (hub.tasks?.stats?.tasksPlural || 'tâches') : (hub.tasks?.stats?.taskSingular || 'tâche')}</p>
+            <p className="text-xs text-gray-500 font-medium mt-2">{pendingTasks.length !== 1 ? (hub.tasks?.stats?.tasksPlural || 'tasks') : (hub.tasks?.stats?.taskSingular || 'task')}</p>
           </motion.div>
 
           {/* Completed Card - Vert pastel (sémantique muted) */}
@@ -342,7 +342,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#5A9B7A]">{hub.tasks?.stats?.completed || 'Terminées'}</span>
+              <span className="text-sm font-medium text-[#5A9B7A]">{hub.tasks?.stats?.completed || 'Completed'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
@@ -351,7 +351,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{completedTasks.length}</p>
-            <p className="text-xs text-[#6BA888] font-medium mt-2">{completedTasks.length !== 1 ? (hub.tasks?.stats?.completedPlural || 'complétées') : (hub.tasks?.stats?.completedSingular || 'complétée')}</p>
+            <p className="text-xs text-[#6BA888] font-medium mt-2">{completedTasks.length !== 1 ? (hub.tasks?.stats?.completedPlural || 'completed') : (hub.tasks?.stats?.completedSingular || 'completed')}</p>
           </motion.div>
 
           {/* Overdue Card - Rouge pastel (sémantique muted) */}
@@ -367,7 +367,7 @@ export default function ModernTasksPage() {
               style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#B06060]">{hub.tasks?.stats?.overdue || 'En retard'}</span>
+              <span className="text-sm font-medium text-[#B06060]">{hub.tasks?.stats?.overdue || 'Overdue'}</span>
               <div
                 className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
@@ -376,7 +376,7 @@ export default function ModernTasksPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{overdueTasks.length}</p>
-            <p className="text-xs text-[#C07070] font-medium mt-2">{overdueTasks.length !== 1 ? (hub.tasks?.stats?.urgentPlural || 'urgentes') : (hub.tasks?.stats?.urgentSingular || 'urgente')}</p>
+            <p className="text-xs text-[#C07070] font-medium mt-2">{overdueTasks.length !== 1 ? (hub.tasks?.stats?.urgentPlural || 'urgent') : (hub.tasks?.stats?.urgentSingular || 'urgent')}</p>
           </motion.div>
         </motion.div>
 
@@ -394,7 +394,7 @@ export default function ModernTasksPage() {
             >
               <ClipboardList className="w-5 h-5 text-white" />
             </div>
-            <h3 className="text-base font-bold text-gray-900">{hub.tasks?.allTasks || 'Toutes les tâches'}</h3>
+            <h3 className="text-base font-bold text-gray-900">{hub.tasks?.allTasks || 'All tasks'}</h3>
             <Badge
               className="text-xs px-2 py-0.5 font-bold border-none"
               style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)', color: 'white' }}
@@ -432,8 +432,8 @@ export default function ModernTasksPage() {
                       <Sparkles className="w-5 h-5 text-white" />
                     </motion.div>
                   </motion.div>
-                  <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'Aucune tâche en attente'}</p>
-                  <p className="text-sm text-gray-500">{hub.tasks?.emptyState?.description || 'Tout est fait !'}</p>
+                  <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'No pending tasks'}</p>
+                  <p className="text-sm text-gray-500">{hub.tasks?.emptyState?.description || 'All done!'}</p>
                 </motion.div>
               ) : (
                 pendingTasks.map((task) => {
@@ -490,7 +490,7 @@ export default function ModernTasksPage() {
                                 }}
                               >
                                 <AlertCircle className="w-3 h-3 mr-1" />
-                                {hub.tasks?.overdue || 'En retard'}
+                                {hub.tasks?.overdue || 'Overdue'}
                               </Badge>
                             )}
                           </div>
@@ -535,7 +535,7 @@ export default function ModernTasksPage() {
                               }}
                             >
                               <Check className="w-4 h-4 mr-1" />
-                              {hub.tasks?.complete || 'Terminer'}
+                              {hub.tasks?.complete || 'Complete'}
                             </Button>
                           </motion.div>
                         )}
@@ -590,11 +590,11 @@ export default function ModernTasksPage() {
               </motion.div>
               <div>
                 <h2 className="text-xl font-bold text-gray-900">
-                  {hub.tasks?.modal?.newTask || 'Nouvelle tâche'}
+                  {hub.tasks?.modal?.newTask || 'New task'}
                 </h2>
                 <p className="text-sm text-gray-500 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
-                  Organise ta coloc efficacement
+                  {hub.tasks?.modal?.subtitle || 'Organize your coliving efficiently'}
                 </p>
               </div>
             </div>
@@ -611,12 +611,12 @@ export default function ModernTasksPage() {
                 >
                   <FileText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
                 </div>
-                {hub.tasks?.modal?.titleLabel || 'Titre'} *
+                {hub.tasks?.modal?.titleLabel || 'Title'} *
               </label>
               <Input
                 value={createForm.title}
                 onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
-                placeholder={hub.tasks?.modal?.titlePlaceholder || 'Ex: Nettoyer la cuisine'}
+                placeholder={hub.tasks?.modal?.titlePlaceholder || 'E.g.: Clean the kitchen'}
                 className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
               />
             </div>
@@ -635,7 +635,7 @@ export default function ModernTasksPage() {
               <Textarea
                 value={createForm.description}
                 onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                placeholder={hub.tasks?.modal?.descriptionPlaceholder || 'Détails (optionnel)'}
+                placeholder={hub.tasks?.modal?.descriptionPlaceholder || 'Details (optional)'}
                 className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
                 rows={3}
               />
@@ -651,7 +651,7 @@ export default function ModernTasksPage() {
                   >
                     <Package className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
                   </div>
-                  {hub.tasks?.modal?.categoryLabel || 'Catégorie'}
+                  {hub.tasks?.modal?.categoryLabel || 'Category'}
                 </label>
                 <select
                   value={createForm.category}
@@ -674,7 +674,7 @@ export default function ModernTasksPage() {
                   >
                     <AlertCircle className="w-3.5 h-3.5" style={{ color: '#a855f7' }} />
                   </div>
-                  {hub.tasks?.modal?.priorityLabel || 'Priorité'}
+                  {hub.tasks?.modal?.priorityLabel || 'Priority'}
                 </label>
                 <select
                   value={createForm.priority}
@@ -699,7 +699,7 @@ export default function ModernTasksPage() {
                 >
                   <Calendar className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
                 </div>
-                {hub.tasks?.modal?.dueDateLabel || "Date d'échéance"}
+                {hub.tasks?.modal?.dueDateLabel || 'Due date'}
               </label>
               <Input
                 type="date"
@@ -718,7 +718,7 @@ export default function ModernTasksPage() {
                   className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
                   style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#ff651e' }}
                 >
-                  {hub.tasks?.modal?.cancel || 'Annuler'}
+                  {hub.tasks?.modal?.cancel || 'Cancel'}
                 </Button>
               </motion.div>
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
@@ -731,7 +731,7 @@ export default function ModernTasksPage() {
                     boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
                   }}
                 >
-                  {isSubmitting ? (hub.tasks?.modal?.creating || 'Création...') : (hub.tasks?.modal?.create || 'Créer')}
+                  {isSubmitting ? (hub.tasks?.modal?.creating || 'Creating...') : (hub.tasks?.modal?.create || 'Create')}
                 </Button>
               </motion.div>
             </div>
@@ -745,7 +745,7 @@ export default function ModernTasksPage() {
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-[#7CB89B]" />
-              {hub.tasks?.completeModal?.title || 'Terminer la tâche'}
+              {hub.tasks?.completeModal?.title || 'Complete task'}
             </DialogTitle>
           </DialogHeader>
 
@@ -781,12 +781,12 @@ export default function ModernTasksPage() {
               <div>
                 <Label className="font-semibold text-gray-700 flex items-center gap-2">
                   <PenLine className="w-4 h-4" style={{ color: '#ff651e' }} />
-                  {hub.tasks?.completeModal?.notesLabel || 'Notes de complétion'}
+                  {hub.tasks?.completeModal?.notesLabel || 'Completion notes'}
                 </Label>
                 <Textarea
                   value={completeForm.completion_notes}
                   onChange={(e) => setCompleteForm({ ...completeForm, completion_notes: e.target.value })}
-                  placeholder={hub.tasks?.completeModal?.notesPlaceholder || 'Comment ça s\'est passé ? (optionnel)'}
+                  placeholder={hub.tasks?.completeModal?.notesPlaceholder || 'How did it go? (optional)'}
                   className="rounded-xl mt-2 border-2 border-gray-200 focus:border-[#9ECDB5]"
                 />
               </div>
@@ -797,7 +797,7 @@ export default function ModernTasksPage() {
                   onClick={() => setShowCompleteModal(false)}
                   className="flex-1 rounded-full border-2 border-gray-200 hover:border-gray-300 font-semibold"
                 >
-                  {hub.tasks?.modal?.cancel || 'Annuler'}
+                  {hub.tasks?.modal?.cancel || 'Cancel'}
                 </Button>
                 <Button
                   onClick={handleCompleteTask}
@@ -809,7 +809,7 @@ export default function ModernTasksPage() {
                   }}
                 >
                   <Check className="w-4 h-4 mr-2" />
-                  {isSubmitting ? (hub.tasks?.completeModal?.completing || 'Finalisation...') : (hub.tasks?.complete || 'Terminer')}
+                  {isSubmitting ? (hub.tasks?.completeModal?.completing || 'Completing...') : (hub.tasks?.complete || 'Complete')}
                 </Button>
               </div>
             </div>

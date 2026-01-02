@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Role Icons & Combined Logo Exploration</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-light: #252540;
+            --text: #edf2f4;
+            --text-muted: #8d99ae;
+
+            /* Role colors from design system */
+            --searcher: #FFB10B;
+            --searcher-light: #FFF9E6;
+            --owner: #9B59B6;
+            --owner-light: #F3E8FF;
+            --resident: #E67E22;
+            --resident-light: #FFF0E6;
+
+            --accent: #4361ee;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            font-size: 1.8rem;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        /* Section Styling */
+        .section {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-title .badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            background: var(--accent);
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        /* Role Icons Grid */
+        .role-icons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .role-card {
+            text-align: center;
+        }
+
+        .role-card .icon-container {
+            width: 120px;
+            height: 120px;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            position: relative;
+        }
+
+        .role-card .icon-container svg {
+            width: 64px;
+            height: 64px;
+        }
+
+        .role-card.searcher .icon-container {
+            background: linear-gradient(135deg, var(--searcher), #F9A825);
+        }
+
+        .role-card.owner .icon-container {
+            background: linear-gradient(135deg, var(--owner), #8E44AD);
+        }
+
+        .role-card.resident .icon-container {
+            background: linear-gradient(135deg, var(--resident), #D35400);
+        }
+
+        .role-card .role-name {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .role-card .role-desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .role-card .circle-highlight {
+            font-size: 0.75rem;
+            margin-top: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            color: var(--accent);
+        }
+
+        /* Anatomy Section */
+        .anatomy-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .anatomy-item {
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+        }
+
+        .anatomy-item svg {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1rem;
+        }
+
+        .anatomy-item .highlight-circle {
+            fill: var(--accent);
+            opacity: 0.3;
+        }
+
+        .anatomy-item .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .anatomy-item .part-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        /* Combined Concept Section */
+        .combined-section {
+            text-align: center;
+        }
+
+        .combined-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .combined-card {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 1.5rem;
+        }
+
+        .combined-card .preview {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1rem;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--searcher), var(--owner), var(--resident));
+        }
+
+        .combined-card .preview svg {
+            width: 90px;
+            height: 90px;
+        }
+
+        .combined-card .title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .combined-card .desc {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* Comparison with "i" */
+        .comparison-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .comparison-item {
+            text-align: center;
+        }
+
+        .comparison-item .preview-box {
+            width: 120px;
+            height: 120px;
+            border-radius: 27px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .comparison-item .preview-box.gradient {
+            background: linear-gradient(135deg, #4361ee, #7209b7);
+        }
+
+        .comparison-item .preview-box.multi {
+            background: linear-gradient(135deg, var(--searcher) 0%, var(--owner) 50%, var(--resident) 100%);
+        }
+
+        .comparison-item .preview-box .i-char {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 72px;
+            font-weight: 600;
+            color: white;
+        }
+
+        .comparison-item .label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .vs-badge {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+
+        /* App Icon Simulation */
+        .app-icon-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 16px;
+        }
+
+        .app-icon-item {
+            text-align: center;
+        }
+
+        .app-icon-sim {
+            border-radius: 22%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+        }
+
+        .app-icon-sim.size-60 {
+            width: 60px;
+            height: 60px;
+        }
+
+        .app-icon-sim.size-120 {
+            width: 120px;
+            height: 120px;
+        }
+
+        .app-icon-sim svg {
+            width: 60%;
+            height: 60%;
+        }
+
+        .app-icon-item .size-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        /* Insights */
+        .insight-box {
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.1), rgba(114, 9, 183, 0.1));
+            border: 1px solid rgba(67, 97, 238, 0.3);
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-top: 1.5rem;
+        }
+
+        .insight-box .title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .insight-box ul {
+            list-style: none;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .insight-box li {
+            padding: 0.25rem 0;
+            padding-left: 1.25rem;
+            position: relative;
+        }
+
+        .insight-box li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            .role-icons-grid,
+            .anatomy-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-row {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Exploration des Icônes de Rôle</h1>
+    <p class="subtitle">Loupe (Searcher) + Clé (Owner) + Personne (Resident) → Logo unifié ?</p>
+
+    <!-- Section 1: Les 3 icônes séparées -->
+    <div class="section">
+        <h2 class="section-title">
+            <span>1. Les 3 icônes de rôle</span>
+            <span class="badge">DESIGN SYSTEM</span>
+        </h2>
+
+        <div class="role-icons-grid">
+            <!-- Searcher -->
+            <div class="role-card searcher">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"/>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                    </svg>
+                </div>
+                <div class="role-name">Searcher</div>
+                <div class="role-desc">Chercheur de logement</div>
+                <div class="circle-highlight">Cercle = verre de la loupe</div>
+            </div>
+
+            <!-- Owner -->
+            <div class="role-card owner">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="7.5" cy="15.5" r="5"/>
+                        <path d="m21 2-9.6 9.6"/>
+                        <path d="m15.5 7.5 3 3L22 7l-3-3"/>
+                    </svg>
+                </div>
+                <div class="role-name">Owner</div>
+                <div class="role-desc">Propriétaire</div>
+                <div class="circle-highlight">Cercle = tête de la clé</div>
+            </div>
+
+            <!-- Resident -->
+            <div class="role-card resident">
+                <div class="icon-container">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="5"/>
+                        <path d="M20 21a8 8 0 0 0-16 0"/>
+                    </svg>
+                </div>
+                <div class="role-name">Resident</div>
+                <div class="role-desc">Résident actuel</div>
+                <div class="circle-highlight">Cercle = tête de la personne</div>
+            </div>
+        </div>
+
+        <div class="insight-box">
+            <div class="title">Le point commun : le cercle</div>
+            <ul>
+                <li>Les 3 icônes partagent un élément circulaire central</li>
+                <li>Ce cercle peut servir de point d'ancrage pour une fusion</li>
+                <li>Chaque "appendice" représente une fonction distincte</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Section 2: Anatomie des cercles -->
+    <div class="section">
+        <h2 class="section-title">
+            <span>2. Anatomie : le cercle partagé</span>
+        </h2>
+
+        <div class="anatomy-grid">
+            <div class="anatomy-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--searcher)" stroke-width="2">
+                    <circle cx="11" cy="11" r="8" class="highlight-circle" fill="var(--searcher)" fill-opacity="0.2"/>
+                    <circle cx="11" cy="11" r="8"/>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" stroke-dasharray="2 2"/>
+                </svg>
+                <div class="label">Loupe</div>
+                <div class="part-name">Cercle + Manche diagonal</div>
+            </div>
+
+            <div class="anatomy-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--owner)" stroke-width="2">
+                    <circle cx="7.5" cy="15.5" r="5" class="highlight-circle" fill="var(--owner)" fill-opacity="0.2"/>
+                    <circle cx="7.5" cy="15.5" r="5"/>
+                    <path d="m21 2-9.6 9.6" stroke-dasharray="2 2"/>
+                    <path d="m15.5 7.5 3 3L22 7l-3-3" stroke-dasharray="2 2"/>
+                </svg>
+                <div class="label">Clé</div>
+                <div class="part-name">Cercle + Tige + Dents</div>
+            </div>
+
+            <div class="anatomy-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--resident)" stroke-width="2">
+                    <circle cx="12" cy="8" r="5" class="highlight-circle" fill="var(--resident)" fill-opacity="0.2"/>
+                    <circle cx="12" cy="8" r="5"/>
+                    <path d="M20 21a8 8 0 0 0-16 0" stroke-dasharray="2 2"/>
+                </svg>
+                <div class="label">Personne</div>
+                <div class="part-name">Cercle (tête) + Corps</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 3: Concepts combinés -->
+    <div class="section combined-section">
+        <h2 class="section-title" style="justify-content: center;">
+            <span>3. Concepts de fusion</span>
+            <span class="badge">EXPLORATION</span>
+        </h2>
+
+        <div class="combined-grid">
+            <!-- Concept A: Cercle central avec 3 appendices -->
+            <div class="combined-card">
+                <div class="preview">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <!-- Cercle central partagé -->
+                        <circle cx="50" cy="50" r="20" fill="white" fill-opacity="0.9"/>
+
+                        <!-- Manche loupe (bas-droite) -->
+                        <line x1="64" y1="64" x2="82" y2="82" stroke="white" stroke-width="6" stroke-linecap="round"/>
+
+                        <!-- Tige clé (haut-droite) -->
+                        <line x1="64" y1="36" x2="85" y2="15" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M80 20 L88 12 L92 16 L84 24 L80 24 Z" fill="white"/>
+
+                        <!-- Corps personne (bas-centre) -->
+                        <path d="M35 60 Q50 75, 65 60" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </div>
+                <div class="title">Concept A : Fusion centrale</div>
+                <div class="desc">Un cercle, trois extensions représentant chaque rôle</div>
+            </div>
+
+            <!-- Concept B: Trois cercles qui se chevauchent -->
+            <div class="combined-card">
+                <div class="preview">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <!-- Trois cercles qui se chevauchent -->
+                        <circle cx="40" cy="35" r="18" fill="white" fill-opacity="0.3" stroke="white" stroke-width="2"/>
+                        <circle cx="60" cy="35" r="18" fill="white" fill-opacity="0.3" stroke="white" stroke-width="2"/>
+                        <circle cx="50" cy="55" r="18" fill="white" fill-opacity="0.3" stroke="white" stroke-width="2"/>
+
+                        <!-- Intersection centrale plus opaque -->
+                        <circle cx="50" cy="42" r="8" fill="white" fill-opacity="0.8"/>
+                    </svg>
+                </div>
+                <div class="title">Concept B : Venn Diagram</div>
+                <div class="desc">Trois cercles = trois rôles, intersection = communauté</div>
+            </div>
+
+            <!-- Concept C: Cercle avec symboles intégrés -->
+            <div class="combined-card">
+                <div class="preview">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <!-- Grand cercle -->
+                        <circle cx="50" cy="50" r="35" fill="white" fill-opacity="0.15" stroke="white" stroke-width="3"/>
+
+                        <!-- Mini loupe -->
+                        <circle cx="35" cy="45" r="8" stroke="white" stroke-width="2" fill="none"/>
+                        <line x1="40" y1="50" x2="46" y2="56" stroke="white" stroke-width="2"/>
+
+                        <!-- Mini clé -->
+                        <circle cx="65" cy="45" r="6" stroke="white" stroke-width="2" fill="none"/>
+                        <line x1="65" y1="51" x2="65" y2="62" stroke="white" stroke-width="2"/>
+                        <line x1="62" y1="58" x2="65" y2="58" stroke="white" stroke-width="2"/>
+
+                        <!-- Mini personne -->
+                        <circle cx="50" cy="60" r="5" fill="white"/>
+                        <path d="M42 75 Q50 68, 58 75" stroke="white" stroke-width="2.5" fill="none"/>
+                    </svg>
+                </div>
+                <div class="title">Concept C : Cercle englobant</div>
+                <div class="desc">Un cercle contenant les 3 symboles miniatures</div>
+            </div>
+
+            <!-- Concept D: Abstrait géométrique -->
+            <div class="combined-card">
+                <div class="preview">
+                    <svg viewBox="0 0 100 100" fill="none">
+                        <!-- Forme abstraite basée sur cercle -->
+                        <circle cx="50" cy="50" r="28" fill="white" fill-opacity="0.9"/>
+
+                        <!-- 3 "rayons" représentant les 3 rôles -->
+                        <line x1="50" y1="22" x2="50" y2="8" stroke="white" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="26" y1="64" x2="14" y2="72" stroke="white" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="74" y1="64" x2="86" y2="72" stroke="white" stroke-width="6" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="title">Concept D : Abstrait tripode</div>
+                <div class="desc">Un cercle avec 3 rayons = 3 directions, 1 communauté</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 4: Comparaison avec le "i" -->
+    <div class="section">
+        <h2 class="section-title" style="justify-content: center;">
+            <span>4. Comparaison avec le "i" Fredoka</span>
+        </h2>
+
+        <div class="comparison-row">
+            <div class="comparison-item">
+                <div class="preview-box gradient">
+                    <span class="i-char">i</span>
+                </div>
+                <div class="label">Le "i" seul</div>
+            </div>
+
+            <span class="vs-badge">VS</span>
+
+            <div class="comparison-item">
+                <div class="preview-box multi">
+                    <svg viewBox="0 0 100 100" fill="none" width="72" height="72">
+                        <circle cx="50" cy="50" r="20" fill="white" fill-opacity="0.9"/>
+                        <line x1="64" y1="64" x2="80" y2="80" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="64" y1="36" x2="82" y2="18" stroke="white" stroke-width="4" stroke-linecap="round"/>
+                        <path d="M80 22 L86 16 L90 20 L84 26 Z" fill="white"/>
+                        <path d="M38 62 Q50 72, 62 62" stroke="white" stroke-width="4" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </div>
+                <div class="label">Fusion des 3 rôles</div>
+            </div>
+
+            <span class="vs-badge">VS</span>
+
+            <div class="comparison-item">
+                <div class="preview-box multi">
+                    <svg viewBox="0 0 100 100" fill="none" width="72" height="72">
+                        <circle cx="40" cy="35" r="16" fill="white" fill-opacity="0.35" stroke="white" stroke-width="2"/>
+                        <circle cx="60" cy="35" r="16" fill="white" fill-opacity="0.35" stroke="white" stroke-width="2"/>
+                        <circle cx="50" cy="55" r="16" fill="white" fill-opacity="0.35" stroke="white" stroke-width="2"/>
+                    </svg>
+                </div>
+                <div class="label">Venn (3 cercles)</div>
+            </div>
+        </div>
+
+        <!-- App Icon Simulation -->
+        <div class="app-icon-row">
+            <div class="app-icon-item">
+                <div class="app-icon-sim size-60" style="background: linear-gradient(135deg, #4361ee, #7209b7);">
+                    <span style="font-family: Fredoka; font-size: 36px; font-weight: 600; color: white;">i</span>
+                </div>
+                <div class="size-label">i @ 60px</div>
+            </div>
+
+            <div class="app-icon-item">
+                <div class="app-icon-sim size-60" style="background: linear-gradient(135deg, var(--searcher), var(--owner), var(--resident));">
+                    <svg viewBox="0 0 100 100" fill="none" width="36" height="36">
+                        <circle cx="50" cy="50" r="22" fill="white" fill-opacity="0.95"/>
+                        <line x1="66" y1="66" x2="82" y2="82" stroke="white" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="66" y1="34" x2="84" y2="16" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M36 64 Q50 76, 64 64" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </div>
+                <div class="size-label">Fusion @ 60px</div>
+            </div>
+
+            <div class="app-icon-item">
+                <div class="app-icon-sim size-60" style="background: linear-gradient(135deg, var(--searcher), var(--owner), var(--resident));">
+                    <svg viewBox="0 0 100 100" fill="none" width="36" height="36">
+                        <circle cx="40" cy="38" r="18" fill="white" fill-opacity="0.4" stroke="white" stroke-width="2.5"/>
+                        <circle cx="60" cy="38" r="18" fill="white" fill-opacity="0.4" stroke="white" stroke-width="2.5"/>
+                        <circle cx="50" cy="58" r="18" fill="white" fill-opacity="0.4" stroke="white" stroke-width="2.5"/>
+                    </svg>
+                </div>
+                <div class="size-label">Venn @ 60px</div>
+            </div>
+
+            <div class="app-icon-item">
+                <div class="app-icon-sim size-120" style="background: linear-gradient(135deg, var(--searcher), var(--owner), var(--resident));">
+                    <svg viewBox="0 0 100 100" fill="none" width="72" height="72">
+                        <circle cx="50" cy="50" r="22" fill="white" fill-opacity="0.95"/>
+                        <line x1="66" y1="66" x2="82" y2="82" stroke="white" stroke-width="6" stroke-linecap="round"/>
+                        <line x1="66" y1="34" x2="84" y2="16" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                        <path d="M36 64 Q50 76, 64 64" stroke="white" stroke-width="5" stroke-linecap="round" fill="none"/>
+                    </svg>
+                </div>
+                <div class="size-label">Fusion @ 120px</div>
+            </div>
+        </div>
+
+        <div class="insight-box">
+            <div class="title">Analyse comparative</div>
+            <ul>
+                <li><strong>"i" :</strong> Simple, mémorable, lien direct avec "izzico", évoque une personne</li>
+                <li><strong>Fusion :</strong> Représente les 3 rôles, mais plus complexe à 60px</li>
+                <li><strong>Venn :</strong> Symbolise la communauté, mais abstrait sans contexte</li>
+                <li><strong>Question clé :</strong> Préférez-vous la simplicité ou la signification explicite ?</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Section 5: Hybrid concept - "i" + rôles -->
+    <div class="section">
+        <h2 class="section-title" style="justify-content: center;">
+            <span>5. Concept hybride : le "i" transformé</span>
+            <span class="badge">NOUVEAU</span>
+        </h2>
+
+        <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">
+            Et si le "i" de Fredoka pouvait évoquer les 3 rôles tout en restant simple ?
+        </p>
+
+        <div class="combined-grid">
+            <!-- Le "i" avec le point = cercle partagé -->
+            <div class="combined-card">
+                <div class="preview" style="background: linear-gradient(135deg, #4361ee, #7209b7);">
+                    <svg viewBox="0 0 100 100" fill="none" width="90" height="90">
+                        <!-- Point du i agrandi = le cercle partagé -->
+                        <circle cx="50" cy="25" r="14" fill="white"/>
+
+                        <!-- Corps du i -->
+                        <rect x="40" y="45" width="20" height="40" rx="10" fill="white"/>
+                    </svg>
+                </div>
+                <div class="title">"i" standard</div>
+                <div class="desc">Le point = cercle = élément partagé des 3 icônes</div>
+            </div>
+
+            <!-- Le "i" avec mini symboles dans le point -->
+            <div class="combined-card">
+                <div class="preview" style="background: linear-gradient(135deg, var(--searcher), var(--owner), var(--resident));">
+                    <svg viewBox="0 0 100 100" fill="none" width="90" height="90">
+                        <!-- Point du i contient les 3 rôles en rotation -->
+                        <circle cx="50" cy="25" r="14" fill="white" fill-opacity="0.2" stroke="white" stroke-width="2"/>
+
+                        <!-- Trois mini cercles dans le point -->
+                        <circle cx="50" cy="18" r="4" fill="white"/>
+                        <circle cx="44" cy="28" r="4" fill="white"/>
+                        <circle cx="56" cy="28" r="4" fill="white"/>
+
+                        <!-- Corps du i -->
+                        <rect x="40" y="45" width="20" height="40" rx="10" fill="white"/>
+                    </svg>
+                </div>
+                <div class="title">"i" communautaire</div>
+                <div class="desc">Le point devient un trio = les 3 rôles unis</div>
+            </div>
+
+            <!-- Le "i" avec extensions -->
+            <div class="combined-card">
+                <div class="preview" style="background: linear-gradient(135deg, var(--searcher), var(--owner), var(--resident));">
+                    <svg viewBox="0 0 100 100" fill="none" width="90" height="90">
+                        <!-- Point du i = tête de personne -->
+                        <circle cx="50" cy="22" r="12" fill="white"/>
+
+                        <!-- Corps = tige -->
+                        <rect x="42" y="40" width="16" height="35" rx="8" fill="white"/>
+
+                        <!-- Petits bras = évoque une personne qui accueille -->
+                        <line x1="32" y1="52" x2="42" y2="48" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                        <line x1="68" y1="52" x2="58" y2="48" stroke="white" stroke-width="5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="title">"i" accueillant</div>
+                <div class="desc">Le "i" devient clairement une personne qui accueille</div>
+            </div>
+
+            <!-- Le "i" stylisé avec loupe + clé intégrés -->
+            <div class="combined-card">
+                <div class="preview" style="background: linear-gradient(135deg, var(--searcher), var(--owner), var(--resident));">
+                    <svg viewBox="0 0 100 100" fill="none" width="90" height="90">
+                        <!-- Point = tête personne + verre loupe -->
+                        <circle cx="50" cy="22" r="14" fill="white"/>
+
+                        <!-- Corps = tige de clé -->
+                        <rect x="43" y="42" width="14" height="38" rx="7" fill="white"/>
+
+                        <!-- Dent de clé -->
+                        <rect x="35" y="65" width="12" height="5" rx="2" fill="white"/>
+
+                        <!-- Manche loupe subtil -->
+                        <line x1="60" y1="30" x2="72" y2="42" stroke="white" stroke-width="4" stroke-linecap="round" opacity="0.6"/>
+                    </svg>
+                </div>
+                <div class="title">"i" fusionné</div>
+                <div class="desc">Personne + éléments loupe/clé subtilement intégrés</div>
+            </div>
+        </div>
+
+        <div class="insight-box">
+            <div class="title">Avantages du "i" transformé</div>
+            <ul>
+                <li>Conserve la simplicité et la lisibilité à petite taille</li>
+                <li>Cohérence parfaite avec le wordmark "izzico"</li>
+                <li>Le point du "i" EST déjà un cercle = l'élément partagé</li>
+                <li>Peut évoluer subtilement sans perdre la reconnaissance</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Future interactivity can be added here
+        console.log('IzzIco Role Icons Workbench loaded');
+    </script>
+</body>
+</html>

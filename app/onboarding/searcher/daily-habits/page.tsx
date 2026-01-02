@@ -90,7 +90,7 @@ export default function DailyHabitsPage() {
       progress={{
         current: 2,
         total: 6,
-        label: onboarding.dailyHabits.progress || 'Étape 2 sur 6',
+        label: `${t('onboarding.progress.step')} 2 ${t('onboarding.progress.of')} 6`,
         stepName: onboarding.dailyHabits.title,
       }}
       isLoading={isLoading}
@@ -229,7 +229,7 @@ export default function DailyHabitsPage() {
             >
               <div className="flex items-center justify-center gap-2">
                 <CigaretteOff className="w-5 h-5 text-green-600" />
-                <span className="font-medium">Non-fumeur</span>
+                <span className="font-medium">{onboarding.dailyHabits.nonSmoker || t('common.no')}</span>
               </div>
             </OnboardingSelectionCard>
             <OnboardingSelectionCard
@@ -239,7 +239,7 @@ export default function DailyHabitsPage() {
             >
               <div className="flex items-center justify-center gap-2">
                 <Cigarette className="w-5 h-5 text-gray-600" />
-                <span className="font-medium">Fumeur</span>
+                <span className="font-medium">{onboarding.dailyHabits.smoker || t('common.yes')}</span>
               </div>
             </OnboardingSelectionCard>
           </OnboardingGrid>

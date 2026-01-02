@@ -184,7 +184,7 @@ export default function QuickAvailabilityPage() {
       progress={{
         current: 4,
         total: 5,
-        label: 'Étape 4 sur 5',
+        label: `${t('onboarding.progress.step')} 4 ${t('onboarding.progress.of')} 5`,
         stepName: t('quickOnboarding.availability.stepName'),
       }}
       isLoading={isPageLoading}

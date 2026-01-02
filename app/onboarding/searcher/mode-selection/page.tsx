@@ -4,9 +4,11 @@ import { useRouter } from 'next/navigation';
 import { Zap, ListChecks, ArrowRight, Clock, Target } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function ModeSelectionPage() {
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleModeSelect = (mode: 'quick' | 'full') => {
     // Save mode selection
@@ -31,10 +33,10 @@ export default function ModeSelectionPage() {
           className="text-center mb-12"
         >
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Commençons ton profil
+            {t('modeSelection.title')}
           </h1>
           <p className="text-lg text-gray-600">
-            Choisis comment tu veux configurer ton profil
+            {t('modeSelection.subtitle')}
           </p>
         </motion.div>
 
@@ -52,7 +54,7 @@ export default function ModeSelectionPage() {
           >
             {/* Recommended Badge */}
             <div className="absolute -top-4 right-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-              ⚡ Recommandé
+              ⚡ {t('modeSelection.quick.recommended')}
             </div>
 
             {/* Icon */}
@@ -62,36 +64,35 @@ export default function ModeSelectionPage() {
 
             {/* Title */}
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Mode Rapide
+              {t('modeSelection.quick.title')}
             </h2>
 
             {/* Description */}
             <p className="text-gray-600 mb-6">
-              Configure l'essentiel en 5 minutes et commence à explorer tout de suite.
-              Tu pourras compléter ton profil plus tard.
+              {t('modeSelection.quick.description')}
             </p>
 
             {/* Features */}
             <div className="space-y-3 mb-6">
               <div className="flex items-center gap-2 text-sm text-gray-700">
                 <Clock className="w-4 h-4 text-orange-500" />
-                <span>5 minutes seulement</span>
+                <span>{t('modeSelection.quick.feature1')}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700">
                 <Target className="w-4 h-4 text-orange-500" />
-                <span>5 étapes essentielles</span>
+                <span>{t('modeSelection.quick.feature2')}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700">
                 <ArrowRight className="w-4 h-4 text-orange-500" />
-                <span>Accès immédiat au dashboard</span>
+                <span>{t('modeSelection.quick.feature3')}</span>
               </div>
             </div>
 
             {/* CTA */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-              <span className="text-sm text-gray-500">Parfait pour commencer</span>
+              <span className="text-sm text-gray-500">{t('modeSelection.quick.tagline')}</span>
               <div className="flex items-center gap-2 text-orange-600 font-semibold group-hover:gap-3 transition-all">
-                <span>Choisir</span>
+                <span>{t('modeSelection.choose')}</span>
                 <ArrowRight className="w-5 h-5" />
               </div>
             </div>
@@ -117,36 +118,35 @@ export default function ModeSelectionPage() {
 
             {/* Title */}
             <h2 className="text-2xl font-bold text-gray-900 mb-3">
-              Mode Complet
+              {t('modeSelection.full.title')}
             </h2>
 
             {/* Description */}
             <p className="text-gray-600 mb-6">
-              Crée un profil détaillé pour obtenir les meilleurs matchs dès maintenant.
-              Notre algorithme IA te trouvera les options parfaites.
+              {t('modeSelection.full.description')}
             </p>
 
             {/* Features */}
             <div className="space-y-3 mb-6">
               <div className="flex items-center gap-2 text-sm text-gray-700">
                 <Clock className="w-4 h-4 text-purple-500" />
-                <span>15-20 minutes</span>
+                <span>{t('modeSelection.full.feature1')}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700">
                 <Target className="w-4 h-4 text-purple-500" />
-                <span>13 étapes détaillées</span>
+                <span>{t('modeSelection.full.feature2')}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-700">
                 <ArrowRight className="w-4 h-4 text-purple-500" />
-                <span>Matchs optimaux garantis</span>
+                <span>{t('modeSelection.full.feature3')}</span>
               </div>
             </div>
 
             {/* CTA */}
             <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-              <span className="text-sm text-gray-500">Meilleurs résultats</span>
+              <span className="text-sm text-gray-500">{t('modeSelection.full.tagline')}</span>
               <div className="flex items-center gap-2 text-purple-600 font-semibold group-hover:gap-3 transition-all">
-                <span>Choisir</span>
+                <span>{t('modeSelection.choose')}</span>
                 <ArrowRight className="w-5 h-5" />
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function ModeSelectionPage() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="text-center text-sm text-gray-500 mt-8"
         >
-          💡 Tu pourras toujours compléter ton profil plus tard pour améliorer tes matchs
+          💡 {t('modeSelection.footer')}
         </motion.p>
       </div>
     </div>

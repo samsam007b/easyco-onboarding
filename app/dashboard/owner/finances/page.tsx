@@ -118,9 +118,9 @@ export default function FinancesHubPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Chargement...
+            Loading...
           </h3>
-          <p className="text-gray-600">Analyse de vos finances</p>
+          <p className="text-gray-600">Analyzing your finances</p>
         </div>
       </div>
     );

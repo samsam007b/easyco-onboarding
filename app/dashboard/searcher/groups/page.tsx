@@ -190,7 +190,7 @@ export default function GroupsPage() {
 
   const handleCreateGroupFromMatches = () => {
     if (selectedMatches.size === 0) {
-      toast.error(t?.messages?.selectAtLeastOne?.[language] || 'Sélectionne au moins une personne pour créer un groupe');
+      toast.error(t?.messages?.selectAtLeastOne?.[language] || 'Select at least one person to create a group');
       return;
     }
     const memberIds = Array.from(selectedMatches).join(',');
@@ -210,9 +210,9 @@ export default function GroupsPage() {
   };
 
   const formatBudget = (min: number | null, max: number | null) => {
-    if (!min && !max) return t?.budget?.flexible?.[language] || 'Budget flexible';
-    if (!min) return `${t?.budget?.upTo?.[language] || 'Jusqu\'à'} €${max}`;
-    if (!max) return `${t?.budget?.from?.[language] || 'À partir de'} €${min}`;
+    if (!min && !max) return t?.budget?.flexible?.[language] || 'Flexible budget';
+    if (!min) return `${t?.budget?.upTo?.[language] || 'Up to'} €${max}`;
+    if (!max) return `${t?.budget?.from?.[language] || 'From'} €${min}`;
     return `€${min}-${max}`;
   };
 
@@ -228,7 +228,7 @@ export default function GroupsPage() {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <LoadingHouse size={64} />
-          <p className="text-gray-600 font-medium">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -249,10 +249,10 @@ export default function GroupsPage() {
                 <Users className="w-10 h-10 text-white" />
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-                {t?.hero?.title?.[language] || 'Recherchez en Groupe'}
+                {t?.hero?.title?.[language] || 'Search as a Group'}
               </h1>
               <p className="text-xl text-orange-50 max-w-2xl mx-auto mb-8">
-                {t?.hero?.subtitle?.[language] || 'Trouvez des colocataires, partagez les frais et cherchez le logement parfait ensemble'}
+                {t?.hero?.subtitle?.[language] || 'Find roommates, share costs, and search for the perfect home together'}
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -262,7 +262,7 @@ export default function GroupsPage() {
                   size="lg"
                 >
                   <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-                  {t?.hero?.createButton?.[language] || 'Créer un groupe'}
+                  {t?.hero?.createButton?.[language] || 'Create a group'}
                 </Button>
                 <Button
                   onClick={() => router.push('/groups/browse')}
@@ -271,7 +271,7 @@ export default function GroupsPage() {
                   size="lg"
                 >
                   <Search className="w-5 h-5" />
-                  {t?.hero?.browseButton?.[language] || 'Parcourir les groupes'}
+                  {t?.hero?.browseButton?.[language] || 'Browse groups'}
                 </Button>
               </div>
             </div>
@@ -287,10 +287,10 @@ export default function GroupsPage() {
                 <div>
                   <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                     <Sparkles className="w-8 h-8 text-orange-600" />
-                    {t?.matches?.title?.[language] || 'Tes Matchs'}
+                    {t?.matches?.title?.[language] || 'Your Matches'}
                   </h2>
                   <p className="text-gray-600 mt-1">
-                    {t?.matches?.subtitle?.[language] || 'Sélectionne des personnes pour créer un groupe de colocation'}
+                    {t?.matches?.subtitle?.[language] || 'Select people to create a roommate group'}
                   </p>
                 </div>
                 {selectedMatches.size > 0 && (
@@ -299,7 +299,7 @@ export default function GroupsPage() {
                     className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 rounded-2xl gap-2"
                   >
                     <UserPlus className="w-4 h-4" />
-                    {t?.matches?.createButton?.[language] || 'Créer un groupe'} ({selectedMatches.size})
+                    {t?.matches?.createButton?.[language] || 'Create a group'} ({selectedMatches.size})
                   </Button>
                 )}
               </div>
@@ -313,10 +313,10 @@ export default function GroupsPage() {
                         <Heart className="w-5 h-5 text-orange-600 mt-0.5 flex-shrink-0" />
                         <div>
                           <p className="text-sm font-semibold text-gray-900 mb-1">
-                            {t?.matches?.infoBanner?.title?.[language] || 'Ces personnes t\'ont aussi liké !'}
+                            {t?.matches?.infoBanner?.title?.[language] || 'These people liked you too!'}
                           </p>
                           <p className="text-sm text-gray-700">
-                            {t?.matches?.infoBanner?.description?.[language] || 'Sélectionne-les pour former ton groupe de colocation idéal et chercher un logement ensemble.'}
+                            {t?.matches?.infoBanner?.description?.[language] || 'Select them to form your ideal roommate group and search for housing together.'}
                           </p>
                         </div>
                       </div>
@@ -375,7 +375,7 @@ export default function GroupsPage() {
                           <CardContent className="p-4">
                             <h3 className="text-lg font-bold text-gray-900 mb-1">
                               {match.first_name} {match.last_name}
-                              {age && <span className="text-base font-normal text-gray-500 ml-2">{age} {t?.matches?.yearsOld?.[language] || 'ans'}</span>}
+                              {age && <span className="text-base font-normal text-gray-500 ml-2">{age} {t?.matches?.yearsOld?.[language] || 'years old'}</span>}
                             </h3>
 
                             {match.occupation_status && (
@@ -401,7 +401,7 @@ export default function GroupsPage() {
                     <div className="mt-8">
                       <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                         <Users className="w-5 h-5 text-orange-600" />
-                        {t?.matches?.suggestions?.title?.[language] || 'Suggestions de groupes'}
+                        {t?.matches?.suggestions?.title?.[language] || 'Group suggestions'}
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         {matches.slice(0, 4).map((match1, idx1) => {
@@ -430,7 +430,7 @@ export default function GroupsPage() {
                                   <p className="font-semibold text-gray-900">
                                     {match1.first_name} + {match2.first_name}
                                   </p>
-                                  <p className="text-xs text-gray-600">{t?.matches?.suggestions?.groupOf2?.[language] || 'Groupe de 2 personnes'}</p>
+                                  <p className="text-xs text-gray-600">{t?.matches?.suggestions?.groupOf2?.[language] || 'Group of 2 people'}</p>
                                 </div>
                                 <Button
                                   size="sm"
@@ -438,7 +438,7 @@ export default function GroupsPage() {
                                   className="border-orange-300 text-orange-700 hover:bg-orange-50 rounded-xl"
                                 >
                                   <Plus className="w-4 h-4 mr-1" />
-                                  {t?.matches?.suggestions?.create?.[language] || 'Créer'}
+                                  {t?.matches?.suggestions?.create?.[language] || 'Create'}
                                 </Button>
                               </div>
                             </Card>
@@ -461,10 +461,10 @@ export default function GroupsPage() {
                       </div>
                     </div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                      {t?.matches?.empty?.title?.[language] || 'Pas encore de matchs'}
+                      {t?.matches?.empty?.title?.[language] || 'No matches yet'}
                     </h3>
                     <p className="text-gray-600 max-w-md mb-6">
-                      {t?.matches?.empty?.description?.[language] || 'Swipe des profils pour trouver des personnes compatibles avec ton style de vie. Quand vous vous likez mutuellement, un match apparaît ici !'}
+                      {t?.matches?.empty?.description?.[language] || 'Swipe profiles to find people compatible with your lifestyle. When you mutually like each other, a match appears here!'}
                     </p>
                     <Button
                       onClick={() => router.push('/matching/swipe')}
@@ -472,10 +472,10 @@ export default function GroupsPage() {
                       size="lg"
                     >
                       <Heart className="w-5 h-5 group-hover:scale-110 transition-transform" />
-                      {t?.matches?.empty?.button?.[language] || 'Découvrir des profils'}
+                      {t?.matches?.empty?.button?.[language] || 'Discover profiles'}
                     </Button>
                     <p className="text-sm text-gray-500 mt-4">
-                      {t?.matches?.empty?.waiting?.[language] || '35+ profils t\'attendent'}
+                      {t?.matches?.empty?.waiting?.[language] || '35+ profiles waiting for you'}
                     </p>
                   </CardContent>
                 </Card>
@@ -486,12 +486,12 @@ export default function GroupsPage() {
           <section>
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900">{t?.myGroups?.title?.[language] || 'Mes Groupes'}</h2>
-                <p className="text-gray-600 mt-1">{t?.myGroups?.subtitle?.[language] || 'Vos groupes de recherche actifs'}</p>
+                <h2 className="text-3xl font-bold text-gray-900">{t?.myGroups?.title?.[language] || 'My Groups'}</h2>
+                <p className="text-gray-600 mt-1">{t?.myGroups?.subtitle?.[language] || 'Your active search groups'}</p>
               </div>
               {myGroups.length > 0 && (
                 <Badge className="bg-orange-100 text-orange-700 px-4 py-2 text-base hover:bg-orange-100">
-                  {myGroups.length} {myGroups.length > 1 ? (t?.myGroups?.groups?.[language] || 'groupes') : (t?.myGroups?.group?.[language] || 'groupe')}
+                  {myGroups.length} {myGroups.length > 1 ? (t?.myGroups?.groups?.[language] || 'groups') : (t?.myGroups?.group?.[language] || 'group')}
                 </Badge>
               )}
             </div>
@@ -516,7 +516,7 @@ export default function GroupsPage() {
                             <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
                               {group.name}
                             </CardTitle>
-                            <p className="text-sm text-gray-500">{group.member_count} {t?.myGroups?.members?.[language] || 'membres'}</p>
+                            <p className="text-sm text-gray-500">{group.member_count} {t?.myGroups?.members?.[language] || 'members'}</p>
                           </div>
                         </div>
                       </div>
@@ -571,7 +571,7 @@ export default function GroupsPage() {
                             router.push(`/groups/${group.id}/settings`);
                           }}
                         >
-                          {t?.myGroups?.settings?.[language] || 'Paramètres'}
+                          {t?.myGroups?.settings?.[language] || 'Settings'}
                         </Button>
                       </div>
                     </CardContent>
@@ -585,17 +585,17 @@ export default function GroupsPage() {
                     <Users className="w-10 h-10 text-orange-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    {t?.myGroups?.empty?.title?.[language] || 'Aucun groupe pour le moment'}
+                    {t?.myGroups?.empty?.title?.[language] || 'No groups yet'}
                   </h3>
                   <p className="text-gray-600 text-center max-w-md mb-6">
-                    {t?.myGroups?.empty?.description?.[language] || 'Créez votre premier groupe et commencez à chercher un logement avec d\'autres personnes'}
+                    {t?.myGroups?.empty?.description?.[language] || 'Create your first group and start searching for housing with others'}
                   </p>
                   <Button
                     onClick={() => router.push('/dashboard/searcher/groups/create')}
                     className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white rounded-2xl px-6 gap-2"
                   >
                     <Plus className="h-5 w-5" />
-                    {t?.myGroups?.empty?.button?.[language] || 'Créer un groupe'}
+                    {t?.myGroups?.empty?.button?.[language] || 'Create a group'}
                   </Button>
                 </CardContent>
               </Card>
@@ -606,8 +606,8 @@ export default function GroupsPage() {
           <section>
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 className="text-3xl font-bold text-gray-900">{t?.discover?.title?.[language] || 'Groupes à découvrir'}</h2>
-                <p className="text-gray-600 mt-1">{t?.discover?.subtitle?.[language] || 'Rejoignez des groupes qui correspondent à vos critères'}</p>
+                <h2 className="text-3xl font-bold text-gray-900">{t?.discover?.title?.[language] || 'Groups to discover'}</h2>
+                <p className="text-gray-600 mt-1">{t?.discover?.subtitle?.[language] || 'Join groups that match your criteria'}</p>
               </div>
               {discoverGroups.length > 0 && (
                 <Button
@@ -615,7 +615,7 @@ export default function GroupsPage() {
                   onClick={() => router.push('/groups/browse')}
                   className="rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700 gap-2"
                 >
-                  {t?.discover?.viewAll?.[language] || 'Voir tout'}
+                  {t?.discover?.viewAll?.[language] || 'View all'}
                   <TrendingUp className="h-4 w-4" />
                 </Button>
               )}
@@ -640,7 +640,7 @@ export default function GroupsPage() {
                           <CardTitle className="text-lg font-bold text-gray-900 group-hover:text-purple-600 transition-colors">
                             {group.name}
                           </CardTitle>
-                          <p className="text-sm text-gray-500">{group.member_count} {t?.myGroups?.members?.[language] || 'membres'}</p>
+                          <p className="text-sm text-gray-500">{group.member_count} {t?.myGroups?.members?.[language] || 'members'}</p>
                         </div>
                       </div>
                       {group.description && (
@@ -672,7 +672,7 @@ export default function GroupsPage() {
                           router.push(`/groups/${group.id}/join`);
                         }}
                       >
-                        {t?.discover?.joinButton?.[language] || 'Rejoindre ce groupe'}
+                        {t?.discover?.joinButton?.[language] || 'Join this group'}
                       </Button>
                     </CardContent>
                   </Card>
@@ -691,10 +691,10 @@ export default function GroupsPage() {
                     </div>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {t?.discover?.empty?.title?.[language] || 'Aucun groupe public pour le moment'}
+                    {t?.discover?.empty?.title?.[language] || 'No public groups yet'}
                   </h3>
                   <p className="text-gray-600 max-w-md mb-6">
-                    {t?.discover?.empty?.description?.[language] || 'Sois le premier à créer un groupe de recherche ! D\'autres chercheurs pourront te rejoindre pour chercher ensemble.'}
+                    {t?.discover?.empty?.description?.[language] || 'Be the first to create a search group! Other searchers can join you to search together.'}
                   </p>
                   <Button
                     onClick={() => router.push('/dashboard/searcher/groups/create')}
@@ -702,7 +702,7 @@ export default function GroupsPage() {
                     size="lg"
                   >
                     <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-                    {t?.discover?.empty?.button?.[language] || 'Créer un groupe public'}
+                    {t?.discover?.empty?.button?.[language] || 'Create a public group'}
                   </Button>
                 </CardContent>
               </Card>
@@ -715,10 +715,10 @@ export default function GroupsPage() {
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                   <Home className="w-8 h-8 text-orange-600" />
-                  {t?.properties?.title?.[language] || 'Propriétés Recommandées'}
+                  {t?.properties?.title?.[language] || 'Recommended Properties'}
                 </h2>
                 <p className="text-gray-600 mt-1">
-                  {t?.properties?.subtitle?.[language] || 'Logements qui correspondent à tes critères'}
+                  {t?.properties?.subtitle?.[language] || 'Properties matching your criteria'}
                 </p>
               </div>
               {topMatches.length > 0 && (
@@ -741,10 +741,10 @@ export default function GroupsPage() {
                     </div>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {t?.properties?.noPreferences?.title?.[language] || 'Configure tes préférences'}
+                    {t?.properties?.noPreferences?.title?.[language] || 'Configure your preferences'}
                   </h3>
                   <p className="text-gray-600 max-w-md mb-6">
-                    {t?.properties?.noPreferences?.description?.[language] || 'Complète ton profil et tes préférences pour obtenir des recommandations de logements personnalisées.'}
+                    {t?.properties?.noPreferences?.description?.[language] || 'Complete your profile and preferences to get personalized housing recommendations.'}
                   </p>
                   <Button
                     onClick={() => router.push('/settings/preferences')}
@@ -752,7 +752,7 @@ export default function GroupsPage() {
                     size="lg"
                   >
                     <Settings className="w-5 h-5 group-hover:rotate-90 transition-transform" />
-                    {t?.properties?.noPreferences?.button?.[language] || 'Configurer mes préférences'}
+                    {t?.properties?.noPreferences?.button?.[language] || 'Configure my preferences'}
                   </Button>
                 </CardContent>
               </Card>
@@ -767,7 +767,7 @@ export default function GroupsPage() {
                           <Sparkles className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-medium">{t?.properties?.stats?.topMatches?.[language] || 'Top Matchs'}</p>
+                          <p className="text-xs text-gray-600 font-medium">{t?.properties?.stats?.topMatches?.[language] || 'Top Matches'}</p>
                           <p className="text-xl font-bold text-gray-900">{topMatches.length}</p>
                         </div>
                       </div>
@@ -781,7 +781,7 @@ export default function GroupsPage() {
                           <Home className="w-5 h-5 text-white" />
                         </div>
                         <div>
-                          <p className="text-xs text-gray-600 font-medium">{t?.properties?.stats?.totalAnalyzed?.[language] || 'Total analysé'}</p>
+                          <p className="text-xs text-gray-600 font-medium">{t?.properties?.stats?.totalAnalyzed?.[language] || 'Total analyzed'}</p>
                           <p className="text-xl font-bold text-gray-900">{propertiesWithMatches.length}</p>
                         </div>
                       </div>
@@ -844,7 +844,7 @@ export default function GroupsPage() {
                       onClick={() => router.push('/matching/properties')}
                       className="rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700 gap-2"
                     >
-                      {t?.properties?.seeMore?.[language]?.replace('{count}', String(topMatches.length - 6)) || `Voir les ${topMatches.length - 6} autres propriétés`}
+                      {t?.properties?.seeMore?.[language]?.replace('{count}', String(topMatches.length - 6)) || `View ${topMatches.length - 6} more properties`}
                       <ArrowRight className="w-4 h-4" />
                     </Button>
                   </div>
@@ -863,10 +863,10 @@ export default function GroupsPage() {
                     </div>
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                    {t?.properties?.noMatches?.title?.[language] || 'Aucun match élevé trouvé'}
+                    {t?.properties?.noMatches?.title?.[language] || 'No high matches found'}
                   </h3>
                   <p className="text-gray-600 max-w-md mb-6">
-                    {t?.properties?.noMatches?.description?.[language] || 'Ajuste tes préférences ou reviens plus tard pour de nouvelles annonces qui correspondent mieux à tes critères.'}
+                    {t?.properties?.noMatches?.description?.[language] || 'Adjust your preferences or come back later for new listings that better match your criteria.'}
                   </p>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <Button
@@ -875,13 +875,13 @@ export default function GroupsPage() {
                       className="rounded-xl border-orange-200 hover:bg-orange-50 text-orange-700 gap-2"
                     >
                       <Settings className="w-4 h-4" />
-                      {t?.properties?.noMatches?.adjustButton?.[language] || 'Ajuster mes préférences'}
+                      {t?.properties?.noMatches?.adjustButton?.[language] || 'Adjust my preferences'}
                     </Button>
                     <Button
                       onClick={() => router.push('/matching/properties')}
                       className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl gap-2"
                     >
-                      {t?.properties?.noMatches?.exploreButton?.[language] || 'Explorer toutes les propriétés'}
+                      {t?.properties?.noMatches?.exploreButton?.[language] || 'Explore all properties'}
                     </Button>
                   </div>
                 </CardContent>
@@ -892,34 +892,34 @@ export default function GroupsPage() {
           {/* Why Search in Groups - Benefits Section */}
           <section className="bg-gradient-to-br from-purple-50 to-white rounded-3xl p-8 md:p-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
-              {t?.benefits?.title?.[language] || 'Pourquoi chercher en groupe ?'}
+              {t?.benefits?.title?.[language] || 'Why search as a group?'}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Euro className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.benefits?.save?.title?.[language] || 'Économisez'}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.benefits?.save?.title?.[language] || 'Save money'}</h3>
                 <p className="text-gray-600">
-                  {t?.benefits?.save?.description?.[language] || 'Partagez les frais et trouvez un logement plus abordable ensemble'}
+                  {t?.benefits?.save?.description?.[language] || 'Share costs and find more affordable housing together'}
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <Users className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.benefits?.meet?.title?.[language] || 'Rencontrez'}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.benefits?.meet?.title?.[language] || 'Meet people'}</h3>
                 <p className="text-gray-600">
-                  {t?.benefits?.meet?.description?.[language] || 'Trouvez des personnes qui partagent vos critères et votre style de vie'}
+                  {t?.benefits?.meet?.description?.[language] || 'Find people who share your criteria and lifestyle'}
                 </p>
               </div>
               <div className="text-center">
                 <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
                   <TrendingUp className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.benefits?.chances?.title?.[language] || 'Plus de chances'}</h3>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.benefits?.chances?.title?.[language] || 'Better chances'}</h3>
                 <p className="text-gray-600">
-                  {t?.benefits?.chances?.description?.[language] || 'Augmentez vos chances de trouver le logement parfait rapidement'}
+                  {t?.benefits?.chances?.description?.[language] || 'Increase your chances of finding the perfect home quickly'}
                 </p>
               </div>
             </div>

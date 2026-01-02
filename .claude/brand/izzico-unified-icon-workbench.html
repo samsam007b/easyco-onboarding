@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Unified Icon Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --searcher: #FFB10B;
+            --owner: #9B59B6;
+            --resident: #E67E22;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .canvas-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-header h1 { font-size: 1.25rem; font-weight: 500; }
+
+        .canvas-actions { display: flex; gap: 0.5rem; }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .canvas {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            background-color: #1a1a2e;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas.show-guides::before,
+        .canvas.show-guides::after {
+            content: '';
+            position: absolute;
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .canvas.show-guides::before { width: 1px; height: 100%; left: 50%; }
+        .canvas.show-guides::after { width: 100%; height: 1px; top: 50%; }
+
+        #icon-svg {
+            width: 300px;
+            height: 300px;
+        }
+
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title .color-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 90px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .control-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .preview-row {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .preview-item { text-align: center; }
+
+        .preview-box {
+            border-radius: 22%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .preview-label { font-size: 0.65rem; color: var(--text-muted); }
+
+        .export-info {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .app-layout { grid-template-columns: 1fr; }
+            .canvas { width: 350px; height: 350px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div class="canvas-header">
+                <h1>Unified Icon - Cercle Partagé</h1>
+                <div class="canvas-actions">
+                    <button class="btn" id="toggle-guides">Guides</button>
+                    <button class="btn" id="reset-all">Reset</button>
+                    <button class="btn primary" id="export-svg">Exporter SVG</button>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas show-guides" id="canvas">
+                    <svg id="icon-svg" viewBox="0 0 100 100" fill="none"></svg>
+                </div>
+            </div>
+
+            <div class="preview-row" id="preview-row"></div>
+        </div>
+
+        <div class="controls-panel">
+            <!-- Cercle central -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: white;"></span>
+                    Cercle central (partagé)
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Position Y</span>
+                    <input type="range" id="circle-cy" min="30" max="60" value="42">
+                    <span class="control-value" id="circle-cy-val">42</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Rayon</span>
+                    <input type="range" id="circle-r" min="10" max="30" value="18">
+                    <span class="control-value" id="circle-r-val">18</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Épaisseur</span>
+                    <input type="range" id="circle-stroke" min="1" max="6" step="0.5" value="3">
+                    <span class="control-value" id="circle-stroke-val">3</span>
+                </div>
+                <div class="hint">Le cercle = verre loupe + tête clé + tête personne</div>
+            </div>
+
+            <!-- Loupe (manche gauche) -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: var(--searcher);"></span>
+                    Manche Loupe (gauche)
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Longueur</span>
+                    <input type="range" id="loupe-length" min="10" max="40" value="22">
+                    <span class="control-value" id="loupe-length-val">22</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Angle</span>
+                    <input type="range" id="loupe-angle" min="0" max="360" value="135">
+                    <span class="control-value" id="loupe-angle-val">135°</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Épaisseur</span>
+                    <input type="range" id="loupe-stroke" min="2" max="8" step="0.5" value="4">
+                    <span class="control-value" id="loupe-stroke-val">4</span>
+                </div>
+            </div>
+
+            <!-- Clé (tige droite) -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: var(--owner);"></span>
+                    Tige Clé (droite)
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Longueur</span>
+                    <input type="range" id="key-length" min="10" max="40" value="22">
+                    <span class="control-value" id="key-length-val">22</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Angle</span>
+                    <input type="range" id="key-angle" min="0" max="360" value="45">
+                    <span class="control-value" id="key-angle-val">45°</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Épaisseur tige</span>
+                    <input type="range" id="key-stroke" min="2" max="6" step="0.5" value="3">
+                    <span class="control-value" id="key-stroke-val">3</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Dents (nb)</span>
+                    <input type="range" id="key-teeth" min="1" max="3" value="2">
+                    <span class="control-value" id="key-teeth-val">2</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Dents (taille)</span>
+                    <input type="range" id="key-teeth-size" min="3" max="10" value="5">
+                    <span class="control-value" id="key-teeth-size-val">5</span>
+                </div>
+            </div>
+
+            <!-- Buste (bas) -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: var(--resident);"></span>
+                    Buste Personne (bas)
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Écart du cercle</span>
+                    <input type="range" id="bust-gap" min="2" max="15" value="6">
+                    <span class="control-value" id="bust-gap-val">6</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Largeur</span>
+                    <input type="range" id="bust-width" min="15" max="50" value="30">
+                    <span class="control-value" id="bust-width-val">30</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Hauteur</span>
+                    <input type="range" id="bust-height" min="10" max="30" value="18">
+                    <span class="control-value" id="bust-height-val">18</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Épaisseur</span>
+                    <input type="range" id="bust-stroke" min="2" max="6" step="0.5" value="3">
+                    <span class="control-value" id="bust-stroke-val">3</span>
+                </div>
+                <div class="hint">Détaché du cercle pour montrer que le cercle = tête</div>
+            </div>
+
+            <!-- Couleur globale -->
+            <div class="panel-section">
+                <div class="section-title">Couleur & Fond</div>
+                <div class="control-row">
+                    <span class="control-label">Couleur icône</span>
+                    <input type="color" id="icon-color" value="#ffffff">
+                    <span class="control-value" id="icon-color-val">#fff</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Fond</span>
+                    <input type="color" id="bg-color" value="#1a1a2e">
+                    <span class="control-value" id="bg-color-val">#1a1a2e</span>
+                </div>
+                <div class="preset-buttons">
+                    <button class="btn" data-bg="#ffffff" data-fg="#1a1a2e">Blanc</button>
+                    <button class="btn" data-bg="#1a1a2e" data-fg="#ffffff">Sombre</button>
+                    <button class="btn" data-bg="#4361ee" data-fg="#ffffff">Bleu</button>
+                    <button class="btn" data-bg="gradient" data-fg="#ffffff">Gradient</button>
+                </div>
+            </div>
+
+            <!-- Specs -->
+            <div class="panel-section" style="border-bottom: none;">
+                <div class="section-title">Specs actuelles</div>
+                <div class="export-info" id="specs-display"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State
+        const state = {
+            circle: { cy: 42, r: 18, stroke: 3 },
+            loupe: { length: 22, angle: 135, stroke: 4 },
+            key: { length: 22, angle: 45, stroke: 3, teeth: 2, teethSize: 5 },
+            bust: { gap: 6, width: 30, height: 18, stroke: 3 },
+            iconColor: '#ffffff',
+            bgColor: '#1a1a2e',
+            bgGradient: false
+        };
+
+        const canvas = document.getElementById('canvas');
+        const svg = document.getElementById('icon-svg');
+
+        // SVG helper
+        function createSVG(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+            return el;
+        }
+
+        // Draw the unified icon
+        function drawIcon() {
+            svg.textContent = '';
+
+            const cx = 50;
+            const cy = state.circle.cy;
+            const r = state.circle.r;
+            const color = state.iconColor;
+
+            // 1. Cercle central
+            svg.appendChild(createSVG('circle', {
+                cx: cx,
+                cy: cy,
+                r: r,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': state.circle.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // 2. Manche loupe (gauche)
+            const loupeAngleRad = (state.loupe.angle * Math.PI) / 180;
+            const loupeStartX = cx + r * Math.cos(loupeAngleRad);
+            const loupeStartY = cy + r * Math.sin(loupeAngleRad);
+            const loupeEndX = loupeStartX + state.loupe.length * Math.cos(loupeAngleRad);
+            const loupeEndY = loupeStartY + state.loupe.length * Math.sin(loupeAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: loupeStartX,
+                y1: loupeStartY,
+                x2: loupeEndX,
+                y2: loupeEndY,
+                stroke: color,
+                'stroke-width': state.loupe.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // 3. Tige clé (droite)
+            const keyAngleRad = (state.key.angle * Math.PI) / 180;
+            const keyStartX = cx + r * Math.cos(keyAngleRad);
+            const keyStartY = cy + r * Math.sin(keyAngleRad);
+            const keyEndX = keyStartX + state.key.length * Math.cos(keyAngleRad);
+            const keyEndY = keyStartY + state.key.length * Math.sin(keyAngleRad);
+
+            svg.appendChild(createSVG('line', {
+                x1: keyStartX,
+                y1: keyStartY,
+                x2: keyEndX,
+                y2: keyEndY,
+                stroke: color,
+                'stroke-width': state.key.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Dents de clé (perpendiculaires à la tige)
+            const teethAngle = keyAngleRad + Math.PI / 2;
+            const teethCount = state.key.teeth;
+            const teethSize = state.key.teethSize;
+
+            for (let i = 0; i < teethCount; i++) {
+                const t = 0.5 + (i * 0.3); // Position along key
+                const toothX = keyStartX + (keyEndX - keyStartX) * t;
+                const toothY = keyStartY + (keyEndY - keyStartY) * t;
+                const toothEndX = toothX + teethSize * Math.cos(teethAngle);
+                const toothEndY = toothY + teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('line', {
+                    x1: toothX,
+                    y1: toothY,
+                    x2: toothEndX,
+                    y2: toothEndY,
+                    stroke: color,
+                    'stroke-width': state.key.stroke * 0.8,
+                    'stroke-linecap': 'round'
+                }));
+            }
+
+            // 4. Buste personne (arc en bas, détaché)
+            const bustTop = cy + r + state.bust.gap;
+            const bustWidth = state.bust.width;
+            const bustHeight = state.bust.height;
+
+            // Arc pour le buste (épaules)
+            const bustPath = `M ${cx - bustWidth/2} ${bustTop + bustHeight} Q ${cx} ${bustTop} ${cx + bustWidth/2} ${bustTop + bustHeight}`;
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': state.bust.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            updateSpecs();
+            updatePreviews();
+        }
+
+        // Update specs display
+        function updateSpecs() {
+            const specs = document.getElementById('specs-display');
+            specs.textContent = `/* UNIFIED ICON */
+Cercle: cy=${state.circle.cy} r=${state.circle.r} stroke=${state.circle.stroke}
+Loupe: len=${state.loupe.length} angle=${state.loupe.angle}° stroke=${state.loupe.stroke}
+Clé: len=${state.key.length} angle=${state.key.angle}° teeth=${state.key.teeth}
+Buste: gap=${state.bust.gap} w=${state.bust.width} h=${state.bust.height}
+Couleur: ${state.iconColor}`;
+        }
+
+        // Update previews
+        function updatePreviews() {
+            const container = document.getElementById('preview-row');
+            container.textContent = '';
+
+            const sizes = [60, 120, 180];
+            const bg = state.bgGradient ? 'linear-gradient(135deg, #4361ee, #7209b7)' : state.bgColor;
+
+            sizes.forEach(size => {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+
+                const box = document.createElement('div');
+                box.className = 'preview-box';
+                box.style.width = size + 'px';
+                box.style.height = size + 'px';
+                box.style.background = bg;
+
+                const svgClone = svg.cloneNode(true);
+                svgClone.style.width = (size * 0.7) + 'px';
+                svgClone.style.height = (size * 0.7) + 'px';
+                box.appendChild(svgClone);
+
+                const label = document.createElement('div');
+                label.className = 'preview-label';
+                label.textContent = size + 'px';
+
+                item.appendChild(box);
+                item.appendChild(label);
+                container.appendChild(item);
+            });
+        }
+
+        // Bind controls
+        function bindControls() {
+            // Circle
+            bindRange('circle-cy', v => { state.circle.cy = v; });
+            bindRange('circle-r', v => { state.circle.r = v; });
+            bindRange('circle-stroke', v => { state.circle.stroke = v; });
+
+            // Loupe
+            bindRange('loupe-length', v => { state.loupe.length = v; });
+            bindRange('loupe-angle', v => { state.loupe.angle = v; }, '°');
+            bindRange('loupe-stroke', v => { state.loupe.stroke = v; });
+
+            // Key
+            bindRange('key-length', v => { state.key.length = v; });
+            bindRange('key-angle', v => { state.key.angle = v; }, '°');
+            bindRange('key-stroke', v => { state.key.stroke = v; });
+            bindRange('key-teeth', v => { state.key.teeth = v; });
+            bindRange('key-teeth-size', v => { state.key.teethSize = v; });
+
+            // Bust
+            bindRange('bust-gap', v => { state.bust.gap = v; });
+            bindRange('bust-width', v => { state.bust.width = v; });
+            bindRange('bust-height', v => { state.bust.height = v; });
+            bindRange('bust-stroke', v => { state.bust.stroke = v; });
+
+            // Colors
+            document.getElementById('icon-color').addEventListener('input', e => {
+                state.iconColor = e.target.value;
+                document.getElementById('icon-color-val').textContent = e.target.value;
+                drawIcon();
+            });
+
+            document.getElementById('bg-color').addEventListener('input', e => {
+                state.bgColor = e.target.value;
+                state.bgGradient = false;
+                canvas.style.background = '';
+                canvas.style.backgroundColor = e.target.value;
+                document.getElementById('bg-color-val').textContent = e.target.value;
+                updatePreviews();
+            });
+
+            // Presets
+            document.querySelectorAll('[data-bg]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const bg = btn.dataset.bg;
+                    const fg = btn.dataset.fg;
+
+                    state.iconColor = fg;
+                    document.getElementById('icon-color').value = fg;
+                    document.getElementById('icon-color-val').textContent = fg;
+
+                    if (bg === 'gradient') {
+                        state.bgGradient = true;
+                        canvas.style.backgroundColor = '';
+                        canvas.style.background = 'linear-gradient(135deg, #4361ee, #7209b7)';
+                        document.getElementById('bg-color-val').textContent = 'gradient';
+                    } else {
+                        state.bgGradient = false;
+                        state.bgColor = bg;
+                        canvas.style.background = '';
+                        canvas.style.backgroundColor = bg;
+                        document.getElementById('bg-color').value = bg;
+                        document.getElementById('bg-color-val').textContent = bg;
+                    }
+
+                    drawIcon();
+                });
+            });
+        }
+
+        function bindRange(id, setter, suffix = '') {
+            const input = document.getElementById(id);
+            const display = document.getElementById(id + '-val');
+
+            input.addEventListener('input', e => {
+                const v = parseFloat(e.target.value);
+                setter(v);
+                display.textContent = v + suffix;
+                drawIcon();
+            });
+        }
+
+        // Toggle guides
+        document.getElementById('toggle-guides').addEventListener('click', () => {
+            canvas.classList.toggle('show-guides');
+        });
+
+        // Reset
+        document.getElementById('reset-all').addEventListener('click', () => {
+            state.circle = { cy: 42, r: 18, stroke: 3 };
+            state.loupe = { length: 22, angle: 135, stroke: 4 };
+            state.key = { length: 22, angle: 45, stroke: 3, teeth: 2, teethSize: 5 };
+            state.bust = { gap: 6, width: 30, height: 18, stroke: 3 };
+            state.iconColor = '#ffffff';
+            state.bgColor = '#1a1a2e';
+            state.bgGradient = false;
+
+            // Reset inputs
+            document.getElementById('circle-cy').value = 42;
+            document.getElementById('circle-r').value = 18;
+            document.getElementById('circle-stroke').value = 3;
+            document.getElementById('loupe-length').value = 22;
+            document.getElementById('loupe-angle').value = 135;
+            document.getElementById('loupe-stroke').value = 4;
+            document.getElementById('key-length').value = 22;
+            document.getElementById('key-angle').value = 45;
+            document.getElementById('key-stroke').value = 3;
+            document.getElementById('key-teeth').value = 2;
+            document.getElementById('key-teeth-size').value = 5;
+            document.getElementById('bust-gap').value = 6;
+            document.getElementById('bust-width').value = 30;
+            document.getElementById('bust-height').value = 18;
+            document.getElementById('bust-stroke').value = 3;
+            document.getElementById('icon-color').value = '#ffffff';
+            document.getElementById('bg-color').value = '#1a1a2e';
+
+            // Reset displays
+            document.querySelectorAll('.control-value').forEach(el => {
+                const id = el.id.replace('-val', '');
+                const input = document.getElementById(id);
+                if (input) {
+                    el.textContent = input.value + (id.includes('angle') ? '°' : '');
+                }
+            });
+
+            canvas.style.background = '';
+            canvas.style.backgroundColor = '#1a1a2e';
+
+            drawIcon();
+        });
+
+        // Export SVG
+        document.getElementById('export-svg').addEventListener('click', () => {
+            const exportSvg = createSVG('svg', {
+                xmlns: 'http://www.w3.org/2000/svg',
+                viewBox: '0 0 100 100',
+                width: '1024',
+                height: '1024'
+            });
+
+            // Background
+            if (state.bgGradient) {
+                const defs = createSVG('defs', {});
+                const grad = createSVG('linearGradient', { id: 'bg', x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+                grad.appendChild(createSVG('stop', { offset: '0%', 'stop-color': '#4361ee' }));
+                grad.appendChild(createSVG('stop', { offset: '100%', 'stop-color': '#7209b7' }));
+                defs.appendChild(grad);
+                exportSvg.appendChild(defs);
+                exportSvg.appendChild(createSVG('rect', { width: '100', height: '100', rx: '22', fill: 'url(#bg)' }));
+            } else {
+                exportSvg.appendChild(createSVG('rect', { width: '100', height: '100', rx: '22', fill: state.bgColor }));
+            }
+
+            // Copy icon elements
+            Array.from(svg.children).forEach(child => {
+                exportSvg.appendChild(child.cloneNode(true));
+            });
+
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(exportSvg);
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'izzico-unified-icon.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Init
+        bindControls();
+        drawIcon();
+    </script>
+</body>
+</html>

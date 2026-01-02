@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Exploration Typographique V3 - Funky</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Baloo+2:wght@400;500;600;700;800&family=Comfortaa:wght@400;500;600;700&family=Righteous&family=Paytone+One&family=Lilita+One&family=Boogaloo&family=Chewy&family=Titan+One&family=Luckiest+Guy&family=Bubblegum+Sans&family=Sigmar+One&family=Lemon&family=Sniglet:wght@400;800&family=Patrick+Hand&family=Grandstander:wght@400;500;600;700;800;900&family=Fraunces:wght@400;500;600;700;800;900&family=Anybody:wght@400;500;600;700;800;900&family=Big+Shoulders+Display:wght@400;500;600;700;800;900&family=Abril+Fatface&family=Libre+Bodoni:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, sans-serif;
+            background: #FAF9F7;
+            color: #1a1a1a;
+            min-height: 100vh;
+            padding: 2rem 3rem;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .header h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #1a1a1a;
+            color: white;
+            font-size: 0.6rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .tag.funky { background: #FF5722; }
+        .tag.retro { background: #9c5698; }
+        .tag.blob { background: #FFB10B; color: #1a1a1a; }
+
+        .section {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Main Grid */
+        .funky-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .funky-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .funky-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+
+        .funky-card.featured {
+            border: 3px solid #1a1a1a;
+        }
+
+        .funky-card.top-pick {
+            background: linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%);
+            color: white;
+        }
+
+        .funky-card.top-pick .font-name {
+            color: rgba(255,255,255,0.7);
+        }
+
+        .funky-card.top-pick .font-note {
+            color: rgba(255,255,255,0.6);
+        }
+
+        .font-name {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #999;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .font-wordmark {
+            font-size: 4rem;
+            color: #1a1a1a;
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+
+        .funky-card.top-pick .font-wordmark {
+            color: white;
+        }
+
+        .font-note {
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        /* Font Families - Funky Display */
+        .font-fredoka { font-family: 'Fredoka', sans-serif; }
+        .font-baloo { font-family: 'Baloo 2', cursive; }
+        .font-comfortaa { font-family: 'Comfortaa', cursive; }
+        .font-righteous { font-family: 'Righteous', cursive; }
+        .font-paytone { font-family: 'Paytone One', sans-serif; }
+        .font-lilita { font-family: 'Lilita One', cursive; }
+        .font-boogaloo { font-family: 'Boogaloo', cursive; }
+        .font-chewy { font-family: 'Chewy', cursive; }
+        .font-titan { font-family: 'Titan One', cursive; }
+        .font-luckiest { font-family: 'Luckiest Guy', cursive; }
+        .font-bubblegum { font-family: 'Bubblegum Sans', cursive; }
+        .font-sigmar { font-family: 'Sigmar One', cursive; }
+        .font-lemon { font-family: 'Lemon', serif; }
+        .font-sniglet { font-family: 'Sniglet', cursive; }
+        .font-grandstander { font-family: 'Grandstander', cursive; }
+        .font-fraunces { font-family: 'Fraunces', serif; }
+        .font-anybody { font-family: 'Anybody', sans-serif; }
+        .font-shoulders { font-family: 'Big Shoulders Display', sans-serif; }
+        .font-abril { font-family: 'Abril Fatface', serif; }
+        .font-bodoni { font-family: 'Libre Bodoni', serif; }
+
+        .weight-400 { font-weight: 400; }
+        .weight-500 { font-weight: 500; }
+        .weight-600 { font-weight: 600; }
+        .weight-700 { font-weight: 700; }
+        .weight-800 { font-weight: 800; }
+        .weight-900 { font-weight: 900; }
+
+        /* Hero Section */
+        .hero-showcase {
+            background: #1a1a1a;
+            border-radius: 20px;
+            padding: 4rem 3rem;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .hero-showcase .section-title {
+            color: #666;
+        }
+
+        .hero-main {
+            font-size: 8rem;
+            color: white;
+            line-height: 1;
+            margin: 2rem 0;
+        }
+
+        .hero-subtitle {
+            color: #888;
+            font-size: 0.8rem;
+        }
+
+        /* Comparison Section */
+        .comparison-showcase {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .comparison-row {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .comparison-row:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-label {
+            width: 200px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+        }
+
+        .comparison-wordmark {
+            flex: 1;
+            font-size: 3.5rem;
+            color: #1a1a1a;
+        }
+
+        .comparison-tags {
+            width: 150px;
+            text-align: right;
+        }
+
+        /* SVG Custom Concepts */
+        .svg-section {
+            background: #f5f5f5;
+            border-radius: 16px;
+            padding: 3rem;
+        }
+
+        .svg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .svg-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .svg-display {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+
+        .svg-display svg {
+            height: 70px;
+            width: auto;
+        }
+
+        .svg-name {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .svg-description {
+            font-size: 0.7rem;
+            color: #666;
+        }
+
+        /* Gradient Preview */
+        .gradient-preview {
+            background: linear-gradient(90deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%);
+            border-radius: 16px;
+            padding: 4rem 3rem;
+            text-align: center;
+        }
+
+        .gradient-wordmark {
+            font-size: 6rem;
+            color: white;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .gradient-note {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8rem;
+        }
+
+        /* Final Picks */
+        .final-picks {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .pick-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .pick-card.winner {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .pick-rank {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .pick-card.winner .pick-rank {
+            color: #FFB10B;
+        }
+
+        .pick-wordmark {
+            font-size: 3.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .pick-font {
+            font-size: 0.7rem;
+            color: #888;
+        }
+
+        .pick-card.winner .pick-font {
+            color: #999;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem;
+            color: #999;
+            font-size: 0.7rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .final-picks { grid-template-columns: 1fr; }
+            .hero-main { font-size: 4rem; }
+            .gradient-wordmark { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Exploration Typographique V3</h1>
+        <p>IzzIco - Direction Funky, Bold & Distinctive</p>
+    </header>
+
+    <!-- HERO: TOP PICK -->
+    <section class="hero-showcase">
+        <div class="section-title">Direction Recommandee</div>
+        <div class="hero-main font-fredoka weight-600">izzico</div>
+        <div class="hero-subtitle">Fredoka SemiBold - Rounded, Fun, Moderne</div>
+    </section>
+
+    <!-- ROUNDED / BLOB STYLE -->
+    <section class="section">
+        <h2 class="section-title">Style Rounded / Blob</h2>
+        <p class="section-subtitle">Inspirees par Goji, Gleffy - terminaisons rondes, fun mais pro</p>
+
+        <div class="funky-grid">
+            <div class="funky-card featured">
+                <div class="font-name">Fredoka <span class="tag blob">Top Pick</span></div>
+                <div class="font-wordmark font-fredoka weight-600">izzico</div>
+                <div class="font-note">Rounded moderne, equilibre parfait fun/pro</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Baloo 2 <span class="tag funky">Funky</span></div>
+                <div class="font-wordmark font-baloo weight-700">izzico</div>
+                <div class="font-note">Tres expressif, terminaisons blob distinctives</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Comfortaa <span class="tag blob">Blob</span></div>
+                <div class="font-wordmark font-comfortaa weight-700">izzico</div>
+                <div class="font-note">Geometrique arrondi, elegant et lisible</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Sniglet <span class="tag funky">Funky</span></div>
+                <div class="font-wordmark font-sniglet" style="font-weight: 800;">izzico</div>
+                <div class="font-note">Playful, terminaisons tres rondes</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Grandstander <span class="tag blob">Blob</span></div>
+                <div class="font-wordmark font-grandstander weight-700">izzico</div>
+                <div class="font-note">Chaleureux, comme ecrit a la main arrondie</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BOLD DISPLAY -->
+    <section class="section">
+        <h2 class="section-title">Style Bold Display</h2>
+        <p class="section-subtitle">Inspirees par Ontika, Ratio - impact fort, moderne</p>
+
+        <div class="funky-grid">
+            <div class="funky-card">
+                <div class="font-name">Righteous <span class="tag funky">Funky</span></div>
+                <div class="font-wordmark font-righteous">izzico</div>
+                <div class="font-note">Retro-moderne, angles arrondis</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Paytone One <span class="tag funky">Funky</span></div>
+                <div class="font-wordmark font-paytone">izzico</div>
+                <div class="font-note">Ultra bold, impactant</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Lilita One <span class="tag funky">Funky</span></div>
+                <div class="font-wordmark font-lilita">izzico</div>
+                <div class="font-note">Energique, dynamique</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Big Shoulders Display <span class="tag funky">Funky</span></div>
+                <div class="font-wordmark font-shoulders weight-700">izzico</div>
+                <div class="font-note">Condense, urbain, fort</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Anybody <span class="tag funky">Funky</span></div>
+                <div class="font-wordmark font-anybody weight-700">izzico</div>
+                <div class="font-note">Variable, adaptable, moderne</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- RETRO / GROOVY -->
+    <section class="section">
+        <h2 class="section-title">Style Retro / Groovy</h2>
+        <p class="section-subtitle">Inspirees par Boogie/Monoton, After - vintage avec caractere</p>
+
+        <div class="funky-grid">
+            <div class="funky-card">
+                <div class="font-name">Boogaloo <span class="tag retro">Retro</span></div>
+                <div class="font-wordmark font-boogaloo">izzico</div>
+                <div class="font-note">70s vibes, groovy</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Chewy <span class="tag retro">Retro</span></div>
+                <div class="font-wordmark font-chewy">izzico</div>
+                <div class="font-note">Casual, amical, accessible</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Lemon <span class="tag retro">Retro</span></div>
+                <div class="font-wordmark font-lemon">izzico</div>
+                <div class="font-note">Serif display, retro elegant</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Abril Fatface <span class="tag retro">Retro</span></div>
+                <div class="font-wordmark font-abril">izzico</div>
+                <div class="font-note">Didone moderne, elegant</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Fraunces <span class="tag retro">Retro</span></div>
+                <div class="font-wordmark font-fraunces weight-700">izzico</div>
+                <div class="font-note">Serif variable, personnalite forte</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ULTRA FUNKY (usage prudent) -->
+    <section class="section">
+        <h2 class="section-title">Ultra Funky (Plus Risque)</h2>
+        <p class="section-subtitle">Tres distinctif mais peut limiter la versatilite</p>
+
+        <div class="funky-grid">
+            <div class="funky-card">
+                <div class="font-name">Titan One</div>
+                <div class="font-wordmark font-titan">izzico</div>
+                <div class="font-note">Bold massif, sportif</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Luckiest Guy</div>
+                <div class="font-wordmark font-luckiest">izzico</div>
+                <div class="font-note">Cartoon, tres expressif</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Bubblegum Sans</div>
+                <div class="font-wordmark font-bubblegum">izzico</div>
+                <div class="font-note">Playful, jeune</div>
+            </div>
+
+            <div class="funky-card">
+                <div class="font-name">Sigmar One</div>
+                <div class="font-wordmark font-sigmar">izzico</div>
+                <div class="font-note">Blocky, puissant</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARAISON DIRECTE -->
+    <section class="section">
+        <h2 class="section-title">Comparaison Directe - Top 8 Funky</h2>
+        <p class="section-subtitle">Les plus prometteurs pour IzzIco</p>
+
+        <div class="comparison-showcase">
+            <div class="comparison-row">
+                <div class="comparison-label">Fredoka SemiBold</div>
+                <div class="comparison-wordmark font-fredoka weight-600">izzico</div>
+                <div class="comparison-tags"><span class="tag blob">Top Pick</span></div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Baloo 2 Bold</div>
+                <div class="comparison-wordmark font-baloo weight-700">izzico</div>
+                <div class="comparison-tags"><span class="tag funky">Funky</span></div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Comfortaa Bold</div>
+                <div class="comparison-wordmark font-comfortaa weight-700">izzico</div>
+                <div class="comparison-tags"><span class="tag blob">Blob</span></div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Righteous</div>
+                <div class="comparison-wordmark font-righteous">izzico</div>
+                <div class="comparison-tags"><span class="tag funky">Funky</span></div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Grandstander Bold</div>
+                <div class="comparison-wordmark font-grandstander weight-700">izzico</div>
+                <div class="comparison-tags"><span class="tag blob">Blob</span></div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Paytone One</div>
+                <div class="comparison-wordmark font-paytone">izzico</div>
+                <div class="comparison-tags"><span class="tag funky">Funky</span></div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Sniglet ExtraBold</div>
+                <div class="comparison-wordmark font-sniglet" style="font-weight: 800;">izzico</div>
+                <div class="comparison-tags"><span class="tag blob">Blob</span></div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Fraunces Bold</div>
+                <div class="comparison-wordmark font-fraunces weight-700">izzico</div>
+                <div class="comparison-tags"><span class="tag retro">Retro</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AVEC GRADIENT -->
+    <section class="section">
+        <h2 class="section-title">Preview avec Gradient Signature</h2>
+        <p class="section-subtitle">Visualisation avec les couleurs IzzIco</p>
+
+        <div class="gradient-preview">
+            <div class="gradient-wordmark font-fredoka weight-600">izzico</div>
+            <div class="gradient-note">Fredoka SemiBold sur gradient #9c5698 → #FF5722 → #FFB10B</div>
+        </div>
+    </section>
+
+    <!-- CASSE VARIATIONS -->
+    <section class="section">
+        <h2 class="section-title">Variations de Casse (Fredoka)</h2>
+        <p class="section-subtitle">Quelle version pour IzzIco?</p>
+
+        <div class="comparison-showcase">
+            <div class="comparison-row">
+                <div class="comparison-label">Minuscules</div>
+                <div class="comparison-wordmark font-fredoka weight-600">izzico</div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">CamelCase</div>
+                <div class="comparison-wordmark font-fredoka weight-600">IzzIco</div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Majuscules</div>
+                <div class="comparison-wordmark font-fredoka weight-600">IZZICO</div>
+            </div>
+            <div class="comparison-row">
+                <div class="comparison-label">Capitale seule</div>
+                <div class="comparison-wordmark font-fredoka weight-600">Izzico</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FINAL SELECTION -->
+    <section class="section">
+        <h2 class="section-title">Selection Finale Recommandee</h2>
+        <p class="section-subtitle">3 directions pour IzzIco - du plus safe au plus audacieux</p>
+
+        <div class="final-picks">
+            <div class="pick-card winner">
+                <div class="pick-rank">1er Choix - Equilibre</div>
+                <div class="pick-wordmark font-fredoka weight-600" style="color: white;">izzico</div>
+                <div class="pick-font">Fredoka SemiBold</div>
+            </div>
+            <div class="pick-card">
+                <div class="pick-rank">2e Choix - Plus Funky</div>
+                <div class="pick-wordmark font-baloo weight-700">izzico</div>
+                <div class="pick-font">Baloo 2 Bold</div>
+            </div>
+            <div class="pick-card">
+                <div class="pick-rank">3e Choix - Elegant Fun</div>
+                <div class="pick-wordmark font-comfortaa weight-700">izzico</div>
+                <div class="pick-font">Comfortaa Bold</div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>IzzIco - Exploration Typographique V3 - Funky</p>
+        <p>Basee sur les inspirations: Goji, Gleffy, Boogie, Ontika, After, Ratio</p>
+    </footer>
+</body>
+</html>

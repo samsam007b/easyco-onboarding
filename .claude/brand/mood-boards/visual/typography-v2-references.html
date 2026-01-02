@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Exploration Typographique V2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&family=Nunito:wght@400;600;700;800;900&family=Outfit:wght@400;500;600;700;800&family=Sora:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Urbanist:wght@400;500;600;700;800&family=Rubik:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #FAF9F7;
+            color: #1a1a1a;
+            min-height: 100vh;
+            padding: 2rem 3rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .header h1 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: #1a1a1a;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 0.85rem;
+        }
+
+        /* Section */
+        .section {
+            max-width: 1400px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: #999;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 0.8rem;
+            color: #666;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        /* Reference Badge */
+        .ref-badge {
+            display: inline-block;
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+        .ref-tussen { background: #6B1E23; color: white; }
+        .ref-mix { background: #ff6400; color: white; }
+        .ref-hangar { background: #1a1a1a; color: white; }
+        .ref-mima { background: #FFFF00; color: #1a1a1a; }
+
+        /* Hero Exploration */
+        .hero-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .hero-item {
+            text-align: center;
+            padding: 2rem;
+            border-radius: 8px;
+            background: #FAFAFA;
+        }
+
+        .hero-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .hero-wordmark {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+        }
+
+        /* Ligature Concepts */
+        .ligature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .ligature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            position: relative;
+        }
+
+        .ligature-card.featured {
+            border: 2px solid #1a1a1a;
+        }
+
+        .ligature-name {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #999;
+            margin-bottom: 1.5rem;
+        }
+
+        .ligature-wordmark {
+            font-size: 4.5rem;
+            color: #1a1a1a;
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .ligature-detail {
+            font-size: 0.75rem;
+            color: #888;
+            line-height: 1.5;
+        }
+
+        /* SVG Ligature */
+        .svg-ligature {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100px;
+            margin-bottom: 1rem;
+        }
+
+        .svg-ligature svg {
+            height: 80px;
+            width: auto;
+        }
+
+        /* Custom ZZ treatments */
+        .zz-connected {
+            position: relative;
+            display: inline-block;
+        }
+
+        .zz-blob {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+        }
+
+        .zz-wave {
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+        }
+
+        /* Case Studies Grid */
+        .case-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .case-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .case-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .case-ref {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+        }
+
+        .case-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            margin-top: 0.25rem;
+        }
+
+        .case-body {
+            padding: 2rem 1.5rem;
+        }
+
+        .case-wordmark {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .case-note {
+            font-size: 0.7rem;
+            color: #888;
+            text-align: center;
+        }
+
+        /* Minuscules Section */
+        .lowercase-showcase {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .lowercase-row {
+            display: flex;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .lowercase-row:last-child {
+            border-bottom: none;
+        }
+
+        .lowercase-label {
+            width: 180px;
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+        }
+
+        .lowercase-wordmark {
+            flex: 1;
+            font-size: 3.5rem;
+            color: #1a1a1a;
+        }
+
+        .lowercase-note {
+            width: 200px;
+            font-size: 0.7rem;
+            color: #888;
+            text-align: right;
+        }
+
+        /* Font Families */
+        .font-poppins { font-family: 'Poppins', sans-serif; }
+        .font-nunito { font-family: 'Nunito', sans-serif; }
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+        .font-sora { font-family: 'Sora', sans-serif; }
+        .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .font-urbanist { font-family: 'Urbanist', sans-serif; }
+        .font-rubik { font-family: 'Rubik', sans-serif; }
+        .font-dm-sans { font-family: 'DM Sans', sans-serif; }
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        .font-quicksand { font-family: 'Quicksand', sans-serif; }
+        .font-bricolage { font-family: 'Bricolage Grotesque', sans-serif; }
+        .font-lexend { font-family: 'Lexend', sans-serif; }
+
+        .weight-500 { font-weight: 500; }
+        .weight-600 { font-weight: 600; }
+        .weight-700 { font-weight: 700; }
+        .weight-800 { font-weight: 800; }
+        .weight-900 { font-weight: 900; }
+
+        /* Mix Typography Section */
+        .mix-section {
+            background: white;
+            border-radius: 12px;
+            padding: 3rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .mix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .mix-item {
+            padding: 1.5rem;
+            background: #FAFAFA;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .mix-label {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .mix-wordmark {
+            font-size: 3.5rem;
+            color: #1a1a1a;
+            letter-spacing: -0.01em;
+        }
+
+        .mix-description {
+            font-size: 0.7rem;
+            color: #888;
+            margin-top: 1rem;
+        }
+
+        /* Top Picks */
+        .top-picks {
+            background: #1a1a1a;
+            border-radius: 12px;
+            padding: 3rem;
+            color: white;
+        }
+
+        .top-picks .section-title {
+            color: #666;
+        }
+
+        .top-picks .section-subtitle {
+            color: #888;
+            border-bottom-color: #333;
+        }
+
+        .picks-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .pick-item {
+            background: #252525;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .pick-rank {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .pick-wordmark {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .pick-font {
+            font-size: 0.65rem;
+            color: #888;
+        }
+
+        /* Special ZZ Exploration */
+        .zz-exploration {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .zz-item {
+            background: #FAFAFA;
+            border-radius: 8px;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        .zz-display {
+            font-size: 5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .zz-type {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #999;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 3rem;
+            color: #ccc;
+            font-size: 0.7rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-grid { grid-template-columns: 1fr; }
+            .case-grid { grid-template-columns: 1fr; }
+            .hero-wordmark { font-size: 3rem; }
+            .ligature-wordmark { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Exploration Typographique V2</h1>
+        <p>IzzIco - Inspire par Mix, Tussen, Hangar, MIMA</p>
+    </header>
+
+    <!-- HERO: 3 DIRECTIONS DE CASSE -->
+    <section class="section">
+        <h2 class="section-title">Question Fondamentale</h2>
+        <p class="section-subtitle">Quelle casse pour IzzIco? Chaque option change la personnalite de la marque.</p>
+
+        <div class="hero-section">
+            <div class="hero-grid">
+                <div class="hero-item">
+                    <div class="hero-label">Minuscules <span class="ref-badge ref-tussen">Tussen</span> <span class="ref-badge ref-mix">Mix</span></div>
+                    <div class="hero-wordmark font-poppins weight-700">izzico</div>
+                </div>
+                <div class="hero-item">
+                    <div class="hero-label">CamelCase (Actuel)</div>
+                    <div class="hero-wordmark font-poppins weight-700">IzzIco</div>
+                </div>
+                <div class="hero-item">
+                    <div class="hero-label">Majuscules <span class="ref-badge ref-mima">MIMA</span></div>
+                    <div class="hero-wordmark font-poppins weight-700">IZZICO</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOCUS: LE DOUBLE Z -->
+    <section class="section">
+        <h2 class="section-title">Focus: Le Double "ZZ"</h2>
+        <p class="section-subtitle">Inspire par Tussen (ligature SS), le "zz" peut devenir l'element signature d'IzzIco - symbolisant la connexion Owner <-> Resident <-> Searcher.</p>
+
+        <div class="zz-exploration">
+            <div class="zz-item">
+                <div class="zz-display font-poppins">zz</div>
+                <div class="zz-type">Poppins - Geometrique</div>
+            </div>
+            <div class="zz-item">
+                <div class="zz-display font-nunito">zz</div>
+                <div class="zz-type">Nunito - Arrondi</div>
+            </div>
+            <div class="zz-item">
+                <div class="zz-display font-quicksand">zz</div>
+                <div class="zz-type">Quicksand - Fluide</div>
+            </div>
+            <div class="zz-item">
+                <div class="zz-display font-rubik">zz</div>
+                <div class="zz-type">Rubik - Solide</div>
+            </div>
+            <div class="zz-item">
+                <div class="zz-display font-outfit">zz</div>
+                <div class="zz-type">Outfit - Clean</div>
+            </div>
+            <div class="zz-item">
+                <div class="zz-display font-sora">zz</div>
+                <div class="zz-type">Sora - Tech</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LIGATURE CONCEPTS -->
+    <section class="section">
+        <h2 class="section-title">Concepts de Ligature "zz"</h2>
+        <p class="section-subtitle">Comme Tussen transforme ses "SS" en element connecteur, IzzIco pourrait transformer son "zz" en signature visuelle.</p>
+
+        <div class="ligature-grid">
+            <!-- Concept 1: ZZ Connecte -->
+            <div class="ligature-card featured">
+                <div class="ligature-name">Concept A: ZZ Connecte <span class="ref-badge ref-tussen">Tussen</span></div>
+                <div class="svg-ligature">
+                    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- i -->
+                        <rect x="10" y="25" width="12" height="45" rx="2" fill="#1a1a1a"/>
+                        <circle cx="16" cy="12" r="7" fill="#1a1a1a"/>
+                        <!-- z connecte 1 -->
+                        <path d="M40 25 L75 25 L75 32 L52 63 L78 63 L78 70 L38 70 L38 63 L61 32 L40 32 Z" fill="#1a1a1a"/>
+                        <!-- Connexion blob -->
+                        <ellipse cx="95" cy="47" rx="12" ry="18" fill="#1a1a1a"/>
+                        <!-- z connecte 2 -->
+                        <path d="M108 25 L143 25 L143 32 L120 63 L146 63 L146 70 L106 70 L106 63 L129 32 L108 32 Z" fill="#1a1a1a"/>
+                        <!-- I -->
+                        <rect x="160" y="10" width="14" height="60" rx="2" fill="#1a1a1a"/>
+                        <!-- c -->
+                        <path d="M210 47 C210 35 200 25 188 25 C176 25 166 35 166 47 C166 59 176 70 188 70 C196 70 203 66 207 60 L200 55 C198 58 194 61 188 61 C181 61 176 55 176 47 C176 39 181 33 188 33 C194 33 198 36 200 39 Z" fill="#1a1a1a"/>
+                        <!-- o -->
+                        <ellipse cx="235" cy="47" rx="22" ry="23" fill="#1a1a1a"/>
+                        <ellipse cx="235" cy="47" rx="12" ry="13" fill="#FAF9F7"/>
+                    </svg>
+                </div>
+                <div class="ligature-detail">Les deux Z sont relies par un element organique central, symbolisant la connexion entre les utilisateurs. Inspire directement de Tussen.</div>
+            </div>
+
+            <!-- Concept 2: ZZ Fusion -->
+            <div class="ligature-card">
+                <div class="ligature-name">Concept B: ZZ Fusion</div>
+                <div class="svg-ligature">
+                    <svg viewBox="0 0 380 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- i -->
+                        <rect x="10" y="25" width="12" height="45" rx="2" fill="#1a1a1a"/>
+                        <circle cx="16" cy="12" r="7" fill="#1a1a1a"/>
+                        <!-- zz fusionnes partageant une diagonale -->
+                        <path d="M40 25 L110 25 L110 32 L65 63 L50 63 L85 32 L40 32 Z M60 63 L113 63 L113 70 L38 70 L38 63 Z" fill="#1a1a1a"/>
+                        <!-- I -->
+                        <rect x="125" y="10" width="14" height="60" rx="2" fill="#1a1a1a"/>
+                        <!-- c -->
+                        <path d="M175 47 C175 35 165 25 153 25 C141 25 131 35 131 47 C131 59 141 70 153 70 C161 70 168 66 172 60 L165 55 C163 58 159 61 153 61 C146 61 141 55 141 47 C141 39 146 33 153 33 C159 33 163 36 165 39 Z" fill="#1a1a1a"/>
+                        <!-- o -->
+                        <ellipse cx="200" cy="47" rx="22" ry="23" fill="#1a1a1a"/>
+                        <ellipse cx="200" cy="47" rx="12" ry="13" fill="#FAF9F7"/>
+                    </svg>
+                </div>
+                <div class="ligature-detail">Les deux Z partagent une diagonale centrale, creant une forme compacte et dynamique.</div>
+            </div>
+
+            <!-- Concept 3: ZZ Ondule -->
+            <div class="ligature-card">
+                <div class="ligature-name">Concept C: ZZ Ondule (Wave)</div>
+                <div class="svg-ligature">
+                    <svg viewBox="0 0 400 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- i -->
+                        <rect x="10" y="25" width="12" height="45" rx="6" fill="#1a1a1a"/>
+                        <circle cx="16" cy="12" r="7" fill="#1a1a1a"/>
+                        <!-- zz comme une vague continue -->
+                        <path d="M35 25 C35 25 45 25 55 25 L55 30 C55 30 40 55 40 55 L55 55 L75 30 L75 25 L95 25 L95 30 L80 55 L95 55 L95 70 L35 70 L35 65 L50 40 L35 40 Z" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="2" stroke-linejoin="round"/>
+                        <!-- I -->
+                        <rect x="110" y="10" width="14" height="60" rx="6" fill="#1a1a1a"/>
+                        <!-- c arrondi -->
+                        <path d="M160 47 C160 35 150 25 138 25 C126 25 116 35 116 47 C116 59 126 70 138 70 C146 70 153 66 157 60 L150 55 C148 58 144 61 138 61 C131 61 126 55 126 47 C126 39 131 33 138 33 C144 33 148 36 150 39 Z" fill="#1a1a1a"/>
+                        <!-- o -->
+                        <ellipse cx="185" cy="47" rx="22" ry="23" fill="#1a1a1a"/>
+                        <ellipse cx="185" cy="47" rx="12" ry="13" fill="#FAF9F7"/>
+                    </svg>
+                </div>
+                <div class="ligature-detail">Le double Z forme une vague continue, evoquant le mouvement et la fluidite des echanges.</div>
+            </div>
+
+            <!-- Concept 4: Standard elegant -->
+            <div class="ligature-card">
+                <div class="ligature-name">Concept D: Classique Elegant <span class="ref-badge ref-hangar">Hangar</span></div>
+                <div class="ligature-wordmark font-sora weight-700" style="letter-spacing: 0.02em;">izzico</div>
+                <div class="ligature-detail">Approche minimaliste comme Hangar: typographie elegante sans modification, mais avec un element distinctif (arc, point, etc.) ajoute separement.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- INSPIRATION PAR REFERENCE -->
+    <section class="section">
+        <h2 class="section-title">Inspirations par Reference</h2>
+        <p class="section-subtitle">Comment chaque reference pourrait influencer la typographie IzzIco.</p>
+
+        <div class="case-grid">
+            <!-- Mix inspired -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-ref"><span class="ref-badge ref-mix">Mix Brussels</span></div>
+                    <div class="case-title">Dynamique + Angles</div>
+                </div>
+                <div class="case-body">
+                    <div class="case-wordmark font-space weight-700" style="font-style: italic; letter-spacing: -0.03em;">izzico</div>
+                    <div class="case-note">Space Grotesk italique - coupes angulaires, energie</div>
+                </div>
+            </div>
+
+            <!-- Tussen inspired -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-ref"><span class="ref-badge ref-tussen">Tussen</span></div>
+                    <div class="case-title">Organique + Chaleureux</div>
+                </div>
+                <div class="case-body">
+                    <div class="case-wordmark font-nunito weight-800">izzico</div>
+                    <div class="case-note">Nunito ExtraBold - terminaisons rondes, accueillant</div>
+                </div>
+            </div>
+
+            <!-- Hangar inspired -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-ref"><span class="ref-badge ref-hangar">Hangar</span></div>
+                    <div class="case-title">Elegant + Raffine</div>
+                </div>
+                <div class="case-body">
+                    <div class="case-wordmark font-urbanist weight-600" style="letter-spacing: 0.05em;">izzico</div>
+                    <div class="case-note">Urbanist SemiBold - espace, sophistication</div>
+                </div>
+            </div>
+
+            <!-- MIMA inspired -->
+            <div class="case-card">
+                <div class="case-header">
+                    <div class="case-ref"><span class="ref-badge ref-mima">MIMA</span></div>
+                    <div class="case-title">Bold + Contraste Fort</div>
+                </div>
+                <div class="case-body">
+                    <div class="case-wordmark font-poppins weight-800">IZZICO</div>
+                    <div class="case-note">Poppins ExtraBold - impact maximum, symetrie</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MINUSCULES SHOWCASE -->
+    <section class="section">
+        <h2 class="section-title">Exploration Minuscules "izzico"</h2>
+        <p class="section-subtitle">Comme Mix, Tussen et Hangar, les minuscules creent une approche plus accessible et moderne.</p>
+
+        <div class="lowercase-showcase">
+            <div class="lowercase-row">
+                <div class="lowercase-label">Poppins Bold</div>
+                <div class="lowercase-wordmark font-poppins weight-700">izzico</div>
+                <div class="lowercase-note">Geometrique, equilibre</div>
+            </div>
+            <div class="lowercase-row">
+                <div class="lowercase-label">Nunito ExtraBold</div>
+                <div class="lowercase-wordmark font-nunito weight-800">izzico</div>
+                <div class="lowercase-note">Chaleureux, friendly</div>
+            </div>
+            <div class="lowercase-row">
+                <div class="lowercase-label">Outfit Bold</div>
+                <div class="lowercase-wordmark font-outfit weight-700">izzico</div>
+                <div class="lowercase-note">Clean, minimal</div>
+            </div>
+            <div class="lowercase-row">
+                <div class="lowercase-label">Sora Bold</div>
+                <div class="lowercase-wordmark font-sora weight-700">izzico</div>
+                <div class="lowercase-note">Tech, startup</div>
+            </div>
+            <div class="lowercase-row">
+                <div class="lowercase-label">Plus Jakarta Sans Bold</div>
+                <div class="lowercase-wordmark font-jakarta weight-700">izzico</div>
+                <div class="lowercase-note">Premium, moderne</div>
+            </div>
+            <div class="lowercase-row">
+                <div class="lowercase-label">Quicksand Bold</div>
+                <div class="lowercase-wordmark font-quicksand weight-700">izzico</div>
+                <div class="lowercase-note">Doux, ludique</div>
+            </div>
+            <div class="lowercase-row">
+                <div class="lowercase-label">Rubik Bold</div>
+                <div class="lowercase-wordmark font-rubik weight-700">izzico</div>
+                <div class="lowercase-note">Solide, confiance</div>
+            </div>
+            <div class="lowercase-row">
+                <div class="lowercase-label">Bricolage Grotesque Bold</div>
+                <div class="lowercase-wordmark font-bricolage weight-700">izzico</div>
+                <div class="lowercase-note">Unique, expressif</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MIX TYPOGRAPHIES -->
+    <section class="section">
+        <h2 class="section-title">Mix de 2 Typographies</h2>
+        <p class="section-subtitle">Comme MIMA (TT Firs + Libre Caslon), combiner deux polices peut creer une tension interessante.</p>
+
+        <div class="mix-section">
+            <div class="mix-grid">
+                <div class="mix-item">
+                    <div class="mix-label">Sora + Nunito</div>
+                    <div class="mix-wordmark">
+                        <span class="font-sora weight-700">izz</span><span class="font-nunito weight-700">ico</span>
+                    </div>
+                    <div class="mix-description">Tech + Chaleur</div>
+                </div>
+                <div class="mix-item">
+                    <div class="mix-label">Poppins + Quicksand</div>
+                    <div class="mix-wordmark">
+                        <span class="font-poppins weight-700">izz</span><span class="font-quicksand weight-700">ico</span>
+                    </div>
+                    <div class="mix-description">Structure + Fluidite</div>
+                </div>
+                <div class="mix-item">
+                    <div class="mix-label">Outfit + Rubik</div>
+                    <div class="mix-wordmark">
+                        <span class="font-outfit weight-700">izz</span><span class="font-rubik weight-700">ico</span>
+                    </div>
+                    <div class="mix-description">Minimal + Solide</div>
+                </div>
+                <div class="mix-item">
+                    <div class="mix-label">Space Grotesk + DM Sans</div>
+                    <div class="mix-wordmark">
+                        <span class="font-space weight-700">izz</span><span class="font-dm-sans weight-700">ico</span>
+                    </div>
+                    <div class="mix-description">Angulaire + Doux</div>
+                </div>
+                <div class="mix-item">
+                    <div class="mix-label">Bricolage + Lexend</div>
+                    <div class="mix-wordmark">
+                        <span class="font-bricolage weight-700">izz</span><span class="font-lexend weight-700">ico</span>
+                    </div>
+                    <div class="mix-description">Unique + Lisible</div>
+                </div>
+                <div class="mix-item">
+                    <div class="mix-label">Jakarta + Outfit</div>
+                    <div class="mix-wordmark">
+                        <span class="font-jakarta weight-700">izz</span><span class="font-outfit weight-700">ico</span>
+                    </div>
+                    <div class="mix-description">Premium + Clean</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOP PICKS -->
+    <section class="section">
+        <div class="top-picks">
+            <h2 class="section-title">Selection Recommandee</h2>
+            <p class="section-subtitle">Basee sur l'analyse des references et le positionnement IzzIco ("connecteur cool", fun, humain).</p>
+
+            <div class="picks-grid">
+                <div class="pick-item">
+                    <div class="pick-rank">1. Recommande</div>
+                    <div class="pick-wordmark font-nunito weight-800">izzico</div>
+                    <div class="pick-font">Nunito ExtraBold - Chaleureux comme Tussen</div>
+                </div>
+                <div class="pick-item">
+                    <div class="pick-rank">2. Alternative Premium</div>
+                    <div class="pick-wordmark font-jakarta weight-700">izzico</div>
+                    <div class="pick-font">Plus Jakarta Sans Bold - Elegant moderne</div>
+                </div>
+                <div class="pick-item">
+                    <div class="pick-rank">3. Alternative Fun</div>
+                    <div class="pick-wordmark font-poppins weight-700">izzico</div>
+                    <div class="pick-font">Poppins Bold - Geometrique accessible</div>
+                </div>
+                <div class="pick-item">
+                    <div class="pick-rank">4. Alternative Tech</div>
+                    <div class="pick-wordmark font-sora weight-700">izzico</div>
+                    <div class="pick-font">Sora Bold - Startup moderne</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <p>IzzIco - Exploration Typographique V2</p>
+        <p>Inspire par Mix Brussels, Tussen, Hangar, MIMA</p>
+        <p style="margin-top: 1rem; color: #888;">Prochaine etape: Valider la direction, puis appliquer le gradient signature</p>
+    </footer>
+</body>
+</html>

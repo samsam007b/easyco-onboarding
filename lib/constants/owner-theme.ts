@@ -7,13 +7,84 @@ export const ownerGradientSimple = 'linear-gradient(135deg, #9c5698 0%, #c2566b 
 export const ownerGradientLight = 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)';
 export const ownerPageBackground = 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)';
 
-// Individual Owner Colors
+// Individual Owner Colors (5-color palette from gradient)
 export const ownerColors = {
   primary: '#9c5698',
   secondary: '#a5568d',
   tertiary: '#af5682',
   quaternary: '#b85676',
   accent: '#c2566b',
+} as const;
+
+// Extended Owner Palette with light/bg variants for each color
+export const ownerPalette = {
+  primary: {
+    main: '#9c5698',
+    light: '#F8F0F7',
+    bg: 'linear-gradient(135deg, #F8F0F7 0%, #F3E8F2 100%)',
+    text: '#7a4476',
+    border: '#D4B5D1',
+    shadow: 'rgba(156, 86, 152, 0.15)',
+  },
+  secondary: {
+    main: '#a5568d',
+    light: '#FDF5FA',
+    bg: 'linear-gradient(135deg, #FDF5FA 0%, #F8EBF5 100%)',
+    text: '#824570',
+    border: '#DDB8D4',
+    shadow: 'rgba(165, 86, 141, 0.15)',
+  },
+  tertiary: {
+    main: '#af5682',
+    light: '#FFF5F8',
+    bg: 'linear-gradient(135deg, #FFF5F8 0%, #FDEEF3 100%)',
+    text: '#8a4567',
+    border: '#E5B8CA',
+    shadow: 'rgba(175, 86, 130, 0.15)',
+  },
+  quaternary: {
+    main: '#b85676',
+    light: '#FFF4F6',
+    bg: 'linear-gradient(135deg, #FFF4F6 0%, #FDEAEF 100%)',
+    text: '#92455e',
+    border: '#EBB8C4',
+    shadow: 'rgba(184, 86, 118, 0.15)',
+  },
+  accent: {
+    main: '#c2566b',
+    light: '#FFF3F4',
+    bg: 'linear-gradient(135deg, #FFF3F4 0%, #FDE8EA 100%)',
+    text: '#9a4555',
+    border: '#F0B8BE',
+    shadow: 'rgba(194, 86, 107, 0.15)',
+  },
+} as const;
+
+// Color usage by UI purpose (hierarchy guide)
+export const ownerUIColors = {
+  // Header & Navigation
+  headerIcon: ownerPalette.primary.main,
+  headerIconBg: ownerPalette.primary.light,
+
+  // KPI Cards - use different colors for variety
+  kpiRevenue: ownerPalette.primary,      // Revenus totaux
+  kpiCollected: ownerPalette.tertiary,   // Loyers collectés
+  kpiPending: ownerPalette.quaternary,   // En attente
+  kpiOverdue: ownerPalette.accent,       // Impayés
+
+  // Buttons
+  buttonPrimary: ownerGradient,          // Full gradient - CTAs only
+  buttonSecondary: ownerPalette.secondary.main,
+  buttonOutline: ownerPalette.primary.main,
+
+  // Charts
+  chartArea: ownerPalette.tertiary.main,
+  chartLine: ownerPalette.primary.main,
+  chartBar: ownerPalette.quaternary.main,
+
+  // Progress bars
+  progressFill: ownerPalette.tertiary.main,
+  progressBg: ownerPalette.primary.light,
 } as const;
 
 // Semantic Colors

@@ -40,7 +40,7 @@ export default function PrivacyPage() {
       progress={{
         current: 7,
         total: 8,
-        label: 'Étape 7 sur 8',
+        label: `${t('onboarding.progress.step')} 7 ${t('onboarding.progress.of')} 8`,
         stepName: t('onboarding.privacy.title'),
       }}
     >

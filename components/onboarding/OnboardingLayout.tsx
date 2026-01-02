@@ -76,10 +76,10 @@ export default function OnboardingLayout({
   children,
   role,
   backUrl,
-  backLabel = 'Retour',
+  backLabel = 'Back',
   progress,
   isLoading = false,
-  loadingText = 'Chargement...',
+  loadingText = 'Loading...',
 }: OnboardingLayoutProps) {
   const router = useRouter();
   const theme = roleThemes[role];
@@ -128,7 +128,7 @@ export default function OnboardingLayout({
           <div className="mb-8">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-700">
-                {progress.label || `Étape ${progress.current} sur ${progress.total}`}
+                {progress.label || `Step ${progress.current} of ${progress.total}`}
               </span>
               {progress.stepName && (
                 <span className="text-sm text-gray-500">{progress.stepName}</span>

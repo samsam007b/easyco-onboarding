@@ -102,14 +102,14 @@ export default function OwnerBasicInfo() {
   const handleInvitationAccepted = () => {
     setShowInvitationModal(false);
     setPendingInvitation(null);
-    toast.success('Invitation acceptée ! Bienvenue dans la colocation.');
+    toast.success(onboarding.owner.invitation?.accepted || 'Invitation accepted! Welcome to the coliving.');
     router.push('/onboarding/owner/about');
   };
 
   const handleInvitationRefused = () => {
     setShowInvitationModal(false);
     setPendingInvitation(null);
-    toast.info('Invitation refusée. Vous pouvez la retrouver dans vos paramètres.');
+    toast.info(onboarding.owner.invitation?.refused || 'Invitation refused. You can find it in your settings.');
     router.push('/onboarding/owner/about');
   };
 

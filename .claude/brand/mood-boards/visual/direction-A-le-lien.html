@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Board - Direction A : Le Lien | IzzIco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Nunito:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --violet: #7B4ED8;
+            --orange: #FF8F3F;
+            --jaune: #FFD93D;
+            --gradient: linear-gradient(135deg, var(--violet) 0%, var(--orange) 50%, var(--jaune) 100%);
+            --dark: #1a1a2e;
+            --light: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: var(--gradient);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header .tagline {
+            margin-top: 1rem;
+            font-style: italic;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 1.5rem;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 1rem;
+            color: var(--orange);
+        }
+
+        /* Concept Central */
+        .concept-central {
+            grid-column: span 8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+            background: linear-gradient(180deg, rgba(123, 78, 216, 0.2) 0%, rgba(255, 143, 63, 0.1) 100%);
+        }
+
+        .logo-concept {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .role-circle {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .role-circle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .role-circle.owner {
+            background: var(--violet);
+        }
+
+        .role-circle.resident {
+            background: var(--orange);
+        }
+
+        .role-circle.searcher {
+            background: var(--jaune);
+            color: var(--dark);
+        }
+
+        .connector {
+            width: 60px;
+            height: 4px;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+
+        /* Variations */
+        .variations {
+            grid-column: span 4;
+        }
+
+        .variation-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .variation {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: border-color 0.3s ease;
+        }
+
+        .variation:hover {
+            border-color: var(--orange);
+        }
+
+        .variation-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .variation-name {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .variation-desc {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        /* Cercles Entrelaces Animation */
+        .circles-interlock {
+            position: relative;
+            width: 150px;
+            height: 150px;
+        }
+
+        .circles-interlock .circle {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        .circles-interlock .c1 {
+            background: var(--violet);
+            top: 0;
+            left: 35px;
+        }
+
+        .circles-interlock .c2 {
+            background: var(--orange);
+            bottom: 10px;
+            left: 0;
+        }
+
+        .circles-interlock .c3 {
+            background: var(--jaune);
+            bottom: 10px;
+            right: 0;
+        }
+
+        .circles-interlock .center-dot {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Palette */
+        .palette {
+            grid-column: span 4;
+        }
+
+        .color-swatch {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .swatch {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            flex-shrink: 0;
+        }
+
+        .swatch.violet { background: var(--violet); }
+        .swatch.orange { background: var(--orange); }
+        .swatch.jaune { background: var(--jaune); }
+
+        .swatch-info .role {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .swatch-info .hex {
+            font-family: monospace;
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+
+        .gradient-bar {
+            height: 40px;
+            background: var(--gradient);
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        /* Typography */
+        .typography {
+            grid-column: span 4;
+        }
+
+        .font-sample {
+            margin-bottom: 1.5rem;
+        }
+
+        .font-name {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .font-preview {
+            font-size: 1.8rem;
+        }
+
+        .font-preview.poppins { font-family: 'Poppins', sans-serif; }
+        .font-preview.montserrat { font-family: 'Montserrat', sans-serif; }
+        .font-preview.nunito { font-family: 'Nunito', sans-serif; }
+        .font-preview.quicksand { font-family: 'Quicksand', sans-serif; }
+
+        /* References */
+        .references {
+            grid-column: span 4;
+        }
+
+        .ref-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .ref-item {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        .ref-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .ref-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        /* Points Forts */
+        .points-forts {
+            grid-column: span 6;
+        }
+
+        .points-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+
+        .point {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(123, 78, 216, 0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .point-icon {
+            color: #4ade80;
+        }
+
+        /* Points Vigilance */
+        .points-vigilance {
+            grid-column: span 6;
+        }
+
+        .vigilance-list {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .vigilance {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem;
+            background: rgba(255, 143, 63, 0.2);
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+
+        .vigilance-icon {
+            color: #fbbf24;
+        }
+
+        /* Score */
+        .score {
+            grid-column: span 12;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .score-value {
+            font-size: 4rem;
+            font-weight: 700;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .score-label {
+            font-size: 1rem;
+            opacity: 0.7;
+        }
+
+        /* Logo Wordmark Demo */
+        .wordmark-demo {
+            grid-column: span 12;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            padding: 3rem;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.05) 100%);
+        }
+
+        .wordmark {
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .wordmark.poppins { font-family: 'Poppins', sans-serif; }
+        .wordmark.montserrat { font-family: 'Montserrat', sans-serif; }
+
+        .wordmark span {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            opacity: 0.5;
+            font-size: 0.8rem;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        .circles-interlock .circle {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .circles-interlock .c2 {
+            animation-delay: 0.3s;
+        }
+
+        .circles-interlock .c3 {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Direction A : Le Lien</h1>
+        <p class="subtitle">Trois elements connectes symbolisant les 3 roles</p>
+        <p class="tagline">"Searcher, Resident, Owner - unis par IzzIco"</p>
+    </header>
+
+    <main class="main-grid">
+        <!-- Concept Central -->
+        <section class="card concept-central">
+            <h2>Concept Central</h2>
+
+            <!-- Version lineaire -->
+            <div class="logo-concept">
+                <div class="role-circle owner">Owner</div>
+                <div class="connector"></div>
+                <div class="role-circle resident">Resident</div>
+                <div class="connector"></div>
+                <div class="role-circle searcher">Searcher</div>
+            </div>
+
+            <!-- Version cercles entrelaces -->
+            <div class="circles-interlock">
+                <div class="circle c1"></div>
+                <div class="circle c2"></div>
+                <div class="circle c3"></div>
+                <div class="center-dot"></div>
+            </div>
+            <p style="margin-top: 1rem; opacity: 0.7; font-size: 0.9rem;">Le point central = la connexion IzzIco</p>
+        </section>
+
+        <!-- Variations -->
+        <section class="card variations">
+            <h2>Variations</h2>
+            <div class="variation-grid">
+                <div class="variation">
+                    <div class="variation-icon">◯◯◯</div>
+                    <div class="variation-name">Cercles Entrelaces</div>
+                    <div class="variation-desc">Style Mastercard/Olympics</div>
+                </div>
+                <div class="variation">
+                    <div class="variation-icon">👤👤👤</div>
+                    <div class="variation-name">Figures Humaines</div>
+                    <div class="variation-desc">Silhouettes abstraites liees</div>
+                </div>
+                <div class="variation">
+                    <div class="variation-icon">●─●─●</div>
+                    <div class="variation-name">Noeuds/Points</div>
+                    <div class="variation-desc">Triangle de connexion</div>
+                </div>
+                <div class="variation">
+                    <div class="variation-icon">◐◑◒</div>
+                    <div class="variation-name">Venn Diagram</div>
+                    <div class="variation-desc">3 cercles avec intersection</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Palette -->
+        <section class="card palette">
+            <h2>Palette Couleur</h2>
+            <div class="color-swatch">
+                <div class="swatch violet"></div>
+                <div class="swatch-info">
+                    <div class="role">Owner</div>
+                    <div class="hex">#7B4ED8 - Premium, Tech</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch orange"></div>
+                <div class="swatch-info">
+                    <div class="role">Resident</div>
+                    <div class="hex">#FF8F3F - Chaleur, Creativite</div>
+                </div>
+            </div>
+            <div class="color-swatch">
+                <div class="swatch jaune"></div>
+                <div class="swatch-info">
+                    <div class="role">Searcher</div>
+                    <div class="hex">#FFD93D - Optimisme, Action</div>
+                </div>
+            </div>
+            <div class="gradient-bar"></div>
+            <p style="margin-top: 0.5rem; font-size: 0.8rem; opacity: 0.6;">Gradient traversant les 3 elements</p>
+        </section>
+
+        <!-- Typography -->
+        <section class="card typography">
+            <h2>Typographies</h2>
+            <div class="font-sample">
+                <div class="font-name">Poppins - Moderne, Accessible</div>
+                <div class="font-preview poppins">IzzIco</div>
+            </div>
+            <div class="font-sample">
+                <div class="font-name">Montserrat - Geometrique</div>
+                <div class="font-preview montserrat">IzzIco</div>
+            </div>
+            <div class="font-sample">
+                <div class="font-name">Nunito - Friendly</div>
+                <div class="font-preview nunito">IzzIco</div>
+            </div>
+            <div class="font-sample">
+                <div class="font-name">Quicksand - Chaleureux</div>
+                <div class="font-preview quicksand">IzzIco</div>
+            </div>
+        </section>
+
+        <!-- References -->
+        <section class="card references">
+            <h2>References</h2>
+            <div class="ref-grid">
+                <div class="ref-item">
+                    <div class="ref-icon">💳</div>
+                    <div class="ref-name">Mastercard</div>
+                </div>
+                <div class="ref-item">
+                    <div class="ref-icon">🏅</div>
+                    <div class="ref-name">Olympics</div>
+                </div>
+                <div class="ref-item">
+                    <div class="ref-icon">💬</div>
+                    <div class="ref-name">Slack</div>
+                </div>
+                <div class="ref-item">
+                    <div class="ref-icon">📊</div>
+                    <div class="ref-name">Airtable</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Points Forts -->
+        <section class="card points-forts">
+            <h2>Points Forts</h2>
+            <div class="points-list">
+                <div class="point">
+                    <span class="point-icon">✓</span>
+                    <span>Clarte conceptuelle : 3 roles = 3 elements</span>
+                </div>
+                <div class="point">
+                    <span class="point-icon">✓</span>
+                    <span>Differenciant : peu de concurrents</span>
+                </div>
+                <div class="point">
+                    <span class="point-icon">✓</span>
+                    <span>Scalable : fonctionne en petit</span>
+                </div>
+                <div class="point">
+                    <span class="point-icon">✓</span>
+                    <span>Gradient-friendly : traverse naturellement</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Points Vigilance -->
+        <section class="card points-vigilance">
+            <h2>Points de Vigilance</h2>
+            <div class="vigilance-list">
+                <div class="vigilance">
+                    <span class="vigilance-icon">⚠</span>
+                    <span>Risque generique : "3 personnes" = logo RH/corporate</span>
+                </div>
+                <div class="vigilance">
+                    <span class="vigilance-icon">⚠</span>
+                    <span>Complexite : 3 elements peuvent etre lourds en petit</span>
+                </div>
+                <div class="vigilance">
+                    <span class="vigilance-icon">⚠</span>
+                    <span>Lisibilite : les liens doivent rester clairs</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wordmark Demo -->
+        <section class="card wordmark-demo">
+            <div class="wordmark poppins"><span>Izz</span>Ico</div>
+            <div class="wordmark montserrat"><span>Izz</span>Ico</div>
+        </section>
+
+        <!-- Score -->
+        <section class="card score">
+            <div class="score-value">19/25</div>
+            <div class="score-label">Score de Correspondance Brand Canvas</div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>IzzIco Brand Discovery - Direction A : Le Lien</p>
+        <p>Genere le 2 janvier 2026</p>
+    </footer>
+</body>
+</html>

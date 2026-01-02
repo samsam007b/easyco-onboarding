@@ -38,20 +38,20 @@ export default function GroupSelectionPage() {
     {
       id: 'alone' as SearchMode,
       icon: UserCircle,
-      title: t('onboarding.groupSelection.aloneTitle') || 'Seul(e)',
-      description: t('onboarding.groupSelection.aloneDesc') || 'Recherchez et postulez individuellement',
+      title: t('onboarding.groupSelection.aloneTitle') || 'Alone',
+      description: t('onboarding.groupSelection.aloneDesc') || 'Search and apply individually',
     },
     {
       id: 'create_group' as SearchMode,
       icon: Users,
-      title: t('onboarding.groupSelection.createTitle') || 'Créer un groupe',
-      description: t('onboarding.groupSelection.createDesc') || 'Invitez des amis pour chercher ensemble',
+      title: t('onboarding.groupSelection.createTitle') || 'Create a group',
+      description: t('onboarding.groupSelection.createDesc') || 'Invite friends to search together',
     },
     {
       id: 'join_group' as SearchMode,
       icon: UserPlus,
-      title: t('onboarding.groupSelection.joinTitle') || 'Rejoindre un groupe',
-      description: t('onboarding.groupSelection.joinDesc') || 'Utilisez un code d\'invitation',
+      title: t('onboarding.groupSelection.joinTitle') || 'Join a group',
+      description: t('onboarding.groupSelection.joinDesc') || 'Use an invitation code',
     },
   ];
 
@@ -59,18 +59,18 @@ export default function GroupSelectionPage() {
     <OnboardingLayout
       role="searcher"
       backUrl="/onboarding/searcher"
-      backLabel={t('common.back') || 'Retour'}
+      backLabel={t('common.back') || 'Back'}
       progress={{
         current: 0,
         total: 6,
-        label: t('onboarding.groupSelection.progress') || 'Étape préliminaire',
-        stepName: t('onboarding.groupSelection.stepName') || 'Mode de recherche',
+        label: t('onboarding.groupSelection.progress') || 'Preliminary step',
+        stepName: t('onboarding.groupSelection.stepName') || 'Search mode',
       }}
     >
       <OnboardingHeading
         role="searcher"
-        title={t('onboarding.groupSelection.title') || 'Comment souhaitez-vous chercher ?'}
-        description={t('onboarding.groupSelection.subtitle') || 'Choisissez si vous voulez chercher seul(e) ou en groupe'}
+        title={t('onboarding.groupSelection.title') || 'How do you want to search?'}
+        description={t('onboarding.groupSelection.subtitle') || 'Choose if you want to search alone or in a group'}
       />
 
       {/* Options Grid */}
@@ -129,10 +129,10 @@ export default function GroupSelectionPage() {
           </div>
           <div>
             <h4 className="font-semibold text-blue-900 text-sm mb-1">
-              {t('onboarding.groupSelection.infoTitle') || 'Vous pourrez changer plus tard'}
+              {t('onboarding.groupSelection.infoTitle') || 'You can change later'}
             </h4>
             <p className="text-blue-800 text-sm">
-              {t('onboarding.groupSelection.infoDesc') || 'Créez ou rejoignez des groupes à tout moment depuis votre tableau de bord.'}
+              {t('onboarding.groupSelection.infoDesc') || 'Create or join groups anytime from your dashboard.'}
             </p>
           </div>
         </div>
@@ -144,7 +144,7 @@ export default function GroupSelectionPage() {
         onClick={handleContinue}
         disabled={!selectedMode}
       >
-        {t('common.continue') || 'Continuer'}
+        {t('common.continue') || 'Continue'}
       </OnboardingButton>
     </OnboardingLayout>
   );

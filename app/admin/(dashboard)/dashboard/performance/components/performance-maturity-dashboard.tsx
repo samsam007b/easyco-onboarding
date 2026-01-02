@@ -199,7 +199,7 @@ const categories: MaturityCategory[] = [
         status: 'completed',
         isFree: true,
         priority: 'medium',
-        impact: 'Chargement progressif',
+        impact: 'Progressive loading',
       },
     ],
   },

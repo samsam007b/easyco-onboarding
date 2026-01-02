@@ -501,10 +501,10 @@ export default function MaintenancePage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Chargement de la maintenance...
+            Loading maintenance...
           </h3>
           <p className="text-gray-600">
-            Récupération des demandes depuis Supabase
+            Fetching requests from database
           </p>
         </div>
       </div>

@@ -345,10 +345,10 @@ export default function LeasesPage() {
             <LoadingHouse size={80} />
           </div>
           <h3 className="text-xl font-semibold text-gray-900 mb-2">
-            Chargement des baux...
+            Loading leases...
           </h3>
           <p className="text-gray-600">
-            Analyse des contrats de location
+            Analyzing rental contracts
           </p>
         </div>
       </div>

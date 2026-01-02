@@ -49,11 +49,11 @@ export default function CoreSocialPersonalityPage() {
 
   const handleContinue = () => {
     if (!eventParticipationInterest) {
-      toast.error('Event participation interest is required');
+      toast.error(t('coreOnboarding.socialPersonality.errors.eventRequired'));
       return;
     }
     if (!guestFrequency) {
-      toast.error('Guest frequency is required');
+      toast.error(t('coreOnboarding.socialPersonality.errors.guestRequired'));
       return;
     }
 
@@ -70,16 +70,16 @@ export default function CoreSocialPersonalityPage() {
   const canContinue = eventParticipationInterest && guestFrequency;
 
   const eventParticipationOptions = [
-    { value: 'low', label: 'Low Interest', icon: <Users className="w-5 h-5" />, desc: 'I prefer staying in' },
-    { value: 'medium', label: 'Moderate', icon: <Users className="w-5 h-5" />, desc: 'Once in a while' },
-    { value: 'high', label: 'High Interest', icon: <Users className="w-5 h-5" />, desc: 'I love social events!' },
+    { value: 'low', labelKey: 'lowInterest', icon: <Users className="w-5 h-5" />, descKey: 'lowDesc' },
+    { value: 'medium', labelKey: 'moderate', icon: <Users className="w-5 h-5" />, descKey: 'moderateDesc' },
+    { value: 'high', labelKey: 'highInterest', icon: <Users className="w-5 h-5" />, descKey: 'highDesc' },
   ];
 
   const guestFrequencyOptions = [
-    { value: 'never', label: 'Never', desc: 'I don\'t have guests over' },
-    { value: 'rarely', label: 'Rarely', desc: 'Few times a year' },
-    { value: 'sometimes', label: 'Sometimes', desc: 'Once a month' },
-    { value: 'often', label: 'Often', desc: 'Multiple times a month' },
+    { value: 'never', labelKey: 'never', descKey: 'neverDesc' },
+    { value: 'rarely', labelKey: 'rarely', descKey: 'rarelyDesc' },
+    { value: 'sometimes', labelKey: 'sometimes', descKey: 'sometimesDesc' },
+    { value: 'often', labelKey: 'often', descKey: 'oftenDesc' },
   ];
 
   return (
@@ -90,46 +90,46 @@ export default function CoreSocialPersonalityPage() {
       progress={{
         current: 3,
         total: 4,
-        label: 'Step 3 of 4',
-        stepName: 'Social Life',
+        label: t('coreOnboarding.socialPersonality.progress'),
+        stepName: t('coreOnboarding.socialPersonality.stepName'),
       }}
       isLoading={isLoading}
       loadingText={common.loading}
     >
       <OnboardingHeading
         role={role}
-        title="Your Social Vibe"
-        description="Help us understand how you like to connect with others"
+        title={t('coreOnboarding.socialPersonality.title')}
+        description={t('coreOnboarding.socialPersonality.description')}
       />
 
       <div className="space-y-6">
         {/* Social Energy */}
         <div>
           <p className="text-sm text-gray-600 mb-3">
-            How would you describe your social energy at home?
+            {t('coreOnboarding.socialPersonality.socialEnergyQuestion')}
           </p>
           <OnboardingSlider
             role={role}
-            label="Social Energy Level"
+            label={t('coreOnboarding.socialPersonality.socialEnergyLevel')}
             value={socialEnergy}
             onChange={setSocialEnergy}
             min={1}
             max={10}
-            minLabel="Introvert"
-            maxLabel="Extrovert"
+            minLabel={t('coreOnboarding.socialPersonality.introvert')}
+            maxLabel={t('coreOnboarding.socialPersonality.extrovert')}
           />
           <p className="text-xs text-gray-500 mt-2">
-            {socialEnergy <= 3 && 'You prefer quiet time and solitude to recharge'}
-            {socialEnergy > 3 && socialEnergy <= 7 && 'You enjoy a balance of social time and alone time'}
-            {socialEnergy > 7 && 'You thrive on social interactions and group activities'}
+            {socialEnergy <= 3 && t('coreOnboarding.socialPersonality.energyDescLow')}
+            {socialEnergy > 3 && socialEnergy <= 7 && t('coreOnboarding.socialPersonality.energyDescMid')}
+            {socialEnergy > 7 && t('coreOnboarding.socialPersonality.energyDescHigh')}
           </p>
         </div>
 
         {/* Shared Meals Interest */}
         <div>
-          <OnboardingLabel required>Interest in Shared Meals</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.socialPersonality.sharedMeals')}</OnboardingLabel>
           <p className="text-sm text-gray-600 mb-3">
-            Would you enjoy cooking and eating together with flatmates?
+            {t('coreOnboarding.socialPersonality.sharedMealsQuestion')}
           </p>
           <OnboardingGrid columns={2}>
             <OnboardingSelectionCard
@@ -138,8 +138,8 @@ export default function CoreSocialPersonalityPage() {
               onClick={() => setSharedMealsInterest(false)}
             >
               <div className="text-center">
-                <div className="font-medium">Not interested</div>
-                <div className="text-xs text-gray-500 mt-1">I prefer eating alone</div>
+                <div className="font-medium">{t('coreOnboarding.socialPersonality.sharedMealsOptions.notInterested')}</div>
+                <div className="text-xs text-gray-500 mt-1">{t('coreOnboarding.socialPersonality.sharedMealsOptions.notInterestedDesc')}</div>
               </div>
             </OnboardingSelectionCard>
             <OnboardingSelectionCard
@@ -148,8 +148,8 @@ export default function CoreSocialPersonalityPage() {
               onClick={() => setSharedMealsInterest(true)}
             >
               <div className="text-center">
-                <div className="font-medium">Yes, interested!</div>
-                <div className="text-xs text-gray-500 mt-1">I enjoy shared meals</div>
+                <div className="font-medium">{t('coreOnboarding.socialPersonality.sharedMealsOptions.interested')}</div>
+                <div className="text-xs text-gray-500 mt-1">{t('coreOnboarding.socialPersonality.sharedMealsOptions.interestedDesc')}</div>
               </div>
             </OnboardingSelectionCard>
           </OnboardingGrid>
@@ -157,9 +157,9 @@ export default function CoreSocialPersonalityPage() {
 
         {/* Event Participation Interest */}
         <div>
-          <OnboardingLabel required>Community Events & Activities</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.socialPersonality.communityEvents')}</OnboardingLabel>
           <p className="text-sm text-gray-600 mb-3">
-            How interested are you in participating in flatmate events and activities?
+            {t('coreOnboarding.socialPersonality.communityEventsQuestion')}
           </p>
           <OnboardingGrid columns={3}>
             {eventParticipationOptions.map((option) => (
@@ -171,8 +171,8 @@ export default function CoreSocialPersonalityPage() {
               >
                 <div className="text-center">
                   <div className="flex justify-center mb-2 text-gray-600">{option.icon}</div>
-                  <div className="font-medium text-sm">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium text-sm">{t(`coreOnboarding.socialPersonality.eventOptions.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`coreOnboarding.socialPersonality.eventOptions.${option.descKey}`)}</div>
                 </div>
               </OnboardingSelectionCard>
             ))}
@@ -181,9 +181,9 @@ export default function CoreSocialPersonalityPage() {
 
         {/* Guest Frequency */}
         <div>
-          <OnboardingLabel required>How Often Do You Have Guests?</OnboardingLabel>
+          <OnboardingLabel required>{t('coreOnboarding.socialPersonality.guestFrequency')}</OnboardingLabel>
           <p className="text-sm text-gray-600 mb-3">
-            How frequently do you invite friends or family over?
+            {t('coreOnboarding.socialPersonality.guestFrequencyQuestion')}
           </p>
           <OnboardingGrid columns={2}>
             {guestFrequencyOptions.map((option) => (
@@ -194,8 +194,8 @@ export default function CoreSocialPersonalityPage() {
                 onClick={() => setGuestFrequency(option.value)}
               >
                 <div className="text-center">
-                  <div className="font-medium">{option.label}</div>
-                  <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                  <div className="font-medium">{t(`coreOnboarding.socialPersonality.guestOptions.${option.labelKey}`)}</div>
+                  <div className="text-xs text-gray-500 mt-1">{t(`coreOnboarding.socialPersonality.guestOptions.${option.descKey}`)}</div>
                 </div>
               </OnboardingSelectionCard>
             ))}

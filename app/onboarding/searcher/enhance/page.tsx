@@ -201,7 +201,7 @@ export default function OnboardingEnhanceMenu() {
           <div className="mt-4">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-700">
-                {completedCount}/{totalCount} étapes complétées
+                {completedCount}/{totalCount} {t('enhanceSearcher.menu.stepsCompleted') || 'steps completed'}
               </span>
               <span className="text-sm font-bold text-orange-600">
                 {Math.round(progressPercentage)}%

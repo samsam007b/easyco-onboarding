@@ -91,9 +91,9 @@ export default function ResidentPersonalityPage() {
   const canContinue = sociabilityLevel && preferredInteractionType && homeActivityLevel;
 
   const getPersonalityLabel = () => {
-    if (introvertExtrovertScale <= 2) return 'Introvert';
-    if (introvertExtrovertScale >= 4) return 'Extrovert';
-    return 'Ambivert';
+    if (introvertExtrovertScale <= 2) return resident.personality.personalityLabels?.introvert || 'Introvert';
+    if (introvertExtrovertScale >= 4) return resident.personality.personalityLabels?.extrovert || 'Extrovert';
+    return resident.personality.personalityLabels?.ambivert || 'Ambivert';
   };
 
   if (isLoading) {
@@ -159,7 +159,7 @@ export default function ResidentPersonalityPage() {
             {/* Introvert/Extrovert Scale */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Introvert ↔ Extrovert Scale
+                {resident.personality.introvertExtrovertScale}
               </label>
               <div className="space-y-3">
                 <input
@@ -171,9 +171,9 @@ export default function ResidentPersonalityPage() {
                   className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
                 />
                 <div className="flex justify-between items-center">
-                  <span className="text-sm text-gray-500">Introvert</span>
+                  <span className="text-sm text-gray-500">{resident.personality.personalityLabels?.introvert || 'Introvert'}</span>
                   <span className="text-xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent">{getPersonalityLabel()}</span>
-                  <span className="text-sm text-gray-500">Extrovert</span>
+                  <span className="text-sm text-gray-500">{resident.personality.personalityLabels?.extrovert || 'Extrovert'}</span>
                 </div>
               </div>
             </div>
@@ -181,13 +181,13 @@ export default function ResidentPersonalityPage() {
             {/* Sociability Level */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Social Activity Level <span className="text-red-500">*</span>
+                {resident.personality.socialActivityLevel} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'low', label: 'Low', icon: Volume2, variant: 'blue' as const, desc: 'I prefer quiet time' },
-                  { value: 'medium', label: 'Medium', icon: Smile, variant: 'green' as const, desc: 'Balanced social life' },
-                  { value: 'high', label: 'High', icon: PartyPopper, variant: 'orange' as const, desc: 'Love being social' },
+                  { value: 'low', labelKey: 'low', icon: Volume2, variant: 'blue' as const, descKey: 'lowDesc' },
+                  { value: 'medium', labelKey: 'medium', icon: Smile, variant: 'green' as const, descKey: 'mediumDesc' },
+                  { value: 'high', labelKey: 'high', icon: PartyPopper, variant: 'orange' as const, descKey: 'highDesc' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -203,8 +203,8 @@ export default function ResidentPersonalityPage() {
                       <div className="flex justify-center mb-2">
                         <IconBadge icon={option.icon} variant={option.variant} size="lg" />
                       </div>
-                      <div className="font-medium text-sm">{option.label}</div>
-                      <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                      <div className="font-medium text-sm">{resident.personality.socialLevels?.[option.labelKey]}</div>
+                      <div className="text-xs text-gray-500 mt-1">{resident.personality.socialLevels?.[option.descKey]}</div>
                     </div>
                   </button>
                 ))}
@@ -214,13 +214,13 @@ export default function ResidentPersonalityPage() {
             {/* Preferred Interaction Type */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                Preferred Living Style <span className="text-red-500">*</span>
+                {resident.personality.preferredLivingStyle} <span className="text-red-500">*</span>
               </label>
               <div className="space-y-3">
                 {[
-                  { value: 'cozy_evenings', label: 'Cozy Evenings', icon: Sofa, variant: 'purple' as const, desc: 'Movie nights and chill hangouts' },
-                  { value: 'independent_living', label: 'Independent Living', icon: DoorOpen, variant: 'blue' as const, desc: 'Respect each other\'s space' },
-                  { value: 'community_events', label: 'Community Events', icon: Sparkles, variant: 'pink' as const, desc: 'Group activities and parties' },
+                  { value: 'cozy_evenings', labelKey: 'cozyEvenings', icon: Sofa, variant: 'purple' as const, descKey: 'cozyEveningsDesc' },
+                  { value: 'independent_living', labelKey: 'independentLiving', icon: DoorOpen, variant: 'blue' as const, descKey: 'independentLivingDesc' },
+                  { value: 'community_events', labelKey: 'communityEvents', icon: Sparkles, variant: 'pink' as const, descKey: 'communityEventsDesc' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -235,8 +235,8 @@ export default function ResidentPersonalityPage() {
                     <div className="flex items-center gap-4">
                       <IconBadge icon={option.icon} variant={option.variant} size="lg" />
                       <div className="flex-1">
-                        <div className="font-medium">{option.label}</div>
-                        <div className="text-sm text-gray-500 mt-1">{option.desc}</div>
+                        <div className="font-medium">{resident.personality.livingStyles?.[option.labelKey]}</div>
+                        <div className="text-sm text-gray-500 mt-1">{resident.personality.livingStyles?.[option.descKey]}</div>
                       </div>
                     </div>
                   </button>
@@ -247,13 +247,13 @@ export default function ResidentPersonalityPage() {
             {/* Home Activity Level */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-3">
-                How Active Are You at Home? <span className="text-red-500">*</span>
+                {resident.personality.homeActivityQuestion} <span className="text-red-500">*</span>
               </label>
               <div className="grid grid-cols-3 gap-3">
                 {[
-                  { value: 'quiet', label: 'Quiet', icon: BookOpen, variant: 'blue' as const, desc: 'Mostly in my room' },
-                  { value: 'social', label: 'Social', icon: Coffee, variant: 'orange' as const, desc: 'Often in common areas' },
-                  { value: 'very_active', label: 'Very Active', icon: Guitar, variant: 'purple' as const, desc: 'Always doing something' },
+                  { value: 'quiet', labelKey: 'quiet', icon: BookOpen, variant: 'blue' as const, descKey: 'quietDesc' },
+                  { value: 'social', labelKey: 'social', icon: Coffee, variant: 'orange' as const, descKey: 'socialDesc' },
+                  { value: 'very_active', labelKey: 'veryActive', icon: Guitar, variant: 'purple' as const, descKey: 'veryActiveDesc' },
                 ].map((option) => (
                   <button
                     key={option.value}
@@ -269,8 +269,8 @@ export default function ResidentPersonalityPage() {
                       <div className="flex justify-center mb-2">
                         <IconBadge icon={option.icon} variant={option.variant} size="lg" />
                       </div>
-                      <div className="font-medium text-sm">{option.label}</div>
-                      <div className="text-xs text-gray-500 mt-1">{option.desc}</div>
+                      <div className="font-medium text-sm">{resident.personality.activityLevels?.[option.labelKey]}</div>
+                      <div className="text-xs text-gray-500 mt-1">{resident.personality.activityLevels?.[option.descKey]}</div>
                     </div>
                   </button>
                 ))}

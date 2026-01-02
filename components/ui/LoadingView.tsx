@@ -16,7 +16,7 @@ export default function LoadingView({
 }: LoadingViewProps) {
   const { getSection } = useLanguage();
   const common = getSection('common');
-  const displayMessage = message ?? (common?.loading || 'Chargement...');
+  const displayMessage = message ?? (common?.loading || 'Loading...');
   const sizes = {
     sm: 40,
     md: 60,

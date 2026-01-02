@@ -52,8 +52,8 @@ import { cn } from '@/lib/utils';
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
 
 const PROPERTY_TYPES: { value: PropertyType; label: string; icon: React.ReactNode }[] = [
-  { value: 'apartment', label: 'Appartement', icon: <Building2 className="w-4 h-4" /> },
-  { value: 'house', label: 'Maison', icon: <Home className="w-4 h-4" /> },
+  { value: 'apartment', label: 'Apartment', icon: <Building2 className="w-4 h-4" /> },
+  { value: 'house', label: 'House', icon: <Home className="w-4 h-4" /> },
   { value: 'studio', label: 'Studio', icon: <Maximize2 className="w-4 h-4" /> },
   { value: 'coliving', label: 'Coliving', icon: <Users className="w-4 h-4" /> },
 ];
@@ -61,13 +61,13 @@ const PROPERTY_TYPES: { value: PropertyType; label: string; icon: React.ReactNod
 const AMENITIES_CONFIG: { value: PropertyAmenity; label: string; icon: React.ReactNode }[] = [
   { value: 'wifi', label: 'WiFi', icon: <Wifi className="w-4 h-4" /> },
   { value: 'parking', label: 'Parking', icon: <Car className="w-4 h-4" /> },
-  { value: 'garden', label: 'Jardin', icon: <Trees className="w-4 h-4" /> },
-  { value: 'gym', label: 'Salle de sport', icon: <Dumbbell className="w-4 h-4" /> },
-  { value: 'washing_machine', label: 'Machine à laver', icon: <WashingMachine className="w-4 h-4" /> },
-  { value: 'air_conditioning', label: 'Climatisation', icon: <Wind className="w-4 h-4" /> },
-  { value: 'heating', label: 'Chauffage', icon: <Flame className="w-4 h-4" /> },
-  { value: 'kitchen', label: 'Cuisine équipée', icon: <Utensils className="w-4 h-4" /> },
-  { value: 'furnished', label: 'Meublé', icon: <Sofa className="w-4 h-4" /> },
+  { value: 'garden', label: 'Garden', icon: <Trees className="w-4 h-4" /> },
+  { value: 'gym', label: 'Gym', icon: <Dumbbell className="w-4 h-4" /> },
+  { value: 'washing_machine', label: 'Washing machine', icon: <WashingMachine className="w-4 h-4" /> },
+  { value: 'air_conditioning', label: 'Air conditioning', icon: <Wind className="w-4 h-4" /> },
+  { value: 'heating', label: 'Heating', icon: <Flame className="w-4 h-4" /> },
+  { value: 'kitchen', label: 'Equipped kitchen', icon: <Utensils className="w-4 h-4" /> },
+  { value: 'furnished', label: 'Furnished', icon: <Sofa className="w-4 h-4" /> },
 ];
 
 interface AddPropertyModalProps {
@@ -80,9 +80,9 @@ type Step = 'type' | 'details' | 'pricing' | 'amenities';
 
 const STEPS: { id: Step; title: string; icon: React.ReactNode }[] = [
   { id: 'type', title: 'Type', icon: <Home className="w-4 h-4" /> },
-  { id: 'details', title: 'Détails', icon: <MapPin className="w-4 h-4" /> },
-  { id: 'pricing', title: 'Prix', icon: <Euro className="w-4 h-4" /> },
-  { id: 'amenities', title: 'Équipements', icon: <Wifi className="w-4 h-4" /> },
+  { id: 'details', title: 'Details', icon: <MapPin className="w-4 h-4" /> },
+  { id: 'pricing', title: 'Price', icon: <Euro className="w-4 h-4" /> },
+  { id: 'amenities', title: 'Amenities', icon: <Wifi className="w-4 h-4" /> },
 ];
 
 export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyModalProps) {
@@ -198,15 +198,15 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
       });
 
       if (!result.success) {
-        throw new Error(result.error || 'Erreur lors de la création');
+        throw new Error(result.error || 'Error creating property');
       }
 
-      toast.success('Propriété créée avec succès !');
+      toast.success('Property created successfully!');
       handleClose();
       onSuccess?.();
       router.refresh();
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Erreur lors de la création';
+      const errorMessage = error instanceof Error ? error.message : 'Error creating property';
       toast.error(errorMessage);
     } finally {
       setIsSubmitting(false);
@@ -223,10 +223,10 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
         >
           <DialogHeader>
             <DialogTitle className="text-xl font-bold text-white">
-              Ajouter une propriété
+              Add a property
             </DialogTitle>
             <DialogDescription className="text-white/80">
-              Complétez les informations pour créer votre annonce
+              Complete the information to create your listing
             </DialogDescription>
           </DialogHeader>
 
@@ -274,16 +274,16 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 className="space-y-4"
               >
                 <Input
-                  label="Titre de l'annonce"
+                  label="Listing title"
                   value={formData.title}
                   onChange={(e) => handleInputChange('title', e.target.value)}
-                  placeholder="Ex: Bel appartement lumineux au centre-ville"
+                  placeholder="E.g., Beautiful bright apartment in city center"
                   required
                 />
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Type de bien
+                    Property type
                   </label>
                   <div className="grid grid-cols-2 gap-3">
                     {PROPERTY_TYPES.map((type) => (
@@ -320,10 +320,10 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 </div>
 
                 <Textarea
-                  label="Description (optionnel)"
+                  label="Description (optional)"
                   value={formData.description}
                   onChange={(e) => handleInputChange('description', e.target.value)}
-                  placeholder="Décrivez votre bien..."
+                  placeholder="Describe your property..."
                   rows={3}
                 />
               </motion.div>
@@ -339,23 +339,23 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 className="space-y-4"
               >
                 <Input
-                  label="Adresse"
+                  label="Address"
                   value={formData.address}
                   onChange={(e) => handleInputChange('address', e.target.value)}
-                  placeholder="123 Rue de la Paix"
+                  placeholder="123 Main Street"
                   leftIcon={<MapPin className="w-4 h-4" />}
                 />
 
                 <div className="grid grid-cols-2 gap-4">
                   <Input
-                    label="Ville"
+                    label="City"
                     value={formData.city}
                     onChange={(e) => handleInputChange('city', e.target.value)}
-                    placeholder="Bruxelles"
+                    placeholder="Brussels"
                     required
                   />
                   <Input
-                    label="Code postal"
+                    label="Postal code"
                     value={formData.postal_code}
                     onChange={(e) => handleInputChange('postal_code', e.target.value)}
                     placeholder="1000"
@@ -365,7 +365,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
 
                 <div className="grid grid-cols-3 gap-4">
                   <Input
-                    label="Chambres"
+                    label="Bedrooms"
                     type="number"
                     min="0"
                     value={formData.bedrooms}
@@ -373,7 +373,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     leftIcon={<Bed className="w-4 h-4" />}
                   />
                   <Input
-                    label="SdB"
+                    label="Bathrooms"
                     type="number"
                     min="0"
                     value={formData.bathrooms}
@@ -381,7 +381,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     leftIcon={<Bath className="w-4 h-4" />}
                   />
                   <Input
-                    label="Surface (m²)"
+                    label="Area (m²)"
                     type="number"
                     min="0"
                     value={formData.surface_area || ''}
@@ -391,7 +391,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 </div>
 
                 <Input
-                  label="Disponible à partir du"
+                  label="Available from"
                   type="date"
                   value={formData.available_from}
                   onChange={(e) => handleInputChange('available_from', e.target.value)}
@@ -410,7 +410,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 className="space-y-4"
               >
                 <Input
-                  label="Loyer mensuel (€)"
+                  label="Monthly rent (€)"
                   type="number"
                   min="0"
                   value={formData.monthly_rent || ''}
@@ -429,7 +429,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     leftIcon={<Euro className="w-4 h-4" />}
                   />
                   <Input
-                    label="Dépôt de garantie (€)"
+                    label="Security deposit (€)"
                     type="number"
                     min="0"
                     value={formData.deposit || ''}
@@ -439,7 +439,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 </div>
 
                 <Input
-                  label="Durée minimum (mois)"
+                  label="Minimum stay (months)"
                   type="number"
                   min="1"
                   value={formData.minimum_stay_months}
@@ -448,11 +448,11 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
 
                 {/* Summary card */}
                 <div className="mt-4 p-4 rounded-xl bg-gray-50 border border-gray-200">
-                  <h4 className="font-medium text-gray-700 mb-2">Récapitulatif mensuel</h4>
+                  <h4 className="font-medium text-gray-700 mb-2">Monthly summary</h4>
                   <div className="flex justify-between text-sm">
-                    <span className="text-gray-500">Loyer + Charges</span>
+                    <span className="text-gray-500">Rent + Charges</span>
                     <span className="font-bold" style={{ color: '#9c5698' }}>
-                      {(formData.monthly_rent + formData.charges).toLocaleString('fr-FR')} €/mois
+                      {(formData.monthly_rent + formData.charges).toLocaleString('en-US')} €/month
                     </span>
                   </div>
                 </div>
@@ -470,7 +470,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
               >
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Équipements
+                    Amenities
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {AMENITIES_CONFIG.map((amenity) => (
@@ -508,7 +508,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Règles de la maison
+                    House rules
                   </label>
                   <div className="space-y-2">
                     <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
@@ -519,7 +519,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <PawPrint className="w-5 h-5 text-gray-400" />
-                      <span className="text-sm text-gray-700">Animaux acceptés</span>
+                      <span className="text-sm text-gray-700">Pets allowed</span>
                     </label>
                     <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
                       <input
@@ -529,7 +529,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <Cigarette className="w-5 h-5 text-gray-400" />
-                      <span className="text-sm text-gray-700">Fumeurs acceptés</span>
+                      <span className="text-sm text-gray-700">Smoking allowed</span>
                     </label>
                     <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
                       <input
@@ -539,7 +539,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
                       />
                       <Users className="w-5 h-5 text-gray-400" />
-                      <span className="text-sm text-gray-700">Couples acceptés</span>
+                      <span className="text-sm text-gray-700">Couples allowed</span>
                     </label>
                   </div>
                 </div>
@@ -559,12 +559,12 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
             {currentStepIndex === 0 ? (
               <>
                 <X className="w-4 h-4 mr-2" />
-                Annuler
+                Cancel
               </>
             ) : (
               <>
                 <ChevronLeft className="w-4 h-4 mr-2" />
-                Retour
+                Back
               </>
             )}
           </Button>
@@ -579,12 +579,12 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
               {isSubmitting ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Création...
+                  Creating...
                 </>
               ) : (
                 <>
                   <Check className="w-4 h-4 mr-2" />
-                  Créer la propriété
+                  Create property
                 </>
               )}
             </Button>
@@ -595,7 +595,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
               className="text-white"
               style={{ background: canProceed() ? ownerGradient : undefined }}
             >
-              Continuer
+              Continue
               <ChevronRight className="w-4 h-4 ml-2" />
             </Button>
           )}

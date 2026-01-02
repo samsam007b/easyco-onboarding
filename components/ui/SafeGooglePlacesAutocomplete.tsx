@@ -69,7 +69,7 @@ export default function SafeGooglePlacesAutocomplete({
         <input
           ref={inputRef}
           type="text"
-          placeholder={!placesLibrary ? (common?.loading || 'Chargement...') : defaultPlaceholder}
+          placeholder={!placesLibrary ? (common?.loading || 'Loading...') : defaultPlaceholder}
           defaultValue={defaultValue}
           className={inputClassName}
           disabled={!placesLibrary}

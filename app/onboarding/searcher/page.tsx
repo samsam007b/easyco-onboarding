@@ -16,18 +16,18 @@ export default function SearcherIndex() {
   const features = [
     {
       icon: Search,
-      title: t('onboarding.searcherIndex.feature1Title') || 'Recherche intelligente',
-      description: t('onboarding.searcherIndex.feature1Desc') || 'Trouvez des colocations qui correspondent à votre style de vie',
+      title: t('onboarding.searcherIndex.feature1Title') || 'Smart search',
+      description: t('onboarding.searcherIndex.feature1Desc') || 'Find shared housing that matches your lifestyle',
     },
     {
       icon: Users,
-      title: t('onboarding.searcherIndex.feature2Title') || 'Matching personnalisé',
-      description: t('onboarding.searcherIndex.feature2Desc') || 'Connectez-vous avec des colocataires compatibles',
+      title: t('onboarding.searcherIndex.feature2Title') || 'Personalized matching',
+      description: t('onboarding.searcherIndex.feature2Desc') || 'Connect with compatible roommates',
     },
     {
       icon: Home,
-      title: t('onboarding.searcherIndex.feature3Title') || 'Propriétés vérifiées',
-      description: t('onboarding.searcherIndex.feature3Desc') || 'Accédez à des logements de qualité',
+      title: t('onboarding.searcherIndex.feature3Title') || 'Verified properties',
+      description: t('onboarding.searcherIndex.feature3Desc') || 'Access quality housing',
     },
   ];
 
@@ -35,7 +35,7 @@ export default function SearcherIndex() {
     <OnboardingLayout
       role="searcher"
       backUrl="/"
-      backLabel={t('common.back') || 'Retour'}
+      backLabel={t('common.back') || 'Back'}
     >
       <div className="text-center mb-8">
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-br from-[#FF8C42] to-[#FFB85C] mb-4">
@@ -43,8 +43,8 @@ export default function SearcherIndex() {
         </div>
         <OnboardingHeading
           role="searcher"
-          title={t('onboarding.searcherIndex.title') || 'Bienvenue sur Izzico'}
-          description={t('onboarding.searcherIndex.description') || 'Trouvez votre colocation idéale en quelques étapes'}
+          title={t('onboarding.searcherIndex.title') || 'Welcome to Izzico'}
+          description={t('onboarding.searcherIndex.description') || 'Find your ideal shared housing in a few steps'}
         />
       </div>
 
@@ -71,12 +71,12 @@ export default function SearcherIndex() {
         role="searcher"
         onClick={() => router.push('/onboarding/searcher/group-selection')}
       >
-        {t('onboarding.searcherIndex.start') || 'Commencer'}
+        {t('onboarding.searcherIndex.start') || 'Get started'}
       </OnboardingButton>
 
       {/* Info text */}
       <p className="text-center text-sm text-gray-500 mt-4">
-        {t('onboarding.searcherIndex.timeEstimate') || 'Environ 5 minutes pour compléter votre profil'}
+        {t('onboarding.searcherIndex.timeEstimate') || 'About 5 minutes to complete your profile'}
       </p>
     </OnboardingLayout>
   );

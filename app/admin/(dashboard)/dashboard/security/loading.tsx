@@ -47,7 +47,7 @@ export default function SecurityDashboardLoading() {
             Security Center
           </h1>
           <p className="text-slate-400 mt-1">
-            Chargement des donnees...
+            Loading data...
           </p>
         </div>
         <div className="h-9 w-28 bg-slate-700 rounded-md animate-pulse" />

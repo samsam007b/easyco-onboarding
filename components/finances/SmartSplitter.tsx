@@ -363,7 +363,7 @@ export default function SmartSplitter({
           onClick={onBack}
           className="flex-1 rounded-full"
         >
-          {splitter?.back || 'Retour'}
+          {splitter?.back || 'Back'}
         </Button>
         <Button
           onClick={handleConfirm}
@@ -371,7 +371,7 @@ export default function SmartSplitter({
           className="flex-1 rounded-full cta-resident"
         >
           <Check className="w-4 h-4 mr-2" />
-          {splitter?.confirmSplit || 'Confirmer le partage'}
+          {splitter?.confirmSplit || 'Confirm split'}
         </Button>
       </div>
     </div>

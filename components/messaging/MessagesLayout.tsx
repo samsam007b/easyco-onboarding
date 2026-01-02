@@ -249,7 +249,7 @@ export function MobileBackButton({
           'md:hidden rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#ff9014]/10',
           className
         )}
-        aria-label="Retour"
+        aria-label="Back"
       >
         <ArrowLeft className="h-5 w-5" />
       </Button>

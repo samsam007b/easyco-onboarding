@@ -258,9 +258,9 @@ function SearcherMessagesContent() {
         <div className="text-center">
           <LoadingHouse size={80} />
           <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-4">
-            {t?.loading?.title?.[language] || 'Chargement des messages...'}
+            {t?.loading?.title?.[language] || 'Loading messages...'}
           </h3>
-          <p className="text-gray-600">{t?.loading?.subtitle?.[language] || 'Préparation de vos conversations'}</p>
+          <p className="text-gray-600">{t?.loading?.subtitle?.[language] || 'Preparing your conversations'}</p>
         </div>
       </div>
     );
@@ -344,7 +344,7 @@ function SuspenseFallback() {
     <div className="flex items-center justify-center py-20">
       <div className="text-center">
         <LoadingHouse size={80} />
-        <p className="text-gray-600 font-medium mt-4">{t?.loading?.simple?.[language] || 'Chargement...'}</p>
+        <p className="text-gray-600 font-medium mt-4">{t?.loading?.simple?.[language] || 'Loading...'}</p>
       </div>
     </div>
   );

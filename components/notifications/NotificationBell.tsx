@@ -122,14 +122,14 @@ export default function NotificationBell() {
                     style={{ color: '#ff651e' }}
                   >
                     <CheckCheck className="w-3 h-3 mr-1" />
-                    Tout marquer lu
+                    Mark all read
                   </Button>
                 )}
               </div>
               <div className="flex items-center gap-2 text-xs">
-                <span style={{ color: '#ff651e' }} className="font-medium">{stats.unreadCount} non lues</span>
+                <span style={{ color: '#ff651e' }} className="font-medium">{stats.unreadCount} unread</span>
                 <span className="text-gray-400">•</span>
-                <span className="text-gray-500">{stats.todayCount} aujourd'hui</span>
+                <span className="text-gray-500">{stats.todayCount} today</span>
               </div>
             </div>
 
@@ -210,7 +210,7 @@ export default function NotificationBell() {
                                   markAsRead(notification.id);
                                 }}
                                 className="p-1 hover:bg-white rounded-lg transition-colors"
-                                title="Marquer comme lu"
+                                title="Mark as read"
                               >
                                 <Check className="w-4 h-4" style={{ color: '#10b981' }} />
                               </button>
@@ -221,7 +221,7 @@ export default function NotificationBell() {
                                 deleteNotification(notification.id);
                               }}
                               className="p-1 hover:bg-white rounded-lg transition-colors"
-                              title="Supprimer"
+                              title="Delete"
                             >
                               <X className="w-4 h-4" style={{ color: '#ff651e' }} />
                             </button>
@@ -237,10 +237,10 @@ export default function NotificationBell() {
                     <Bell className="w-9 h-9" style={{ color: '#ff651e' }} />
                   </div>
                   <p className="text-base font-semibold text-gray-900 mb-1">
-                    Aucune notification
+                    No notifications
                   </p>
                   <p className="text-sm text-gray-500">
-                    Vous êtes à jour!
+                    You're all caught up!
                   </p>
                 </div>
               )}
@@ -258,7 +258,7 @@ export default function NotificationBell() {
                   className="w-full rounded-xl text-sm font-medium hover:bg-[#fff5f3]"
                   style={{ color: '#ff651e' }}
                 >
-                  Voir toutes les notifications
+                  See all notifications
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </div>

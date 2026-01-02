@@ -198,7 +198,7 @@ export function PropertyTimeline({
     return (
       <div className={cn('flex flex-col items-center justify-center py-12', className)}>
         <Loader2 className="w-8 h-8 animate-spin text-purple-500 mb-4" />
-        <p className="text-gray-500">Chargement de l'historique...</p>
+        <p className="text-gray-500">Loading history...</p>
       </div>
     );
   }

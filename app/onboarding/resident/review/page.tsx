@@ -42,7 +42,7 @@ export default function ResidentReviewPage() {
       // Get current user
       const { data: { user }, error: userError } = await supabase.auth.getUser();
       if (userError || !user) {
-        toast.error('Please log in to continue');
+        toast.error(common.errors?.loginRequired || 'Please log in to continue');
         router.push('/login');
         return;
       }
@@ -114,7 +114,7 @@ export default function ResidentReviewPage() {
         throw new Error('Failed to verify onboarding completion');
       }
 
-      toast.success('Profile completed successfully!');
+      toast.success(resident.review?.success || 'Profile completed successfully!');
 
       // Clear localStorage after successful submission
       safeLocalStorage.remove('coreBasicInfo');
@@ -127,7 +127,7 @@ export default function ResidentReviewPage() {
       router.push('/onboarding/resident/property-setup');
     } catch (err: any) {
       // FIXME: Use logger.error('Error submitting:', err);
-      toast.error('Error: ' + err.message);
+      toast.error((common.errors?.error || 'Error: ') + err.message);
       setIsSubmitting(false);
     }
   };
@@ -193,36 +193,36 @@ export default function ResidentReviewPage() {
           {data.coreDailyLife && Object.keys(data.coreDailyLife).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
-                Daily Life
+                {resident.review?.dailyLife || 'Daily Life'}
               </h2>
               <dl className="space-y-2 text-sm">
                 {data.coreDailyLife.occupationStatus && (
                   <div className="flex justify-between">
-                    <dt>Occupation</dt>
+                    <dt>{resident.review?.occupation || 'Occupation'}</dt>
                     <dd className="font-medium capitalize">{data.coreDailyLife.occupationStatus.replace(/_/g, ' ')}</dd>
                   </div>
                 )}
                 {data.coreDailyLife.wakeUpTime && (
                   <div className="flex justify-between">
-                    <dt>Wake Up Time</dt>
+                    <dt>{resident.review?.wakeUpTime || 'Wake Up Time'}</dt>
                     <dd className="font-medium capitalize">{data.coreDailyLife.wakeUpTime}</dd>
                   </div>
                 )}
                 {data.coreDailyLife.sleepTime && (
                   <div className="flex justify-between">
-                    <dt>Sleep Time</dt>
+                    <dt>{resident.review?.sleepTime || 'Sleep Time'}</dt>
                     <dd className="font-medium capitalize">{data.coreDailyLife.sleepTime}</dd>
                   </div>
                 )}
                 {data.coreDailyLife.workSchedule && (
                   <div className="flex justify-between">
-                    <dt>Work Schedule</dt>
+                    <dt>{resident.review?.workSchedule || 'Work Schedule'}</dt>
                     <dd className="font-medium capitalize">{data.coreDailyLife.workSchedule}</dd>
                   </div>
                 )}
                 {data.coreDailyLife.cleanliness && (
                   <div className="flex justify-between">
-                    <dt>Cleanliness Level</dt>
+                    <dt>{resident.review?.cleanlinessLevel || 'Cleanliness Level'}</dt>
                     <dd className="font-medium">{data.coreDailyLife.cleanliness}/10</dd>
                   </div>
                 )}
@@ -234,18 +234,18 @@ export default function ResidentReviewPage() {
           {data.coreSocialPersonality && Object.keys(data.coreSocialPersonality).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
-                Social Life
+                {resident.review?.socialLife || 'Social Life'}
               </h2>
               <dl className="space-y-2 text-sm">
                 {data.coreSocialPersonality.socialEnergy !== undefined && (
                   <div className="flex justify-between">
-                    <dt>Social Energy</dt>
+                    <dt>{resident.review?.socialEnergy || 'Social Energy'}</dt>
                     <dd className="font-medium">{data.coreSocialPersonality.socialEnergy}/10</dd>
                   </div>
                 )}
                 {data.coreSocialPersonality.eventParticipationInterest && (
                   <div className="flex justify-between">
-                    <dt>Event Participation</dt>
+                    <dt>{resident.review?.eventParticipation || 'Event Participation'}</dt>
                     <dd className="font-medium capitalize">{data.coreSocialPersonality.eventParticipationInterest}</dd>
                   </div>
                 )}
@@ -257,12 +257,12 @@ export default function ResidentReviewPage() {
           {data.coreValuesPreferences && Object.keys(data.coreValuesPreferences).length > 0 && (
             <div className="bg-white p-6 rounded-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
-                Values
+                {resident.review?.values || 'Values'}
               </h2>
               <dl className="space-y-2 text-sm">
                 {data.coreValuesPreferences.coreValues && data.coreValuesPreferences.coreValues.length > 0 && (
                   <div>
-                    <dt className="mb-1">Core Values</dt>
+                    <dt className="mb-1">{resident.review?.coreValues || 'Core Values'}</dt>
                     <dd className="font-medium">
                       <div className="flex flex-wrap gap-1">
                         {data.coreValuesPreferences.coreValues.map((value: string) => (

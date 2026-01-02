@@ -41,7 +41,7 @@ export default function OwnerReview() {
       const { data: { user }, error: authError } = await supabase.auth.getUser();
 
       if (authError || !user) {
-        toast.error('Authentication error. Please login again.');
+        toast.error(common.errors?.authError || 'Authentication error. Please login again.');
         router.push('/login');
         return;
       }
@@ -79,16 +79,16 @@ export default function OwnerReview() {
       toast.success(onboarding.owner.review.profileCreated);
       router.push('/onboarding/owner/success');
     } catch (err: any) {
-      toast.error('Error: ' + (err.message || 'Failed to create profile'));
+      toast.error((common.errors?.error || 'Error: ') + (err.message || common.errors?.profileFailed || 'Failed to create profile'));
       setIsSubmitting(false);
     }
   };
 
   const getOwnerTypeLabel = (type: string) => {
     const labels: Record<string, string> = {
-      individual: 'Individual Owner',
-      agency: 'Property Agency',
-      company: 'Company / Corporation',
+      individual: onboarding.owner.about?.individualOwner || 'Individual Owner',
+      agency: onboarding.owner.about?.propertyAgency || 'Property Agency',
+      company: onboarding.owner.about?.companyCorporation || 'Company / Corporation',
     };
     return labels[type] || type;
   };
@@ -101,7 +101,7 @@ export default function OwnerReview() {
       progress={{
         current: 3,
         total: 3,
-        label: 'Étape 3 sur 3',
+        label: `${onboarding.progress?.step || 'Step'} 3 ${onboarding.progress?.of || 'of'} 3`,
         stepName: onboarding.owner.review.title,
       }}
       isLoading={isLoading}

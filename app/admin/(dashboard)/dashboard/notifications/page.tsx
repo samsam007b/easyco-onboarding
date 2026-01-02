@@ -83,19 +83,19 @@ export default async function AdminNotificationsPage() {
       color: 'purple',
     },
     {
-      title: 'Non lues',
+      title: 'Unread',
       value: stats.unreadNotifications,
       icon: AlertCircle,
       color: 'orange',
     },
     {
-      title: 'Aujourd\'hui',
+      title: 'Today',
       value: stats.todayNotifications,
       icon: Clock,
       color: 'blue',
     },
     {
-      title: 'Cette semaine',
+      title: 'This week',
       value: stats.weekNotifications,
       icon: Calendar,
       color: 'green',
@@ -117,11 +117,11 @@ export default async function AdminNotificationsPage() {
       case 'message':
         return <Badge className="bg-blue-500/20 text-blue-400">Message</Badge>;
       case 'application':
-        return <Badge className="bg-purple-500/20 text-purple-400">Candidature</Badge>;
+        return <Badge className="bg-purple-500/20 text-purple-400">Application</Badge>;
       case 'property':
-        return <Badge className="bg-green-500/20 text-green-400">Propriété</Badge>;
+        return <Badge className="bg-green-500/20 text-green-400">Property</Badge>;
       case 'system':
-        return <Badge className="bg-slate-500/20 text-slate-400">Système</Badge>;
+        return <Badge className="bg-slate-500/20 text-slate-400">System</Badge>;
       default:
         return <Badge className="bg-slate-500/20 text-slate-400">{type}</Badge>;
     }
@@ -167,14 +167,14 @@ export default async function AdminNotificationsPage() {
       <Card className="bg-slate-800/50 border-slate-700">
         <CardHeader>
           <div className="flex items-center justify-between">
-            <CardTitle className="text-white">Notifications récentes</CardTitle>
+            <CardTitle className="text-white">Recent notifications</CardTitle>
           </div>
         </CardHeader>
         <CardContent>
           {notifications.length === 0 ? (
             <div className="text-center py-12">
               <Bell className="w-12 h-12 text-slate-600 mx-auto mb-3" />
-              <p className="text-slate-400">Aucune notification trouvée</p>
+              <p className="text-slate-400">No notifications found</p>
             </div>
           ) : (
             <div className="space-y-3">
@@ -197,14 +197,14 @@ export default async function AdminNotificationsPage() {
                       </p>
                       {getTypeBadge(notification.type)}
                       {!notification.read && (
-                        <Badge className="bg-purple-500/20 text-purple-400 text-xs">Nouveau</Badge>
+                        <Badge className="bg-purple-500/20 text-purple-400 text-xs">New</Badge>
                       )}
                     </div>
                     <p className="text-sm text-slate-400 line-clamp-2">
                       {notification.message}
                     </p>
                     <div className="flex items-center gap-2 mt-2 text-xs text-slate-500">
-                      <span>{notification.users?.full_name || notification.users?.email || 'Utilisateur'}</span>
+                      <span>{notification.users?.full_name || notification.users?.email || 'User'}</span>
                       <span>•</span>
                       <span>{formatDate(notification.created_at)}</span>
                     </div>
@@ -225,13 +225,13 @@ export default async function AdminNotificationsPage() {
             </div>
             <div>
               <h3 className="text-lg font-medium text-white mb-2">
-                Envoi de notifications
+                Send notifications
               </h3>
               <p className="text-sm text-slate-400 mb-4">
-                Envoyez des notifications groupées à tous les utilisateurs ou à des groupes spécifiques.
+                Send group notifications to all users or specific groups.
               </p>
               <Button disabled className="bg-purple-600 hover:bg-purple-700 text-white">
-                Bientôt disponible
+                Coming soon
               </Button>
             </div>
           </div>

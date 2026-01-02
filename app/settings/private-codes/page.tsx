@@ -86,7 +86,7 @@ export default function PrivateCodesPage() {
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-orange-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
-          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement...'}</p>
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
         </div>
       </div>
     );
@@ -100,16 +100,16 @@ export default function PrivateCodesPage() {
             <AlertCircle className="w-8 h-8 text-gray-400" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
-            {t?.noResidence?.title?.[language] || 'Aucune résidence trouvée'}
+            {t?.noResidence?.title?.[language] || 'No residence found'}
           </h2>
           <p className="text-gray-600 mb-6">
-            {t?.noResidence?.description?.[language] || 'Vous devez d\'abord créer ou rejoindre une résidence pour accéder aux codes.'}
+            {t?.noResidence?.description?.[language] || 'You must first create or join a residence to access the codes.'}
           </p>
           <Button
             onClick={() => router.push('/onboarding/resident/property-setup')}
             className="rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
           >
-            {t?.noResidence?.button?.[language] || 'Configurer ma résidence'}
+            {t?.noResidence?.button?.[language] || 'Set up my residence'}
           </Button>
         </Card>
       </div>
@@ -126,7 +126,7 @@ export default function PrivateCodesPage() {
           className="mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2" />
-          {t?.back?.[language] || 'Retour aux paramètres'}
+          {t?.back?.[language] || 'Back to settings'}
         </Button>
 
         <motion.div
@@ -137,9 +137,9 @@ export default function PrivateCodesPage() {
           <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600 shadow-xl">
             <Lock className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'Codes Privés'}</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'Private Codes'}</h1>
           <p className="text-gray-600 text-lg">
-            {t?.subtitle?.[language] || 'Codes d\'invitation pour'} {codes.property_title}
+            {t?.subtitle?.[language] || 'Invitation codes for'} {codes.property_title}
           </p>
         </motion.div>
 
