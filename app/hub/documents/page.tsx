@@ -591,184 +591,258 @@ export default function DocumentsPage() {
         </div>
       </div>
 
-      {/* Upload Modal */}
+      {/* Upload Modal - V3 Fun Design */}
       {showUploadModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
+            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative border-2 border-orange-100"
+            style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t?.uploadModal?.title?.[language] || 'Upload un document'}</h2>
-              <button
-                onClick={() => {
-                  setShowUploadModal(false);
-                  resetUploadForm();
-                }}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+            {/* Decorative gradient circles */}
+            <div className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', transform: 'translate(30%, -30%)' }} />
+            <div className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-10 pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)', transform: 'translate(-30%, 30%)' }} />
 
-            <div className="space-y-4">
-              {/* File Upload Zone */}
-              <div>
-                <Label>{t?.uploadModal?.file?.[language] || 'Fichier'} *</Label>
-                <div
-                  onDragEnter={handleDrag}
-                  onDragLeave={handleDrag}
-                  onDragOver={handleDrag}
-                  onDrop={handleDrop}
-                  className={cn(
-                    'mt-2 border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer',
-                    dragActive ? 'bg-orange-50' : 'border-gray-300'
-                  )}
-                  style={dragActive ? { borderColor: '#ff651e' } : undefined}
-                >
-                  {selectedFile ? (
-                    <div className="space-y-2">
-                      <div className="text-4xl">{getFileIcon(selectedFile.type)}</div>
-                      <p className="font-medium text-gray-900">{selectedFile.name}</p>
-                      <p className="text-sm text-gray-500">{formatFileSize(selectedFile.size)}</p>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedFile(null);
-                        }}
-                        className="rounded-full"
-                      >
-                        {t?.uploadModal?.changeFile?.[language] || 'Changer de fichier'}
-                      </Button>
-                    </div>
-                  ) : (
-                    <label className="cursor-pointer">
-                      <Upload className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-                      <p className="text-gray-600 mb-1">
-                        {t?.uploadModal?.dragDropText?.[language] || 'Glissez un fichier ici ou cliquez pour sélectionner'}
+            {/* Scrollable content wrapper */}
+            <div className="max-h-[90vh] overflow-y-auto">
+              {/* Header - V3 Fun gradient */}
+              <div className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 z-30" style={{ background: '#FFF5F0' }}>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <motion.div
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+                    >
+                      <Upload className="w-6 h-6 text-white" />
+                    </motion.div>
+                    <div>
+                      <h2 className="text-xl font-bold text-gray-900">
+                        {t?.uploadModal?.title?.[language] || 'Upload un document'}
+                      </h2>
+                      <p className="text-sm text-gray-500 flex items-center gap-1">
+                        <Sparkles className="w-3 h-3" style={{ color: '#ff651e' }} />
+                        {t?.uploadModal?.subtitle?.[language] || 'Ajoutez un nouveau fichier'}
                       </p>
-                      <p className="text-xs text-gray-500">{t?.uploadModal?.fileTypes?.[language] || 'PDF, Images, Documents (Max 50MB)'}</p>
-                      <input
-                        type="file"
-                        onChange={(e) => e.target.files && handleFileSelect(e.target.files[0])}
-                        className="hidden"
-                        accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif"
-                      />
-                    </label>
-                  )}
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setShowUploadModal(false);
+                      resetUploadForm();
+                    }}
+                    className="w-10 h-10 rounded-xl flex items-center justify-center hover:bg-orange-100 transition-colors"
+                  >
+                    <X className="w-5 h-5 text-gray-500" />
+                  </button>
                 </div>
               </div>
 
-              {/* Title */}
-              <div>
-                <Label>{t?.uploadModal?.docTitle?.[language] || 'Titre'} *</Label>
-                <Input
-                  value={uploadForm.title}
-                  onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
-                  placeholder={t?.uploadModal?.titlePlaceholder?.[language] || 'Ex: Contrat de bail 2024'}
-                  className="rounded-xl"
-                />
-              </div>
-
-              {/* Description */}
-              <div>
-                <Label>{t?.uploadModal?.description?.[language] || 'Description (optionnel)'}</Label>
-                <Textarea
-                  value={uploadForm.description}
-                  onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
-                  placeholder={t?.uploadModal?.descriptionPlaceholder?.[language] || 'Ajoutez des détails sur ce document...'}
-                  className="rounded-xl min-h-[80px]"
-                />
-              </div>
-
-              {/* Category */}
-              <div>
-                <Label>{t?.uploadModal?.category?.[language] || 'Catégorie'} *</Label>
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2">
-                  {DOCUMENT_CATEGORIES.map((cat) => {
-                    const Icon = getCategoryIcon(cat.icon);
-                    return (
-                      <button
-                        key={cat.value}
-                        onClick={() => setUploadForm({ ...uploadForm, category: cat.value })}
-                        className={cn(
-                          'p-3 rounded-xl border-2 text-center transition-all',
-                          uploadForm.category === cat.value
-                            ? 'bg-orange-50'
-                            : 'border-gray-200 hover:border-gray-300'
-                        )}
-                        style={uploadForm.category === cat.value ? { borderColor: '#ff651e' } : undefined}
-                      >
-                        <div className="mb-1 flex items-center justify-center">
-                          <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#ff651e]" : "text-gray-500")} />
+              {/* Form Content */}
+              <div className="p-6 space-y-5">
+                {/* File Upload Zone */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
+                      <FileText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    </div>
+                    {t?.uploadModal?.file?.[language] || 'Fichier'} *
+                  </Label>
+                  <div
+                    onDragEnter={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDragOver={handleDrag}
+                    onDrop={handleDrop}
+                    className={cn(
+                      'border-2 border-dashed rounded-2xl p-8 text-center transition-all cursor-pointer',
+                      dragActive ? 'bg-orange-50 border-orange-300' : 'border-gray-200 hover:border-orange-200'
+                    )}
+                  >
+                    {selectedFile ? (
+                      <div className="space-y-2">
+                        <div className="text-4xl">{getFileIcon(selectedFile.type)}</div>
+                        <p className="font-medium text-gray-900">{selectedFile.name}</p>
+                        <p className="text-sm text-gray-500">{formatFileSize(selectedFile.size)}</p>
+                        <Button
+                          size="sm"
+                          variant="outline"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedFile(null);
+                          }}
+                          className="rounded-full border-2 border-orange-200 hover:border-orange-400"
+                        >
+                          {t?.uploadModal?.changeFile?.[language] || 'Changer de fichier'}
+                        </Button>
+                      </div>
+                    ) : (
+                      <label className="cursor-pointer">
+                        <div className="w-16 h-16 mx-auto mb-3 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.1)' }}>
+                          <Upload className="w-8 h-8" style={{ color: '#ff651e' }} />
                         </div>
-                        <div className="text-xs font-medium text-gray-700">{cat.label}</div>
-                      </button>
-                    );
-                  })}
+                        <p className="text-gray-600 mb-1 font-medium">
+                          {t?.uploadModal?.dragDropText?.[language] || 'Glissez un fichier ici ou cliquez pour sélectionner'}
+                        </p>
+                        <p className="text-xs text-gray-500">{t?.uploadModal?.fileTypes?.[language] || 'PDF, Images, Documents (Max 50MB)'}</p>
+                        <input
+                          type="file"
+                          onChange={(e) => e.target.files && handleFileSelect(e.target.files[0])}
+                          className="hidden"
+                          accept=".pdf,.doc,.docx,.xls,.xlsx,.jpg,.jpeg,.png,.gif"
+                        />
+                      </label>
+                    )}
+                  </div>
+                </div>
+
+                {/* Title */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
+                      <ScrollText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    </div>
+                    {t?.uploadModal?.docTitle?.[language] || 'Titre'} *
+                  </Label>
+                  <Input
+                    value={uploadForm.title}
+                    onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
+                    placeholder={t?.uploadModal?.titlePlaceholder?.[language] || 'Ex: Contrat de bail 2024'}
+                    className="rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors"
+                  />
+                </div>
+
+                {/* Description */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
+                      <FileSignature className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    </div>
+                    {t?.uploadModal?.description?.[language] || 'Description (optionnel)'}
+                  </Label>
+                  <Textarea
+                    value={uploadForm.description}
+                    onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
+                    placeholder={t?.uploadModal?.descriptionPlaceholder?.[language] || 'Ajoutez des détails sur ce document...'}
+                    className="rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors min-h-[80px]"
+                  />
+                </div>
+
+                {/* Category */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
+                      <FolderOpen className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    </div>
+                    {t?.uploadModal?.category?.[language] || 'Catégorie'} *
+                  </Label>
+                  <div className="grid grid-cols-3 md:grid-cols-5 gap-2">
+                    {DOCUMENT_CATEGORIES.map((cat) => {
+                      const Icon = getCategoryIcon(cat.icon);
+                      return (
+                        <button
+                          key={cat.value}
+                          onClick={() => setUploadForm({ ...uploadForm, category: cat.value })}
+                          className={cn(
+                            'p-3 rounded-2xl border-2 text-center transition-all',
+                            uploadForm.category === cat.value
+                              ? 'bg-orange-50 border-orange-400'
+                              : 'border-gray-200 hover:border-orange-200'
+                          )}
+                        >
+                          <div className="mb-1 flex items-center justify-center">
+                            <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#ff651e]" : "text-gray-500")} />
+                          </div>
+                          <div className="text-xs font-medium text-gray-700">{cat.label}</div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Expiration Date */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
+                      <Calendar className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    </div>
+                    {t?.uploadModal?.expirationDate?.[language] || "Date d'expiration (optionnel)"}
+                  </Label>
+                  <Input
+                    type="date"
+                    value={uploadForm.expires_at || ''}
+                    onChange={(e) => setUploadForm({ ...uploadForm, expires_at: e.target.value })}
+                    className="rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors"
+                  />
+                </div>
+
+                {/* Private Toggle */}
+                <div className="flex items-center gap-3 p-4 rounded-2xl bg-gray-50 border-2 border-gray-100">
+                  <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
+                    <Shield className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                  </div>
+                  <div className="flex-1">
+                    <Label htmlFor="is_private" className="cursor-pointer font-semibold text-gray-700">
+                      {t?.uploadModal?.privateLabel?.[language] || 'Document privé'}
+                    </Label>
+                    <p className="text-xs text-gray-500">{t?.uploadModal?.privateDescription?.[language] || 'Visible uniquement par moi'}</p>
+                  </div>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      id="is_private"
+                      checked={uploadForm.is_private}
+                      onChange={(e) => setUploadForm({ ...uploadForm, is_private: e.target.checked })}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
+                      style={uploadForm.is_private ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
+                    ></div>
+                  </label>
                 </div>
               </div>
 
-              {/* Expiration Date */}
-              <div>
-                <Label>{t?.uploadModal?.expirationDate?.[language] || "Date d'expiration (optionnel)"}</Label>
-                <Input
-                  type="date"
-                  value={uploadForm.expires_at || ''}
-                  onChange={(e) => setUploadForm({ ...uploadForm, expires_at: e.target.value })}
-                  className="rounded-xl"
-                />
+              {/* Actions - Sticky Footer */}
+              <div className="sticky bottom-0 border-t-2 border-orange-100 px-6 py-4 bg-white">
+                <div className="flex gap-3">
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setShowUploadModal(false);
+                        resetUploadForm();
+                      }}
+                      className="w-full rounded-2xl py-6 font-bold border-2 border-gray-200 hover:border-orange-200"
+                      disabled={isUploading}
+                    >
+                      {t?.uploadModal?.cancel?.[language] || 'Annuler'}
+                    </Button>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Button
+                      onClick={handleUpload}
+                      disabled={isUploading || !selectedFile || !uploadForm.title}
+                      className="w-full rounded-2xl py-6 font-bold text-white border-none shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+                    >
+                      {isUploading ? (
+                        <>
+                          <LoadingHouse size={20} className="mr-2" />
+                          {t?.uploadModal?.uploading?.[language] || 'Upload...'}
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="w-5 h-5 mr-2" />
+                          {t?.uploadModal?.upload?.[language] || 'Uploader'}
+                        </>
+                      )}
+                    </Button>
+                  </motion.div>
+                </div>
               </div>
-
-              {/* Private Toggle */}
-              <div className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  id="is_private"
-                  checked={uploadForm.is_private}
-                  onChange={(e) => setUploadForm({ ...uploadForm, is_private: e.target.checked })}
-                  className="w-4 h-4 rounded border-gray-300"
-                />
-                <Label htmlFor="is_private" className="cursor-pointer">
-                  {t?.uploadModal?.privateDocument?.[language] || 'Document privé (visible uniquement par moi)'}
-                </Label>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex gap-3 mt-6">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowUploadModal(false);
-                  resetUploadForm();
-                }}
-                className="flex-1 rounded-full"
-                disabled={isUploading}
-              >
-                {t?.uploadModal?.cancel?.[language] || 'Annuler'}
-              </Button>
-              <Button
-                onClick={handleUpload}
-                disabled={isUploading || !selectedFile || !uploadForm.title}
-                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
-              >
-                {isUploading ? (
-                  <>
-                    <LoadingHouse size={20} className="mr-2" />
-                    {t?.uploadModal?.uploading?.[language] || 'Upload...'}
-                  </>
-                ) : (
-                  <>
-                    <Upload className="w-4 h-4 mr-2" />
-                    {t?.uploadModal?.upload?.[language] || 'Uploader'}
-                  </>
-                )}
-              </Button>
             </div>
           </motion.div>
         </div>

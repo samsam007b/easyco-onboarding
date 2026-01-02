@@ -592,126 +592,204 @@ export default function RulesPage() {
         </div>
       </div>
 
-      {/* Create Modal */}
+      {/* Create Modal - V3 Fun Design */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
+            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative border-2 border-orange-100"
+            style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t?.createModal?.title?.[language] || 'Proposer une règle'}</h2>
-              <button
-                onClick={() => {
-                  setShowCreateModal(false);
-                  resetCreateForm();
-                }}
-                className="text-gray-400 hover:text-gray-600"
+            {/* Decorative gradient circles */}
+            <div
+              className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', transform: 'translate(30%, -30%)' }}
+            />
+            <div
+              className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-8 pointer-events-none"
+              style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)', transform: 'translate(-30%, 30%)' }}
+            />
+
+            {/* Scrollable content */}
+            <div className="max-h-[90vh] overflow-y-auto">
+              {/* Header - V3 Fun gradient */}
+              <div
+                className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between z-30"
+                style={{ background: '#FFF5F0' }}
               >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {/* Title */}
-              <div>
-                <Label>{t?.createModal?.ruleTitle?.[language] || 'Titre'} *</Label>
-                <Input
-                  value={createForm.title}
-                  onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
-                  placeholder={t?.createModal?.titlePlaceholder?.[language] || 'Ex: Pas de bruit après 22h'}
-                  className="rounded-xl"
-                />
-              </div>
-
-              {/* Description */}
-              <div>
-                <Label>{t?.createModal?.description?.[language] || 'Description'} *</Label>
-                <Textarea
-                  value={createForm.description}
-                  onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
-                  placeholder={t?.createModal?.descriptionPlaceholder?.[language] || 'Expliquez la règle en détail...'}
-                  className="rounded-xl min-h-[100px]"
-                />
-              </div>
-
-              {/* Category */}
-              <div>
-                <Label>{t?.createModal?.category?.[language] || 'Catégorie'} *</Label>
-                <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2">
-                  {RULE_CATEGORIES.map((cat) => (
-                    <button
-                      key={cat.value}
-                      onClick={() => setCreateForm({ ...createForm, category: cat.value })}
-                      className={cn(
-                        'p-3 rounded-xl border-2 text-center transition-all',
-                        createForm.category === cat.value
-                          ? 'border-resident-500 bg-resident-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      )}
-                    >
-                      <div className="text-2xl mb-1">{cat.emoji}</div>
-                      <div className="text-xs font-medium text-gray-700">{cat.label}</div>
-                    </button>
-                  ))}
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    animate={{ scale: [1, 1.05, 1] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
+                  >
+                    <Vote className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <div>
+                    <h2 className="text-xl font-bold text-gray-900">
+                      {t?.createModal?.title?.[language] || 'Proposer une règle'}
+                    </h2>
+                    <p className="text-sm text-gray-500 flex items-center gap-1">
+                      <Sparkles className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      Crée une règle pour ta coloc
+                    </p>
+                  </div>
                 </div>
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setShowCreateModal(false);
+                    resetCreateForm();
+                  }}
+                  className="p-2.5 rounded-xl transition-colors"
+                  style={{ background: 'rgba(255, 101, 30, 0.1)' }}
+                >
+                  <X className="w-5 h-5" style={{ color: '#ff651e' }} />
+                </motion.button>
               </div>
 
-              {/* Voting Duration */}
-              <div>
-                <Label>{t?.createModal?.votingDuration?.[language] || 'Durée du vote (jours)'}</Label>
-                <Input
-                  type="number"
-                  min="1"
-                  max="30"
-                  value={createForm.voting_duration_days}
-                  onChange={(e) =>
-                    setCreateForm({ ...createForm, voting_duration_days: parseInt(e.target.value) })
-                  }
-                  className="rounded-xl"
-                />
-                <p className="text-xs text-gray-500 mt-1">
-                  {t?.createModal?.votingEndsIn?.[language]?.replace('{days}', String(createForm.voting_duration_days || 7)) || `Le vote se terminera dans ${createForm.voting_duration_days || 7} jours`}
-                </p>
-              </div>
-            </div>
+              {/* Form content */}
+              <div className="p-6 space-y-5 relative z-10">
+                {/* Title */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    </div>
+                    {t?.createModal?.ruleTitle?.[language] || 'Titre'} *
+                  </Label>
+                  <Input
+                    value={createForm.title}
+                    onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
+                    placeholder={t?.createModal?.titlePlaceholder?.[language] || 'Ex: Pas de bruit après 22h'}
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                  />
+                </div>
 
-            {/* Actions */}
-            <div className="flex gap-3 mt-6">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowCreateModal(false);
-                  resetCreateForm();
-                }}
-                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#ff651e' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                disabled={isCreating}
-              >
-                {t?.createModal?.cancel?.[language] || 'Annuler'}
-              </Button>
-              <Button
-                onClick={handleCreateRule}
-                disabled={isCreating || !createForm.title || !createForm.description}
-                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
-              >
-                {isCreating ? (
-                  <>
-                    <LoadingHouse size={20} className="mr-2" />
-                    {t?.createModal?.creating?.[language] || 'Création...'}
-                  </>
-                ) : (
-                  <>
-                    <Plus className="w-4 h-4 mr-2" />
-                    {t?.createModal?.submit?.[language] || 'Proposer la règle'}
-                  </>
-                )}
-              </Button>
-            </div>
+                {/* Description */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: 'rgba(59, 130, 246, 0.15)' }}
+                    >
+                      <Archive className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
+                    </div>
+                    {t?.createModal?.description?.[language] || 'Description'} *
+                  </Label>
+                  <Textarea
+                    value={createForm.description}
+                    onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
+                    placeholder={t?.createModal?.descriptionPlaceholder?.[language] || 'Expliquez la règle en détail...'}
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all min-h-[100px]"
+                  />
+                </div>
+
+                {/* Category */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: 'rgba(16, 185, 129, 0.15)' }}
+                    >
+                      <Users className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
+                    </div>
+                    {t?.createModal?.category?.[language] || 'Catégorie'} *
+                  </Label>
+                  <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2">
+                    {RULE_CATEGORIES.map((cat) => (
+                      <button
+                        key={cat.value}
+                        onClick={() => setCreateForm({ ...createForm, category: cat.value })}
+                        className={cn(
+                          'p-3 rounded-xl border-2 text-center transition-all',
+                          createForm.category === cat.value
+                            ? 'bg-orange-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        )}
+                        style={createForm.category === cat.value ? { borderColor: '#ff651e' } : undefined}
+                      >
+                        <div className="text-2xl mb-1">{cat.emoji}</div>
+                        <div className="text-xs font-medium text-gray-700">{cat.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Voting Duration */}
+                <div>
+                  <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                    <div
+                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      style={{ background: 'rgba(168, 85, 247, 0.15)' }}
+                    >
+                      <Clock className="w-3.5 h-3.5" style={{ color: '#a855f7' }} />
+                    </div>
+                    {t?.createModal?.votingDuration?.[language] || 'Durée du vote (jours)'}
+                  </Label>
+                  <Input
+                    type="number"
+                    min="1"
+                    max="30"
+                    value={createForm.voting_duration_days}
+                    onChange={(e) =>
+                      setCreateForm({ ...createForm, voting_duration_days: parseInt(e.target.value) })
+                    }
+                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                  />
+                  <p className="text-xs text-gray-500 mt-2">
+                    {t?.createModal?.votingEndsIn?.[language]?.replace('{days}', String(createForm.voting_duration_days || 7)) || `Le vote se terminera dans ${createForm.voting_duration_days || 7} jours`}
+                  </p>
+                </div>
+
+                {/* Actions */}
+                <div className="flex gap-3 pt-2">
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        setShowCreateModal(false);
+                        resetCreateForm();
+                      }}
+                      className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
+                      style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#ff651e' }}
+                      disabled={isCreating}
+                    >
+                      {t?.createModal?.cancel?.[language] || 'Annuler'}
+                    </Button>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                    <Button
+                      onClick={handleCreateRule}
+                      disabled={isCreating || !createForm.title || !createForm.description}
+                      className="w-full rounded-2xl py-6 font-bold text-white border-none"
+                      style={{
+                        background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                        boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
+                      }}
+                    >
+                      {isCreating ? (
+                        <>
+                          <LoadingHouse size={20} className="mr-2" />
+                          {t?.createModal?.creating?.[language] || 'Création...'}
+                        </>
+                      ) : (
+                        <>
+                          <Plus className="w-4 h-4 mr-2" />
+                          {t?.createModal?.submit?.[language] || 'Proposer la règle'}
+                        </>
+                      )}
+                    </Button>
+                  </motion.div>
+                </div>
+              </div>{/* End form content */}
+            </div>{/* End scrollable content */}
           </motion.div>
         </div>
       )}
