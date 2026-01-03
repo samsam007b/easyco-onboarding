@@ -11012,6 +11012,225 @@ export const translations = {
           },
         },
       },
+
+      // ============================================
+      // EXPENSES ADD PAGE - app/dashboard/owner/expenses/add
+      // ============================================
+      expensesAddPage: {
+        title: {
+          fr: 'Ajouter une dépense',
+          en: 'Add Expense',
+          nl: 'Kosten toevoegen',
+          de: 'Ausgabe hinzufügen',
+        },
+        subtitle: {
+          fr: 'Enregistrer les dépenses liées à la propriété',
+          en: 'Record property-related expenses',
+          nl: 'Registreer eigendomskosten',
+          de: 'Immobilienbezogene Ausgaben erfassen',
+        },
+        cardTitle: {
+          fr: 'Détails de la dépense',
+          en: 'Expense Details',
+          nl: 'Kostendetails',
+          de: 'Ausgabendetails',
+        },
+        property: {
+          fr: 'Propriété',
+          en: 'Property',
+          nl: 'Eigendom',
+          de: 'Immobilie',
+        },
+        noProperties: {
+          fr: 'Aucune propriété trouvée',
+          en: 'No properties found',
+          nl: 'Geen eigendommen gevonden',
+          de: 'Keine Immobilien gefunden',
+        },
+        selectProperty: {
+          fr: 'Sélectionner une propriété',
+          en: 'Select property',
+          nl: 'Selecteer eigendom',
+          de: 'Immobilie auswählen',
+        },
+        expenseTitle: {
+          fr: 'Titre de la dépense',
+          en: 'Expense Title',
+          nl: 'Kostentitel',
+          de: 'Ausgabentitel',
+        },
+        expenseTitlePlaceholder: {
+          fr: 'ex: Maintenance, Réparations, Charges',
+          en: 'e.g., Maintenance, Repairs, Utilities',
+          nl: 'bijv. Onderhoud, Reparaties, Nutsvoorzieningen',
+          de: 'z.B. Wartung, Reparaturen, Nebenkosten',
+        },
+        amount: {
+          fr: 'Montant (€)',
+          en: 'Amount (€)',
+          nl: 'Bedrag (€)',
+          de: 'Betrag (€)',
+        },
+        category: {
+          fr: 'Catégorie',
+          en: 'Category',
+          nl: 'Categorie',
+          de: 'Kategorie',
+        },
+        selectCategory: {
+          fr: 'Sélectionner une catégorie',
+          en: 'Select category',
+          nl: 'Selecteer categorie',
+          de: 'Kategorie auswählen',
+        },
+        categories: {
+          maintenance: { fr: 'Maintenance', en: 'Maintenance', nl: 'Onderhoud', de: 'Wartung' },
+          repairs: { fr: 'Réparations', en: 'Repairs', nl: 'Reparaties', de: 'Reparaturen' },
+          utilities: { fr: 'Charges', en: 'Utilities', nl: 'Nutsvoorzieningen', de: 'Nebenkosten' },
+          insurance: { fr: 'Assurance', en: 'Insurance', nl: 'Verzekering', de: 'Versicherung' },
+          property_tax: { fr: 'Taxe foncière', en: 'Property Tax', nl: 'Onroerendgoedbelasting', de: 'Grundsteuer' },
+          management: { fr: 'Gestion immobilière', en: 'Property Management', nl: 'Vastgoedbeheer', de: 'Hausverwaltung' },
+          other: { fr: 'Autre', en: 'Other', nl: 'Anders', de: 'Sonstiges' },
+        },
+        date: {
+          fr: 'Date',
+          en: 'Date',
+          nl: 'Datum',
+          de: 'Datum',
+        },
+        description: {
+          fr: 'Description (Optionnel)',
+          en: 'Description (Optional)',
+          nl: 'Beschrijving (Optioneel)',
+          de: 'Beschreibung (Optional)',
+        },
+        descriptionPlaceholder: {
+          fr: 'Ajouter des détails supplémentaires...',
+          en: 'Add any additional details...',
+          nl: 'Voeg extra details toe...',
+          de: 'Weitere Details hinzufügen...',
+        },
+        cancel: {
+          fr: 'Annuler',
+          en: 'Cancel',
+          nl: 'Annuleren',
+          de: 'Abbrechen',
+        },
+        submit: {
+          fr: 'Ajouter la dépense',
+          en: 'Add Expense',
+          nl: 'Kosten toevoegen',
+          de: 'Ausgabe hinzufügen',
+        },
+        submitting: {
+          fr: 'Ajout en cours...',
+          en: 'Adding...',
+          nl: 'Toevoegen...',
+          de: 'Hinzufügen...',
+        },
+        errors: {
+          loadProperties: {
+            fr: 'Impossible de charger vos propriétés. Veuillez réessayer.',
+            en: 'Unable to load your properties. Please try again.',
+            nl: 'Kan je eigendommen niet laden. Probeer het opnieuw.',
+            de: 'Ihre Immobilien konnten nicht geladen werden. Bitte versuchen Sie es erneut.',
+          },
+          noPublishedProperties: {
+            fr: 'Vous devez avoir une propriété publiée pour ajouter des dépenses.',
+            en: 'You must have a published property to add expenses.',
+            nl: 'Je moet een gepubliceerd eigendom hebben om kosten toe te voegen.',
+            de: 'Sie müssen eine veröffentlichte Immobilie haben, um Ausgaben hinzuzufügen.',
+          },
+          loadError: {
+            fr: 'Une erreur est survenue lors du chargement de vos propriétés.',
+            en: 'An error occurred while loading your properties.',
+            nl: 'Er is een fout opgetreden bij het laden van je eigendommen.',
+            de: 'Beim Laden Ihrer Immobilien ist ein Fehler aufgetreten.',
+          },
+          notLoggedIn: {
+            fr: 'Vous devez être connecté pour ajouter une dépense.',
+            en: 'You must be logged in to add an expense.',
+            nl: 'Je moet ingelogd zijn om kosten toe te voegen.',
+            de: 'Sie müssen angemeldet sein, um eine Ausgabe hinzuzufügen.',
+          },
+          selectProperty: {
+            fr: 'Veuillez sélectionner une propriété.',
+            en: 'Please select a property.',
+            nl: 'Selecteer een eigendom.',
+            de: 'Bitte wählen Sie eine Immobilie aus.',
+          },
+          submitError: {
+            fr: 'Erreur lors de l\'ajout de la dépense. Veuillez réessayer.',
+            en: 'Error adding expense. Please try again.',
+            nl: 'Fout bij het toevoegen van kosten. Probeer het opnieuw.',
+            de: 'Fehler beim Hinzufügen der Ausgabe. Bitte versuchen Sie es erneut.',
+          },
+        },
+      },
+
+      // ============================================
+      // MESSAGES PAGE - app/dashboard/owner/messages
+      // ============================================
+      messagesPage: {
+        loading: {
+          title: {
+            fr: 'Chargement des messages...',
+            en: 'Loading messages...',
+            nl: 'Berichten laden...',
+            de: 'Nachrichten werden geladen...',
+          },
+          subtitle: {
+            fr: 'Préparation de vos conversations',
+            en: 'Preparing your conversations',
+            nl: 'Je gesprekken voorbereiden',
+            de: 'Ihre Unterhaltungen werden vorbereitet',
+          },
+        },
+        fallback: {
+          fr: 'Utilisateur',
+          en: 'User',
+          nl: 'Gebruiker',
+          de: 'Benutzer',
+        },
+        errors: {
+          loadConversations: {
+            fr: 'Erreur lors du chargement des conversations',
+            en: 'Error loading conversations',
+            nl: 'Fout bij het laden van gesprekken',
+            de: 'Fehler beim Laden der Unterhaltungen',
+          },
+          loadError: {
+            fr: 'Erreur de chargement',
+            en: 'Loading error',
+            nl: 'Laadfout',
+            de: 'Ladefehler',
+          },
+          sendFailed: {
+            fr: 'Échec de l\'envoi du message',
+            en: 'Failed to send message',
+            nl: 'Bericht verzenden mislukt',
+            de: 'Nachricht konnte nicht gesendet werden',
+          },
+          archiveFailed: {
+            fr: 'Échec de l\'archivage',
+            en: 'Failed to archive',
+            nl: 'Archiveren mislukt',
+            de: 'Archivierung fehlgeschlagen',
+          },
+        },
+        archived: {
+          fr: 'Conversation archivée',
+          en: 'Conversation archived',
+          nl: 'Gesprek gearchiveerd',
+          de: 'Unterhaltung archiviert',
+        },
+        emptyState: {
+          fr: 'Soyez le premier à envoyer un message dans cette conversation !',
+          en: 'Be the first to send a message in this conversation!',
+          nl: 'Wees de eerste om een bericht in dit gesprek te sturen!',
+          de: 'Seien Sie der Erste, der eine Nachricht in dieser Unterhaltung sendet!',
+        },
+      },
     },
 
     // Resident Dashboard

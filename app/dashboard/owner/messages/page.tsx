@@ -28,6 +28,7 @@ import {
 import { toast } from 'sonner';
 import { motion } from 'framer-motion';
 import { Sparkles, MessageCircle } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // V3 Owner gradient constants
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
@@ -46,6 +47,8 @@ function OwnerMessagesContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.owner?.messagesPage;
 
   // User state
   const [isLoading, setIsLoading] = useState(true);
@@ -121,18 +124,18 @@ function OwnerMessagesContent() {
 
       const role = getUserRole(userData?.user_type);
       setUserRole(role);
-      setUserName(userData?.full_name || 'Utilisateur');
+      setUserName(userData?.full_name || (t?.fallback?.[language] || 'User'));
 
       // Load conversations
       const result = await getUnifiedConversations(user.id, role);
       if (result.success && result.data) {
         setMessagingState(result.data);
       } else {
-        toast.error('Erreur lors du chargement des conversations');
+        toast.error(t?.errors?.loadConversations?.[language] || 'Error loading conversations');
       }
     } catch (error) {
       console.error('Error loading user:', error);
-      toast.error('Erreur de chargement');
+      toast.error(t?.errors?.loadError?.[language] || 'Loading error');
     } finally {
       setIsLoading(false);
     }
@@ -203,7 +206,7 @@ function OwnerMessagesContent() {
     });
 
     if (!result.success) {
-      toast.error('Échec de l\'envoi du message');
+      toast.error(t?.errors?.sendFailed?.[language] || 'Failed to send message');
       throw new Error(result.error);
     }
 
@@ -232,11 +235,11 @@ function OwnerMessagesContent() {
     );
 
     if (result.success) {
-      toast.success('Conversation archivée');
+      toast.success(t?.archived?.[language] || 'Conversation archived');
       setSelectedConversation(null);
       loadUserAndConversations();
     } else {
-      toast.error('Échec de l\'archivage');
+      toast.error(t?.errors?.archiveFailed?.[language] || 'Failed to archive');
     }
   };
 
@@ -274,9 +277,9 @@ function OwnerMessagesContent() {
         <div className="text-center">
           <LoadingHouse size={80} />
           <h3 className="text-xl font-semibold text-gray-900 mb-2 mt-4">
-            Loading messages...
+            {t?.loading?.title?.[language] || 'Loading messages...'}
           </h3>
-          <p className="text-gray-600">Preparing your conversations</p>
+          <p className="text-gray-600">{t?.loading?.subtitle?.[language] || 'Preparing your conversations'}</p>
         </div>
       </div>
     );
@@ -335,7 +338,7 @@ function OwnerMessagesContent() {
             {selectedConversation.name}
           </h3>
           <p className="text-gray-500 max-w-sm mx-auto">
-            Soyez le premier à envoyer un message dans cette conversation !
+            {t?.emptyState?.[language] || 'Be the first to send a message in this conversation!'}
           </p>
         </div>
       );

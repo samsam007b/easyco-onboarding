@@ -12,10 +12,13 @@ import { Select } from '@/components/ui/select';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useAuth } from '@/lib/contexts/auth-context';
 import { logger } from '@/lib/utils/logger';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function AddOwnerExpensePage() {
   const router = useRouter();
   const { user } = useAuth();
+  const { language, getSection } = useLanguage();
+  const t = getSection('dashboard')?.owner?.expensesAddPage;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [properties, setProperties] = useState<Array<{ id: string; title: string }>>([]);
@@ -42,7 +45,7 @@ export default function AddOwnerExpensePage() {
 
         if (error) {
           logger.supabaseError('load owner properties for expense form', error, { userId: user.id });
-          setError('Impossible de charger vos propriétés. Veuillez réessayer.');
+          setError(t?.errors?.loadProperties?.[language] || 'Unable to load your properties. Please try again.');
           return;
         }
 
@@ -50,7 +53,7 @@ export default function AddOwnerExpensePage() {
           setProperties(data);
           if (data.length === 0) {
             logger.warn('Owner has no published properties for expense', { userId: user.id });
-            setError('Vous devez avoir une propriété publiée pour ajouter des dépenses.');
+            setError(t?.errors?.noPublishedProperties?.[language] || 'You must have a published property to add expenses.');
           } else if (data.length === 1) {
             // Auto-select if only one property
             setFormData(prev => ({ ...prev, property: data[0].id }));
@@ -59,7 +62,7 @@ export default function AddOwnerExpensePage() {
         }
       } catch (err) {
         logger.error('Failed to load properties for expense form', err, { userId: user.id });
-        setError('Une erreur est survenue lors du chargement de vos propriétés.');
+        setError(t?.errors?.loadError?.[language] || 'An error occurred while loading your properties.');
       }
     };
 
@@ -73,13 +76,13 @@ export default function AddOwnerExpensePage() {
 
     try {
       if (!user) {
-        setError('Vous devez être connecté pour ajouter une dépense');
+        setError(t?.errors?.notLoggedIn?.[language] || 'You must be logged in to add an expense.');
         setIsSubmitting(false);
         return;
       }
 
       if (!formData.property) {
-        setError('Veuillez sélectionner une propriété');
+        setError(t?.errors?.selectProperty?.[language] || 'Please select a property.');
         setIsSubmitting(false);
         return;
       }
@@ -114,7 +117,7 @@ export default function AddOwnerExpensePage() {
       router.push('/dashboard/owner');
     } catch (err) {
       logger.error('Failed to submit owner expense', err, { formData });
-      setError('Erreur lors de l\'ajout de la dépense. Veuillez réessayer.');
+      setError(t?.errors?.submitError?.[language] || 'Error adding expense. Please try again.');
       setIsSubmitting(false);
     }
   };
@@ -134,8 +137,8 @@ export default function AddOwnerExpensePage() {
               <ChevronLeft className="h-5 w-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-purple-900">Add Expense</h1>
-              <p className="text-gray-600 mt-1">Record property-related expenses</p>
+              <h1 className="text-3xl font-bold text-purple-900">{t?.title?.[language] || 'Add Expense'}</h1>
+              <p className="text-gray-600 mt-1">{t?.subtitle?.[language] || 'Record property-related expenses'}</p>
             </div>
           </div>
         </div>
@@ -147,7 +150,7 @@ export default function AddOwnerExpensePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="h-6 w-6 text-purple-700" />
-              Expense Details
+              {t?.cardTitle?.[language] || 'Expense Details'}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -159,11 +162,11 @@ export default function AddOwnerExpensePage() {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <Select
-                  label="Property"
+                  label={t?.property?.[language] || 'Property'}
                   value={formData.property}
                   onChange={(e) => setFormData({ ...formData, property: e.target.value })}
                   options={properties.map(p => ({ value: p.id, label: p.title }))}
-                  placeholder={properties.length === 0 ? "No properties found" : "Select property"}
+                  placeholder={properties.length === 0 ? (t?.noProperties?.[language] || 'No properties found') : (t?.selectProperty?.[language] || 'Select property')}
                   required
                   className="rounded-xl"
                   disabled={properties.length === 0}
@@ -171,10 +174,10 @@ export default function AddOwnerExpensePage() {
               </div>
 
               <div>
-                <Label htmlFor="title">Expense Title</Label>
+                <Label htmlFor="title">{t?.expenseTitle?.[language] || 'Expense Title'}</Label>
                 <Input
                   id="title"
-                  placeholder="e.g., Maintenance, Repairs, Utilities"
+                  placeholder={t?.expenseTitlePlaceholder?.[language] || 'e.g., Maintenance, Repairs, Utilities'}
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
@@ -183,7 +186,7 @@ export default function AddOwnerExpensePage() {
               </div>
 
               <div>
-                <Label htmlFor="amount">Amount (€)</Label>
+                <Label htmlFor="amount">{t?.amount?.[language] || 'Amount (€)'}</Label>
                 <Input
                   id="amount"
                   type="number"
@@ -198,26 +201,26 @@ export default function AddOwnerExpensePage() {
 
               <div>
                 <Select
-                  label="Category"
+                  label={t?.category?.[language] || 'Category'}
                   value={formData.category}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   options={[
-                    { value: 'maintenance', label: 'Maintenance' },
-                    { value: 'repairs', label: 'Repairs' },
-                    { value: 'utilities', label: 'Utilities' },
-                    { value: 'insurance', label: 'Insurance' },
-                    { value: 'property_tax', label: 'Property Tax' },
-                    { value: 'management', label: 'Property Management' },
-                    { value: 'other', label: 'Other' },
+                    { value: 'maintenance', label: t?.categories?.maintenance?.[language] || 'Maintenance' },
+                    { value: 'repairs', label: t?.categories?.repairs?.[language] || 'Repairs' },
+                    { value: 'utilities', label: t?.categories?.utilities?.[language] || 'Utilities' },
+                    { value: 'insurance', label: t?.categories?.insurance?.[language] || 'Insurance' },
+                    { value: 'property_tax', label: t?.categories?.property_tax?.[language] || 'Property Tax' },
+                    { value: 'management', label: t?.categories?.management?.[language] || 'Property Management' },
+                    { value: 'other', label: t?.categories?.other?.[language] || 'Other' },
                   ]}
-                  placeholder="Select category"
+                  placeholder={t?.selectCategory?.[language] || 'Select category'}
                   required
                   className="rounded-xl"
                 />
               </div>
 
               <div>
-                <Label htmlFor="date">Date</Label>
+                <Label htmlFor="date">{t?.date?.[language] || 'Date'}</Label>
                 <Input
                   id="date"
                   type="date"
@@ -229,10 +232,10 @@ export default function AddOwnerExpensePage() {
               </div>
 
               <div>
-                <Label htmlFor="description">Description (Optional)</Label>
+                <Label htmlFor="description">{t?.description?.[language] || 'Description (Optional)'}</Label>
                 <Textarea
                   id="description"
-                  placeholder="Add any additional details..."
+                  placeholder={t?.descriptionPlaceholder?.[language] || 'Add any additional details...'}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   className="rounded-xl"
@@ -247,14 +250,14 @@ export default function AddOwnerExpensePage() {
                   onClick={() => router.back()}
                   className="flex-1 rounded-xl"
                 >
-                  Cancel
+                  {t?.cancel?.[language] || 'Cancel'}
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting || properties.length === 0}
                   className="flex-1 bg-purple-900 hover:bg-purple-950 rounded-xl disabled:opacity-50"
                 >
-                  {isSubmitting ? 'Ajout en cours...' : 'Add Expense'}
+                  {isSubmitting ? (t?.submitting?.[language] || 'Adding...') : (t?.submit?.[language] || 'Add Expense')}
                 </Button>
               </div>
             </form>
