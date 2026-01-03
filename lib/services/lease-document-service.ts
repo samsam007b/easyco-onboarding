@@ -2,8 +2,68 @@
  * Lease Document Service
  * Handles generating and downloading lease contract PDFs
  *
- * Uses iframe + srcdoc for secure PDF generation (avoids document.write)
+ * Uses iframe + srcdoc for secure PDF generation
+ * Supports i18n for fr, en, nl, de
  */
+
+// =============================================================================
+// I18N CONFIGURATION
+// =============================================================================
+export type LeaseLanguage = 'fr' | 'en' | 'nl' | 'de';
+
+const localeMap: Record<LeaseLanguage, string> = {
+  fr: 'fr-FR',
+  en: 'en-GB',
+  nl: 'nl-NL',
+  de: 'de-DE',
+};
+
+const translations = {
+  title: { fr: 'CONTRAT DE LOCATION', en: 'LEASE AGREEMENT', nl: 'HUUROVEREENKOMST', de: 'MIETVERTRAG' },
+  subtitle: { fr: 'Établi via Izzico', en: 'Established via Izzico', nl: 'Opgesteld via Izzico', de: 'Erstellt über Izzico' },
+  property: {
+    section: { fr: 'Bien Loué', en: 'Rented Property', nl: 'Gehuurde Woning', de: 'Mietobjekt' },
+    designation: { fr: 'Désignation', en: 'Designation', nl: 'Aanduiding', de: 'Bezeichnung' },
+    address: { fr: 'Adresse', en: 'Address', nl: 'Adres', de: 'Adresse' },
+    notProvided: { fr: 'Non renseignée', en: 'Not provided', nl: 'Niet opgegeven', de: 'Nicht angegeben' },
+  },
+  parties: {
+    section: { fr: 'Parties au Contrat', en: 'Contract Parties', nl: 'Contractpartijen', de: 'Vertragsparteien' },
+    owner: { fr: 'Propriétaire (Bailleur)', en: 'Owner (Landlord)', nl: 'Eigenaar (Verhuurder)', de: 'Eigentümer (Vermieter)' },
+    ownerDefault: { fr: 'Propriétaire', en: 'Owner', nl: 'Eigenaar', de: 'Eigentümer' },
+    tenant: { fr: 'Locataire (Preneur)', en: 'Tenant (Lessee)', nl: 'Huurder (Huurder)', de: 'Mieter (Mieter)' },
+  },
+  duration: {
+    section: { fr: 'Durée du Bail', en: 'Lease Duration', nl: 'Huurduur', de: 'Mietdauer' },
+    startDate: { fr: 'Date de début', en: 'Start date', nl: 'Startdatum', de: 'Startdatum' },
+    endDate: { fr: 'Date de fin', en: 'End date', nl: 'Einddatum', de: 'Enddatum' },
+    totalDuration: { fr: 'Durée totale', en: 'Total duration', nl: 'Totale duur', de: 'Gesamtdauer' },
+    months: { fr: 'mois', en: 'months', nl: 'maanden', de: 'Monate' },
+  },
+  financial: {
+    section: { fr: 'Conditions Financières', en: 'Financial Terms', nl: 'Financiële Voorwaarden', de: 'Finanzielle Bedingungen' },
+    monthlyRent: { fr: 'Loyer mensuel (hors charges)', en: 'Monthly rent (excluding charges)', nl: 'Maandelijkse huur (exclusief kosten)', de: 'Monatsmiete (ohne Nebenkosten)' },
+    deposit: { fr: 'Dépôt de garantie', en: 'Security deposit', nl: 'Borg', de: 'Kaution' },
+    annualRent: { fr: 'Loyer annuel', en: 'Annual rent', nl: 'Jaarhuur', de: 'Jahresmiete' },
+  },
+  terms: {
+    section: { fr: 'Conditions Particulières', en: 'Special Terms', nl: 'Bijzondere Voorwaarden', de: 'Besondere Bedingungen' },
+  },
+  signatures: {
+    landlord: { fr: 'Le Bailleur', en: 'The Landlord', nl: 'De Verhuurder', de: 'Der Vermieter' },
+    tenant: { fr: 'Le Locataire', en: 'The Tenant', nl: 'De Huurder', de: 'Der Mieter' },
+    signedOn: { fr: 'Signé le', en: 'Signed on', nl: 'Ondertekend op', de: 'Unterzeichnet am' },
+    signature: { fr: 'Signature:', en: 'Signature:', nl: 'Handtekening:', de: 'Unterschrift:' },
+  },
+  footer: {
+    generatedOn: { fr: 'Document généré le', en: 'Document generated on', nl: 'Document gegenereerd op', de: 'Dokument erstellt am' },
+    via: { fr: 'via Izzico', en: 'via Izzico', nl: 'via Izzico', de: 'über Izzico' },
+    reference: { fr: 'Référence', en: 'Reference', nl: 'Referentie', de: 'Referenz' },
+  },
+  errors: {
+    unknown: { fr: 'Erreur inconnue', en: 'Unknown error', nl: 'Onbekende fout', de: 'Unbekannter Fehler' },
+  },
+};
 
 export interface LeaseDocumentData {
   leaseId: string;
@@ -24,13 +84,13 @@ export interface LeaseDocumentData {
  * Generate PDF directly from lease data (client-side only)
  * Uses the print dialog to create a PDF
  */
-export function generateLeasePDF(data: LeaseDocumentData): void {
+export function generateLeasePDF(data: LeaseDocumentData, language: LeaseLanguage = 'fr'): void {
   if (typeof window === 'undefined') {
     console.error('[LeaseDocument] generateLeasePDF must be called client-side');
     return;
   }
 
-  const html = generateLeaseHTML(data);
+  const html = generateLeaseHTML(data, language);
 
   // Create hidden iframe for printing
   const iframe = document.createElement('iframe');
@@ -60,15 +120,15 @@ export function generateLeasePDF(data: LeaseDocumentData): void {
 /**
  * Main entry point - generate PDF from lease data
  */
-export function downloadLeaseDocument(data: LeaseDocumentData): { success: boolean; error?: string } {
+export function downloadLeaseDocument(data: LeaseDocumentData, language: LeaseLanguage = 'fr'): { success: boolean; error?: string } {
   try {
-    generateLeasePDF(data);
+    generateLeasePDF(data, language);
     return { success: true };
   } catch (error) {
     console.error('[LeaseDocument] Error:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Erreur inconnue'
+      error: error instanceof Error ? error.message : translations.errors.unknown[language]
     };
   }
 }
@@ -76,19 +136,22 @@ export function downloadLeaseDocument(data: LeaseDocumentData): { success: boole
 /**
  * Generate lease contract HTML for PDF
  */
-function generateLeaseHTML(data: LeaseDocumentData): string {
+function generateLeaseHTML(data: LeaseDocumentData, language: LeaseLanguage = 'fr'): string {
+  const t = translations;
+  const locale = localeMap[language];
+
   const formatCurrency = (amount: number) =>
-    new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(amount);
+    new Intl.NumberFormat(locale, { style: 'currency', currency: 'EUR' }).format(amount);
 
   const formatDate = (date: Date) =>
-    date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
+    date.toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' });
 
   return `
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="${language}">
 <head>
   <meta charset="UTF-8">
-  <title>Contrat de Location - ${escapeHtml(data.propertyTitle)}</title>
+  <title>${t.title[language]} - ${escapeHtml(data.propertyTitle)}</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -212,71 +275,71 @@ function generateLeaseHTML(data: LeaseDocumentData): string {
 </head>
 <body>
   <div class="header">
-    <h1>CONTRAT DE LOCATION</h1>
-    <p>Établi via EasyCo</p>
+    <h1>${t.title[language]}</h1>
+    <p>${t.subtitle[language]}</p>
   </div>
 
   <div class="section">
-    <h2 class="section-title">Bien Loué</h2>
+    <h2 class="section-title">${t.property.section[language]}</h2>
     <div class="info-grid">
       <div class="info-item">
-        <div class="info-label">Désignation</div>
+        <div class="info-label">${t.property.designation[language]}</div>
         <div class="info-value">${escapeHtml(data.propertyTitle)}</div>
       </div>
       <div class="info-item">
-        <div class="info-label">Adresse</div>
-        <div class="info-value">${escapeHtml(data.propertyAddress) || 'Non renseignée'}</div>
+        <div class="info-label">${t.property.address[language]}</div>
+        <div class="info-value">${escapeHtml(data.propertyAddress) || t.property.notProvided[language]}</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <h2 class="section-title">Parties au Contrat</h2>
+    <h2 class="section-title">${t.parties.section[language]}</h2>
     <div class="info-grid">
       <div class="info-item">
-        <div class="info-label">Propriétaire (Bailleur)</div>
-        <div class="info-value">${escapeHtml(data.ownerName || 'Propriétaire')}</div>
+        <div class="info-label">${t.parties.owner[language]}</div>
+        <div class="info-value">${escapeHtml(data.ownerName || t.parties.ownerDefault[language])}</div>
       </div>
       <div class="info-item">
-        <div class="info-label">Locataire (Preneur)</div>
+        <div class="info-label">${t.parties.tenant[language]}</div>
         <div class="info-value">${escapeHtml(data.tenantName)}</div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <h2 class="section-title">Durée du Bail</h2>
+    <h2 class="section-title">${t.duration.section[language]}</h2>
     <div class="info-grid">
       <div class="info-item">
-        <div class="info-label">Date de début</div>
+        <div class="info-label">${t.duration.startDate[language]}</div>
         <div class="info-value">${formatDate(data.startDate)}</div>
       </div>
       <div class="info-item">
-        <div class="info-label">Date de fin</div>
+        <div class="info-label">${t.duration.endDate[language]}</div>
         <div class="info-value">${formatDate(data.endDate)}</div>
       </div>
     </div>
     <div class="info-item" style="margin-top: 15px;">
-      <div class="info-label">Durée totale</div>
-      <div class="info-value">${data.durationMonths} mois</div>
+      <div class="info-label">${t.duration.totalDuration[language]}</div>
+      <div class="info-value">${data.durationMonths} ${t.duration.months[language]}</div>
     </div>
   </div>
 
   <div class="section">
-    <h2 class="section-title">Conditions Financières</h2>
+    <h2 class="section-title">${t.financial.section[language]}</h2>
     <div class="financial-box">
       <div class="financial-row">
-        <span class="financial-label">Loyer mensuel (hors charges)</span>
+        <span class="financial-label">${t.financial.monthlyRent[language]}</span>
         <span class="financial-value">${formatCurrency(data.monthlyRent)}</span>
       </div>
       ${data.deposit ? `
       <div class="financial-row">
-        <span class="financial-label">Dépôt de garantie</span>
+        <span class="financial-label">${t.financial.deposit[language]}</span>
         <span class="financial-value">${formatCurrency(data.deposit)}</span>
       </div>
       ` : ''}
       <div class="financial-row">
-        <span class="financial-label">Loyer annuel</span>
+        <span class="financial-label">${t.financial.annualRent[language]}</span>
         <span class="financial-value">${formatCurrency(data.monthlyRent * 12)}</span>
       </div>
     </div>
@@ -284,27 +347,27 @@ function generateLeaseHTML(data: LeaseDocumentData): string {
 
   ${data.terms ? `
   <div class="section">
-    <h2 class="section-title">Conditions Particulières</h2>
+    <h2 class="section-title">${t.terms.section[language]}</h2>
     <div class="terms">${escapeHtml(data.terms)}</div>
   </div>
   ` : ''}
 
   <div class="signatures">
     <div class="signature-box">
-      <div class="signature-label">Le Bailleur</div>
-      <div class="signature-name">${escapeHtml(data.ownerName || 'Propriétaire')}</div>
-      ${data.signedAt ? `<div style="color: #10b981; font-size: 12px; margin-top: 8px;">✓ Signé le ${formatDate(data.signedAt)}</div>` : '<div style="color: #6b7280; font-size: 12px; margin-top: 40px;">Signature:</div>'}
+      <div class="signature-label">${t.signatures.landlord[language]}</div>
+      <div class="signature-name">${escapeHtml(data.ownerName || t.parties.ownerDefault[language])}</div>
+      ${data.signedAt ? `<div style="color: #10b981; font-size: 12px; margin-top: 8px;">✓ ${t.signatures.signedOn[language]} ${formatDate(data.signedAt)}</div>` : `<div style="color: #6b7280; font-size: 12px; margin-top: 40px;">${t.signatures.signature[language]}</div>`}
     </div>
     <div class="signature-box">
-      <div class="signature-label">Le Locataire</div>
+      <div class="signature-label">${t.signatures.tenant[language]}</div>
       <div class="signature-name">${escapeHtml(data.tenantName)}</div>
-      ${data.signedAt ? `<div style="color: #10b981; font-size: 12px; margin-top: 8px;">✓ Signé le ${formatDate(data.signedAt)}</div>` : '<div style="color: #6b7280; font-size: 12px; margin-top: 40px;">Signature:</div>'}
+      ${data.signedAt ? `<div style="color: #10b981; font-size: 12px; margin-top: 8px;">✓ ${t.signatures.signedOn[language]} ${formatDate(data.signedAt)}</div>` : `<div style="color: #6b7280; font-size: 12px; margin-top: 40px;">${t.signatures.signature[language]}</div>`}
     </div>
   </div>
 
   <div class="footer">
-    <p>Document généré le ${formatDate(new Date())} via EasyCo</p>
-    <p>Référence: ${data.leaseId}</p>
+    <p>${t.footer.generatedOn[language]} ${formatDate(new Date())} ${t.footer.via[language]}</p>
+    <p>${t.footer.reference[language]}: ${data.leaseId}</p>
   </div>
 </body>
 </html>

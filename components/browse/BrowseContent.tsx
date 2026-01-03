@@ -7,6 +7,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { Search, SlidersHorizontal, Map as MapIcon, List, Bell, Users, Heart, X, RotateCcw, Info, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import PropertyCard from '@/components/PropertyCard';
 import { useQuery } from '@tanstack/react-query';
 import { calculateMatchScore, type UserPreferences, type PropertyFeatures } from '@/lib/services/matching-service';
@@ -270,14 +271,14 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
         next.delete(propertyId);
         return next;
       });
-      toast.success('Retiré des favoris');
+      toast.success(getHookTranslation('browse', 'removedFromFavorites'));
     } else {
       await supabase
         .from('favorites')
         .insert({ user_id: userId, property_id: propertyId });
 
       setUserFavorites(prev => new Set(prev).add(propertyId));
-      toast.success('Ajouté aux favoris !');
+      toast.success(getHookTranslation('browse', 'addedToFavorites'));
     }
   }, [userId, userFavorites, supabase]);
 
@@ -663,7 +664,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
 
                     if (error) {
                       console.error('Failed to delete swipe:', error);
-                      toast.error('Impossible d\'annuler');
+                      toast.error(getHookTranslation('browse', 'cannotUndo'));
                       return;
                     }
 
@@ -672,7 +673,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                     restoreUser(lastPassed);
                     setMatchingIndex(0);
 
-                    toast.info(`${lastPassed.first_name} remis dans le deck`);
+                    toast.info(`${lastPassed.first_name} ${getHookTranslation('browse', 'restoredToDeck')}`);
                   }
                 }}
               />
@@ -706,7 +707,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                       setMatchingIndex(0);
                       await loadPotentialMatches();
                       setIsAnimatingReload(false);
-                      toast.success('Profils rechargés !');
+                      toast.success(getHookTranslation('browse', 'profilesReloaded'));
                     }}
                     disabled={isAnimatingReload}
                     className="bg-gradient-to-r from-amber-500 to-amber-600"
@@ -761,7 +762,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                           if (success) {
                             if (action === 'like') {
                               setLikedProfiles(prev => [...prev, currentUser]);
-                              toast.success(`${currentUser.first_name} liké !`);
+                              toast.success(`${currentUser.first_name} ${getHookTranslation('browse', 'liked')}`);
                             } else {
                               setPassedProfiles(prev => [...prev, currentUser]);
                             }
@@ -769,7 +770,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                             setTimeout(() => setMatchingIndex(prev => prev + 1), 200);
                           }
                         }}
-                        onCardClick={() => toast.info('Profil complet bientôt disponible !')}
+                        onCardClick={() => toast.info(getHookTranslation('browse', 'fullProfileSoon'))}
                         isExpanded={isCardExpanded}
                         onExpandChange={setIsCardExpanded}
                       />
@@ -798,7 +799,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
 
                     if (error) {
                       console.error('Failed to delete swipe:', error);
-                      toast.error('Impossible d\'annuler');
+                      toast.error(getHookTranslation('browse', 'cannotUndo'));
                       return;
                     }
 
@@ -807,7 +808,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                     restoreUser(lastLiked);
                     setMatchingIndex(0);
 
-                    toast.info(`${lastLiked.first_name} remis dans le deck`);
+                    toast.info(`${lastLiked.first_name} ${getHookTranslation('browse', 'restoredToDeck')}`);
                   }
                 }}
               />
@@ -843,7 +844,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                   const success = await recordSwipe(currentUser.user_id, 'like');
                   if (success) {
                     setLikedProfiles(prev => [...prev, currentUser]);
-                    toast.success(`${currentUser.first_name} liké !`);
+                    toast.success(`${currentUser.first_name} ${getHookTranslation('browse', 'liked')}`);
                     setIsCardExpanded(false);
                     setMatchingIndex(prev => prev + 1);
                   }

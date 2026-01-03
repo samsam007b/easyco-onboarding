@@ -4,6 +4,58 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setMaintenanceServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  unknownUser: {
+    fr: 'Utilisateur inconnu',
+    en: 'Unknown user',
+    nl: 'Onbekende gebruiker',
+    de: 'Unbekannter Benutzer',
+  },
+  property: {
+    fr: 'Propriété',
+    en: 'Property',
+    nl: 'Eigendom',
+    de: 'Immobilie',
+  },
+  errors: {
+    createRequest: {
+      fr: 'Erreur lors de la création de la demande',
+      en: 'Error creating the request',
+      nl: 'Fout bij het aanmaken van het verzoek',
+      de: 'Fehler beim Erstellen der Anfrage',
+    },
+    updateRequest: {
+      fr: 'Erreur lors de la mise à jour',
+      en: 'Error updating the request',
+      nl: 'Fout bij het bijwerken',
+      de: 'Fehler beim Aktualisieren',
+    },
+    updateStatus: {
+      fr: 'Erreur lors de la mise à jour du statut',
+      en: 'Error updating the status',
+      nl: 'Fout bij het bijwerken van de status',
+      de: 'Fehler beim Aktualisieren des Status',
+    },
+    deleteRequest: {
+      fr: 'Erreur lors de la suppression',
+      en: 'Error deleting the request',
+      nl: 'Fout bij het verwijderen',
+      de: 'Fehler beim Löschen',
+    },
+  },
+};
 import type {
   MaintenanceRequest,
   MaintenanceRequestWithCreator,
@@ -109,9 +161,9 @@ class MaintenanceService {
           resolved_at: r.resolved_at,
           created_at: r.created_at,
           updated_at: r.updated_at,
-          creator_name: r.profiles?.full_name || 'Utilisateur inconnu',
+          creator_name: r.profiles?.full_name || translations.unknownUser[currentLang],
           creator_avatar: r.profiles?.avatar_url,
-          property_name: propertyMap.get(r.property_id) || 'Propriété',
+          property_name: propertyMap.get(r.property_id) || translations.property[currentLang],
         })) || [];
 
       console.log(`[Maintenance] ✅ Batch fetched ${enriched.length} requests for ${properties.length} properties`);
@@ -163,7 +215,7 @@ class MaintenanceService {
       const enriched: MaintenanceRequestWithCreator[] =
         (data as RequestWithProfile[] | null)?.map((r) => ({
           ...r,
-          creator_name: r.profiles?.full_name || 'Utilisateur inconnu',
+          creator_name: r.profiles?.full_name || translations.unknownUser[currentLang],
           creator_avatar: r.profiles?.avatar_url,
         })) || [];
 
@@ -199,7 +251,7 @@ class MaintenanceService {
       const typedData = data as RequestWithProfile;
       const enriched: MaintenanceRequestWithCreator = {
         ...typedData,
-        creator_name: typedData.profiles?.full_name || 'Utilisateur inconnu',
+        creator_name: typedData.profiles?.full_name || translations.unknownUser[currentLang],
         creator_avatar: typedData.profiles?.avatar_url,
       };
 
@@ -254,7 +306,7 @@ class MaintenanceService {
       console.error('[Maintenance] ❌ Failed to create request:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la création de la demande',
+        error: error.message || translations.errors.createRequest[currentLang],
       };
     }
   }
@@ -290,7 +342,7 @@ class MaintenanceService {
       console.error('[Maintenance] ❌ Failed to update request:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la mise à jour',
+        error: error.message || translations.errors.updateRequest[currentLang],
       };
     }
   }
@@ -323,7 +375,7 @@ class MaintenanceService {
       console.error('[Maintenance] ❌ Failed to update status:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la mise à jour du statut',
+        error: error.message || translations.errors.updateStatus[currentLang],
       };
     }
   }
@@ -347,7 +399,7 @@ class MaintenanceService {
       console.error('[Maintenance] ❌ Failed to delete request:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la suppression',
+        error: error.message || translations.errors.deleteRequest[currentLang],
       };
     }
   }

@@ -51,6 +51,7 @@ import {
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -298,7 +299,7 @@ export default function FinanceAnalyticsPage() {
       }
     } catch (error) {
       console.error('Error loading finance data:', error);
-      toast.error('Erreur lors du chargement des données');
+      toast.error(getHookTranslation('finance', 'loadFailed'));
     } finally {
       setIsLoading(false);
       setIsRefreshing(false);
@@ -365,17 +366,17 @@ export default function FinanceAnalyticsPage() {
 
       if (error) throw error;
 
-      toast.success('Paiement marqué comme payé');
+      toast.success(getHookTranslation('finance', 'paymentMarkedPaid'));
       await loadData(true);
     } catch (error) {
       console.error('Error marking payment as paid:', error);
-      toast.error('Erreur lors de la mise à jour');
+      toast.error(getHookTranslation('finance', 'updateFailed'));
     }
   };
 
   const handleSendReminder = async (paymentId: string) => {
     try {
-      toast.loading('Envoi de la relance...', { id: 'reminder' });
+      toast.loading(getHookTranslation('finance', 'sendingReminder'), { id: 'reminder' });
 
       const response = await fetch('/api/owner/payments/reminder', {
         method: 'POST',
@@ -386,14 +387,14 @@ export default function FinanceAnalyticsPage() {
       const result = await response.json();
 
       if (!response.ok) {
-        throw new Error(result.error || 'Échec de l\'envoi');
+        throw new Error(result.error || getHookTranslation('finance', 'reminderFailed'));
       }
 
-      toast.success(`Relance envoyée à ${result.sentTo}`, { id: 'reminder' });
+      toast.success(`${getHookTranslation('finance', 'reminderSent')} (${result.sentTo})`, { id: 'reminder' });
     } catch (error) {
       console.error('Error sending reminder:', error);
       toast.error(
-        error instanceof Error ? error.message : 'Erreur lors de l\'envoi de la relance',
+        error instanceof Error ? error.message : getHookTranslation('finance', 'reminderFailed'),
         { id: 'reminder' }
       );
     }
@@ -406,7 +407,7 @@ export default function FinanceAnalyticsPage() {
 
   const handleExportCSV = useCallback(() => {
     if (!overview || recentPayments.length === 0) {
-      toast.error('Aucune donnée à exporter');
+      toast.error(getHookTranslation('finance', 'noDataToExport'));
       return;
     }
 
@@ -429,12 +430,12 @@ export default function FinanceAnalyticsPage() {
     };
 
     exportFinanceToCSV(exportData);
-    toast.success('Export CSV téléchargé');
+    toast.success(getHookTranslation('finance', 'csvDownloaded'));
   }, [overview, recentPayments]);
 
   const handleExportPDF = useCallback(() => {
     if (!overview || recentPayments.length === 0) {
-      toast.error('Aucune donnée à exporter');
+      toast.error(getHookTranslation('finance', 'noDataToExport'));
       return;
     }
 
@@ -457,7 +458,7 @@ export default function FinanceAnalyticsPage() {
     };
 
     exportFinanceToPDF(exportData);
-    toast.success('Préparation du PDF pour impression...');
+    toast.success(getHookTranslation('finance', 'pdfPreparing'));
   }, [overview, recentPayments]);
 
   if (isLoading) {

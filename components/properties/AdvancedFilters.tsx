@@ -19,6 +19,7 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export interface AdvancedFilterOptions {
   // Price
@@ -118,6 +119,8 @@ export function AdvancedFilters({
   onReset,
 }: AdvancedFiltersProps) {
   const [localFilters, setLocalFilters] = useState<AdvancedFilterOptions>(filters);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   const updateFilter = (key: keyof AdvancedFilterOptions, value: any) => {
     setLocalFilters((prev) => ({ ...prev, [key]: value }));
@@ -187,7 +190,7 @@ export function AdvancedFilters({
             )}
           </div>
           {onClose && (
-            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Fermer les filtres">
+            <Button variant="ghost" size="icon" onClick={onClose} aria-label={ariaLabels?.closeFilters?.[language] || 'Fermer les filtres'}>
               <X className="w-5 h-5" />
             </Button>
           )}

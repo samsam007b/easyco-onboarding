@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco ZZ Spacing Tuning</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-card: #12121c;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            --text-muted: rgba(255, 255, 255, 0.4);
+            --accent: #6366f1;
+            --gradient-signature: linear-gradient(135deg,
+                #9c5698 0%, #af5682 12%, #c2566b 24%, #d15659 30%,
+                #e05747 36%, #ff6524 48%, #ff7c10 60%, #ff8e08 66%,
+                #ffa000 72%, #ffb400 86%, #ffc800 100%
+            );
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .header { text-align: center; margin-bottom: 2rem; }
+        .header h1 { font-family: 'Fredoka', sans-serif; font-size: 2rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .header p { color: var(--text-secondary); font-size: 0.9rem; }
+
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: var(--bg-card);
+            border-radius: 1.5rem;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            overflow: visible;
+        }
+
+        .preview-main {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 300px;
+            margin-bottom: 2rem;
+        }
+
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .wordmark .l-i { font-weight: 600; }
+        .wordmark .l-z { font-weight: 540; }
+        .wordmark .l-c { font-weight: 540; }
+        .wordmark .l-o { font-weight: 540; }
+
+        .wordmark-gradient {
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .main-wordmark {
+            font-size: 180px;
+        }
+
+        /* Comparison Grid */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            overflow: visible;
+            padding-top: 1rem;
+        }
+
+        .comparison-item {
+            background: rgba(255,255,255,0.02);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            padding-top: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            overflow: visible;
+        }
+
+        .comparison-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .comparison-item.active {
+            border-color: var(--accent);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .comparison-item.current {
+            border-color: #ffa000;
+        }
+
+        .comparison-wordmark {
+            font-size: 48px;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-value {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--accent);
+            margin-bottom: 0.25rem;
+        }
+
+        .comparison-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Slider Control */
+        .slider-section {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .slider-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .slider-value {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 1rem;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .slider-marks {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ZZ Detail View */
+        .zz-detail {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .zz-detail h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .zz-zoom-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.02);
+            border-radius: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .zz-zoom {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 200px;
+            font-weight: 540;
+            display: inline-flex;
+        }
+
+        .zz-zoom span {
+            display: inline-block;
+        }
+
+        .zz-zoom-gradient {
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .overlap-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 4px;
+            height: 150px;
+            background: rgba(255, 160, 0, 0.5);
+            pointer-events: none;
+        }
+
+        /* Size Previews */
+        .size-previews {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .size-preview {
+            text-align: center;
+        }
+
+        .size-preview-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .size-preview-box {
+            background: white;
+            border-radius: 22.5%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto;
+        }
+
+        .size-preview-box .wordmark {
+            color: #0a0a12;
+        }
+
+        /* Export Section */
+        .export-section {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+        }
+
+        .export-section h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .export-value {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(0,0,0,0.3);
+            border-radius: 0.5rem;
+            font-family: monospace;
+            margin-bottom: 1rem;
+        }
+
+        .export-value code {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent);
+            border: none;
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .copy-btn:hover { opacity: 0.8; }
+
+        .validate-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #9c5698, #e05747, #ffa000);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .validate-btn:hover { opacity: 0.9; }
+
+        .recommendation {
+            padding: 1rem;
+            background: rgba(255, 160, 0, 0.1);
+            border: 1px solid rgba(255, 160, 0, 0.3);
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .recommendation strong {
+            color: #ffa000;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>IzzIco ZZ Spacing Tuning</h1>
+        <p>Ajuster l'espacement entre les deux Z pour une fusion parfaite</p>
+    </div>
+
+    <div class="main-container">
+        <!-- Main Preview -->
+        <div class="preview-section">
+            <div class="preview-main">
+                <div class="wordmark wordmark-gradient main-wordmark" id="mainWordmark">
+                    <span class="l-i">i</span><span class="l-z" id="z1">z</span><span class="l-z" id="z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+            </div>
+
+            <!-- Size Previews -->
+            <div class="size-previews">
+                <div class="size-preview">
+                    <div class="size-preview-label">App Store (1024px)</div>
+                    <div class="size-preview-box" style="width: 100px; height: 100px;">
+                        <div class="wordmark" id="preview1024" style="font-size: 28px;">
+                            <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Home Screen (60px)</div>
+                    <div class="size-preview-box" style="width: 60px; height: 60px;">
+                        <div class="wordmark" id="preview60" style="font-size: 17px;">
+                            <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Spotlight (40px)</div>
+                    <div class="size-preview-box" style="width: 40px; height: 40px;">
+                        <div class="wordmark" id="preview40" style="font-size: 11px;">
+                            <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="size-preview">
+                    <div class="size-preview-label">Settings (29px)</div>
+                    <div class="size-preview-box" style="width: 29px; height: 29px;">
+                        <div class="wordmark" id="preview29" style="font-size: 8px;">
+                            <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Presets -->
+        <div class="comparison-grid">
+            <div class="comparison-item current" data-spacing="-0.18">
+                <div class="wordmark wordmark-gradient comparison-wordmark">
+                    <span class="l-i">i</span><span class="l-z" style="letter-spacing: -0.18em;">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+                <div class="comparison-value">-0.18em</div>
+                <div class="comparison-label">Actuel</div>
+            </div>
+            <div class="comparison-item" data-spacing="-0.22">
+                <div class="wordmark wordmark-gradient comparison-wordmark">
+                    <span class="l-i">i</span><span class="l-z" style="letter-spacing: -0.22em;">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+                <div class="comparison-value">-0.22em</div>
+                <div class="comparison-label">Rapproche</div>
+            </div>
+            <div class="comparison-item" data-spacing="-0.25">
+                <div class="wordmark wordmark-gradient comparison-wordmark">
+                    <span class="l-i">i</span><span class="l-z" style="letter-spacing: -0.25em;">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+                <div class="comparison-value">-0.25em</div>
+                <div class="comparison-label">Fusionne</div>
+            </div>
+            <div class="comparison-item" data-spacing="-0.28">
+                <div class="wordmark wordmark-gradient comparison-wordmark">
+                    <span class="l-i">i</span><span class="l-z" style="letter-spacing: -0.28em;">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+                <div class="comparison-value">-0.28em</div>
+                <div class="comparison-label">Plus serre</div>
+            </div>
+            <div class="comparison-item" data-spacing="-0.30">
+                <div class="wordmark wordmark-gradient comparison-wordmark">
+                    <span class="l-i">i</span><span class="l-z" style="letter-spacing: -0.30em;">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+                <div class="comparison-value">-0.30em</div>
+                <div class="comparison-label">Maximum</div>
+            </div>
+        </div>
+
+        <!-- Fine Tuning Slider -->
+        <div class="slider-section">
+            <div class="slider-header">
+                <span class="slider-title">Espacement ZZ (fine tuning)</span>
+                <span class="slider-value" id="sliderValue">-0.18em</span>
+            </div>
+            <input type="range" id="spacingSlider" min="-35" max="-10" value="-18" step="1">
+            <div class="slider-marks">
+                <span>-0.35em (tres serre)</span>
+                <span>-0.25em</span>
+                <span>-0.10em (espace)</span>
+            </div>
+        </div>
+
+        <!-- ZZ Detail View -->
+        <div class="zz-detail">
+            <h3>Zoom sur les ZZ</h3>
+            <div class="zz-zoom-container">
+                <div class="zz-zoom zz-zoom-gradient" id="zzZoom">
+                    <span id="zoomZ1">z</span><span id="zoomZ2">z</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Export Section -->
+        <div class="export-section">
+            <h3>Valeur selectionnee</h3>
+
+            <div class="recommendation">
+                <strong>Recommandation:</strong> Pour une fusion optimale des Z sans perdre la lisibilite,
+                un espacement entre <strong>-0.22em</strong> et <strong>-0.25em</strong> est ideal.
+            </div>
+
+            <div class="export-value">
+                <code id="cssValue">--zz-spacing: -0.18em;</code>
+                <button class="copy-btn" id="copyBtn">Copier</button>
+            </div>
+
+            <button class="validate-btn" id="validateBtn">Valider cet espacement</button>
+        </div>
+    </div>
+
+    <script>
+        var currentSpacing = -0.18;
+
+        function updateAllPreviews() {
+            // Main wordmark
+            document.getElementById('z1').style.letterSpacing = currentSpacing + 'em';
+
+            // Size previews
+            ['preview1024', 'preview60', 'preview40', 'preview29'].forEach(function(id) {
+                var el = document.getElementById(id);
+                var zSpan = el.querySelector('.l-z.zz-space');
+                if (zSpan) zSpan.style.letterSpacing = currentSpacing + 'em';
+            });
+
+            // ZZ Zoom
+            document.getElementById('zoomZ1').style.letterSpacing = currentSpacing + 'em';
+
+            // Slider value display
+            document.getElementById('sliderValue').textContent = currentSpacing.toFixed(2) + 'em';
+
+            // CSS value
+            document.getElementById('cssValue').textContent = '--zz-spacing: ' + currentSpacing.toFixed(2) + 'em;';
+
+            // Update comparison items active state
+            document.querySelectorAll('.comparison-item').forEach(function(item) {
+                var itemSpacing = parseFloat(item.dataset.spacing);
+                item.classList.toggle('active', Math.abs(itemSpacing - currentSpacing) < 0.01);
+            });
+        }
+
+        // Slider event
+        document.getElementById('spacingSlider').addEventListener('input', function(e) {
+            currentSpacing = parseInt(e.target.value) / 100;
+            updateAllPreviews();
+        });
+
+        // Comparison item clicks
+        document.querySelectorAll('.comparison-item').forEach(function(item) {
+            item.addEventListener('click', function() {
+                currentSpacing = parseFloat(this.dataset.spacing);
+                document.getElementById('spacingSlider').value = currentSpacing * 100;
+                updateAllPreviews();
+            });
+        });
+
+        // Copy button
+        document.getElementById('copyBtn').addEventListener('click', function() {
+            var text = document.getElementById('cssValue').textContent;
+            navigator.clipboard.writeText(text).then(function() {
+                var btn = document.getElementById('copyBtn');
+                btn.textContent = 'Copie!';
+                setTimeout(function() { btn.textContent = 'Copier'; }, 2000);
+            });
+        });
+
+        // Validate button
+        document.getElementById('validateBtn').addEventListener('click', function() {
+            var specs = {
+                spacing: currentSpacing + 'em',
+                css: '--zz-spacing: ' + currentSpacing.toFixed(2) + 'em',
+                marginRight: 'margin-right: ' + currentSpacing.toFixed(2) + 'em'
+            };
+
+            alert('Espacement valide: ' + currentSpacing.toFixed(2) + 'em\n\nJe vais maintenant mettre a jour tous les fichiers avec cette valeur et vectoriser le logo trademark.');
+        });
+
+        // Initialize
+        updateAllPreviews();
+    </script>
+</body>
+</html>

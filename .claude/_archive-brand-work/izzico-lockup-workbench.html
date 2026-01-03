@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Lockup Tuning Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600&family=Nunito:wght@600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #1a1a2e;
+            --bg-card: #252542;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --accent: #ffa000;
+            --gradient-signature: linear-gradient(135deg, #9c5698 0%, #d15659 30%, #e05747 50%, #ff7c10 70%, #ffc800 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        h1 { font-family: 'Nunito', sans-serif; font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+        .subtitle { color: var(--text-secondary); margin-bottom: 40px; }
+
+        .workbench {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .preview-area {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+        }
+
+        .preview-section { text-align: center; }
+        .preview-label {
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+        }
+
+        .preview-lockup-gradient {
+            background: var(--gradient-signature);
+            border-radius: 20px;
+            padding: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .preview-lockup-dark {
+            background: var(--bg-main);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px;
+            padding: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lockup { display: flex; align-items: center; gap: 40px; }
+
+        .lockup-icon svg { display: block; }
+
+        .lockup-wordmark {
+            font-family: 'Fredoka', sans-serif;
+            color: white;
+            display: flex;
+            align-items: baseline;
+            font-size: 80px;
+        }
+
+        .lockup-wordmark .l-i { font-weight: 600; }
+        .lockup-wordmark .l-z { font-weight: 540; letter-spacing: -0.18em; }
+        .lockup-wordmark .l-z2 { font-weight: 540; }
+        .lockup-wordmark .l-c { font-weight: 540; }
+        .lockup-wordmark .l-o { font-weight: 540; }
+
+        .preview-row { display: flex; justify-content: center; gap: 80px; }
+        .preview-item { text-align: center; }
+        .preview-item-label { font-size: 11px; color: var(--text-secondary); margin-top: 16px; }
+
+        .controls {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 32px;
+        }
+
+        .control-section { margin-bottom: 32px; }
+        .control-section:last-child { margin-bottom: 0; }
+        .control-section h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .control-group { margin-bottom: 20px; }
+        .control-label { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .control-label span { font-size: 13px; color: var(--text-secondary); }
+        .control-value {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            color: var(--accent);
+            background: rgba(255,160,0,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+        }
+
+        .specs-output {
+            background: rgba(0,0,0,0.3);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 11px;
+            line-height: 1.8;
+            color: #aaa;
+            white-space: pre-wrap;
+        }
+
+        .ratio-viz {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .ratio-bar { flex: 1; height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+        .ratio-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.2s; }
+        .ratio-text { font-family: 'SF Mono', Monaco, monospace; font-size: 12px; color: var(--text-secondary); min-width: 60px; text-align: right; }
+
+        .presets { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
+        .preset-btn {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .preset-btn:hover { background: rgba(255,160,0,0.1); border-color: var(--accent); color: var(--accent); }
+        .preset-btn.active { background: var(--accent); border-color: var(--accent); color: var(--bg-main); }
+
+        .lock-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient-signature);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .lock-btn:hover { opacity: 0.9; }
+    </style>
+</head>
+<body>
+    <h1>Lockup Tuning Workbench</h1>
+    <p class="subtitle">Définir les proportions exactes Icon + Wordmark</p>
+
+    <div class="workbench">
+        <div class="preview-area">
+            <div class="preview-section">
+                <div class="preview-label">Lockup sur Dégradé Signature</div>
+                <div class="preview-lockup-gradient">
+                    <div class="lockup" id="lockup-gradient">
+                        <div class="lockup-icon" id="icon-gradient">
+                            <svg id="svg-gradient" viewBox="0 0 2048 2048" fill="none" width="86" height="86">
+                                <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="lockup-wordmark" id="wordmark-gradient">
+                            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-label">Lockup sur Fond Sombre</div>
+                <div class="preview-lockup-dark">
+                    <div class="lockup" id="lockup-dark">
+                        <div class="lockup-icon" id="icon-dark">
+                            <svg id="svg-dark" viewBox="0 0 2048 2048" fill="none" width="86" height="86">
+                                <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                            </svg>
+                        </div>
+                        <div class="lockup-wordmark" id="wordmark-dark">
+                            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-section">
+                <div class="preview-label">Éléments Séparés</div>
+                <div class="preview-row">
+                    <div class="preview-item">
+                        <svg id="svg-solo" viewBox="0 0 2048 2048" fill="none" width="86" height="86">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                        </svg>
+                        <div class="preview-item-label">Icon seul</div>
+                    </div>
+                    <div class="preview-item">
+                        <div class="lockup-wordmark" id="wordmark-solo" style="color: white;">
+                            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </div>
+                        <div class="preview-item-label">Wordmark seul</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="control-section">
+                <h3>📐 Proportions</h3>
+
+                <div class="presets">
+                    <button class="preset-btn" data-preset="equal">1:1</button>
+                    <button class="preset-btn" data-preset="icon-larger">1.2:1</button>
+                    <button class="preset-btn active" data-preset="icon-much-larger">1.5:1</button>
+                    <button class="preset-btn" data-preset="golden">φ:1</button>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Hauteur Icon</span>
+                        <span class="control-value" id="val-icon-height">86px</span>
+                    </div>
+                    <input type="range" id="icon-height" min="60" max="200" value="86">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Font-size Wordmark</span>
+                        <span class="control-value" id="val-wordmark-size">80px</span>
+                    </div>
+                    <input type="range" id="wordmark-size" min="40" max="160" value="80">
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">
+                        <span>Espacement (gap)</span>
+                        <span class="control-value" id="val-gap">30px</span>
+                    </div>
+                    <input type="range" id="gap" min="16" max="100" value="30">
+                </div>
+
+                <div class="ratio-viz">
+                    <span style="font-size: 11px; color: var(--text-secondary);">Ratio:</span>
+                    <div class="ratio-bar">
+                        <div class="ratio-fill" id="ratio-fill"></div>
+                    </div>
+                    <span class="ratio-text" id="ratio-text">1.50:1</span>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>📋 Specs Calculées</h3>
+                <div class="specs-output" id="specs-output"></div>
+            </div>
+
+            <div class="control-section">
+                <button class="lock-btn" id="copy-btn">🔒 Copier les Specs</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const iconHeightInput = document.getElementById('icon-height');
+        const wordmarkSizeInput = document.getElementById('wordmark-size');
+        const gapInput = document.getElementById('gap');
+
+        function updatePreview() {
+            const iconHeight = parseInt(iconHeightInput.value);
+            const wordmarkSize = parseInt(wordmarkSizeInput.value);
+            const gap = parseInt(gapInput.value);
+
+            document.getElementById('val-icon-height').textContent = iconHeight + 'px';
+            document.getElementById('val-wordmark-size').textContent = wordmarkSize + 'px';
+            document.getElementById('val-gap').textContent = gap + 'px';
+
+            const wordmarkVisualHeight = wordmarkSize * 0.72;
+            const ratio = iconHeight / wordmarkVisualHeight;
+
+            document.getElementById('ratio-fill').style.width = Math.min(ratio / 2 * 100, 100) + '%';
+            document.getElementById('ratio-text').textContent = ratio.toFixed(2) + ':1';
+
+            document.getElementById('lockup-gradient').style.gap = gap + 'px';
+            document.getElementById('lockup-dark').style.gap = gap + 'px';
+
+            ['svg-gradient', 'svg-dark', 'svg-solo'].forEach(function(id) {
+                const svg = document.getElementById(id);
+                svg.setAttribute('width', iconHeight);
+                svg.setAttribute('height', iconHeight);
+            });
+
+            ['wordmark-gradient', 'wordmark-dark', 'wordmark-solo'].forEach(function(id) {
+                document.getElementById(id).style.fontSize = wordmarkSize + 'px';
+            });
+
+            const gapRatio = (gap / iconHeight * 100).toFixed(0);
+            document.getElementById('specs-output').textContent =
+                '/* Lockup Specs */\n' +
+                'icon-height: ' + iconHeight + 'px\n' +
+                'wordmark-font-size: ' + wordmarkSize + 'px\n' +
+                'wordmark-visual: ~' + Math.round(wordmarkVisualHeight) + 'px\n' +
+                'gap: ' + gap + 'px (' + gapRatio + '% icon)\n' +
+                'ratio: ' + ratio.toFixed(2) + ':1';
+
+            document.querySelectorAll('.preset-btn').forEach(function(btn) {
+                btn.classList.remove('active');
+            });
+        }
+
+        function applyPreset(preset) {
+            let iconHeight, wordmarkSize, gap;
+
+            switch(preset) {
+                case 'equal':
+                    wordmarkSize = 80;
+                    iconHeight = Math.round(wordmarkSize * 0.72);
+                    gap = Math.round(iconHeight * 0.5);
+                    break;
+                case 'icon-larger':
+                    wordmarkSize = 80;
+                    iconHeight = Math.round(wordmarkSize * 0.72 * 1.2);
+                    gap = Math.round(iconHeight * 0.4);
+                    break;
+                case 'icon-much-larger':
+                    wordmarkSize = 80;
+                    iconHeight = Math.round(wordmarkSize * 0.72 * 1.5);
+                    gap = Math.round(iconHeight * 0.35);
+                    break;
+                case 'golden':
+                    wordmarkSize = 80;
+                    iconHeight = Math.round(wordmarkSize * 0.72 * 1.618);
+                    gap = Math.round(iconHeight * 0.32);
+                    break;
+            }
+
+            iconHeightInput.value = iconHeight;
+            wordmarkSizeInput.value = wordmarkSize;
+            gapInput.value = gap;
+            updatePreview();
+        }
+
+        document.querySelectorAll('.preset-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.preset-btn').forEach(function(b) {
+                    b.classList.remove('active');
+                });
+                btn.classList.add('active');
+                applyPreset(btn.dataset.preset);
+            });
+        });
+
+        iconHeightInput.addEventListener('input', updatePreview);
+        wordmarkSizeInput.addEventListener('input', updatePreview);
+        gapInput.addEventListener('input', updatePreview);
+
+        document.getElementById('copy-btn').addEventListener('click', function() {
+            const iconHeight = iconHeightInput.value;
+            const wordmarkSize = wordmarkSizeInput.value;
+            const gap = gapInput.value;
+            const ratio = (iconHeight / (wordmarkSize * 0.72)).toFixed(2);
+
+            const specs = '## Logo Lockup - SPECS\n\n' +
+                '| Paramètre | Valeur |\n' +
+                '|-----------|--------|\n' +
+                '| Icon height | ' + iconHeight + 'px |\n' +
+                '| Wordmark font-size | ' + wordmarkSize + 'px |\n' +
+                '| Gap | ' + gap + 'px |\n' +
+                '| Ratio icon/wordmark | ' + ratio + ':1 |';
+
+            navigator.clipboard.writeText(specs).then(function() {
+                alert('Specs copiées !');
+            });
+        });
+
+        applyPreset('icon-much-larger');
+    </script>
+</body>
+</html>

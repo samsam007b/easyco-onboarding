@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
 // ============================================================================
@@ -122,7 +123,7 @@ export function useSecurityRealtime(initialStats?: SecurityStats) {
 
           // Show toast for critical/high errors
           if (newError.severity === 'critical' || newError.severity === 'high') {
-            toast.error(`Nouvelle erreur ${newError.severity}`, {
+            toast.error(`${getHookTranslation('security', 'newError')} (${newError.severity})`, {
               description: newError.message.slice(0, 100),
             });
           }
@@ -141,7 +142,7 @@ export function useSecurityRealtime(initialStats?: SecurityStats) {
               ...prev,
               unresolvedErrors: Math.max(0, prev.unresolvedErrors - 1),
             }));
-            toast.success('Erreur resolue');
+            toast.success(getHookTranslation('security', 'errorResolved'));
           }
         }
       )
@@ -158,7 +159,7 @@ export function useSecurityRealtime(initialStats?: SecurityStats) {
           }));
 
           // Always show toast for new alerts
-          toast.warning(`Nouvelle alerte: ${newAlert.title}`, {
+          toast.warning(`${getHookTranslation('security', 'newAlert')}: ${newAlert.title}`, {
             description: newAlert.description.slice(0, 100),
           });
         }

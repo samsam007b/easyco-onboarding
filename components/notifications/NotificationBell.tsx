@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { NotificationType } from '@/types/notification.types';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 const getNotificationIcon = (type: NotificationType) => {
   switch (type) {
@@ -52,6 +53,8 @@ const getNotificationColor = (type: NotificationType) => {
 export default function NotificationBell() {
   const router = useRouter();
   const { notifications, stats, markAsRead, markAllAsRead, deleteNotification } = useNotifications();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -210,7 +213,7 @@ export default function NotificationBell() {
                                   markAsRead(notification.id);
                                 }}
                                 className="p-1 hover:bg-white rounded-lg transition-colors"
-                                title="Mark as read"
+                                title={ariaLabels?.markAsRead?.[language] || 'Mark as read'}
                               >
                                 <Check className="w-4 h-4" style={{ color: '#10b981' }} />
                               </button>
@@ -221,7 +224,7 @@ export default function NotificationBell() {
                                 deleteNotification(notification.id);
                               }}
                               className="p-1 hover:bg-white rounded-lg transition-colors"
-                              title="Delete"
+                              title={ariaLabels?.delete?.[language] || 'Delete'}
                             >
                               <X className="w-4 h-4" style={{ color: '#ff651e' }} />
                             </button>

@@ -29,6 +29,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 import { ownerGradient } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export type PropertyStatus = 'all' | 'published' | 'draft' | 'archived' | 'rented' | 'vacant';
 export type PropertyHealth = 'all' | 'excellent' | 'attention' | 'critical';
@@ -58,29 +59,30 @@ interface PropertyFiltersProps {
   className?: string;
 }
 
-const statusOptions = [
-  { value: 'all' as const, label: 'Tous les statuts', icon: Building2 },
-  { value: 'published' as const, label: 'Publiés', icon: CheckCircle },
-  { value: 'rented' as const, label: 'Loués', icon: CheckCircle },
-  { value: 'vacant' as const, label: 'Vacants', icon: AlertTriangle },
-  { value: 'draft' as const, label: 'Brouillons', icon: Clock },
-  { value: 'archived' as const, label: 'Archivés', icon: Clock },
+// Status, health, and sort options with translation keys
+const statusOptionsConfig = [
+  { value: 'all' as const, labelKey: 'allStatuses', icon: Building2 },
+  { value: 'published' as const, labelKey: 'published', icon: CheckCircle },
+  { value: 'rented' as const, labelKey: 'rented', icon: CheckCircle },
+  { value: 'vacant' as const, labelKey: 'vacant', icon: AlertTriangle },
+  { value: 'draft' as const, labelKey: 'drafts', icon: Clock },
+  { value: 'archived' as const, labelKey: 'archived', icon: Clock },
 ];
 
-const healthOptions = [
-  { value: 'all' as const, label: 'Toute santé', color: '#6B7280' },
-  { value: 'excellent' as const, label: 'Excellent', color: '#059669' },
-  { value: 'attention' as const, label: 'Attention', color: '#D97706' },
-  { value: 'critical' as const, label: 'Critique', color: '#DC2626' },
+const healthOptionsConfig = [
+  { value: 'all' as const, labelKey: 'allHealth', color: '#6B7280' },
+  { value: 'excellent' as const, labelKey: 'excellent', color: '#059669' },
+  { value: 'attention' as const, labelKey: 'attention', color: '#D97706' },
+  { value: 'critical' as const, labelKey: 'critical', color: '#DC2626' },
 ];
 
-const sortOptions: { value: SortField; label: string }[] = [
-  { value: 'created', label: 'Date de création' },
-  { value: 'rent', label: 'Loyer' },
-  { value: 'views', label: 'Vues' },
-  { value: 'inquiries', label: 'Demandes' },
-  { value: 'name', label: 'Nom' },
-  { value: 'city', label: 'Ville' },
+const sortOptionsConfig: { value: SortField; labelKey: string }[] = [
+  { value: 'created', labelKey: 'sortCreated' },
+  { value: 'rent', labelKey: 'sortRent' },
+  { value: 'views', labelKey: 'sortViews' },
+  { value: 'inquiries', labelKey: 'sortInquiries' },
+  { value: 'name', labelKey: 'sortName' },
+  { value: 'city', labelKey: 'sortCity' },
 ];
 
 export function PropertyFilters({
@@ -94,6 +96,8 @@ export function PropertyFilters({
   className,
 }: PropertyFiltersProps) {
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerPortfolio')?.filters;
 
   // Check if any filters are active
   const hasActiveFilters = useMemo(() => {
@@ -140,9 +144,12 @@ export function PropertyFilters({
     onFiltersChange({ ...filters, [key]: value });
   };
 
-  const currentStatus = statusOptions.find(s => s.value === filters.status);
-  const currentHealth = healthOptions.find(h => h.value === filters.health);
-  const currentSort = sortOptions.find(s => s.value === filters.sortField);
+  const currentStatus = statusOptionsConfig.find(s => s.value === filters.status);
+  const currentHealth = healthOptionsConfig.find(h => h.value === filters.health);
+  const currentSort = sortOptionsConfig.find(s => s.value === filters.sortField);
+
+  // Helper to get label from translation key
+  const getLabel = (key: string) => t?.[key]?.[language] || key;
 
   return (
     <motion.div
@@ -161,7 +168,7 @@ export function PropertyFilters({
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
             <Input
               type="text"
-              placeholder="Rechercher un bien..."
+              placeholder={t?.searchProperty?.[language] || 'Rechercher un bien...'}
               value={filters.search}
               onChange={(e) => updateFilter('search', e.target.value)}
               className="pl-10 rounded-xl border-gray-200"
@@ -188,20 +195,20 @@ export function PropertyFilters({
               >
                 <span className="flex items-center gap-2">
                   {currentStatus && <currentStatus.icon className="w-4 h-4" />}
-                  {currentStatus?.label}
+                  {currentStatus ? getLabel(currentStatus.labelKey) : ''}
                 </span>
                 <ChevronDown className="w-4 h-4 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-48">
-              {statusOptions.map((option) => (
+              {statusOptionsConfig.map((option) => (
                 <DropdownMenuItem
                   key={option.value}
                   onClick={() => updateFilter('status', option.value)}
                   className={cn(filters.status === option.value && 'bg-purple-50')}
                 >
                   <option.icon className="w-4 h-4 mr-2" />
-                  {option.label}
+                  {getLabel(option.labelKey)}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -222,13 +229,13 @@ export function PropertyFilters({
                     className="w-2.5 h-2.5 rounded-full"
                     style={{ backgroundColor: currentHealth?.color }}
                   />
-                  {currentHealth?.label}
+                  {currentHealth ? getLabel(currentHealth.labelKey) : ''}
                 </span>
                 <ChevronDown className="w-4 h-4 ml-2" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-40">
-              {healthOptions.map((option) => (
+              {healthOptionsConfig.map((option) => (
                 <DropdownMenuItem
                   key={option.value}
                   onClick={() => updateFilter('health', option.value)}
@@ -238,7 +245,7 @@ export function PropertyFilters({
                     className="w-2.5 h-2.5 rounded-full mr-2"
                     style={{ backgroundColor: option.color }}
                   />
-                  {option.label}
+                  {getLabel(option.labelKey)}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -257,7 +264,7 @@ export function PropertyFilters({
                 >
                   <span className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
-                    {filters.city || 'Toutes villes'}
+                    {filters.city || getLabel('allCities')}
                   </span>
                   <ChevronDown className="w-4 h-4 ml-2" />
                 </Button>
@@ -267,7 +274,7 @@ export function PropertyFilters({
                   onClick={() => updateFilter('city', '')}
                   className={cn(!filters.city && 'bg-purple-50')}
                 >
-                  Toutes les villes
+                  {getLabel('allCitiesLong')}
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 {cities.map((city) => (
@@ -293,7 +300,7 @@ export function PropertyFilters({
             )}
           >
             <Filter className="w-4 h-4 mr-2" />
-            Filtres
+            {getLabel('filters')}
             {activeFilterCount > 0 && (
               <span
                 className="ml-2 px-1.5 py-0.5 text-xs font-bold rounded-full text-white"
@@ -346,14 +353,14 @@ export function PropertyFilters({
                   {/* Price Range */}
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Fourchette de loyer
+                      {getLabel('rentRange')}
                     </label>
                     <div className="flex items-center gap-2">
                       <div className="relative flex-1">
                         <Euro className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <Input
                           type="number"
-                          placeholder="Min"
+                          placeholder={getLabel('min')}
                           value={filters.minRent || ''}
                           onChange={(e) =>
                             updateFilter('minRent', e.target.value ? Number(e.target.value) : null)
@@ -366,7 +373,7 @@ export function PropertyFilters({
                         <Euro className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
                         <Input
                           type="number"
-                          placeholder="Max"
+                          placeholder={getLabel('max')}
                           value={filters.maxRent || ''}
                           onChange={(e) =>
                             updateFilter('maxRent', e.target.value ? Number(e.target.value) : null)
@@ -380,24 +387,24 @@ export function PropertyFilters({
                   {/* Sort */}
                   <div>
                     <label className="text-sm font-medium text-gray-700 mb-2 block">
-                      Trier par
+                      {getLabel('sortBy')}
                     </label>
                     <div className="flex items-center gap-2">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                           <Button variant="outline" className="flex-1 justify-between rounded-lg">
-                            {currentSort?.label}
+                            {currentSort ? getLabel(currentSort.labelKey) : ''}
                             <ChevronDown className="w-4 h-4 ml-2" />
                           </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="start" className="w-48">
-                          {sortOptions.map((option) => (
+                          {sortOptionsConfig.map((option) => (
                             <DropdownMenuItem
                               key={option.value}
                               onClick={() => updateFilter('sortField', option.value)}
                               className={cn(filters.sortField === option.value && 'bg-purple-50')}
                             >
-                              {option.label}
+                              {getLabel(option.labelKey)}
                             </DropdownMenuItem>
                           ))}
                         </DropdownMenuContent>
@@ -428,7 +435,7 @@ export function PropertyFilters({
                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
                       >
                         <X className="w-4 h-4 mr-2" />
-                        Réinitialiser
+                        {getLabel('reset')}
                       </Button>
                     )}
                   </div>
@@ -443,10 +450,10 @@ export function PropertyFilters({
       <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 rounded-b-2xl flex items-center justify-between text-sm">
         <span className="text-gray-600">
           {filteredCount === totalCount ? (
-            <>{totalCount} bien{totalCount > 1 ? 's' : ''}</>
+            <>{totalCount} {totalCount > 1 ? getLabel('propertiesPlural') : getLabel('property')}</>
           ) : (
             <>
-              {filteredCount} sur {totalCount} bien{totalCount > 1 ? 's' : ''}
+              {filteredCount} {getLabel('of')} {totalCount} {totalCount > 1 ? getLabel('propertiesPlural') : getLabel('property')}
             </>
           )}
         </span>
@@ -455,7 +462,7 @@ export function PropertyFilters({
             onClick={resetFilters}
             className="text-purple-600 hover:text-purple-700 font-medium"
           >
-            Effacer les filtres
+            {getLabel('clearFilters')}
           </button>
         )}
       </div>

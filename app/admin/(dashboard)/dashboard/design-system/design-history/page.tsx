@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { History, Calendar, Palette, Layout, CheckSquare, Clock, ArrowLeft, Eye, Tag, Layers, Upload, Plus, Trash2, RefreshCw, Image as ImageIcon, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { ScreenshotDropZone } from '@/components/admin/design-system/ScreenshotDropZone';
 
 type UploadedScreenshot = {
@@ -177,13 +178,13 @@ export default function DesignHistoryPage() {
 
       if (response.ok) {
         setUploadedScreenshots((prev) => prev.filter((s) => s.id !== screenshot.id));
-        toast.success('Screenshot supprimé');
+        toast.success(getHookTranslation('admin', 'screenshotDeleted'));
       } else {
-        toast.error('Erreur lors de la suppression');
+        toast.error(getHookTranslation('admin', 'deleteError'));
       }
     } catch (error) {
       console.error('Error deleting screenshot:', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(getHookTranslation('admin', 'deleteError'));
     }
   }, [selectedVersion]);
 

@@ -1,0 +1,2488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Brand Guidelines</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fredoka:wght@300..700&family=Nunito:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Background */
+            --bg-main: #F5F5F5;
+            --bg-white: #FFFFFF;
+            --bg-dark: #0a0a12;
+
+            /* Text */
+            --text-primary: #1a1a1a;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+
+            /* Brand Colors */
+            --owner-primary: #9c5698;
+            --resident-primary: #e05747;
+            --searcher-primary: #ffa000;
+            --searcher-gold: #ffc800;
+
+            /* Gradients */
+            --gradient-signature: linear-gradient(135deg,
+                #9c5698 0%,
+                #d15659 30%,
+                #e05747 50%,
+                #ff7c10 70%,
+                #ffc800 100%
+            );
+
+            --gradient-owner: linear-gradient(135deg, #9c5698, #a5568d, #af5682, #b85676, #c2566b);
+            --gradient-resident: linear-gradient(135deg, #e05747, #f25a35, #ff6524, #ff7018, #ff7c10);
+            --gradient-searcher: linear-gradient(135deg, #ffa000, #ffaa00, #ffb400, #ffbe00, #ffc800);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ===== NAVIGATION ===== */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            background: var(--bg-white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            z-index: 1000;
+            border-bottom: 1px solid #e5e5e5;
+        }
+
+        .nav-brand {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .nav-brand .l-i { font-weight: 600; }
+        .nav-brand .l-z { font-weight: 540; letter-spacing: -0.20em; }
+        .nav-brand .l-z2 { font-weight: 540; }
+        .nav-brand .l-c { font-weight: 540; }
+        .nav-brand .l-o { font-weight: 540; }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-menu span {
+            color: var(--text-muted);
+        }
+
+        .nav-breadcrumb {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .nav-cta {
+            background: var(--bg-dark);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: opacity 0.2s;
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .nav-cta:hover {
+            opacity: 0.85;
+        }
+
+        /* ===== MAIN CONTENT ===== */
+        .main {
+            padding-top: 72px;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            background: var(--gradient-signature);
+            padding: 120px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 70vh;
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+            max-width: 1200px;
+        }
+
+        .hero-icon {
+            width: 180px;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-icon svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 8px 24px rgba(0,0,0,0.15));
+        }
+
+        .hero-wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 120px;
+            color: white;
+            display: flex;
+            align-items: baseline;
+            text-shadow: 0 8px 32px rgba(0,0,0,0.15);
+        }
+
+        .hero-wordmark .l-i { font-weight: 600; }
+        .hero-wordmark .l-z { font-weight: 540; letter-spacing: -0.20em; }
+        .hero-wordmark .l-z2 { font-weight: 540; }
+        .hero-wordmark .l-c { font-weight: 540; }
+        .hero-wordmark .l-o { font-weight: 540; }
+
+        /* ===== SECTION ===== */
+        .section {
+            padding: 80px 48px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-full {
+            padding: 80px 48px;
+            max-width: none;
+        }
+
+        .section-header {
+            margin-bottom: 48px;
+        }
+
+        .section-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+
+        .section-desc {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 640px;
+            line-height: 1.7;
+        }
+
+        /* ===== OVERVIEW ===== */
+        .overview {
+            background: var(--bg-white);
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+        }
+
+        .overview-text h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .overview-text p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .stat {
+            padding: 24px;
+            background: var(--bg-main);
+            border-radius: 12px;
+        }
+
+        .stat-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== IDENTITY SYSTEM ===== */
+        .identity-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .identity-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .identity-preview {
+            height: 240px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .identity-preview.bg-gradient {
+            background: var(--gradient-signature);
+        }
+
+        .identity-preview.bg-dark {
+            background: var(--bg-dark);
+        }
+
+        .identity-preview.bg-light {
+            background: #f0f0f0;
+        }
+
+        .identity-preview svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .identity-preview .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 48px;
+        }
+
+        .identity-preview .wordmark-white { color: white; }
+        .identity-preview .wordmark-dark { color: var(--bg-dark); }
+
+        .identity-preview .wordmark .l-i { font-weight: 600; }
+        .identity-preview .wordmark .l-z { font-weight: 540; letter-spacing: -0.20em; }
+        .identity-preview .wordmark .l-z2 { font-weight: 540; }
+        .identity-preview .wordmark .l-c { font-weight: 540; }
+        .identity-preview .wordmark .l-o { font-weight: 540; }
+
+        .identity-info {
+            padding: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .identity-info h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .identity-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* ===== SAFE SPACE ===== */
+        .safespace-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+            align-items: start;
+        }
+
+        .safespace-visual {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 48px;
+        }
+
+        .safespace-demo {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .safespace-demo svg {
+            width: 160px;
+            height: 160px;
+        }
+
+        .safespace-box {
+            position: absolute;
+            border: 2px dashed rgba(255, 100, 100, 0.5);
+            background: rgba(255, 100, 100, 0.05);
+        }
+
+        .safespace-text h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .safespace-text p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        .safespace-rules {
+            margin-top: 32px;
+        }
+
+        .safespace-rule {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 16px;
+            padding: 16px;
+            background: var(--bg-white);
+            border-radius: 8px;
+        }
+
+        .safespace-rule-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-signature);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .safespace-rule-text {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== COLOR PALETTE ===== */
+        .color-palette {
+            background: var(--bg-white);
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 0;
+        }
+
+        .palette-swatch {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .palette-swatch-color {
+            flex: 1;
+            min-height: 160px;
+        }
+
+        .palette-swatch-info {
+            padding: 16px;
+            background: var(--bg-white);
+        }
+
+        .palette-swatch-name {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .palette-swatch-code {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        .palette-swatch-rgba {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'SF Mono', Monaco, monospace;
+            margin-top: 4px;
+        }
+
+        /* Role colors section */
+        .role-colors {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .role-card {
+            border-radius: 16px;
+            overflow: hidden;
+            background: var(--bg-white);
+        }
+
+        .role-preview {
+            height: 140px;
+        }
+
+        .role-info {
+            padding: 24px;
+        }
+
+        .role-info h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .role-info code {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+
+        /* Gradient stops display */
+        .gradient-stops {
+            display: flex;
+            gap: 2px;
+            padding: 0 24px 24px;
+        }
+
+        .gradient-stop {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gradient-stop-color {
+            width: 100%;
+            height: 48px;
+            border-radius: 8px;
+        }
+
+        .gradient-stop-label {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .gradient-stop-index {
+            font-size: 9px;
+            color: #aaa;
+            margin-top: 2px;
+        }
+
+        /* ===== TYPOGRAPHY ===== */
+        .typography-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+
+        .typography-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .typography-sample {
+            font-size: 48px;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .typography-card.logo .typography-sample {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+        }
+
+        .typography-card.heading .typography-sample {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 700;
+        }
+
+        .typography-card.body .typography-sample {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+            font-size: 32px;
+        }
+
+        .typography-info h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .typography-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        .typography-weights {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .typography-weight {
+            padding: 4px 12px;
+            background: var(--bg-main);
+            border-radius: 4px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== ICON CONCEPT ===== */
+        .concept-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: center;
+        }
+
+        .concept-visual {
+            background: var(--bg-dark);
+            border-radius: 24px;
+            padding: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .concept-visual svg {
+            width: 240px;
+            height: 240px;
+        }
+
+        .concept-elements {
+            display: grid;
+            gap: 24px;
+        }
+
+        .concept-element {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            padding: 20px;
+            background: var(--bg-white);
+            border-radius: 12px;
+        }
+
+        .concept-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .concept-icon.searcher { background: var(--gradient-searcher); }
+        .concept-icon.owner { background: var(--gradient-owner); }
+        .concept-icon.resident { background: var(--gradient-resident); }
+
+        .concept-text h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .concept-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* ===== APPLICATIONS ===== */
+        .applications-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 32px;
+        }
+
+        .app-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .app-preview {
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 48px;
+        }
+
+        .app-preview.dark { background: var(--bg-dark); }
+        .app-preview.gradient { background: var(--gradient-signature); }
+        .app-preview.light { background: #f0f0f0; }
+
+        .app-mockup {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .app-info {
+            padding: 24px;
+            border-top: 1px solid #eee;
+        }
+
+        .app-info h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .app-info p {
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        /* ===== SPECIFICATIONS ===== */
+        .specs-table {
+            width: 100%;
+            background: var(--bg-white);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .specs-table th,
+        .specs-table td {
+            padding: 20px 24px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .specs-table th {
+            background: var(--bg-main);
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+        }
+
+        .specs-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .specs-table code {
+            background: var(--bg-main);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+
+        /* ===== ARTISTIC SECTION ===== */
+        .artistic {
+            background: var(--bg-dark);
+            padding: 120px 48px;
+            overflow: hidden;
+        }
+
+        .artistic-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 80px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        .artistic-wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: clamp(80px, 12vw, 200px);
+            color: white;
+            display: flex;
+            align-items: baseline;
+            white-space: nowrap;
+        }
+
+        .artistic-wordmark .l-i { font-weight: 600; }
+        .artistic-wordmark .l-z { font-weight: 540; letter-spacing: -0.20em; }
+        .artistic-wordmark .l-z2 { font-weight: 540; }
+        .artistic-wordmark .l-c { font-weight: 540; }
+        .artistic-wordmark .l-o { font-weight: 540; }
+
+        .artistic-icon {
+            flex-shrink: 0;
+        }
+
+        .artistic-icon svg {
+            width: clamp(120px, 15vw, 240px);
+            height: clamp(120px, 15vw, 240px);
+        }
+
+        /* ===== LOGO CONSTRUCTION ===== */
+        .construction {
+            background: var(--bg-white);
+        }
+
+        .construction-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: start;
+        }
+
+        .construction-visual {
+            background: var(--bg-main);
+            border-radius: 16px;
+            padding: 48px;
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .construction-svg-container {
+            width: 100%;
+            height: 100%;
+            max-width: 400px;
+            max-height: 400px;
+        }
+
+        .construction-text h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .construction-text p {
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .construction-specs {
+            display: grid;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .construction-spec {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            background: var(--bg-main);
+            border-radius: 8px;
+        }
+
+        .construction-spec-label {
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .construction-spec-value {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 13px;
+            color: var(--text-muted);
+            background: var(--bg-white);
+            padding: 4px 12px;
+            border-radius: 4px;
+        }
+
+        /* Construction SVG styles */
+        .construction-line {
+            stroke: rgba(156, 86, 152, 0.6);
+            stroke-width: 0.5;
+            stroke-dasharray: 2 2;
+        }
+
+        .construction-dimension {
+            stroke: #e05747;
+            stroke-width: 0.3;
+        }
+
+        .construction-angle {
+            fill: none;
+            stroke: #ffa000;
+            stroke-width: 0.3;
+        }
+
+        .construction-point {
+            fill: #9c5698;
+        }
+
+        .construction-label {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 3px;
+            fill: var(--text-secondary);
+        }
+
+        /* ===== WORDMARK CONSTRUCTION (Full-width banner) ===== */
+        .wordmark-construction {
+            background: var(--bg-main);
+            padding: 80px 0;
+        }
+
+        .wordmark-construction .section-header {
+            max-width: 1400px;
+            margin: 0 auto 48px;
+            padding: 0 48px;
+        }
+
+        .wordmark-banner {
+            background: var(--bg-white);
+            padding: 48px;
+            margin-bottom: 48px;
+        }
+
+        .wordmark-svg-main {
+            width: 100%;
+            max-width: 100%;
+            display: block;
+        }
+
+        .wordmark-detail-row {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 32px;
+            max-width: 1800px;
+            margin: 0 auto;
+            padding: 0 48px;
+        }
+
+        .wordmark-detail-svg-container {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .wordmark-svg-detail {
+            width: 100%;
+        }
+
+        .wordmark-specs-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .wordmark-specs-panel h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .wordmark-specs-panel p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .wordmark-zz-detail {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .wordmark-zz-detail h3 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .wm-detail-desc {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .wordmark-svg-zz {
+            width: 100%;
+            display: block;
+        }
+
+        .wm-path-anatomy {
+            margin-top: 20px;
+        }
+
+        .wm-path-anatomy h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .wm-code-block {
+            background: #f7f7f9;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        .wm-code-block code {
+            display: block;
+            color: #333;
+        }
+
+        .wm-code-block .code-comment {
+            color: #888;
+            font-style: italic;
+        }
+
+        /* SVG specific styles - larger annotations for full-width */
+        .wm-construction-line {
+            stroke: #aaa;
+            stroke-width: 0.3;
+            stroke-dasharray: 2 2;
+        }
+
+        .wm-dimension-line {
+            stroke: #666;
+            stroke-width: 0.2;
+        }
+
+        .wm-annotation {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 3.5px;
+            fill: #444;
+        }
+
+        .wm-annotation-lg {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 4px;
+            fill: #333;
+            font-weight: 500;
+        }
+
+        .wm-annotation-sm {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 2.8px;
+            fill: #666;
+        }
+
+        .wm-radius-arc {
+            fill: none;
+            stroke: #555;
+            stroke-width: 0.2;
+        }
+
+        .wm-stroke-indicator {
+            fill: none;
+            stroke: #333;
+            stroke-width: 0.25;
+        }
+
+        .wm-overlap-zone {
+            fill: rgba(0,0,0,0.06);
+        }
+
+        .wordmark-analysis {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            max-width: 1800px;
+            margin: 48px auto 0;
+            padding: 0 48px;
+        }
+
+        .wordmark-analysis-card {
+            background: var(--bg-white);
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .wordmark-analysis-card h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .wordmark-analysis-card h4 .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .wordmark-analysis-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .wordmark-analysis-card code {
+            background: var(--bg-main);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+        }
+
+        /* ===== APP ICONS SECTION ===== */
+        .app-icons-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .app-icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .app-icon-squircle {
+            width: 120px;
+            height: 120px;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .app-icon-squircle svg {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Glassmorphism version with internal gradient */
+        .app-icon-squircle.glass {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+        }
+
+        /* Gradient background layer (behind the glass) */
+        .app-icon-squircle.glass::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--owner-start) 0%, #d15659 30%, var(--resident-mid) 50%, #ff7c10 70%, var(--searcher-end) 100%);
+            border-radius: 28px;
+            z-index: 0;
+        }
+
+        /* Frosted glass overlay */
+        .app-icon-squircle.glass::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(32px) saturate(140%);
+            -webkit-backdrop-filter: blur(32px) saturate(140%);
+            border-radius: 28px;
+            z-index: 1;
+        }
+
+        /* Solid backgrounds */
+        .app-icon-squircle.bg-dark {
+            background: var(--bg-dark);
+        }
+
+        .app-icon-squircle.bg-white {
+            background: white;
+            border: 1px solid #e5e5e5;
+        }
+
+        .app-icon-label {
+            font-family: 'Nunito', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+
+        /* Row container for glass icons */
+        .app-icons-glass-row {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+        }
+
+        .app-icons-solid-row {
+            display: flex;
+            justify-content: center;
+            gap: 48px;
+            margin-top: 48px;
+        }
+
+        /* ===== GLASSMORPHISM SECTION ===== */
+        .glass-showcase {
+            background: linear-gradient(135deg, var(--owner-start) 0%, var(--resident-mid) 50%, var(--searcher-end) 100%);
+            border-radius: 24px;
+            padding: 64px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .glass-showcase::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.1) 0%, transparent 35%);
+            pointer-events: none;
+        }
+
+        .glass-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card {
+            /* Frosted glass - gradient colors bleed through */
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(32px) saturate(140%);
+            -webkit-backdrop-filter: blur(32px) saturate(140%);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 20px;
+            padding: 32px;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle light refraction on top */
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg,
+                rgba(255,255,255,0.12) 0%,
+                transparent 40%);
+            border-radius: 20px;
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 48px rgba(0,0,0,0.12);
+        }
+
+        .glass-card-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-card h4 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .glass-card p {
+            font-size: 14px;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .glass-specs {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-top: 48px;
+        }
+
+        .glass-spec-card {
+            background: var(--bg-white);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .glass-spec-card h4 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .glass-code {
+            background: #f7f7f9;
+            border-radius: 8px;
+            padding: 16px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 12px;
+            line-height: 2;
+        }
+
+        .glass-code .property {
+            color: #9c5698;
+        }
+
+        .glass-code .value {
+            color: #c2566b;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 48px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            border-top: 1px solid #e5e5e5;
+            background: var(--bg-white);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .hero-content {
+                flex-direction: column;
+                gap: 48px;
+            }
+
+            .hero-wordmark {
+                font-size: 80px;
+            }
+
+            .identity-grid,
+            .typography-grid,
+            .role-colors {
+                grid-template-columns: 1fr;
+            }
+
+            .palette-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .overview-grid,
+            .safespace-grid,
+            .concept-grid,
+            .applications-grid,
+            .construction-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .artistic-content {
+                flex-direction: column;
+                gap: 48px;
+            }
+
+            .wordmark-letter {
+                font-size: 80px;
+            }
+
+            .wordmark-analysis {
+                grid-template-columns: 1fr;
+            }
+
+            .wordmark-construction .construction-spec {
+                flex-direction: column;
+                gap: 4px;
+                text-align: center;
+            }
+
+            .wordmark-detail-row {
+                grid-template-columns: 1fr;
+            }
+
+            .wordmark-banner {
+                padding: 32px 24px;
+            }
+
+            .glass-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .glass-specs {
+                grid-template-columns: 1fr;
+            }
+
+            .glass-showcase {
+                padding: 40px;
+            }
+
+            .app-icons-glass-row,
+            .app-icons-solid-row {
+                flex-wrap: wrap;
+                gap: 32px;
+            }
+
+            .app-icon-squircle {
+                width: 100px;
+                height: 100px;
+                padding: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 24px;
+            }
+
+            .section,
+            .section-full {
+                padding: 48px 24px;
+            }
+
+            .palette-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .wordmark-construction-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .wordmark-analysis {
+                grid-template-columns: 1fr;
+            }
+
+            .wordmark-svg-visual {
+                aspect-ratio: 2.5 / 1;
+            }
+
+            .wordmark-detail-row {
+                padding: 0 24px;
+                gap: 24px;
+            }
+
+            .wordmark-zz-detail,
+            .wordmark-specs-panel {
+                padding: 24px;
+            }
+
+            .wordmark-banner {
+                padding: 24px 16px;
+            }
+
+            .wm-code-block {
+                font-size: 10px;
+                padding: 12px;
+            }
+
+            .glass-showcase {
+                padding: 24px;
+            }
+
+            .glass-card {
+                padding: 24px;
+            }
+
+            .glass-card h4 {
+                font-size: 18px;
+            }
+        }
+
+        /* ===== PRINT STYLESHEET ===== */
+        @media print {
+            /* Reset and base */
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+            }
+
+            body {
+                background: white !important;
+                font-size: 10pt;
+            }
+
+            /* Hide navigation and buttons */
+            .nav,
+            .nav-cta {
+                display: none !important;
+            }
+
+            /* Remove fixed positioning issues */
+            .hero {
+                margin-top: 0 !important;
+                padding-top: 80px !important;
+            }
+
+            /* Page breaks */
+            .section, .section-full {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            .section-header {
+                page-break-after: avoid;
+            }
+
+            /* Force backgrounds to print */
+            .hero,
+            .artistic,
+            .glass-showcase,
+            .app-icons-glass-row,
+            .palette-swatch-color,
+            .gradient-swatch,
+            .app-icon-squircle {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Ensure glassmorphism shows gradient */
+            .app-icon-squircle.glass::before {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+
+            /* Shadows are problematic in print - simplify */
+            .app-icon-squircle,
+            .glass-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+
+            /* Links */
+            a {
+                text-decoration: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- NAVIGATION -->
+    <nav class="nav">
+        <a href="#" class="nav-brand">
+            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+        </a>
+        <div class="nav-menu">
+            <span class="nav-breadcrumb">Izzico</span>
+            <span>/</span>
+            <span class="nav-breadcrumb">Brand Guidelines</span>
+        </div>
+        <button onclick="window.print()" class="nav-cta">Télécharger PDF</button>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="main">
+        <!-- HERO -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-icon">
+                    <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                </div>
+                <span class="hero-wordmark">
+                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </span>
+            </div>
+        </section>
+
+        <!-- ARTISTIC FULL-WIDTH -->
+        <section class="artistic">
+            <div class="artistic-content">
+                <span class="artistic-wordmark">
+                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </span>
+                <div class="artistic-icon">
+                    <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="artistic-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#9c5698"/>
+                                <stop offset="30%" stop-color="#d15659"/>
+                                <stop offset="50%" stop-color="#e05747"/>
+                                <stop offset="70%" stop-color="#ff7c10"/>
+                                <stop offset="100%" stop-color="#ffc800"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="url(#artistic-gradient)"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="url(#artistic-gradient)"/>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- OVERVIEW -->
+        <section class="section overview">
+            <div class="section-header">
+                <div class="section-label">Overview</div>
+                <h2 class="section-title">Coliving, simplified.</h2>
+            </div>
+            <div class="overview-grid">
+                <div class="overview-text">
+                    <h3>About the project</h3>
+                    <p>Izzico is a coliving and roommate matching platform connecting three key user groups: property owners, current residents, and people searching for housing. The brand identity needed to represent this interconnected ecosystem while maintaining a friendly, approachable feel.</p>
+                    <p>The core challenge was creating a unified visual system that could adapt to each user role while preserving brand cohesion. The solution centers on a single iconic symbol that embodies all three perspectives simultaneously.</p>
+                </div>
+                <div class="overview-stats">
+                    <div class="stat">
+                        <div class="stat-value">3</div>
+                        <div class="stat-label">User Roles</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">1</div>
+                        <div class="stat-label">Unified Icon</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">Fredoka</div>
+                        <div class="stat-label">Primary Typeface</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value">85%</div>
+                        <div class="stat-label">Squircle Radius</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- IDENTITY SYSTEM -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">Identity System</div>
+                <h2 class="section-title">Logo Variations</h2>
+                <p class="section-desc">The identity system provides flexibility across different contexts while maintaining brand recognition. Each variation is optimized for specific use cases.</p>
+            </div>
+            <div class="identity-grid">
+                <div class="identity-card">
+                    <div class="identity-preview bg-gradient">
+                        <svg viewBox="0 0 2048 2048" fill="none" width="100" height="100">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="identity-info">
+                        <h4>Full Logo</h4>
+                        <p>Icon on gradient background</p>
+                    </div>
+                </div>
+                <div class="identity-card">
+                    <div class="identity-preview bg-dark">
+                        <span class="wordmark wordmark-white">
+                            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </span>
+                    </div>
+                    <div class="identity-info">
+                        <h4>Wordmark</h4>
+                        <p>Typography-only version</p>
+                    </div>
+                </div>
+                <div class="identity-card">
+                    <div class="identity-preview bg-dark">
+                        <svg viewBox="0 0 2048 2048" fill="none" width="80" height="80">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="identity-info">
+                        <h4>Brand Mark</h4>
+                        <p>Icon-only for favicons and avatars</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SAFE SPACE -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">Brand Guidelines</div>
+                <h2 class="section-title">Safe Space</h2>
+                <p class="section-desc">To ensure the visual integrity and impact of our brand elements, we've established clear guidelines for the safe space around both the Izzico brand mark and the full logo lockup.</p>
+            </div>
+            <div class="safespace-grid">
+                <div class="safespace-visual">
+                    <div class="safespace-demo" style="padding: 60px; background: #f0f0f0; border-radius: 12px; position: relative;">
+                        <div style="position: absolute; inset: 20px; border: 2px dashed rgba(156, 86, 152, 0.4); background: rgba(156, 86, 152, 0.05);"></div>
+                        <svg viewBox="0 0 2048 2048" fill="none" width="120" height="120" style="position: relative; z-index: 1;">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="#0a0a12"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="#0a0a12"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="safespace-text">
+                    <h3>Brand Mark Safe Space</h3>
+                    <p>The safe space around the brand mark is defined using the width of one icon element. Maintain this clear space around all sides of the mark.</p>
+                    <p>For maximum impact, we recommend expanding this space to 1.5x or more when possible.</p>
+                    <div class="safespace-rules">
+                        <div class="safespace-rule">
+                            <div class="safespace-rule-icon"></div>
+                            <div class="safespace-rule-text">Minimum clearance: 20% of icon width on all sides</div>
+                        </div>
+                        <div class="safespace-rule">
+                            <div class="safespace-rule-icon"></div>
+                            <div class="safespace-rule-text">No other graphic elements, text, or images should intrude into the safe space</div>
+                        </div>
+                        <div class="safespace-rule">
+                            <div class="safespace-rule-icon"></div>
+                            <div class="safespace-rule-text">Minimum size: 24px for digital, 8mm for print</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- APP ICONS -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">Brand Guidelines</div>
+                <h2 class="section-title">App Icons</h2>
+                <p class="section-desc">Les différentes déclinaisons de l'icône d'application Izzico, adaptées à divers contextes et fonds.</p>
+            </div>
+
+            <!-- Glassmorphism versions on gradient -->
+            <h3 style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 24px;">Verre Dépoli sur Dégradé</h3>
+            <div class="app-icons-glass-row">
+                <div class="app-icon-item">
+                    <div class="app-icon-squircle glass">
+                        <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="app-icon-label">Logo blanc</span>
+                </div>
+                <div class="app-icon-item">
+                    <div class="app-icon-squircle glass">
+                        <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="#0a0a12"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="#0a0a12"/>
+                        </svg>
+                    </div>
+                    <span class="app-icon-label">Logo noir</span>
+                </div>
+                <div class="app-icon-item">
+                    <div class="app-icon-squircle glass">
+                        <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="app-icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="30%" stop-color="#d15659"/>
+                                    <stop offset="50%" stop-color="#e05747"/>
+                                    <stop offset="70%" stop-color="#ff7c10"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="url(#app-icon-gradient)"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="url(#app-icon-gradient)"/>
+                        </svg>
+                    </div>
+                    <span class="app-icon-label">Logo dégradé</span>
+                </div>
+            </div>
+
+            <!-- Solid versions -->
+            <h3 style="font-family: 'Nunito', sans-serif; font-size: 14px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 48px; margin-bottom: 24px;">Versions Classiques</h3>
+            <div class="app-icons-solid-row">
+                <div class="app-icon-item">
+                    <div class="app-icon-squircle bg-dark">
+                        <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                        </svg>
+                    </div>
+                    <span class="app-icon-label">Blanc sur noir</span>
+                </div>
+                <div class="app-icon-item">
+                    <div class="app-icon-squircle bg-white">
+                        <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="#0a0a12"/>
+                            <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="#0a0a12"/>
+                        </svg>
+                    </div>
+                    <span class="app-icon-label">Noir sur blanc</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- COLOR PALETTE -->
+        <section class="section-full color-palette">
+            <div class="section" style="padding-top: 0; padding-bottom: 0;">
+                <div class="section-header">
+                    <div class="section-label">Brand Guidelines</div>
+                    <h2 class="section-title">Color Palette</h2>
+                </div>
+            </div>
+            <div class="palette-grid">
+                <div class="palette-swatch">
+                    <div class="palette-swatch-color" style="background: #9c5698;"></div>
+                    <div class="palette-swatch-info">
+                        <div class="palette-swatch-name">Owner Primary</div>
+                        <div class="palette-swatch-code">HEX: #9c5698</div>
+                        <div class="palette-swatch-rgba">RGB: 156, 86, 152</div>
+                    </div>
+                </div>
+                <div class="palette-swatch">
+                    <div class="palette-swatch-color" style="background: #c2566b;"></div>
+                    <div class="palette-swatch-info">
+                        <div class="palette-swatch-name">Owner End</div>
+                        <div class="palette-swatch-code">HEX: #c2566b</div>
+                        <div class="palette-swatch-rgba">RGB: 194, 86, 107</div>
+                    </div>
+                </div>
+                <div class="palette-swatch">
+                    <div class="palette-swatch-color" style="background: #e05747;"></div>
+                    <div class="palette-swatch-info">
+                        <div class="palette-swatch-name">Resident Primary</div>
+                        <div class="palette-swatch-code">HEX: #e05747</div>
+                        <div class="palette-swatch-rgba">RGB: 224, 87, 71</div>
+                    </div>
+                </div>
+                <div class="palette-swatch">
+                    <div class="palette-swatch-color" style="background: #ff7c10;"></div>
+                    <div class="palette-swatch-info">
+                        <div class="palette-swatch-name">Resident End</div>
+                        <div class="palette-swatch-code">HEX: #ff7c10</div>
+                        <div class="palette-swatch-rgba">RGB: 255, 124, 16</div>
+                    </div>
+                </div>
+                <div class="palette-swatch">
+                    <div class="palette-swatch-color" style="background: #ffc800;"></div>
+                    <div class="palette-swatch-info">
+                        <div class="palette-swatch-name">Searcher Gold</div>
+                        <div class="palette-swatch-code">HEX: #ffc800</div>
+                        <div class="palette-swatch-rgba">RGB: 255, 200, 0</div>
+                    </div>
+                </div>
+            </div>
+            <div class="section">
+                <div class="role-colors">
+                    <!-- OWNER GRADIENT -->
+                    <div class="role-card">
+                        <div class="role-preview" style="background: var(--gradient-owner);"></div>
+                        <div class="role-info">
+                            <h4>Owner / Propriétaire</h4>
+                            <code>Mauve → Rose (Hue 303° → 346°)</code>
+                        </div>
+                        <div class="gradient-stops">
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #9c5698;"></div>
+                                <div class="gradient-stop-label">#9c5698</div>
+                                <div class="gradient-stop-index">Stop 1</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #a5568d;"></div>
+                                <div class="gradient-stop-label">#a5568d</div>
+                                <div class="gradient-stop-index">Stop 2</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #af5682;"></div>
+                                <div class="gradient-stop-label">#af5682</div>
+                                <div class="gradient-stop-index">Stop 3</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #b85676;"></div>
+                                <div class="gradient-stop-label">#b85676</div>
+                                <div class="gradient-stop-index">Stop 4</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #c2566b;"></div>
+                                <div class="gradient-stop-label">#c2566b</div>
+                                <div class="gradient-stop-index">Stop 5</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RESIDENT GRADIENT -->
+                    <div class="role-card">
+                        <div class="role-preview" style="background: var(--gradient-resident);"></div>
+                        <div class="role-info">
+                            <h4>Resident</h4>
+                            <code>Rouge → Orange (Hue 6° → 32°)</code>
+                        </div>
+                        <div class="gradient-stops">
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #e05747;"></div>
+                                <div class="gradient-stop-label">#e05747</div>
+                                <div class="gradient-stop-index">Stop 1</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #f25a35;"></div>
+                                <div class="gradient-stop-label">#f25a35</div>
+                                <div class="gradient-stop-index">Stop 2</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ff6524;"></div>
+                                <div class="gradient-stop-label">#ff6524</div>
+                                <div class="gradient-stop-index">Stop 3</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ff7018;"></div>
+                                <div class="gradient-stop-label">#ff7018</div>
+                                <div class="gradient-stop-index">Stop 4</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ff7c10;"></div>
+                                <div class="gradient-stop-label">#ff7c10</div>
+                                <div class="gradient-stop-index">Stop 5</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SEARCHER GRADIENT -->
+                    <div class="role-card">
+                        <div class="role-preview" style="background: var(--gradient-searcher);"></div>
+                        <div class="role-info">
+                            <h4>Searcher / Chercheur</h4>
+                            <code>Or → Jaune (Hue 45° → 55°)</code>
+                        </div>
+                        <div class="gradient-stops">
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ffa000;"></div>
+                                <div class="gradient-stop-label">#ffa000</div>
+                                <div class="gradient-stop-index">Stop 1</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ffaa00;"></div>
+                                <div class="gradient-stop-label">#ffaa00</div>
+                                <div class="gradient-stop-index">Stop 2</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ffb400;"></div>
+                                <div class="gradient-stop-label">#ffb400</div>
+                                <div class="gradient-stop-index">Stop 3</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ffbe00;"></div>
+                                <div class="gradient-stop-label">#ffbe00</div>
+                                <div class="gradient-stop-index">Stop 4</div>
+                            </div>
+                            <div class="gradient-stop">
+                                <div class="gradient-stop-color" style="background: #ffc800;"></div>
+                                <div class="gradient-stop-label">#ffc800</div>
+                                <div class="gradient-stop-index">Stop 5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ICON CONCEPT -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">Design Rationale</div>
+                <h2 class="section-title">Icon Concept</h2>
+                <p class="section-desc">The Izzico icon unifies three distinct symbols into one cohesive mark, representing the platform's core user groups and their interconnected relationships.</p>
+            </div>
+            <div class="concept-grid">
+                <div class="concept-visual">
+                    <svg viewBox="0 0 2048 2048" fill="none">
+                        <defs>
+                            <linearGradient id="concept-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#9c5698"/>
+                                <stop offset="30%" stop-color="#d15659"/>
+                                <stop offset="50%" stop-color="#e05747"/>
+                                <stop offset="70%" stop-color="#ff7c10"/>
+                                <stop offset="100%" stop-color="#ffc800"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="url(#concept-gradient)"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="url(#concept-gradient)"/>
+                    </svg>
+                </div>
+                <div class="concept-elements">
+                    <div class="concept-element">
+                        <div class="concept-icon searcher">
+                            <span style="filter: brightness(0) invert(1);">&#128269;</span>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Magnifying Glass - Searcher</h4>
+                            <p>The left handle represents people searching for housing. The circle serves as the lens, symbolizing their quest to find the perfect home.</p>
+                        </div>
+                    </div>
+                    <div class="concept-element">
+                        <div class="concept-icon owner">
+                            <span style="filter: brightness(0) invert(1);">&#128273;</span>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Key - Owner</h4>
+                            <p>The right handle with teeth represents property owners. The circle becomes the key head, symbolizing access and ownership.</p>
+                        </div>
+                    </div>
+                    <div class="concept-element">
+                        <div class="concept-icon resident">
+                            <span style="filter: brightness(0) invert(1);">&#128100;</span>
+                        </div>
+                        <div class="concept-text">
+                            <h4>Person - Resident</h4>
+                            <p>The bottom curve represents a person's shoulders. Combined with the circle as a head, it symbolizes residents who make a house a home.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TYPOGRAPHY -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">Typography</div>
+                <h2 class="section-title">Type System</h2>
+                <p class="section-desc">Our typography system uses three complementary typefaces, each serving a specific purpose in the visual hierarchy.</p>
+            </div>
+            <div class="typography-grid">
+                <div class="typography-card logo">
+                    <div class="typography-sample">Aa</div>
+                    <div class="typography-info">
+                        <h4>Fredoka</h4>
+                        <p>Logo &amp; Wordmark only</p>
+                        <div class="typography-weights">
+                            <span class="typography-weight">540</span>
+                            <span class="typography-weight">600</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="typography-card heading">
+                    <div class="typography-sample" style="font-family: 'Inter', sans-serif; font-weight: 700;">Aa</div>
+                    <div class="typography-info">
+                        <h4>Nunito</h4>
+                        <p>Headings &amp; Titles</p>
+                        <div class="typography-weights">
+                            <span class="typography-weight">400</span>
+                            <span class="typography-weight">600</span>
+                            <span class="typography-weight">700</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="typography-card body">
+                    <div class="typography-sample">Aa</div>
+                    <div class="typography-info">
+                        <h4>Inter</h4>
+                        <p>Body text &amp; UI</p>
+                        <div class="typography-weights">
+                            <span class="typography-weight">400</span>
+                            <span class="typography-weight">500</span>
+                            <span class="typography-weight">600</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOGO CONSTRUCTION -->
+        <section class="section construction">
+            <div class="section-header">
+                <div class="section-label">Geometry</div>
+                <h2 class="section-title">Logo Construction</h2>
+                <p class="section-desc">The icon is built on a precise geometric grid. All elements are mathematically positioned to create perfect visual balance between the three symbolic representations.</p>
+            </div>
+            <div class="construction-grid">
+                <div class="construction-visual">
+                    <div class="construction-svg-container">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Grid lines -->
+                            <line x1="50" y1="0" x2="50" y2="100" class="construction-line" opacity="0.3"/>
+                            <line x1="0" y1="50" x2="100" y2="50" class="construction-line" opacity="0.3"/>
+
+                            <!-- Center point -->
+                            <circle cx="50" cy="41" r="1" class="construction-point"/>
+                            <text x="52" y="39" class="construction-label">cx: 50</text>
+                            <text x="52" y="43" class="construction-label">cy: 41</text>
+
+                            <!-- Circle construction -->
+                            <circle cx="50" cy="41" r="15" stroke="#9c5698" stroke-width="0.5" fill="none" stroke-dasharray="2 1"/>
+                            <line x1="50" y1="41" x2="65" y2="41" class="construction-dimension"/>
+                            <text x="55" y="39" class="construction-label" fill="#9c5698">r: 15</text>
+
+                            <!-- Loupe angle indicator (139°) -->
+                            <path d="M 54 41 A 4 4 0 0 1 50 45" class="construction-angle"/>
+                            <text x="44" y="50" class="construction-label" fill="#ffa000">139°</text>
+
+                            <!-- Loupe handle line -->
+                            <line x1="38.68" y1="50.84" x2="22.83" y2="64.62" stroke="#ffa000" stroke-width="0.5"/>
+                            <circle cx="38.68" cy="50.84" r="0.8" fill="#ffa000"/>
+                            <circle cx="22.83" cy="64.62" r="0.8" fill="#ffa000"/>
+                            <text x="18" y="68" class="construction-label" fill="#ffa000">Loupe</text>
+
+                            <!-- Key angle indicator (36°) -->
+                            <path d="M 54 41 A 4 4 0 0 0 58 41" class="construction-angle"/>
+                            <text x="60" y="47" class="construction-label" fill="#ffa000">36°</text>
+
+                            <!-- Key handle line -->
+                            <line x1="62.14" y1="49.82" x2="79.12" y2="62.16" stroke="#9c5698" stroke-width="0.5"/>
+                            <circle cx="62.14" cy="49.82" r="0.8" fill="#9c5698"/>
+                            <circle cx="79.12" cy="62.16" r="0.8" fill="#9c5698"/>
+                            <text x="80" y="60" class="construction-label" fill="#9c5698">Key</text>
+
+                            <!-- Teeth indicators -->
+                            <line x1="70.63" y1="55.99" x2="66.52" y2="61.65" stroke="#c2566b" stroke-width="0.4"/>
+                            <line x1="75.73" y1="59.69" x2="71.61" y2="65.35" stroke="#c2566b" stroke-width="0.4"/>
+                            <text x="64" y="69" class="construction-label" fill="#c2566b">Teeth</text>
+
+                            <!-- Bust curve -->
+                            <path d="M 32.5 79 Q 50 61.15 67.5 79" stroke="#e05747" stroke-width="0.5" fill="none"/>
+                            <circle cx="32.5" cy="79" r="0.8" fill="#e05747"/>
+                            <circle cx="50" cy="61.15" r="0.8" fill="#e05747"/>
+                            <circle cx="67.5" cy="79" r="0.8" fill="#e05747"/>
+                            <text x="45" y="84" class="construction-label" fill="#e05747">Bust</text>
+
+                            <!-- Control point line -->
+                            <line x1="32.5" y1="79" x2="50" y2="61.15" stroke="#e05747" stroke-width="0.3" stroke-dasharray="1 1"/>
+                            <line x1="50" y1="61.15" x2="67.5" y2="79" stroke="#e05747" stroke-width="0.3" stroke-dasharray="1 1"/>
+
+                            <!-- Dimension: bust width -->
+                            <line x1="32.5" y1="85" x2="67.5" y2="85" class="construction-dimension"/>
+                            <text x="47" y="89" class="construction-label" fill="#e05747">35</text>
+
+                            <!-- The actual icon shape (semi-transparent) -->
+                            <g opacity="0.15">
+                                <circle cx="50" cy="41" r="15" stroke="#1a1a1a" stroke-width="7.5" fill="none"/>
+                                <g transform="translate(30.755, 57.73) rotate(139)">
+                                    <rect x="-10.5" y="-3" width="21" height="6" rx="2.55" ry="2.55" fill="#1a1a1a"/>
+                                </g>
+                                <g transform="translate(70.63, 55.99) rotate(36)">
+                                    <rect x="-10.5" y="-3" width="21" height="6" rx="2.55" ry="2.55" fill="#1a1a1a"/>
+                                </g>
+                                <g transform="translate(68.575, 58.82) rotate(126)">
+                                    <rect x="-3.5" y="-1.5" width="7" height="3" rx="1.275" ry="1.275" fill="#1a1a1a"/>
+                                </g>
+                                <g transform="translate(73.67, 62.52) rotate(126)">
+                                    <rect x="-3.5" y="-1.5" width="7" height="3" rx="1.275" ry="1.275" fill="#1a1a1a"/>
+                                </g>
+                                <path d="M 32.5 79 Q 50 61.15 67.5 79" stroke="#1a1a1a" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="construction-text">
+                    <h3>Geometric Precision</h3>
+                    <p>Every element of the Izzico icon is mathematically defined. The central circle serves as the anchor point for all three handles, creating perfect visual harmony.</p>
+                    <p>The 85% squircle linecaps match the Fredoka typeface character, ensuring consistency between the icon and wordmark.</p>
+
+                    <div class="construction-specs">
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Circle Center</span>
+                            <span class="construction-spec-value">cx: 50, cy: 41</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Circle Radius</span>
+                            <span class="construction-spec-value">r: 15, stroke: 7.5</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Loupe Angle</span>
+                            <span class="construction-spec-value">139° from center</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Key Angle</span>
+                            <span class="construction-spec-value">36° from center</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Handle Length</span>
+                            <span class="construction-spec-value">21 units each</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Bust Curvature</span>
+                            <span class="construction-spec-value">85% Bézier</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Cap Roundness</span>
+                            <span class="construction-spec-value">85% (Fredoka style)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WORDMARK CONSTRUCTION - Full Width Banner -->
+        <section class="section wordmark-construction">
+            <div class="section-header">
+                <div class="section-label">Geometry</div>
+                <h2 class="section-title">Wordmark Construction</h2>
+                <p class="section-desc">The "izzico" wordmark is built from vectorized Fredoka letterforms. Each stroke features 85% squircle corners - the same geometric DNA found in the icon.</p>
+            </div>
+
+            <!-- FULL WIDTH WORDMARK BANNER -->
+            <div class="wordmark-banner">
+                <svg class="wordmark-svg-main" viewBox="150 620 2500 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Background grid -->
+                    <defs>
+                        <pattern id="wm-grid-main" width="50" height="50" patternUnits="userSpaceOnUse">
+                            <path d="M 50 0 L 0 0 0 50" fill="none" stroke="#e8e8e8" stroke-width="1"/>
+                        </pattern>
+                        <pattern id="wm-grid-fine" width="10" height="10" patternUnits="userSpaceOnUse">
+                            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#f0f0f0" stroke-width="0.5"/>
+                        </pattern>
+                    </defs>
+                    <rect x="150" y="620" width="2500" height="820" fill="url(#wm-grid-fine)"/>
+                    <rect x="150" y="620" width="2500" height="820" fill="url(#wm-grid-main)"/>
+
+                    <!-- Construction lines -->
+                    <!-- Baseline -->
+                    <line x1="150" y1="1380" x2="2650" y2="1380" stroke="#bbb" stroke-width="1" stroke-dasharray="8 4"/>
+                    <text x="170" y="1400" fill="#888" font-family="SF Mono, Monaco, monospace" font-size="18">baseline</text>
+
+                    <!-- x-height -->
+                    <line x1="150" y1="870" x2="2650" y2="870" stroke="#bbb" stroke-width="1" stroke-dasharray="8 4"/>
+                    <text x="170" y="860" fill="#888" font-family="SF Mono, Monaco, monospace" font-size="18">x-height</text>
+
+                    <!-- Ascender (dot) -->
+                    <line x1="150" y1="720" x2="1520" y2="720" stroke="#bbb" stroke-width="1" stroke-dasharray="8 4"/>
+                    <text x="170" y="710" fill="#888" font-family="SF Mono, Monaco, monospace" font-size="18">ascender (dot)</text>
+
+                    <!-- Actual letterforms - semi-transparent fill -->
+                    <g opacity="0.15">
+                        <!-- First I dot -->
+                        <path fill="#1a1a1a" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                        <!-- First I stem -->
+                        <path fill="#1a1a1a" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                        <!-- ZZ letters -->
+                        <path fill="#1a1a1a" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                        <!-- Second I dot -->
+                        <path fill="#1a1a1a" d="M1369.87 650.3C1398.82 639.004 1466.62 634.108 1478.69 672.509C1481.31 681.001 1483.42 688.154 1483.74 697.07C1484.51 718.785 1485.83 756.767 1466.85 771.906C1449.94 785.405 1416.42 784.214 1396.26 782.645C1341.63 778.392 1346.28 718.857 1350.36 679.158C1351.29 670.214 1358.58 658.094 1366.26 653.355C1368.3 652.091 1368.29 652.183 1369.87 650.3Z"/>
+                        <!-- Second I stem -->
+                        <path fill="#1a1a1a" d="M1474.33 1350.33C1460.87 1381.25 1413.05 1378.28 1385.75 1373.47C1376.72 1371.88 1356.59 1360.1 1355.23 1351.74C1348.53 1310.68 1351.43 1265.25 1351.83 1223.54L1352.17 1107.1C1352.28 1077.45 1352.17 1047.8 1351.83 1018.15C1351.29 982.56 1348.28 934.783 1355.21 899.228C1358.68 890.227 1370.03 881.13 1378.51 878.643C1407.68 870.095 1461.19 866.305 1474.41 901.686C1480.17 915.181 1479.37 949.569 1479.73 965.402C1482.28 1078.58 1479.62 1191.83 1481.28 1305.04C1481.43 1315.01 1478.38 1342.45 1474.33 1350.33Z"/>
+                        <!-- c letter -->
+                        <path fill="#1a1a1a" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                        <!-- O letter -->
+                        <path fill="#1a1a1a" d="M2590.49 1169.34C2586.63 1184.96 2583.85 1203.38 2577.43 1218.48C2548.83 1285.22 2504.09 1332.59 2437.33 1362.35C2280.22 1432.38 2090.78 1317.8 2078.78 1146.46C2076.14 1108.65 2080.79 1066.14 2095.05 1030.31C2121.67 964.455 2173.12 911.708 2238.3 883.458C2297.45 858.224 2372.3 857.752 2431.88 882.076C2492.55 906.882 2541.86 953.317 2570.25 1012.39C2574.44 1021.15 2577.7 1029.24 2580.45 1038.54C2581.86 1043.33 2583.21 1049.51 2585.23 1053.91C2593.87 1081.44 2597.14 1140.78 2590.49 1169.34ZM2345.5 1250.06C2415.49 1244.76 2467.99 1183.8 2462.86 1113.79C2457.73 1043.78 2396.9 991.132 2326.88 996.093C2256.62 1001.07 2203.75 1062.15 2208.9 1132.41C2214.05 1202.66 2275.26 1255.38 2345.5 1250.06Z"/>
+                    </g>
+
+                    <!-- Letter outlines (stroke only, for construction) -->
+                    <g fill="none" stroke="#333" stroke-width="4">
+                        <!-- First I dot -->
+                        <path d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                        <!-- First I stem -->
+                        <path d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                        <!-- ZZ letters -->
+                        <path d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                        <!-- Second I dot -->
+                        <path d="M1369.87 650.3C1398.82 639.004 1466.62 634.108 1478.69 672.509C1481.31 681.001 1483.42 688.154 1483.74 697.07C1484.51 718.785 1485.83 756.767 1466.85 771.906C1449.94 785.405 1416.42 784.214 1396.26 782.645C1341.63 778.392 1346.28 718.857 1350.36 679.158C1351.29 670.214 1358.58 658.094 1366.26 653.355C1368.3 652.091 1368.29 652.183 1369.87 650.3Z"/>
+                        <!-- Second I stem -->
+                        <path d="M1474.33 1350.33C1460.87 1381.25 1413.05 1378.28 1385.75 1373.47C1376.72 1371.88 1356.59 1360.1 1355.23 1351.74C1348.53 1310.68 1351.43 1265.25 1351.83 1223.54L1352.17 1107.1C1352.28 1077.45 1352.17 1047.8 1351.83 1018.15C1351.29 982.56 1348.28 934.783 1355.21 899.228C1358.68 890.227 1370.03 881.13 1378.51 878.643C1407.68 870.095 1461.19 866.305 1474.41 901.686C1480.17 915.181 1479.37 949.569 1479.73 965.402C1482.28 1078.58 1479.62 1191.83 1481.28 1305.04C1481.43 1315.01 1478.38 1342.45 1474.33 1350.33Z"/>
+                        <!-- c letter -->
+                        <path d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                        <!-- O letter -->
+                        <path d="M2590.49 1169.34C2586.63 1184.96 2583.85 1203.38 2577.43 1218.48C2548.83 1285.22 2504.09 1332.59 2437.33 1362.35C2280.22 1432.38 2090.78 1317.8 2078.78 1146.46C2076.14 1108.65 2080.79 1066.14 2095.05 1030.31C2121.67 964.455 2173.12 911.708 2238.3 883.458C2297.45 858.224 2372.3 857.752 2431.88 882.076C2492.55 906.882 2541.86 953.317 2570.25 1012.39C2574.44 1021.15 2577.7 1029.24 2580.45 1038.54C2581.86 1043.33 2583.21 1049.51 2585.23 1053.91C2593.87 1081.44 2597.14 1140.78 2590.49 1169.34ZM2345.5 1250.06C2415.49 1244.76 2467.99 1183.8 2462.86 1113.79C2457.73 1043.78 2396.9 991.132 2326.88 996.093C2256.62 1001.07 2203.75 1062.15 2208.9 1132.41C2214.05 1202.66 2275.26 1255.38 2345.5 1250.06Z"/>
+                    </g>
+
+                    <!-- Weight annotations -->
+                    <text x="280" y="1420" fill="#333" font-family="SF Mono, Monaco, monospace" font-size="24" text-anchor="middle">w: 600</text>
+                    <text x="620" y="1420" fill="#333" font-family="SF Mono, Monaco, monospace" font-size="24" text-anchor="middle">w: 540</text>
+                    <text x="1020" y="1420" fill="#333" font-family="SF Mono, Monaco, monospace" font-size="24" text-anchor="middle">w: 540</text>
+                    <text x="1415" y="1420" fill="#333" font-family="SF Mono, Monaco, monospace" font-size="24" text-anchor="middle">w: 600</text>
+                    <text x="1800" y="1420" fill="#333" font-family="SF Mono, Monaco, monospace" font-size="24" text-anchor="middle">w: 540</text>
+                    <text x="2340" y="1420" fill="#333" font-family="SF Mono, Monaco, monospace" font-size="24" text-anchor="middle">w: 540</text>
+
+                    <!-- ZZ overlap zone highlight -->
+                    <rect x="700" y="865" width="180" height="520" fill="rgba(0,0,0,0.03)" stroke="#999" stroke-width="2" stroke-dasharray="10 5" rx="4"/>
+                    <text x="790" y="850" fill="#666" font-family="SF Mono, Monaco, monospace" font-size="20" text-anchor="middle">overlap zone</text>
+                    <text x="790" y="825" fill="#888" font-family="SF Mono, Monaco, monospace" font-size="16" text-anchor="middle">-0.20em</text>
+                </svg>
+            </div>
+
+            <!-- ZZ DETAIL: Actual Fredoka paths with overlap analysis -->
+            <div class="wordmark-detail-row">
+                <div class="wordmark-zz-detail">
+                    <h3>ZZ Ligature — Vectorized Overlap</h3>
+                    <p class="wm-detail-desc">The trademark uses a <strong>single unified path</strong> for both Z letters. The "cutout" where the second Z's diagonal enters the first Z is achieved through a compound path with an inner contour.</p>
+
+                    <svg class="wordmark-svg-zz" viewBox="400 840 920 580" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Background -->
+                        <defs>
+                            <pattern id="zz-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#eee" stroke-width="0.5"/>
+                            </pattern>
+                        </defs>
+                        <rect x="400" y="840" width="920" height="580" fill="url(#zz-grid)"/>
+
+                        <!-- OUTER CONTOUR - The merged ZZ boundary -->
+                        <path fill="none" stroke="#1a1a1a" stroke-width="5" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495"/>
+
+                        <!-- INNER CONTOUR - The cutout (second Z entering first Z) -->
+                        <path fill="rgba(255,100,100,0.1)" stroke="#c00" stroke-width="4" stroke-dasharray="12 6" d="M644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+
+                        <!-- Annotations -->
+                        <!-- Outer contour label -->
+                        <text x="1100" y="920" fill="#333" font-family="SF Mono, Monaco, monospace" font-size="18">OUTER CONTOUR</text>
+                        <text x="1100" y="942" fill="#666" font-family="SF Mono, Monaco, monospace" font-size="14">merged ZZ boundary</text>
+                        <line x1="1090" y1="930" x2="1000" y2="970" stroke="#333" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+                        <!-- Inner contour label -->
+                        <text x="920" y="1100" fill="#c00" font-family="SF Mono, Monaco, monospace" font-size="18">INNER CONTOUR</text>
+                        <text x="920" y="1122" fill="#c00" font-family="SF Mono, Monaco, monospace" font-size="14">(cutout)</text>
+                        <text x="920" y="1144" fill="#888" font-family="SF Mono, Monaco, monospace" font-size="12">Z2 diagonal enters Z1</text>
+
+                        <!-- Entry point marker -->
+                        <circle cx="1048" cy="1006" r="8" fill="#c00" opacity="0.5"/>
+                        <text x="1060" y="990" fill="#c00" font-family="SF Mono, Monaco, monospace" font-size="14">entry point</text>
+
+                        <!-- Exit point marker -->
+                        <circle cx="644" cy="1242" r="8" fill="#c00" opacity="0.5"/>
+                        <text x="580" y="1270" fill="#c00" font-family="SF Mono, Monaco, monospace" font-size="14">exit point</text>
+
+                        <!-- Dimension: horizontal overlap width -->
+                        <line x1="644" y1="1300" x2="1048" y2="1300" stroke="#666" stroke-width="1.5"/>
+                        <line x1="644" y1="1290" x2="644" y2="1310" stroke="#666" stroke-width="1.5"/>
+                        <line x1="1048" y1="1290" x2="1048" y2="1310" stroke="#666" stroke-width="1.5"/>
+                        <text x="846" y="1330" fill="#666" font-family="SF Mono, Monaco, monospace" font-size="16" text-anchor="middle">≈404 units overlap</text>
+
+                        <!-- Arrow marker definition -->
+                        <defs>
+                            <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+                                <path d="M0,0 L0,6 L9,3 z" fill="#333"/>
+                            </marker>
+                        </defs>
+                    </svg>
+                </div>
+
+                <div class="wordmark-specs-panel">
+                    <h3>Vector Anatomy</h3>
+                    <p>The wordmark is a vectorized set of Fredoka letterforms. Each corner uses an <strong>85% squircle</strong> - the same characteristic curve found in the icon's linecaps.</p>
+
+                    <div class="wm-path-anatomy">
+                        <h4>SVG Path Structure</h4>
+                        <div class="wm-code-block">
+                            <code>M458... <span class="code-comment">← outer contour start</span></code>
+                            <code>C467... <span class="code-comment">← Bézier curves</span></code>
+                            <code>L826... <span class="code-comment">← line segments</span></code>
+                            <code>Z       <span class="code-comment">← close outer</span></code>
+                            <code>M644... <span class="code-comment">← inner contour (cutout)</span></code>
+                            <code>C660... <span class="code-comment">← creates the "hole"</span></code>
+                        </div>
+                    </div>
+
+                    <div class="construction-specs">
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">SVG ViewBox</span>
+                            <span class="construction-spec-value">5800 × 1880</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Corner Radius</span>
+                            <span class="construction-spec-value">rx = 85% × stroke/2</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">I Stem Width</span>
+                            <span class="construction-spec-value">≈151 units (w: 600)</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Z Stroke Width</span>
+                            <span class="construction-spec-value">≈134 units (w: 540)</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">ZZ Overlap</span>
+                            <span class="construction-spec-value">-0.20em (≈404 units)</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Weight Pattern</span>
+                            <span class="construction-spec-value">600-540-540-600-540-540</span>
+                        </div>
+                        <div class="construction-spec">
+                            <span class="construction-spec-label">Icon Connection</span>
+                            <span class="construction-spec-value">Same 85% squircle</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wordmark-analysis">
+                <div class="wordmark-analysis-card">
+                    <h4><span class="dot"></span> Unified Geometry</h4>
+                    <p>The wordmark and icon share the same geometric DNA: the <code>85% squircle</code> corner radius. This creates visual cohesion across all brand elements.</p>
+                </div>
+                <div class="wordmark-analysis-card">
+                    <h4><span class="dot"></span> Optical Weight Compensation</h4>
+                    <p>The "i" letters use <code>w: 600</code> while "z/c/o" use <code>w: 540</code> — a 10% reduction that creates perceptual balance across different letter densities.</p>
+                </div>
+                <div class="wordmark-analysis-card">
+                    <h4><span class="dot"></span> Compound Path Ligature</h4>
+                    <p>The ZZ uses a <strong>compound path</strong> with inner contour cutout. The second Z's diagonal physically enters the first Z at <code>x: 1048</code> and exits at <code>x: 644</code>.</p>
+                </div>
+                <div class="wordmark-analysis-card">
+                    <h4><span class="dot"></span> Structural Symmetry</h4>
+                    <p>The weight pattern <code>600-540-540-600-540-540</code> mirrors around position 3.5, with the two "i" letters anchoring the design.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SPECIFICATIONS -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">Technical</div>
+                <h2 class="section-title">Specifications</h2>
+            </div>
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Property</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Icon ViewBox</td>
+                        <td>Dimensions</td>
+                        <td><code>0 0 2048 2048</code></td>
+                    </tr>
+                    <tr>
+                        <td>Icon Style</td>
+                        <td>Linecap</td>
+                        <td><code>85% squircle</code></td>
+                    </tr>
+                    <tr>
+                        <td>Wordmark Font</td>
+                        <td>Family</td>
+                        <td><code>Fredoka Variable</code></td>
+                    </tr>
+                    <tr>
+                        <td>Letter "i" (first)</td>
+                        <td>Font-weight</td>
+                        <td><code>600</code></td>
+                    </tr>
+                    <tr>
+                        <td>Letters "z", "c", "o"</td>
+                        <td>Font-weight</td>
+                        <td><code>540</code></td>
+                    </tr>
+                    <tr>
+                        <td>ZZ Spacing</td>
+                        <td>Letter-spacing</td>
+                        <td><code>-0.20em</code></td>
+                    </tr>
+                    <tr>
+                        <td>Gradient Direction</td>
+                        <td>Angle</td>
+                        <td><code>135deg</code></td>
+                    </tr>
+                    <tr>
+                        <td>Dark Background</td>
+                        <td>Color</td>
+                        <td><code>#0a0a12</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- GLASSMORPHISM -->
+        <section class="section">
+            <div class="section-header">
+                <div class="section-label">UI Design</div>
+                <h2 class="section-title">Verre Dépoli</h2>
+            </div>
+            <p class="section-desc" style="margin-bottom: 32px; color: var(--text-secondary); max-width: 720px;">
+                L'interface Izzico utilise un effet verre dépoli qui laisse transparaître les couleurs du fond de façon diffuse.
+                Le fort blur combiné à une faible opacité crée un effet givré élégant qui révèle les dégradés signature.
+            </p>
+
+            <!-- Live demo -->
+            <div class="glass-showcase">
+                <div class="glass-cards">
+                    <div class="glass-card">
+                        <div class="glass-card-icon">🪟</div>
+                        <h4>Couleurs diffusées</h4>
+                        <p>Les couleurs du dégradé arrière transparaissent à travers le verre dépoli, créant une surface vivante.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="glass-card-icon">✨</div>
+                        <h4>Blur intense</h4>
+                        <p>Un blur de 32px mélange les couleurs sans révéler les détails, pour un effet givré naturel.</p>
+                    </div>
+                    <div class="glass-card">
+                        <div class="glass-card-icon">🎨</div>
+                        <h4>Saturation</h4>
+                        <p>La saturation à 140% intensifie les couleurs qui passent à travers le verre pour un rendu vibrant.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Specs -->
+            <div class="glass-specs">
+                <div class="glass-spec-card">
+                    <h4>Verre Dépoli</h4>
+                    <div class="glass-code">
+                        <span class="property">background</span>: <span class="value">rgba(255, 255, 255, 0.25)</span>;<br>
+                        <span class="property">backdrop-filter</span>: <span class="value">blur(32px) saturate(140%)</span>;<br>
+                        <span class="property">border</span>: <span class="value">1px solid rgba(255, 255, 255, 0.35)</span>;
+                    </div>
+                </div>
+                <div class="glass-spec-card">
+                    <h4>Effet</h4>
+                    <div class="glass-code">
+                        • Couleurs du fond diffusées<br>
+                        • Saturation augmentée (+40%)<br>
+                        • Reflet léger en haut (::before)
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>Izzico Brand Guidelines - Version 1.0</p>
+        <p style="margin-top: 8px; opacity: 0.7;">January 2026 - Coliving, simplified.</p>
+    </footer>
+</body>
+</html>

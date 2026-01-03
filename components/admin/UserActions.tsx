@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface UserActionsProps {
   userId: string;
@@ -73,15 +74,13 @@ export default function UserActions({ userId, userEmail, userName }: UserActions
         },
       });
 
-      toast.success('Utilisateur banni avec succès', {
-        description: `${userName || userEmail} a été banni de la plateforme.`,
-      });
+      toast.success(getHookTranslation('admin', 'userBannedSuccess'));
 
       setConfirmDialog({ type: null, isOpen: false });
       router.refresh();
     } catch (error) {
       logger.error('Ban user error', error);
-      toast.error('Erreur lors du bannissement');
+      toast.error(getHookTranslation('admin', 'banError'));
     } finally {
       setIsLoading(false);
     }
@@ -127,18 +126,14 @@ export default function UserActions({ userId, userEmail, userName }: UserActions
         throw deleteError;
       }
 
-      toast.success('Utilisateur supprimé', {
-        description: `${userName || userEmail} a été supprimé définitivement.`,
-      });
+      toast.success(getHookTranslation('admin', 'userDeleted'));
 
       setConfirmDialog({ type: null, isOpen: false });
       router.push('/admin/dashboard/users');
       router.refresh();
     } catch (error) {
       logger.error('Delete user error', error);
-      toast.error('Erreur lors de la suppression', {
-        description: 'L\'utilisateur a peut-être des données liées qui empêchent la suppression.',
-      });
+      toast.error(getHookTranslation('admin', 'deleteError'));
     } finally {
       setIsLoading(false);
     }

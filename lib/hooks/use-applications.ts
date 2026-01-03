@@ -5,6 +5,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { toasts } from '@/lib/toast-helpers';
 import { logger } from '@/lib/utils/logger';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 export interface Application {
   id: string;
@@ -152,7 +153,7 @@ export function useApplications(userId?: string) {
           userId,
           asOwner,
         });
-        toast.error('Failed to load applications. Please try again or contact support.');
+        toast.error(getHookTranslation('applications', 'loadFailed'));
       } finally {
         setIsLoading(false);
       }
@@ -175,7 +176,7 @@ export function useApplications(userId?: string) {
         return data;
       } catch (error: any) {
         logger.supabaseError('get application', error, { applicationId });
-        toast.error('Failed to load application');
+        toast.error(getHookTranslation('applications', 'loadSingleFailed'));
         return null;
       }
     },
@@ -272,7 +273,7 @@ export function useApplications(userId?: string) {
         return true;
       } catch (error: any) {
         logger.supabaseError('update application status', error, { applicationId, status });
-        toast.error('Failed to update application');
+        toast.error(getHookTranslation('applications', 'updateFailed'));
         return false;
       }
     },
@@ -291,12 +292,12 @@ export function useApplications(userId?: string) {
 
         if (error) throw error;
 
-        toast.success('Application withdrawn');
+        toast.success(getHookTranslation('applications', 'withdrawn'));
         await loadApplications();
         return true;
       } catch (error: any) {
         logger.supabaseError('withdraw application', error, { applicationId, userId });
-        toast.error('Failed to withdraw application');
+        toast.error(getHookTranslation('applications', 'withdrawFailed'));
         return false;
       }
     },
@@ -316,12 +317,12 @@ export function useApplications(userId?: string) {
 
         if (error) throw error;
 
-        toast.success('Application deleted');
+        toast.success(getHookTranslation('applications', 'deleted'));
         await loadApplications();
         return true;
       } catch (error: any) {
         logger.supabaseError('delete application', error, { applicationId, userId });
-        toast.error('Failed to delete application');
+        toast.error(getHookTranslation('applications', 'deleteFailed'));
         return false;
       }
     },
@@ -411,7 +412,7 @@ export function useApplications(userId?: string) {
         return true;
       } catch (error: any) {
         logger.supabaseError('update group application status', error, { groupApplicationId, newStatus });
-        toast.error('Failed to update group application');
+        toast.error(getHookTranslation('applications', 'updateGroupFailed'));
         return false;
       }
     },

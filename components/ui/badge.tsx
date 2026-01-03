@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils/cn'
 import { X } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/use-language'
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
   /**
@@ -43,6 +44,9 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
     },
     ref
   ) => {
+    const { language, getSection } = useLanguage()
+    const ariaLabels = getSection('ariaLabels')
+
     const variantStyles = {
       default: 'bg-gray-100 text-gray-800 border-gray-200',
       primary: 'bg-[#FFD600]/10 text-[#4A148C] border-[#FFD600]/30',
@@ -77,7 +81,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
             type="button"
             onClick={onDismiss}
             className="inline-flex items-center justify-center hover:opacity-70 transition-opacity"
-            aria-label="Dismiss"
+            aria-label={ariaLabels?.dismiss?.[language] || 'Dismiss'}
           >
             <X className={cn(
               size === 'sm' && 'w-3 h-3',

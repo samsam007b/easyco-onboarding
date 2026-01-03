@@ -16,6 +16,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -54,7 +55,7 @@ export default function Error404Page() {
       }
     } catch (error) {
       console.error('[Error404Page] Error loading:', error);
-      toast.error('Erreur lors du chargement');
+      toast.error(getHookTranslation('security', 'loadError'));
     } finally {
       setIsLoading(false);
     }

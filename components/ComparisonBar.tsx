@@ -4,9 +4,12 @@ import { useComparison } from '@/contexts/ComparisonContext';
 import { Button } from '@/components/ui/button';
 import { X, Scale } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function ComparisonBar() {
   const { selectedPropertyIds, clearComparison, goToComparison } = useComparison();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   if (selectedPropertyIds.length === 0) return null;
 
@@ -48,7 +51,7 @@ export default function ComparisonBar() {
               Comparer
             </Button>
 
-            <Button variant="ghost" size="icon" onClick={clearComparison} aria-label="Effacer la comparaison">
+            <Button variant="ghost" size="icon" onClick={clearComparison} aria-label={ariaLabels?.clearComparison?.[language] || 'Effacer la comparaison'}>
               <X className="w-4 h-4" />
             </Button>
           </div>

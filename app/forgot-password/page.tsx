@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { ArrowLeft, Mail, Check } from 'lucide-react'
 import { toast } from 'sonner'
 import { useLanguage } from '@/lib/i18n/use-language'
+import { getHookTranslation } from '@/lib/i18n/get-language'
 import LanguageSwitcher from '@/components/LanguageSwitcher'
 import LoadingHouse from '@/components/ui/LoadingHouse';
 
@@ -48,7 +49,7 @@ export default function ForgotPasswordPage() {
       })
     } catch (error: any) {
       // FIXME: Use logger.error('Unexpected error:', error)
-      toast.error('An unexpected error occurred')
+      toast.error(getHookTranslation('forgotPassword', 'unexpectedError'))
     } finally {
       setIsLoading(false)
     }

@@ -15,6 +15,138 @@ import {
 } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+const translations = {
+  invite: {
+    fr: 'Inviter',
+    en: 'Invite',
+    nl: 'Uitnodigen',
+    de: 'Einladen',
+  },
+  earnFreeMonths: {
+    fr: 'Gagnez des mois gratuits',
+    en: 'Earn free months',
+    nl: 'Verdien gratis maanden',
+    de: 'Verdienen Sie Freimonate',
+  },
+  loading: {
+    fr: 'Chargement...',
+    en: 'Loading...',
+    nl: 'Laden...',
+    de: 'Laden...',
+  },
+  automaticRewards: {
+    fr: 'Récompenses automatiques',
+    en: 'Automatic rewards',
+    nl: 'Automatische beloningen',
+    de: 'Automatische Belohnungen',
+  },
+  rewardsDescription: {
+    fr: "Quand quelqu'un rejoint avec votre code, vous gagnez tous les deux des mois gratuits !",
+    en: 'When someone joins with your code, you both earn free months!',
+    nl: 'Wanneer iemand met uw code lid wordt, verdienen jullie beiden gratis maanden!',
+    de: 'Wenn jemand mit Ihrem Code beitritt, verdienen Sie beide Freimonate!',
+  },
+  resident: {
+    fr: 'Résident',
+    en: 'Resident',
+    nl: 'Bewoner',
+    de: 'Bewohner',
+  },
+  owner: {
+    fr: 'Proprio',
+    en: 'Owner',
+    nl: 'Eigenaar',
+    de: 'Eigentümer',
+  },
+  months: {
+    fr: 'mois',
+    en: 'months',
+    nl: 'maanden',
+    de: 'Monate',
+  },
+  roommateCode: {
+    fr: 'Code Colocataire',
+    en: 'Roommate Code',
+    nl: 'Huisgenotencode',
+    de: 'Mitbewohner-Code',
+  },
+  inviteToResidence: {
+    fr: 'Inviter dans votre résidence',
+    en: 'Invite to your residence',
+    nl: 'Uitnodigen naar uw woning',
+    de: 'In Ihre Wohnung einladen',
+  },
+  ownerCode: {
+    fr: 'Code Propriétaire',
+    en: 'Owner Code',
+    nl: 'Eigenarencode',
+    de: 'Eigentümer-Code',
+  },
+  transferManagement: {
+    fr: 'Pour transférer la gestion',
+    en: 'To transfer management',
+    nl: 'Om beheer over te dragen',
+    de: 'Zur Verwaltungsübertragung',
+  },
+  noCodesAvailable: {
+    fr: 'Aucun code disponible',
+    en: 'No codes available',
+    nl: 'Geen codes beschikbaar',
+    de: 'Keine Codes verfügbar',
+  },
+  toasts: {
+    copied: {
+      fr: 'Copié !',
+      en: 'Copied!',
+      nl: 'Gekopieerd!',
+      de: 'Kopiert!',
+    },
+    copyError: {
+      fr: 'Erreur lors de la copie',
+      en: 'Error copying',
+      nl: 'Fout bij kopiëren',
+      de: 'Fehler beim Kopieren',
+    },
+  },
+  share: {
+    joinMessage: {
+      fr: (propertyName: string, code: string) =>
+        `Rejoins ${propertyName} sur Izzico ! Utilise ce code pour nous rejoindre : ${code}\n\nInscris-toi ici : https://izzico.be/onboarding/resident/property-setup`,
+      en: (propertyName: string, code: string) =>
+        `Join ${propertyName} on Izzico! Use this code to join us: ${code}\n\nSign up here: https://izzico.be/onboarding/resident/property-setup`,
+      nl: (propertyName: string, code: string) =>
+        `Word lid van ${propertyName} op Izzico! Gebruik deze code om bij ons te komen: ${code}\n\nMeld je hier aan: https://izzico.be/onboarding/resident/property-setup`,
+      de: (propertyName: string, code: string) =>
+        `Tritt ${propertyName} auf Izzico bei! Verwende diesen Code um beizutreten: ${code}\n\nMelde dich hier an: https://izzico.be/onboarding/resident/property-setup`,
+    },
+    emailSubject: {
+      fr: (propertyName: string) => `Rejoins-nous sur ${propertyName}`,
+      en: (propertyName: string) => `Join us at ${propertyName}`,
+      nl: (propertyName: string) => `Sluit je bij ons aan op ${propertyName}`,
+      de: (propertyName: string) => `Schließe dich uns bei ${propertyName} an`,
+    },
+    emailBody: {
+      fr: (propertyName: string, code: string) =>
+        `Salut !\n\nJe t'invite à rejoindre ${propertyName} sur Izzico.\n\nUtilise ce code d'invitation : ${code}\n\n1. Va sur https://izzico.be/onboarding/resident/property-setup\n2. Clique sur "Rejoindre une colocation"\n3. Entre le code d'invitation\n\nOn gagne tous les deux des mois gratuits quand tu t'inscris !\n\nÀ bientôt !`,
+      en: (propertyName: string, code: string) =>
+        `Hi!\n\nI'm inviting you to join ${propertyName} on Izzico.\n\nUse this invitation code: ${code}\n\n1. Go to https://izzico.be/onboarding/resident/property-setup\n2. Click on "Join a coliving"\n3. Enter the invitation code\n\nWe both earn free months when you sign up!\n\nSee you soon!`,
+      nl: (propertyName: string, code: string) =>
+        `Hallo!\n\nIk nodig je uit om lid te worden van ${propertyName} op Izzico.\n\nGebruik deze uitnodigingscode: ${code}\n\n1. Ga naar https://izzico.be/onboarding/resident/property-setup\n2. Klik op "Word lid van een coliving"\n3. Voer de uitnodigingscode in\n\nWe verdienen allebei gratis maanden als je je aanmeldt!\n\nTot snel!`,
+      de: (propertyName: string, code: string) =>
+        `Hallo!\n\nIch lade dich ein, ${propertyName} auf Izzico beizutreten.\n\nVerwende diesen Einladungscode: ${code}\n\n1. Gehe zu https://izzico.be/onboarding/resident/property-setup\n2. Klicke auf "Einer WG beitreten"\n3. Gib den Einladungscode ein\n\nWir verdienen beide Freimonate, wenn du dich anmeldest!\n\nBis bald!`,
+    },
+    ourColiving: {
+      fr: 'notre colocation',
+      en: 'our coliving',
+      nl: 'onze coliving',
+      de: 'unsere WG',
+    },
+  },
+};
 
 interface InvitePopupProps {
   isOpen: boolean;
@@ -36,6 +168,10 @@ export function InvitePopup({
   showResidenceCodes = true,
   propertyInfo
 }: InvitePopupProps) {
+  const { language } = useLanguage();
+  const lang = language as Language;
+  const t = translations;
+
   const supabase = createClient();
   const [residenceData, setResidenceData] = useState<{
     invitationCode?: string;
@@ -99,25 +235,25 @@ export function InvitePopup({
     try {
       await navigator.clipboard.writeText(text);
       setCopiedCode(type);
-      toast.success('Copié !');
+      toast.success(t.toasts.copied[lang]);
       setTimeout(() => setCopiedCode(null), 2000);
     } catch {
-      toast.error('Erreur lors de la copie');
+      toast.error(t.toasts.copyError[lang]);
     }
   };
 
   const shareResidenceViaWhatsApp = () => {
     if (!residenceData?.invitationCode) return;
-    const propertyName = residenceData.propertyName || 'notre colocation';
-    const text = `Rejoins ${propertyName} sur Izzico ! Utilise ce code pour nous rejoindre : ${residenceData.invitationCode}\n\nInscris-toi ici : https://izzico.be/onboarding/resident/property-setup`;
+    const propertyName = residenceData.propertyName || t.share.ourColiving[lang];
+    const text = t.share.joinMessage[lang](propertyName, residenceData.invitationCode);
     window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   const shareResidenceViaEmail = () => {
     if (!residenceData?.invitationCode) return;
-    const propertyName = residenceData.propertyName || 'notre colocation';
-    const subject = `Rejoins-nous sur ${propertyName}`;
-    const body = `Salut !\n\nJe t'invite à rejoindre ${propertyName} sur Izzico.\n\nUtilise ce code d'invitation : ${residenceData.invitationCode}\n\n1. Va sur https://izzico.be/onboarding/resident/property-setup\n2. Clique sur "Rejoindre une colocation"\n3. Entre le code d'invitation\n\nOn gagne tous les deux des mois gratuits quand tu t'inscris !\n\nÀ bientôt !`;
+    const propertyName = residenceData.propertyName || t.share.ourColiving[lang];
+    const subject = t.share.emailSubject[lang](propertyName);
+    const body = t.share.emailBody[lang](propertyName, residenceData.invitationCode);
     window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
@@ -147,8 +283,8 @@ export function InvitePopup({
                   <Users className="w-6 h-6" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold">Inviter</h2>
-                  <p className="text-white/80 text-sm">Gagnez des mois gratuits</p>
+                  <h2 className="text-xl font-bold">{t.invite[lang]}</h2>
+                  <p className="text-white/80 text-sm">{t.earnFreeMonths[lang]}</p>
                 </div>
               </div>
               <button
@@ -163,7 +299,7 @@ export function InvitePopup({
           {isLoading ? (
             <div className="p-8 text-center">
               <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
-              <p className="text-gray-500 text-sm">Loading...</p>
+              <p className="text-gray-500 text-sm">{t.loading[lang]}</p>
             </div>
           ) : (
             <div className="p-6 space-y-6">
@@ -171,25 +307,25 @@ export function InvitePopup({
               <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Sparkles className="w-5 h-5 text-green-600" />
-                  <span className="font-semibold text-green-800">Récompenses automatiques</span>
+                  <span className="font-semibold text-green-800">{t.automaticRewards[lang]}</span>
                 </div>
                 <p className="text-sm text-green-700">
-                  Quand quelqu'un rejoint avec votre code, vous gagnez tous les deux des mois gratuits !
+                  {t.rewardsDescription[lang]}
                 </p>
                 <div className="mt-3 flex gap-2">
                   <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
                     <div className="flex items-center justify-center gap-1">
                       <Home className="w-3.5 h-3.5 text-orange-600" />
-                      <span className="text-xs text-gray-600">Résident</span>
+                      <span className="text-xs text-gray-600">{t.resident[lang]}</span>
                     </div>
-                    <p className="font-bold text-orange-600">+2 mois</p>
+                    <p className="font-bold text-orange-600">+2 {t.months[lang]}</p>
                   </div>
                   <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
                     <div className="flex items-center justify-center gap-1">
                       <Building2 className="w-3.5 h-3.5 text-purple-600" />
-                      <span className="text-xs text-gray-600">Proprio</span>
+                      <span className="text-xs text-gray-600">{t.owner[lang]}</span>
                     </div>
-                    <p className="font-bold text-purple-600">+3 mois</p>
+                    <p className="font-bold text-purple-600">+3 {t.months[lang]}</p>
                   </div>
                 </div>
               </div>
@@ -202,8 +338,8 @@ export function InvitePopup({
                       <Home className="w-4 h-4 text-orange-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">Code Colocataire</h3>
-                      <p className="text-xs text-gray-500">Inviter dans votre résidence</p>
+                      <h3 className="font-semibold text-gray-900">{t.roommateCode[lang]}</h3>
+                      <p className="text-xs text-gray-500">{t.inviteToResidence[lang]}</p>
                     </div>
                   </div>
 
@@ -249,8 +385,8 @@ export function InvitePopup({
                       <Building2 className="w-4 h-4 text-purple-600" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">Code Propriétaire</h3>
-                      <p className="text-xs text-gray-500">Pour transférer la gestion</p>
+                      <h3 className="font-semibold text-gray-900">{t.ownerCode[lang]}</h3>
+                      <p className="text-xs text-gray-500">{t.transferManagement[lang]}</p>
                     </div>
                   </div>
 
@@ -273,7 +409,7 @@ export function InvitePopup({
               {/* No codes available */}
               {!residenceData?.invitationCode && !residenceData?.ownerCode && (
                 <div className="text-center py-4">
-                  <p className="text-gray-500">Aucun code disponible</p>
+                  <p className="text-gray-500">{t.noCodesAvailable[lang]}</p>
                 </div>
               )}
             </div>

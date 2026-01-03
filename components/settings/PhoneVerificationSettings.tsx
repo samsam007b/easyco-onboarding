@@ -50,6 +50,9 @@ function OTPInput({
   disabled?: boolean;
   onComplete?: () => void;
 }) {
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value.replace(/\D/g, '').slice(0, 6);
     onChange(newValue);
@@ -93,7 +96,7 @@ function OTPInput({
         disabled={disabled}
         className="absolute inset-0 opacity-0 cursor-pointer"
         autoFocus
-        aria-label="Code de vérification"
+        aria-label={ariaLabels?.verificationCode?.[language] || 'Code de vérification'}
       />
     </div>
   );

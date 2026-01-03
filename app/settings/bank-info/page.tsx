@@ -387,7 +387,7 @@ export default function BankInfoPage() {
                   id="account_holder_name"
                   value={bankInfo.account_holder_name}
                   onChange={(e) => setBankInfo({ ...bankInfo, account_holder_name: e.target.value })}
-                  placeholder="Jean Dupont"
+                  placeholder={t?.placeholders?.accountHolder?.[language] || 'Jean Dupont'}
                   className="mt-2"
                 />
               </div>
@@ -398,7 +398,7 @@ export default function BankInfoPage() {
                   id="iban"
                   value={formatIBAN(bankInfo.iban)}
                   onChange={(e) => setBankInfo({ ...bankInfo, iban: e.target.value.replace(/\s/g, '') })}
-                  placeholder="BE68 5390 0754 7034"
+                  placeholder={t?.placeholders?.iban?.[language] || 'BE68 5390 0754 7034'}
                   className="mt-2 font-mono"
                   maxLength={42} // 34 chars + spaces
                 />
@@ -416,7 +416,7 @@ export default function BankInfoPage() {
                     id="bank_name"
                     value={bankInfo.bank_name}
                     onChange={(e) => setBankInfo({ ...bankInfo, bank_name: e.target.value })}
-                    placeholder="KBC, ING, Belfius..."
+                    placeholder={t?.placeholders?.bankName?.[language] || 'KBC, ING, Belfius...'}
                     className="mt-2"
                   />
                 </div>
@@ -427,7 +427,7 @@ export default function BankInfoPage() {
                     id="bic"
                     value={bankInfo.bic}
                     onChange={(e) => setBankInfo({ ...bankInfo, bic: e.target.value.toUpperCase() })}
-                    placeholder="KREDBEBB"
+                    placeholder={t?.placeholders?.bic?.[language] || 'KREDBEBB'}
                     className="mt-2 font-mono"
                     maxLength={11}
                   />
@@ -478,7 +478,7 @@ export default function BankInfoPage() {
                     id="revtag"
                     value={bankInfo.revtag.replace('@', '')}
                     onChange={(e) => setBankInfo({ ...bankInfo, revtag: e.target.value.replace('@', '') })}
-                    placeholder="votre_revtag"
+                    placeholder={t?.placeholders?.revtag?.[language] || 'votre_revtag'}
                     className="pl-8"
                   />
                 </div>

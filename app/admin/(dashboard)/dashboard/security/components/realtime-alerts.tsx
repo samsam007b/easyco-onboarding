@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
 import { acknowledgeAlert, bulkAcknowledgeAlerts } from '../actions';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface SecurityAlert {
   id: string;
@@ -52,7 +53,7 @@ export function RealtimeAlerts({ alerts, totalActive }: RealtimeAlertsProps) {
     startTransition(async () => {
       const result = await acknowledgeAlert(alertId);
       if (result.success) {
-        toast.success('Alerte acquittee');
+        toast.success(getHookTranslation('security', 'alertAcknowledged'));
       } else {
         toast.error(result.error || 'Erreur');
       }

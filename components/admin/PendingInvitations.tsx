@@ -17,8 +17,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
 import { toast } from 'sonner';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const dateLocales: Record<string, typeof fr> = { fr, en: enUS, nl, de };
 
 interface Invitation {
   id: string;
@@ -33,6 +36,9 @@ interface Invitation {
 
 export default function PendingInvitations() {
   const router = useRouter();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
+  const locale = dateLocales[language] || fr;
   const [invitations, setInvitations] = useState<Invitation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [cancellingId, setCancellingId] = useState<string | null>(null);
@@ -224,7 +230,7 @@ export default function PendingInvitations() {
                     onClick={() => handleResend(invitation)}
                     disabled={resendingId === invitation.id}
                     className="text-slate-400 hover:text-purple-400"
-                    title="Renvoyer l'invitation"
+                    title={ariaLabels?.resendInvitation?.[language] || "Renvoyer l'invitation"}
                   >
                     <Send className={`w-4 h-4 ${resendingId === invitation.id ? 'animate-pulse' : ''}`} />
                   </Button>
@@ -234,7 +240,7 @@ export default function PendingInvitations() {
                     onClick={() => handleCancel(invitation.id, invitation.email)}
                     disabled={cancellingId === invitation.id}
                     className="text-slate-400 hover:text-red-400"
-                    title="Annuler l'invitation"
+                    title={ariaLabels?.cancelInvitation?.[language] || "Annuler l'invitation"}
                   >
                     <Trash2 className={`w-4 h-4 ${cancellingId === invitation.id ? 'animate-pulse' : ''}`} />
                   </Button>

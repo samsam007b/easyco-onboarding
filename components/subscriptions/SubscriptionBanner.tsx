@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Clock, CreditCard, Gift, TrendingUp, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface SubscriptionStatus {
   subscription_id: string;
@@ -26,6 +27,8 @@ interface SubscriptionBannerProps {
 
 export default function SubscriptionBanner({ userId, compact = false }: SubscriptionBannerProps) {
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [status, setStatus] = useState<SubscriptionStatus | null>(null);
   const [loading, setLoading] = useState(true);
   const [dismissed, setDismissed] = useState(false);
@@ -172,7 +175,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
         <button
           onClick={() => setDismissed(true)}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition"
-          aria-label="Masquer"
+          aria-label={ariaLabels?.hide?.[language] || 'Masquer'}
         >
           <X className="w-5 h-5" />
         </button>

@@ -26,6 +26,7 @@ import {
   TrendingUp,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 export default function PreferencesEditorPage() {
   const router = useRouter();
@@ -90,13 +91,13 @@ export default function PreferencesEditorPage() {
     try {
       const success = await updateUserPreferences(formData);
       if (success) {
-        toast.success('Preferences saved successfully!');
+        toast.success(getHookTranslation('preferences', 'saved'));
         setHasChanges(false);
       } else {
-        toast.error('Failed to save preferences');
+        toast.error(getHookTranslation('preferences', 'saveFailed'));
       }
     } catch (error) {
-      toast.error('An error occurred while saving');
+      toast.error(getHookTranslation('preferences', 'errorSaving'));
     } finally {
       setSaving(false);
     }
@@ -105,7 +106,7 @@ export default function PreferencesEditorPage() {
   const handleReset = () => {
     setFormData(userPreferences || {});
     setHasChanges(false);
-    toast.info('Changes reset');
+    toast.info(getHookTranslation('preferences', 'changesReset'));
   };
 
   if (loading || matchingLoading) {

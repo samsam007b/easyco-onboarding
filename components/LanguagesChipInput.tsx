@@ -22,6 +22,7 @@ import {
   type LanguageSuggestion,
   type CanonicalLanguage,
 } from '@/lib/languages/language-utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export type LanguageChip = {
   code: string; // ISO 639 code
@@ -44,6 +45,8 @@ export function LanguagesChipInput({
   placeholder = 'Type a language (e.g., français, English, Nederlands)...',
   className = '',
 }: LanguagesChipInputProps) {
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [inputValue, setInputValue] = useState('');
   const [suggestions, setSuggestions] = useState<LanguageSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -199,7 +202,7 @@ export function LanguagesChipInput({
           placeholder={value.length >= maxLanguages ? `Maximum ${maxLanguages} languages` : placeholder}
           disabled={value.length >= maxLanguages}
           className={error ? 'border-red-500' : ''}
-          aria-label="Type a language"
+          aria-label={ariaLabels?.typeLanguage?.[language] || 'Type a language'}
           aria-autocomplete="list"
           aria-controls="language-suggestions"
           aria-expanded={showSuggestions}

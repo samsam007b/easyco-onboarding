@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Final Branding Assets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Brand Colors */
+            --owner-primary: #9c5698;
+            --resident-primary: #e05747;
+            --searcher-primary: #ffa000;
+            --searcher-gold: #ffc800;
+
+            /* Gradient Signature */
+            --gradient-signature: linear-gradient(135deg,
+                #9c5698 0%,
+                #d15659 30%,
+                #e05747 50%,
+                #ff7c10 70%,
+                #ffc800 100%
+            );
+
+            /* UI Colors */
+            --bg-dark: #0a0a12;
+            --bg-card: #14141f;
+            --bg-elevated: #1a1a2e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+
+            /* Typography */
+            --zz-spacing: -0.20em;
+            --weight-i: 600;
+            --weight-z: 540;
+            --weight-c: 540;
+            --weight-o: 540;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--gradient-signature);
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .header .subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        .header .version {
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            opacity: 0.7;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+        }
+
+        /* ===== SECTION ===== */
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .section-number {
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-signature);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 600;
+        }
+
+        /* ===== SUMMARY GRID ===== */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+        }
+
+        .summary-card h4 {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .summary-card .desc {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* ===== LOGO DISPLAY ===== */
+        .logo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .logo-card {
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        .logo-preview {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .logo-preview.dark-bg {
+            background: var(--bg-dark);
+            border: 1px solid #222;
+        }
+
+        .logo-preview.light-bg {
+            background: #f5f5f7;
+        }
+
+        .logo-preview.gradient-bg {
+            background: var(--gradient-signature);
+        }
+
+        .logo-preview svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .logo-info {
+            background: var(--bg-card);
+            padding: 1.25rem;
+        }
+
+        .logo-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* ===== TRADEMARK ===== */
+        .trademark-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .trademark-card {
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        .trademark-preview {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .trademark-preview.dark-bg {
+            background: var(--bg-dark);
+            border: 1px solid #222;
+        }
+
+        .trademark-preview.light-bg {
+            background: #f5f5f7;
+        }
+
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 64px;
+            display: inline-flex;
+            align-items: baseline;
+        }
+
+        .wordmark .l-i { font-weight: 600; }
+        .wordmark .l-z { font-weight: 540; letter-spacing: -0.20em; }
+        .wordmark .l-z2 { font-weight: 540; }
+        .wordmark .l-c { font-weight: 540; }
+        .wordmark .l-o { font-weight: 540; }
+
+        .wordmark-white { color: #ffffff; }
+        .wordmark-dark { color: #0a0a12; }
+        .wordmark-gradient {
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .trademark-info {
+            background: var(--bg-card);
+            padding: 1.25rem;
+        }
+
+        .trademark-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .trademark-info p {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* ===== COMBINED LOGO ===== */
+        .combined-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .combined-preview {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+            padding: 2rem;
+            border-radius: 1.5rem;
+        }
+
+        .combined-preview svg {
+            width: 80px;
+            height: 80px;
+        }
+
+        .combined-preview .wordmark {
+            font-size: 48px;
+        }
+
+        /* ===== SPECS TABLE ===== */
+        .specs-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-card);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .specs-table th,
+        .specs-table td {
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border-bottom: 1px solid #222;
+        }
+
+        .specs-table th {
+            background: var(--bg-elevated);
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+        }
+
+        .specs-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .specs-table code {
+            background: var(--bg-dark);
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.875rem;
+            color: #88f;
+        }
+
+        /* ===== COLOR SWATCHES ===== */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .color-swatch {
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .color-preview {
+            height: 100px;
+        }
+
+        .color-info {
+            background: var(--bg-card);
+            padding: 1rem;
+        }
+
+        .color-info h4 {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .color-info code {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== SVG CODE ===== */
+        .svg-code-section {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            margin-top: 2rem;
+        }
+
+        .svg-code-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #222;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .svg-code-header h4 {
+            font-weight: 600;
+        }
+
+        .copy-btn {
+            background: var(--gradient-signature);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            font-size: 0.875rem;
+        }
+
+        .svg-code-content {
+            padding: 1.5rem;
+            max-height: 300px;
+            overflow: auto;
+        }
+
+        .svg-code-content pre {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.75rem;
+            color: #8f8;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-muted);
+            border-top: 1px solid #222;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .logo-grid,
+            .trademark-grid,
+            .combined-grid,
+            .color-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER -->
+    <div class="header">
+        <h1>IzzIco</h1>
+        <p class="subtitle">Final Branding Assets</p>
+        <p class="version">Version 1.0 - Janvier 2026</p>
+    </div>
+
+    <div class="container">
+        <!-- SECTION 1: RESUME -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">1</div>
+                <h2 class="section-title">Resume du Travail de Design</h2>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h4>Logo Icon</h4>
+                    <div class="value">IzzIco Icon V1</div>
+                    <div class="desc">Loupe + Cle + Buste fusionnes</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Trademark</h4>
+                    <div class="value">Fredoka Variable</div>
+                    <div class="desc">Weights: i=600, z/c/o=540</div>
+                </div>
+                <div class="summary-card">
+                    <h4>ZZ Spacing</h4>
+                    <div class="value" style="font-family: monospace;">-0.20em</div>
+                    <div class="desc">Fusion visuelle des deux Z</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Linecaps</h4>
+                    <div class="value">85% Squircle</div>
+                    <div class="desc">Style Fredoka arrondi</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Vectorisation</h4>
+                    <div class="value">100% Complete</div>
+                    <div class="desc">Paths pre-calcules, sans transform</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Variantes</h4>
+                    <div class="value">3 Versions</div>
+                    <div class="desc">Blanc, Sombre, Gradient</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 2: LOGO ICON -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">2</div>
+                <h2 class="section-title">Logo Icon - IzzIco Icon V1</h2>
+            </div>
+
+            <div class="logo-grid">
+                <!-- White -->
+                <div class="logo-card">
+                    <div class="logo-preview dark-bg">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="white"/>
+                            <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="white"/>
+                            <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="white"/>
+                            <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="white"/>
+                            <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="white"/>
+                            <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="white"/>
+                            <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="white"/>
+                            <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <div class="logo-info">
+                        <h4>Version Blanche</h4>
+                        <p>Pour fonds sombres</p>
+                    </div>
+                </div>
+
+                <!-- Dark -->
+                <div class="logo-card">
+                    <div class="logo-preview light-bg">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="#0a0a12"/>
+                            <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="#0a0a12"/>
+                            <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="#0a0a12"/>
+                            <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="#0a0a12"/>
+                            <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="#0a0a12"/>
+                            <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="#0a0a12"/>
+                            <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="#0a0a12"/>
+                            <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="#0a0a12"/>
+                        </svg>
+                    </div>
+                    <div class="logo-info">
+                        <h4>Version Sombre</h4>
+                        <p>Pour fonds clairs</p>
+                    </div>
+                </div>
+
+                <!-- Gradient -->
+                <div class="logo-card">
+                    <div class="logo-preview dark-bg">
+                        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="icon-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="30%" stop-color="#d15659"/>
+                                    <stop offset="50%" stop-color="#e05747"/>
+                                    <stop offset="70%" stop-color="#ff7c10"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="url(#icon-gradient)"/>
+                            <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="url(#icon-gradient)"/>
+                            <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="url(#icon-gradient)"/>
+                            <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="url(#icon-gradient)"/>
+                            <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="url(#icon-gradient)"/>
+                            <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="url(#icon-gradient)"/>
+                            <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="url(#icon-gradient)"/>
+                            <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="url(#icon-gradient)"/>
+                        </svg>
+                    </div>
+                    <div class="logo-info">
+                        <h4>Version Gradient</h4>
+                        <p>Gradient signature IzzIco</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 3: TRADEMARK -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">3</div>
+                <h2 class="section-title">Trademark - Wordmark IzzIco</h2>
+            </div>
+
+            <div class="trademark-grid">
+                <!-- White -->
+                <div class="trademark-card">
+                    <div class="trademark-preview dark-bg">
+                        <span class="wordmark wordmark-white">
+                            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </span>
+                    </div>
+                    <div class="trademark-info">
+                        <h4>Version Blanche</h4>
+                        <p>Pour fonds sombres</p>
+                    </div>
+                </div>
+
+                <!-- Dark -->
+                <div class="trademark-card">
+                    <div class="trademark-preview light-bg">
+                        <span class="wordmark wordmark-dark">
+                            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </span>
+                    </div>
+                    <div class="trademark-info">
+                        <h4>Version Sombre</h4>
+                        <p>Pour fonds clairs</p>
+                    </div>
+                </div>
+
+                <!-- Gradient -->
+                <div class="trademark-card">
+                    <div class="trademark-preview dark-bg">
+                        <span class="wordmark wordmark-gradient">
+                            <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                        </span>
+                    </div>
+                    <div class="trademark-info">
+                        <h4>Version Gradient</h4>
+                        <p>Gradient signature dans les lettres</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 4: COMBINED -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">4</div>
+                <h2 class="section-title">Logo Complet (Icon + Trademark)</h2>
+            </div>
+
+            <div class="combined-grid">
+                <!-- White -->
+                <div class="combined-preview dark-bg" style="border: 1px solid #222;">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="white"/>
+                        <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="white"/>
+                        <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="white"/>
+                        <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="white"/>
+                        <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="white"/>
+                        <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="white"/>
+                        <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="white"/>
+                        <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="white"/>
+                    </svg>
+                    <span class="wordmark wordmark-white">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                </div>
+
+                <!-- Dark -->
+                <div class="combined-preview light-bg">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="#0a0a12"/>
+                        <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="#0a0a12"/>
+                        <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="#0a0a12"/>
+                        <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="#0a0a12"/>
+                        <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="#0a0a12"/>
+                        <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="#0a0a12"/>
+                        <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="#0a0a12"/>
+                        <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="#0a0a12"/>
+                    </svg>
+                    <span class="wordmark wordmark-dark">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                </div>
+
+                <!-- Gradient -->
+                <div class="combined-preview dark-bg" style="border: 1px solid #222;">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="combined-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#9c5698"/>
+                                <stop offset="30%" stop-color="#d15659"/>
+                                <stop offset="50%" stop-color="#e05747"/>
+                                <stop offset="70%" stop-color="#ff7c10"/>
+                                <stop offset="100%" stop-color="#ffc800"/>
+                            </linearGradient>
+                        </defs>
+                        <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="url(#combined-gradient)"/>
+                        <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="url(#combined-gradient)"/>
+                        <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="url(#combined-gradient)"/>
+                        <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="url(#combined-gradient)"/>
+                        <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="url(#combined-gradient)"/>
+                        <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="url(#combined-gradient)"/>
+                        <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="url(#combined-gradient)"/>
+                        <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="url(#combined-gradient)"/>
+                    </svg>
+                    <span class="wordmark wordmark-gradient">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 5: COULEURS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">5</div>
+                <h2 class="section-title">Couleurs des Roles</h2>
+            </div>
+
+            <div class="color-grid">
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #9c5698, #c2566b);"></div>
+                    <div class="color-info">
+                        <h4>Owner (Proprietaire)</h4>
+                        <code>#9c5698</code>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #e05747, #ff7c10);"></div>
+                    <div class="color-info">
+                        <h4>Resident</h4>
+                        <code>#e05747</code>
+                    </div>
+                </div>
+                <div class="color-swatch">
+                    <div class="color-preview" style="background: linear-gradient(135deg, #ffa000, #ffc800);"></div>
+                    <div class="color-info">
+                        <h4>Searcher (Chercheur)</h4>
+                        <code>#ffa000 → #ffc800</code>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <div class="color-swatch" style="max-width: 100%;">
+                    <div class="color-preview" style="background: var(--gradient-signature); height: 80px;"></div>
+                    <div class="color-info">
+                        <h4>Gradient Signature</h4>
+                        <code>linear-gradient(135deg, #9c5698 0%, #d15659 30%, #e05747 50%, #ff7c10 70%, #ffc800 100%)</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SECTION 6: SPECIFICATIONS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">6</div>
+                <h2 class="section-title">Specifications Techniques</h2>
+            </div>
+
+            <table class="specs-table">
+                <thead>
+                    <tr>
+                        <th>Element</th>
+                        <th>Specification</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Icon ViewBox</td>
+                        <td>Dimensions</td>
+                        <td><code>0 0 100 100</code></td>
+                    </tr>
+                    <tr>
+                        <td>Icon Linecaps</td>
+                        <td>Style</td>
+                        <td><code>85% squircle</code></td>
+                    </tr>
+                    <tr>
+                        <td>Trademark Font</td>
+                        <td>Police</td>
+                        <td><code>Fredoka Variable</code></td>
+                    </tr>
+                    <tr>
+                        <td>Weight "i" (1er)</td>
+                        <td>Font-weight</td>
+                        <td><code>600</code></td>
+                    </tr>
+                    <tr>
+                        <td>Weight "z", "i", "c", "o"</td>
+                        <td>Font-weight</td>
+                        <td><code>540</code></td>
+                    </tr>
+                    <tr>
+                        <td>ZZ Spacing</td>
+                        <td>Letter-spacing</td>
+                        <td><code>-0.20em</code></td>
+                    </tr>
+                    <tr>
+                        <td>Gradient Direction</td>
+                        <td>Angle</td>
+                        <td><code>135deg</code></td>
+                    </tr>
+                    <tr>
+                        <td>Dark Color</td>
+                        <td>Hex</td>
+                        <td><code>#0a0a12</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SECTION 7: DECISIONS -->
+        <div class="section">
+            <div class="section-header">
+                <div class="section-number">7</div>
+                <h2 class="section-title">Decisions de Design</h2>
+            </div>
+
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <h4>Icon Concept</h4>
+                    <div class="value">3-en-1</div>
+                    <div class="desc">Loupe (Searcher) + Cle (Owner) + Buste (Resident) fusionnes en un symbole unique</div>
+                </div>
+                <div class="summary-card">
+                    <h4>ZZ Fusion</h4>
+                    <div class="value">-0.20em</div>
+                    <div class="desc">Les deux Z se chevauchent pour creer une identite visuelle distinctive</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Gradient Application</h4>
+                    <div class="value">Conteneur</div>
+                    <div class="desc">Le gradient est applique au conteneur, pas aux lettres individuelles (evite le bug d'overlap)</div>
+                </div>
+                <div class="summary-card">
+                    <h4>Weight Hierarchy</h4>
+                    <div class="value">i = 600</div>
+                    <div class="desc">Le premier "i" est plus lourd (600) pour ancrer visuellement le debut du mot</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p>IzzIco Brand Identity - Version 1.0</p>
+        <p style="margin-top: 0.5rem; font-size: 0.875rem;">Janvier 2026 - Coliving, simplified.</p>
+    </div>
+</body>
+</html>

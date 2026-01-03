@@ -4,6 +4,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 // Rate limiting: max saves per minute
 const RATE_LIMIT_MAX_SAVES = 10;
@@ -62,7 +63,7 @@ export function useAutoSave(options: AutoSaveOptions) {
       if (sizeInBytes > maxSizeBytes) {
         // FIXME: Use logger.error to log this error properly
         // Data too large for auto-save - size: sizeInBytes, maxSize: maxSizeBytes, key: key
-        toast.error('Data is too large to save');
+        toast.error(getHookTranslation('autoSave', 'dataTooLarge'));
         return;
       }
 

@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Font Pairing Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@300;400;500;600;700&family=Nunito:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a12;
+            --panel: #12121a;
+            --control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --gradient-signature: linear-gradient(135deg,
+                #9c5698 0%, #af5682 12%, #c2566b 24%,
+                #d15659 30%, #e05747 36%, #ff6524 48%,
+                #ff7c10 60%, #ff8e08 66%, #ffa000 72%,
+                #ffb400 86%, #ffc800 100%
+            );
+            --owner: #9c5698;
+            --resident: #e05747;
+            --searcher: #ffa000;
+
+            --weight-i: 600;
+            --weight-z: 540;
+            --weight-c: 540;
+            --weight-o: 540;
+            --zz-spacing: -0.18em;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .page-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .subtitle { color: var(--text-muted); font-size: 0.9rem; }
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .wordmark-balanced {
+            font-family: 'Fredoka', sans-serif;
+            display: inline-block;
+        }
+        .wordmark-balanced .l-i { font-weight: 600; }
+        .wordmark-balanced .l-z { font-weight: 540; }
+        .wordmark-balanced .l-c { font-weight: 540; }
+        .wordmark-balanced .l-o { font-weight: 540; }
+        .wordmark-balanced .zz-space { margin-right: -0.18em; }
+
+        .section {
+            background: var(--panel);
+            border-radius: 24px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border: 1px solid var(--border);
+        }
+        .section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        .info-box {
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .info-highlight { color: var(--accent); font-weight: 600; }
+
+        .pairing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 1.5rem;
+        }
+        .pairing-card {
+            background: var(--control);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 2px solid var(--border);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .pairing-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .pairing-card.selected {
+            border-color: var(--searcher);
+            background: rgba(255, 160, 0, 0.1);
+        }
+
+        .card-logo {
+            text-align: center;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #1a1a2e 0%, #12121a 100%);
+            border-radius: 12px;
+        }
+        .card-logo .wordmark-balanced {
+            font-size: 2.5rem;
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .pairing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .pairing-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .pairing-badge {
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            background: var(--border);
+        }
+        .pairing-badge.recommended {
+            background: var(--searcher);
+            color: #1a1a2e;
+        }
+
+        .pairing-preview {
+            margin-bottom: 1rem;
+        }
+        .pairing-preview-h {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .pairing-preview-sub {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            opacity: 0.85;
+        }
+        .pairing-preview-p {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            opacity: 0.8;
+        }
+        .pairing-meta {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+        .pairing-fonts {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+        .pairing-font-tag {
+            background: var(--border);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.7rem;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        .preview-card {
+            background: var(--control);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+        .preview-card.light {
+            background: #ffffff;
+            color: #1a1a2e;
+        }
+        .preview-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+        .preview-card.light .preview-label {
+            color: #6a6a8a;
+        }
+        .preview-logo {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .preview-logo .wordmark-balanced {
+            font-size: 3rem;
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .preview-heading {
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+        }
+        .preview-subheading {
+            font-size: 1.15rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            opacity: 0.8;
+        }
+        .preview-body {
+            font-size: 0.95rem;
+            line-height: 1.7;
+            opacity: 0.9;
+        }
+
+        .ui-preview {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: #1a1a2e;
+        }
+        .ui-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e8;
+        }
+        .ui-header .wordmark-balanced {
+            font-size: 1.5rem;
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .ui-nav {
+            display: flex;
+            gap: 1.5rem;
+            margin-left: auto;
+        }
+        .ui-nav-item {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #6a6a8a;
+        }
+        .ui-nav-item.active {
+            color: var(--resident);
+        }
+        .ui-card {
+            background: #f8f8fc;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .ui-card-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+        .ui-card-text {
+            font-size: 0.85rem;
+            color: #6a6a8a;
+        }
+        .ui-button {
+            display: inline-block;
+            padding: 0.75rem 1.5rem;
+            background: var(--gradient-signature);
+            color: white;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .analysis-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--control);
+            border-radius: 8px;
+        }
+        .analysis-score {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--searcher);
+        }
+        .analysis-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .font-specimen {
+            margin-bottom: 2rem;
+        }
+        .specimen-name {
+            font-size: 0.8rem;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+        .specimen-alphabet {
+            font-size: 1.5rem;
+            letter-spacing: 0.02em;
+            margin-bottom: 0.5rem;
+        }
+        .specimen-weights {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+        .specimen-weight {
+            padding: 0.25rem 0.5rem;
+            background: var(--control);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="page-title">IzzIco Font Pairing Workbench</div>
+        <div class="subtitle">Selection des polices complementaires (hors logo)</div>
+    </div>
+
+    <div class="container" id="app"></div>
+
+    <script>
+        var FONTS = {
+            inter: { name: 'Inter', family: "'Inter', sans-serif", vibe: 'Clean, moderne, ultra-lisible' },
+            nunito: { name: 'Nunito', family: "'Nunito', sans-serif", vibe: 'Arrondi, chaleureux, accessible' },
+            poppins: { name: 'Poppins', family: "'Poppins', sans-serif", vibe: 'Geometrique, moderne, bold' },
+            dmSans: { name: 'DM Sans', family: "'DM Sans', sans-serif", vibe: 'Geometrique, clean, minimal' },
+            outfit: { name: 'Outfit', family: "'Outfit', sans-serif", vibe: 'Moderne, geometrique, polyvalent' },
+            plusJakarta: { name: 'Plus Jakarta Sans', family: "'Plus Jakarta Sans', sans-serif", vibe: 'Contemporain, elegant, premium' },
+            manrope: { name: 'Manrope', family: "'Manrope', sans-serif", vibe: 'Semi-arrondi, tech, moderne' }
+        };
+
+        var PAIRINGS = [
+            {
+                id: 'plusJakarta-inter',
+                heading: 'plusJakarta',
+                body: 'inter',
+                name: 'Plus Jakarta Sans + Inter',
+                recommended: true,
+                reason: 'Equilibre parfait: headings premium + body ultra-lisible',
+                readability: 95,
+                harmony: 90,
+                versatility: 95,
+                uniqueness: 88
+            },
+            {
+                id: 'manrope-inter',
+                heading: 'manrope',
+                body: 'inter',
+                name: 'Manrope + Inter',
+                recommended: true,
+                reason: 'Look tech moderne, excellent contraste',
+                readability: 95,
+                harmony: 88,
+                versatility: 92,
+                uniqueness: 82
+            },
+            {
+                id: 'outfit-dmSans',
+                heading: 'outfit',
+                body: 'dmSans',
+                name: 'Outfit + DM Sans',
+                recommended: false,
+                reason: 'Duo geometrique coherent, tres clean',
+                readability: 90,
+                harmony: 92,
+                versatility: 85,
+                uniqueness: 78
+            },
+            {
+                id: 'poppins-inter',
+                heading: 'poppins',
+                body: 'inter',
+                name: 'Poppins + Inter',
+                recommended: false,
+                reason: 'Headings impactants, body neutre',
+                readability: 92,
+                harmony: 85,
+                versatility: 90,
+                uniqueness: 75
+            },
+            {
+                id: 'nunito-inter',
+                heading: 'nunito',
+                body: 'inter',
+                name: 'Nunito + Inter',
+                recommended: false,
+                reason: 'Arrondi friendly (proche Fredoka), contraste avec body',
+                readability: 90,
+                harmony: 85,
+                versatility: 85,
+                uniqueness: 70
+            },
+            {
+                id: 'plusJakarta-dmSans',
+                heading: 'plusJakarta',
+                body: 'dmSans',
+                name: 'Plus Jakarta + DM Sans',
+                recommended: false,
+                reason: 'Duo elegant et geometrique',
+                readability: 92,
+                harmony: 90,
+                versatility: 88,
+                uniqueness: 85
+            }
+        ];
+
+        var selectedPairing = PAIRINGS[0];
+
+        function clearEl(el) { while (el.firstChild) el.removeChild(el.firstChild); }
+        function create(tag, classes, text) {
+            var el = document.createElement(tag);
+            if (classes) el.className = classes;
+            if (text) el.textContent = text;
+            return el;
+        }
+
+        function createLogo(size) {
+            var wrapper = create('span', 'wordmark-balanced');
+            wrapper.style.fontSize = size || '2.5rem';
+
+            var letters = [
+                { char: 'i', cls: 'l-i' },
+                { char: 'z', cls: 'l-z zz-space' },
+                { char: 'z', cls: 'l-z' },
+                { char: 'i', cls: 'l-i' },
+                { char: 'c', cls: 'l-c' },
+                { char: 'o', cls: 'l-o' }
+            ];
+
+            letters.forEach(function(l) {
+                var span = create('span', l.cls, l.char);
+                wrapper.appendChild(span);
+            });
+
+            return wrapper;
+        }
+
+        function renderInfoBox() {
+            var section = create('div', 'section');
+            var info = create('div', 'info-box');
+
+            var highlight = create('span', 'info-highlight', 'Fredoka');
+            info.appendChild(highlight);
+            info.appendChild(document.createTextNode(' est reserve exclusivement au logo IzzIco (verrouille). Les combinaisons ci-dessous utilisent d\'autres polices pour les titres et le corps de texte. Le logo est affiche au-dessus de chaque combinaison pour verifier l\'harmonie visuelle.'));
+
+            section.appendChild(info);
+            return section;
+        }
+
+        function renderPairingCards() {
+            var section = create('div', 'section');
+            section.appendChild(create('div', 'section-title', 'Combinaisons de Polices'));
+
+            var grid = create('div', 'pairing-grid');
+
+            PAIRINGS.forEach(function(pairing) {
+                var card = create('div', 'pairing-card' + (pairing.id === selectedPairing.id ? ' selected' : ''));
+                card.onclick = function() {
+                    selectedPairing = pairing;
+                    render();
+                };
+
+                var logoBox = create('div', 'card-logo');
+                logoBox.appendChild(createLogo('2.5rem'));
+                card.appendChild(logoBox);
+
+                var header = create('div', 'pairing-header');
+                header.appendChild(create('span', 'pairing-name', pairing.name));
+                if (pairing.recommended) {
+                    header.appendChild(create('span', 'pairing-badge recommended', 'Recommande'));
+                }
+                card.appendChild(header);
+
+                var preview = create('div', 'pairing-preview');
+
+                var previewH = create('div', 'pairing-preview-h', 'Trouvez votre coliving');
+                previewH.style.fontFamily = FONTS[pairing.heading].family;
+                preview.appendChild(previewH);
+
+                var previewSub = create('div', 'pairing-preview-sub', 'La plateforme nouvelle generation');
+                previewSub.style.fontFamily = FONTS[pairing.heading].family;
+                preview.appendChild(previewSub);
+
+                var previewP = create('div', 'pairing-preview-p', 'Decouvrez des espaces de vie partages adaptes a votre style de vie et rencontrez des colocataires compatibles.');
+                previewP.style.fontFamily = FONTS[pairing.body].family;
+                preview.appendChild(previewP);
+
+                card.appendChild(preview);
+
+                var meta = create('div', 'pairing-meta', pairing.reason);
+
+                var fontTags = create('div', 'pairing-fonts');
+                var headTag = create('span', 'pairing-font-tag', 'H: ' + FONTS[pairing.heading].name);
+                var bodyTag = create('span', 'pairing-font-tag', 'Body: ' + FONTS[pairing.body].name);
+                fontTags.appendChild(headTag);
+                fontTags.appendChild(bodyTag);
+                meta.appendChild(fontTags);
+
+                card.appendChild(meta);
+
+                grid.appendChild(card);
+            });
+
+            section.appendChild(grid);
+            return section;
+        }
+
+        function renderAnalysis() {
+            var section = create('div', 'section');
+            section.appendChild(create('div', 'section-title', 'Analyse: ' + selectedPairing.name));
+
+            var grid = create('div', 'analysis-grid');
+
+            var metrics = [
+                { label: 'Lisibilite', value: selectedPairing.readability },
+                { label: 'Harmonie', value: selectedPairing.harmony },
+                { label: 'Versatilite', value: selectedPairing.versatility },
+                { label: 'Unicite', value: selectedPairing.uniqueness }
+            ];
+
+            metrics.forEach(function(m) {
+                var item = create('div', 'analysis-item');
+                item.appendChild(create('div', 'analysis-score', m.value));
+                item.appendChild(create('div', 'analysis-label', m.label));
+                grid.appendChild(item);
+            });
+
+            section.appendChild(grid);
+            return section;
+        }
+
+        function renderPreview() {
+            var section = create('div', 'section');
+            section.appendChild(create('div', 'section-title', 'Preview en Contexte'));
+
+            var grid = create('div', 'preview-grid');
+
+            // Dark preview
+            var darkCard = create('div', 'preview-card');
+            darkCard.appendChild(create('div', 'preview-label', 'Mode Sombre'));
+
+            var darkLogo = create('div', 'preview-logo');
+            darkLogo.appendChild(createLogo('3rem'));
+            darkCard.appendChild(darkLogo);
+
+            var darkH = create('div', 'preview-heading', 'Bienvenue sur IzzIco');
+            darkH.style.fontFamily = FONTS[selectedPairing.heading].family;
+            darkCard.appendChild(darkH);
+
+            var darkSub = create('div', 'preview-subheading', 'La plateforme de coliving nouvelle generation');
+            darkSub.style.fontFamily = FONTS[selectedPairing.heading].family;
+            darkCard.appendChild(darkSub);
+
+            var darkP = create('div', 'preview-body', 'Trouvez votre espace de vie ideal parmi des milliers de colivings verifies. Notre algorithme de matching vous connecte avec des colocataires qui partagent vos valeurs et votre style de vie.');
+            darkP.style.fontFamily = FONTS[selectedPairing.body].family;
+            darkCard.appendChild(darkP);
+
+            grid.appendChild(darkCard);
+
+            // Light preview
+            var lightCard = create('div', 'preview-card light');
+            lightCard.appendChild(create('div', 'preview-label', 'Mode Clair'));
+
+            var lightLogo = create('div', 'preview-logo');
+            lightLogo.appendChild(createLogo('3rem'));
+            lightCard.appendChild(lightLogo);
+
+            var lightH = create('div', 'preview-heading', 'Bienvenue sur IzzIco');
+            lightH.style.fontFamily = FONTS[selectedPairing.heading].family;
+            lightCard.appendChild(lightH);
+
+            var lightSub = create('div', 'preview-subheading', 'La plateforme de coliving nouvelle generation');
+            lightSub.style.fontFamily = FONTS[selectedPairing.heading].family;
+            lightCard.appendChild(lightSub);
+
+            var lightP = create('div', 'preview-body', 'Trouvez votre espace de vie ideal parmi des milliers de colivings verifies. Notre algorithme de matching vous connecte avec des colocataires qui partagent vos valeurs et votre style de vie.');
+            lightP.style.fontFamily = FONTS[selectedPairing.body].family;
+            lightCard.appendChild(lightP);
+
+            grid.appendChild(lightCard);
+
+            section.appendChild(grid);
+            return section;
+        }
+
+        function renderUIPreview() {
+            var section = create('div', 'section');
+            section.appendChild(create('div', 'section-title', 'Preview Interface'));
+
+            var ui = create('div', 'ui-preview');
+
+            var header = create('div', 'ui-header');
+            header.appendChild(createLogo('1.5rem'));
+
+            var nav = create('div', 'ui-nav');
+            ['Rechercher', 'Mes Matchs', 'Messages', 'Profil'].forEach(function(item, i) {
+                var navItem = create('span', 'ui-nav-item' + (i === 0 ? ' active' : ''), item);
+                navItem.style.fontFamily = FONTS[selectedPairing.body].family;
+                nav.appendChild(navItem);
+            });
+            header.appendChild(nav);
+            ui.appendChild(header);
+
+            var cards = [
+                { title: 'Appartement Lumineux - Bruxelles', text: '3 chambres - 850 EUR/mois - Disponible maintenant' },
+                { title: 'Coliving Moderne - Ixelles', text: '2 chambres - 720 EUR/mois - A partir du 1er fevrier' }
+            ];
+
+            cards.forEach(function(c) {
+                var card = create('div', 'ui-card');
+                var title = create('div', 'ui-card-title', c.title);
+                title.style.fontFamily = FONTS[selectedPairing.heading].family;
+                card.appendChild(title);
+                var text = create('div', 'ui-card-text', c.text);
+                text.style.fontFamily = FONTS[selectedPairing.body].family;
+                card.appendChild(text);
+                ui.appendChild(card);
+            });
+
+            var btn = create('div', 'ui-button', 'Voir plus de resultats');
+            btn.style.fontFamily = FONTS[selectedPairing.body].family;
+            ui.appendChild(btn);
+
+            section.appendChild(ui);
+            return section;
+        }
+
+        function renderSpecimens() {
+            var section = create('div', 'section');
+            section.appendChild(create('div', 'section-title', 'Specimens Typographiques'));
+
+            var logoSpecimen = create('div', 'font-specimen');
+            logoSpecimen.appendChild(create('div', 'specimen-name', 'Fredoka (Logo uniquement) - Friendly, arrondi, playful'));
+
+            var logoAlphabet = create('div', 'specimen-alphabet', 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz');
+            logoAlphabet.style.fontFamily = "'Fredoka', sans-serif";
+            logoSpecimen.appendChild(logoAlphabet);
+
+            var logoWeights = create('div', 'specimen-weights');
+            [300, 400, 500, 540, 600, 700].forEach(function(w) {
+                var weight = create('span', 'specimen-weight', w + (w === 540 ? ' (z,c,o)' : w === 600 ? ' (i)' : ''));
+                weight.style.fontFamily = "'Fredoka', sans-serif";
+                weight.style.fontWeight = w;
+                logoWeights.appendChild(weight);
+            });
+            logoSpecimen.appendChild(logoWeights);
+            section.appendChild(logoSpecimen);
+
+            [selectedPairing.heading, selectedPairing.body].forEach(function(fontKey, idx) {
+                if (idx === 1 && selectedPairing.heading === selectedPairing.body) return;
+
+                var font = FONTS[fontKey];
+                var specimen = create('div', 'font-specimen');
+
+                var role = idx === 0 ? 'Headings' : 'Body';
+                specimen.appendChild(create('div', 'specimen-name', font.name + ' (' + role + ') - ' + font.vibe));
+
+                var alphabet = create('div', 'specimen-alphabet', 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz');
+                alphabet.style.fontFamily = font.family;
+                specimen.appendChild(alphabet);
+
+                var weights = create('div', 'specimen-weights');
+                [300, 400, 500, 600, 700].forEach(function(w) {
+                    var weight = create('span', 'specimen-weight', w);
+                    weight.style.fontFamily = font.family;
+                    weight.style.fontWeight = w;
+                    weights.appendChild(weight);
+                });
+                specimen.appendChild(weights);
+
+                section.appendChild(specimen);
+            });
+
+            return section;
+        }
+
+        function render() {
+            var app = document.getElementById('app');
+            clearEl(app);
+
+            app.appendChild(renderInfoBox());
+            app.appendChild(renderPairingCards());
+            app.appendChild(renderAnalysis());
+            app.appendChild(renderPreview());
+            app.appendChild(renderUIPreview());
+            app.appendChild(renderSpecimens());
+        }
+
+        render();
+    </script>
+</body>
+</html>

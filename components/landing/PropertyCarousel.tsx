@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Pause, Play } from 'lucide-react';
 import Image from 'next/image';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // Liste des images de propriétés
 const PROPERTY_IMAGES = Array.from({ length: 28 }, (_, i) => {
@@ -31,6 +32,8 @@ export function PropertyCarousel({
   const [isPlaying, setIsPlaying] = useState(true);
   const [direction, setDirection] = useState(0);
   const timerRef = useRef<NodeJS.Timeout | undefined>(undefined);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   const goToNext = () => {
     setDirection(1);
@@ -148,7 +151,7 @@ export function PropertyCarousel({
           <button
             onClick={goToPrev}
             className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 hover:bg-white shadow-lg transition-all hover:scale-110"
-            aria-label="Image précédente"
+            aria-label={ariaLabels?.previousImage?.[language] || 'Image précédente'}
           >
             <ChevronLeft className="w-6 h-6 text-gray-800" />
           </button>
@@ -157,7 +160,7 @@ export function PropertyCarousel({
           <button
             onClick={goToNext}
             className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-3 rounded-full bg-white/90 hover:bg-white shadow-lg transition-all hover:scale-110"
-            aria-label="Image suivante"
+            aria-label={ariaLabels?.nextImage?.[language] || 'Image suivante'}
           >
             <ChevronRight className="w-6 h-6 text-gray-800" />
           </button>
@@ -166,7 +169,7 @@ export function PropertyCarousel({
           <button
             onClick={togglePlay}
             className="absolute bottom-4 right-4 z-10 p-3 rounded-full bg-white/90 hover:bg-white shadow-lg transition-all hover:scale-110"
-            aria-label={isPlaying ? 'Mettre en pause' : 'Lecture automatique'}
+            aria-label={isPlaying ? (ariaLabels?.pause?.[language] || 'Mettre en pause') : (ariaLabels?.autoPlay?.[language] || 'Lecture automatique')}
           >
             {isPlaying ? (
               <Pause className="w-5 h-5 text-gray-800" />
@@ -189,7 +192,7 @@ export function PropertyCarousel({
                   ? 'w-8 bg-white'
                   : 'w-2 bg-white/50 hover:bg-white/75'
               }`}
-              aria-label={`Aller à l'image ${index + 1}`}
+              aria-label={`${ariaLabels?.goToImage?.[language] || "Aller à l'image"} ${index + 1}`}
             />
           ))}
         </div>

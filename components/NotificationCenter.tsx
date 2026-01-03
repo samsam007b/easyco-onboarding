@@ -30,7 +30,8 @@ import {
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 const notificationIcons = {
   message: MessageSquare,
@@ -48,8 +49,13 @@ const notificationColors = {
   system: 'text-yellow-600',
 };
 
+const dateLocales: Record<string, typeof fr> = { fr, en: enUS, nl, de };
+
 export function NotificationCenter() {
   const router = useRouter();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
+  const locale = dateLocales[language] || fr;
   const {
     notifications,
     unreadCount,
@@ -89,7 +95,7 @@ export function NotificationCenter() {
           variant="ghost"
           size="icon"
           className="relative"
-          aria-label="Notifications"
+          aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
         >
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
@@ -186,7 +192,7 @@ export function NotificationCenter() {
                           <span className="text-xs text-gray-500">
                             {formatDistanceToNow(new Date(notification.created_at), {
                               addSuffix: true,
-                              locale: fr,
+                              locale,
                             })}
                           </span>
 

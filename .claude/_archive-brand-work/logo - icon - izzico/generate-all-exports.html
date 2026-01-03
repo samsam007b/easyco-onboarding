@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>IzzIco - Export All Icons</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a12;
+            color: #e8e8f0;
+            padding: 40px;
+            min-height: 100vh;
+        }
+        h1 { font-size: 24px; margin-bottom: 10px; }
+        .subtitle { color: #8888a0; margin-bottom: 30px; }
+        .badge {
+            display: inline-block;
+            background: #22c55e;
+            color: black;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+        .export-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        .export-card {
+            background: #12121a;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        .export-card h3 {
+            font-size: 14px;
+            margin-bottom: 15px;
+            color: #22c55e;
+        }
+        .preview {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            background: #1a1a24;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .preview.gradient-bg {
+            background: linear-gradient(135deg, #9c5698, #d15659, #e05747, #ff7c10, #ffc800);
+        }
+        .preview.light-bg {
+            background: #f5f5f5;
+        }
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .btn {
+            padding: 8px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-svg { background: #22c55e; color: black; }
+        .btn-png { background: #3b82f6; color: white; }
+        .btn-jpg { background: #f59e0b; color: black; }
+        .btn:hover { opacity: 0.9; transform: scale(1.02); }
+        .size-selector {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: #12121a;
+            border-radius: 12px;
+        }
+        .size-selector label { margin-right: 10px; }
+        .size-selector select {
+            background: #1a1a24;
+            color: #e8e8f0;
+            border: 1px solid #2a2a3a;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .download-all {
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #9c5698, #e05747, #ffc800);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .download-all:hover { opacity: 0.9; }
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            background: #1a1a24;
+            border-radius: 8px;
+            font-size: 13px;
+            color: #8888a0;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .status .success { color: #22c55e; }
+        .status .info { color: #3b82f6; }
+    </style>
+</head>
+<body>
+    <h1>IzzIco Icon - Export Tool <span class="badge">Fully Vectorized</span></h1>
+    <p class="subtitle">Generer toutes les versions PNG et JPEG de l'icone V1 - Paths pre-calcules, aucun transform</p>
+
+    <div class="size-selector">
+        <label for="export-size">Taille d'export:</label>
+        <select id="export-size">
+            <option value="64">64px</option>
+            <option value="128">128px</option>
+            <option value="256">256px</option>
+            <option value="512" selected>512px</option>
+            <option value="1024">1024px (App Icon)</option>
+            <option value="2048">2048px</option>
+        </select>
+        <button class="download-all" id="download-all-btn">Telecharger Tout (PNG + JPEG)</button>
+    </div>
+
+    <div class="export-grid" id="export-grid"></div>
+
+    <div class="status" id="status"></div>
+
+    <script>
+        // Pre-computed flattened paths (no transforms!)
+        var PATHS = {
+            loupe: 'M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z',
+            key: 'M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z',
+            tooth1: 'M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z',
+            tooth2: 'M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z',
+            circle: 'M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41',
+            capL: 'M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z',
+            capR: 'M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z',
+            bust: 'M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z'
+        };
+
+        // Icon variants configuration
+        var VARIANTS = [
+            { id: 'white', name: 'Blanc (transparent)', bgClass: '', fill: 'white' },
+            { id: 'dark', name: 'Sombre (transparent)', bgClass: 'light-bg', fill: '#0a0a12' },
+            { id: 'gradient', name: 'Gradient', bgClass: '', fill: 'url(#izzico-gradient)', hasGradient: true },
+            { id: 'multicolor', name: 'Multicolore', bgClass: '', multicolor: true },
+            { id: 'app-dark', name: 'App Icon (Dark BG)', bgClass: '', hasBg: '#0a0a12', fill: 'white' },
+            { id: 'app-gradient', name: 'App Icon (Gradient BG)', bgClass: '', hasGradientBg: true, fill: 'white' }
+        ];
+
+        function createSVGElement(tag, attrs) {
+            var el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            for (var key in attrs) {
+                el.setAttribute(key, attrs[key]);
+            }
+            return el;
+        }
+
+        function generateSVGElement(variant, size) {
+            var fill = variant.fill || 'white';
+
+            var svg = createSVGElement('svg', {
+                viewBox: '0 0 100 100',
+                width: size,
+                height: size,
+                fill: 'none',
+                xmlns: 'http://www.w3.org/2000/svg'
+            });
+
+            // Add defs if needed
+            if (variant.hasGradient || variant.hasGradientBg) {
+                var defs = createSVGElement('defs', {});
+                var gradient = createSVGElement('linearGradient', {
+                    id: 'izzico-gradient',
+                    x1: '0%', y1: '0%', x2: '100%', y2: '100%'
+                });
+                var stops = [
+                    { offset: '0%', color: '#9c5698' },
+                    { offset: '30%', color: '#d15659' },
+                    { offset: '50%', color: '#e05747' },
+                    { offset: '70%', color: '#ff7c10' },
+                    { offset: '100%', color: '#ffc800' }
+                ];
+                stops.forEach(function(s) {
+                    var stop = createSVGElement('stop', { offset: s.offset, 'stop-color': s.color });
+                    gradient.appendChild(stop);
+                });
+                defs.appendChild(gradient);
+                svg.appendChild(defs);
+            }
+
+            if (variant.multicolor) {
+                var defs = createSVGElement('defs', {});
+                var gradient = createSVGElement('linearGradient', {
+                    id: 'circle-grad',
+                    x1: '0%', y1: '0%', x2: '100%', y2: '100%'
+                });
+                var stops = [
+                    { offset: '0%', color: '#9c5698' },
+                    { offset: '50%', color: '#e05747' },
+                    { offset: '100%', color: '#ffa000' }
+                ];
+                stops.forEach(function(s) {
+                    var stop = createSVGElement('stop', { offset: s.offset, 'stop-color': s.color });
+                    gradient.appendChild(stop);
+                });
+                defs.appendChild(gradient);
+                svg.appendChild(defs);
+            }
+
+            // Background
+            if (variant.hasBg) {
+                svg.appendChild(createSVGElement('rect', { width: '100', height: '100', rx: '22', fill: variant.hasBg }));
+            }
+            if (variant.hasGradientBg) {
+                svg.appendChild(createSVGElement('rect', { width: '100', height: '100', rx: '22', fill: 'url(#izzico-gradient)' }));
+            }
+
+            // Icon layers using flattened paths (no transforms!)
+            if (variant.multicolor) {
+                // Loupe - Searcher Gold
+                svg.appendChild(createSVGElement('path', { d: PATHS.loupe, fill: '#ffa000' }));
+                // Key - Owner Purple
+                svg.appendChild(createSVGElement('path', { d: PATHS.key, fill: '#9c5698' }));
+                // Teeth - Owner Purple
+                svg.appendChild(createSVGElement('path', { d: PATHS.tooth1, fill: '#9c5698' }));
+                svg.appendChild(createSVGElement('path', { d: PATHS.tooth2, fill: '#9c5698' }));
+                // Circle - Gradient (donut path)
+                svg.appendChild(createSVGElement('path', { d: PATHS.circle, fill: 'url(#circle-grad)', 'fill-rule': 'evenodd' }));
+                // Bust - Resident Orange
+                svg.appendChild(createSVGElement('path', { d: PATHS.capL, fill: '#e05747' }));
+                svg.appendChild(createSVGElement('path', { d: PATHS.capR, fill: '#e05747' }));
+                svg.appendChild(createSVGElement('path', { d: PATHS.bust, fill: '#e05747' }));
+            } else {
+                // Loupe
+                svg.appendChild(createSVGElement('path', { d: PATHS.loupe, fill: fill }));
+                // Key
+                svg.appendChild(createSVGElement('path', { d: PATHS.key, fill: fill }));
+                // Teeth
+                svg.appendChild(createSVGElement('path', { d: PATHS.tooth1, fill: fill }));
+                svg.appendChild(createSVGElement('path', { d: PATHS.tooth2, fill: fill }));
+                // Circle (donut path with evenodd fill-rule)
+                svg.appendChild(createSVGElement('path', { d: PATHS.circle, fill: fill, 'fill-rule': 'evenodd' }));
+                // Bust caps
+                svg.appendChild(createSVGElement('path', { d: PATHS.capL, fill: fill }));
+                svg.appendChild(createSVGElement('path', { d: PATHS.capR, fill: fill }));
+                // Bust curve
+                svg.appendChild(createSVGElement('path', { d: PATHS.bust, fill: fill }));
+            }
+
+            return svg;
+        }
+
+        function svgToString(svgElement) {
+            var serializer = new XMLSerializer();
+            return serializer.serializeToString(svgElement);
+        }
+
+        function download(dataUrl, filename) {
+            var link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function log(message, type) {
+            var status = document.getElementById('status');
+            var time = new Date().toLocaleTimeString();
+            var div = document.createElement('div');
+            if (type) div.className = type;
+            div.textContent = '[' + time + '] ' + message;
+            status.appendChild(div);
+            status.scrollTop = status.scrollHeight;
+        }
+
+        function getSize() {
+            return parseInt(document.getElementById('export-size').value);
+        }
+
+        function downloadSVG(variantId) {
+            var variant = VARIANTS.find(function(v) { return v.id === variantId; });
+            var svg = generateSVGElement(variant, 100);
+            var svgString = svgToString(svg);
+            var blob = new Blob([svgString], { type: 'image/svg+xml' });
+            var url = URL.createObjectURL(blob);
+            download(url, 'izzico-icon-v1-' + variant.id + '.svg');
+            URL.revokeObjectURL(url);
+            log('SVG exporte: izzico-icon-v1-' + variant.id + '.svg', 'success');
+        }
+
+        function downloadPNG(variantId) {
+            var variant = VARIANTS.find(function(v) { return v.id === variantId; });
+            var size = getSize();
+            var svg = generateSVGElement(variant, size);
+            var svgString = svgToString(svg);
+            var img = new Image();
+            var blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, size, size);
+                canvas.toBlob(function(blob) {
+                    var pngUrl = URL.createObjectURL(blob);
+                    download(pngUrl, 'izzico-icon-v1-' + variant.id + '-' + size + 'px.png');
+                    URL.revokeObjectURL(pngUrl);
+                    URL.revokeObjectURL(url);
+                    log('PNG exporte: izzico-icon-v1-' + variant.id + '-' + size + 'px.png', 'success');
+                }, 'image/png');
+            };
+            img.src = url;
+        }
+
+        function downloadJPEG(variantId) {
+            var variant = VARIANTS.find(function(v) { return v.id === variantId; });
+            var size = getSize();
+            var svg = generateSVGElement(variant, size);
+            var svgString = svgToString(svg);
+            var img = new Image();
+            var blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+            var url = URL.createObjectURL(blob);
+
+            img.onload = function() {
+                var canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                var ctx = canvas.getContext('2d');
+
+                // Background for JPEG
+                if (!variant.hasBg && !variant.hasGradientBg) {
+                    ctx.fillStyle = '#0a0a12';
+                    ctx.fillRect(0, 0, size, size);
+                }
+
+                ctx.drawImage(img, 0, 0, size, size);
+                canvas.toBlob(function(blob) {
+                    var jpegUrl = URL.createObjectURL(blob);
+                    download(jpegUrl, 'izzico-icon-v1-' + variant.id + '-' + size + 'px.jpg');
+                    URL.revokeObjectURL(jpegUrl);
+                    URL.revokeObjectURL(url);
+                    log('JPEG exporte: izzico-icon-v1-' + variant.id + '-' + size + 'px.jpg', 'success');
+                }, 'image/jpeg', 0.95);
+            };
+            img.src = url;
+        }
+
+        function downloadAll() {
+            log('Demarrage de l\'export...', 'info');
+            var delay = 0;
+
+            VARIANTS.forEach(function(variant) {
+                setTimeout(function() { downloadSVG(variant.id); }, delay);
+                delay += 300;
+                setTimeout(function() { downloadPNG(variant.id); }, delay);
+                delay += 300;
+                setTimeout(function() { downloadJPEG(variant.id); }, delay);
+                delay += 300;
+            });
+
+            setTimeout(function() {
+                log('Export termine! Verifiez votre dossier Telechargements.', 'success');
+            }, delay + 500);
+        }
+
+        function createButton(text, className, onclick) {
+            var btn = document.createElement('button');
+            btn.className = 'btn ' + className;
+            btn.textContent = text;
+            btn.onclick = onclick;
+            return btn;
+        }
+
+        function renderGrid() {
+            var grid = document.getElementById('export-grid');
+
+            VARIANTS.forEach(function(variant) {
+                var card = document.createElement('div');
+                card.className = 'export-card';
+
+                var title = document.createElement('h3');
+                title.textContent = variant.name;
+                card.appendChild(title);
+
+                var preview = document.createElement('div');
+                preview.className = 'preview ' + (variant.bgClass || '');
+                if (variant.hasGradientBg) {
+                    preview.classList.add('gradient-bg');
+                }
+                preview.appendChild(generateSVGElement(variant, 60));
+                card.appendChild(preview);
+
+                var btnGroup = document.createElement('div');
+                btnGroup.className = 'btn-group';
+
+                var variantId = variant.id;
+                btnGroup.appendChild(createButton('SVG', 'btn-svg', function() { downloadSVG(variantId); }));
+                btnGroup.appendChild(createButton('PNG', 'btn-png', function() { downloadPNG(variantId); }));
+                btnGroup.appendChild(createButton('JPEG', 'btn-jpg', function() { downloadJPEG(variantId); }));
+
+                card.appendChild(btnGroup);
+                grid.appendChild(card);
+            });
+        }
+
+        // Initialize
+        document.getElementById('download-all-btn').onclick = downloadAll;
+        renderGrid();
+        log('Outil pret - Icones entierement vectorises (paths pre-calcules, aucun transform)', 'success');
+    </script>
+</body>
+</html>

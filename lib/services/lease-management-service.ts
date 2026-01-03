@@ -5,6 +5,69 @@
 
 import { createClient } from '@/lib/auth/supabase-client';
 
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setLeaseManagementServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const localeMap: Record<Language, string> = {
+  fr: 'fr-FR',
+  en: 'en-US',
+  nl: 'nl-NL',
+  de: 'de-DE',
+};
+
+const translations = {
+  tenantAlreadyAssociated: {
+    fr: 'Ce locataire est déjà associé à cette propriété',
+    en: 'This tenant is already associated with this property',
+    nl: 'Deze huurder is al gekoppeld aan dit pand',
+    de: 'Dieser Mieter ist bereits mit dieser Immobilie verknüpft',
+  },
+  cannotCreateLease: {
+    fr: 'Impossible de créer le bail: ',
+    en: 'Unable to create lease: ',
+    nl: 'Kan huurovereenkomst niet aanmaken: ',
+    de: 'Mietvertrag konnte nicht erstellt werden: ',
+  },
+  leaseCreatedOn: {
+    fr: (date: string) => `Bail créé le ${date}`,
+    en: (date: string) => `Lease created on ${date}`,
+    nl: (date: string) => `Huurovereenkomst aangemaakt op ${date}`,
+    de: (date: string) => `Mietvertrag erstellt am ${date}`,
+  },
+  unexpectedError: {
+    fr: 'Erreur inattendue',
+    en: 'Unexpected error',
+    nl: 'Onverwachte fout',
+    de: 'Unerwarteter Fehler',
+  },
+  applicationNotFound: {
+    fr: 'Application non trouvée',
+    en: 'Application not found',
+    nl: 'Aanvraag niet gevonden',
+    de: 'Bewerbung nicht gefunden',
+  },
+  property: {
+    fr: 'Propriété',
+    en: 'Property',
+    nl: 'Woning',
+    de: 'Immobilie',
+  },
+  errorLoadingData: {
+    fr: 'Erreur lors de la récupération des données',
+    en: 'Error loading data',
+    nl: 'Fout bij het laden van gegevens',
+    de: 'Fehler beim Laden der Daten',
+  },
+};
+
 export interface CreateLeaseFromApplicationData {
   applicationId: string;
   propertyId: string;
@@ -45,7 +108,7 @@ class LeaseManagementService {
       if (existingResident) {
         return {
           success: false,
-          error: 'Ce locataire est déjà associé à cette propriété'
+          error: translations.tenantAlreadyAssociated[currentLang]
         };
       }
 
@@ -100,7 +163,7 @@ class LeaseManagementService {
             console.error('[LeaseManagement] Error with minimal insert:', minimalError);
             return {
               success: false,
-              error: 'Impossible de créer le bail: ' + minimalError.message
+              error: translations.cannotCreateLease[currentLang] + minimalError.message
             };
           }
 
@@ -112,16 +175,17 @@ class LeaseManagementService {
 
         return {
           success: false,
-          error: 'Impossible de créer le bail: ' + residentError.message
+          error: translations.cannotCreateLease[currentLang] + residentError.message
         };
       }
 
       // 4. Update the application status to mark it as converted to lease
+      const formattedDate = new Date().toLocaleDateString(localeMap[currentLang]);
       await supabase
         .from('applications')
         .update({
           status: 'approved',
-          review_notes: `Bail créé le ${new Date().toLocaleDateString('fr-FR')}`
+          review_notes: translations.leaseCreatedOn[currentLang](formattedDate)
         })
         .eq('id', data.applicationId);
 
@@ -154,7 +218,7 @@ class LeaseManagementService {
       console.error('[LeaseManagement] Unexpected error:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Erreur inattendue'
+        error: error instanceof Error ? error.message : translations.unexpectedError[currentLang]
       };
     }
   }
@@ -195,7 +259,7 @@ class LeaseManagementService {
         return {
           application: null,
           property: null,
-          error: 'Application non trouvée'
+          error: translations.applicationNotFound[currentLang]
         };
       }
 
@@ -217,7 +281,7 @@ class LeaseManagementService {
           monthlyRent: property?.monthly_rent || 0,
         },
         property: {
-          title: property?.title || 'Propriété',
+          title: property?.title || translations.property[currentLang],
           monthlyRent: property?.monthly_rent || 0,
         }
       };
@@ -226,7 +290,7 @@ class LeaseManagementService {
       return {
         application: null,
         property: null,
-        error: 'Erreur lors de la récupération des données'
+        error: translations.errorLoadingData[currentLang]
       };
     }
   }

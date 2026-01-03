@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { createClient } from '@/lib/auth/supabase-client';
 
 interface PayeeInfo {
@@ -119,8 +120,8 @@ export default function SettleDebtModal({
         // Check for rate limit error
         if (error.message?.includes('Rate limit')) {
           setRateLimitError(true);
-          toast.error('Too many requests', {
-            description: 'Please wait before trying again.',
+          toast.error(getHookTranslation('settle', 'tooManyRequests'), {
+            description: getHookTranslation('settle', 'waitBeforeTrying'),
           });
           return;
         }
@@ -179,7 +180,7 @@ export default function SettleDebtModal({
         }
       } catch (error) {
         console.error('Error loading full IBAN:', error);
-        toast.error('Error loading data');
+        toast.error(getHookTranslation('settle', 'loadError'));
       } finally {
         setIsLoadingFullIBAN(false);
       }
@@ -206,10 +207,10 @@ export default function SettleDebtModal({
     try {
       await navigator.clipboard.writeText(payeeInfo.iban);
       setCopiedIBAN(true);
-      toast.success('IBAN copied!');
+      toast.success(getHookTranslation('settle', 'ibanCopied'));
       setTimeout(() => setCopiedIBAN(false), 3000);
     } catch {
-      toast.error('Error copying');
+      toast.error(getHookTranslation('settle', 'copyError'));
     }
   };
 
@@ -217,10 +218,10 @@ export default function SettleDebtModal({
     try {
       await navigator.clipboard.writeText(Math.abs(amount).toFixed(2));
       setCopiedAmount(true);
-      toast.success('Amount copied!');
+      toast.success(getHookTranslation('settle', 'amountCopied'));
       setTimeout(() => setCopiedAmount(false), 3000);
     } catch {
-      toast.error('Error copying');
+      toast.error(getHookTranslation('settle', 'copyError'));
     }
   };
 
@@ -254,13 +255,13 @@ export default function SettleDebtModal({
 
       if (error) throw error;
 
-      toast.success('Payment reported!', {
-        description: `${payeeName} will receive a notification to confirm`,
+      toast.success(getHookTranslation('settle', 'paymentReported'), {
+        description: `${payeeName} ${getHookTranslation('settle', 'willNotify')}`,
       });
       onClose();
     } catch (error: any) {
       console.error('Error marking as paid:', error);
-      toast.error('Error', { description: error.message });
+      toast.error(getHookTranslation('settle', 'error'), { description: error.message });
     }
   };
 

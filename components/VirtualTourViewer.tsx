@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Eye, Maximize, Play, Video, AlertTriangle } from 'lucide-react';
 import { VirtualTourInfo } from '@/types/virtual-tours.types';
 import { sanitizeEmbedCode } from '@/lib/security/sanitizer';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface VirtualTourViewerProps {
   tourInfo: VirtualTourInfo;
@@ -21,6 +22,8 @@ export default function VirtualTourViewer({
   onViewStart,
   onViewEnd,
 }: VirtualTourViewerProps) {
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [isPlaying, setIsPlaying] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [viewStartTime, setViewStartTime] = useState<number | null>(null);
@@ -173,7 +176,7 @@ export default function VirtualTourViewer({
               allow="xr-spatial-tracking; gyroscope; accelerometer"
               allowFullScreen
               frameBorder="0"
-              title="Visite virtuelle"
+              title={ariaLabels?.virtualTour?.[language] || 'Visite virtuelle'}
               sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
               referrerPolicy="strict-origin-when-cross-origin"
             />

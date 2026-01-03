@@ -4,6 +4,52 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setRulesServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  unknownUser: {
+    fr: 'Utilisateur inconnu',
+    en: 'Unknown user',
+    nl: 'Onbekende gebruiker',
+    de: 'Unbekannter Benutzer',
+  },
+  errors: {
+    createRule: {
+      fr: 'Erreur lors de la création de la règle',
+      en: 'Error creating the rule',
+      nl: 'Fout bij het aanmaken van de regel',
+      de: 'Fehler beim Erstellen der Regel',
+    },
+    castVote: {
+      fr: 'Erreur lors du vote',
+      en: 'Error casting vote',
+      nl: 'Fout bij het uitbrengen van de stem',
+      de: 'Fehler beim Abstimmen',
+    },
+    finalize: {
+      fr: 'Erreur lors de la finalisation',
+      en: 'Error finalizing the vote',
+      nl: 'Fout bij het afronden',
+      de: 'Fehler beim Abschließen',
+    },
+    archive: {
+      fr: "Erreur lors de l'archivage",
+      en: 'Error archiving the rule',
+      nl: 'Fout bij het archiveren',
+      de: 'Fehler beim Archivieren',
+    },
+  },
+};
 import type {
   HouseRule,
   HouseRuleWithProposer,
@@ -70,7 +116,7 @@ class RulesService {
 
           return {
             ...rule,
-            proposer_name: (rule.profiles as any)?.full_name || 'Utilisateur inconnu',
+            proposer_name: (rule.profiles as any)?.full_name || translations.unknownUser[currentLang],
             proposer_avatar: (rule.profiles as any)?.avatar_url,
             user_vote: userVote,
             has_voted: !!userVote,
@@ -122,7 +168,7 @@ class RulesService {
 
       const enriched: HouseRuleWithProposer = {
         ...data,
-        proposer_name: (data.profiles as any)?.full_name || 'Utilisateur inconnu',
+        proposer_name: (data.profiles as any)?.full_name || translations.unknownUser[currentLang],
         proposer_avatar: (data.profiles as any)?.avatar_url,
         user_vote: userVote?.vote,
         has_voted: !!userVote,
@@ -185,7 +231,7 @@ class RulesService {
       console.error('[Rules] ❌ Failed to create rule:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la création de la règle',
+        error: error.message || translations.errors.createRule[currentLang],
       };
     }
   }
@@ -217,7 +263,7 @@ class RulesService {
       console.error('[Rules] ❌ Failed to cast vote:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors du vote',
+        error: error.message || translations.errors.castVote[currentLang],
       };
     }
   }
@@ -244,7 +290,7 @@ class RulesService {
       console.error('[Rules] ❌ Failed to finalize voting:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la finalisation',
+        error: error.message || translations.errors.finalize[currentLang],
       };
     }
   }
@@ -271,7 +317,7 @@ class RulesService {
       console.error('[Rules] ❌ Failed to archive rule:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de l\'archivage',
+        error: error.message || translations.errors.archive[currentLang],
       };
     }
   }
@@ -300,7 +346,7 @@ class RulesService {
       const enriched: RuleVoteWithUser[] =
         data?.map((vote) => ({
           ...vote,
-          user_name: (vote.profiles as any)?.full_name || 'Utilisateur inconnu',
+          user_name: (vote.profiles as any)?.full_name || translations.unknownUser[currentLang],
           user_avatar: (vote.profiles as any)?.avatar_url,
         })) || [];
 

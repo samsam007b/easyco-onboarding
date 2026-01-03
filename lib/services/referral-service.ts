@@ -13,6 +13,106 @@ import type {
 } from '@/types/referral.types';
 
 // ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setReferralServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  notAuthenticated: {
+    fr: 'Non authentifié',
+    en: 'Not authenticated',
+    nl: 'Niet geauthenticeerd',
+    de: 'Nicht authentifiziert',
+  },
+  unexpectedError: {
+    fr: 'Erreur inattendue',
+    en: 'Unexpected error',
+    nl: 'Onverwachte fout',
+    de: 'Unerwarteter Fehler',
+  },
+  izzicoUser: {
+    fr: 'Utilisateur Izzico',
+    en: 'Izzico User',
+    nl: 'Izzico Gebruiker',
+    de: 'Izzico Benutzer',
+  },
+  aFriend: {
+    fr: 'Un ami',
+    en: 'A friend',
+    nl: 'Een vriend',
+    de: 'Ein Freund',
+  },
+  errors: {
+    generateCode: {
+      fr: 'Erreur lors de la génération du code',
+      en: 'Error generating the code',
+      nl: 'Fout bij het genereren van de code',
+      de: 'Fehler beim Generieren des Codes',
+    },
+    validation: {
+      fr: 'Erreur de validation',
+      en: 'Validation error',
+      nl: 'Validatiefout',
+      de: 'Validierungsfehler',
+    },
+    invalidCode: {
+      fr: 'Code invalide ou inactif',
+      en: 'Invalid or inactive code',
+      nl: 'Ongeldige of inactieve code',
+      de: 'Ungültiger oder inaktiver Code',
+    },
+    applyCode: {
+      fr: "Erreur lors de l'application du code",
+      en: 'Error applying the code',
+      nl: 'Fout bij het toepassen van de code',
+      de: 'Fehler beim Anwenden des Codes',
+    },
+    loadStats: {
+      fr: 'Erreur lors du chargement des statistiques',
+      en: 'Error loading statistics',
+      nl: 'Fout bij het laden van statistieken',
+      de: 'Fehler beim Laden der Statistiken',
+    },
+    loadCredits: {
+      fr: 'Erreur lors du chargement des crédits',
+      en: 'Error loading credits',
+      nl: 'Fout bij het laden van tegoeden',
+      de: 'Fehler beim Laden der Guthaben',
+    },
+  },
+  share: {
+    subject: {
+      fr: (name: string) => `${name} vous invite sur Izzico!`,
+      en: (name: string) => `${name} invites you to Izzico!`,
+      nl: (name: string) => `${name} nodigt je uit voor Izzico!`,
+      de: (name: string) => `${name} lädt dich zu Izzico ein!`,
+    },
+    body: {
+      fr: (name: string, code: string, url: string) =>
+        `${name} vous invite à rejoindre Izzico, la plateforme de coliving en Belgique!\n\nUtilisez le code ${code} ou cliquez sur ce lien pour vous inscrire et bénéficier d'un mois gratuit:\n${url}\n\nÀ bientôt sur Izzico!`,
+      en: (name: string, code: string, url: string) =>
+        `${name} invites you to join Izzico, the coliving platform in Belgium!\n\nUse the code ${code} or click this link to sign up and get a free month:\n${url}\n\nSee you soon on Izzico!`,
+      nl: (name: string, code: string, url: string) =>
+        `${name} nodigt je uit voor Izzico, het coliving-platform in België!\n\nGebruik de code ${code} of klik op deze link om je aan te melden en een gratis maand te krijgen:\n${url}\n\nTot snel op Izzico!`,
+      de: (name: string, code: string, url: string) =>
+        `${name} lädt dich zu Izzico ein, der Coliving-Plattform in Belgien!\n\nVerwende den Code ${code} oder klicke auf diesen Link, um dich anzumelden und einen kostenlosen Monat zu erhalten:\n${url}\n\nBis bald auf Izzico!`,
+    },
+    twitter: {
+      fr: (code: string) => `Rejoignez Izzico avec mon code ${code} et bénéficiez d'un mois gratuit!`,
+      en: (code: string) => `Join Izzico with my code ${code} and get a free month!`,
+      nl: (code: string) => `Sluit je aan bij Izzico met mijn code ${code} en krijg een gratis maand!`,
+      de: (code: string) => `Tritt Izzico mit meinem Code ${code} bei und erhalte einen kostenlosen Monat!`,
+    },
+  },
+};
+
+// ============================================================================
 // CONSTANTS
 // ============================================================================
 
@@ -36,7 +136,7 @@ export async function getUserReferralCode(
     if (!targetUserId) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Non authentifié' };
+        return { success: false, error: translations.notAuthenticated[currentLang] };
       }
       targetUserId = user.id;
     }
@@ -47,7 +147,7 @@ export async function getUserReferralCode(
 
     if (error) {
       logger.supabaseError('create_user_referral_code', error, { userId: targetUserId });
-      return { success: false, error: 'Erreur lors de la génération du code' };
+      return { success: false, error: translations.errors.generateCode[currentLang] };
     }
 
     const code = data as string;
@@ -60,7 +160,7 @@ export async function getUserReferralCode(
     };
   } catch (error) {
     logger.error('getUserReferralCode error:', error);
-    return { success: false, error: 'Erreur inattendue' };
+    return { success: false, error: translations.unexpectedError[currentLang] };
   }
 }
 
@@ -86,14 +186,14 @@ export async function validateReferralCode(
       logger.supabaseError('validate_referral_code', error, { code: normalizedCode });
       return {
         success: true,
-        data: { valid: false, error: 'Erreur de validation' },
+        data: { valid: false, error: translations.errors.validation[currentLang] },
       };
     }
 
     if (!referrerId) {
       return {
         success: true,
-        data: { valid: false, error: 'Code invalide ou inactif' },
+        data: { valid: false, error: translations.errors.invalidCode[currentLang] },
       };
     }
 
@@ -109,12 +209,12 @@ export async function validateReferralCode(
       data: {
         valid: true,
         referrer_id: referrerId,
-        referrer_name: referrer?.full_name || 'Utilisateur Izzico',
+        referrer_name: referrer?.full_name || translations.izzicoUser[currentLang],
       },
     };
   } catch (error) {
     logger.error('validateReferralCode error:', error);
-    return { success: false, error: 'Erreur inattendue' };
+    return { success: false, error: translations.unexpectedError[currentLang] };
   }
 }
 
@@ -138,7 +238,7 @@ export async function applyReferralCode(
     if (!targetUserId) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Non authentifié' };
+        return { success: false, error: translations.notAuthenticated[currentLang] };
       }
       targetUserId = user.id;
     }
@@ -152,7 +252,7 @@ export async function applyReferralCode(
 
     if (error) {
       logger.supabaseError('apply_referral_code', error, { userId: targetUserId, code });
-      return { success: false, error: 'Erreur lors de l\'application du code' };
+      return { success: false, error: translations.errors.applyCode[currentLang] };
     }
 
     const result = data as ApplyCodeResponse;
@@ -162,7 +262,7 @@ export async function applyReferralCode(
     };
   } catch (error) {
     logger.error('applyReferralCode error:', error);
-    return { success: false, error: 'Erreur inattendue' };
+    return { success: false, error: translations.unexpectedError[currentLang] };
   }
 }
 
@@ -184,7 +284,7 @@ export async function getReferralStats(
     if (!targetUserId) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Non authentifié' };
+        return { success: false, error: translations.notAuthenticated[currentLang] };
       }
       targetUserId = user.id;
     }
@@ -195,7 +295,7 @@ export async function getReferralStats(
 
     if (error) {
       logger.supabaseError('get_referral_stats', error, { userId: targetUserId });
-      return { success: false, error: 'Erreur lors du chargement des statistiques' };
+      return { success: false, error: translations.errors.loadStats[currentLang] };
     }
 
     // Parse the result (it's returned as JSONB from the function)
@@ -206,7 +306,7 @@ export async function getReferralStats(
     };
   } catch (error) {
     logger.error('getReferralStats error:', error);
-    return { success: false, error: 'Erreur inattendue' };
+    return { success: false, error: translations.unexpectedError[currentLang] };
   }
 }
 
@@ -228,7 +328,7 @@ export async function checkPendingReferral(
     if (!targetUserId) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Non authentifié' };
+        return { success: false, error: translations.notAuthenticated[currentLang] };
       }
       targetUserId = user.id;
     }
@@ -263,12 +363,12 @@ export async function checkPendingReferral(
       success: true,
       data: {
         hasReferrer: true,
-        referrerName: referrerData?.full_name || 'Utilisateur Izzico',
+        referrerName: referrerData?.full_name || translations.izzicoUser[currentLang],
       },
     };
   } catch (error) {
     logger.error('checkPendingReferral error:', error);
-    return { success: false, error: 'Erreur inattendue' };
+    return { success: false, error: translations.unexpectedError[currentLang] };
   }
 }
 
@@ -290,7 +390,7 @@ export async function getReferralCredits(
     if (!targetUserId) {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        return { success: false, error: 'Non authentifié' };
+        return { success: false, error: translations.notAuthenticated[currentLang] };
       }
       targetUserId = user.id;
     }
@@ -303,7 +403,7 @@ export async function getReferralCredits(
 
     if (error && error.code !== 'PGRST116') {
       logger.supabaseError('get referral credits', error, { userId: targetUserId });
-      return { success: false, error: 'Erreur lors du chargement des crédits' };
+      return { success: false, error: translations.errors.loadCredits[currentLang] };
     }
 
     const earned = data?.total_credits_earned || 0;
@@ -317,7 +417,7 @@ export async function getReferralCredits(
     };
   } catch (error) {
     logger.error('getReferralCredits error:', error);
-    return { success: false, error: 'Erreur inattendue' };
+    return { success: false, error: translations.unexpectedError[currentLang] };
   }
 }
 
@@ -333,16 +433,11 @@ export function generateShareMessage(
   shareUrl: string,
   userName?: string
 ): { subject: string; body: string } {
-  const inviterName = userName || 'Un ami';
+  const inviterName = userName || translations.aFriend[currentLang];
 
   return {
-    subject: `${inviterName} vous invite sur Izzico!`,
-    body: `${inviterName} vous invite à rejoindre Izzico, la plateforme de coliving en Belgique!
-
-Utilisez le code ${code} ou cliquez sur ce lien pour vous inscrire et bénéficier d'un mois gratuit:
-${shareUrl}
-
-À bientôt sur Izzico!`,
+    subject: translations.share.subject[currentLang](inviterName),
+    body: translations.share.body[currentLang](inviterName, code, shareUrl),
   };
 }
 
@@ -373,7 +468,7 @@ export function getFacebookShareUrl(shareUrl: string): string {
  * Generate Twitter/X share URL
  */
 export function getTwitterShareUrl(code: string, shareUrl: string): string {
-  const text = `Rejoignez Izzico avec mon code ${code} et bénéficiez d'un mois gratuit!`;
+  const text = translations.share.twitter[currentLang](code);
   return `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
 }
 

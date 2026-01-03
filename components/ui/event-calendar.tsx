@@ -1,12 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isToday, isSameDay, addMonths, subMonths, startOfWeek, endOfWeek, Locale } from 'date-fns';
+import { fr, enUS, nl, de } from 'date-fns/locale';
 import { ChevronLeft, ChevronRight, X, Clock, MapPin } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export interface CalendarEvent {
   id: string;
@@ -24,14 +25,26 @@ interface EventCalendarProps {
   onDateClick?: (date: Date) => void;
 }
 
+// Map language codes to date-fns locales
+const dateLocales: Record<string, Locale> = {
+  fr,
+  en: enUS,
+  nl,
+  de,
+};
+
 export function EventCalendar({ events, onEventClick, onDateClick }: EventCalendarProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
+  const t = getSection('calendar');
+  const locale = dateLocales[language] || fr;
 
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(currentMonth);
-  const calendarStart = startOfWeek(monthStart, { locale: fr });
-  const calendarEnd = endOfWeek(monthEnd, { locale: fr });
+  const calendarStart = startOfWeek(monthStart, { locale });
+  const calendarEnd = endOfWeek(monthEnd, { locale });
 
   const calendarDays = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
 
@@ -74,14 +87,16 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
     }
   };
 
-  const weekDays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
+  // Get translated weekdays
+  const weekDaysKeys = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'] as const;
+  const weekDays = weekDaysKeys.map(key => t?.weekDays?.[key]?.[language] || key);
 
   return (
     <div className="w-full h-full">
       {/* Header */}
       <div className="flex items-center justify-between mb-6 px-2">
         <h2 className="text-2xl font-bold text-gray-900">
-          {format(currentMonth, 'MMMM yyyy', { locale: fr })}
+          {format(currentMonth, 'MMMM yyyy', { locale })}
         </h2>
         <div className="flex gap-2">
           <Button
@@ -89,7 +104,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
             size="icon"
             onClick={handlePreviousMonth}
             className="h-9 w-9"
-            aria-label="Mois précédent"
+            aria-label={ariaLabels?.previousMonth?.[language] || 'Mois précédent'}
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
@@ -98,7 +113,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
             size="icon"
             onClick={handleNextMonth}
             className="h-9 w-9"
-            aria-label="Mois suivant"
+            aria-label={ariaLabels?.nextMonth?.[language] || 'Mois suivant'}
           >
             <ChevronRight className="h-4 w-4" />
           </Button>
@@ -171,14 +186,14 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
                     </div>
                     {event.start && (
                       <div className="text-[10px] opacity-90 mt-0.5">
-                        {format(new Date(event.start), 'HH:mm', { locale: fr })}
+                        {format(new Date(event.start), 'HH:mm', { locale })}
                       </div>
                     )}
                   </motion.div>
                 ))}
                 {dayEvents.length > 3 && (
                   <div className="text-xs text-orange-600 font-medium pl-1">
-                    +{dayEvents.length - 3} de plus
+                    +{dayEvents.length - 3} {t?.moreEvents?.[language] || 'de plus'}
                   </div>
                 )}
               </div>
@@ -199,13 +214,14 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold text-gray-900">
-                  {format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })}
+                  {format(selectedDate, 'EEEE d MMMM yyyy', { locale })}
                 </h3>
                 <Button
                   variant="ghost"
                   size="icon"
                   onClick={() => setSelectedDate(null)}
                   className="h-8 w-8"
+                  aria-label={ariaLabels?.close?.[language] || 'Fermer'}
                 >
                   <X className="h-4 w-4" />
                 </Button>
@@ -215,7 +231,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
               <div className="space-y-3">
                 {getEventsForDate(selectedDate).length === 0 ? (
                   <div className="text-center py-8 text-gray-500">
-                    <p>Aucune visite prévue ce jour</p>
+                    <p>{t?.noVisitPlanned?.[language] || 'Aucune visite prévue ce jour'}</p>
                   </div>
                 ) : (
                   getEventsForDate(selectedDate).map((event) => (
@@ -231,8 +247,8 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
                             <div className="flex items-center gap-2 text-sm text-gray-600">
                               <Clock className="w-4 h-4 text-orange-600" />
                               <span>
-                                {format(new Date(event.start), 'HH:mm', { locale: fr })}
-                                {event.end && ` - ${format(new Date(event.end), 'HH:mm', { locale: fr })}`}
+                                {format(new Date(event.start), 'HH:mm', { locale })}
+                                {event.end && ` - ${format(new Date(event.end), 'HH:mm', { locale })}`}
                               </span>
                             </div>
                           )}

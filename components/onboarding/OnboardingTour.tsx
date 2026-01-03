@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronRight, ChevronLeft, Sparkles, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { OnboardingStep } from '@/lib/hooks/useOnboarding';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface OnboardingTourProps {
   isActive: boolean;
@@ -49,6 +50,8 @@ const OnboardingTour = memo(function OnboardingTour({
   onComplete,
   variant = 'searcher',
 }: OnboardingTourProps) {
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ x: 0, y: 0 });
   const [windowSize, setWindowSize] = useState({ width: 0, height: 0 });
@@ -392,7 +395,7 @@ const OnboardingTour = memo(function OnboardingTour({
                   0 1px 4px ${colors.glowSoft}
                 `,
               }}
-              title="Cliquez pour continuer"
+              title={ariaLabels?.clickToContinue?.[language] || 'Cliquez pour continuer'}
             >
               {/* Shimmer animation */}
               <motion.div

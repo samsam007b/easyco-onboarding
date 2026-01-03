@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Squircle Tuner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --owner-start: #9b6b9e;
+            --resident-mid: #e8837c;
+            --searcher-end: #f5b73f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: #0a0a12;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .header-sub {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            margin-top: 4px;
+        }
+
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Preview */
+        .preview-area {
+            background: linear-gradient(135deg, var(--owner-start) 0%, var(--resident-mid) 50%, var(--searcher-end) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            gap: 40px;
+        }
+
+        .preview-area.dark-bg {
+            background: #1a1a2e;
+        }
+
+        .preview-area.white-bg {
+            background: #ffffff;
+        }
+
+        .preview-row {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .element-box {
+            text-align: center;
+        }
+
+        .element-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            margin-bottom: 15px;
+        }
+
+        /* Squircle reference from Fredoka */
+        .fredoka-ref {
+            width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fredoka-o {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 180px;
+            font-weight: 500;
+            color: white;
+            line-height: 1;
+        }
+
+        /* Icon display */
+        .icon-display {
+            width: 200px;
+            height: 200px;
+        }
+
+        .icon-display svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Shape comparison */
+        .shape-comparison {
+            display: flex;
+            gap: 30px;
+            background: rgba(0,0,0,0.4);
+            padding: 20px 30px;
+            border-radius: 12px;
+            align-items: center;
+        }
+
+        .shape-item {
+            text-align: center;
+        }
+
+        .shape-item .label {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            margin-bottom: 8px;
+        }
+
+        .shape-preview {
+            width: 60px;
+            height: 60px;
+            background: white;
+            margin: 0 auto;
+        }
+
+        .shape-preview.circle {
+            border-radius: 50%;
+        }
+
+        .shape-preview.squircle-light {
+            border-radius: 30%;
+        }
+
+        .shape-preview.squircle-medium {
+            border-radius: 22%;
+        }
+
+        .shape-preview.squircle-heavy {
+            border-radius: 15%;
+        }
+
+        /* Controls */
+        .controls-panel {
+            background: #0f0f1a;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 30px;
+        }
+
+        .control-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.4;
+            margin-bottom: 15px;
+        }
+
+        .control-item {
+            margin-bottom: 18px;
+        }
+
+        .control-item label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .control-item label .value {
+            color: var(--searcher-end);
+            font-weight: 600;
+        }
+
+        .control-item input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.12);
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .control-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+        }
+
+        .bg-toggle {
+            display: flex;
+            gap: 6px;
+        }
+
+        .bg-toggle button {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: white;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        .bg-toggle button.active {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--searcher-end);
+        }
+
+        .info-panel {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .info-panel h4 {
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .label {
+            opacity: 0.5;
+        }
+
+        .export-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .note {
+            font-size: 0.75rem;
+            opacity: 0.4;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+
+        /* Overlay for inner shape visualization */
+        .inner-shape-overlay {
+            position: absolute;
+            border: 2px dashed rgba(255,255,255,0.5);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Squircle Tuner - Forme interieure du rond</h1>
+        <p class="header-sub">Aligner le creux de la tete avec la forme Fredoka</p>
+    </div>
+
+    <div class="main-container">
+        <div class="preview-area" id="previewArea">
+            <div class="preview-row">
+                <!-- Reference: Fredoka O shape -->
+                <div class="element-box">
+                    <div class="element-label">Reference Fredoka "O"</div>
+                    <div class="fredoka-ref">
+                        <span class="fredoka-o">O</span>
+                    </div>
+                </div>
+
+                <!-- Icon with adjustable inner squircle -->
+                <div class="element-box">
+                    <div class="element-label">Icon (creux ajustable)</div>
+                    <div class="icon-display">
+                        <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" id="iconSvg">
+                            <defs>
+                                <!-- Mask for the head hole -->
+                                <mask id="headMask">
+                                    <rect width="1000" height="1000" fill="white"/>
+                                    <!-- Inner squircle cutout - will be adjusted -->
+                                    <rect id="innerSquircle"
+                                        x="280" y="210"
+                                        width="200" height="200"
+                                        rx="100" ry="100"
+                                        fill="black"/>
+                                </mask>
+                            </defs>
+
+                            <!-- Head (outer circle with squircle hole) -->
+                            <g mask="url(#headMask)">
+                                <circle id="headOuter" cx="380" cy="310" r="200" fill="white"/>
+                            </g>
+
+                            <!-- Magnifying glass handle -->
+                            <line id="loupeHandle"
+                                x1="535" y1="465" x2="680" y2="610"
+                                stroke="white" stroke-width="80" stroke-linecap="round"/>
+
+                            <!-- Key handle -->
+                            <line id="keyHandle"
+                                x1="225" y1="465" x2="80" y2="610"
+                                stroke="white" stroke-width="80" stroke-linecap="round"/>
+
+                            <!-- Key teeth -->
+                            <g id="keyTeeth">
+                                <line x1="120" y1="545" x2="165" y2="590"
+                                    stroke="white" stroke-width="40" stroke-linecap="round"/>
+                                <line x1="80" y1="585" x2="125" y2="630"
+                                    stroke="white" stroke-width="40" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Bust -->
+                            <path id="bust"
+                                d="M 180 800 Q 380 680 580 800"
+                                fill="none" stroke="white" stroke-width="80" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shape comparison strip -->
+            <div class="shape-comparison">
+                <div class="shape-item">
+                    <div class="label">Cercle pur</div>
+                    <div class="shape-preview circle"></div>
+                </div>
+                <div class="shape-item">
+                    <div class="label">Squircle leger</div>
+                    <div class="shape-preview squircle-light"></div>
+                </div>
+                <div class="shape-item">
+                    <div class="label">Squircle moyen</div>
+                    <div class="shape-preview squircle-medium"></div>
+                </div>
+                <div class="shape-item">
+                    <div class="label">Squircle fort</div>
+                    <div class="shape-preview squircle-heavy"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-section">
+                <h3>Fond</h3>
+                <div class="bg-toggle">
+                    <button id="bgGradient" class="active">Gradient</button>
+                    <button id="bgDark">Sombre</button>
+                    <button id="bgWhite">Blanc</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Forme du creux (interieur)</h3>
+
+                <div class="control-item">
+                    <label>
+                        <span>Squircleness</span>
+                        <span class="value" id="squirclenessValue">100% (cercle)</span>
+                    </label>
+                    <input type="range" id="squircleness" min="20" max="100" value="100">
+                </div>
+
+                <p class="note">
+                    100% = cercle parfait<br>
+                    ~70% = squircle Fredoka<br>
+                    20% = presque carre
+                </p>
+            </div>
+
+            <div class="control-section">
+                <h3>Taille du creux</h3>
+
+                <div class="control-item">
+                    <label>
+                        <span>Diametre interieur</span>
+                        <span class="value" id="innerSizeValue">200</span>
+                    </label>
+                    <input type="range" id="innerSize" min="120" max="280" value="200">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Epaisseur du trait</h3>
+
+                <div class="control-item">
+                    <label>
+                        <span>Stroke principal</span>
+                        <span class="value" id="strokeValue">80</span>
+                    </label>
+                    <input type="range" id="strokeWidth" min="40" max="140" value="80">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Taille affichage</h3>
+
+                <div class="control-item">
+                    <label>
+                        <span>Taille</span>
+                        <span class="value" id="displaySizeValue">200px</span>
+                    </label>
+                    <input type="range" id="displaySize" min="150" max="350" value="200">
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h4>Valeurs actuelles</h4>
+                <div class="info-row">
+                    <span class="label">Border-radius equiv.</span>
+                    <span class="value" id="borderRadiusValue">50%</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">SVG rx/ry</span>
+                    <span class="value" id="rxryValue">100</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Epaisseur trait</span>
+                    <span class="value" id="strokeInfoValue">80px</span>
+                </div>
+            </div>
+
+            <button class="export-btn" id="exportBtn">Copier SVG</button>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const innerSquircle = document.getElementById('innerSquircle');
+        const headOuter = document.getElementById('headOuter');
+        const iconDisplay = document.querySelector('.icon-display');
+        const previewArea = document.getElementById('previewArea');
+
+        // Stroke elements
+        const loupeHandle = document.getElementById('loupeHandle');
+        const keyHandle = document.getElementById('keyHandle');
+        const bust = document.getElementById('bust');
+        const keyTeeth = document.querySelectorAll('#keyTeeth line');
+
+        // Sliders
+        const squircleness = document.getElementById('squircleness');
+        const innerSize = document.getElementById('innerSize');
+        const strokeWidth = document.getElementById('strokeWidth');
+        const displaySize = document.getElementById('displaySize');
+
+        // Value displays
+        const squirclenessValue = document.getElementById('squirclenessValue');
+        const innerSizeValue = document.getElementById('innerSizeValue');
+        const strokeValue = document.getElementById('strokeValue');
+        const displaySizeValue = document.getElementById('displaySizeValue');
+        const borderRadiusValue = document.getElementById('borderRadiusValue');
+        const rxryValue = document.getElementById('rxryValue');
+        const strokeInfoValue = document.getElementById('strokeInfoValue');
+
+        // Background buttons
+        const bgGradient = document.getElementById('bgGradient');
+        const bgDark = document.getElementById('bgDark');
+        const bgWhite = document.getElementById('bgWhite');
+
+        // Center of the head
+        const HEAD_CENTER_X = 380;
+        const HEAD_CENTER_Y = 310;
+
+        function updateIcon() {
+            const squircle = parseInt(squircleness.value);
+            const size = parseInt(innerSize.value);
+            const stroke = parseInt(strokeWidth.value);
+            const display = parseInt(displaySize.value);
+
+            // Calculate the rx/ry based on squircleness
+            // 100% = full circle (rx = size/2), lower = more squarish
+            const maxRadius = size / 2;
+            const radius = maxRadius * (squircle / 100);
+
+            // Update inner squircle position and shape
+            const halfSize = size / 2;
+            innerSquircle.setAttribute('x', HEAD_CENTER_X - halfSize);
+            innerSquircle.setAttribute('y', HEAD_CENTER_Y - halfSize);
+            innerSquircle.setAttribute('width', size);
+            innerSquircle.setAttribute('height', size);
+            innerSquircle.setAttribute('rx', radius);
+            innerSquircle.setAttribute('ry', radius);
+
+            // Calculate outer radius based on inner size + stroke
+            const outerRadius = halfSize + stroke;
+            headOuter.setAttribute('r', outerRadius);
+
+            // Update stroke widths
+            loupeHandle.setAttribute('stroke-width', stroke);
+            keyHandle.setAttribute('stroke-width', stroke);
+            bust.setAttribute('stroke-width', stroke);
+            keyTeeth.forEach(tooth => {
+                tooth.setAttribute('stroke-width', stroke / 2);
+            });
+
+            // Update display size
+            iconDisplay.style.width = display + 'px';
+            iconDisplay.style.height = display + 'px';
+
+            // Update value displays
+            if (squircle >= 95) {
+                squirclenessValue.textContent = squircle + '% (cercle)';
+            } else if (squircle >= 65 && squircle <= 75) {
+                squirclenessValue.textContent = squircle + '% (Fredoka)';
+            } else if (squircle <= 30) {
+                squirclenessValue.textContent = squircle + '% (carre)';
+            } else {
+                squirclenessValue.textContent = squircle + '%';
+            }
+
+            innerSizeValue.textContent = size;
+            strokeValue.textContent = stroke;
+            displaySizeValue.textContent = display + 'px';
+
+            // Info panel
+            borderRadiusValue.textContent = Math.round(squircle / 2) + '%';
+            rxryValue.textContent = Math.round(radius);
+            strokeInfoValue.textContent = stroke + 'px';
+        }
+
+        // Event listeners
+        squircleness.addEventListener('input', updateIcon);
+        innerSize.addEventListener('input', updateIcon);
+        strokeWidth.addEventListener('input', updateIcon);
+        displaySize.addEventListener('input', updateIcon);
+
+        // Background toggles
+        bgGradient.addEventListener('click', () => {
+            previewArea.className = 'preview-area';
+            bgGradient.classList.add('active');
+            bgDark.classList.remove('active');
+            bgWhite.classList.remove('active');
+        });
+
+        bgDark.addEventListener('click', () => {
+            previewArea.className = 'preview-area dark-bg';
+            bgDark.classList.add('active');
+            bgGradient.classList.remove('active');
+            bgWhite.classList.remove('active');
+        });
+
+        bgWhite.addEventListener('click', () => {
+            previewArea.className = 'preview-area white-bg';
+            bgWhite.classList.add('active');
+            bgGradient.classList.remove('active');
+            bgDark.classList.remove('active');
+        });
+
+        // Export
+        document.getElementById('exportBtn').addEventListener('click', () => {
+            const svgEl = document.getElementById('iconSvg');
+            const svgContent = svgEl.outerHTML;
+            navigator.clipboard.writeText(svgContent).then(() => {
+                const btn = document.getElementById('exportBtn');
+                btn.textContent = 'Copie !';
+                setTimeout(() => btn.textContent = 'Copier SVG', 2000);
+            });
+        });
+
+        // Initial
+        updateIcon();
+    </script>
+</body>
+</html>

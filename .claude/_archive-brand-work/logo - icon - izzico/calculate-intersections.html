@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcul Précis des Intersections</title>
+  <style>
+    body {
+      font-family: 'SF Mono', Monaco, monospace;
+      background: #1a1a2e;
+      color: white;
+      padding: 40px;
+      font-size: 13px;
+    }
+    h1 { color: #ff7c10; }
+    .section {
+      background: #252542;
+      border-radius: 12px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .result { color: #4caf50; font-weight: bold; }
+    .coord { color: #ffc800; }
+    pre { background: #0a0a12; padding: 15px; border-radius: 8px; overflow-x: auto; }
+    svg { background: #0a0a12; border-radius: 8px; }
+    .row { display: flex; gap: 30px; align-items: flex-start; }
+    button {
+      background: linear-gradient(135deg, #9c5698, #ff7c10);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Calcul Précis des Intersections Circle-Handle</h1>
+
+  <div class="row">
+    <div class="section" style="flex: 1;">
+      <h2>Géométrie de référence</h2>
+      <p>Circle center: <span class="coord">(50, 41)</span></p>
+      <p>Circle radius: <span class="coord">18.75</span></p>
+      <p>Circle equation: (x-50)² + (y-41)² = 351.5625</p>
+
+      <h3>Loupe Handle - Points originaux:</h3>
+      <pre id="loupe-points"></pre>
+
+      <h3>Key Handle - Points originaux:</h3>
+      <pre id="key-points"></pre>
+    </div>
+
+    <div class="section" style="flex: 1;">
+      <h2>Visualisation</h2>
+      <svg id="viz" width="500" height="500" viewBox="0 0 100 100">
+        <!-- Grid -->
+        <defs>
+          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="#333" stroke-width="0.2"/>
+          </pattern>
+        </defs>
+        <rect width="100" height="100" fill="url(#grid)"/>
+
+        <!-- Circle -->
+        <circle cx="50" cy="41" r="18.75" fill="none" stroke="#ff7c10" stroke-width="0.3"/>
+        <circle cx="50" cy="41" r="11.25" fill="none" stroke="#9c5698" stroke-width="0.3"/>
+
+        <!-- Original handles (transparent) -->
+        <path id="loupe-original" d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="rgba(255,124,16,0.3)" stroke="#ff7c10" stroke-width="0.2"/>
+
+        <path id="key-original" d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="rgba(156,86,152,0.3)" stroke="#9c5698" stroke-width="0.2"/>
+
+        <!-- Intersection points will be added here -->
+        <g id="intersections"></g>
+      </svg>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Résultats du calcul</h2>
+    <pre id="results"></pre>
+    <button onclick="copyResults()">Copier les paths tronqués</button>
+  </div>
+
+  <div class="section">
+    <h2>SVG Final Vectorisé</h2>
+    <div class="row">
+      <svg width="400" height="400" viewBox="0 0 100 100" style="background: #0a0a12;">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#9c5698"/>
+            <stop offset="30%" stop-color="#d15659"/>
+            <stop offset="50%" stop-color="#e05747"/>
+            <stop offset="70%" stop-color="#ff7c10"/>
+            <stop offset="100%" stop-color="#ffc800"/>
+          </linearGradient>
+        </defs>
+        <g id="final-icon"></g>
+      </svg>
+      <pre id="final-svg" style="flex: 1; max-height: 400px; overflow-y: auto;"></pre>
+    </div>
+  </div>
+
+  <script>
+    const cx = 50, cy = 41, r = 18.75;
+
+    // Loupe handle key points
+    const loupePoints = [
+      {name: 'Start', x: 38.723, y: 54.778},
+      {name: 'Corner1', x: 26.723, y: 65.21},
+      {name: 'Cap1-c1', x: 25.66, y: 66.134},
+      {name: 'Cap1-c2', x: 24.05, y: 66.021},
+      {name: 'Cap1-end', x: 23.126, y: 64.958},
+      {name: 'Corner2', x: 22.535, y: 64.279},
+      {name: 'Cap2-c1', x: 21.611, y: 63.216},
+      {name: 'Cap2-c2', x: 21.724, y: 61.605},
+      {name: 'Cap2-end', x: 22.787, y: 60.682},
+      {name: 'Corner3', x: 34.787, y: 50.25},
+      {name: 'Cap3-c1', x: 35.85, y: 49.326},
+      {name: 'Cap3-c2', x: 37.46, y: 49.439},
+      {name: 'Cap3-end', x: 38.384, y: 50.502},
+      {name: 'Corner4', x: 38.975, y: 51.181},
+      {name: 'Cap4-c1', x: 39.899, y: 52.244},
+      {name: 'Cap4-c2', x: 39.786, y: 53.855}
+    ];
+
+    // Key handle key points
+    const keyPoints = [
+      {name: 'Start', x: 65.962, y: 48.89},
+      {name: 'Corner1', x: 78.825, y: 58.236},
+      {name: 'Cap1-c1', x: 79.964, y: 59.064},
+      {name: 'Cap1-c2', x: 80.217, y: 60.658},
+      {name: 'Cap1-end', x: 79.389, y: 61.798},
+      {name: 'Corner2', x: 78.86, y: 62.526},
+      {name: 'Cap2-c1', x: 78.032, y: 63.665},
+      {name: 'Cap2-c2', x: 76.438, y: 63.918},
+      {name: 'Cap2-end', x: 75.298, y: 63.09},
+      {name: 'Corner3', x: 62.435, y: 53.744},
+      {name: 'Cap3-c1', x: 61.296, y: 52.916},
+      {name: 'Cap3-c2', x: 61.043, y: 51.322},
+      {name: 'Cap3-end', x: 61.871, y: 50.182},
+      {name: 'Corner4', x: 62.4, y: 49.454},
+      {name: 'Cap4-c1', x: 63.228, y: 48.315},
+      {name: 'Cap4-c2', x: 64.822, y: 48.062}
+    ];
+
+    // Check if point is inside circle
+    function isInside(x, y) {
+      return (x - cx) * (x - cx) + (y - cy) * (y - cy) < r * r;
+    }
+
+    // Distance from center
+    function distFromCenter(x, y) {
+      return Math.sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy));
+    }
+
+    // Find intersection of line segment with circle
+    function lineCircleIntersect(x1, y1, x2, y2) {
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const fx = x1 - cx;
+      const fy = y1 - cy;
+
+      const a = dx * dx + dy * dy;
+      const b = 2 * (fx * dx + fy * dy);
+      const c = fx * fx + fy * fy - r * r;
+
+      const disc = b * b - 4 * a * c;
+      if (disc < 0) return null;
+
+      const t1 = (-b - Math.sqrt(disc)) / (2 * a);
+      const t2 = (-b + Math.sqrt(disc)) / (2 * a);
+
+      const results = [];
+      if (t1 >= 0 && t1 <= 1) {
+        results.push({x: x1 + t1 * dx, y: y1 + t1 * dy, t: t1});
+      }
+      if (t2 >= 0 && t2 <= 1 && Math.abs(t2 - t1) > 0.001) {
+        results.push({x: x1 + t2 * dx, y: y1 + t2 * dy, t: t2});
+      }
+      return results.length > 0 ? results : null;
+    }
+
+    // Display point info
+    function showPoints() {
+      let loupeHtml = '';
+      loupePoints.forEach(p => {
+        const inside = isInside(p.x, p.y);
+        const dist = distFromCenter(p.x, p.y).toFixed(2);
+        loupeHtml += p.name + ': (' + p.x + ', ' + p.y + ') - dist=' + dist + (inside ? ' [INSIDE]' : ' [outside]') + '\n';
+      });
+      document.getElementById('loupe-points').textContent = loupeHtml;
+
+      let keyHtml = '';
+      keyPoints.forEach(p => {
+        const inside = isInside(p.x, p.y);
+        const dist = distFromCenter(p.x, p.y).toFixed(2);
+        keyHtml += p.name + ': (' + p.x + ', ' + p.y + ') - dist=' + dist + (inside ? ' [INSIDE]' : ' [outside]') + '\n';
+      });
+      document.getElementById('key-points').textContent = keyHtml;
+    }
+
+    // Calculate intersections
+    function calculateIntersections() {
+      const results = [];
+      const intersectGroup = document.getElementById('intersections');
+
+      // Loupe: line from Start (38.723, 54.778) to Corner1 (26.723, 65.21)
+      const loupe1 = lineCircleIntersect(38.723, 54.778, 26.723, 65.21);
+      if (loupe1) {
+        loupe1.forEach((p, i) => {
+          results.push({edge: 'Loupe Edge 1', point: p});
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', p.x);
+          circle.setAttribute('cy', p.y);
+          circle.setAttribute('r', '0.8');
+          circle.setAttribute('fill', '#4caf50');
+          intersectGroup.appendChild(circle);
+        });
+      }
+
+      // Loupe: line from Corner4 (38.975, 51.181) to Corner3 (34.787, 50.25)
+      // Actually the path goes Start -> Corner1 -> ... -> Corner3 -> Corner4 -> Start
+      // Edge going back is from Cap2-end (22.787, 60.682) to Corner3 (34.787, 50.25)
+      const loupe2 = lineCircleIntersect(22.787, 60.682, 34.787, 50.25);
+      if (loupe2) {
+        loupe2.forEach((p, i) => {
+          results.push({edge: 'Loupe Edge 2', point: p});
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', p.x);
+          circle.setAttribute('cy', p.y);
+          circle.setAttribute('r', '0.8');
+          circle.setAttribute('fill', '#8bc34a');
+          intersectGroup.appendChild(circle);
+        });
+      }
+
+      // Key: line from Start (65.962, 48.89) to Corner1 (78.825, 58.236)
+      const key1 = lineCircleIntersect(65.962, 48.89, 78.825, 58.236);
+      if (key1) {
+        key1.forEach((p, i) => {
+          results.push({edge: 'Key Edge 1', point: p});
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', p.x);
+          circle.setAttribute('cy', p.y);
+          circle.setAttribute('r', '0.8');
+          circle.setAttribute('fill', '#2196f3');
+          intersectGroup.appendChild(circle);
+        });
+      }
+
+      // Key: line from Cap2-end (75.298, 63.09) to Corner3 (62.435, 53.744)
+      const key2 = lineCircleIntersect(75.298, 63.09, 62.435, 53.744);
+      if (key2) {
+        key2.forEach((p, i) => {
+          results.push({edge: 'Key Edge 2', point: p});
+          const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          circle.setAttribute('cx', p.x);
+          circle.setAttribute('cy', p.y);
+          circle.setAttribute('r', '0.8');
+          circle.setAttribute('fill', '#03a9f4');
+          intersectGroup.appendChild(circle);
+        });
+      }
+
+      // Display results
+      let resultText = 'INTERSECTION POINTS CALCULATED:\n\n';
+      results.forEach(r => {
+        resultText += r.edge + ': (' + r.point.x.toFixed(3) + ', ' + r.point.y.toFixed(3) + ')\n';
+      });
+
+      // Now create the trimmed handle paths
+      resultText += '\n\nTRIMMED HANDLE PATHS:\n\n';
+
+      // For loupe: we keep the path from intersection1 -> around the handle -> intersection2
+      // Then close with an arc along the circle
+      if (loupe1 && loupe1[0] && loupe2 && loupe2[0]) {
+        const L1 = loupe1[0];
+        const L2 = loupe2[0];
+
+        const loupeTrimmed = 'M ' + L1.x.toFixed(3) + ' ' + L1.y.toFixed(3) +
+          ' L 26.723 65.21' +
+          ' C 25.66 66.134 24.05 66.021 23.126 64.958' +
+          ' L 22.535 64.279' +
+          ' C 21.611 63.216 21.724 61.605 22.787 60.682' +
+          ' L ' + L2.x.toFixed(3) + ' ' + L2.y.toFixed(3) +
+          ' A 18.75 18.75 0 0 1 ' + L1.x.toFixed(3) + ' ' + L1.y.toFixed(3) +
+          ' Z';
+
+        resultText += 'LOUPE TRIMMED:\n' + loupeTrimmed + '\n\n';
+        window.loupeTrimmed = loupeTrimmed;
+        window.L1 = L1;
+        window.L2 = L2;
+      }
+
+      if (key1 && key1[0] && key2 && key2[0]) {
+        const K1 = key1[0];
+        const K2 = key2[0];
+
+        const keyTrimmed = 'M ' + K1.x.toFixed(3) + ' ' + K1.y.toFixed(3) +
+          ' L 78.825 58.236' +
+          ' C 79.964 59.064 80.217 60.658 79.389 61.798' +
+          ' L 78.86 62.526' +
+          ' C 78.032 63.665 76.438 63.918 75.298 63.09' +
+          ' L ' + K2.x.toFixed(3) + ' ' + K2.y.toFixed(3) +
+          ' A 18.75 18.75 0 0 1 ' + K1.x.toFixed(3) + ' ' + K1.y.toFixed(3) +
+          ' Z';
+
+        resultText += 'KEY TRIMMED:\n' + keyTrimmed + '\n\n';
+        window.keyTrimmed = keyTrimmed;
+        window.K1 = K1;
+        window.K2 = K2;
+      }
+
+      document.getElementById('results').textContent = resultText;
+
+      // Generate final SVG
+      generateFinalSVG();
+    }
+
+    function generateFinalSVG() {
+      const ns = 'http://www.w3.org/2000/svg';
+      const finalGroup = document.getElementById('final-icon');
+
+      // Clear
+      while (finalGroup.firstChild) {
+        finalGroup.removeChild(finalGroup.firstChild);
+      }
+
+      // Loupe trimmed
+      if (window.loupeTrimmed) {
+        const loupe = document.createElementNS(ns, 'path');
+        loupe.setAttribute('d', window.loupeTrimmed);
+        loupe.setAttribute('fill', 'url(#grad)');
+        finalGroup.appendChild(loupe);
+      }
+
+      // Key trimmed
+      if (window.keyTrimmed) {
+        const key = document.createElementNS(ns, 'path');
+        key.setAttribute('d', window.keyTrimmed);
+        key.setAttribute('fill', 'url(#grad)');
+        finalGroup.appendChild(key);
+      }
+
+      // Key teeth
+      const tooth1 = document.createElementNS(ns, 'path');
+      tooth1.setAttribute('d', 'M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z');
+      tooth1.setAttribute('fill', 'url(#grad)');
+      finalGroup.appendChild(tooth1);
+
+      const tooth2 = document.createElementNS(ns, 'path');
+      tooth2.setAttribute('d', 'M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z');
+      tooth2.setAttribute('fill', 'url(#grad)');
+      finalGroup.appendChild(tooth2);
+
+      // Circle donut
+      const circle = document.createElementNS(ns, 'path');
+      circle.setAttribute('d', 'M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41');
+      circle.setAttribute('fill-rule', 'evenodd');
+      circle.setAttribute('fill', 'url(#grad)');
+      finalGroup.appendChild(circle);
+
+      // Bust
+      const bust = document.createElementNS(ns, 'path');
+      bust.setAttribute('d', 'M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z');
+      bust.setAttribute('fill', 'url(#grad)');
+      finalGroup.appendChild(bust);
+
+      const capL = document.createElementNS(ns, 'path');
+      capL.setAttribute('d', 'M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z');
+      capL.setAttribute('fill', 'url(#grad)');
+      finalGroup.appendChild(capL);
+
+      const capR = document.createElementNS(ns, 'path');
+      capR.setAttribute('d', 'M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z');
+      capR.setAttribute('fill', 'url(#grad)');
+      finalGroup.appendChild(capR);
+
+      // Output the final SVG code
+      const svgCode = '<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+        '  <!-- IzzIco Icon V1 - FULLY VECTORIZED -->\n' +
+        '  <!-- Handles geometrically trimmed at circle edge -->\n' +
+        '  <!-- NO hidden geometry -->\n\n' +
+        '  <defs>\n' +
+        '    <linearGradient id="izzico-gradient" x1="0%" y1="0%" x2="100%" y2="100%">\n' +
+        '      <stop offset="0%" stop-color="#9c5698"/>\n' +
+        '      <stop offset="30%" stop-color="#d15659"/>\n' +
+        '      <stop offset="50%" stop-color="#e05747"/>\n' +
+        '      <stop offset="70%" stop-color="#ff7c10"/>\n' +
+        '      <stop offset="100%" stop-color="#ffc800"/>\n' +
+        '    </linearGradient>\n' +
+        '  </defs>\n\n' +
+        '  <!-- LOUPE HANDLE - Trimmed -->\n' +
+        '  <path d="' + (window.loupeTrimmed || '') + '" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- KEY HANDLE - Trimmed -->\n' +
+        '  <path d="' + (window.keyTrimmed || '') + '" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- KEY TEETH -->\n' +
+        '  <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="url(#izzico-gradient)"/>\n' +
+        '  <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- CIRCLE DONUT -->\n' +
+        '  <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- BUST -->\n' +
+        '  <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="url(#izzico-gradient)"/>\n' +
+        '  <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="url(#izzico-gradient)"/>\n' +
+        '  <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="url(#izzico-gradient)"/>\n' +
+        '</svg>';
+
+      document.getElementById('final-svg').textContent = svgCode;
+      window.finalSVG = svgCode;
+    }
+
+    function copyResults() {
+      if (window.finalSVG) {
+        navigator.clipboard.writeText(window.finalSVG);
+        alert('SVG copié!');
+      }
+    }
+
+    // Run on load
+    showPoints();
+    calculateIntersections();
+  </script>
+</body>
+</html>

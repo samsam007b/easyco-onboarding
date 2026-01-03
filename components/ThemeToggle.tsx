@@ -3,6 +3,7 @@
 import { useTheme } from '@/contexts/ThemeContext';
 import { Moon, Sun, Monitor } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface ThemeToggleProps {
   variant?: 'icon' | 'dropdown';
@@ -13,6 +14,8 @@ export default function ThemeToggle({ variant = 'icon', className = '' }: ThemeT
   const { theme, resolvedTheme, setTheme, toggleTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -36,7 +39,7 @@ export default function ThemeToggle({ variant = 'icon', className = '' }: ThemeT
             ? 'linear-gradient(135deg, rgba(139, 111, 207, 0.2), rgba(217, 160, 179, 0.2))'
             : 'linear-gradient(135deg, rgba(123, 95, 184, 0.1), rgba(201, 139, 158, 0.1))',
         }}
-        aria-label={resolvedTheme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+        aria-label={resolvedTheme === 'dark' ? (ariaLabels?.switchToLightMode?.[language] || 'Passer en mode clair') : (ariaLabels?.switchToDarkMode?.[language] || 'Passer en mode sombre')}
       >
         <div className="relative w-5 h-5">
           {/* Sun icon */}
@@ -94,7 +97,7 @@ export default function ThemeToggle({ variant = 'icon', className = '' }: ThemeT
           backdropFilter: 'blur(10px)',
           border: `1px solid ${resolvedTheme === 'dark' ? '#2A2A30' : '#E5E7EB'}`,
         }}
-        aria-label="Changer de thème"
+        aria-label={ariaLabels?.changeTheme?.[language] || 'Changer de thème'}
         aria-expanded={isOpen}
       >
         <CurrentIcon className="w-4 h-4" style={{ color: currentOption.color }} />

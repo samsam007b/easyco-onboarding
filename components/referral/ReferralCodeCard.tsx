@@ -11,6 +11,74 @@ import {
   getEmailShareUrl,
   getFacebookShareUrl,
 } from '@/lib/services/referral-service';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+const translations = {
+  yourCode: {
+    fr: 'Votre code',
+    en: 'Your code',
+    nl: 'Uw code',
+    de: 'Ihr Code',
+  },
+  yourReferralCode: {
+    fr: 'Votre Code de Parrainage',
+    en: 'Your Referral Code',
+    nl: 'Uw Verwijzingscode',
+    de: 'Ihr Empfehlungscode',
+  },
+  shareDescription: {
+    fr: 'Partagez ce code avec vos amis pour gagner des mois gratuits !',
+    en: 'Share this code with friends to earn free months!',
+    nl: 'Deel deze code met vrienden om gratis maanden te verdienen!',
+    de: 'Teilen Sie diesen Code mit Freunden und verdienen Sie kostenlose Monate!',
+  },
+  freeMonths: {
+    fr: 'mois offerts',
+    en: 'free months',
+    nl: 'gratis maanden',
+    de: 'Freimonate',
+  },
+  forInvitedResident: {
+    fr: 'pour un résident invité',
+    en: 'for an invited resident',
+    nl: 'voor een uitgenodigde bewoner',
+    de: 'für einen eingeladenen Bewohner',
+  },
+  forInvitedOwner: {
+    fr: 'pour un propriétaire invité',
+    en: 'for an invited owner',
+    nl: 'voor een uitgenodigde eigenaar',
+    de: 'für einen eingeladenen Eigentümer',
+  },
+  copyInviteLink: {
+    fr: "Copier le lien d'invitation",
+    en: 'Copy invite link',
+    nl: 'Uitnodigingslink kopiëren',
+    de: 'Einladungslink kopieren',
+  },
+  toasts: {
+    codeCopied: {
+      fr: 'Code copié !',
+      en: 'Code copied!',
+      nl: 'Code gekopieerd!',
+      de: 'Code kopiert!',
+    },
+    linkCopied: {
+      fr: 'Lien copié !',
+      en: 'Link copied!',
+      nl: 'Link gekopieerd!',
+      de: 'Link kopiert!',
+    },
+    copyError: {
+      fr: 'Erreur lors de la copie',
+      en: 'Error copying',
+      nl: 'Fout bij kopiëren',
+      de: 'Fehler beim Kopieren',
+    },
+  },
+};
 
 interface ReferralCodeCardProps {
   code: string;
@@ -25,25 +93,29 @@ export function ReferralCodeCard({
   userName,
   variant = 'default',
 }: ReferralCodeCardProps) {
+  const { language } = useLanguage();
+  const lang = language as Language;
+  const t = translations;
+
   const [copied, setCopied] = useState(false);
 
   const handleCopyCode = async () => {
     const success = await copyToClipboard(code);
     if (success) {
       setCopied(true);
-      toast.success('Code copié !');
+      toast.success(t.toasts.codeCopied[lang]);
       setTimeout(() => setCopied(false), 2000);
     } else {
-      toast.error('Erreur lors de la copie');
+      toast.error(t.toasts.copyError[lang]);
     }
   };
 
   const handleCopyLink = async () => {
     const success = await copyToClipboard(shareUrl);
     if (success) {
-      toast.success('Lien copié !');
+      toast.success(t.toasts.linkCopied[lang]);
     } else {
-      toast.error('Erreur lors de la copie');
+      toast.error(t.toasts.copyError[lang]);
     }
   };
 
@@ -66,7 +138,7 @@ export function ReferralCodeCard({
           <Gift className="w-5 h-5 text-owner-600" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-gray-600">Votre code</p>
+          <p className="text-sm text-gray-600">{t.yourCode[lang]}</p>
           <p className="font-bold text-owner-700 tracking-wider">{code}</p>
         </div>
         <Button
@@ -97,10 +169,10 @@ export function ReferralCodeCard({
           <div className="p-2 bg-white/20 rounded-lg">
             <Gift className="w-6 h-6" />
           </div>
-          <h3 className="text-xl font-bold">Votre Code de Parrainage</h3>
+          <h3 className="text-xl font-bold">{t.yourReferralCode[lang]}</h3>
         </div>
         <p className="text-white/80 text-sm">
-          Partagez ce code avec vos amis pour gagner des mois gratuits !
+          {t.shareDescription[lang]}
         </p>
       </div>
 
@@ -128,13 +200,13 @@ export function ReferralCodeCard({
         <div className="grid grid-cols-2 gap-4 mb-6">
           <div className="p-4 bg-orange-50 rounded-xl text-center">
             <p className="text-2xl font-bold text-orange-600">+2</p>
-            <p className="text-sm text-gray-600">mois offerts</p>
-            <p className="text-xs text-gray-500 mt-1">pour un résident invité</p>
+            <p className="text-sm text-gray-600">{t.freeMonths[lang]}</p>
+            <p className="text-xs text-gray-500 mt-1">{t.forInvitedResident[lang]}</p>
           </div>
           <div className="p-4 bg-purple-50 rounded-xl text-center">
             <p className="text-2xl font-bold text-purple-600">+3</p>
-            <p className="text-sm text-gray-600">mois offerts</p>
-            <p className="text-xs text-gray-500 mt-1">pour un propriétaire invité</p>
+            <p className="text-sm text-gray-600">{t.freeMonths[lang]}</p>
+            <p className="text-xs text-gray-500 mt-1">{t.forInvitedOwner[lang]}</p>
           </div>
         </div>
 
@@ -146,7 +218,7 @@ export function ReferralCodeCard({
             className="w-full justify-center gap-2"
           >
             <Share2 className="w-4 h-4" />
-            Copier le lien d&apos;invitation
+            {t.copyInviteLink[lang]}
           </Button>
 
           <div className="flex gap-2">

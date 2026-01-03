@@ -25,6 +25,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import Link from 'next/link';
 
 interface User {
@@ -114,12 +115,12 @@ export default function UsersTable({ users }: UsersTableProps) {
         },
       });
 
-      toast.success('Utilisateur banni avec succès');
+      toast.success(getHookTranslation('admin', 'userBannedSuccess'));
       setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null });
       router.refresh();
     } catch (error) {
       logger.error('Ban user error', error);
-      toast.error('Erreur lors du bannissement');
+      toast.error(getHookTranslation('admin', 'banError'));
     } finally {
       setIsLoading(false);
     }
@@ -151,12 +152,12 @@ export default function UsersTable({ users }: UsersTableProps) {
       const { error } = await supabase.from('users').delete().eq('id', confirmDialog.userId);
       if (error) throw error;
 
-      toast.success('Utilisateur supprimé');
+      toast.success(getHookTranslation('admin', 'userDeleted'));
       setConfirmDialog({ type: null, userId: null, userName: null, userEmail: null });
       router.refresh();
     } catch (error) {
       logger.error('Delete user error', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(getHookTranslation('admin', 'deleteError'));
     } finally {
       setIsLoading(false);
     }

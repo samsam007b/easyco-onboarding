@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { X, Download, Smartphone } from 'lucide-react';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -15,6 +16,8 @@ export function PWAInstallPrompt() {
   const [showPrompt, setShowPrompt] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   useEffect(() => {
     // Check if app is already installed (standalone mode)
@@ -102,7 +105,7 @@ export function PWAInstallPrompt() {
           <button
             onClick={handleDismiss}
             className="absolute top-2 right-2 p-1 hover:bg-white/20 rounded-full transition"
-            aria-label="Fermer"
+            aria-label={ariaLabels?.close?.[language] || 'Fermer'}
           >
             <X className="w-5 h-5" />
           </button>

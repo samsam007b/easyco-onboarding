@@ -109,7 +109,7 @@
         .wordmark-display .l-z { font-weight: 540; }
         .wordmark-display .l-c { font-weight: 540; opacity: 0.4; }
         .wordmark-display .l-o { font-weight: 540; opacity: 0.4; }
-        .wordmark-display .zz-space { letter-spacing: -0.18em; }
+        .wordmark-display .zz-space { letter-spacing: -0.20em; }
         .wordmark-display .highlight { opacity: 1; }
 
         /* Size previews */
@@ -473,7 +473,7 @@
         // State
         var state = {
             rotation: 0,
-            spacing: -0.18,
+            spacing: -0.20,
             fontSize: 120,
             fontWeight: 540,
             color: '#ffffff',
@@ -650,7 +650,7 @@
             document.getElementById('resetBtn').addEventListener('click', function() {
                 state = {
                     rotation: 0,
-                    spacing: -0.18,
+                    spacing: -0.20,
                     fontSize: 120,
                     fontWeight: 540,
                     color: '#ffffff',
@@ -660,8 +660,8 @@
 
                 document.getElementById('rotation').value = 0;
                 document.getElementById('rotationValue').textContent = '0°';
-                document.getElementById('spacing').value = -18;
-                document.getElementById('spacingValue').textContent = '-0.18em';
+                document.getElementById('spacing').value = -20;
+                document.getElementById('spacingValue').textContent = '-0.20em';
                 document.getElementById('fontSize').value = 120;
                 document.getElementById('sizeValue').textContent = '120px';
                 document.getElementById('fontWeight').value = 540;

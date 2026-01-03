@@ -5,8 +5,12 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Mail, X, Check } from 'lucide-react'
 import { toast } from 'sonner'
+import { getHookTranslation } from '@/lib/i18n/get-language'
+import { useLanguage } from '@/lib/i18n/use-language'
 
 export function EmailVerificationBanner() {
+  const { language, getSection } = useLanguage()
+  const ariaLabels = getSection('ariaLabels')
   const [isVisible, setIsVisible] = useState(false)
   const [isResending, setIsResending] = useState(false)
   const [emailSent, setEmailSent] = useState(false)
@@ -47,7 +51,7 @@ export function EmailVerificationBanner() {
       const { data: { user } } = await supabase.auth.getUser()
 
       if (!user) {
-        toast.error('Please log in to resend verification email')
+        toast.error(getHookTranslation('emailVerification', 'loginRequired'))
         return
       }
 
@@ -59,13 +63,13 @@ export function EmailVerificationBanner() {
 
       if (error) {
         // FIXME: Use logger.error('Error resending email:', error)
-        toast.error('Failed to resend verification email')
+        toast.error(getHookTranslation('emailVerification', 'resendFailed'))
         return
       }
 
       setEmailSent(true)
-      toast.success('Verification email sent!', {
-        description: 'Please check your inbox',
+      toast.success(getHookTranslation('emailVerification', 'sent'), {
+        description: getHookTranslation('emailVerification', 'sentDescription'),
       })
 
       // Reset "email sent" state after 30 seconds
@@ -74,7 +78,7 @@ export function EmailVerificationBanner() {
       }, 30000)
     } catch (error) {
       // FIXME: Use logger.error('Error:', error)
-      toast.error('An unexpected error occurred')
+      toast.error(getHookTranslation('emailVerification', 'unexpectedError'))
     } finally {
       setIsResending(false)
     }
@@ -118,7 +122,7 @@ export function EmailVerificationBanner() {
           <button
             onClick={() => setIsVisible(false)}
             className="text-yellow-600 hover:text-yellow-900 p-1"
-            aria-label="Dismiss"
+            aria-label={ariaLabels?.dismiss?.[language] || 'Dismiss'}
           >
             <X className="w-5 h-5" />
           </button>

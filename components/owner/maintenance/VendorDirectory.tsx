@@ -27,6 +27,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { ownerGradient } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
 import type { TicketCategory } from './TicketKanbanBoard';
 
 interface Vendor {
@@ -54,18 +55,18 @@ interface VendorDirectoryProps {
 
 const specialtyConfig: Record<TicketCategory, {
   icon: typeof Wrench;
-  label: string;
+  labelKey: string;
   color: string;
   bgColor: string;
 }> = {
-  plumbing: { icon: Droplets, label: 'Plombier', color: '#0ea5e9', bgColor: '#e0f2fe' },
-  electrical: { icon: Zap, label: 'Électricien', color: '#f59e0b', bgColor: '#fef3c7' },
-  heating: { icon: Flame, label: 'Chauffagiste', color: '#ef4444', bgColor: '#fee2e2' },
-  appliance: { icon: Lightbulb, label: 'Électroménager', color: '#8b5cf6', bgColor: '#ede9fe' },
-  locksmith: { icon: Key, label: 'Serrurier', color: '#64748b', bgColor: '#f1f5f9' },
-  painting: { icon: Paintbrush, label: 'Peintre', color: '#ec4899', bgColor: '#fce7f3' },
-  pest: { icon: Bug, label: 'Désinsectiseur', color: '#84cc16', bgColor: '#ecfccb' },
-  other: { icon: Wrench, label: 'Artisan', color: '#9c5698', bgColor: '#fdf4ff' },
+  plumbing: { icon: Droplets, labelKey: 'plumber', color: '#0ea5e9', bgColor: '#e0f2fe' },
+  electrical: { icon: Zap, labelKey: 'electrician', color: '#f59e0b', bgColor: '#fef3c7' },
+  heating: { icon: Flame, labelKey: 'heatingTech', color: '#ef4444', bgColor: '#fee2e2' },
+  appliance: { icon: Lightbulb, labelKey: 'appliance', color: '#8b5cf6', bgColor: '#ede9fe' },
+  locksmith: { icon: Key, labelKey: 'locksmith', color: '#64748b', bgColor: '#f1f5f9' },
+  painting: { icon: Paintbrush, labelKey: 'painter', color: '#ec4899', bgColor: '#fce7f3' },
+  pest: { icon: Bug, labelKey: 'pestControl', color: '#84cc16', bgColor: '#ecfccb' },
+  other: { icon: Wrench, labelKey: 'handyman', color: '#9c5698', bgColor: '#fdf4ff' },
 };
 
 function RatingStars({ rating }: { rating: number }) {
@@ -95,11 +96,17 @@ export function VendorDirectory({
 }: VendorDirectoryProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSpecialty, setFilterSpecialty] = useState<TicketCategory | 'all'>('all');
+  const { language, getSection } = useLanguage();
+  const t = getSection('ownerMaintenance');
+
+  // Helper to get specialty label
+  const getSpecialtyLabel = (key: string) => t?.specialties?.[key]?.[language] || key;
 
   // Filter vendors
   const filteredVendors = vendors.filter((vendor) => {
+    const specialtyLabel = getSpecialtyLabel(specialtyConfig[vendor.specialty].labelKey);
     const matchesSearch = vendor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          specialtyConfig[vendor.specialty].label.toLowerCase().includes(searchTerm.toLowerCase());
+                          specialtyLabel.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesFilter = filterSpecialty === 'all' || vendor.specialty === filterSpecialty;
     return matchesSearch && matchesFilter;
   });
@@ -133,8 +140,8 @@ export function VendorDirectory({
               <Wrench className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-gray-900">Annuaire prestataires</h3>
-              <p className="text-sm text-gray-500">{vendors.length} contact{vendors.length > 1 ? 's' : ''}</p>
+              <h3 className="text-lg font-bold text-gray-900">{t?.vendorDirectory?.[language] || 'Annuaire prestataires'}</h3>
+              <p className="text-sm text-gray-500">{vendors.length} {vendors.length > 1 ? (t?.contacts?.[language] || 'contacts') : (t?.contact?.[language] || 'contact')}</p>
             </div>
           </div>
 
@@ -146,7 +153,7 @@ export function VendorDirectory({
               style={{ background: ownerGradient }}
             >
               <Plus className="w-4 h-4 mr-1" />
-              Ajouter
+              {t?.add?.[language] || 'Ajouter'}
             </Button>
           )}
         </div>
@@ -158,7 +165,7 @@ export function VendorDirectory({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
           <input
             type="text"
-            placeholder="Rechercher un prestataire..."
+            placeholder={t?.searchVendor?.[language] || 'Rechercher un prestataire...'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
@@ -176,7 +183,7 @@ export function VendorDirectory({
             )}
             style={filterSpecialty === 'all' ? { background: ownerGradient } : undefined}
           >
-            Tous
+            {t?.allVendors?.[language] || 'Tous'}
           </Button>
           {availableSpecialties.map((specialty) => {
             const config = specialtyConfig[specialty];
@@ -194,7 +201,7 @@ export function VendorDirectory({
                 style={filterSpecialty === specialty ? { background: config.color } : undefined}
               >
                 <Icon className="w-3 h-3 mr-1" />
-                {config.label}
+                {getSpecialtyLabel(config.labelKey)}
               </Button>
             );
           })}
@@ -211,7 +218,7 @@ export function VendorDirectory({
               className="text-center py-8 text-gray-400"
             >
               <Wrench className="w-10 h-10 mx-auto mb-2 opacity-50" />
-              <p className="text-sm">Aucun prestataire trouvé</p>
+              <p className="text-sm">{t?.noVendorFound?.[language] || 'Aucun prestataire trouvé'}</p>
             </motion.div>
           ) : (
             <div className="space-y-3">
@@ -263,17 +270,17 @@ export function VendorDirectory({
                               borderColor: config.color,
                             }}
                           >
-                            {config.label}
+                            {getSpecialtyLabel(config.labelKey)}
                           </Badge>
                           <RatingStars rating={vendor.rating} />
-                          <span className="text-xs">({vendor.totalJobs} jobs)</span>
+                          <span className="text-xs">({vendor.totalJobs} {t?.jobs?.[language] || 'jobs'})</span>
                         </div>
 
                         <div className="flex flex-wrap items-center gap-3 text-xs text-gray-500">
                           {vendor.avgResponseTime && (
                             <div className="flex items-center gap-1">
                               <Clock className="w-3 h-3" />
-                              <span>Rép. ~{vendor.avgResponseTime}</span>
+                              <span>{t?.responseTime?.[language] || 'Rép. ~'}{vendor.avgResponseTime}</span>
                             </div>
                           )}
                           {vendor.address && (

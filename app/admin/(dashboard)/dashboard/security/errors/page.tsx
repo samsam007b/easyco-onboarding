@@ -22,6 +22,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { resolveError, reopenError, bulkResolveErrors } from '../actions';
 import {
   Dialog,
@@ -116,7 +117,7 @@ export default function ErrorsPage() {
       setTotalCount(count || 0);
     } catch (error) {
       console.error('[ErrorsPage] Error loading:', error);
-      toast.error('Erreur lors du chargement');
+      toast.error(getHookTranslation('security', 'loadError'));
     } finally {
       setIsLoading(false);
     }
@@ -139,7 +140,7 @@ export default function ErrorsPage() {
     startTransition(async () => {
       const result = await resolveError(errorId);
       if (result.success) {
-        toast.success('Erreur marquee comme resolue');
+        toast.success(getHookTranslation('security', 'errorMarkedResolved'));
         loadErrors();
         setSelectedErrors(prev => {
           const next = new Set(prev);
@@ -158,7 +159,7 @@ export default function ErrorsPage() {
     startTransition(async () => {
       const result = await reopenError(errorId);
       if (result.success) {
-        toast.info('Erreur reouverte');
+        toast.info(getHookTranslation('security', 'errorReopened'));
         loadErrors();
       } else {
         toast.error(result.error || 'Erreur');

@@ -19,6 +19,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
@@ -79,7 +80,7 @@ export default function NotificationsPage() {
       }
     } catch (error) {
       console.error('[NotificationsPage] Error loading:', error);
-      toast.error('Error loading notifications');
+      toast.error(getHookTranslation('admin', 'loadNotificationsError'));
     } finally {
       setIsLoading(false);
     }

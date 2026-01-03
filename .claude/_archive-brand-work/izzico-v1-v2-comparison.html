@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - V1 vs V2 Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-card: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent-v1: #22c55e;
+            --accent-v2: #6366f1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 2rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+        }
+
+        .version-card {
+            background: var(--bg-panel);
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            overflow: hidden;
+        }
+
+        .version-card.v1 { border-color: var(--accent-v1); }
+        .version-card.v2 { border-color: var(--accent-v2); }
+
+        .version-header {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .version-card.v1 .version-header { background: rgba(34, 197, 94, 0.1); }
+        .version-card.v2 .version-header { background: rgba(99, 102, 241, 0.1); }
+
+        .version-title {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .version-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .version-card.v1 .version-badge { background: var(--accent-v1); color: black; }
+        .version-card.v2 .version-badge { background: var(--accent-v2); color: white; }
+
+        .icon-display {
+            padding: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-card);
+        }
+
+        .specs-section {
+            padding: 1.5rem;
+        }
+
+        .specs-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .spec-group {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .spec-group h4 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .spec-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75rem;
+            padding: 0.25rem 0;
+        }
+
+        .spec-row span:last-child {
+            font-family: monospace;
+            color: var(--accent-v2);
+        }
+
+        .version-card.v1 .spec-row span:last-child { color: var(--accent-v1); }
+
+        .concept-box {
+            background: var(--bg-card);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .size-comparison {
+            background: var(--bg-panel);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+        }
+
+        .size-comparison h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .size-row {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 3rem;
+        }
+
+        .size-item {
+            text-align: center;
+        }
+
+        .size-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: flex-end;
+            margin-bottom: 0.5rem;
+        }
+
+        .size-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .v1-label { color: var(--accent-v1); }
+        .v2-label { color: var(--accent-v2); }
+
+        .lockup-section {
+            background: var(--bg-panel);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto 2rem;
+        }
+
+        .lockup-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .lockup-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .lockup-item {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .wordmark .l-z { font-weight: 540; }
+        .wordmark .l-c { font-weight: 540; }
+        .wordmark .l-o { font-weight: 540; }
+        .wordmark .zz-space { margin-right: -0.18em; }
+
+        .adjust-section {
+            background: var(--bg-panel);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .adjust-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 60px;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-v2);
+        }
+
+        .control-value {
+            font-family: monospace;
+            font-size: 0.8rem;
+            color: var(--accent-v2);
+            text-align: right;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            border: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-primary {
+            background: var(--accent-v2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn:hover { opacity: 0.9; }
+
+        /* Vectorized section */
+        .vector-section {
+            background: var(--bg-panel);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 2rem auto;
+            border: 2px solid var(--accent-v1);
+        }
+
+        .vector-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-v1);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .vector-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+        }
+
+        .vector-preview {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .vector-info {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .vector-code-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .vector-code {
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 1rem;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 0.65rem;
+            color: var(--text);
+            overflow-x: auto;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre;
+            line-height: 1.5;
+            border: 1px solid var(--border);
+        }
+
+        .vector-code .tag { color: #ff79c6; }
+        .vector-code .attr { color: #50fa7b; }
+        .vector-code .value { color: #f1fa8c; }
+        .vector-code .comment { color: #6272a4; }
+
+        .copy-btn {
+            padding: 0.5rem 1rem;
+            background: var(--accent-v1);
+            color: black;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .copy-btn:hover { opacity: 0.9; }
+        .copy-btn.copied { background: #4ade80; }
+
+        .download-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .download-btn {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .download-btn:hover {
+            background: var(--border);
+            border-color: var(--accent-v1);
+        }
+
+        .download-btn.downloading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .download-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .size-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: var(--bg-dark);
+            border-radius: 8px;
+            font-size: 0.75rem;
+        }
+
+        .size-selector label {
+            color: var(--text-muted);
+        }
+
+        .size-selector select {
+            background: var(--bg-card);
+            color: var(--text);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 0.4rem 0.6rem;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .size-selector select:focus {
+            outline: none;
+            border-color: var(--accent-v1);
+        }
+
+        .vector-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .vector-tab {
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .vector-tab.active {
+            background: var(--accent-v1);
+            color: black;
+            border-color: var(--accent-v1);
+        }
+    </style>
+</head>
+<body>
+    <h1>IzzIco Icon - V1 vs V2</h1>
+    <p class="subtitle">Comparaison Cercle (verrouille) vs Fredoka "i" (exploration)</p>
+
+    <div class="comparison-grid">
+        <!-- V1 Card -->
+        <div class="version-card v1">
+            <div class="version-header">
+                <span class="version-title">V1 - Cercle (Fredoka linecap)</span>
+                <span class="version-badge">VERROUILLE</span>
+            </div>
+            <div class="icon-display" id="v1-display"></div>
+            <div class="specs-section">
+                <div class="specs-title">Specifications</div>
+                <div class="specs-grid">
+                    <div class="spec-group">
+                        <h4>Tete (Cercle)</h4>
+                        <div class="spec-row"><span>Centre Y</span><span>41</span></div>
+                        <div class="spec-row"><span>Rayon</span><span>15</span></div>
+                        <div class="spec-row"><span>Stroke</span><span>7.5</span></div>
+                    </div>
+                    <div class="spec-group">
+                        <h4>Buste (Arc Bezier)</h4>
+                        <div class="spec-row"><span>Largeur</span><span>35</span></div>
+                        <div class="spec-row"><span>Hauteur</span><span>21</span></div>
+                        <div class="spec-row"><span>Courbure</span><span>85%</span></div>
+                        <div class="spec-row"><span>Gap</span><span>2</span></div>
+                    </div>
+                    <div class="spec-group">
+                        <h4>Loupe</h4>
+                        <div class="spec-row"><span>Angle</span><span>139°</span></div>
+                        <div class="spec-row"><span>Longueur</span><span>21</span></div>
+                        <div class="spec-row"><span>Stroke</span><span>6</span></div>
+                    </div>
+                    <div class="spec-group">
+                        <h4>Cle</h4>
+                        <div class="spec-row"><span>Angle</span><span>36°</span></div>
+                        <div class="spec-row"><span>Longueur</span><span>21</span></div>
+                        <div class="spec-row"><span>Dents</span><span>2 × 7</span></div>
+                    </div>
+                </div>
+                <div class="concept-box">
+                    <strong>Concept:</strong> Le cercle represente simultanement le verre de la loupe (Searcher), la tete de la cle (Owner), et la tete de la personne (Resident). Linecaps: 85% (style Fredoka).
+                </div>
+            </div>
+        </div>
+
+        <!-- V2 Card -->
+        <div class="version-card v2">
+            <div class="version-header">
+                <span class="version-title">V2 - Fredoka "i" + Icone</span>
+                <span class="version-badge">EN EXPLORATION</span>
+            </div>
+            <div class="icon-display" id="v2-display"></div>
+            <div class="specs-section">
+                <div class="specs-title">Specifications</div>
+                <div class="specs-grid">
+                    <div class="spec-group">
+                        <h4>Tete (Superellipse)</h4>
+                        <div class="spec-row"><span>Taille</span><span>39</span></div>
+                        <div class="spec-row"><span>Squircle n</span><span>4.5</span></div>
+                        <div class="spec-row"><span>Stroke</span><span>8.5</span></div>
+                        <div class="spec-row"><span>Position Y</span><span>60</span></div>
+                    </div>
+                    <div class="spec-group">
+                        <h4>Buste (Rectangle)</h4>
+                        <div class="spec-row"><span>Largeur</span><span>44</span></div>
+                        <div class="spec-row"><span>Hauteur</span><span id="bust-h-display">40</span></div>
+                        <div class="spec-row"><span>Arrondi</span><span>50%</span></div>
+                        <div class="spec-row"><span>Gap</span><span>15</span></div>
+                    </div>
+                    <div class="spec-group">
+                        <h4>Loupe</h4>
+                        <div class="spec-row"><span>Angle</span><span>137°</span></div>
+                        <div class="spec-row"><span>Longueur</span><span>31</span></div>
+                        <div class="spec-row"><span>Stroke</span><span>8</span></div>
+                    </div>
+                    <div class="spec-group">
+                        <h4>Cle</h4>
+                        <div class="spec-row"><span>Angle</span><span>40°</span></div>
+                        <div class="spec-row"><span>Longueur</span><span>31</span></div>
+                        <div class="spec-row"><span>Dents</span><span>2 × 10</span></div>
+                    </div>
+                </div>
+                <div class="concept-box">
+                    <strong>Concept:</strong> Base sur le "i" de Fredoka - la tete est le tittle (superellipse), le buste est le stem. Coherence typographique avec le wordmark.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="size-comparison">
+        <h3>Comparaison par taille</h3>
+        <div class="size-row">
+            <div class="size-item">
+                <div class="size-icons">
+                    <div id="v1-128"></div>
+                    <div id="v2-128"></div>
+                </div>
+                <div class="size-label"><span class="v1-label">V1</span> / <span class="v2-label">V2</span> @ 128px</div>
+            </div>
+            <div class="size-item">
+                <div class="size-icons">
+                    <div id="v1-64"></div>
+                    <div id="v2-64"></div>
+                </div>
+                <div class="size-label"><span class="v1-label">V1</span> / <span class="v2-label">V2</span> @ 64px</div>
+            </div>
+            <div class="size-item">
+                <div class="size-icons">
+                    <div id="v1-32"></div>
+                    <div id="v2-32"></div>
+                </div>
+                <div class="size-label"><span class="v1-label">V1</span> / <span class="v2-label">V2</span> @ 32px</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="lockup-section">
+        <h3>Lockup avec wordmark</h3>
+        <div class="lockup-grid">
+            <div class="lockup-item">
+                <div id="lockup-v1"></div>
+                <div class="wordmark">
+                    <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+            </div>
+            <div class="lockup-item">
+                <div id="lockup-v2"></div>
+                <div class="wordmark">
+                    <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="adjust-section">
+        <h3>Ajuster hauteur buste V2</h3>
+        <div class="control-row">
+            <span class="control-label">Hauteur buste</span>
+            <input type="range" id="bust-height" min="25" max="60" value="40">
+            <span class="control-value" id="bust-height-val">40</span>
+        </div>
+        <div class="btn-row">
+            <button class="btn btn-secondary" onclick="setBustHeight(40)">Original (40)</button>
+            <button class="btn btn-secondary" onclick="setBustHeight(35)">Court (35)</button>
+            <button class="btn btn-secondary" onclick="setBustHeight(30)">Tres court (30)</button>
+        </div>
+    </div>
+
+    <!-- Vectorized Icon Section -->
+    <div class="vector-section">
+        <h3>V1 Icon - Version Vectorisee (Compound Path)</h3>
+        <div class="vector-grid">
+            <div class="vector-preview">
+                <div id="vectorized-display"></div>
+                <div class="vector-info">
+                    Icone V1 vectorisee<br>
+                    <strong>1 seul chemin compound</strong><br>
+                    Exportable en .svg
+                </div>
+                <button class="copy-btn" onclick="copyVectorSVG()">Copier le SVG</button>
+
+                <div class="size-selector">
+                    <label for="export-size">Taille export:</label>
+                    <select id="export-size">
+                        <option value="64">64px</option>
+                        <option value="128">128px</option>
+                        <option value="256">256px</option>
+                        <option value="512" selected>512px</option>
+                        <option value="1024">1024px</option>
+                        <option value="2048">2048px</option>
+                    </select>
+                </div>
+
+                <div class="download-btns">
+                    <button class="download-btn" onclick="downloadSVG()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        SVG
+                    </button>
+                    <button class="download-btn" onclick="downloadPNG()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        PNG
+                    </button>
+                    <button class="download-btn" onclick="downloadJPEG()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        JPEG
+                    </button>
+                </div>
+            </div>
+            <div class="vector-code-container">
+                <div class="vector-tabs">
+                    <button class="vector-tab active" onclick="showVectorTab('clean')">SVG Propre</button>
+                    <button class="vector-tab" onclick="showVectorTab('minified')">Minifie</button>
+                    <button class="vector-tab" onclick="showVectorTab('paths')">Paths Separes</button>
+                </div>
+                <div class="vector-code" id="vector-code-display"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // V1 SPECS (LOCKED - Circle based)
+        const V1 = {
+            circle: { cy: 41, r: 15, stroke: 7.5 },
+            loupe: { angle: 139, length: 21, stroke: 6 },
+            key: { angle: 36, length: 21, stroke: 6, teethSize: 7, teethStroke: 3 },
+            bust: { gap: 2, width: 35, height: 21, stroke: 6.5, curvature: 0.85 }
+        };
+
+        // V2 SPECS (Fredoka "i" based - exploration)
+        const V2 = {
+            tittle: { size: 39, n: 4.5, stroke: 8.5, y: 60 },
+            stem: { width: 44, height: 40, radius: 50, gap: 15 },
+            loupe: { angle: 137, length: 31, stroke: 8 },
+            key: { angle: 40, length: 31, stroke: 8, teethSize: 10 }
+        };
+
+        let bustHeight = V2.stem.height;
+
+        function createSVG(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+            return el;
+        }
+
+        function clearEl(el) {
+            while (el.firstChild) el.removeChild(el.firstChild);
+        }
+
+        function superellipsePath(cx, cy, a, b, n, pts = 80) {
+            const path = [];
+            for (let i = 0; i <= pts; i++) {
+                const ang = (2 * Math.PI * i) / pts;
+                const c = Math.cos(ang), s = Math.sin(ang);
+                const x = cx + a * Math.sign(c) * Math.pow(Math.abs(c), 2/n);
+                const y = cy + b * Math.sign(s) * Math.pow(Math.abs(s), 2/n);
+                path.push(i === 0 ? `M ${x.toFixed(1)} ${y.toFixed(1)}` : `L ${x.toFixed(1)} ${y.toFixed(1)}`);
+            }
+            path.push('Z');
+            return path.join(' ');
+        }
+
+        function superellipsePoint(cx, cy, a, b, n, angle) {
+            const c = Math.cos(angle), s = Math.sin(angle);
+            return {
+                x: cx + a * Math.sign(c) * Math.pow(Math.abs(c), 2/n),
+                y: cy + b * Math.sign(s) * Math.pow(Math.abs(s), 2/n)
+            };
+        }
+
+        // V1 Icon - Circle based (LOCKED) with 85% squircle linecaps
+        const CAP_ROUNDNESS = 0.85; // LOCKED at 85%
+
+        function createSquircleLine(g, x1, y1, x2, y2, stroke, roundness) {
+            // Create a line with squircle caps using rectangles
+            const dx = x2 - x1, dy = y2 - y1;
+            const length = Math.sqrt(dx*dx + dy*dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            const rx = (stroke / 2) * roundness;
+
+            const rect = createSVG('rect', {
+                x: -stroke/2,
+                y: -stroke/2,
+                width: length + stroke,
+                height: stroke,
+                rx: rx,
+                fill: 'white',
+                transform: `translate(${x1}, ${y1}) rotate(${angle})`
+            });
+            g.appendChild(rect);
+        }
+
+        function createV1Icon(size) {
+            const svg = createSVG('svg', {
+                viewBox: '0 0 100 100',
+                width: size,
+                height: size
+            });
+
+            const g = createSVG('g', {});
+            svg.appendChild(g);
+
+            const cx = 50, cy = V1.circle.cy, r = V1.circle.r;
+
+            // === LAYER ORDER (painter's algorithm - first drawn = background) ===
+            // 1. Loupe (arrière-plan)
+            // 2. Clé + Dents (arrière-plan)
+            // 3. Cercle (premier plan - au-dessus des tiges)
+            // 4. Buste caps (arrière-plan du buste)
+            // 5. Buste path (premier plan du buste)
+
+            // --- Layer 1: Loupe (background) ---
+            const lRad = V1.loupe.angle * Math.PI / 180;
+            const lx1 = cx + r * Math.cos(lRad);
+            const ly1 = cy + r * Math.sin(lRad);
+            const lx2 = lx1 + V1.loupe.length * Math.cos(lRad);
+            const ly2 = ly1 + V1.loupe.length * Math.sin(lRad);
+            createSquircleLine(g, lx1, ly1, lx2, ly2, V1.loupe.stroke, CAP_ROUNDNESS);
+
+            // --- Layer 2: Key (background) ---
+            const kRad = V1.key.angle * Math.PI / 180;
+            const kx1 = cx + r * Math.cos(kRad);
+            const ky1 = cy + r * Math.sin(kRad);
+            const kx2 = kx1 + V1.key.length * Math.cos(kRad);
+            const ky2 = ky1 + V1.key.length * Math.sin(kRad);
+            createSquircleLine(g, kx1, ky1, kx2, ky2, V1.key.stroke, CAP_ROUNDNESS);
+
+            // --- Layer 2b: Teeth (background) ---
+            const tRad = kRad + Math.PI / 2;
+            [0.5, 0.8].forEach(t => {
+                const tx = kx1 + (kx2 - kx1) * t;
+                const ty = ky1 + (ky2 - ky1) * t;
+                const tx2 = tx + V1.key.teethSize * Math.cos(tRad);
+                const ty2 = ty + V1.key.teethSize * Math.sin(tRad);
+                createSquircleLine(g, tx, ty, tx2, ty2, V1.key.teethStroke, CAP_ROUNDNESS);
+            });
+
+            // --- Layer 3: Circle (foreground - on top of handles) ---
+            const outerR = r + V1.circle.stroke/2;
+            const innerR = r - V1.circle.stroke/2;
+            g.appendChild(createSVG('circle', {
+                cx, cy, r: outerR,
+                fill: 'white'
+            }));
+            g.appendChild(createSVG('circle', {
+                cx, cy, r: innerR,
+                fill: '#1a1a24' // background color to cut out
+            }));
+
+            // --- Layer 4 & 5: Bust ---
+            const bustTop = cy + r + V1.bust.gap;
+            const endY = bustTop + V1.bust.height;
+            const leftX = cx - V1.bust.width/2;
+            const rightX = cx + V1.bust.width/2;
+            const controlY = endY - V1.bust.height * V1.bust.curvature;
+
+            // Calculate tangent angles at endpoints for proper cap rotation
+            const hw = V1.bust.stroke / 2;
+            const radius = hw * CAP_ROUNDNESS;
+            const leftTangentX = cx - leftX;
+            const leftTangentY = controlY - endY;
+            const leftAngle = Math.atan2(leftTangentY, leftTangentX) * 180 / Math.PI;
+            const rightTangentX = rightX - cx;
+            const rightTangentY = endY - controlY;
+            const rightAngle = Math.atan2(rightTangentY, rightTangentX) * 180 / Math.PI;
+
+            // Layer 4: Squircle caps (background - drawn BEFORE path)
+            g.appendChild(createSVG('rect', {
+                x: -hw,
+                y: -hw,
+                width: V1.bust.stroke,
+                height: V1.bust.stroke,
+                rx: radius,
+                ry: radius,
+                fill: 'white',
+                transform: `translate(${leftX}, ${endY}) rotate(${leftAngle})`
+            }));
+            g.appendChild(createSVG('rect', {
+                x: -hw,
+                y: -hw,
+                width: V1.bust.stroke,
+                height: V1.bust.stroke,
+                rx: radius,
+                ry: radius,
+                fill: 'white',
+                transform: `translate(${rightX}, ${endY}) rotate(${rightAngle})`
+            }));
+
+            // Layer 5: Bust path (foreground - drawn AFTER caps, covers junction)
+            g.appendChild(createSVG('path', {
+                d: `M ${leftX} ${endY} Q ${cx} ${controlY} ${rightX} ${endY}`,
+                stroke: 'white',
+                'stroke-width': V1.bust.stroke,
+                'stroke-linecap': 'butt',
+                fill: 'none'
+            }));
+
+            return svg;
+        }
+
+        // V2 Icon - Fredoka "i" + loupe/key/teeth
+        // Centered and scaled to match V1's visual weight
+        function createV2Icon(size, customBustHeight) {
+            const h = customBustHeight || bustHeight;
+
+            // Calculate bounding box for proper centering
+            const t = V2.tittle;
+            const s = V2.stem;
+            const cx = 100; // Center X in design space
+
+            // Calculate actual bounds
+            const tittleTop = t.y - t.size/2 - t.stroke/2;
+            const stemBottom = t.y + t.size/2 + s.gap + h;
+
+            // Loupe extends to the left
+            const lRad = V2.loupe.angle * Math.PI / 180;
+            const loupeEndX = cx + (t.size/2) * Math.cos(lRad) + V2.loupe.length * Math.cos(lRad);
+            const loupeEndY = t.y + (t.size/2) * Math.sin(lRad) + V2.loupe.length * Math.sin(lRad);
+
+            // Key extends to the right
+            const kRad = V2.key.angle * Math.PI / 180;
+            const keyEndX = cx + (t.size/2) * Math.cos(kRad) + V2.key.length * Math.cos(kRad);
+            const keyEndY = t.y + (t.size/2) * Math.sin(kRad) + V2.key.length * Math.sin(kRad);
+
+            // Calculate bounds with padding
+            const padding = 10;
+            const minX = Math.min(loupeEndX, cx - s.width/2) - padding - V2.loupe.stroke;
+            const maxX = Math.max(keyEndX + V2.key.teethSize, cx + s.width/2) + padding + V2.key.stroke;
+            const minY = tittleTop - padding;
+            const maxY = Math.max(stemBottom, loupeEndY, keyEndY) + padding + V2.loupe.stroke;
+
+            const width = maxX - minX;
+            const height = maxY - minY;
+
+            // Use square viewBox centered on content
+            const viewSize = Math.max(width, height);
+            const offsetX = minX - (viewSize - width) / 2;
+            const offsetY = minY - (viewSize - height) / 2;
+
+            const svg = createSVG('svg', {
+                viewBox: `${offsetX} ${offsetY} ${viewSize} ${viewSize}`,
+                width: size,
+                height: size,
+                fill: 'none'
+            });
+
+            // Tittle (superellipse)
+            const tittlePath = superellipsePath(cx, t.y, t.size/2, t.size/2, t.n);
+            svg.appendChild(createSVG('path', {
+                d: tittlePath,
+                fill: 'none',
+                stroke: 'white',
+                'stroke-width': t.stroke
+            }));
+
+            // Stem (rounded rect)
+            const stemTop = t.y + t.size/2 + s.gap;
+            const stemRx = (Math.min(s.width, h) / 2) * (s.radius / 100);
+            svg.appendChild(createSVG('rect', {
+                x: cx - s.width/2,
+                y: stemTop,
+                width: s.width,
+                height: h,
+                rx: stemRx,
+                fill: 'white'
+            }));
+
+            // Loupe
+            const lStart = superellipsePoint(cx, t.y, t.size/2, t.size/2, t.n, lRad);
+            svg.appendChild(createSVG('line', {
+                x1: lStart.x, y1: lStart.y,
+                x2: lStart.x + V2.loupe.length * Math.cos(lRad),
+                y2: lStart.y + V2.loupe.length * Math.sin(lRad),
+                stroke: 'white',
+                'stroke-width': V2.loupe.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Key
+            const kStart = superellipsePoint(cx, t.y, t.size/2, t.size/2, t.n, kRad);
+            const kEndX = kStart.x + V2.key.length * Math.cos(kRad);
+            const kEndY = kStart.y + V2.key.length * Math.sin(kRad);
+            svg.appendChild(createSVG('line', {
+                x1: kStart.x, y1: kStart.y,
+                x2: kEndX, y2: kEndY,
+                stroke: 'white',
+                'stroke-width': V2.key.stroke,
+                'stroke-linecap': 'round'
+            }));
+
+            // Teeth
+            const tRad = kRad + Math.PI / 2;
+            [0.5, 0.75].forEach(p => {
+                const tx = kStart.x + (kEndX - kStart.x) * p;
+                const ty = kStart.y + (kEndY - kStart.y) * p;
+                svg.appendChild(createSVG('line', {
+                    x1: tx, y1: ty,
+                    x2: tx + V2.key.teethSize * Math.cos(tRad),
+                    y2: ty + V2.key.teethSize * Math.sin(tRad),
+                    stroke: 'white',
+                    'stroke-width': V2.key.stroke * 0.5,
+                    'stroke-linecap': 'round'
+                }));
+            });
+
+            return svg;
+        }
+
+        // ============================================
+        // VECTORIZED V1 ICON - True compound paths
+        // ============================================
+
+        // Helper: Create rounded rectangle path data
+        function roundedRectPath(x, y, w, h, rx) {
+            rx = Math.min(rx, w/2, h/2);
+            return `M ${x + rx} ${y} ` +
+                   `L ${x + w - rx} ${y} ` +
+                   `Q ${x + w} ${y} ${x + w} ${y + rx} ` +
+                   `L ${x + w} ${y + h - rx} ` +
+                   `Q ${x + w} ${y + h} ${x + w - rx} ${y + h} ` +
+                   `L ${x + rx} ${y + h} ` +
+                   `Q ${x} ${y + h} ${x} ${y + h - rx} ` +
+                   `L ${x} ${y + rx} ` +
+                   `Q ${x} ${y} ${x + rx} ${y} Z`;
+        }
+
+        // Helper: Create donut (ring) path - outer circle CW, inner circle CCW
+        function donutPath(cx, cy, outerR, innerR) {
+            // Outer circle (clockwise)
+            const outer = `M ${cx + outerR} ${cy} ` +
+                          `A ${outerR} ${outerR} 0 1 1 ${cx - outerR} ${cy} ` +
+                          `A ${outerR} ${outerR} 0 1 1 ${cx + outerR} ${cy} Z `;
+            // Inner circle (counter-clockwise for cut-out)
+            const inner = `M ${cx + innerR} ${cy} ` +
+                          `A ${innerR} ${innerR} 0 1 0 ${cx - innerR} ${cy} ` +
+                          `A ${innerR} ${innerR} 0 1 0 ${cx + innerR} ${cy} Z`;
+            return outer + inner;
+        }
+
+        // Helper: Stroke to fill - convert stroked path to filled outline
+        function strokeToFillQuadratic(x1, y1, cx, cy, x2, y2, stroke) {
+            const hw = stroke / 2;
+
+            // Calculate perpendiculars at start, control, end
+            const startTangentX = cx - x1;
+            const startTangentY = cy - y1;
+            const startLen = Math.sqrt(startTangentX * startTangentX + startTangentY * startTangentY);
+            const startPerpX = -startTangentY / startLen * hw;
+            const startPerpY = startTangentX / startLen * hw;
+
+            const endTangentX = x2 - cx;
+            const endTangentY = y2 - cy;
+            const endLen = Math.sqrt(endTangentX * endTangentX + endTangentY * endTangentY);
+            const endPerpX = -endTangentY / endLen * hw;
+            const endPerpY = endTangentX / endLen * hw;
+
+            // Outer edge (top)
+            const ox1 = x1 + startPerpX, oy1 = y1 + startPerpY;
+            const ocx = cx + (startPerpX + endPerpX) / 2, ocy = cy + (startPerpY + endPerpY) / 2;
+            const ox2 = x2 + endPerpX, oy2 = y2 + endPerpY;
+
+            // Inner edge (bottom) - reversed
+            const ix1 = x1 - startPerpX, iy1 = y1 - startPerpY;
+            const icx = cx - (startPerpX + endPerpX) / 2, icy = cy - (startPerpY + endPerpY) / 2;
+            const ix2 = x2 - endPerpX, iy2 = y2 - endPerpY;
+
+            return `M ${ox1} ${oy1} Q ${ocx} ${ocy} ${ox2} ${oy2} ` +
+                   `L ${ix2} ${iy2} Q ${icx} ${icy} ${ix1} ${iy1} Z`;
+        }
+
+        // Helper: Rotated squircle cap path
+        function squircleCapPath(cx, cy, size, rx, angleDeg) {
+            const hw = size / 2;
+            const angleRad = angleDeg * Math.PI / 180;
+            const cos = Math.cos(angleRad);
+            const sin = Math.sin(angleRad);
+
+            // Generate rounded rect points
+            const points = [];
+            const r = Math.min(rx, hw);
+
+            // We'll generate the path in local coords then rotate
+            // Using approximation with arcs
+            const localPath = roundedRectPath(-hw, -hw, size, size, r);
+
+            // Parse and transform - simplified: just use transform attribute
+            return { path: localPath, transform: `translate(${cx}, ${cy}) rotate(${angleDeg})` };
+        }
+
+        // Generate vectorized compound path SVG
+        function generateVectorizedSVG() {
+            const cx = 50, cy = V1.circle.cy, r = V1.circle.r;
+            const outerR = r + V1.circle.stroke / 2;
+            const innerR = r - V1.circle.stroke / 2;
+
+            // Calculate all positions
+            const lRad = V1.loupe.angle * Math.PI / 180;
+            const lx1 = cx + r * Math.cos(lRad);
+            const ly1 = cy + r * Math.sin(lRad);
+            const lx2 = lx1 + V1.loupe.length * Math.cos(lRad);
+            const ly2 = ly1 + V1.loupe.length * Math.sin(lRad);
+            const lAngle = V1.loupe.angle;
+            const lStroke = V1.loupe.stroke;
+            const lRx = lStroke / 2 * CAP_ROUNDNESS;
+
+            const kRad = V1.key.angle * Math.PI / 180;
+            const kx1 = cx + r * Math.cos(kRad);
+            const ky1 = cy + r * Math.sin(kRad);
+            const kx2 = kx1 + V1.key.length * Math.cos(kRad);
+            const ky2 = ky1 + V1.key.length * Math.sin(kRad);
+            const kAngle = V1.key.angle;
+            const kStroke = V1.key.stroke;
+            const kRx = kStroke / 2 * CAP_ROUNDNESS;
+
+            // Teeth
+            const tRad = kRad + Math.PI / 2;
+            const teeth = [0.5, 0.8].map(t => {
+                const tx = kx1 + (kx2 - kx1) * t;
+                const ty = ky1 + (ky2 - ky1) * t;
+                const tx2 = tx + V1.key.teethSize * Math.cos(tRad);
+                const ty2 = ty + V1.key.teethSize * Math.sin(tRad);
+                return { x1: tx, y1: ty, x2: tx2, y2: ty2 };
+            });
+            const tAngle = (kRad + Math.PI / 2) * 180 / Math.PI;
+            const tStroke = V1.key.teethStroke;
+            const tRx = tStroke / 2 * CAP_ROUNDNESS;
+
+            // Bust
+            const bustTop = cy + r + V1.bust.gap;
+            const endY = bustTop + V1.bust.height;
+            const leftX = cx - V1.bust.width / 2;
+            const rightX = cx + V1.bust.width / 2;
+            const controlY = endY - V1.bust.height * V1.bust.curvature;
+            const bustStroke = V1.bust.stroke;
+            const bustRx = bustStroke / 2 * CAP_ROUNDNESS;
+
+            const leftTangentX = cx - leftX;
+            const leftTangentY = controlY - endY;
+            const leftAngle = Math.atan2(leftTangentY, leftTangentX) * 180 / Math.PI;
+            const rightTangentX = rightX - cx;
+            const rightTangentY = endY - controlY;
+            const rightAngle = Math.atan2(rightTangentY, rightTangentX) * 180 / Math.PI;
+
+            // Build SVG with separate paths (cleaner structure)
+            const paths = {
+                loupe: {
+                    rect: roundedRectPath(-V1.loupe.length/2, -lStroke/2, V1.loupe.length, lStroke, lRx),
+                    transform: `translate(${(lx1+lx2)/2}, ${(ly1+ly2)/2}) rotate(${lAngle})`
+                },
+                key: {
+                    rect: roundedRectPath(-V1.key.length/2, -kStroke/2, V1.key.length, kStroke, kRx),
+                    transform: `translate(${(kx1+kx2)/2}, ${(ky1+ky2)/2}) rotate(${kAngle})`
+                },
+                teeth: teeth.map((t, i) => ({
+                    rect: roundedRectPath(-V1.key.teethSize/2, -tStroke/2, V1.key.teethSize, tStroke, tRx),
+                    transform: `translate(${(t.x1+t.x2)/2}, ${(t.y1+t.y2)/2}) rotate(${tAngle})`
+                })),
+                circle: donutPath(cx, cy, outerR, innerR),
+                bustPath: `M ${leftX} ${endY} Q ${cx} ${controlY} ${rightX} ${endY}`,
+                bustLeftCap: {
+                    rect: roundedRectPath(-bustStroke/2, -bustStroke/2, bustStroke, bustStroke, bustRx),
+                    transform: `translate(${leftX}, ${endY}) rotate(${leftAngle})`
+                },
+                bustRightCap: {
+                    rect: roundedRectPath(-bustStroke/2, -bustStroke/2, bustStroke, bustStroke, bustRx),
+                    transform: `translate(${rightX}, ${endY}) rotate(${rightAngle})`
+                }
+            };
+
+            return paths;
+        }
+
+        // Create vectorized SVG element
+        function createVectorizedIcon(size) {
+            const paths = generateVectorizedSVG();
+
+            const svg = createSVG('svg', {
+                viewBox: '0 0 100 100',
+                width: size,
+                height: size,
+                fill: 'none',
+                xmlns: 'http://www.w3.org/2000/svg'
+            });
+
+            // Layer 1: Loupe
+            svg.appendChild(createSVG('path', {
+                d: paths.loupe.rect,
+                fill: 'white',
+                transform: paths.loupe.transform
+            }));
+
+            // Layer 2: Key
+            svg.appendChild(createSVG('path', {
+                d: paths.key.rect,
+                fill: 'white',
+                transform: paths.key.transform
+            }));
+
+            // Layer 3: Teeth
+            paths.teeth.forEach(t => {
+                svg.appendChild(createSVG('path', {
+                    d: t.rect,
+                    fill: 'white',
+                    transform: t.transform
+                }));
+            });
+
+            // Layer 4: Circle (donut path - single path with fill-rule evenodd)
+            svg.appendChild(createSVG('path', {
+                d: paths.circle,
+                fill: 'white',
+                'fill-rule': 'evenodd'
+            }));
+
+            // Layer 5: Bust caps (background)
+            svg.appendChild(createSVG('path', {
+                d: paths.bustLeftCap.rect,
+                fill: 'white',
+                transform: paths.bustLeftCap.transform
+            }));
+            svg.appendChild(createSVG('path', {
+                d: paths.bustRightCap.rect,
+                fill: 'white',
+                transform: paths.bustRightCap.transform
+            }));
+
+            // Layer 6: Bust path
+            svg.appendChild(createSVG('path', {
+                d: paths.bustPath,
+                stroke: 'white',
+                'stroke-width': V1.bust.stroke,
+                'stroke-linecap': 'butt',
+                fill: 'none'
+            }));
+
+            return svg;
+        }
+
+        // Generate clean SVG code for export
+        function generateCleanSVGCode() {
+            const paths = generateVectorizedSVG();
+
+            let svg = `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- IzzIco V1 Icon - Vectorized -->
+  <!-- Layer 1: Loupe (background) -->
+  <path d="${paths.loupe.rect}" fill="white" transform="${paths.loupe.transform}"/>
+
+  <!-- Layer 2: Key (background) -->
+  <path d="${paths.key.rect}" fill="white" transform="${paths.key.transform}"/>
+
+  <!-- Layer 3: Teeth -->
+  <path d="${paths.teeth[0].rect}" fill="white" transform="${paths.teeth[0].transform}"/>
+  <path d="${paths.teeth[1].rect}" fill="white" transform="${paths.teeth[1].transform}"/>
+
+  <!-- Layer 4: Circle (donut - single path) -->
+  <path d="${paths.circle}" fill="white" fill-rule="evenodd"/>
+
+  <!-- Layer 5: Bust caps (background) -->
+  <path d="${paths.bustLeftCap.rect}" fill="white" transform="${paths.bustLeftCap.transform}"/>
+  <path d="${paths.bustRightCap.rect}" fill="white" transform="${paths.bustRightCap.transform}"/>
+
+  <!-- Layer 6: Bust curve -->
+  <path d="${paths.bustPath}" stroke="white" stroke-width="${V1.bust.stroke}" stroke-linecap="butt" fill="none"/>
+</svg>`;
+            return svg;
+        }
+
+        // Generate minified SVG
+        function generateMinifiedSVGCode() {
+            const paths = generateVectorizedSVG();
+
+            // Combine all filled paths
+            let combined = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">`;
+            combined += `<g fill="white">`;
+            combined += `<path d="${paths.loupe.rect}" transform="${paths.loupe.transform}"/>`;
+            combined += `<path d="${paths.key.rect}" transform="${paths.key.transform}"/>`;
+            paths.teeth.forEach(t => {
+                combined += `<path d="${t.rect}" transform="${t.transform}"/>`;
+            });
+            combined += `<path d="${paths.circle}" fill-rule="evenodd"/>`;
+            combined += `<path d="${paths.bustLeftCap.rect}" transform="${paths.bustLeftCap.transform}"/>`;
+            combined += `<path d="${paths.bustRightCap.rect}" transform="${paths.bustRightCap.transform}"/>`;
+            combined += `</g>`;
+            combined += `<path d="${paths.bustPath}" stroke="white" stroke-width="${V1.bust.stroke}" stroke-linecap="butt" fill="none"/>`;
+            combined += `</svg>`;
+
+            return combined;
+        }
+
+        // Generate paths-only version (for inspection)
+        function generatePathsOnlyCode() {
+            const paths = generateVectorizedSVG();
+
+            let output = `/* IzzIco V1 - Path Data */\n\n`;
+            output += `// Loupe (transform: ${paths.loupe.transform})\n`;
+            output += `const loupe = "${paths.loupe.rect}";\n\n`;
+            output += `// Key (transform: ${paths.key.transform})\n`;
+            output += `const key = "${paths.key.rect}";\n\n`;
+            output += `// Teeth\n`;
+            paths.teeth.forEach((t, i) => {
+                output += `const tooth${i+1} = "${t.rect}"; // transform: ${t.transform}\n`;
+            });
+            output += `\n// Circle (donut - fill-rule: evenodd)\n`;
+            output += `const circle = "${paths.circle}";\n\n`;
+            output += `// Bust caps\n`;
+            output += `const bustLeftCap = "${paths.bustLeftCap.rect}"; // transform: ${paths.bustLeftCap.transform}\n`;
+            output += `const bustRightCap = "${paths.bustRightCap.rect}"; // transform: ${paths.bustRightCap.transform}\n\n`;
+            output += `// Bust path (stroked)\n`;
+            output += `const bustPath = "${paths.bustPath}";\n`;
+            output += `const bustStroke = ${V1.bust.stroke};\n`;
+
+            return output;
+        }
+
+        let currentVectorTab = 'clean';
+
+        function showVectorTab(tab) {
+            currentVectorTab = tab;
+            document.querySelectorAll('.vector-tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            updateVectorCode();
+        }
+
+        function updateVectorCode() {
+            const display = document.getElementById('vector-code-display');
+            let code;
+
+            switch (currentVectorTab) {
+                case 'clean':
+                    code = generateCleanSVGCode();
+                    break;
+                case 'minified':
+                    code = generateMinifiedSVGCode();
+                    break;
+                case 'paths':
+                    code = generatePathsOnlyCode();
+                    break;
+            }
+
+            display.textContent = code;
+        }
+
+        function copyVectorSVG() {
+            const code = generateCleanSVGCode();
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = 'Copie !';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copier le SVG';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // ============================================
+        // DOWNLOAD FUNCTIONS
+        // ============================================
+
+        function getExportSize() {
+            return parseInt(document.getElementById('export-size').value);
+        }
+
+        function triggerDownload(dataUrl, filename) {
+            const link = document.createElement('a');
+            link.href = dataUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function setDownloading(btn, state, originalContent) {
+            if (state) {
+                btn.classList.add('downloading');
+                // Store original children
+                btn.dataset.wasDownloading = 'true';
+                // Clear and add spinner
+                while (btn.firstChild) btn.removeChild(btn.firstChild);
+                btn.appendChild(document.createTextNode('⏳'));
+            } else {
+                btn.classList.remove('downloading');
+            }
+        }
+
+        // Download SVG
+        function downloadSVG() {
+            const btn = event.target.closest('.download-btn');
+            const originalText = btn.textContent;
+            setDownloading(btn, true);
+
+            const svgCode = generateCleanSVGCode();
+            const blob = new Blob([svgCode], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+
+            triggerDownload(url, 'izzico-icon-v1.svg');
+            URL.revokeObjectURL(url);
+
+            setTimeout(() => {
+                btn.classList.remove('downloading');
+                while (btn.firstChild) btn.removeChild(btn.firstChild);
+                const icon = createDownloadIcon();
+                btn.appendChild(icon);
+                btn.appendChild(document.createTextNode(' SVG'));
+            }, 500);
+        }
+
+        // Create download icon SVG element
+        function createDownloadIcon() {
+            const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            svg.setAttribute('viewBox', '0 0 24 24');
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+            svg.setAttribute('stroke-width', '2');
+
+            const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            path.setAttribute('d', 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4');
+            svg.appendChild(path);
+
+            const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+            polyline.setAttribute('points', '7 10 12 15 17 10');
+            svg.appendChild(polyline);
+
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('x1', '12');
+            line.setAttribute('y1', '15');
+            line.setAttribute('x2', '12');
+            line.setAttribute('y2', '3');
+            svg.appendChild(line);
+
+            return svg;
+        }
+
+        // Download PNG (with transparency)
+        function downloadPNG() {
+            const btn = event.target.closest('.download-btn');
+            setDownloading(btn, true);
+
+            const size = getExportSize();
+            const svgCode = generateCleanSVGCode();
+
+            // Create image from SVG
+            const img = new Image();
+            const svgBlob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+
+                // Scale and draw
+                ctx.drawImage(img, 0, 0, size, size);
+
+                // Convert to PNG
+                canvas.toBlob(function(blob) {
+                    const pngUrl = URL.createObjectURL(blob);
+                    triggerDownload(pngUrl, 'izzico-icon-v1-' + size + 'px.png');
+                    URL.revokeObjectURL(pngUrl);
+                    URL.revokeObjectURL(url);
+
+                    btn.classList.remove('downloading');
+                    while (btn.firstChild) btn.removeChild(btn.firstChild);
+                    btn.appendChild(createDownloadIcon());
+                    btn.appendChild(document.createTextNode(' PNG'));
+                }, 'image/png');
+            };
+
+            img.onerror = function() {
+                console.error('Error loading SVG for PNG export');
+                URL.revokeObjectURL(url);
+                btn.classList.remove('downloading');
+                while (btn.firstChild) btn.removeChild(btn.firstChild);
+                btn.appendChild(createDownloadIcon());
+                btn.appendChild(document.createTextNode(' PNG'));
+            };
+
+            img.src = url;
+        }
+
+        // Download JPEG (with background color)
+        function downloadJPEG() {
+            const btn = event.target.closest('.download-btn');
+            setDownloading(btn, true);
+
+            const size = getExportSize();
+            const svgCode = generateCleanSVGCode();
+
+            // Create image from SVG
+            const img = new Image();
+            const svgBlob = new Blob([svgCode], { type: 'image/svg+xml;charset=utf-8' });
+            const url = URL.createObjectURL(svgBlob);
+
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+
+                // Fill with dark background (JPEG doesn't support transparency)
+                ctx.fillStyle = '#1a1a24'; // Match the icon's background color
+                ctx.fillRect(0, 0, size, size);
+
+                // Scale and draw
+                ctx.drawImage(img, 0, 0, size, size);
+
+                // Convert to JPEG (quality 0.95)
+                canvas.toBlob(function(blob) {
+                    const jpegUrl = URL.createObjectURL(blob);
+                    triggerDownload(jpegUrl, 'izzico-icon-v1-' + size + 'px.jpg');
+                    URL.revokeObjectURL(jpegUrl);
+                    URL.revokeObjectURL(url);
+
+                    btn.classList.remove('downloading');
+                    while (btn.firstChild) btn.removeChild(btn.firstChild);
+                    btn.appendChild(createDownloadIcon());
+                    btn.appendChild(document.createTextNode(' JPEG'));
+                }, 'image/jpeg', 0.95);
+            };
+
+            img.onerror = function() {
+                console.error('Error loading SVG for JPEG export');
+                URL.revokeObjectURL(url);
+                btn.classList.remove('downloading');
+                while (btn.firstChild) btn.removeChild(btn.firstChild);
+                btn.appendChild(createDownloadIcon());
+                btn.appendChild(document.createTextNode(' JPEG'));
+            };
+
+            img.src = url;
+        }
+
+        function renderVectorized() {
+            const display = document.getElementById('vectorized-display');
+            if (display) {
+                clearEl(display);
+                display.appendChild(createVectorizedIcon(180));
+                updateVectorCode();
+            }
+        }
+
+        function render() {
+            // Main displays
+            clearEl(document.getElementById('v1-display'));
+            document.getElementById('v1-display').appendChild(createV1Icon(180));
+
+            clearEl(document.getElementById('v2-display'));
+            document.getElementById('v2-display').appendChild(createV2Icon(180));
+
+            // Size comparison
+            [128, 64, 32].forEach(size => {
+                const v1El = document.getElementById(`v1-${size}`);
+                const v2El = document.getElementById(`v2-${size}`);
+                clearEl(v1El); clearEl(v2El);
+                v1El.appendChild(createV1Icon(size));
+                v2El.appendChild(createV2Icon(size));
+            });
+
+            // Lockups
+            clearEl(document.getElementById('lockup-v1'));
+            document.getElementById('lockup-v1').appendChild(createV1Icon(60));
+
+            clearEl(document.getElementById('lockup-v2'));
+            document.getElementById('lockup-v2').appendChild(createV2Icon(60));
+
+            // Update display
+            document.getElementById('bust-h-display').textContent = bustHeight;
+            document.getElementById('bust-height-val').textContent = bustHeight;
+
+            // Render vectorized version
+            renderVectorized();
+        }
+
+        function setBustHeight(h) {
+            bustHeight = h;
+            document.getElementById('bust-height').value = h;
+            render();
+        }
+
+        document.getElementById('bust-height').addEventListener('input', e => {
+            bustHeight = parseInt(e.target.value);
+            render();
+        });
+
+        render();
+    </script>
+</body>
+</html>

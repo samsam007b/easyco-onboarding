@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface Settings {
   // General
@@ -145,14 +146,14 @@ export default function AdminSettingsPage() {
         });
       }
 
-      toast.success('Paramètres enregistrés', {
-        description: 'Les modifications ont été sauvegardées.',
+      toast.success(getHookTranslation('admin', 'settingsSaved'), {
+        description: getHookTranslation('admin', 'settingsSavedDescription'),
       });
       setHasChanges(false);
     } catch (error) {
       logger.error('Failed to save settings', error);
-      toast.error('Erreur lors de la sauvegarde', {
-        description: 'Veuillez réessayer.',
+      toast.error(getHookTranslation('admin', 'saveError'), {
+        description: getHookTranslation('admin', 'saveErrorDescription'),
       });
     } finally {
       setIsSaving(false);

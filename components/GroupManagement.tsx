@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { createClient } from '@/lib/auth/supabase-client';
 import { showErrorToast, showSuccessToast, showInfoToast, toasts } from '@/lib/toast-helpers';
 import LoadingHouse from '@/components/ui/LoadingHouse';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface Group {
   id: string;
@@ -43,6 +44,8 @@ interface GroupInvitation {
 export default function GroupManagement({ userId }: { userId: string }) {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   const [currentGroup, setCurrentGroup] = useState<Group | null>(null);
   const [members, setMembers] = useState<GroupMember[]>([]);
@@ -360,12 +363,12 @@ export default function GroupManagement({ userId }: { userId: string }) {
                     <p className="font-medium text-gray-900 flex items-center gap-2">
                       {member.users.full_name}
                       {member.role === 'creator' && (
-                        <span className="flex items-center gap-1" aria-label="Creator">
+                        <span className="flex items-center gap-1" aria-label={ariaLabels?.creator?.[language] || 'Creator'}>
                           <Crown className="w-4 h-4 text-yellow-500" />
                         </span>
                       )}
                       {member.role === 'admin' && (
-                        <span className="flex items-center gap-1" aria-label="Admin">
+                        <span className="flex items-center gap-1" aria-label={ariaLabels?.admin?.[language] || 'Admin'}>
                           <Shield className="w-4 h-4 text-blue-500" />
                         </span>
                       )}

@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Stroke Width Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --owner-start: #9b6b9e;
+            --resident-mid: #e8837c;
+            --searcher-end: #f5b73f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f23 100%);
+            min-height: 100vh;
+            padding: 40px;
+            color: white;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .subtitle {
+            text-align: center;
+            opacity: 0.7;
+            margin-bottom: 40px;
+        }
+
+        .main-comparison {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            margin-bottom: 50px;
+            padding: 40px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+        }
+
+        .element-box {
+            text-align: center;
+        }
+
+        .element-box h3 {
+            font-size: 0.9rem;
+            opacity: 0.6;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+
+        .icon-container {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-container svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .wordmark-container {
+            display: flex;
+            align-items: center;
+            height: 200px;
+        }
+
+        .wordmark-text {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: var(--wordmark-weight, 500);
+            font-size: var(--wordmark-size, 100px);
+            color: white;
+            letter-spacing: 0.02em;
+        }
+
+        /* Measurement overlay */
+        .measurement-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .measurement-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .stroke-samples {
+            display: flex;
+            gap: 40px;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 30px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+        }
+
+        .stroke-sample {
+            text-align: center;
+        }
+
+        .stroke-sample .label {
+            font-size: 0.75rem;
+            opacity: 0.6;
+            margin-bottom: 10px;
+        }
+
+        .stroke-bar {
+            width: var(--stroke-width);
+            height: 100px;
+            background: white;
+            border-radius: 50px;
+            margin: 0 auto;
+        }
+
+        .stroke-value {
+            font-size: 0.85rem;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* Controls */
+        .controls {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .controls h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+
+        .control-group label {
+            min-width: 180px;
+            font-size: 0.9rem;
+        }
+
+        .control-group input[type="range"] {
+            flex: 1;
+            max-width: 300px;
+            height: 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.2);
+            -webkit-appearance: none;
+        }
+
+        .control-group input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+            cursor: pointer;
+        }
+
+        .control-group .value {
+            min-width: 80px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* Analysis section */
+        .analysis {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 30px;
+            margin-bottom: 40px;
+        }
+
+        .analysis h2 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .analysis-card {
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .analysis-card h4 {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+
+        .analysis-card .value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .analysis-card .note {
+            font-size: 0.8rem;
+            opacity: 0.6;
+            margin-top: 8px;
+        }
+
+        .match-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .match-good { background: rgba(76, 175, 80, 0.3); color: #81c784; }
+        .match-ok { background: rgba(255, 193, 7, 0.3); color: #ffd54f; }
+        .match-bad { background: rgba(244, 67, 54, 0.3); color: #e57373; }
+
+        /* Thickened icon preview */
+        .thickened-section {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .thickened-section h2 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+
+        .thickened-grid {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .thickened-item {
+            text-align: center;
+            padding: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 16px;
+        }
+
+        .thickened-item h4 {
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+            font-weight: 400;
+            opacity: 0.7;
+        }
+
+        .thickened-item svg {
+            width: 120px;
+            height: 120px;
+        }
+
+        .thickened-item .specs {
+            font-size: 0.8rem;
+            margin-top: 10px;
+            opacity: 0.6;
+        }
+
+        /* Side by side lockup test */
+        .lockup-test {
+            background: linear-gradient(135deg, var(--owner-start), var(--resident-mid), var(--searcher-end));
+            border-radius: 24px;
+            padding: 60px;
+            text-align: center;
+        }
+
+        .lockup-test h2 {
+            font-size: 1rem;
+            margin-bottom: 30px;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        .lockup-preview {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--lockup-gap, 20px);
+        }
+
+        .lockup-preview svg {
+            height: var(--icon-height, 120px);
+            width: auto;
+        }
+
+        .lockup-preview .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: var(--wordmark-weight, 500);
+            font-size: var(--wordmark-size, 80px);
+            color: white;
+            letter-spacing: 0.02em;
+        }
+    </style>
+</head>
+<body>
+    <h1>Comparaison des Epaisseurs de Trait</h1>
+    <p class="subtitle">Analyse de l'harmonie Icon / Wordmark Fredoka</p>
+
+    <!-- Main side-by-side comparison -->
+    <div class="main-comparison">
+        <div class="element-box">
+            <h3>ICON (Original)</h3>
+            <div class="icon-container" id="iconContainer">
+                <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="element-box">
+            <h3>WORDMARK (Fredoka)</h3>
+            <div class="wordmark-container">
+                <span class="wordmark-text" id="wordmarkText">IzzIco</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stroke width measurement -->
+    <div class="measurement-section">
+        <h2>Mesure Visuelle des Epaisseurs</h2>
+        <div class="stroke-samples">
+            <div class="stroke-sample">
+                <div class="label">Icon Handle<br>(estimé)</div>
+                <div class="stroke-bar" style="--stroke-width: 40px;"></div>
+                <div class="stroke-value" id="iconStrokeValue">~40px</div>
+            </div>
+            <div class="stroke-sample">
+                <div class="label">Fredoka 300</div>
+                <div class="stroke-bar" style="--stroke-width: 12px;"></div>
+                <div class="stroke-value">~12px</div>
+            </div>
+            <div class="stroke-sample">
+                <div class="label">Fredoka 400</div>
+                <div class="stroke-bar" style="--stroke-width: 16px;"></div>
+                <div class="stroke-value">~16px</div>
+            </div>
+            <div class="stroke-sample">
+                <div class="label">Fredoka 500</div>
+                <div class="stroke-bar" style="--stroke-width: 20px;"></div>
+                <div class="stroke-value">~20px</div>
+            </div>
+            <div class="stroke-sample">
+                <div class="label">Fredoka 600</div>
+                <div class="stroke-bar" style="--stroke-width: 24px;"></div>
+                <div class="stroke-value">~24px</div>
+            </div>
+            <div class="stroke-sample">
+                <div class="label">Fredoka 700</div>
+                <div class="stroke-bar" style="--stroke-width: 28px;"></div>
+                <div class="stroke-value">~28px</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="controls">
+        <h2>Ajustements</h2>
+        <div class="control-group">
+            <label>Taille wordmark (px):</label>
+            <input type="range" id="wordmarkSize" min="60" max="150" value="100">
+            <span class="value" id="wordmarkSizeValue">100px</span>
+        </div>
+        <div class="control-group">
+            <label>Poids Fredoka:</label>
+            <input type="range" id="wordmarkWeight" min="300" max="700" step="100" value="500">
+            <span class="value" id="wordmarkWeightValue">500</span>
+        </div>
+        <div class="control-group">
+            <label>Taille icon (px):</label>
+            <input type="range" id="iconSize" min="100" max="300" value="200">
+            <span class="value" id="iconSizeValue">200px</span>
+        </div>
+    </div>
+
+    <!-- Analysis -->
+    <div class="analysis">
+        <h2>Analyse Automatique</h2>
+        <div class="analysis-grid">
+            <div class="analysis-card">
+                <h4>Epaisseur Icon (à l'echelle)</h4>
+                <div class="value" id="iconStrokeScaled">~40px</div>
+                <div class="note">Basé sur handle loupe ~4% de la largeur icon</div>
+            </div>
+            <div class="analysis-card">
+                <h4>Epaisseur Fredoka (estimée)</h4>
+                <div class="value" id="fredokaStroke">~20px</div>
+                <div class="note">Environ 20% du font-size pour weight 500</div>
+            </div>
+            <div class="analysis-card">
+                <h4>Ratio Epaisseur</h4>
+                <div class="value" id="strokeRatio">2.0:1</div>
+                <div class="note">Icon / Wordmark</div>
+            </div>
+            <div class="analysis-card">
+                <h4>Harmonie</h4>
+                <div class="value">
+                    <span class="match-indicator" id="matchIndicator">A EVALUER</span>
+                </div>
+                <div class="note" id="matchNote">Ajustez les paramètres</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SVG Filter thickening preview -->
+    <div class="thickened-section">
+        <h2>Simulation : Icon avec Traits Epaissis (SVG Filter)</h2>
+        <p style="opacity: 0.6; margin-bottom: 20px; font-size: 0.9rem;">
+            Utilisation de feMorphology pour simuler des traits plus épais. Note: solution temporaire - un redessinage propre serait préférable.
+        </p>
+        <div class="thickened-grid">
+            <div class="thickened-item">
+                <h4>Original</h4>
+                <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                </svg>
+                <div class="specs">Stroke: ~80px (viewBox)</div>
+            </div>
+
+            <div class="thickened-item">
+                <h4>Dilate +20</h4>
+                <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="dilate20">
+                            <feMorphology operator="dilate" radius="20"/>
+                        </filter>
+                    </defs>
+                    <g filter="url(#dilate20)">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </g>
+                </svg>
+                <div class="specs">Stroke: ~120px (viewBox)</div>
+            </div>
+
+            <div class="thickened-item">
+                <h4>Dilate +40</h4>
+                <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="dilate40">
+                            <feMorphology operator="dilate" radius="40"/>
+                        </filter>
+                    </defs>
+                    <g filter="url(#dilate40)">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </g>
+                </svg>
+                <div class="specs">Stroke: ~160px (viewBox)</div>
+            </div>
+
+            <div class="thickened-item">
+                <h4>Dilate +60</h4>
+                <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <filter id="dilate60">
+                            <feMorphology operator="dilate" radius="60"/>
+                        </filter>
+                    </defs>
+                    <g filter="url(#dilate60)">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </g>
+                </svg>
+                <div class="specs">Stroke: ~200px (viewBox)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Live lockup test -->
+    <div class="lockup-test">
+        <h2>Test Lockup en Direct</h2>
+        <div class="lockup-preview" id="lockupPreview">
+            <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg" id="lockupIcon">
+                <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+            </svg>
+            <span class="wordmark" id="lockupWordmark">IzzIco</span>
+        </div>
+    </div>
+
+    <script>
+        // Slider controls
+        const wordmarkSizeSlider = document.getElementById('wordmarkSize');
+        const wordmarkWeightSlider = document.getElementById('wordmarkWeight');
+        const iconSizeSlider = document.getElementById('iconSize');
+
+        const wordmarkSizeValue = document.getElementById('wordmarkSizeValue');
+        const wordmarkWeightValue = document.getElementById('wordmarkWeightValue');
+        const iconSizeValue = document.getElementById('iconSizeValue');
+
+        const wordmarkText = document.getElementById('wordmarkText');
+        const iconContainer = document.getElementById('iconContainer');
+        const lockupWordmark = document.getElementById('lockupWordmark');
+        const lockupIcon = document.getElementById('lockupIcon');
+
+        // Analysis elements
+        const iconStrokeScaled = document.getElementById('iconStrokeScaled');
+        const fredokaStroke = document.getElementById('fredokaStroke');
+        const strokeRatio = document.getElementById('strokeRatio');
+        const matchIndicator = document.getElementById('matchIndicator');
+        const matchNote = document.getElementById('matchNote');
+
+        function updateDisplay() {
+            const wordmarkSize = parseInt(wordmarkSizeSlider.value);
+            const wordmarkWeight = parseInt(wordmarkWeightSlider.value);
+            const iconSize = parseInt(iconSizeSlider.value);
+
+            // Update values display
+            wordmarkSizeValue.textContent = wordmarkSize + 'px';
+            wordmarkWeightValue.textContent = wordmarkWeight;
+            iconSizeValue.textContent = iconSize + 'px';
+
+            // Update main comparison
+            wordmarkText.style.fontSize = wordmarkSize + 'px';
+            wordmarkText.style.fontWeight = wordmarkWeight;
+            iconContainer.style.width = iconSize + 'px';
+            iconContainer.style.height = iconSize + 'px';
+
+            // Update lockup test (proportionally)
+            const lockupIconHeight = iconSize * 0.6;
+            const lockupFontSize = wordmarkSize * 0.6;
+            lockupIcon.style.height = lockupIconHeight + 'px';
+            lockupWordmark.style.fontSize = lockupFontSize + 'px';
+            lockupWordmark.style.fontWeight = wordmarkWeight;
+
+            // Calculate stroke widths
+            // Icon: handle is approximately 4% of icon width in viewBox (80px / 2048px)
+            const iconStrokeWidth = iconSize * 0.039; // ~4% of displayed size
+
+            // Fredoka: stroke width varies with weight
+            // At weight 500, stroke is approximately 18-20% of font-size
+            const weightFactor = 0.12 + (wordmarkWeight - 300) * 0.0002; // 12% at 300, ~20% at 700
+            const fredokaStrokeWidth = wordmarkSize * weightFactor;
+
+            // Update analysis
+            iconStrokeScaled.textContent = '~' + Math.round(iconStrokeWidth) + 'px';
+            fredokaStroke.textContent = '~' + Math.round(fredokaStrokeWidth) + 'px';
+
+            const ratio = iconStrokeWidth / fredokaStrokeWidth;
+            strokeRatio.textContent = ratio.toFixed(2) + ':1';
+
+            // Evaluate match
+            if (ratio >= 0.85 && ratio <= 1.15) {
+                matchIndicator.className = 'match-indicator match-good';
+                matchIndicator.textContent = 'EXCELLENT';
+                matchNote.textContent = 'Les épaisseurs sont bien harmonisées';
+            } else if (ratio >= 0.7 && ratio <= 1.4) {
+                matchIndicator.className = 'match-indicator match-ok';
+                matchIndicator.textContent = 'ACCEPTABLE';
+                matchNote.textContent = 'Léger déséquilibre, mais fonctionnel';
+            } else {
+                matchIndicator.className = 'match-indicator match-bad';
+                matchIndicator.textContent = 'DESEQUILIBRE';
+                matchNote.textContent = ratio > 1 ? 'Icon trop épais vs wordmark' : 'Wordmark trop épais vs icon';
+            }
+        }
+
+        wordmarkSizeSlider.addEventListener('input', updateDisplay);
+        wordmarkWeightSlider.addEventListener('input', updateDisplay);
+        iconSizeSlider.addEventListener('input', updateDisplay);
+
+        // Initial update
+        updateDisplay();
+    </script>
+</body>
+</html>

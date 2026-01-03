@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import confetti from 'canvas-confetti';
 
 type ToastType = 'success' | 'error' | 'info' | 'warning' | 'achievement';
+type Language = 'fr' | 'en' | 'nl' | 'de';
 
 interface ToastOptions {
   withConfetti?: boolean;
@@ -11,6 +12,122 @@ interface ToastOptions {
   duration?: number;
   description?: string;
 }
+
+// =============================================================================
+// I18N TRANSLATIONS
+// =============================================================================
+const translations = {
+  profileComplete: {
+    title: {
+      fr: 'Profil complété',
+      en: 'Profile completed',
+      nl: 'Profiel voltooid',
+      de: 'Profil abgeschlossen',
+    },
+    description: {
+      fr: 'Tu es maintenant visible par les autres utilisateurs',
+      en: 'You are now visible to other users',
+      nl: 'Je bent nu zichtbaar voor andere gebruikers',
+      de: 'Du bist jetzt für andere Benutzer sichtbar',
+    },
+  },
+  firstMatch: {
+    title: {
+      fr: 'Premier match',
+      en: 'First match',
+      nl: 'Eerste match',
+      de: 'Erster Match',
+    },
+    description: {
+      fr: 'Quelqu\'un est intéressé par ton profil',
+      en: 'Someone is interested in your profile',
+      nl: 'Iemand is geïnteresseerd in je profiel',
+      de: 'Jemand interessiert sich für dein Profil',
+    },
+  },
+  applicationSent: {
+    title: {
+      fr: 'Candidature envoyée',
+      en: 'Application sent',
+      nl: 'Aanvraag verzonden',
+      de: 'Bewerbung gesendet',
+    },
+    description: {
+      fr: 'Les colocataires ont été notifiés',
+      en: 'The roommates have been notified',
+      nl: 'De huisgenoten zijn op de hoogte gebracht',
+      de: 'Die Mitbewohner wurden benachrichtigt',
+    },
+  },
+  messageSent: {
+    fr: 'Message envoyé',
+    en: 'Message sent',
+    nl: 'Bericht verzonden',
+    de: 'Nachricht gesendet',
+  },
+  searchSaved: {
+    title: {
+      fr: 'Recherche sauvegardée',
+      en: 'Search saved',
+      nl: 'Zoekopdracht opgeslagen',
+      de: 'Suche gespeichert',
+    },
+    description: {
+      fr: 'Tu recevras des alertes pour les nouvelles colocs',
+      en: 'You will receive alerts for new colivings',
+      nl: 'Je ontvangt meldingen voor nieuwe colivings',
+      de: 'Du erhältst Benachrichtigungen für neue WGs',
+    },
+  },
+  favoriteAdded: {
+    fr: (name?: string) => name ? `${name} ajouté aux favoris` : 'Ajouté aux favoris',
+    en: (name?: string) => name ? `${name} added to favorites` : 'Added to favorites',
+    nl: (name?: string) => name ? `${name} toegevoegd aan favorieten` : 'Toegevoegd aan favorieten',
+    de: (name?: string) => name ? `${name} zu Favoriten hinzugefügt` : 'Zu Favoriten hinzugefügt',
+  },
+  visitScheduled: {
+    title: {
+      fr: 'Visite programmée',
+      en: 'Visit scheduled',
+      nl: 'Bezoek gepland',
+      de: 'Besuch geplant',
+    },
+    description: {
+      fr: 'Un rappel te sera envoyé avant la visite',
+      en: 'A reminder will be sent before the visit',
+      nl: 'Een herinnering wordt voor het bezoek verzonden',
+      de: 'Eine Erinnerung wird vor dem Besuch gesendet',
+    },
+  },
+  welcome: {
+    title: {
+      fr: (firstName?: string) => firstName ? `Bienvenue ${firstName}` : 'Bienvenue',
+      en: (firstName?: string) => firstName ? `Welcome ${firstName}` : 'Welcome',
+      nl: (firstName?: string) => firstName ? `Welkom ${firstName}` : 'Welkom',
+      de: (firstName?: string) => firstName ? `Willkommen ${firstName}` : 'Willkommen',
+    },
+    description: {
+      fr: 'Ton compte a été créé avec succès',
+      en: 'Your account was created successfully',
+      nl: 'Je account is succesvol aangemaakt',
+      de: 'Dein Konto wurde erfolgreich erstellt',
+    },
+  },
+  checklistComplete: {
+    title: {
+      fr: 'Toutes les étapes complétées',
+      en: 'All steps completed',
+      nl: 'Alle stappen voltooid',
+      de: 'Alle Schritte abgeschlossen',
+    },
+    description: {
+      fr: 'Tu maîtrises maintenant l\'application',
+      en: 'You now master the application',
+      nl: 'Je beheerst nu de applicatie',
+      de: 'Du beherrschst jetzt die Anwendung',
+    },
+  },
+};
 
 // Color schemes
 const COLORS = {
@@ -20,9 +137,14 @@ const COLORS = {
 
 // Current variant (can be set from context)
 let currentVariant: 'searcher' | 'resident' = 'searcher';
+let currentLanguage: Language = 'fr';
 
 export function setToastVariant(variant: 'searcher' | 'resident') {
   currentVariant = variant;
+}
+
+export function setToastLanguage(language: Language) {
+  currentLanguage = language;
 }
 
 // Fire confetti effects
@@ -122,63 +244,69 @@ export const celebrateToast = {
 
   // Profile completed
   profileComplete: () => {
-    showToast('achievement', 'Profil complété', {
+    const t = translations.profileComplete;
+    showToast('achievement', t.title[currentLanguage], {
       withConfetti: true,
       confettiType: 'sides',
-      description: 'Tu es maintenant visible par les autres utilisateurs',
+      description: t.description[currentLanguage],
     });
   },
 
   // First match
   firstMatch: () => {
-    showToast('achievement', 'Premier match', {
+    const t = translations.firstMatch;
+    showToast('achievement', t.title[currentLanguage], {
       withConfetti: true,
       confettiType: 'stars',
-      description: 'Quelqu\'un est intéressé par ton profil',
+      description: t.description[currentLanguage],
     });
   },
 
   // Application sent
   applicationSent: () => {
-    showToast('success', 'Candidature envoyée', {
+    const t = translations.applicationSent;
+    showToast('success', t.title[currentLanguage], {
       withConfetti: true,
       confettiType: 'burst',
-      description: 'Les colocataires ont été notifiés',
+      description: t.description[currentLanguage],
     });
   },
 
   // Message sent
   messageSent: () => {
-    toast.success('Message envoyé');
+    toast.success(translations.messageSent[currentLanguage]);
   },
 
   // Search saved
   searchSaved: () => {
-    showToast('success', 'Recherche sauvegardée', {
-      description: 'Tu recevras des alertes pour les nouvelles colocs',
+    const t = translations.searchSaved;
+    showToast('success', t.title[currentLanguage], {
+      description: t.description[currentLanguage],
     });
   },
 
   // Favorite added
   favoriteAdded: (name?: string) => {
-    toast.success(name ? `${name} ajouté aux favoris` : 'Ajouté aux favoris');
+    toast.success(translations.favoriteAdded[currentLanguage](name));
   },
 
   // Visit scheduled
   visitScheduled: () => {
-    showToast('success', 'Visite programmée', {
+    const t = translations.visitScheduled;
+    showToast('success', t.title[currentLanguage], {
       withConfetti: true,
-      description: 'Un rappel te sera envoyé avant la visite',
+      description: t.description[currentLanguage],
     });
   },
 
   // Welcome new user
   welcome: (firstName?: string) => {
-    const message = firstName ? `Bienvenue ${firstName}` : 'Bienvenue';
+    const t = translations.welcome;
+    const message = t.title[currentLanguage](firstName);
     showToast('success', message, {
       withConfetti: true,
       confettiType: 'stars',
-      description: 'Ton compte a été créé avec succès',
+      description: t.description[currentLanguage],
     });
   },
 
@@ -189,10 +317,11 @@ export const celebrateToast = {
 
   // All checklist items done
   checklistComplete: () => {
-    showToast('achievement', 'Toutes les étapes complétées', {
+    const t = translations.checklistComplete;
+    showToast('achievement', t.title[currentLanguage], {
       withConfetti: true,
       confettiType: 'sides',
-      description: 'Tu maîtrises maintenant l\'application',
+      description: t.description[currentLanguage],
     });
   },
 };

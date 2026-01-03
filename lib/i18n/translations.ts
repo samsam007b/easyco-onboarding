@@ -1741,6 +1741,178 @@ export const translations = {
         de: 'Support kontaktieren',
       },
     },
+
+    // Bank Info Page
+    bankInfo: {
+      pageTitle: {
+        fr: 'Informations bancaires',
+        en: 'Bank Information',
+        nl: 'Bankgegevens',
+        de: 'Bankinformationen',
+      },
+      subtitle: {
+        fr: 'Gérez vos informations de paiement',
+        en: 'Manage your payment information',
+        nl: 'Beheer uw betalingsgegevens',
+        de: 'Verwalten Sie Ihre Zahlungsinformationen',
+      },
+      sections: {
+        bankAccount: {
+          fr: 'Compte bancaire',
+          en: 'Bank Account',
+          nl: 'Bankrekening',
+          de: 'Bankkonto',
+        },
+        mobileMethods: {
+          fr: 'Paiements mobiles',
+          en: 'Mobile Payments',
+          nl: 'Mobiele betalingen',
+          de: 'Mobile Zahlungen',
+        },
+      },
+      fields: {
+        accountHolder: {
+          fr: 'Titulaire du compte',
+          en: 'Account Holder',
+          nl: 'Rekeninghouder',
+          de: 'Kontoinhaber',
+        },
+        bankName: {
+          fr: 'Nom de la banque',
+          en: 'Bank Name',
+          nl: 'Banknaam',
+          de: 'Bankname',
+        },
+        optional: {
+          fr: 'optionnel',
+          en: 'optional',
+          nl: 'optioneel',
+          de: 'optional',
+        },
+        ibanHint: {
+          fr: 'Votre numéro de compte international (IBAN)',
+          en: 'Your International Bank Account Number (IBAN)',
+          nl: 'Uw internationaal bankrekeningnummer (IBAN)',
+          de: 'Ihre internationale Bankkontonummer (IBAN)',
+        },
+        payconiqHint: {
+          fr: 'Permettre les paiements via Payconiq',
+          en: 'Allow payments via Payconiq',
+          nl: 'Betalingen via Payconiq toestaan',
+          de: 'Zahlungen über Payconiq erlauben',
+        },
+        revtagHint: {
+          fr: 'Votre identifiant Revolut pour recevoir des paiements',
+          en: 'Your Revolut ID to receive payments',
+          nl: 'Uw Revolut-ID om betalingen te ontvangen',
+          de: 'Ihre Revolut-ID zum Empfangen von Zahlungen',
+        },
+      },
+      placeholders: {
+        accountHolder: {
+          fr: 'Jean Dupont',
+          en: 'John Doe',
+          nl: 'Jan Jansen',
+          de: 'Max Mustermann',
+        },
+        iban: {
+          fr: 'BE68 5390 0754 7034',
+          en: 'BE68 5390 0754 7034',
+          nl: 'NL91 ABNA 0417 1643 00',
+          de: 'DE89 3704 0044 0532 0130 00',
+        },
+        bankName: {
+          fr: 'KBC, ING, Belfius...',
+          en: 'KBC, ING, Belfius...',
+          nl: 'ING, ABN AMRO, Rabobank...',
+          de: 'Sparkasse, Deutsche Bank...',
+        },
+        bic: {
+          fr: 'KREDBEBB',
+          en: 'KREDBEBB',
+          nl: 'ABNANL2A',
+          de: 'COBADEFFXXX',
+        },
+        revtag: {
+          fr: 'votre_revtag',
+          en: 'your_revtag',
+          nl: 'uw_revtag',
+          de: 'ihr_revtag',
+        },
+      },
+      security: {
+        title: {
+          fr: 'Données sécurisées',
+          en: 'Secure Data',
+          nl: 'Beveiligde gegevens',
+          de: 'Sichere Daten',
+        },
+        description: {
+          fr: 'Vos informations bancaires sont chiffrées et ne sont visibles que par vos colocataires pour effectuer des paiements.',
+          en: 'Your bank information is encrypted and only visible to your roommates for making payments.',
+          nl: 'Uw bankgegevens zijn versleuteld en alleen zichtbaar voor uw huisgenoten om betalingen te doen.',
+          de: 'Ihre Bankdaten sind verschlüsselt und nur für Ihre Mitbewohner sichtbar, um Zahlungen zu tätigen.',
+        },
+      },
+      buttons: {
+        saving: {
+          fr: 'Enregistrement...',
+          en: 'Saving...',
+          nl: 'Opslaan...',
+          de: 'Speichern...',
+        },
+        save: {
+          fr: 'Enregistrer les informations',
+          en: 'Save Information',
+          nl: 'Informatie opslaan',
+          de: 'Informationen speichern',
+        },
+      },
+      twoFactor: {
+        title: {
+          fr: 'Confirmation requise',
+          en: 'Confirmation Required',
+          nl: 'Bevestiging vereist',
+          de: 'Bestätigung erforderlich',
+        },
+        description: {
+          fr: 'Pour modifier vos informations bancaires, veuillez confirmer votre identité.',
+          en: 'To modify your bank information, please confirm your identity.',
+          nl: 'Om uw bankgegevens te wijzigen, bevestig uw identiteit.',
+          de: 'Um Ihre Bankdaten zu ändern, bestätigen Sie bitte Ihre Identität.',
+        },
+        passwordLabel: {
+          fr: 'Mot de passe',
+          en: 'Password',
+          nl: 'Wachtwoord',
+          de: 'Passwort',
+        },
+        passwordPlaceholder: {
+          fr: 'Entrez votre mot de passe',
+          en: 'Enter your password',
+          nl: 'Voer uw wachtwoord in',
+          de: 'Geben Sie Ihr Passwort ein',
+        },
+        cancel: {
+          fr: 'Annuler',
+          en: 'Cancel',
+          nl: 'Annuleren',
+          de: 'Abbrechen',
+        },
+        verifying: {
+          fr: 'Vérification...',
+          en: 'Verifying...',
+          nl: 'Verifiëren...',
+          de: 'Überprüfen...',
+        },
+        confirm: {
+          fr: 'Confirmer et enregistrer',
+          en: 'Confirm and Save',
+          nl: 'Bevestigen en opslaan',
+          de: 'Bestätigen und speichern',
+        },
+      },
+    },
   },
 
   // ============================================================================
@@ -15911,6 +16083,184 @@ export const translations = {
       nl: 'woningen',
       de: 'Immobilien',
     },
+
+    // PropertyFilters Component
+    filters: {
+      searchProperty: {
+        fr: 'Rechercher un bien...',
+        en: 'Search for a property...',
+        nl: 'Zoek een woning...',
+        de: 'Immobilie suchen...',
+      },
+      allStatuses: {
+        fr: 'Tous les statuts',
+        en: 'All statuses',
+        nl: 'Alle statussen',
+        de: 'Alle Status',
+      },
+      published: {
+        fr: 'Publiés',
+        en: 'Published',
+        nl: 'Gepubliceerd',
+        de: 'Veröffentlicht',
+      },
+      rented: {
+        fr: 'Loués',
+        en: 'Rented',
+        nl: 'Verhuurd',
+        de: 'Vermietet',
+      },
+      vacant: {
+        fr: 'Vacants',
+        en: 'Vacant',
+        nl: 'Leegstaand',
+        de: 'Leer',
+      },
+      drafts: {
+        fr: 'Brouillons',
+        en: 'Drafts',
+        nl: 'Concepten',
+        de: 'Entwürfe',
+      },
+      archived: {
+        fr: 'Archivés',
+        en: 'Archived',
+        nl: 'Gearchiveerd',
+        de: 'Archiviert',
+      },
+      allHealth: {
+        fr: 'Toute santé',
+        en: 'All health',
+        nl: 'Alle gezondheid',
+        de: 'Alle Gesundheit',
+      },
+      excellent: {
+        fr: 'Excellent',
+        en: 'Excellent',
+        nl: 'Uitstekend',
+        de: 'Ausgezeichnet',
+      },
+      attention: {
+        fr: 'Attention',
+        en: 'Attention',
+        nl: 'Aandacht',
+        de: 'Achtung',
+      },
+      critical: {
+        fr: 'Critique',
+        en: 'Critical',
+        nl: 'Kritiek',
+        de: 'Kritisch',
+      },
+      allCities: {
+        fr: 'Toutes villes',
+        en: 'All cities',
+        nl: 'Alle steden',
+        de: 'Alle Städte',
+      },
+      allCitiesLong: {
+        fr: 'Toutes les villes',
+        en: 'All cities',
+        nl: 'Alle steden',
+        de: 'Alle Städte',
+      },
+      filters: {
+        fr: 'Filtres',
+        en: 'Filters',
+        nl: 'Filters',
+        de: 'Filter',
+      },
+      rentRange: {
+        fr: 'Fourchette de loyer',
+        en: 'Rent range',
+        nl: 'Huurbereik',
+        de: 'Mietbereich',
+      },
+      min: {
+        fr: 'Min',
+        en: 'Min',
+        nl: 'Min',
+        de: 'Min',
+      },
+      max: {
+        fr: 'Max',
+        en: 'Max',
+        nl: 'Max',
+        de: 'Max',
+      },
+      sortBy: {
+        fr: 'Trier par',
+        en: 'Sort by',
+        nl: 'Sorteren op',
+        de: 'Sortieren nach',
+      },
+      sortCreated: {
+        fr: 'Date de création',
+        en: 'Creation date',
+        nl: 'Aanmaakdatum',
+        de: 'Erstellungsdatum',
+      },
+      sortRent: {
+        fr: 'Loyer',
+        en: 'Rent',
+        nl: 'Huur',
+        de: 'Miete',
+      },
+      sortViews: {
+        fr: 'Vues',
+        en: 'Views',
+        nl: 'Weergaven',
+        de: 'Aufrufe',
+      },
+      sortInquiries: {
+        fr: 'Demandes',
+        en: 'Inquiries',
+        nl: 'Aanvragen',
+        de: 'Anfragen',
+      },
+      sortName: {
+        fr: 'Nom',
+        en: 'Name',
+        nl: 'Naam',
+        de: 'Name',
+      },
+      sortCity: {
+        fr: 'Ville',
+        en: 'City',
+        nl: 'Stad',
+        de: 'Stadt',
+      },
+      reset: {
+        fr: 'Réinitialiser',
+        en: 'Reset',
+        nl: 'Resetten',
+        de: 'Zurücksetzen',
+      },
+      clearFilters: {
+        fr: 'Effacer les filtres',
+        en: 'Clear filters',
+        nl: 'Filters wissen',
+        de: 'Filter löschen',
+      },
+      property: {
+        fr: 'bien',
+        en: 'property',
+        nl: 'woning',
+        de: 'Immobilie',
+      },
+      propertiesPlural: {
+        fr: 'biens',
+        en: 'properties',
+        nl: 'woningen',
+        de: 'Immobilien',
+      },
+      of: {
+        fr: 'sur',
+        en: 'of',
+        nl: 'van',
+        de: 'von',
+      },
+    },
   },
 
   // ============================================================================
@@ -21676,6 +22026,108 @@ export const translations = {
       nl: 'Fout bij toevoegen',
       de: 'Fehler beim Hinzufügen',
     },
+
+    // VendorDirectory
+    searchVendor: {
+      fr: 'Rechercher un prestataire...',
+      en: 'Search for a vendor...',
+      nl: 'Zoek een leverancier...',
+      de: 'Anbieter suchen...',
+    },
+    allVendors: {
+      fr: 'Tous',
+      en: 'All',
+      nl: 'Alle',
+      de: 'Alle',
+    },
+    vendorDirectory: {
+      fr: 'Annuaire prestataires',
+      en: 'Vendor directory',
+      nl: 'Leverancierslijst',
+      de: 'Anbieterverzeichnis',
+    },
+    contact: {
+      fr: 'contact',
+      en: 'contact',
+      nl: 'contact',
+      de: 'Kontakt',
+    },
+    contacts: {
+      fr: 'contacts',
+      en: 'contacts',
+      nl: 'contacten',
+      de: 'Kontakte',
+    },
+    noVendorFound: {
+      fr: 'Aucun prestataire trouvé',
+      en: 'No vendor found',
+      nl: 'Geen leverancier gevonden',
+      de: 'Kein Anbieter gefunden',
+    },
+    jobs: {
+      fr: 'interventions',
+      en: 'jobs',
+      nl: 'opdrachten',
+      de: 'Aufträge',
+    },
+    responseTime: {
+      fr: 'Rép. ~',
+      en: 'Resp. ~',
+      nl: 'Ant. ~',
+      de: 'Antw. ~',
+    },
+
+    // Vendor Specialties
+    specialties: {
+      plumber: {
+        fr: 'Plombier',
+        en: 'Plumber',
+        nl: 'Loodgieter',
+        de: 'Klempner',
+      },
+      electrician: {
+        fr: 'Électricien',
+        en: 'Electrician',
+        nl: 'Elektricien',
+        de: 'Elektriker',
+      },
+      heatingTech: {
+        fr: 'Chauffagiste',
+        en: 'Heating technician',
+        nl: 'Verwarmingstechnicus',
+        de: 'Heizungstechniker',
+      },
+      appliance: {
+        fr: 'Électroménager',
+        en: 'Appliance repair',
+        nl: 'Huishoudapparatuur',
+        de: 'Haushaltsgeräte',
+      },
+      locksmith: {
+        fr: 'Serrurier',
+        en: 'Locksmith',
+        nl: 'Slotenmaker',
+        de: 'Schlosser',
+      },
+      painter: {
+        fr: 'Peintre',
+        en: 'Painter',
+        nl: 'Schilder',
+        de: 'Maler',
+      },
+      pestControl: {
+        fr: 'Désinsectiseur',
+        en: 'Pest control',
+        nl: 'Ongediertebestrijder',
+        de: 'Schädlingsbekämpfer',
+      },
+      handyman: {
+        fr: 'Artisan',
+        en: 'Handyman',
+        nl: 'Klusjesman',
+        de: 'Handwerker',
+      },
+    },
   },
 
   // ============================================================================
@@ -21834,6 +22286,676 @@ export const translations = {
       en: 'Error creating lease',
       nl: 'Fout bij aanmaken huurcontract',
       de: 'Fehler beim Erstellen des Mietvertrags',
+    },
+  },
+
+  // ============================================================================
+  // APPLICATION MODAL
+  // ============================================================================
+  applicationModal: {
+    // Header
+    title: {
+      fr: 'Postuler pour ce bien',
+      en: 'Apply for Property',
+      nl: 'Solliciteren voor woning',
+      de: 'Für Immobilie bewerben',
+    },
+
+    // Section titles
+    personalInfo: {
+      fr: 'Informations personnelles',
+      en: 'Personal Information',
+      nl: 'Persoonlijke gegevens',
+      de: 'Persönliche Daten',
+    },
+    moveInDetails: {
+      fr: 'Détails d\'emménagement',
+      en: 'Move-in Details',
+      nl: 'Verhuisdetails',
+      de: 'Einzugsdetails',
+    },
+    professionalInfo: {
+      fr: 'Informations professionnelles',
+      en: 'Professional Information',
+      nl: 'Professionele informatie',
+      de: 'Berufliche Informationen',
+    },
+
+    // Labels
+    fullName: {
+      fr: 'Nom complet *',
+      en: 'Full Name *',
+      nl: 'Volledige naam *',
+      de: 'Vollständiger Name *',
+    },
+    email: {
+      fr: 'Email *',
+      en: 'Email *',
+      nl: 'E-mail *',
+      de: 'E-Mail *',
+    },
+    phone: {
+      fr: 'Numéro de téléphone',
+      en: 'Phone Number',
+      nl: 'Telefoonnummer',
+      de: 'Telefonnummer',
+    },
+    desiredMoveInDate: {
+      fr: 'Date d\'emménagement souhaitée',
+      en: 'Desired Move-in Date',
+      nl: 'Gewenste verhuisdatum',
+      de: 'Gewünschtes Einzugsdatum',
+    },
+    leaseDuration: {
+      fr: 'Durée du bail (mois)',
+      en: 'Lease Duration (months)',
+      nl: 'Huurduur (maanden)',
+      de: 'Mietdauer (Monate)',
+    },
+    occupation: {
+      fr: 'Profession',
+      en: 'Occupation',
+      nl: 'Beroep',
+      de: 'Beruf',
+    },
+    employerInstitution: {
+      fr: 'Employeur/Institution',
+      en: 'Employer/Institution',
+      nl: 'Werkgever/Instelling',
+      de: 'Arbeitgeber/Institution',
+    },
+    monthlyIncome: {
+      fr: 'Revenu mensuel (€)',
+      en: 'Monthly Income (€)',
+      nl: 'Maandinkomen (€)',
+      de: 'Monatliches Einkommen (€)',
+    },
+    messageToOwner: {
+      fr: 'Message au propriétaire (Optionnel)',
+      en: 'Message to Owner (Optional)',
+      nl: 'Bericht aan eigenaar (Optioneel)',
+      de: 'Nachricht an Eigentümer (Optional)',
+    },
+
+    // Placeholders
+    placeholders: {
+      fullName: {
+        fr: 'Votre nom complet',
+        en: 'Your full name',
+        nl: 'Uw volledige naam',
+        de: 'Ihr vollständiger Name',
+      },
+      email: {
+        fr: 'votre.email@exemple.com',
+        en: 'your.email@example.com',
+        nl: 'uw.email@voorbeeld.com',
+        de: 'ihre.email@beispiel.de',
+      },
+      phone: {
+        fr: '+32 XXX XX XX XX',
+        en: '+32 XXX XX XX XX',
+        nl: '+31 6 XXX XX XX',
+        de: '+49 XXX XXXXXXX',
+      },
+      occupation: {
+        fr: 'ex. Ingénieur, Étudiant, etc.',
+        en: 'e.g., Software Engineer, Student, etc.',
+        nl: 'bijv. Ingenieur, Student, etc.',
+        de: 'z.B. Ingenieur, Student, etc.',
+      },
+      employer: {
+        fr: 'Nom de l\'entreprise ou université',
+        en: 'Company or university name',
+        nl: 'Bedrijfs- of universiteitsnaam',
+        de: 'Firmen- oder Universitätsname',
+      },
+      income: {
+        fr: 'ex. 2500',
+        en: 'e.g., 2500',
+        nl: 'bijv. 2500',
+        de: 'z.B. 2500',
+      },
+      message: {
+        fr: 'Présentez-vous et expliquez pourquoi ce bien vous intéresse...',
+        en: 'Introduce yourself and explain why you\'re interested in this property...',
+        nl: 'Stel uzelf voor en leg uit waarom u geïnteresseerd bent in deze woning...',
+        de: 'Stellen Sie sich vor und erklären Sie, warum Sie an dieser Immobilie interessiert sind...',
+      },
+    },
+
+    // Lease duration options
+    leaseOptions: {
+      months3: {
+        fr: '3 mois',
+        en: '3 months',
+        nl: '3 maanden',
+        de: '3 Monate',
+      },
+      months6: {
+        fr: '6 mois',
+        en: '6 months',
+        nl: '6 maanden',
+        de: '6 Monate',
+      },
+      months12: {
+        fr: '12 mois',
+        en: '12 months',
+        nl: '12 maanden',
+        de: '12 Monate',
+      },
+      months24: {
+        fr: '24 mois',
+        en: '24 months',
+        nl: '24 maanden',
+        de: '24 Monate',
+      },
+    },
+
+    // Helper texts
+    incomeHelper: {
+      fr: 'Cette information aide le propriétaire à évaluer votre candidature',
+      en: 'This information helps the landlord assess your application',
+      nl: 'Deze informatie helpt de verhuurder uw aanvraag te beoordelen',
+      de: 'Diese Information hilft dem Vermieter, Ihre Bewerbung zu bewerten',
+    },
+    messageHelper: {
+      fr: 'Un message personnel peut faire ressortir votre candidature',
+      en: 'A personal message can help your application stand out',
+      nl: 'Een persoonlijk bericht kan uw aanvraag laten opvallen',
+      de: 'Eine persönliche Nachricht kann Ihre Bewerbung hervorheben',
+    },
+
+    // Disclaimer
+    disclaimerNote: {
+      fr: 'Note :',
+      en: 'Note:',
+      nl: 'Opmerking:',
+      de: 'Hinweis:',
+    },
+    disclaimer: {
+      fr: 'En soumettant cette candidature, vous confirmez que les informations fournies sont exactes. Le propriétaire examinera votre candidature et vous contactera si elle est acceptée.',
+      en: 'By submitting this application, you agree that the information provided is accurate. The property owner will review your application and contact you if approved.',
+      nl: 'Door deze aanvraag in te dienen, bevestigt u dat de verstrekte informatie correct is. De eigenaar zal uw aanvraag beoordelen en contact met u opnemen indien goedgekeurd.',
+      de: 'Mit dem Absenden dieser Bewerbung bestätigen Sie, dass die angegebenen Informationen korrekt sind. Der Eigentümer wird Ihre Bewerbung prüfen und Sie bei Genehmigung kontaktieren.',
+    },
+
+    // Buttons
+    cancel: {
+      fr: 'Annuler',
+      en: 'Cancel',
+      nl: 'Annuleren',
+      de: 'Abbrechen',
+    },
+    submitting: {
+      fr: 'Envoi en cours...',
+      en: 'Submitting...',
+      nl: 'Indienen...',
+      de: 'Wird gesendet...',
+    },
+    submit: {
+      fr: 'Envoyer la candidature',
+      en: 'Submit Application',
+      nl: 'Aanvraag indienen',
+      de: 'Bewerbung absenden',
+    },
+  },
+
+  // ============================================================================
+  // CALENDAR (Event Calendar Component)
+  // ============================================================================
+  calendar: {
+    weekDays: {
+      mon: { fr: 'Lun', en: 'Mon', nl: 'Ma', de: 'Mo' },
+      tue: { fr: 'Mar', en: 'Tue', nl: 'Di', de: 'Di' },
+      wed: { fr: 'Mer', en: 'Wed', nl: 'Wo', de: 'Mi' },
+      thu: { fr: 'Jeu', en: 'Thu', nl: 'Do', de: 'Do' },
+      fri: { fr: 'Ven', en: 'Fri', nl: 'Vr', de: 'Fr' },
+      sat: { fr: 'Sam', en: 'Sat', nl: 'Za', de: 'Sa' },
+      sun: { fr: 'Dim', en: 'Sun', nl: 'Zo', de: 'So' },
+    },
+    noVisitPlanned: {
+      fr: 'Aucune visite prévue ce jour',
+      en: 'No visit planned for this day',
+      nl: 'Geen bezoek gepland voor deze dag',
+      de: 'Kein Besuch für diesen Tag geplant',
+    },
+    moreEvents: {
+      fr: 'de plus',
+      en: 'more',
+      nl: 'meer',
+      de: 'mehr',
+    },
+  },
+
+  // ============================================================================
+  // ARIA LABELS (Accessibility)
+  // ============================================================================
+  ariaLabels: {
+    // Common actions
+    close: {
+      fr: 'Fermer',
+      en: 'Close',
+      nl: 'Sluiten',
+      de: 'Schließen',
+    },
+    openMenu: {
+      fr: 'Ouvrir le menu',
+      en: 'Open menu',
+      nl: 'Menu openen',
+      de: 'Menü öffnen',
+    },
+    closeMenu: {
+      fr: 'Fermer le menu',
+      en: 'Close menu',
+      nl: 'Menu sluiten',
+      de: 'Menü schließen',
+    },
+    notifications: {
+      fr: 'Notifications',
+      en: 'Notifications',
+      nl: 'Meldingen',
+      de: 'Benachrichtigungen',
+    },
+    settings: {
+      fr: 'Paramètres',
+      en: 'Settings',
+      nl: 'Instellingen',
+      de: 'Einstellungen',
+    },
+    messages: {
+      fr: 'Messages',
+      en: 'Messages',
+      nl: 'Berichten',
+      de: 'Nachrichten',
+    },
+    back: {
+      fr: 'Retour',
+      en: 'Back',
+      nl: 'Terug',
+      de: 'Zurück',
+    },
+    dismiss: {
+      fr: 'Masquer',
+      en: 'Dismiss',
+      nl: 'Negeren',
+      de: 'Ausblenden',
+    },
+    hide: {
+      fr: 'Masquer',
+      en: 'Hide',
+      nl: 'Verbergen',
+      de: 'Ausblenden',
+    },
+    markAsRead: {
+      fr: 'Marquer comme lu',
+      en: 'Mark as read',
+      nl: 'Markeren als gelezen',
+      de: 'Als gelesen markieren',
+    },
+    changeLanguage: {
+      fr: 'Changer de langue',
+      en: 'Change language',
+      nl: 'Taal wijzigen',
+      de: 'Sprache ändern',
+    },
+    changeTheme: {
+      fr: 'Changer de thème',
+      en: 'Change theme',
+      nl: 'Thema wijzigen',
+      de: 'Thema wechseln',
+    },
+    switchToLightMode: {
+      fr: 'Passer en mode clair',
+      en: 'Switch to light mode',
+      nl: 'Overschakelen naar lichte modus',
+      de: 'Zu hellem Modus wechseln',
+    },
+    switchToDarkMode: {
+      fr: 'Passer en mode sombre',
+      en: 'Switch to dark mode',
+      nl: 'Overschakelen naar donkere modus',
+      de: 'Zu dunklem Modus wechseln',
+    },
+    closeModal: {
+      fr: 'Fermer la fenêtre',
+      en: 'Close modal',
+      nl: 'Venster sluiten',
+      de: 'Fenster schließen',
+    },
+    closeFilters: {
+      fr: 'Fermer les filtres',
+      en: 'Close filters',
+      nl: 'Filters sluiten',
+      de: 'Filter schließen',
+    },
+    mobileNavigation: {
+      fr: 'Navigation mobile',
+      en: 'Mobile navigation',
+      nl: 'Mobiele navigatie',
+      de: 'Mobile Navigation',
+    },
+
+    // SwipeActions
+    undo: {
+      fr: 'Annuler',
+      en: 'Undo',
+      nl: 'Ongedaan maken',
+      de: 'Rückgängig',
+    },
+    skip: {
+      fr: 'Passer',
+      en: 'Skip',
+      nl: 'Overslaan',
+      de: 'Überspringen',
+    },
+    superLike: {
+      fr: 'Super Like',
+      en: 'Super Like',
+      nl: 'Super Like',
+      de: 'Super Like',
+    },
+    like: {
+      fr: 'Like',
+      en: 'Like',
+      nl: 'Like',
+      de: 'Gefällt mir',
+    },
+
+    // Carousel/Calendar navigation
+    previousImage: {
+      fr: 'Image précédente',
+      en: 'Previous image',
+      nl: 'Vorige afbeelding',
+      de: 'Vorheriges Bild',
+    },
+    nextImage: {
+      fr: 'Image suivante',
+      en: 'Next image',
+      nl: 'Volgende afbeelding',
+      de: 'Nächstes Bild',
+    },
+    previousMonth: {
+      fr: 'Mois précédent',
+      en: 'Previous month',
+      nl: 'Vorige maand',
+      de: 'Vorheriger Monat',
+    },
+    nextMonth: {
+      fr: 'Mois suivant',
+      en: 'Next month',
+      nl: 'Volgende maand',
+      de: 'Nächster Monat',
+    },
+
+    // Comparison
+    clearComparison: {
+      fr: 'Effacer la comparaison',
+      en: 'Clear comparison',
+      nl: 'Vergelijking wissen',
+      de: 'Vergleich löschen',
+    },
+    removeFromComparison: {
+      fr: 'Retirer de la comparaison',
+      en: 'Remove from comparison',
+      nl: 'Uit vergelijking verwijderen',
+      de: 'Aus Vergleich entfernen',
+    },
+
+    // Social media
+    facebook: {
+      fr: 'Facebook',
+      en: 'Facebook',
+      nl: 'Facebook',
+      de: 'Facebook',
+    },
+    instagram: {
+      fr: 'Instagram',
+      en: 'Instagram',
+      nl: 'Instagram',
+      de: 'Instagram',
+    },
+    linkedIn: {
+      fr: 'LinkedIn',
+      en: 'LinkedIn',
+      nl: 'LinkedIn',
+      de: 'LinkedIn',
+    },
+
+    // Group roles
+    creator: {
+      fr: 'Créateur',
+      en: 'Creator',
+      nl: 'Maker',
+      de: 'Ersteller',
+    },
+    admin: {
+      fr: 'Admin',
+      en: 'Admin',
+      nl: 'Admin',
+      de: 'Admin',
+    },
+
+    // Form inputs
+    verificationCode: {
+      fr: 'Code de vérification',
+      en: 'Verification code',
+      nl: 'Verificatiecode',
+      de: 'Verifizierungscode',
+    },
+    typeLanguage: {
+      fr: 'Tapez une langue',
+      en: 'Type a language',
+      nl: 'Typ een taal',
+      de: 'Sprache eingeben',
+    },
+
+    // Media controls
+    pause: {
+      fr: 'Mettre en pause',
+      en: 'Pause',
+      nl: 'Pauze',
+      de: 'Pause',
+    },
+    autoPlay: {
+      fr: 'Lecture automatique',
+      en: 'Auto play',
+      nl: 'Automatisch afspelen',
+      de: 'Automatische Wiedergabe',
+    },
+    goToImage: {
+      fr: "Aller à l'image",
+      en: 'Go to image',
+      nl: 'Ga naar afbeelding',
+      de: 'Gehe zu Bild',
+    },
+    delete: {
+      fr: 'Supprimer',
+      en: 'Delete',
+      nl: 'Verwijderen',
+      de: 'Löschen',
+    },
+
+    // Tenant actions
+    viewLease: {
+      fr: 'Voir le bail',
+      en: 'View lease',
+      nl: 'Huurcontract bekijken',
+      de: 'Mietvertrag anzeigen',
+    },
+    sendMessage: {
+      fr: 'Envoyer un message',
+      en: 'Send message',
+      nl: 'Bericht sturen',
+      de: 'Nachricht senden',
+    },
+    viewPayments: {
+      fr: 'Voir les paiements',
+      en: 'View payments',
+      nl: 'Betalingen bekijken',
+      de: 'Zahlungen anzeigen',
+    },
+
+    // Invitation actions
+    resendInvitation: {
+      fr: "Renvoyer l'invitation",
+      en: 'Resend invitation',
+      nl: 'Uitnodiging opnieuw versturen',
+      de: 'Einladung erneut senden',
+    },
+    cancelInvitation: {
+      fr: "Annuler l'invitation",
+      en: 'Cancel invitation',
+      nl: 'Uitnodiging annuleren',
+      de: 'Einladung abbrechen',
+    },
+
+    // Virtual tour & onboarding
+    virtualTour: {
+      fr: 'Visite virtuelle',
+      en: 'Virtual tour',
+      nl: 'Virtuele rondleiding',
+      de: 'Virtuelle Tour',
+    },
+    clickToContinue: {
+      fr: 'Cliquez pour continuer',
+      en: 'Click to continue',
+      nl: 'Klik om door te gaan',
+      de: 'Klicken Sie, um fortzufahren',
+    },
+  },
+
+  // ============================================================================
+  // AESTHETIC FILTERS
+  // ============================================================================
+  aestheticFilters: {
+    title: {
+      fr: 'Filtres Esthétiques',
+      en: 'Aesthetic Filters',
+      nl: 'Esthetische Filters',
+      de: 'Ästhetische Filter',
+    },
+    clearAll: {
+      fr: 'Tout effacer',
+      en: 'Clear all',
+      nl: 'Alles wissen',
+      de: 'Alles löschen',
+    },
+    applyFilters: {
+      fr: 'Appliquer les filtres',
+      en: 'Apply Filters',
+      nl: 'Filters toepassen',
+      de: 'Filter anwenden',
+    },
+    reset: {
+      fr: 'Réinitialiser',
+      en: 'Reset',
+      nl: 'Reset',
+      de: 'Zurücksetzen',
+    },
+    // Section titles
+    designStyle: {
+      fr: 'Style de Design',
+      en: 'Design Style',
+      nl: 'Designstijl',
+      de: 'Designstil',
+    },
+    naturalLight: {
+      fr: 'Lumière Naturelle',
+      en: 'Natural Light',
+      nl: 'Natuurlijk Licht',
+      de: 'Natürliches Licht',
+    },
+    heatingCooling: {
+      fr: 'Chauffage & Climatisation',
+      en: 'Heating & Cooling',
+      nl: 'Verwarming & Koeling',
+      de: 'Heizung & Kühlung',
+    },
+    furnitureStyle: {
+      fr: 'Style de Mobilier',
+      en: 'Furniture Style',
+      nl: 'Meubelstijl',
+      de: 'Möbelstil',
+    },
+    roomAtmosphere: {
+      fr: 'Atmosphère de la Pièce',
+      en: 'Room Atmosphere',
+      nl: 'Kameratmosfeer',
+      de: 'Raumatmosphäre',
+    },
+    // Labels
+    minDesignQuality: {
+      fr: 'Qualité de Design Minimum :',
+      en: 'Minimum Design Quality:',
+      nl: 'Minimum Designkwaliteit:',
+      de: 'Mindestdesignqualität:',
+    },
+    minNaturalLight: {
+      fr: 'Lumière Naturelle Minimum :',
+      en: 'Minimum Natural Light:',
+      nl: 'Minimum Natuurlijk Licht:',
+      de: 'Mindestens Natürliches Licht:',
+    },
+    any: {
+      fr: 'Tous',
+      en: 'Any',
+      nl: 'Alle',
+      de: 'Alle',
+    },
+    basic: {
+      fr: 'Basique (1)',
+      en: 'Basic (1)',
+      nl: 'Basis (1)',
+      de: 'Einfach (1)',
+    },
+    exceptional: {
+      fr: 'Exceptionnel (10)',
+      en: 'Exceptional (10)',
+      nl: 'Uitzonderlijk (10)',
+      de: 'Außergewöhnlich (10)',
+    },
+    dark1: {
+      fr: 'Sombre (1)',
+      en: 'Dark (1)',
+      nl: 'Donker (1)',
+      de: 'Dunkel (1)',
+    },
+    veryBright10: {
+      fr: 'Très lumineux (10)',
+      en: 'Very Bright (10)',
+      nl: 'Zeer helder (10)',
+      de: 'Sehr hell (10)',
+    },
+    // Light levels
+    dark: {
+      fr: 'Sombre',
+      en: 'Dark',
+      nl: 'Donker',
+      de: 'Dunkel',
+    },
+    dim: {
+      fr: 'Faible',
+      en: 'Dim',
+      nl: 'Gedempt',
+      de: 'Gedimmt',
+    },
+    moderate: {
+      fr: 'Modéré',
+      en: 'Moderate',
+      nl: 'Matig',
+      de: 'Mäßig',
+    },
+    bright: {
+      fr: 'Lumineux',
+      en: 'Bright',
+      nl: 'Helder',
+      de: 'Hell',
+    },
+    veryBright: {
+      fr: 'Très lumineux',
+      en: 'Very Bright',
+      nl: 'Zeer helder',
+      de: 'Sehr hell',
     },
   },
 };

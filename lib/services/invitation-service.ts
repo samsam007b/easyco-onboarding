@@ -3,6 +3,70 @@
  * Client-side service for managing property invitations
  */
 
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setInvitationServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  connectionError: {
+    fr: 'Erreur de connexion',
+    en: 'Connection error',
+    nl: 'Verbindingsfout',
+    de: 'Verbindungsfehler',
+  },
+  roles: {
+    owner: {
+      fr: 'propriétaire',
+      en: 'owner',
+      nl: 'eigenaar',
+      de: 'Eigentümer',
+    },
+    roommate: {
+      fr: 'colocataire',
+      en: 'roommate',
+      nl: 'huisgenoot',
+      de: 'Mitbewohner',
+    },
+  },
+  share: {
+    whatsapp: {
+      fr: (role: string, propertyName: string, url: string) =>
+        `Rejoins-nous sur Izzico ! Je t'invite à devenir ${role} de "${propertyName}".\n\nClique ici pour accepter l'invitation : ${url}`,
+      en: (role: string, propertyName: string, url: string) =>
+        `Join us on Izzico! I invite you to become ${role} of "${propertyName}".\n\nClick here to accept the invitation: ${url}`,
+      nl: (role: string, propertyName: string, url: string) =>
+        `Doe mee op Izzico! Ik nodig je uit om ${role} te worden van "${propertyName}".\n\nKlik hier om de uitnodiging te accepteren: ${url}`,
+      de: (role: string, propertyName: string, url: string) =>
+        `Komm zu Izzico! Ich lade dich ein, ${role} von "${propertyName}" zu werden.\n\nKlicke hier, um die Einladung anzunehmen: ${url}`,
+    },
+    email: {
+      subject: {
+        fr: (inviterName: string, propertyName: string) => `${inviterName} t'invite à rejoindre ${propertyName} sur Izzico`,
+        en: (inviterName: string, propertyName: string) => `${inviterName} invites you to join ${propertyName} on Izzico`,
+        nl: (inviterName: string, propertyName: string) => `${inviterName} nodigt je uit om ${propertyName} te joinen op Izzico`,
+        de: (inviterName: string, propertyName: string) => `${inviterName} lädt dich ein, ${propertyName} auf Izzico beizutreten`,
+      },
+      body: {
+        fr: (inviterName: string, role: string, propertyName: string, url: string) =>
+          `Salut !\n\n${inviterName} t'invite à devenir ${role} de "${propertyName}" sur Izzico.\n\nClique sur ce lien pour accepter l'invitation :\n${url}\n\nTu pourras ensuite créer ton compte et rejoindre la colocation.\n\nÀ bientôt !`,
+        en: (inviterName: string, role: string, propertyName: string, url: string) =>
+          `Hi!\n\n${inviterName} invites you to become ${role} of "${propertyName}" on Izzico.\n\nClick this link to accept the invitation:\n${url}\n\nYou can then create your account and join the coliving.\n\nSee you soon!`,
+        nl: (inviterName: string, role: string, propertyName: string, url: string) =>
+          `Hallo!\n\n${inviterName} nodigt je uit om ${role} te worden van "${propertyName}" op Izzico.\n\nKlik op deze link om de uitnodiging te accepteren:\n${url}\n\nDaarna kun je je account aanmaken en je aansluiten bij de woongroep.\n\nTot snel!`,
+        de: (inviterName: string, role: string, propertyName: string, url: string) =>
+          `Hallo!\n\n${inviterName} lädt dich ein, ${role} von "${propertyName}" auf Izzico zu werden.\n\nKlicke auf diesen Link, um die Einladung anzunehmen:\n${url}\n\nDanach kannst du dein Konto erstellen und der Wohngemeinschaft beitreten.\n\nBis bald!`,
+      },
+    },
+  },
+};
+
 import type {
   ValidateInvitationResponse,
   CreateInvitationResponse,
@@ -30,7 +94,7 @@ export async function validateInvitationToken(token: string): Promise<ValidateIn
     return {
       valid: false,
       error: 'network_error',
-      message: 'Erreur de connexion',
+      message: translations.connectionError[currentLang],
     };
   }
 }
@@ -60,7 +124,7 @@ export async function createInvitation(
     return {
       success: false,
       error: 'network_error',
-      message: 'Erreur de connexion',
+      message: translations.connectionError[currentLang],
     };
   }
 }
@@ -82,7 +146,7 @@ export async function acceptInvitation(invitationId: string): Promise<AcceptInvi
     return {
       success: false,
       error: 'network_error',
-      message: 'Erreur de connexion',
+      message: translations.connectionError[currentLang],
     };
   }
 }
@@ -104,7 +168,7 @@ export async function refuseInvitation(invitationId: string): Promise<RefuseInvi
     return {
       success: false,
       error: 'network_error',
-      message: 'Erreur de connexion',
+      message: translations.connectionError[currentLang],
     };
   }
 }
@@ -141,10 +205,10 @@ export function generateWhatsAppText(
   propertyName: string,
   invitedRole: InvitedRole
 ): string {
-  const roleText = invitedRole === 'owner' ? 'propriétaire' : 'colocataire';
-  return `Rejoins-nous sur Izzico ! Je t'invite à devenir ${roleText} de "${propertyName}".
-
-Clique ici pour accepter l'invitation : ${inviteUrl}`;
+  const roleText = invitedRole === 'owner'
+    ? translations.roles.owner[currentLang]
+    : translations.roles.roommate[currentLang];
+  return translations.share.whatsapp[currentLang](roleText, propertyName, inviteUrl);
 }
 
 /**
@@ -156,20 +220,12 @@ export function generateEmailContent(
   inviterName: string,
   invitedRole: InvitedRole
 ): { subject: string; body: string } {
-  const roleText = invitedRole === 'owner' ? 'propriétaire' : 'colocataire';
+  const roleText = invitedRole === 'owner'
+    ? translations.roles.owner[currentLang]
+    : translations.roles.roommate[currentLang];
 
-  const subject = `${inviterName} t'invite à rejoindre ${propertyName} sur Izzico`;
-
-  const body = `Salut !
-
-${inviterName} t'invite à devenir ${roleText} de "${propertyName}" sur Izzico.
-
-Clique sur ce lien pour accepter l'invitation :
-${inviteUrl}
-
-Tu pourras ensuite créer ton compte et rejoindre la colocation.
-
-À bientôt !`;
+  const subject = translations.share.email.subject[currentLang](inviterName, propertyName);
+  const body = translations.share.email.body[currentLang](inviterName, roleText, propertyName, inviteUrl);
 
   return { subject, body };
 }

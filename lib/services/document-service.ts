@@ -4,6 +4,58 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setDocumentServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  unknownUser: {
+    fr: 'Utilisateur inconnu',
+    en: 'Unknown user',
+    nl: 'Onbekende gebruiker',
+    de: 'Unbekannter Benutzer',
+  },
+  errors: {
+    uploadFile: {
+      fr: "Erreur lors de l'upload du fichier",
+      en: 'Error uploading the file',
+      nl: 'Fout bij het uploaden van het bestand',
+      de: 'Fehler beim Hochladen der Datei',
+    },
+    uploadDocument: {
+      fr: "Erreur lors de l'upload du document",
+      en: 'Error uploading the document',
+      nl: 'Fout bij het uploaden van het document',
+      de: 'Fehler beim Hochladen des Dokuments',
+    },
+    deleteDocument: {
+      fr: 'Erreur lors de la suppression',
+      en: 'Error deleting the document',
+      nl: 'Fout bij het verwijderen',
+      de: 'Fehler beim Löschen',
+    },
+    shareDocument: {
+      fr: 'Erreur lors du partage',
+      en: 'Error sharing the document',
+      nl: 'Fout bij het delen',
+      de: 'Fehler beim Teilen',
+    },
+    removeShare: {
+      fr: 'Erreur lors de la suppression du partage',
+      en: 'Error removing the share',
+      nl: 'Fout bij het verwijderen van de deling',
+      de: 'Fehler beim Entfernen der Freigabe',
+    },
+  },
+};
 import type {
   PropertyDocument,
   PropertyDocumentWithUploader,
@@ -61,7 +113,7 @@ class DocumentService {
       const enriched: PropertyDocumentWithUploader[] =
         data?.map((doc) => ({
           ...doc,
-          uploader_name: (doc.profiles as any)?.full_name || 'Utilisateur inconnu',
+          uploader_name: (doc.profiles as any)?.full_name || translations.unknownUser[currentLang],
           uploader_avatar: (doc.profiles as any)?.avatar_url,
           is_expired: isDocumentExpired(doc.expires_at),
           is_expiring_soon: isDocumentExpiringSoon(doc.expires_at),
@@ -98,7 +150,7 @@ class DocumentService {
 
       const enriched: PropertyDocumentWithUploader = {
         ...data,
-        uploader_name: (data.profiles as any)?.full_name || 'Utilisateur inconnu',
+        uploader_name: (data.profiles as any)?.full_name || translations.unknownUser[currentLang],
         uploader_avatar: (data.profiles as any)?.avatar_url,
         is_expired: isDocumentExpired(data.expires_at),
         is_expiring_soon: isDocumentExpiringSoon(data.expires_at),
@@ -126,7 +178,7 @@ class DocumentService {
       if (!fileResult.success || !fileResult.url) {
         return {
           success: false,
-          error: fileResult.error || 'Erreur lors de l\'upload du fichier',
+          error: fileResult.error || translations.errors.uploadFile[currentLang],
         };
       }
 
@@ -159,7 +211,7 @@ class DocumentService {
       console.error('[Documents] ❌ Failed to upload document:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de l\'upload du document',
+        error: error.message || translations.errors.uploadDocument[currentLang],
       };
     }
   }
@@ -194,7 +246,7 @@ class DocumentService {
       console.error('[Documents] ❌ Failed to upload file:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de l\'upload du fichier',
+        error: error.message || translations.errors.uploadFile[currentLang],
       };
     }
   }
@@ -234,7 +286,7 @@ class DocumentService {
       console.error('[Documents] ❌ Failed to delete document:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la suppression',
+        error: error.message || translations.errors.deleteDocument[currentLang],
       };
     }
   }
@@ -269,7 +321,7 @@ class DocumentService {
       console.error('[Documents] ❌ Failed to share document:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors du partage',
+        error: error.message || translations.errors.shareDocument[currentLang],
       };
     }
   }
@@ -297,7 +349,7 @@ class DocumentService {
       const enriched: DocumentShareWithUser[] =
         data?.map((share) => ({
           ...share,
-          user_name: (share.profiles as any)?.full_name || 'Utilisateur inconnu',
+          user_name: (share.profiles as any)?.full_name || translations.unknownUser[currentLang],
           user_avatar: (share.profiles as any)?.avatar_url,
         })) || [];
 
@@ -324,7 +376,7 @@ class DocumentService {
       console.error('[Documents] ❌ Failed to remove share:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la suppression du partage',
+        error: error.message || translations.errors.removeShare[currentLang],
       };
     }
   }
@@ -423,7 +475,7 @@ class DocumentService {
       const enriched: PropertyDocumentWithUploader[] =
         data?.map((doc) => ({
           ...doc,
-          uploader_name: (doc.profiles as any)?.full_name || 'Utilisateur inconnu',
+          uploader_name: (doc.profiles as any)?.full_name || translations.unknownUser[currentLang],
           uploader_avatar: (doc.profiles as any)?.avatar_url,
           is_expired: false,
           is_expiring_soon: true,

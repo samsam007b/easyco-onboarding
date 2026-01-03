@@ -4,6 +4,94 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setTaskServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  you: {
+    fr: 'Toi',
+    en: 'You',
+    nl: 'Jij',
+    de: 'Du',
+  },
+  unassigned: {
+    fr: 'Non assigné',
+    en: 'Unassigned',
+    nl: 'Niet toegewezen',
+    de: 'Nicht zugewiesen',
+  },
+  unknown: {
+    fr: 'Inconnu',
+    en: 'Unknown',
+    nl: 'Onbekend',
+    de: 'Unbekannt',
+  },
+  rotationFailed: {
+    fr: 'Échec de la rotation',
+    en: 'Rotation failed',
+    nl: 'Rotatie mislukt',
+    de: 'Rotation fehlgeschlagen',
+  },
+  errors: {
+    createTask: {
+      fr: 'Erreur lors de la création de la tâche',
+      en: 'Error creating the task',
+      nl: 'Fout bij het aanmaken van de taak',
+      de: 'Fehler beim Erstellen der Aufgabe',
+    },
+    setupRotation: {
+      fr: 'Erreur lors de la configuration de la rotation',
+      en: 'Error setting up rotation',
+      nl: 'Fout bij het instellen van de rotatie',
+      de: 'Fehler beim Einrichten der Rotation',
+    },
+    rotateTask: {
+      fr: 'Erreur lors de la rotation',
+      en: 'Error rotating the task',
+      nl: 'Fout bij het roteren van de taak',
+      de: 'Fehler bei der Rotation',
+    },
+    requestExchange: {
+      fr: "Erreur lors de la demande d'échange",
+      en: 'Error requesting exchange',
+      nl: 'Fout bij het aanvragen van de ruil',
+      de: 'Fehler bei der Tauschanfrage',
+    },
+    respondToExchange: {
+      fr: 'Erreur lors de la réponse',
+      en: 'Error responding to exchange',
+      nl: 'Fout bij het reageren',
+      de: 'Fehler bei der Antwort',
+    },
+    setUnavailability: {
+      fr: 'Erreur lors de la configuration',
+      en: 'Error setting unavailability',
+      nl: 'Fout bij het instellen',
+      de: 'Fehler bei der Konfiguration',
+    },
+    completeTask: {
+      fr: 'Erreur lors de la finalisation',
+      en: 'Error completing the task',
+      nl: 'Fout bij het voltooien',
+      de: 'Fehler beim Abschließen',
+    },
+    uploadProof: {
+      fr: "Erreur lors de l'upload de la preuve",
+      en: 'Error uploading proof',
+      nl: 'Fout bij het uploaden van het bewijs',
+      de: 'Fehler beim Hochladen des Nachweises',
+    },
+  },
+};
 import type {
   Task,
   TaskWithDetails,
@@ -91,10 +179,10 @@ class TaskService {
             ...task,
             assigned_to_name:
               task.assigned_to === userId
-                ? 'Toi'
-                : assignedTo?.full_name || 'Non assigné',
+                ? translations.you[currentLang]
+                : assignedTo?.full_name || translations.unassigned[currentLang],
             assigned_to_avatar: assignedTo?.avatar_url,
-            created_by_name: createdBy?.full_name || 'Inconnu',
+            created_by_name: createdBy?.full_name || translations.unknown[currentLang],
             has_rotation: hasRotation,
             days_until_due: daysUntilDue,
             is_overdue: !!isOverdue,
@@ -143,7 +231,7 @@ class TaskService {
       console.error('[Task] ❌ Failed to create task:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la création de la tâche',
+        error: error.message || translations.errors.createTask[currentLang],
       };
     }
   }
@@ -207,7 +295,7 @@ class TaskService {
       console.error('[Task] ❌ Failed to setup rotation:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la configuration de la rotation',
+        error: error.message || translations.errors.setupRotation[currentLang],
       };
     }
   }
@@ -236,20 +324,20 @@ class TaskService {
         return {
           success: true,
           new_assignee: result.new_assignee,
-          new_assignee_name: user?.full_name || 'Inconnu',
+          new_assignee_name: user?.full_name || translations.unknown[currentLang],
           message: result.message,
         };
       }
 
       return {
         success: false,
-        message: result?.message || 'Échec de la rotation',
+        message: result?.message || translations.rotationFailed[currentLang],
       };
     } catch (error: any) {
       console.error('[Task] ❌ Failed to rotate task:', error);
       return {
         success: false,
-        message: error.message || 'Erreur lors de la rotation',
+        message: error.message || translations.errors.rotateTask[currentLang],
       };
     }
   }
@@ -289,7 +377,7 @@ class TaskService {
       console.error('[Task] ❌ Failed to request exchange:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la demande d\'échange',
+        error: error.message || translations.errors.requestExchange[currentLang],
       };
     }
   }
@@ -338,7 +426,7 @@ class TaskService {
       console.error('[Task] ❌ Failed to respond to exchange:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la réponse',
+        error: error.message || translations.errors.respondToExchange[currentLang],
       };
     }
   }
@@ -385,7 +473,7 @@ class TaskService {
       console.error('[Task] ❌ Failed to set unavailability:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la configuration',
+        error: error.message || translations.errors.setUnavailability[currentLang],
       };
     }
   }
@@ -459,7 +547,7 @@ class TaskService {
       console.error('[Task] ❌ Failed to complete task:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la finalisation',
+        error: error.message || translations.errors.completeTask[currentLang],
       };
     }
   }
@@ -492,7 +580,7 @@ class TaskService {
       console.error('[Task] ❌ Failed to upload proof:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de l\'upload de la preuve',
+        error: error.message || translations.errors.uploadProof[currentLang],
       };
     }
   }

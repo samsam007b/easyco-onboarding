@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Icon Builder</title>
+    <style>
+        :root {
+            --owner-start: #9b6b9e;
+            --resident-mid: #e8837c;
+            --searcher-end: #f5b73f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #0a0a12;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            padding: 20px 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .header-subtitle {
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* Main layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            min-height: calc(100vh - 70px);
+        }
+
+        /* Preview area */
+        .preview-area {
+            background: linear-gradient(135deg, var(--owner-start) 0%, var(--resident-mid) 50%, var(--searcher-end) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            gap: 50px;
+        }
+
+        .preview-area.dark-bg {
+            background: #1a1a2e;
+        }
+
+        .preview-row {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+
+        .element-box {
+            text-align: center;
+        }
+
+        .element-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
+            margin-bottom: 12px;
+        }
+
+        /* Reference: I letter from trademark */
+        .i-reference {
+            height: 200px;
+        }
+
+        .i-reference svg {
+            height: 100%;
+            width: auto;
+        }
+
+        /* Icon display */
+        .icon-display {
+            width: 200px;
+            height: 200px;
+        }
+
+        .icon-display svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Stroke comparison bar */
+        .stroke-comparison {
+            display: flex;
+            gap: 30px;
+            background: rgba(0,0,0,0.4);
+            padding: 15px 30px;
+            border-radius: 12px;
+        }
+
+        .stroke-sample {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stroke-sample .bar {
+            width: var(--width, 30px);
+            height: 50px;
+            background: white;
+            border-radius: 100px;
+        }
+
+        .stroke-sample .info {
+            font-size: 0.8rem;
+        }
+
+        .stroke-sample .info .label {
+            opacity: 0.5;
+            font-size: 0.7rem;
+        }
+
+        .stroke-sample .info .value {
+            font-weight: 600;
+        }
+
+        /* Controls panel */
+        .controls-panel {
+            background: #0f0f1a;
+            padding: 25px;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 30px;
+        }
+
+        .control-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.4;
+            margin-bottom: 15px;
+        }
+
+        .control-item {
+            margin-bottom: 18px;
+        }
+
+        .control-item label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+
+        .control-item label .value {
+            font-weight: 600;
+            color: var(--searcher-end);
+        }
+
+        .control-item input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.12);
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .control-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+            cursor: pointer;
+        }
+
+        /* Preset buttons */
+        .presets {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .presets button {
+            padding: 8px 14px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: transparent;
+            color: white;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .presets button:hover {
+            background: rgba(255,255,255,0.08);
+        }
+
+        .presets button.active {
+            background: rgba(255,255,255,0.15);
+            border-color: var(--searcher-end);
+        }
+
+        /* Info panel */
+        .info-panel {
+            background: rgba(255,255,255,0.03);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .info-panel h4 {
+            font-size: 0.75rem;
+            font-weight: 500;
+            margin-bottom: 10px;
+            opacity: 0.6;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 0.8rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .label {
+            opacity: 0.5;
+        }
+
+        .info-row .value {
+            font-weight: 500;
+        }
+
+        .info-row.match .value {
+            color: #4ade80;
+        }
+
+        /* Export button */
+        .export-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .export-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Background toggle */
+        .bg-toggle {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        .bg-toggle button {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: white;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        .bg-toggle button.active {
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Proportions diagram */
+        .proportions-diagram {
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .proportions-diagram h4 {
+            font-size: 0.7rem;
+            opacity: 0.5;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .proportion-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 0;
+            font-size: 0.8rem;
+        }
+
+        .proportion-bar {
+            height: 12px;
+            background: white;
+            border-radius: 6px;
+        }
+
+        .proportion-label {
+            min-width: 80px;
+            opacity: 0.6;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div>
+            <h1>Icon Builder - Proportions Uniformes</h1>
+            <span class="header-subtitle">Base l'epaisseur sur le "I" du trademark</span>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div class="preview-area" id="previewArea">
+            <div class="preview-row">
+                <!-- Reference: I letter from trademark -->
+                <div class="element-box">
+                    <div class="element-label">Reference : "I" du Trademark</div>
+                    <div class="i-reference">
+                        <svg viewBox="150 600 250 850" xmlns="http://www.w3.org/2000/svg">
+                            <!-- I stem -->
+                            <path fill="white" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                            <!-- I dot -->
+                            <path fill="white" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Reconstructed icon -->
+                <div class="element-box">
+                    <div class="element-label">Icon Reconstruit</div>
+                    <div class="icon-display">
+                        <svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" id="iconSvg">
+                            <!-- All elements will be drawn with strokes -->
+
+                            <!-- Magnifying glass lens (circle) -->
+                            <circle id="lens"
+                                cx="420" cy="350" r="180"
+                                fill="none" stroke="white"
+                                stroke-width="80"
+                                stroke-linecap="round"/>
+
+                            <!-- Magnifying glass handle -->
+                            <line id="loupeHandle"
+                                x1="555" y1="485" x2="720" y2="650"
+                                stroke="white"
+                                stroke-width="80"
+                                stroke-linecap="round"/>
+
+                            <!-- Key handle (parallel to loupe) -->
+                            <line id="keyHandle"
+                                x1="285" y1="485" x2="120" y2="650"
+                                stroke="white"
+                                stroke-width="80"
+                                stroke-linecap="round"/>
+
+                            <!-- Key teeth -->
+                            <g id="keyTeeth">
+                                <line x1="165" y1="580" x2="215" y2="630"
+                                    stroke="white" stroke-width="40" stroke-linecap="round"/>
+                                <line x1="120" y1="625" x2="170" y2="675"
+                                    stroke="white" stroke-width="40" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Bust (curved shoulders) -->
+                            <path id="bust"
+                                d="M 250 820 Q 420 720 590 820"
+                                fill="none" stroke="white"
+                                stroke-width="80"
+                                stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stroke comparison -->
+            <div class="stroke-comparison">
+                <div class="stroke-sample">
+                    <div class="bar" id="refStrokeBar" style="--width: 30px;"></div>
+                    <div class="info">
+                        <div class="label">I Trademark</div>
+                        <div class="value">~150px</div>
+                    </div>
+                </div>
+                <div class="stroke-sample">
+                    <div class="bar" id="iconStrokeBar" style="--width: 30px;"></div>
+                    <div class="info">
+                        <div class="label">Icon stroke</div>
+                        <div class="value" id="iconStrokeValue">80px</div>
+                    </div>
+                </div>
+                <div class="stroke-sample">
+                    <div class="bar" id="teethStrokeBar" style="--width: 15px;"></div>
+                    <div class="info">
+                        <div class="label">Dents cle</div>
+                        <div class="value" id="teethStrokeValue">40px</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-section">
+                <h3>Fond</h3>
+                <div class="bg-toggle">
+                    <button id="bgGradient" class="active">Gradient</button>
+                    <button id="bgDark">Sombre</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Epaisseur principale</h3>
+                <p style="font-size: 0.75rem; opacity: 0.5; margin-bottom: 12px;">
+                    = Rond + Tiges loupe/cle + Buste
+                </p>
+                <div class="control-item">
+                    <label>
+                        <span>Stroke principal</span>
+                        <span class="value" id="mainStrokeValue">80</span>
+                    </label>
+                    <input type="range" id="mainStroke" min="40" max="160" value="80">
+                </div>
+
+                <div class="presets">
+                    <button data-stroke="60">Fin (60)</button>
+                    <button data-stroke="80" class="active">Medium (80)</button>
+                    <button data-stroke="100">Epais (100)</button>
+                    <button data-stroke="120">Tres epais (120)</button>
+                    <button data-stroke="150">= Trademark</button>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Proportions des dents</h3>
+                <div class="control-item">
+                    <label>
+                        <span>Ratio dents / tige</span>
+                        <span class="value" id="teethRatioValue">50%</span>
+                    </label>
+                    <input type="range" id="teethRatio" min="30" max="80" value="50">
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Geometrie</h3>
+                <div class="control-item">
+                    <label>
+                        <span>Rayon du rond</span>
+                        <span class="value" id="circleRadiusValue">180</span>
+                    </label>
+                    <input type="range" id="circleRadius" min="120" max="220" value="180">
+                </div>
+                <div class="control-item">
+                    <label>
+                        <span>Longueur tiges</span>
+                        <span class="value" id="handleLengthValue">165</span>
+                    </label>
+                    <input type="range" id="handleLength" min="100" max="250" value="165">
+                </div>
+                <div class="control-item">
+                    <label>
+                        <span>Courbure buste</span>
+                        <span class="value" id="bustCurveValue">100</span>
+                    </label>
+                    <input type="range" id="bustCurve" min="50" max="150" value="100">
+                </div>
+            </div>
+
+            <div class="proportions-diagram">
+                <h4>Resume des proportions</h4>
+                <div class="proportion-item">
+                    <span class="proportion-label">Rond</span>
+                    <div class="proportion-bar" id="propCircle" style="width: 80px;"></div>
+                </div>
+                <div class="proportion-item">
+                    <span class="proportion-label">Tige loupe</span>
+                    <div class="proportion-bar" id="propLoupe" style="width: 80px;"></div>
+                </div>
+                <div class="proportion-item">
+                    <span class="proportion-label">Tige cle</span>
+                    <div class="proportion-bar" id="propKey" style="width: 80px;"></div>
+                </div>
+                <div class="proportion-item">
+                    <span class="proportion-label">Dents</span>
+                    <div class="proportion-bar" id="propTeeth" style="width: 40px;"></div>
+                </div>
+                <div class="proportion-item">
+                    <span class="proportion-label">Buste</span>
+                    <div class="proportion-bar" id="propBust" style="width: 80px;"></div>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h4>Comparaison avec Trademark</h4>
+                <div class="info-row" id="matchRow">
+                    <span class="label">Harmonie</span>
+                    <span class="value" id="harmonyValue">-</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Stroke I trademark</span>
+                    <span class="value">~150px</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Votre stroke</span>
+                    <span class="value" id="yourStrokeValue">80px</span>
+                </div>
+            </div>
+
+            <button class="export-btn" id="exportBtn">Copier le SVG</button>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const iconSvg = document.getElementById('iconSvg');
+        const lens = document.getElementById('lens');
+        const loupeHandle = document.getElementById('loupeHandle');
+        const keyHandle = document.getElementById('keyHandle');
+        const keyTeeth = document.getElementById('keyTeeth');
+        const bust = document.getElementById('bust');
+        const previewArea = document.getElementById('previewArea');
+
+        // Sliders
+        const mainStroke = document.getElementById('mainStroke');
+        const teethRatio = document.getElementById('teethRatio');
+        const circleRadius = document.getElementById('circleRadius');
+        const handleLength = document.getElementById('handleLength');
+        const bustCurve = document.getElementById('bustCurve');
+
+        // Value displays
+        const mainStrokeValue = document.getElementById('mainStrokeValue');
+        const teethRatioValue = document.getElementById('teethRatioValue');
+        const circleRadiusValue = document.getElementById('circleRadiusValue');
+        const handleLengthValue = document.getElementById('handleLengthValue');
+        const bustCurveValue = document.getElementById('bustCurveValue');
+
+        // Reference stroke (I letter is approximately 150px wide in trademark viewBox)
+        const REF_STROKE = 150;
+
+        function updateIcon() {
+            const stroke = parseInt(mainStroke.value);
+            const teethRatioVal = parseInt(teethRatio.value) / 100;
+            const radius = parseInt(circleRadius.value);
+            const handleLen = parseInt(handleLength.value);
+            const bustCurveVal = parseInt(bustCurve.value);
+
+            const teethStroke = Math.round(stroke * teethRatioVal);
+
+            // Update stroke widths
+            lens.setAttribute('stroke-width', stroke);
+            loupeHandle.setAttribute('stroke-width', stroke);
+            keyHandle.setAttribute('stroke-width', stroke);
+            bust.setAttribute('stroke-width', stroke);
+
+            // Update teeth stroke
+            const teethLines = keyTeeth.querySelectorAll('line');
+            teethLines.forEach(line => {
+                line.setAttribute('stroke-width', teethStroke);
+            });
+
+            // Update circle radius
+            lens.setAttribute('r', radius);
+
+            // Calculate handle positions based on circle
+            const cx = 420;
+            const cy = 350;
+            const angle = Math.PI / 4; // 45 degrees
+
+            // Loupe handle starts at circle edge
+            const loupeStartX = cx + radius * Math.cos(angle);
+            const loupeStartY = cy + radius * Math.sin(angle);
+            const loupeEndX = loupeStartX + handleLen * Math.cos(angle);
+            const loupeEndY = loupeStartY + handleLen * Math.sin(angle);
+
+            loupeHandle.setAttribute('x1', loupeStartX);
+            loupeHandle.setAttribute('y1', loupeStartY);
+            loupeHandle.setAttribute('x2', loupeEndX);
+            loupeHandle.setAttribute('y2', loupeEndY);
+
+            // Key handle starts at opposite side
+            const keyStartX = cx - radius * Math.cos(angle);
+            const keyStartY = cy + radius * Math.sin(angle);
+            const keyEndX = keyStartX - handleLen * Math.cos(angle);
+            const keyEndY = keyStartY + handleLen * Math.sin(angle);
+
+            keyHandle.setAttribute('x1', keyStartX);
+            keyHandle.setAttribute('y1', keyStartY);
+            keyHandle.setAttribute('x2', keyEndX);
+            keyHandle.setAttribute('y2', keyEndY);
+
+            // Update key teeth positions
+            const teethOffset = 55;
+            const tooth1 = keyTeeth.children[0];
+            const tooth2 = keyTeeth.children[1];
+
+            // Teeth perpendicular to handle
+            const perpAngle = angle + Math.PI / 2;
+            const toothLen = 50;
+
+            // First tooth
+            const t1x = keyStartX - teethOffset * Math.cos(angle);
+            const t1y = keyStartY + teethOffset * Math.sin(angle);
+            tooth1.setAttribute('x1', t1x);
+            tooth1.setAttribute('y1', t1y);
+            tooth1.setAttribute('x2', t1x + toothLen * Math.cos(perpAngle));
+            tooth1.setAttribute('y2', t1y + toothLen * Math.sin(perpAngle));
+
+            // Second tooth
+            const t2x = keyStartX - (teethOffset + 45) * Math.cos(angle);
+            const t2y = keyStartY + (teethOffset + 45) * Math.sin(angle);
+            tooth2.setAttribute('x1', t2x);
+            tooth2.setAttribute('y1', t2y);
+            tooth2.setAttribute('x2', t2x + toothLen * Math.cos(perpAngle));
+            tooth2.setAttribute('y2', t2y + toothLen * Math.sin(perpAngle));
+
+            // Update bust curve
+            const bustY = 820;
+            const bustWidth = 340;
+            bust.setAttribute('d', `M ${500 - bustWidth/2} ${bustY} Q 500 ${bustY - bustCurveVal} ${500 + bustWidth/2} ${bustY}`);
+
+            // Update value displays
+            mainStrokeValue.textContent = stroke;
+            teethRatioValue.textContent = Math.round(teethRatioVal * 100) + '%';
+            circleRadiusValue.textContent = radius;
+            handleLengthValue.textContent = handleLen;
+            bustCurveValue.textContent = bustCurveVal;
+
+            // Update stroke bars
+            document.getElementById('iconStrokeBar').style.setProperty('--width', (stroke / 5) + 'px');
+            document.getElementById('iconStrokeValue').textContent = stroke + 'px';
+            document.getElementById('teethStrokeBar').style.setProperty('--width', (teethStroke / 5) + 'px');
+            document.getElementById('teethStrokeValue').textContent = teethStroke + 'px';
+
+            // Update proportions diagram
+            document.getElementById('propCircle').style.width = stroke + 'px';
+            document.getElementById('propLoupe').style.width = stroke + 'px';
+            document.getElementById('propKey').style.width = stroke + 'px';
+            document.getElementById('propTeeth').style.width = teethStroke + 'px';
+            document.getElementById('propBust').style.width = stroke + 'px';
+
+            // Harmony check
+            const ratio = stroke / REF_STROKE;
+            const harmonyValue = document.getElementById('harmonyValue');
+            const matchRow = document.getElementById('matchRow');
+            document.getElementById('yourStrokeValue').textContent = stroke + 'px';
+
+            if (ratio >= 0.95 && ratio <= 1.05) {
+                harmonyValue.textContent = 'Parfait !';
+                matchRow.className = 'info-row match';
+            } else if (ratio >= 0.8 && ratio <= 1.2) {
+                harmonyValue.textContent = 'Proche';
+                matchRow.className = 'info-row';
+            } else if (stroke < REF_STROKE) {
+                harmonyValue.textContent = 'Plus fin';
+                matchRow.className = 'info-row';
+            } else {
+                harmonyValue.textContent = 'Plus epais';
+                matchRow.className = 'info-row';
+            }
+
+            // Update preset buttons
+            document.querySelectorAll('.presets button').forEach(btn => {
+                btn.classList.toggle('active', parseInt(btn.dataset.stroke) === stroke);
+            });
+        }
+
+        // Event listeners
+        mainStroke.addEventListener('input', updateIcon);
+        teethRatio.addEventListener('input', updateIcon);
+        circleRadius.addEventListener('input', updateIcon);
+        handleLength.addEventListener('input', updateIcon);
+        bustCurve.addEventListener('input', updateIcon);
+
+        // Preset buttons
+        document.querySelectorAll('.presets button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                mainStroke.value = this.dataset.stroke;
+                updateIcon();
+            });
+        });
+
+        // Background toggle
+        document.getElementById('bgGradient').addEventListener('click', function() {
+            previewArea.classList.remove('dark-bg');
+            this.classList.add('active');
+            document.getElementById('bgDark').classList.remove('active');
+        });
+
+        document.getElementById('bgDark').addEventListener('click', function() {
+            previewArea.classList.add('dark-bg');
+            this.classList.add('active');
+            document.getElementById('bgGradient').classList.remove('active');
+        });
+
+        // Export
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const svgContent = iconSvg.outerHTML;
+            navigator.clipboard.writeText(svgContent).then(() => {
+                this.textContent = 'Copie !';
+                setTimeout(() => {
+                    this.textContent = 'Copier le SVG';
+                }, 2000);
+            });
+        });
+
+        // Initial update
+        updateIcon();
+    </script>
+</body>
+</html>

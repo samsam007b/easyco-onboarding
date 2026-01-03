@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Icon Tuner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --owner-start: #9b6b9e;
+            --resident-mid: #e8837c;
+            --searcher-end: #f5b73f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: #1a1a2e;
+            min-height: 100vh;
+            color: white;
+        }
+
+        /* Header */
+        .header {
+            padding: 30px 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.6;
+        }
+
+        /* Main preview area */
+        .preview-area {
+            background: linear-gradient(135deg, var(--owner-start) 0%, var(--resident-mid) 50%, var(--searcher-end) 100%);
+            min-height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .lockup-container {
+            display: flex;
+            align-items: center;
+            gap: var(--gap, 20px);
+        }
+
+        /* Icon */
+        .icon-wrapper {
+            height: var(--icon-height, 150px);
+            width: var(--icon-height, 150px);
+            flex-shrink: 0;
+        }
+
+        .icon-wrapper svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Wordmark - using official specs */
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 500;
+            font-size: 99px;
+            color: white;
+            letter-spacing: 0.02em;
+            white-space: nowrap;
+        }
+
+        /* Controls panel */
+        .controls {
+            padding: 40px;
+            background: #0f0f1a;
+        }
+
+        .controls h2 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            opacity: 0.8;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .control-row label {
+            min-width: 160px;
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .control-row input[type="range"] {
+            flex: 1;
+            max-width: 400px;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.15);
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .control-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+            cursor: pointer;
+        }
+
+        .control-row .value {
+            min-width: 70px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-align: right;
+        }
+
+        /* Specs display */
+        .specs-panel {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .spec-group {
+            flex: 1;
+        }
+
+        .spec-group h3 {
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .spec-item .label {
+            opacity: 0.6;
+        }
+
+        .spec-item .value {
+            font-weight: 500;
+        }
+
+        .spec-item.locked .value {
+            color: #4ade80;
+        }
+
+        .spec-item.locked .value::after {
+            content: ' (verrouillé)';
+            font-size: 0.75rem;
+            opacity: 0.6;
+        }
+
+        /* Reference line toggle */
+        .reference-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .reference-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .reference-toggle label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            cursor: pointer;
+        }
+
+        /* Reference lines overlay */
+        .reference-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            display: none;
+        }
+
+        .reference-lines.visible {
+            display: block;
+        }
+
+        .ref-line {
+            position: absolute;
+            background: rgba(255, 255, 0, 0.5);
+        }
+
+        .ref-line.horizontal {
+            height: 1px;
+            left: 0;
+            right: 0;
+        }
+
+        .ref-line.vertical {
+            width: 1px;
+            top: 0;
+            bottom: 0;
+        }
+
+        /* Preview container needs relative positioning for reference lines */
+        .preview-wrapper {
+            position: relative;
+        }
+
+        /* Dark background toggle */
+        .preview-area.dark-bg {
+            background: #1a1a2e;
+        }
+
+        .bg-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .bg-toggle button {
+            padding: 8px 16px;
+            border: 1px solid rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.3);
+            color: white;
+            border-radius: 8px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bg-toggle button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .bg-toggle button.active {
+            background: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        /* Ratio display */
+        .ratio-display {
+            background: rgba(0,0,0,0.4);
+            padding: 15px 25px;
+            border-radius: 12px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+        }
+
+        .ratio-display span {
+            opacity: 0.6;
+        }
+
+        .ratio-display strong {
+            margin-left: 8px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Icon Tuner</h1>
+        <p>Ajuste la taille de l'icône pour harmoniser avec le wordmark Fredoka</p>
+    </div>
+
+    <div class="preview-wrapper">
+        <div class="preview-area" id="previewArea">
+            <div class="lockup-container" id="lockupContainer">
+                <!-- Icon -->
+                <div class="icon-wrapper" id="iconWrapper">
+                    <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                </div>
+
+                <!-- Wordmark (specs officiels) -->
+                <span class="wordmark">IzzIco</span>
+            </div>
+
+            <div class="ratio-display">
+                <span>Ratio icon/wordmark :</span>
+                <strong id="ratioValue">2.10:1</strong>
+            </div>
+        </div>
+
+        <div class="bg-toggle">
+            <button id="btnGradient" class="active">Gradient</button>
+            <button id="btnDark">Fond sombre</button>
+        </div>
+    </div>
+
+    <div class="controls">
+        <h2>Ajustements Icon</h2>
+
+        <div class="control-row">
+            <label>Hauteur icon :</label>
+            <input type="range" id="iconHeight" min="80" max="250" value="150">
+            <span class="value" id="iconHeightValue">150px</span>
+        </div>
+
+        <div class="control-row">
+            <label>Espacement (gap) :</label>
+            <input type="range" id="gap" min="0" max="60" value="20">
+            <span class="value" id="gapValue">20px</span>
+        </div>
+
+        <div class="specs-panel">
+            <div class="spec-group">
+                <h3>Wordmark (verrouillé)</h3>
+                <div class="spec-item locked">
+                    <span class="label">Font</span>
+                    <span class="value">Fredoka</span>
+                </div>
+                <div class="spec-item locked">
+                    <span class="label">Weight</span>
+                    <span class="value">500 (Medium)</span>
+                </div>
+                <div class="spec-item locked">
+                    <span class="label">Font-size</span>
+                    <span class="value">99px</span>
+                </div>
+                <div class="spec-item locked">
+                    <span class="label">Letter-spacing</span>
+                    <span class="value">0.02em</span>
+                </div>
+                <div class="spec-item">
+                    <span class="label">Cap-height (visuel)</span>
+                    <span class="value">~71px</span>
+                </div>
+            </div>
+
+            <div class="spec-group">
+                <h3>Icon (en cours)</h3>
+                <div class="spec-item">
+                    <span class="label">Hauteur</span>
+                    <span class="value" id="specIconHeight">150px</span>
+                </div>
+                <div class="spec-item">
+                    <span class="label">Gap</span>
+                    <span class="value" id="specGap">20px</span>
+                </div>
+                <div class="spec-item">
+                    <span class="label">Ratio</span>
+                    <span class="value" id="specRatio">2.10:1</span>
+                </div>
+                <div class="spec-item">
+                    <span class="label">Stroke estimé</span>
+                    <span class="value" id="specStroke">~6px</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const iconHeightSlider = document.getElementById('iconHeight');
+        const gapSlider = document.getElementById('gap');
+
+        const iconHeightValue = document.getElementById('iconHeightValue');
+        const gapValue = document.getElementById('gapValue');
+
+        const iconWrapper = document.getElementById('iconWrapper');
+        const lockupContainer = document.getElementById('lockupContainer');
+        const ratioValue = document.getElementById('ratioValue');
+
+        const specIconHeight = document.getElementById('specIconHeight');
+        const specGap = document.getElementById('specGap');
+        const specRatio = document.getElementById('specRatio');
+        const specStroke = document.getElementById('specStroke');
+
+        const previewArea = document.getElementById('previewArea');
+        const btnGradient = document.getElementById('btnGradient');
+        const btnDark = document.getElementById('btnDark');
+
+        // Wordmark cap-height is approximately 71px at font-size 99px (72% ratio for Fredoka)
+        const wordmarkCapHeight = 71;
+
+        function updateDisplay() {
+            const iconHeight = parseInt(iconHeightSlider.value);
+            const gap = parseInt(gapSlider.value);
+
+            // Update CSS
+            iconWrapper.style.height = iconHeight + 'px';
+            iconWrapper.style.width = iconHeight + 'px';
+            lockupContainer.style.gap = gap + 'px';
+
+            // Update value displays
+            iconHeightValue.textContent = iconHeight + 'px';
+            gapValue.textContent = gap + 'px';
+
+            // Calculate ratio (icon height / wordmark cap-height)
+            const ratio = (iconHeight / wordmarkCapHeight).toFixed(2);
+            ratioValue.textContent = ratio + ':1';
+
+            // Update specs panel
+            specIconHeight.textContent = iconHeight + 'px';
+            specGap.textContent = gap + 'px';
+            specRatio.textContent = ratio + ':1';
+
+            // Estimate stroke width (handle is ~4% of icon size)
+            const strokeWidth = Math.round(iconHeight * 0.04);
+            specStroke.textContent = '~' + strokeWidth + 'px';
+        }
+
+        iconHeightSlider.addEventListener('input', updateDisplay);
+        gapSlider.addEventListener('input', updateDisplay);
+
+        // Background toggle
+        btnGradient.addEventListener('click', function() {
+            previewArea.classList.remove('dark-bg');
+            btnGradient.classList.add('active');
+            btnDark.classList.remove('active');
+        });
+
+        btnDark.addEventListener('click', function() {
+            previewArea.classList.add('dark-bg');
+            btnDark.classList.add('active');
+            btnGradient.classList.remove('active');
+        });
+
+        // Initial update
+        updateDisplay();
+    </script>
+</body>
+</html>

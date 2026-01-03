@@ -8,6 +8,7 @@ import ProfileDropdown from './ProfileDropdown';
 import LanguageSwitcher from './LanguageSwitcher';
 import NotificationsDropdown from './NotificationsDropdown';
 import MessagesIconWithBadge from './MessagesIconWithBadge';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface DashboardHeaderProps {
   profile: {
@@ -22,6 +23,8 @@ interface DashboardHeaderProps {
 export default function DashboardHeader({ profile, avatarColor, role }: DashboardHeaderProps) {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -54,7 +57,7 @@ export default function DashboardHeader({ profile, avatarColor, role }: Dashboar
             <button
               onClick={() => router.push('/profile')}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Settings"
+              aria-label={ariaLabels?.settings?.[language] || 'Settings'}
             >
               <Settings className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
             </button>

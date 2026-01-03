@@ -7,6 +7,78 @@
 import { createClient } from '@/lib/auth/supabase-client';
 import { differenceInDays } from 'date-fns';
 
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setPortfolioServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  actions: {
+    pendingApplications: {
+      title: {
+        fr: (count: number) => `${count} candidature${count > 1 ? 's' : ''} en attente`,
+        en: (count: number) => `${count} pending application${count > 1 ? 's' : ''}`,
+        nl: (count: number) => `${count} wachtende aanvra${count > 1 ? 'gen' : 'ag'}`,
+        de: (count: number) => `${count} ausstehende Bewerbung${count > 1 ? 'en' : ''}`,
+      },
+      description: {
+        fr: 'Des candidats attendent votre réponse',
+        en: 'Applicants are waiting for your response',
+        nl: 'Aanvragers wachten op uw antwoord',
+        de: 'Bewerber warten auf Ihre Antwort',
+      },
+    },
+    draftProperties: {
+      title: {
+        fr: (count: number) => `${count} bien${count > 1 ? 's' : ''} en brouillon`,
+        en: (count: number) => `${count} draft propert${count > 1 ? 'ies' : 'y'}`,
+        nl: (count: number) => `${count} conceptwoning${count > 1 ? 'en' : ''}`,
+        de: (count: number) => `${count} Entwurfsimmobilie${count > 1 ? 'n' : ''}`,
+      },
+      description: {
+        fr: 'Publiez vos biens pour recevoir des candidatures',
+        en: 'Publish your properties to receive applications',
+        nl: 'Publiceer uw woningen om aanvragen te ontvangen',
+        de: 'Veröffentlichen Sie Ihre Immobilien, um Bewerbungen zu erhalten',
+      },
+    },
+    vacantProperties: {
+      title: {
+        fr: (count: number) => `${count} bien${count > 1 ? 's' : ''} vacant${count > 1 ? 's' : ''} depuis 30j+`,
+        en: (count: number) => `${count} propert${count > 1 ? 'ies' : 'y'} vacant for 30d+`,
+        nl: (count: number) => `${count} woning${count > 1 ? 'en' : ''} leeg voor 30d+`,
+        de: (count: number) => `${count} Immobilie${count > 1 ? 'n' : ''} seit 30+ Tagen leer`,
+      },
+      description: {
+        fr: 'Pensez à ajuster le prix ou les annonces',
+        en: 'Consider adjusting price or listings',
+        nl: 'Overweeg prijs of advertenties aan te passen',
+        de: 'Preis oder Anzeigen anpassen',
+      },
+    },
+    newApplications: {
+      title: {
+        fr: (count: number) => `${count} nouvelle${count > 1 ? 's' : ''} candidature${count > 1 ? 's' : ''}`,
+        en: (count: number) => `${count} new application${count > 1 ? 's' : ''}`,
+        nl: (count: number) => `${count} nieuwe aanvra${count > 1 ? 'gen' : 'ag'}`,
+        de: (count: number) => `${count} neue Bewerbung${count > 1 ? 'en' : ''}`,
+      },
+      description: {
+        fr: 'Reçues dans les dernières 24h',
+        en: 'Received in the last 24h',
+        nl: 'Ontvangen in de laatste 24u',
+        de: 'In den letzten 24h erhalten',
+      },
+    },
+  },
+};
+
 // Types
 export interface PropertyStats {
   total: number;
@@ -255,8 +327,8 @@ class PortfolioService {
           id: 'pending-applications',
           type: 'application_pending',
           severity: totalPending >= 5 ? 'critical' : 'warning',
-          title: `${totalPending} candidature${totalPending > 1 ? 's' : ''} en attente`,
-          description: 'Des candidats attendent votre réponse',
+          title: translations.actions.pendingApplications.title[currentLang](totalPending),
+          description: translations.actions.pendingApplications.description[currentLang],
           href: '/dashboard/owner/applications',
           count: totalPending,
           createdAt: new Date().toISOString(),
@@ -270,8 +342,8 @@ class PortfolioService {
           id: 'draft-properties',
           type: 'property_draft',
           severity: 'info',
-          title: `${draftProperties.length} bien${draftProperties.length > 1 ? 's' : ''} en brouillon`,
-          description: 'Publiez vos biens pour recevoir des candidatures',
+          title: translations.actions.draftProperties.title[currentLang](draftProperties.length),
+          description: translations.actions.draftProperties.description[currentLang],
           href: '/dashboard/owner/properties',
           count: draftProperties.length,
           createdAt: new Date().toISOString(),
@@ -304,8 +376,8 @@ class PortfolioService {
             id: 'vacant-properties',
             type: 'property_vacant',
             severity: longVacant.length >= 2 ? 'warning' : 'info',
-            title: `${longVacant.length} bien${longVacant.length > 1 ? 's' : ''} vacant${longVacant.length > 1 ? 's' : ''} depuis 30j+`,
-            description: 'Pensez à ajuster le prix ou les annonces',
+            title: translations.actions.vacantProperties.title[currentLang](longVacant.length),
+            description: translations.actions.vacantProperties.description[currentLang],
             href: '/dashboard/owner/properties',
             count: longVacant.length,
             createdAt: new Date().toISOString(),
@@ -336,8 +408,8 @@ class PortfolioService {
           id: 'new-applications',
           type: 'application_new',
           severity: 'info',
-          title: `${totalNew} nouvelle${totalNew > 1 ? 's' : ''} candidature${totalNew > 1 ? 's' : ''}`,
-          description: 'Reçues dans les dernières 24h',
+          title: translations.actions.newApplications.title[currentLang](totalNew),
+          description: translations.actions.newApplications.description[currentLang],
           href: '/dashboard/owner/applications',
           count: totalNew,
           createdAt: new Date().toISOString(),

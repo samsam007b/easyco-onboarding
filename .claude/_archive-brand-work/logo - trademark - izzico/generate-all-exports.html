@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco Trademark - Export PNG/JPEG</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+        :root {
+            --gradient-signature: linear-gradient(135deg, #9c5698 0%, #d15659 30%, #e05747 50%, #ff7c10 70%, #ffc800 100%);
+            --bg-dark: #1a1a2e;
+            --bg-card: #252542;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .controls {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: flex-end;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        select, input {
+            background: var(--bg-dark);
+            border: 1px solid #444;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            color: white;
+            min-width: 120px;
+        }
+
+        button {
+            background: var(--gradient-signature);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .export-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .export-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .export-preview {
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+
+        .export-preview.dark-bg {
+            background: #111;
+        }
+
+        .export-preview.light-bg {
+            background: #f5f5f7;
+        }
+
+        .export-preview.gradient-bg {
+            background: var(--gradient-signature);
+        }
+
+        .export-info {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #333;
+        }
+
+        .export-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .export-desc {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .export-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .export-btn {
+            flex: 1;
+            padding: 0.5rem;
+            font-size: 0.85rem;
+            background: #333;
+        }
+
+        .export-btn:hover {
+            background: #444;
+        }
+
+        /* Wordmark styles */
+        .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 48px;
+            white-space: nowrap;
+        }
+
+        .wordmark .l-i { font-weight: 600; }
+        .wordmark .l-z { font-weight: 540; letter-spacing: -0.20em; }
+        .wordmark .l-z2 { font-weight: 540; }
+        .wordmark .l-c { font-weight: 540; }
+        .wordmark .l-o { font-weight: 540; }
+
+        .wordmark-white { color: #ffffff; }
+        .wordmark-dark { color: #1a1a2e; }
+        .wordmark-gradient {
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        .size-info {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IzzIco Trademark - Export</h1>
+        <p class="subtitle">Exporter le wordmark en PNG ou JPEG</p>
+
+        <div class="controls">
+            <div class="control-group">
+                <label>Taille (hauteur en px)</label>
+                <select id="sizeSelect">
+                    <option value="64">64px</option>
+                    <option value="128">128px</option>
+                    <option value="256" selected>256px</option>
+                    <option value="512">512px</option>
+                    <option value="1024">1024px</option>
+                    <option value="2048">2048px</option>
+                </select>
+            </div>
+            <div class="control-group">
+                <label>ZZ Spacing (em)</label>
+                <input type="number" id="zzSpacing" value="-0.20" min="-0.5" max="0" step="0.01">
+            </div>
+            <button onclick="refreshPreviews()">Rafraichir</button>
+        </div>
+
+        <div class="export-grid">
+            <!-- White on dark -->
+            <div class="export-card">
+                <div class="export-preview dark-bg" id="preview-white">
+                    <span class="wordmark wordmark-white">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                </div>
+                <div class="export-info">
+                    <div class="export-title">Blanc sur fond sombre</div>
+                    <div class="export-desc">Pour utilisation sur fonds sombres</div>
+                    <div class="export-buttons">
+                        <button class="export-btn" onclick="exportImage('white', 'png')">PNG</button>
+                        <button class="export-btn" onclick="exportImage('white', 'jpeg')">JPEG</button>
+                    </div>
+                    <div class="size-info" id="size-white"></div>
+                </div>
+            </div>
+
+            <!-- Dark on light -->
+            <div class="export-card">
+                <div class="export-preview light-bg" id="preview-dark">
+                    <span class="wordmark wordmark-dark">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                </div>
+                <div class="export-info">
+                    <div class="export-title">Sombre sur fond clair</div>
+                    <div class="export-desc">Pour utilisation sur fonds clairs</div>
+                    <div class="export-buttons">
+                        <button class="export-btn" onclick="exportImage('dark', 'png')">PNG</button>
+                        <button class="export-btn" onclick="exportImage('dark', 'jpeg')">JPEG</button>
+                    </div>
+                    <div class="size-info" id="size-dark"></div>
+                </div>
+            </div>
+
+            <!-- Gradient -->
+            <div class="export-card">
+                <div class="export-preview dark-bg" id="preview-gradient">
+                    <span class="wordmark wordmark-gradient">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                </div>
+                <div class="export-info">
+                    <div class="export-title">Gradient Signature</div>
+                    <div class="export-desc">Version avec le gradient IzzIco</div>
+                    <div class="export-buttons">
+                        <button class="export-btn" onclick="exportImage('gradient', 'png')">PNG</button>
+                        <button class="export-btn" onclick="exportImage('gradient', 'jpeg')">JPEG</button>
+                    </div>
+                    <div class="size-info" id="size-gradient"></div>
+                </div>
+            </div>
+
+            <!-- White on gradient bg -->
+            <div class="export-card">
+                <div class="export-preview gradient-bg" id="preview-white-gradient">
+                    <span class="wordmark wordmark-white">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-c">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </span>
+                </div>
+                <div class="export-info">
+                    <div class="export-title">Blanc sur fond gradient</div>
+                    <div class="export-desc">Pour utilisation decorative</div>
+                    <div class="export-buttons">
+                        <button class="export-btn" onclick="exportImage('white-gradient-bg', 'png')">PNG</button>
+                        <button class="export-btn" onclick="exportImage('white-gradient-bg', 'jpeg')">JPEG</button>
+                    </div>
+                    <div class="size-info" id="size-white-gradient"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="exportCanvas"></canvas>
+
+    <script>
+        function refreshPreviews() {
+            const spacing = document.getElementById('zzSpacing').value + 'em';
+            document.querySelectorAll('.l-z').forEach(el => {
+                el.style.letterSpacing = spacing;
+            });
+        }
+
+        async function exportImage(variant, format) {
+            const size = parseInt(document.getElementById('sizeSelect').value);
+            const spacing = parseFloat(document.getElementById('zzSpacing').value);
+
+            const canvas = document.getElementById('exportCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Calculer les dimensions
+            const aspectRatio = 3.5; // Approximatif pour "izzico"
+            const width = Math.round(size * aspectRatio);
+            const height = size;
+            const padding = size * 0.1;
+
+            canvas.width = width + padding * 2;
+            canvas.height = height + padding * 2;
+
+            // Fond
+            if (variant === 'white' && format === 'jpeg') {
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (variant === 'dark' && format === 'jpeg') {
+                ctx.fillStyle = '#f5f5f7';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (variant === 'white-gradient-bg') {
+                const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                grad.addColorStop(0, '#9c5698');
+                grad.addColorStop(0.3, '#d15659');
+                grad.addColorStop(0.5, '#e05747');
+                grad.addColorStop(0.7, '#ff7c10');
+                grad.addColorStop(1, '#ffc800');
+                ctx.fillStyle = grad;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else if (variant === 'gradient' && format === 'jpeg') {
+                ctx.fillStyle = '#1a1a2e';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            } else {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            // Configurer la police
+            const fontSize = size * 0.65;
+            ctx.textBaseline = 'middle';
+            ctx.textAlign = 'left';
+
+            // Dessiner les lettres une par une
+            const letters = [
+                { char: 'i', weight: 600 },
+                { char: 'z', weight: 540, spacingAfter: spacing },
+                { char: 'z', weight: 540 },
+                { char: 'i', weight: 540 },
+                { char: 'c', weight: 540 },
+                { char: 'o', weight: 540 }
+            ];
+
+            let x = padding;
+            const y = canvas.height / 2 + fontSize * 0.05;
+
+            // Couleur selon la variante
+            if (variant === 'gradient') {
+                const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                grad.addColorStop(0, '#9c5698');
+                grad.addColorStop(0.3, '#d15659');
+                grad.addColorStop(0.5, '#e05747');
+                grad.addColorStop(0.7, '#ff7c10');
+                grad.addColorStop(1, '#ffc800');
+                ctx.fillStyle = grad;
+            } else if (variant === 'dark') {
+                ctx.fillStyle = '#1a1a2e';
+            } else {
+                ctx.fillStyle = '#ffffff';
+            }
+
+            for (const letter of letters) {
+                ctx.font = `${letter.weight} ${fontSize}px Fredoka`;
+                ctx.fillText(letter.char, x, y);
+                const metrics = ctx.measureText(letter.char);
+                x += metrics.width;
+                if (letter.spacingAfter) {
+                    x += letter.spacingAfter * fontSize;
+                }
+            }
+
+            // Exporter
+            const mimeType = format === 'png' ? 'image/png' : 'image/jpeg';
+            const quality = format === 'jpeg' ? 0.95 : undefined;
+            const dataUrl = canvas.toDataURL(mimeType, quality);
+
+            // Telecharger
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = `izzico-trademark-${variant}-${size}px.${format}`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Afficher la taille
+            const blob = await (await fetch(dataUrl)).blob();
+            const sizeKB = (blob.size / 1024).toFixed(1);
+            const sizeEl = document.getElementById(`size-${variant.replace('-bg', '')}`);
+            if (sizeEl) {
+                sizeEl.textContent = `Derniere export: ${canvas.width}x${canvas.height}px, ${sizeKB}KB`;
+            }
+        }
+
+        // Attendre le chargement de la police
+        document.fonts.ready.then(() => {
+            refreshPreviews();
+        });
+    </script>
+</body>
+</html>

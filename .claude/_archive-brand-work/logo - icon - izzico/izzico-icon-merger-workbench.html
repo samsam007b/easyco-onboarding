@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco Icon Merger - Boolean Operations</title>
+    <style>
+        :root {
+            --gradient-signature: linear-gradient(135deg, #9c5698 0%, #d15659 30%, #e05747 50%, #ff7c10 70%, #ffc800 100%);
+            --bg-dark: #0a0a12;
+            --bg-card: #14141f;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-dark);
+            color: white;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #888;
+            margin-bottom: 2rem;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .preview-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            overflow: hidden;
+        }
+
+        .preview-area {
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a2e;
+            position: relative;
+        }
+
+        .preview-area svg {
+            width: 300px;
+            height: 300px;
+        }
+
+        .preview-info {
+            padding: 1.5rem;
+        }
+
+        .preview-info h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .preview-info p {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .zoom-controls {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .zoom-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            border-radius: 0.5rem;
+            width: 36px;
+            height: 36px;
+            color: white;
+            cursor: pointer;
+            font-size: 1.25rem;
+        }
+
+        .zoom-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        .output-section {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .output-section h2 {
+            margin-bottom: 1rem;
+        }
+
+        .svg-code {
+            background: #0a0a12;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            max-height: 400px;
+            overflow: auto;
+        }
+
+        .svg-code pre {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.75rem;
+            color: #8f8;
+            white-space: pre-wrap;
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--gradient-signature);
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .download-btn {
+            background: #333;
+        }
+
+        .info-box {
+            background: rgba(255,200,0,0.1);
+            border: 1px solid rgba(255,200,0,0.3);
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-box h4 {
+            color: #ffc800;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-warning { background: #ff7c10; }
+        .badge-success { background: #4f4; color: #000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IzzIco Icon Merger</h1>
+        <p class="subtitle">Fusion des formes en un seul path vectorise</p>
+
+        <div class="info-box">
+            <h4>Probleme identifie</h4>
+            <p>La version actuelle utilise des formes superposees (painter's algorithm). Les manches sont dessines SOUS le cercle, les caps SOUS le buste. Pour une vraie vectorisation, il faut fusionner ces formes en eliminant les parties cachees.</p>
+        </div>
+
+        <div class="comparison">
+            <!-- Original (layered) -->
+            <div class="preview-card">
+                <div class="preview-area" id="preview-original">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Show layers with different colors to highlight the problem -->
+                        <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="#ffa000" opacity="0.8"/>
+                        <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="#9c5698" opacity="0.8"/>
+                        <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="#9c5698"/>
+                        <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="#9c5698"/>
+                        <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="white"/>
+                        <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="#e05747" opacity="0.8"/>
+                        <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="#e05747" opacity="0.8"/>
+                        <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="white"/>
+                    </svg>
+                </div>
+                <div class="preview-info">
+                    <h3>Version Originale <span class="badge badge-warning">Superposee</span></h3>
+                    <p>6 formes separees avec superposition. Les parties colorees sont CACHEES sous les blanches.</p>
+                </div>
+            </div>
+
+            <!-- Merged with clipPath -->
+            <div class="preview-card">
+                <div class="preview-area" id="preview-clipped">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <!-- Clip pour exclure l'interieur du cercle des manches -->
+                            <clipPath id="clip-outside-circle">
+                                <path d="M 0 0 L 100 0 L 100 100 L 0 100 Z M 31.25 41 A 18.75 18.75 0 1 0 68.75 41 A 18.75 18.75 0 1 0 31.25 41" fill-rule="evenodd"/>
+                            </clipPath>
+                            <!-- Clip pour exclure l'interieur du cercle (version inverse) -->
+                            <mask id="mask-outside-circle">
+                                <rect x="0" y="0" width="100" height="100" fill="white"/>
+                                <circle cx="50" cy="41" r="18.75" fill="black"/>
+                            </mask>
+                        </defs>
+
+                        <!-- Manches clippes (ne passent pas sous le cercle) -->
+                        <g clip-path="url(#clip-outside-circle)">
+                            <path d="M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z" fill="white"/>
+                            <path d="M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z" fill="white"/>
+                        </g>
+
+                        <!-- Dents de cle (pas de clip necessaire) -->
+                        <path d="M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z" fill="white"/>
+                        <path d="M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z" fill="white"/>
+
+                        <!-- Cercle (donut) -->
+                        <path d="M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41" fill-rule="evenodd" fill="white"/>
+
+                        <!-- Buste - version simplifiee sans caps caches -->
+                        <path d="M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z" fill="white"/>
+
+                        <!-- Caps du buste (squircles aux extremites) -->
+                        <path d="M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z" fill="white"/>
+                        <path d="M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z" fill="white"/>
+                    </svg>
+                </div>
+                <div class="preview-info">
+                    <h3>Version Clippee <span class="badge badge-success">Propre</span></h3>
+                    <p>Manches clippes au bord du cercle. Pas de formes cachees.</p>
+                </div>
+            </div>
+
+            <!-- Final unified -->
+            <div class="preview-card">
+                <div class="preview-area" id="preview-unified">
+                    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" id="unified-svg">
+                        <!-- Version unifiee: un seul path compound -->
+                        <defs>
+                            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#9c5698"/>
+                                <stop offset="30%" stop-color="#d15659"/>
+                                <stop offset="50%" stop-color="#e05747"/>
+                                <stop offset="70%" stop-color="#ff7c10"/>
+                                <stop offset="100%" stop-color="#ffc800"/>
+                            </linearGradient>
+                        </defs>
+                        <path id="unified-path" fill="url(#grad)" fill-rule="evenodd" d="
+                            M 31.25 41
+                            A 18.75 18.75 0 1 1 68.75 41
+                            A 18.75 18.75 0 1 1 31.25 41
+                            M 38.75 41
+                            A 11.25 11.25 0 1 0 61.25 41
+                            A 11.25 11.25 0 1 0 38.75 41
+
+                            M 38.723 54.778
+                            L 26.723 65.21
+                            C 25.66 66.134 24.05 66.021 23.126 64.958
+                            L 22.535 64.279
+                            C 21.611 63.216 21.724 61.605 22.787 60.682
+                            L 34.787 50.25
+                            C 35.85 49.326 37.46 49.439 38.384 50.502
+                            L 38.975 51.181
+                            C 39.899 52.244 39.786 53.855 38.723 54.778
+                            Z
+
+                            M 65.962 48.89
+                            L 78.825 58.236
+                            C 79.964 59.064 80.217 60.658 79.389 61.798
+                            L 78.86 62.526
+                            C 78.032 63.665 76.438 63.918 75.298 63.09
+                            L 62.435 53.744
+                            C 61.296 52.916 61.043 51.322 61.871 50.182
+                            L 62.4 49.454
+                            C 63.228 48.315 64.822 48.062 65.962 48.89
+                            Z
+
+                            M 71.096 57.902
+                            L 68.481 61.502
+                            C 68.067 62.071 67.269 62.198 66.7 61.784
+                            L 66.336 61.519
+                            C 65.766 61.105 65.64 60.308 66.054 59.738
+                            L 68.669 56.138
+                            C 69.083 55.569 69.881 55.442 70.45 55.856
+                            L 70.814 56.121
+                            C 71.384 56.535 71.51 57.332 71.096 57.902
+                            Z
+
+                            M 76.191 61.602
+                            L 73.576 65.202
+                            C 73.162 65.771 72.364 65.898 71.795 65.484
+                            L 71.431 65.219
+                            C 70.861 64.805 70.735 64.008 71.149 63.438
+                            L 73.764 59.838
+                            C 74.178 59.269 74.976 59.142 75.545 59.556
+                            L 75.909 59.821
+                            C 76.479 60.235 76.605 61.032 76.191 61.602
+                            Z
+
+                            M 34.821 81.275
+                            Q 50 64.4 65.179 81.275
+                            L 69.821 76.725
+                            Q 50 57.9 30.179 76.725
+                            Z
+
+                            M 29.837 77.074
+                            L 30.519 76.378
+                            C 31.587 75.288 33.336 75.269 34.426 76.337
+                            L 35.122 77.019
+                            C 36.212 78.087 36.231 79.836 35.163 80.926
+                            L 34.481 81.622
+                            C 33.413 82.712 31.664 82.731 30.574 81.663
+                            L 29.878 80.981
+                            C 28.788 79.913 28.769 78.164 29.837 77.074
+                            Z
+
+                            M 69.481 76.378
+                            L 70.163 77.074
+                            C 71.231 78.164 71.212 79.913 70.122 80.981
+                            L 69.426 81.663
+                            C 68.336 82.731 66.587 82.712 65.519 81.622
+                            L 64.837 80.926
+                            C 63.769 79.836 63.788 78.087 64.878 77.019
+                            L 65.574 76.337
+                            C 66.664 75.269 68.413 75.288 69.481 76.378
+                            Z
+                        "/>
+                    </svg>
+                </div>
+                <div class="preview-info">
+                    <h3>Version Unifiee <span class="badge badge-success">1 Path</span></h3>
+                    <p>Toutes les formes dans un seul path compound avec fill-rule evenodd.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="downloadSVG('white')">Telecharger SVG Blanc</button>
+            <button onclick="downloadSVG('dark')">Telecharger SVG Sombre</button>
+            <button onclick="downloadSVG('gradient')">Telecharger SVG Gradient</button>
+            <button class="download-btn" onclick="copyPath()">Copier le Path</button>
+        </div>
+
+        <div class="output-section">
+            <h2>Code SVG Unifie</h2>
+            <div class="svg-code">
+                <pre id="svg-output"></pre>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const UNIFIED_PATH = `M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41 M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z`;
+
+        function generateSVG(color) {
+            const fill = color === 'gradient'
+                ? 'url(#izzico-gradient)'
+                : color;
+
+            const gradientDef = color === 'gradient' ? `
+  <defs>
+    <linearGradient id="izzico-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9c5698"/>
+      <stop offset="30%" stop-color="#d15659"/>
+      <stop offset="50%" stop-color="#e05747"/>
+      <stop offset="70%" stop-color="#ff7c10"/>
+      <stop offset="100%" stop-color="#ffc800"/>
+    </linearGradient>
+  </defs>` : '';
+
+            return `<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- IzzIco Icon V1 - Unified Path Version -->
+  <!-- All shapes merged into single compound path -->${gradientDef}
+  <path fill="${fill}" fill-rule="evenodd" d="${UNIFIED_PATH}"/>
+</svg>`;
+        }
+
+        function downloadSVG(variant) {
+            let color;
+            let filename;
+            switch(variant) {
+                case 'white':
+                    color = '#ffffff';
+                    filename = 'izzico-icon-v1-unified-white.svg';
+                    break;
+                case 'dark':
+                    color = '#0a0a12';
+                    filename = 'izzico-icon-v1-unified-dark.svg';
+                    break;
+                case 'gradient':
+                    color = 'gradient';
+                    filename = 'izzico-icon-v1-unified-gradient.svg';
+                    break;
+            }
+
+            const svg = generateSVG(color);
+            const blob = new Blob([svg], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function copyPath() {
+            navigator.clipboard.writeText(UNIFIED_PATH).then(() => {
+                alert('Path copie dans le presse-papier!');
+            });
+        }
+
+        // Display SVG code
+        document.getElementById('svg-output').textContent = generateSVG('#ffffff');
+    </script>
+</body>
+</html>

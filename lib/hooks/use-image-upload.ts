@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface UploadOptions {
   bucket: 'property-images' | 'avatars';
@@ -101,14 +102,14 @@ export function useImageUpload() {
 
     // 1. Check MIME type (basic check)
     if (!validTypes.includes(file.type)) {
-      toast.error('Please upload an image file (JPEG, PNG, or WebP)');
+      toast.error(getHookTranslation('imageUpload', 'invalidType'));
       return false;
     }
 
     // 2. Check file size
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
     if (file.size > maxSizeBytes) {
-      toast.error(`File size must be less than ${maxSizeMB}MB`);
+      toast.error(`${getHookTranslation('imageUpload', 'fileTooLarge')} ${maxSizeMB}MB`);
       return false;
     }
 
@@ -125,14 +126,14 @@ export function useImageUpload() {
         bytes[8] === 0x57 && bytes[9] === 0x45 && bytes[10] === 0x42 && bytes[11] === 0x50;
 
       if (!isJPEG && !isPNG && !isWebP) {
-        toast.error('Invalid image file. The file may be corrupted or not a real image.');
+        toast.error(getHookTranslation('imageUpload', 'invalidFile'));
         // FIXME: Use logger.warn - File magic number validation failed
         // fileName: file.name, mimeType: file.type, firstBytes: Array.from(bytes.slice(0, 4))
         return false;
       }
     } catch (error) {
       // FIXME: Use logger.error - Error validating file signature
-      toast.error('Failed to validate file');
+      toast.error(getHookTranslation('imageUpload', 'validationFailed'));
       return false;
     }
 
@@ -208,7 +209,7 @@ export function useImageUpload() {
         };
       } catch (error: any) {
         // FIXME: Use logger.error - 'Error uploading image:', error);
-        toast.error(error.message || 'Failed to upload image');
+        toast.error(error.message || getHookTranslation('imageUpload', 'uploadFailed'));
         return {
           url: '',
           path: '',
@@ -252,11 +253,11 @@ export function useImageUpload() {
           throw error;
         }
 
-        toast.success('Image deleted');
+        toast.success(getHookTranslation('imageUpload', 'deleted'));
         return true;
       } catch (error: any) {
         // FIXME: Use logger.error - 'Error deleting image:', error);
-        toast.error(error.message || 'Failed to delete image');
+        toast.error(error.message || getHookTranslation('imageUpload', 'deleteFailed'));
         return false;
       }
     },
@@ -317,7 +318,7 @@ export function useImageUpload() {
         return true;
       } catch (error: any) {
         // FIXME: Use logger.error - 'Error updating property images:', error);
-        toast.error('Failed to update property images');
+        toast.error(getHookTranslation('imageUpload', 'updatePropertyFailed'));
         return false;
       }
     },

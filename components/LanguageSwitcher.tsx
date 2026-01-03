@@ -47,7 +47,8 @@ interface LanguageSwitcherProps {
 
 export default function LanguageSwitcher({ variant = 'hub' }: LanguageSwitcherProps) {
   const styles = variantStyles[variant];
-  const { language, setLanguage } = useLanguage();
+  const { language, setLanguage, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [isOpen, setIsOpen] = useState(false);
   const [hoveredLang, setHoveredLang] = useState<Language | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -85,7 +86,7 @@ export default function LanguageSwitcher({ variant = 'hub' }: LanguageSwitcherPr
         style={{ color: styles.primary }}
         onMouseEnter={(e) => e.currentTarget.style.background = styles.hoverBg}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-        aria-label="Change language"
+        aria-label={ariaLabels?.changeLanguage?.[language] || 'Change language'}
       >
         <Globe className="w-4 h-4" style={{ color: styles.primary }} />
         <span className="font-medium">{language.toUpperCase()}</span>

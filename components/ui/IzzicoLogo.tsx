@@ -40,7 +40,7 @@ const logoSources = {
     dark: '/logos/izzico-icon-dark.svg',
   },
   trademark: {
-    gradient: '/logos/izzico-trademark-gradient.svg',
+    gradient: '/logos/izzico-trademark-text-gradient.svg',
     white: '/logos/izzico-trademark-white.svg',
     dark: '/logos/izzico-trademark-dark.svg',
   },

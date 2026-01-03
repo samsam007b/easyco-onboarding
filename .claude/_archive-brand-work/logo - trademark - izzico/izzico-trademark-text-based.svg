@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 100">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&amp;display=swap');
+
+      .wordmark {
+        font-family: 'Fredoka', sans-serif;
+        font-size: 72px;
+      }
+      .l-i1 { font-weight: 600; }
+      .l-z1 { font-weight: 540; letter-spacing: -0.20em; }
+      .l-z2 { font-weight: 540; }
+      .l-i2 { font-weight: 540; }
+      .l-c { font-weight: 540; }
+      .l-o { font-weight: 540; }
+    </style>
+    <linearGradient id="izzico-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#9c5698"/>
+      <stop offset="30%" stop-color="#d15659"/>
+      <stop offset="50%" stop-color="#e05747"/>
+      <stop offset="70%" stop-color="#ff7c10"/>
+      <stop offset="100%" stop-color="#ffc800"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Wordmark with gradient -->
+  <text x="10" y="72" class="wordmark" fill="url(#izzico-gradient)">
+    <tspan class="l-i1">i</tspan><tspan class="l-z1">z</tspan><tspan class="l-z2">z</tspan><tspan class="l-i2">i</tspan><tspan class="l-c">c</tspan><tspan class="l-o">o</tspan>
+  </text>
+</svg>

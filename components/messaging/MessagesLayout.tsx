@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { MessageCircle, ArrowLeft, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 // V2 Fun Animation variants
 const containerVariants = {
@@ -263,6 +264,9 @@ export function MobileBackButton({
   onBack: () => void;
   className?: string;
 }) {
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
+
   return (
     <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
       <Button
@@ -273,7 +277,7 @@ export function MobileBackButton({
           'md:hidden rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#ff9014]/10',
           className
         )}
-        aria-label="Back"
+        aria-label={ariaLabels?.back?.[language] || 'Back'}
       >
         <ArrowLeft className="h-5 w-5" />
       </Button>

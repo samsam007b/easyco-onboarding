@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
 import { resolveError, reopenError, bulkResolveErrors } from '../actions';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import {
   Dialog,
   DialogContent,
@@ -58,7 +59,7 @@ export function RealtimeErrors({ errors, totalErrors }: RealtimeErrorsProps) {
     startTransition(async () => {
       const result = await resolveError(errorId);
       if (result.success) {
-        toast.success('Erreur marquee comme resolue');
+        toast.success(getHookTranslation('security', 'errorMarkedResolved'));
         setSelectedErrors(prev => {
           const next = new Set(prev);
           next.delete(errorId);
@@ -76,7 +77,7 @@ export function RealtimeErrors({ errors, totalErrors }: RealtimeErrorsProps) {
     startTransition(async () => {
       const result = await reopenError(errorId);
       if (result.success) {
-        toast.info('Erreur reeouverte');
+        toast.info(getHookTranslation('security', 'errorReopened'));
       } else {
         toast.error(result.error || 'Erreur');
       }

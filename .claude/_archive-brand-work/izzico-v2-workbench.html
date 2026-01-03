@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Icon V2 Workbench (Fredoka "i" Style)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --accent-green: #22c55e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            min-height: 100vh;
+        }
+
+        .canvas-area {
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .hint {
+            background: rgba(99, 102, 241, 0.15);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.8rem;
+            color: #a5b4fc;
+            margin-bottom: 1rem;
+        }
+
+        .comparison-section {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 2rem;
+        }
+
+        .comparison-section h3 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        .main-comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .compare-box {
+            background: var(--bg-control);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .compare-box h4 {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+        }
+
+        .compare-box.highlight {
+            border: 2px solid var(--accent);
+        }
+
+        .overlay-container {
+            position: relative;
+            width: 200px;
+            height: 280px;
+        }
+
+        .fredoka-base {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 280px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .fredoka-base.visible {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .icon-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .control-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+
+        .preset-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .checkbox-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .checkbox-row input {
+            width: 16px;
+            height: 16px;
+        }
+
+        .checkbox-row label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .info-box {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+            line-height: 1.5;
+        }
+
+        .decomposition {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .decomposition .compare-box {
+            padding: 1rem;
+        }
+
+        .decomposition h4 {
+            font-size: 0.6rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .lockup-preview {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            justify-content: center;
+            padding: 2rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+            margin-top: 1.5rem;
+        }
+
+        .lockup-preview .wordmark {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 3rem;
+            color: white;
+            letter-spacing: -0.02em;
+        }
+
+        .lockup-preview .wordmark .l-z { font-weight: 540; }
+        .lockup-preview .wordmark .l-c { font-weight: 540; }
+        .lockup-preview .wordmark .l-o { font-weight: 540; }
+        .lockup-preview .wordmark .zz-space { margin-right: -0.18em; }
+
+        .size-variants {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-end;
+            justify-content: center;
+            margin-top: 1.5rem;
+            padding: 2rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+        }
+
+        .size-variant {
+            text-align: center;
+        }
+
+        .size-variant span {
+            display: block;
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <div class="canvas-area">
+            <div>
+                <h1>Icon V2 - Fredoka "i" <span class="version-badge">V2 EXPLORATION</span></h1>
+                <div class="hint">
+                    <strong>Concept:</strong> Utiliser le VRAI caractere "i" de Fredoka comme base.<br>
+                    La tete (tittle) de Fredoka est une <strong>superellipse</strong>, pas un simple rectangle arrondi.
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Calibration sur Fredoka "i"</h3>
+                <div class="main-comparison">
+                    <div class="compare-box highlight">
+                        <h4>V2 superpose sur Fredoka "i"</h4>
+                        <div class="overlay-container">
+                            <div class="fredoka-base visible" id="fredoka-ghost">i</div>
+                            <svg class="icon-overlay" id="icon-v2-overlay" viewBox="0 0 200 280"></svg>
+                        </div>
+                    </div>
+                    <div class="compare-box">
+                        <h4>V2 seul (resultat final)</h4>
+                        <div id="icon-v2-solo" style="width: 200px; height: 280px;"></div>
+                    </div>
+                </div>
+
+                <div class="decomposition">
+                    <div class="compare-box">
+                        <h4>Tittle (tete)</h4>
+                        <div id="part-tittle"></div>
+                    </div>
+                    <div class="compare-box">
+                        <h4>Stem (buste)</h4>
+                        <div id="part-stem"></div>
+                    </div>
+                    <div class="compare-box">
+                        <h4>Loupe</h4>
+                        <div id="part-loupe"></div>
+                    </div>
+                    <div class="compare-box">
+                        <h4>Cle</h4>
+                        <div id="part-key"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comparison-section">
+                <h3>Variantes de taille</h3>
+                <div class="size-variants">
+                    <div class="size-variant" id="size-128"></div>
+                    <div class="size-variant" id="size-64"></div>
+                    <div class="size-variant" id="size-32"></div>
+                    <div class="size-variant" id="size-16"></div>
+                </div>
+
+                <div class="lockup-preview">
+                    <div id="lockup-icon"></div>
+                    <div class="wordmark">
+                        <span class="l-i">i</span><span class="l-z zz-space">z</span><span class="l-z">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="panel-section">
+                <div class="section-title">Affichage</div>
+                <div class="checkbox-row">
+                    <input type="checkbox" id="show-fredoka" checked>
+                    <label for="show-fredoka">Afficher Fredoka "i" en fond</label>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Tittle (Tete - Superellipse)</div>
+
+                <div class="control-row">
+                    <span class="control-label">Taille</span>
+                    <input type="range" id="tittle-size" min="30" max="70" value="52">
+                    <span class="control-value" id="tittle-size-val">52</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Ratio H/L</span>
+                    <input type="range" id="tittle-ratio" min="80" max="120" value="100">
+                    <span class="control-value" id="tittle-ratio-val">100%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Squircle n</span>
+                    <input type="range" id="tittle-n" min="2" max="8" value="4.5" step="0.1">
+                    <span class="control-value" id="tittle-n-val">4.5</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Stroke</span>
+                    <input type="range" id="tittle-stroke" min="0" max="12" value="6" step="0.5">
+                    <span class="control-value" id="tittle-stroke-val">6</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Position Y</span>
+                    <input type="range" id="tittle-y" min="20" max="60" value="38">
+                    <span class="control-value" id="tittle-y-val">38</span>
+                </div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="tittle-filled">
+                    <label for="tittle-filled">Rempli (au lieu de stroke)</label>
+                </div>
+
+                <div class="info-box">
+                    <strong>n = 2</strong> → cercle parfait<br>
+                    <strong>n = 4</strong> → squircle standard<br>
+                    <strong>n > 5</strong> → plus carre
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Stem (Buste)</div>
+
+                <div class="control-row">
+                    <span class="control-label">Largeur</span>
+                    <input type="range" id="stem-width" min="20" max="60" value="42">
+                    <span class="control-value" id="stem-width-val">42</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Hauteur</span>
+                    <input type="range" id="stem-height" min="40" max="120" value="85">
+                    <span class="control-value" id="stem-height-val">85</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Arrondi</span>
+                    <input type="range" id="stem-radius" min="0" max="100" value="50">
+                    <span class="control-value" id="stem-radius-val">50%</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Gap</span>
+                    <input type="range" id="gap" min="0" max="30" value="12">
+                    <span class="control-value" id="gap-val">12</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Loupe & Cle</div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="show-handles" checked>
+                    <label for="show-handles">Afficher loupe & cle</label>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Angle loupe</span>
+                    <input type="range" id="loupe-angle" min="120" max="180" value="145">
+                    <span class="control-value" id="loupe-angle-val">145°</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Angle cle</span>
+                    <input type="range" id="key-angle" min="0" max="60" value="35">
+                    <span class="control-value" id="key-angle-val">35°</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Longueur</span>
+                    <input type="range" id="handle-length" min="20" max="60" value="38">
+                    <span class="control-value" id="handle-length-val">38</span>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Stroke</span>
+                    <input type="range" id="handle-stroke" min="4" max="14" value="8">
+                    <span class="control-value" id="handle-stroke-val">8</span>
+                </div>
+
+                <div class="checkbox-row">
+                    <input type="checkbox" id="show-teeth" checked>
+                    <label for="show-teeth">Afficher dents de cle</label>
+                </div>
+
+                <div class="control-row">
+                    <span class="control-label">Taille dents</span>
+                    <input type="range" id="teeth-size" min="5" max="20" value="12">
+                    <span class="control-value" id="teeth-size-val">12</span>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <div class="section-title">Presets</div>
+                <div class="preset-grid">
+                    <button class="btn" id="preset-match">Match Fredoka</button>
+                    <button class="btn" id="preset-compact">Compact</button>
+                    <button class="btn" id="preset-minimal">Minimal</button>
+                    <button class="btn" id="preset-bold">Bold</button>
+                </div>
+            </div>
+
+            <div class="panel-section" style="border-bottom: none;">
+                <div class="section-title">Export</div>
+                <button class="btn primary" id="copy-svg" style="width: 100%;">Copier SVG</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parameters
+        let showFredoka = true;
+
+        // Tittle (superellipse head)
+        let tittleSize = 52;
+        let tittleRatio = 100;  // height/width ratio %
+        let tittleN = 4.5;      // superellipse exponent
+        let tittleStroke = 6;
+        let tittleY = 38;
+        let tittleFilled = false;
+
+        // Stem (rounded rectangle bust)
+        let stemWidth = 42;
+        let stemHeight = 85;
+        let stemRadius = 50;  // percentage
+        let gap = 12;
+
+        // Handles
+        let showHandles = true;
+        let loupeAngle = 145;
+        let keyAngle = 35;
+        let handleLength = 38;
+        let handleStroke = 8;
+        let showTeeth = true;
+        let teethSize = 12;
+
+        function createSVG(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+            return el;
+        }
+
+        function clearElement(el) {
+            while (el.firstChild) el.removeChild(el.firstChild);
+        }
+
+        // Generate superellipse path
+        // |x/a|^n + |y/b|^n = 1
+        function superellipsePath(cx, cy, a, b, n, points) {
+            points = points || 100;
+            const path = [];
+
+            for (let i = 0; i <= points; i++) {
+                const angle = (2 * Math.PI * i) / points;
+                const cosA = Math.cos(angle);
+                const sinA = Math.sin(angle);
+
+                // Superellipse formula
+                const x = cx + a * Math.sign(cosA) * Math.pow(Math.abs(cosA), 2/n);
+                const y = cy + b * Math.sign(sinA) * Math.pow(Math.abs(sinA), 2/n);
+
+                if (i === 0) {
+                    path.push(`M ${x.toFixed(2)} ${y.toFixed(2)}`);
+                } else {
+                    path.push(`L ${x.toFixed(2)} ${y.toFixed(2)}`);
+                }
+            }
+
+            path.push('Z');
+            return path.join(' ');
+        }
+
+        // Get point on superellipse at given angle
+        function superellipsePoint(cx, cy, a, b, n, angle) {
+            const cosA = Math.cos(angle);
+            const sinA = Math.sin(angle);
+            const x = cx + a * Math.sign(cosA) * Math.pow(Math.abs(cosA), 2/n);
+            const y = cy + b * Math.sign(sinA) * Math.pow(Math.abs(sinA), 2/n);
+            return { x, y };
+        }
+
+        function createV2Icon(width, height, showPart) {
+            showPart = showPart || 'all';
+
+            const svg = createSVG('svg', {
+                viewBox: '0 0 200 280',
+                width: width,
+                height: height,
+                fill: 'none'
+            });
+
+            const cx = 100;
+
+            // Tittle dimensions
+            const tittleW = tittleSize;
+            const tittleH = tittleSize * (tittleRatio / 100);
+            const tittleCY = tittleY;
+
+            // Stem dimensions
+            const stemTop = tittleCY + tittleH/2 + gap;
+            const stemRx = (Math.min(stemWidth, stemHeight) / 2) * (stemRadius / 100);
+
+            // TITTLE (superellipse)
+            if (showPart === 'all' || showPart === 'tittle') {
+                const tittlePath = superellipsePath(cx, tittleCY, tittleW/2, tittleH/2, tittleN);
+
+                if (tittleFilled) {
+                    svg.appendChild(createSVG('path', {
+                        d: tittlePath,
+                        fill: 'white',
+                        stroke: 'none'
+                    }));
+                } else {
+                    svg.appendChild(createSVG('path', {
+                        d: tittlePath,
+                        fill: 'none',
+                        stroke: 'white',
+                        'stroke-width': tittleStroke
+                    }));
+                }
+            }
+
+            // STEM (rounded rectangle)
+            if (showPart === 'all' || showPart === 'stem') {
+                svg.appendChild(createSVG('rect', {
+                    x: cx - stemWidth/2,
+                    y: stemTop,
+                    width: stemWidth,
+                    height: stemHeight,
+                    rx: stemRx,
+                    ry: stemRx,
+                    fill: 'white',
+                    stroke: 'none'
+                }));
+            }
+
+            // LOUPE
+            if ((showPart === 'all' || showPart === 'loupe') && showHandles) {
+                const loupeRad = loupeAngle * Math.PI / 180;
+                const loupeStart = superellipsePoint(cx, tittleCY, tittleW/2, tittleH/2, tittleN, loupeRad);
+                const loupeEndX = loupeStart.x + handleLength * Math.cos(loupeRad);
+                const loupeEndY = loupeStart.y + handleLength * Math.sin(loupeRad);
+
+                svg.appendChild(createSVG('line', {
+                    x1: loupeStart.x, y1: loupeStart.y,
+                    x2: loupeEndX, y2: loupeEndY,
+                    stroke: 'white',
+                    'stroke-width': handleStroke,
+                    'stroke-linecap': 'round'
+                }));
+            }
+
+            // KEY
+            if ((showPart === 'all' || showPart === 'key') && showHandles) {
+                const keyRad = keyAngle * Math.PI / 180;
+                const keyStart = superellipsePoint(cx, tittleCY, tittleW/2, tittleH/2, tittleN, keyRad);
+                const keyEndX = keyStart.x + handleLength * Math.cos(keyRad);
+                const keyEndY = keyStart.y + handleLength * Math.sin(keyRad);
+
+                svg.appendChild(createSVG('line', {
+                    x1: keyStart.x, y1: keyStart.y,
+                    x2: keyEndX, y2: keyEndY,
+                    stroke: 'white',
+                    'stroke-width': handleStroke,
+                    'stroke-linecap': 'round'
+                }));
+
+                // Teeth
+                if (showTeeth && (showPart === 'all' || showPart === 'key')) {
+                    const teethRad = keyRad + Math.PI / 2;
+                    for (let i = 0; i < 2; i++) {
+                        const t = 0.5 + i * 0.25;
+                        const tx = keyStart.x + (keyEndX - keyStart.x) * t;
+                        const ty = keyStart.y + (keyEndY - keyStart.y) * t;
+                        svg.appendChild(createSVG('line', {
+                            x1: tx, y1: ty,
+                            x2: tx + teethSize * Math.cos(teethRad),
+                            y2: ty + teethSize * Math.sin(teethRad),
+                            stroke: 'white',
+                            'stroke-width': handleStroke * 0.5,
+                            'stroke-linecap': 'round'
+                        }));
+                    }
+                }
+            }
+
+            return svg;
+        }
+
+        function getSVGCode() {
+            // Generate a clean SVG for export
+            const cx = 100;
+            const tittleW = tittleSize;
+            const tittleH = tittleSize * (tittleRatio / 100);
+            const tittleCY = tittleY;
+            const stemTop = tittleCY + tittleH/2 + gap;
+            const stemRx = (Math.min(stemWidth, stemHeight) / 2) * (stemRadius / 100);
+
+            let code = `<svg viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg">\n`;
+
+            // Tittle
+            const tittlePath = superellipsePath(cx, tittleCY, tittleW/2, tittleH/2, tittleN);
+            if (tittleFilled) {
+                code += `  <path d="${tittlePath}" fill="white"/>\n`;
+            } else {
+                code += `  <path d="${tittlePath}" fill="none" stroke="white" stroke-width="${tittleStroke}"/>\n`;
+            }
+
+            // Stem
+            code += `  <rect x="${cx - stemWidth/2}" y="${stemTop}" width="${stemWidth}" height="${stemHeight}" rx="${stemRx}" fill="white"/>\n`;
+
+            // Handles
+            if (showHandles) {
+                const loupeRad = loupeAngle * Math.PI / 180;
+                const loupeStart = superellipsePoint(cx, tittleCY, tittleW/2, tittleH/2, tittleN, loupeRad);
+                const loupeEndX = loupeStart.x + handleLength * Math.cos(loupeRad);
+                const loupeEndY = loupeStart.y + handleLength * Math.sin(loupeRad);
+                code += `  <line x1="${loupeStart.x.toFixed(1)}" y1="${loupeStart.y.toFixed(1)}" x2="${loupeEndX.toFixed(1)}" y2="${loupeEndY.toFixed(1)}" stroke="white" stroke-width="${handleStroke}" stroke-linecap="round"/>\n`;
+
+                const keyRad = keyAngle * Math.PI / 180;
+                const keyStart = superellipsePoint(cx, tittleCY, tittleW/2, tittleH/2, tittleN, keyRad);
+                const keyEndX = keyStart.x + handleLength * Math.cos(keyRad);
+                const keyEndY = keyStart.y + handleLength * Math.sin(keyRad);
+                code += `  <line x1="${keyStart.x.toFixed(1)}" y1="${keyStart.y.toFixed(1)}" x2="${keyEndX.toFixed(1)}" y2="${keyEndY.toFixed(1)}" stroke="white" stroke-width="${handleStroke}" stroke-linecap="round"/>\n`;
+
+                if (showTeeth) {
+                    const teethRad = keyRad + Math.PI / 2;
+                    for (let i = 0; i < 2; i++) {
+                        const t = 0.5 + i * 0.25;
+                        const tx = keyStart.x + (keyEndX - keyStart.x) * t;
+                        const ty = keyStart.y + (keyEndY - keyStart.y) * t;
+                        code += `  <line x1="${tx.toFixed(1)}" y1="${ty.toFixed(1)}" x2="${(tx + teethSize * Math.cos(teethRad)).toFixed(1)}" y2="${(ty + teethSize * Math.sin(teethRad)).toFixed(1)}" stroke="white" stroke-width="${(handleStroke * 0.5).toFixed(1)}" stroke-linecap="round"/>\n`;
+                    }
+                }
+            }
+
+            code += `</svg>`;
+            return code;
+        }
+
+        function render() {
+            // Fredoka ghost
+            document.getElementById('fredoka-ghost').style.color = showFredoka ? 'rgba(255, 255, 255, 0.3)' : 'transparent';
+
+            // Main overlay
+            const overlay = document.getElementById('icon-v2-overlay');
+            clearElement(overlay);
+            const overlayIcon = createV2Icon(200, 280, 'all');
+            Array.from(overlayIcon.childNodes).forEach(node => {
+                overlay.appendChild(node.cloneNode(true));
+            });
+
+            // Solo icon
+            const solo = document.getElementById('icon-v2-solo');
+            clearElement(solo);
+            solo.appendChild(createV2Icon(200, 280, 'all'));
+
+            // Parts
+            const partTittle = document.getElementById('part-tittle');
+            clearElement(partTittle);
+            partTittle.appendChild(createV2Icon(80, 112, 'tittle'));
+
+            const partStem = document.getElementById('part-stem');
+            clearElement(partStem);
+            partStem.appendChild(createV2Icon(80, 112, 'stem'));
+
+            const partLoupe = document.getElementById('part-loupe');
+            clearElement(partLoupe);
+            partLoupe.appendChild(createV2Icon(80, 112, 'loupe'));
+
+            const partKey = document.getElementById('part-key');
+            clearElement(partKey);
+            partKey.appendChild(createV2Icon(80, 112, 'key'));
+
+            // Size variants
+            const sizes = [
+                { id: 'size-128', w: 92, h: 128, label: '128px' },
+                { id: 'size-64', w: 46, h: 64, label: '64px' },
+                { id: 'size-32', w: 23, h: 32, label: '32px' },
+                { id: 'size-16', w: 11, h: 16, label: '16px' }
+            ];
+            sizes.forEach(s => {
+                const container = document.getElementById(s.id);
+                clearElement(container);
+                container.appendChild(createV2Icon(s.w, s.h, 'all'));
+                const label = document.createElement('span');
+                label.textContent = s.label;
+                container.appendChild(label);
+            });
+
+            // Lockup
+            const lockup = document.getElementById('lockup-icon');
+            clearElement(lockup);
+            lockup.appendChild(createV2Icon(57, 80, 'all'));
+        }
+
+        // Event listeners
+        document.getElementById('show-fredoka').addEventListener('change', e => {
+            showFredoka = e.target.checked;
+            render();
+        });
+
+        document.getElementById('tittle-size').addEventListener('input', e => {
+            tittleSize = parseInt(e.target.value);
+            document.getElementById('tittle-size-val').textContent = tittleSize;
+            render();
+        });
+
+        document.getElementById('tittle-ratio').addEventListener('input', e => {
+            tittleRatio = parseInt(e.target.value);
+            document.getElementById('tittle-ratio-val').textContent = tittleRatio + '%';
+            render();
+        });
+
+        document.getElementById('tittle-n').addEventListener('input', e => {
+            tittleN = parseFloat(e.target.value);
+            document.getElementById('tittle-n-val').textContent = tittleN.toFixed(1);
+            render();
+        });
+
+        document.getElementById('tittle-stroke').addEventListener('input', e => {
+            tittleStroke = parseFloat(e.target.value);
+            document.getElementById('tittle-stroke-val').textContent = tittleStroke;
+            render();
+        });
+
+        document.getElementById('tittle-y').addEventListener('input', e => {
+            tittleY = parseInt(e.target.value);
+            document.getElementById('tittle-y-val').textContent = tittleY;
+            render();
+        });
+
+        document.getElementById('tittle-filled').addEventListener('change', e => {
+            tittleFilled = e.target.checked;
+            render();
+        });
+
+        document.getElementById('stem-width').addEventListener('input', e => {
+            stemWidth = parseInt(e.target.value);
+            document.getElementById('stem-width-val').textContent = stemWidth;
+            render();
+        });
+
+        document.getElementById('stem-height').addEventListener('input', e => {
+            stemHeight = parseInt(e.target.value);
+            document.getElementById('stem-height-val').textContent = stemHeight;
+            render();
+        });
+
+        document.getElementById('stem-radius').addEventListener('input', e => {
+            stemRadius = parseInt(e.target.value);
+            document.getElementById('stem-radius-val').textContent = stemRadius + '%';
+            render();
+        });
+
+        document.getElementById('gap').addEventListener('input', e => {
+            gap = parseInt(e.target.value);
+            document.getElementById('gap-val').textContent = gap;
+            render();
+        });
+
+        document.getElementById('show-handles').addEventListener('change', e => {
+            showHandles = e.target.checked;
+            render();
+        });
+
+        document.getElementById('loupe-angle').addEventListener('input', e => {
+            loupeAngle = parseInt(e.target.value);
+            document.getElementById('loupe-angle-val').textContent = loupeAngle + '°';
+            render();
+        });
+
+        document.getElementById('key-angle').addEventListener('input', e => {
+            keyAngle = parseInt(e.target.value);
+            document.getElementById('key-angle-val').textContent = keyAngle + '°';
+            render();
+        });
+
+        document.getElementById('handle-length').addEventListener('input', e => {
+            handleLength = parseInt(e.target.value);
+            document.getElementById('handle-length-val').textContent = handleLength;
+            render();
+        });
+
+        document.getElementById('handle-stroke').addEventListener('input', e => {
+            handleStroke = parseInt(e.target.value);
+            document.getElementById('handle-stroke-val').textContent = handleStroke;
+            render();
+        });
+
+        document.getElementById('show-teeth').addEventListener('change', e => {
+            showTeeth = e.target.checked;
+            render();
+        });
+
+        document.getElementById('teeth-size').addEventListener('input', e => {
+            teethSize = parseInt(e.target.value);
+            document.getElementById('teeth-size-val').textContent = teethSize;
+            render();
+        });
+
+        // Presets
+        document.getElementById('preset-match').addEventListener('click', () => {
+            tittleSize = 52; tittleRatio = 100; tittleN = 4.5; tittleStroke = 6; tittleY = 38; tittleFilled = false;
+            stemWidth = 42; stemHeight = 85; stemRadius = 50; gap = 12;
+            loupeAngle = 145; keyAngle = 35; handleLength = 38; handleStroke = 8;
+            showTeeth = true; teethSize = 12;
+            updateSliders();
+            render();
+        });
+
+        document.getElementById('preset-compact').addEventListener('click', () => {
+            tittleSize = 45; tittleRatio = 100; tittleN = 4; tittleStroke = 5; tittleY = 35; tittleFilled = false;
+            stemWidth = 38; stemHeight = 70; stemRadius = 45; gap = 8;
+            loupeAngle = 140; keyAngle = 40; handleLength = 30; handleStroke = 6;
+            showTeeth = true; teethSize = 10;
+            updateSliders();
+            render();
+        });
+
+        document.getElementById('preset-minimal').addEventListener('click', () => {
+            tittleSize = 50; tittleRatio = 100; tittleN = 4; tittleStroke = 0; tittleY = 38; tittleFilled = true;
+            stemWidth = 42; stemHeight = 85; stemRadius = 50; gap = 12;
+            showHandles = false;
+            updateSliders();
+            render();
+        });
+
+        document.getElementById('preset-bold').addEventListener('click', () => {
+            tittleSize = 58; tittleRatio = 105; tittleN = 5; tittleStroke = 8; tittleY = 40; tittleFilled = false;
+            stemWidth = 48; stemHeight = 90; stemRadius = 55; gap = 10;
+            loupeAngle = 150; keyAngle = 30; handleLength = 45; handleStroke = 10;
+            showTeeth = true; teethSize = 14;
+            updateSliders();
+            render();
+        });
+
+        function updateSliders() {
+            document.getElementById('tittle-size').value = tittleSize;
+            document.getElementById('tittle-size-val').textContent = tittleSize;
+            document.getElementById('tittle-ratio').value = tittleRatio;
+            document.getElementById('tittle-ratio-val').textContent = tittleRatio + '%';
+            document.getElementById('tittle-n').value = tittleN;
+            document.getElementById('tittle-n-val').textContent = tittleN.toFixed(1);
+            document.getElementById('tittle-stroke').value = tittleStroke;
+            document.getElementById('tittle-stroke-val').textContent = tittleStroke;
+            document.getElementById('tittle-y').value = tittleY;
+            document.getElementById('tittle-y-val').textContent = tittleY;
+            document.getElementById('tittle-filled').checked = tittleFilled;
+            document.getElementById('stem-width').value = stemWidth;
+            document.getElementById('stem-width-val').textContent = stemWidth;
+            document.getElementById('stem-height').value = stemHeight;
+            document.getElementById('stem-height-val').textContent = stemHeight;
+            document.getElementById('stem-radius').value = stemRadius;
+            document.getElementById('stem-radius-val').textContent = stemRadius + '%';
+            document.getElementById('gap').value = gap;
+            document.getElementById('gap-val').textContent = gap;
+            document.getElementById('show-handles').checked = showHandles;
+            document.getElementById('loupe-angle').value = loupeAngle;
+            document.getElementById('loupe-angle-val').textContent = loupeAngle + '°';
+            document.getElementById('key-angle').value = keyAngle;
+            document.getElementById('key-angle-val').textContent = keyAngle + '°';
+            document.getElementById('handle-length').value = handleLength;
+            document.getElementById('handle-length-val').textContent = handleLength;
+            document.getElementById('handle-stroke').value = handleStroke;
+            document.getElementById('handle-stroke-val').textContent = handleStroke;
+            document.getElementById('show-teeth').checked = showTeeth;
+            document.getElementById('teeth-size').value = teethSize;
+            document.getElementById('teeth-size-val').textContent = teethSize;
+        }
+
+        document.getElementById('copy-svg').addEventListener('click', () => {
+            navigator.clipboard.writeText(getSVGCode());
+            alert('SVG copie !');
+        });
+
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

@@ -6,6 +6,82 @@
 import { createWorker, type Worker } from 'tesseract.js';
 import type { OCRData, OCRResult, OCRLineItem } from '@/types/finances.types';
 
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setOCRServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  errors: {
+    initScanner: {
+      fr: "Impossible d'initialiser le scanner. Veuillez réessayer.",
+      en: 'Unable to initialize the scanner. Please try again.',
+      nl: 'Kan de scanner niet initialiseren. Probeer opnieuw.',
+      de: 'Scanner konnte nicht initialisiert werden. Bitte erneut versuchen.',
+    },
+    fileMustBeImage: {
+      fr: 'Le fichier doit être une image (JPEG, PNG, etc.)',
+      en: 'The file must be an image (JPEG, PNG, etc.)',
+      nl: 'Het bestand moet een afbeelding zijn (JPEG, PNG, etc.)',
+      de: 'Die Datei muss ein Bild sein (JPEG, PNG, etc.)',
+    },
+    cannotReadFile: {
+      fr: 'Impossible de lire le fichier',
+      en: 'Unable to read the file',
+      nl: 'Kan het bestand niet lezen',
+      de: 'Datei kann nicht gelesen werden',
+    },
+    cannotCreateCanvas: {
+      fr: 'Impossible de créer le canvas',
+      en: 'Unable to create canvas',
+      nl: 'Kan canvas niet maken',
+      de: 'Canvas konnte nicht erstellt werden',
+    },
+    cannotLoadImage: {
+      fr: "Impossible de charger l'image",
+      en: 'Unable to load the image',
+      nl: 'Kan de afbeelding niet laden',
+      de: 'Bild konnte nicht geladen werden',
+    },
+    cannotCompressImage: {
+      fr: "Impossible de compresser l'image",
+      en: 'Unable to compress the image',
+      nl: 'Kan de afbeelding niet comprimeren',
+      de: 'Bild konnte nicht komprimiert werden',
+    },
+    networkError: {
+      fr: 'Impossible de charger les ressources OCR. Vérifiez votre connexion internet.',
+      en: 'Unable to load OCR resources. Check your internet connection.',
+      nl: 'Kan OCR-bronnen niet laden. Controleer uw internetverbinding.',
+      de: 'OCR-Ressourcen konnten nicht geladen werden. Überprüfen Sie Ihre Internetverbindung.',
+    },
+    imageNotReadable: {
+      fr: "L'image n'est pas lisible. Essayez avec une photo plus nette.",
+      en: 'The image is not readable. Try with a clearer photo.',
+      nl: 'De afbeelding is niet leesbaar. Probeer met een scherpere foto.',
+      de: 'Das Bild ist nicht lesbar. Versuchen Sie es mit einem klareren Foto.',
+    },
+    initError: {
+      fr: "Erreur d'initialisation du scanner. Veuillez rafraîchir la page.",
+      en: 'Scanner initialization error. Please refresh the page.',
+      nl: 'Initialisatiefout van de scanner. Ververs de pagina.',
+      de: 'Scanner-Initialisierungsfehler. Bitte aktualisieren Sie die Seite.',
+    },
+    scanFailed: {
+      fr: 'Échec du scan. Vous pouvez saisir les informations manuellement.',
+      en: 'Scan failed. You can enter the information manually.',
+      nl: 'Scan mislukt. U kunt de informatie handmatig invoeren.',
+      de: 'Scan fehlgeschlagen. Sie können die Informationen manuell eingeben.',
+    },
+  },
+};
+
 class OCRService {
   private worker: Worker | null = null;
   private isInitialized = false;
@@ -36,7 +112,7 @@ class OCRService {
       console.log('[OCR] ✅ Worker initialized successfully');
     } catch (error) {
       console.error('[OCR] ❌ Failed to initialize worker:', error);
-      throw new Error('Impossible d\'initialiser le scanner. Veuillez réessayer.');
+      throw new Error(translations.errors.initScanner[currentLang]);
     }
   }
 
@@ -56,7 +132,7 @@ class OCRService {
 
       // Validate file type
       if (!imageFile.type.startsWith('image/')) {
-        throw new Error('Le fichier doit être une image (JPEG, PNG, etc.)');
+        throw new Error(translations.errors.fileMustBeImage[currentLang]);
       }
 
       // Check file size (max 10MB)
@@ -121,7 +197,7 @@ class OCRService {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.onload = () => resolve(reader.result as string);
-      reader.onerror = () => reject(new Error('Impossible de lire le fichier'));
+      reader.onerror = () => reject(new Error(translations.errors.cannotReadFile[currentLang]));
       reader.readAsDataURL(file);
     });
   }
@@ -145,7 +221,7 @@ class OCRService {
           const ctx = canvas.getContext('2d');
 
           if (!ctx) {
-            reject(new Error('Impossible de créer le canvas'));
+            reject(new Error(translations.errors.cannotCreateCanvas[currentLang]));
             return;
           }
 
@@ -195,7 +271,7 @@ class OCRService {
         }
       };
 
-      img.onerror = () => reject(new Error('Impossible de charger l\'image'));
+      img.onerror = () => reject(new Error(translations.errors.cannotLoadImage[currentLang]));
       img.src = dataUrl;
     });
   }
@@ -271,7 +347,7 @@ class OCRService {
           const ctx = canvas.getContext('2d');
 
           if (!ctx) {
-            reject(new Error('Impossible de créer le canvas'));
+            reject(new Error(translations.errors.cannotCreateCanvas[currentLang]));
             return;
           }
 
@@ -281,7 +357,7 @@ class OCRService {
           canvas.toBlob(
             (blob) => {
               if (!blob) {
-                reject(new Error('Impossible de compresser l\'image'));
+                reject(new Error(translations.errors.cannotCompressImage[currentLang]));
                 return;
               }
 
@@ -303,11 +379,11 @@ class OCRService {
           );
         };
 
-        img.onerror = () => reject(new Error('Impossible de charger l\'image'));
+        img.onerror = () => reject(new Error(translations.errors.cannotLoadImage[currentLang]));
         img.src = e.target?.result as string;
       };
 
-      reader.onerror = () => reject(new Error('Impossible de lire le fichier'));
+      reader.onerror = () => reject(new Error(translations.errors.cannotReadFile[currentLang]));
       reader.readAsDataURL(file);
     });
   }
@@ -319,18 +395,18 @@ class OCRService {
     const message = error.message || String(error);
 
     if (message.includes('network') || message.includes('Failed to fetch')) {
-      return 'Impossible de charger les ressources OCR. Vérifiez votre connexion internet.';
+      return translations.errors.networkError[currentLang];
     }
 
     if (message.includes('attempting to read image')) {
-      return 'L\'image n\'est pas lisible. Essayez avec une photo plus nette.';
+      return translations.errors.imageNotReadable[currentLang];
     }
 
     if (message.includes('Worker') || message.includes('initialize')) {
-      return 'Erreur d\'initialisation du scanner. Veuillez rafraîchir la page.';
+      return translations.errors.initError[currentLang];
     }
 
-    return 'Échec du scan. Vous pouvez saisir les informations manuellement.';
+    return translations.errors.scanFailed[currentLang];
   }
 
   /**

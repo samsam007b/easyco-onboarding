@@ -6,6 +6,7 @@ import { X, Check, Minus, MapPin, Euro, Home, Users, Calendar, Sparkles, ArrowRi
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface Property {
   id: string;
@@ -42,6 +43,8 @@ export default function PropertyComparison({
   onRemoveProperty,
 }: PropertyComparisonProps) {
   const [selectedProperty, setSelectedProperty] = useState<string | null>(null);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   const comparisonRows = [
     {
@@ -186,7 +189,7 @@ export default function PropertyComparison({
             <button
               onClick={onClose}
               className="p-2 hover:bg-white/20 rounded-full transition"
-              aria-label="Fermer"
+              aria-label={ariaLabels?.close?.[language] || 'Fermer'}
             >
               <X className="w-6 h-6" />
             </button>
@@ -208,7 +211,7 @@ export default function PropertyComparison({
                       <button
                         onClick={() => onRemoveProperty(property.id)}
                         className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center hover:bg-red-600 transition z-10"
-                        aria-label="Retirer de la comparaison"
+                        aria-label={ariaLabels?.removeFromComparison?.[language] || 'Retirer de la comparaison'}
                       >
                         <X className="w-4 h-4" />
                       </button>

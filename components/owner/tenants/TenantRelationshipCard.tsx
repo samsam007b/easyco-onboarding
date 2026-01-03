@@ -26,8 +26,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
 import { ownerGradient, healthColors } from '@/lib/constants/owner-theme';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const dateLocales: Record<string, typeof fr> = { fr, en: enUS, nl, de };
 
 interface TenantRelationshipCardProps {
   tenant: {
@@ -62,6 +65,9 @@ export function TenantRelationshipCard({
   onOpenDetails
 }: TenantRelationshipCardProps) {
   const router = useRouter();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
+  const locale = dateLocales[language] || fr;
 
   // Get health category
   const getHealthCategory = (score: number) => {
@@ -299,7 +305,7 @@ export function TenantRelationshipCard({
                     e.stopPropagation();
                     router.push(`/dashboard/owner/leases?tenant=${tenant.id}`);
                   }}
-                  title="Voir le bail"
+                  title={ariaLabels?.viewLease?.[language] || 'Voir le bail'}
                 >
                   <FileText className="w-4 h-4 text-gray-500" />
                 </Button>
@@ -311,7 +317,7 @@ export function TenantRelationshipCard({
                     e.stopPropagation();
                     router.push(`/dashboard/owner/messages?tenant=${tenant.id}`);
                   }}
-                  title="Envoyer un message"
+                  title={ariaLabels?.sendMessage?.[language] || 'Envoyer un message'}
                 >
                   <MessageCircle className="w-4 h-4 text-gray-500" />
                 </Button>
@@ -323,7 +329,7 @@ export function TenantRelationshipCard({
                     e.stopPropagation();
                     router.push(`/dashboard/owner/finance?tenant=${tenant.id}`);
                   }}
-                  title="Voir les paiements"
+                  title={ariaLabels?.viewPayments?.[language] || 'Voir les paiements'}
                 >
                   <CreditCard className="w-4 h-4 text-gray-500" />
                 </Button>

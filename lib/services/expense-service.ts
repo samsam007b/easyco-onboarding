@@ -4,6 +4,73 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setExpenseServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  you: {
+    fr: 'Toi',
+    en: 'You',
+    nl: 'Jij',
+    de: 'Du',
+  },
+  unknown: {
+    fr: 'Inconnu',
+    en: 'Unknown',
+    nl: 'Onbekend',
+    de: 'Unbekannt',
+  },
+  errors: {
+    createExpense: {
+      fr: 'Erreur lors de la création de la dépense',
+      en: 'Error creating the expense',
+      nl: 'Fout bij het aanmaken van de uitgave',
+      de: 'Fehler beim Erstellen der Ausgabe',
+    },
+    uploadReceipt: {
+      fr: "Erreur lors de l'upload du ticket",
+      en: 'Error uploading receipt',
+      nl: 'Fout bij het uploaden van het bonnetje',
+      de: 'Fehler beim Hochladen des Bons',
+    },
+  },
+  pdf: {
+    expenses: {
+      fr: 'Dépenses',
+      en: 'Expenses',
+      nl: 'Uitgaven',
+      de: 'Ausgaben',
+    },
+    allExpenses: {
+      fr: 'Toutes les dépenses',
+      en: 'All expenses',
+      nl: 'Alle uitgaven',
+      de: 'Alle Ausgaben',
+    },
+    dateRange: {
+      fr: (from: string, to: string) => `Du ${from} au ${to}`,
+      en: (from: string, to: string) => `From ${from} to ${to}`,
+      nl: (from: string, to: string) => `Van ${from} tot ${to}`,
+      de: (from: string, to: string) => `Von ${from} bis ${to}`,
+    },
+    columns: {
+      date: { fr: 'Date', en: 'Date', nl: 'Datum', de: 'Datum' },
+      title: { fr: 'Titre', en: 'Title', nl: 'Titel', de: 'Titel' },
+      category: { fr: 'Catégorie', en: 'Category', nl: 'Categorie', de: 'Kategorie' },
+      amount: { fr: 'Montant', en: 'Amount', nl: 'Bedrag', de: 'Betrag' },
+      status: { fr: 'Statut', en: 'Status', nl: 'Status', de: 'Status' },
+    },
+  },
+};
 import { ocrService } from './ocr-service';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
@@ -123,7 +190,7 @@ class ExpenseService {
       console.error('[Expense] ❌ Failed to create expense:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de la création de la dépense',
+        error: error.message || translations.errors.createExpense[currentLang],
       };
     }
   }
@@ -157,7 +224,7 @@ class ExpenseService {
       console.error('[Expense] ❌ Failed to upload receipt:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de l\'upload du ticket',
+        error: error.message || translations.errors.uploadReceipt[currentLang],
       };
     }
   }
@@ -236,7 +303,7 @@ class ExpenseService {
           return {
             ...exp,
             paid_by_name:
-              exp.paid_by_id === userId ? 'Toi' : paidBy?.full_name || 'Inconnu',
+              exp.paid_by_id === userId ? translations.you[currentLang] : paidBy?.full_name || translations.unknown[currentLang],
             paid_by_avatar: paidBy?.avatar_url,
             split_count: exp.expense_splits?.length || 0,
             your_share: yourSplit?.amount_owed || 0,
@@ -309,7 +376,7 @@ class ExpenseService {
         const user = users?.find((u) => u.id === uid);
         return {
           userId: uid,
-          userName: user?.full_name || 'Inconnu',
+          userName: user?.full_name || translations.unknown[currentLang],
           userAvatar: user?.avatar_url,
           amount: balanceMap.get(uid) || 0,
         };
@@ -366,29 +433,43 @@ class ExpenseService {
       // Create PDF
       const doc = new jsPDF();
 
+      // Get locale for date formatting
+      const localeMap: Record<Language, string> = { fr: 'fr-FR', en: 'en-US', nl: 'nl-NL', de: 'de-DE' };
+      const locale = localeMap[currentLang];
+
       // Title
       doc.setFontSize(18);
-      doc.text(`Dépenses - ${propertyName}`, 14, 22);
+      doc.text(`${translations.pdf.expenses[currentLang]} - ${propertyName}`, 14, 22);
 
       // Date range
       doc.setFontSize(10);
       const dateRange = options.date_from && options.date_to
-        ? `Du ${new Date(options.date_from).toLocaleDateString('fr-FR')} au ${new Date(options.date_to).toLocaleDateString('fr-FR')}`
-        : 'Toutes les dépenses';
+        ? translations.pdf.dateRange[currentLang](
+            new Date(options.date_from).toLocaleDateString(locale),
+            new Date(options.date_to).toLocaleDateString(locale)
+          )
+        : translations.pdf.allExpenses[currentLang];
       doc.text(dateRange, 14, 30);
 
       // Table
       const tableData =
         expenses?.map((exp) => [
-          new Date(exp.date).toLocaleDateString('fr-FR'),
+          new Date(exp.date).toLocaleDateString(locale),
           exp.title,
           exp.category,
           `€${exp.amount.toFixed(2)}`,
           exp.status,
         ]) || [];
 
+      const cols = translations.pdf.columns;
       autoTable(doc, {
-        head: [['Date', 'Titre', 'Catégorie', 'Montant', 'Statut']],
+        head: [[
+          cols.date[currentLang],
+          cols.title[currentLang],
+          cols.category[currentLang],
+          cols.amount[currentLang],
+          cols.status[currentLang],
+        ]],
         body: tableData,
         startY: 35,
         styles: { fontSize: 9 },

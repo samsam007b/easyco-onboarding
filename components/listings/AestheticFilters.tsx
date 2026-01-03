@@ -25,6 +25,7 @@ import {
   ROOM_ATMOSPHERE_LABELS,
   getDesignStyleIcon,
 } from '@/types/room-aesthetics.types';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface AestheticFiltersProps {
   filters: AestheticSearchFilters;
@@ -34,6 +35,8 @@ interface AestheticFiltersProps {
 }
 
 export function AestheticFilters({ filters, onChange, onApply, onReset }: AestheticFiltersProps) {
+  const { language, getSection } = useLanguage();
+  const t = getSection('aestheticFilters');
   const [expandedSections, setExpandedSections] = useState<Set<string>>(
     new Set(['design', 'light', 'heating'])
   );
@@ -105,7 +108,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-purple-600" />
-            <h3 className="font-semibold text-lg">Aesthetic Filters</h3>
+            <h3 className="font-semibold text-lg">{t.title}</h3>
             {activeFilterCount > 0 && (
               <span className="px-2 py-1 bg-purple-600 text-white text-xs rounded-full">
                 {activeFilterCount}
@@ -118,7 +121,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
               className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
             >
               <X className="w-4 h-4" />
-              Clear all
+              {t.clearAll}
             </button>
           )}
         </div>
@@ -128,7 +131,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
       <div className="divide-y">
         {/* Design Style */}
         <FilterSection
-          title="Design Style"
+          title={t.designStyle}
           icon={Palette}
           isExpanded={expandedSections.has('design')}
           onToggle={() => toggleSection('design')}
@@ -154,7 +157,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
           {/* Design Quality Slider */}
           <div className="mt-4 pt-4 border-t">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Minimum Design Quality: {filters.min_design_quality || 'Any'}
+              {t.minDesignQuality} {filters.min_design_quality || t.any}
             </label>
             <input
               type="range"
@@ -170,15 +173,15 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
-              <span>Basic (1)</span>
-              <span>Exceptional (10)</span>
+              <span>{t.basic}</span>
+              <span>{t.exceptional}</span>
             </div>
           </div>
         </FilterSection>
 
         {/* Natural Light */}
         <FilterSection
-          title="Natural Light"
+          title={t.naturalLight}
           icon={Sun}
           isExpanded={expandedSections.has('light')}
           onToggle={() => toggleSection('light')}
@@ -186,7 +189,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
         >
           <div className="space-y-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              Minimum Natural Light: {filters.min_natural_light || 'Any'}
+              {t.minNaturalLight} {filters.min_natural_light || t.any}
             </label>
             <input
               type="range"
@@ -202,21 +205,21 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-yellow-500"
             />
             <div className="flex justify-between text-xs text-gray-500">
-              <span>Dark (1)</span>
-              <span>Very Bright (10)</span>
+              <span>{t.dark1}</span>
+              <span>{t.veryBright10}</span>
             </div>
 
             {/* Visual indicators */}
             <div className="grid grid-cols-5 gap-2 mt-4">
               {[
-                { range: [1, 2], label: 'Dark', emoji: '🌑' },
-                { range: [3, 4], label: 'Dim', emoji: '🌘' },
-                { range: [5, 6], label: 'Moderate', emoji: '🌗' },
-                { range: [7, 8], label: 'Bright', emoji: '🌕' },
-                { range: [9, 10], label: 'Very Bright', emoji: '☀️' },
-              ].map(({ range, label, emoji }) => (
+                { range: [1, 2], labelKey: 'dark' as const, emoji: '🌑' },
+                { range: [3, 4], labelKey: 'dim' as const, emoji: '🌘' },
+                { range: [5, 6], labelKey: 'moderate' as const, emoji: '🌗' },
+                { range: [7, 8], labelKey: 'bright' as const, emoji: '🌕' },
+                { range: [9, 10], labelKey: 'veryBright' as const, emoji: '☀️' },
+              ].map(({ range, labelKey, emoji }) => (
                 <button
-                  key={label}
+                  key={labelKey}
                   onClick={() =>
                     onChange({
                       ...filters,
@@ -232,7 +235,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
                   }`}
                 >
                   <div className="text-lg mb-1">{emoji}</div>
-                  <div className="font-medium">{label}</div>
+                  <div className="font-medium">{t[labelKey]}</div>
                 </button>
               ))}
             </div>
@@ -241,7 +244,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
 
         {/* Heating Type */}
         <FilterSection
-          title="Heating & Cooling"
+          title={t.heatingCooling}
           icon={Thermometer}
           isExpanded={expandedSections.has('heating')}
           onToggle={() => toggleSection('heating')}
@@ -274,7 +277,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
 
         {/* Furniture Style */}
         <FilterSection
-          title="Furniture Style"
+          title={t.furnitureStyle}
           icon={Bed}
           isExpanded={expandedSections.has('furniture')}
           onToggle={() => toggleSection('furniture')}
@@ -299,7 +302,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
 
         {/* Room Atmosphere */}
         <FilterSection
-          title="Room Atmosphere"
+          title={t.roomAtmosphere}
           icon={Eye}
           isExpanded={expandedSections.has('atmosphere')}
           onToggle={() => toggleSection('atmosphere')}
@@ -329,13 +332,13 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
           onClick={onApply}
           className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md"
         >
-          Apply Filters
+          {t.applyFilters}
         </button>
         <button
           onClick={onReset}
           className="px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
         >
-          Reset
+          {t.reset}
         </button>
       </div>
     </div>

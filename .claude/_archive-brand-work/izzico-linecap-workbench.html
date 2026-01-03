@@ -371,14 +371,14 @@
 
                 <div class="control-row">
                     <span class="control-label">Courbure arc</span>
-                    <input type="range" id="bust-curvature" min="0" max="200" value="100">
-                    <span class="control-value" id="bust-curvature-val">100%</span>
+                    <input type="range" id="bust-curvature" min="0" max="200" value="85">
+                    <span class="control-value" id="bust-curvature-val">85%</span>
                 </div>
 
                 <div class="preset-grid">
                     <button class="btn" data-bust-curvature="50">Aplati (50%)</button>
-                    <button class="btn" data-bust-curvature="85">~Fredoka (85%)</button>
-                    <button class="btn primary" data-bust-curvature="100">Normal (100%)</button>
+                    <button class="btn primary" data-bust-curvature="85">Valide (85%)</button>
+                    <button class="btn" data-bust-curvature="100">Normal (100%)</button>
                     <button class="btn" data-bust-curvature="150">Courbe (150%)</button>
                 </div>
 
@@ -442,8 +442,8 @@
         // LOCKED: stroke-linecap: custom (85%)
         let capRoundness = 85;
 
-        // NEW: Bust-specific parameters (adjustable)
-        let bustCurvature = 100;      // 0-200%: how curved the arc is (100% = default)
+        // LOCKED: Bust-specific parameters (validated 2026-01-02)
+        let bustCurvature = 85;       // 0-200%: how curved the arc is (85% = validated)
         let bustCapRoundness = 85;    // 0-100%: terminal roundness for bust
 
         function createSVG(tag, attrs) {

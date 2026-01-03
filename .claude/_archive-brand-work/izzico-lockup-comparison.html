@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Lockup Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-main: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --bg-card-alt: #252542;
+            --text-primary: #ffffff;
+            --text-secondary: #888;
+            --text-muted: #555;
+            --accent: #ffa000;
+            --success: #4ade80;
+            --warning: #fbbf24;
+            --gradient-signature: linear-gradient(135deg, #9c5698 0%, #d15659 30%, #e05747 50%, #ff7c10 70%, #ffc800 100%);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-main);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        h1 {
+            font-family: 'Nunito', sans-serif;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle { color: var(--text-secondary); margin-bottom: 48px; font-size: 15px; }
+
+        /* Options Grid */
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .option-card {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 32px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .option-card:hover {
+            border-color: rgba(255,160,0,0.3);
+        }
+
+        .option-card.recommended {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, rgba(255,160,0,0.05) 0%, rgba(255,200,0,0.02) 100%);
+        }
+
+        .option-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 24px;
+        }
+
+        .option-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .option-badge {
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: var(--accent);
+            color: var(--bg-main);
+        }
+
+        .option-badge.golden {
+            background: linear-gradient(135deg, #ffd700, #ffb000);
+        }
+
+        .option-badge.custom {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-secondary);
+        }
+
+        .option-badge.current {
+            background: rgba(74,222,128,0.2);
+            color: var(--success);
+        }
+
+        /* Preview Box */
+        .preview-box {
+            background: var(--gradient-signature);
+            border-radius: 16px;
+            padding: 40px 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 24px;
+            min-height: 180px;
+        }
+
+        .lockup {
+            display: flex;
+            align-items: center;
+        }
+
+        .lockup svg { display: block; }
+
+        .lockup-wordmark {
+            font-family: 'Fredoka', sans-serif;
+            color: white;
+            display: flex;
+            align-items: baseline;
+        }
+
+        .lockup-wordmark .l-i { font-weight: 600; }
+        .lockup-wordmark .l-z { font-weight: 540; letter-spacing: -0.18em; }
+        .lockup-wordmark .l-z2 { font-weight: 540; }
+        .lockup-wordmark .l-c { font-weight: 540; }
+        .lockup-wordmark .l-o { font-weight: 540; }
+
+        /* Specs Table */
+        .specs-table {
+            width: 100%;
+            font-size: 12px;
+        }
+
+        .specs-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .specs-row:last-child { border-bottom: none; }
+
+        .specs-label { color: var(--text-secondary); }
+        .specs-value {
+            font-family: 'SF Mono', Monaco, monospace;
+            color: var(--text-primary);
+        }
+
+        .specs-value.highlight {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* Analysis Section */
+        .analysis-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .analysis-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .pros-cons {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .pro, .con {
+            font-size: 11px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .pro { color: var(--success); }
+        .con { color: #f87171; }
+
+        .pro::before { content: '✓'; }
+        .con::before { content: '✗'; }
+
+        /* Scale Preview Section */
+        .scale-section {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+
+        .scale-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .scale-subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 32px;
+        }
+
+        .scale-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+        }
+
+        .scale-column {
+            text-align: center;
+        }
+
+        .scale-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 24px;
+        }
+
+        .scale-previews {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .scale-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .scale-size {
+            font-size: 10px;
+            color: var(--text-muted);
+        }
+
+        .scale-preview-box {
+            background: var(--gradient-signature);
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        /* Dark preview */
+        .preview-box.dark {
+            background: var(--bg-main);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Comparison ruler */
+        .ruler-section {
+            background: var(--bg-card);
+            border-radius: 24px;
+            padding: 40px;
+        }
+
+        .ruler-title {
+            font-family: 'Nunito', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 32px;
+        }
+
+        .ruler-row {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .ruler-row:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .ruler-label {
+            width: 120px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .ruler-preview {
+            flex: 1;
+            background: var(--gradient-signature);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .ruler-specs {
+            width: 180px;
+            font-size: 11px;
+            color: var(--text-muted);
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Lockup Comparison</h1>
+    <p class="subtitle">Comparez les 3 options pour choisir les proportions idéales du lockup Izzico</p>
+
+    <!-- Main Options Grid -->
+    <div class="options-grid">
+        <!-- Option A: Golden Ratio -->
+        <div class="option-card">
+            <div class="option-header">
+                <div class="option-title">Option A</div>
+                <div class="option-badge golden">Golden Ratio</div>
+            </div>
+            <div class="preview-box">
+                <div class="lockup" style="gap: 40px;">
+                    <svg viewBox="0 0 2048 2048" fill="none" width="115" height="115">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                    <div class="lockup-wordmark" style="font-size: 99px;">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+            <div class="specs-table">
+                <div class="specs-row">
+                    <span class="specs-label">Icon height</span>
+                    <span class="specs-value">115px</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Wordmark</span>
+                    <span class="specs-value">99px</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Gap</span>
+                    <span class="specs-value">40px (x-height)</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Ratio</span>
+                    <span class="specs-value highlight">1.61:1 (φ)</span>
+                </div>
+            </div>
+            <div class="analysis-section">
+                <div class="analysis-title">Analyse</div>
+                <div class="pros-cons">
+                    <div class="pro">Proportions classiques éprouvées</div>
+                    <div class="pro">Wordmark et icon co-égaux</div>
+                    <div class="pro">Excellente lisibilité toutes tailles</div>
+                    <div class="con">Icon moins dominant/mémorable</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option B: Compromise -->
+        <div class="option-card recommended">
+            <div class="option-header">
+                <div class="option-title">Option B</div>
+                <div class="option-badge">Recommandé</div>
+            </div>
+            <div class="preview-box">
+                <div class="lockup" style="gap: 28px;">
+                    <svg viewBox="0 0 2048 2048" fill="none" width="177" height="177">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                    <div class="lockup-wordmark" style="font-size: 99px;">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+            <div class="specs-table">
+                <div class="specs-row">
+                    <span class="specs-label">Icon height</span>
+                    <span class="specs-value">177px</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Wordmark</span>
+                    <span class="specs-value">99px</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Gap</span>
+                    <span class="specs-value highlight">28px (+75%)</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Ratio</span>
+                    <span class="specs-value">2.48:1</span>
+                </div>
+            </div>
+            <div class="analysis-section">
+                <div class="analysis-title">Analyse</div>
+                <div class="pros-cons">
+                    <div class="pro">Icon dominant = marque app-first</div>
+                    <div class="pro">Gap respirable (16% icon)</div>
+                    <div class="pro">Meilleur équilibre optique</div>
+                    <div class="con">Ratio non-standard</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Option C: Current -->
+        <div class="option-card">
+            <div class="option-header">
+                <div class="option-title">Option C</div>
+                <div class="option-badge current">Votre Choix</div>
+            </div>
+            <div class="preview-box">
+                <div class="lockup" style="gap: 16px;">
+                    <svg viewBox="0 0 2048 2048" fill="none" width="177" height="177">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                    <div class="lockup-wordmark" style="font-size: 99px;">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+            <div class="specs-table">
+                <div class="specs-row">
+                    <span class="specs-label">Icon height</span>
+                    <span class="specs-value">177px</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Wordmark</span>
+                    <span class="specs-value">99px</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Gap</span>
+                    <span class="specs-value">16px (9% icon)</span>
+                </div>
+                <div class="specs-row">
+                    <span class="specs-label">Ratio</span>
+                    <span class="specs-value">2.48:1</span>
+                </div>
+            </div>
+            <div class="analysis-section">
+                <div class="analysis-title">Analyse</div>
+                <div class="pros-cons">
+                    <div class="pro">Ultra compact, moderne</div>
+                    <div class="pro">Unité visuelle forte</div>
+                    <div class="con">Gap très serré</div>
+                    <div class="con">Risque collision aux petites tailles</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scale Test Section -->
+    <div class="scale-section">
+        <div class="scale-title">Test Multi-Tailles</div>
+        <div class="scale-subtitle">Vérifiez la lisibilité à différentes échelles</div>
+
+        <div class="scale-grid">
+            <!-- Option A scales -->
+            <div class="scale-column">
+                <div class="scale-label">Option A (φ:1)</div>
+                <div class="scale-previews">
+                    <div class="scale-item">
+                        <div class="scale-preview-box">
+                            <div class="lockup" style="gap: 20px;">
+                                <svg viewBox="0 0 2048 2048" fill="none" width="58" height="58">
+                                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                                </svg>
+                                <div class="lockup-wordmark" style="font-size: 50px;">
+                                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scale-size">50%</div>
+                    </div>
+                    <div class="scale-item">
+                        <div class="scale-preview-box">
+                            <div class="lockup" style="gap: 10px;">
+                                <svg viewBox="0 0 2048 2048" fill="none" width="29" height="29">
+                                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                                </svg>
+                                <div class="lockup-wordmark" style="font-size: 25px;">
+                                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scale-size">25%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option B scales -->
+            <div class="scale-column">
+                <div class="scale-label">Option B (Recommandé)</div>
+                <div class="scale-previews">
+                    <div class="scale-item">
+                        <div class="scale-preview-box">
+                            <div class="lockup" style="gap: 14px;">
+                                <svg viewBox="0 0 2048 2048" fill="none" width="89" height="89">
+                                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                                </svg>
+                                <div class="lockup-wordmark" style="font-size: 50px;">
+                                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scale-size">50%</div>
+                    </div>
+                    <div class="scale-item">
+                        <div class="scale-preview-box">
+                            <div class="lockup" style="gap: 7px;">
+                                <svg viewBox="0 0 2048 2048" fill="none" width="44" height="44">
+                                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                                </svg>
+                                <div class="lockup-wordmark" style="font-size: 25px;">
+                                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scale-size">25%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Option C scales -->
+            <div class="scale-column">
+                <div class="scale-label">Option C (Actuel)</div>
+                <div class="scale-previews">
+                    <div class="scale-item">
+                        <div class="scale-preview-box">
+                            <div class="lockup" style="gap: 8px;">
+                                <svg viewBox="0 0 2048 2048" fill="none" width="89" height="89">
+                                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                                </svg>
+                                <div class="lockup-wordmark" style="font-size: 50px;">
+                                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scale-size">50%</div>
+                    </div>
+                    <div class="scale-item">
+                        <div class="scale-preview-box">
+                            <div class="lockup" style="gap: 4px;">
+                                <svg viewBox="0 0 2048 2048" fill="none" width="44" height="44">
+                                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                                </svg>
+                                <div class="lockup-wordmark" style="font-size: 25px;">
+                                    <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="scale-size">25%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Direct Comparison -->
+    <div class="ruler-section">
+        <div class="ruler-title">Comparaison Directe</div>
+
+        <div class="ruler-row">
+            <div class="ruler-label">Option A<br><span style="font-size: 10px; color: var(--text-muted);">Golden Ratio</span></div>
+            <div class="ruler-preview">
+                <div class="lockup" style="gap: 40px;">
+                    <svg viewBox="0 0 2048 2048" fill="none" width="115" height="115">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                    <div class="lockup-wordmark" style="font-size: 99px;">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ruler-specs">icon: 115px<br>gap: 40px<br>ratio: 1.61:1</div>
+        </div>
+
+        <div class="ruler-row">
+            <div class="ruler-label">Option B<br><span style="font-size: 10px; color: var(--accent);">Recommandé</span></div>
+            <div class="ruler-preview">
+                <div class="lockup" style="gap: 28px;">
+                    <svg viewBox="0 0 2048 2048" fill="none" width="177" height="177">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                    <div class="lockup-wordmark" style="font-size: 99px;">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ruler-specs">icon: 177px<br>gap: 28px<br>ratio: 2.48:1</div>
+        </div>
+
+        <div class="ruler-row">
+            <div class="ruler-label">Option C<br><span style="font-size: 10px; color: var(--text-muted);">Votre choix</span></div>
+            <div class="ruler-preview">
+                <div class="lockup" style="gap: 16px;">
+                    <svg viewBox="0 0 2048 2048" fill="none" width="177" height="177">
+                        <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                        <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                    </svg>
+                    <div class="lockup-wordmark" style="font-size: 99px;">
+                        <span class="l-i">i</span><span class="l-z">z</span><span class="l-z2">z</span><span class="l-i">i</span><span class="l-c">c</span><span class="l-o">o</span>
+                    </div>
+                </div>
+            </div>
+            <div class="ruler-specs">icon: 177px<br>gap: 16px<br>ratio: 2.48:1</div>
+        </div>
+    </div>
+</body>
+</html>

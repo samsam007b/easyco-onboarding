@@ -4,6 +4,46 @@
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
+
+// ============================================================================
+// i18n TRANSLATIONS
+// ============================================================================
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+let currentLang: Language = 'fr';
+
+export function setRentServiceLanguage(lang: Language) {
+  currentLang = lang;
+}
+
+const translations = {
+  unknownProperty: {
+    fr: 'Propriété inconnue',
+    en: 'Unknown property',
+    nl: 'Onbekende woning',
+    de: 'Unbekannte Immobilie',
+  },
+  errors: {
+    recordPayment: {
+      fr: "Erreur lors de l'enregistrement du paiement",
+      en: 'Error recording payment',
+      nl: 'Fout bij het registreren van de betaling',
+      de: 'Fehler beim Aufzeichnen der Zahlung',
+    },
+    uploadProof: {
+      fr: "Erreur lors de l'upload du justificatif",
+      en: 'Error uploading receipt',
+      nl: 'Fout bij het uploaden van het bewijs',
+      de: 'Fehler beim Hochladen des Belegs',
+    },
+    createSchedule: {
+      fr: "Erreur lors de la création de l'échéancier",
+      en: 'Error creating payment schedule',
+      nl: 'Fout bij het aanmaken van het betalingsschema',
+      de: 'Fehler beim Erstellen des Zahlungsplans',
+    },
+  },
+};
 import type {
   RentPayment,
   RentPaymentWithProperty,
@@ -64,7 +104,7 @@ class RentService {
       const enriched: RentPaymentWithProperty[] =
         payments?.map((p) => ({
           ...p,
-          property_name: (p.properties as any)?.title || 'Propriété inconnue',
+          property_name: (p.properties as any)?.title || translations.unknownProperty[currentLang],
           property_address: (p.properties as any)?.address,
         })) || [];
 
@@ -125,7 +165,7 @@ class RentService {
       console.error('[Rent] ❌ Failed to record payment:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de l\'enregistrement du paiement',
+        error: error.message || translations.errors.recordPayment[currentLang],
       };
     }
   }
@@ -160,7 +200,7 @@ class RentService {
       console.error('[Rent] ❌ Failed to upload proof:', error);
       return {
         success: false,
-        error: error.message || 'Erreur lors de l\'upload du justificatif',
+        error: error.message || translations.errors.uploadProof[currentLang],
       };
     }
   }
@@ -298,7 +338,7 @@ class RentService {
       return {
         success: false,
         created: 0,
-        error: error.message || 'Erreur lors de la création de l\'échéancier',
+        error: error.message || translations.errors.createSchedule[currentLang],
       };
     }
   }

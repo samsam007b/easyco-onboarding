@@ -6,8 +6,9 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import { Cookie, X } from 'lucide-react';
 
 export default function CookieBanner() {
-  const { getSection } = useLanguage();
+  const { language, getSection } = useLanguage();
   const cookies = getSection('cookies');
+  const ariaLabels = getSection('ariaLabels');
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -96,7 +97,7 @@ export default function CookieBanner() {
               <button
                 onClick={declineCookies}
                 className="absolute top-4 right-4 md:hidden text-gray-400 hover:text-gray-600 transition"
-                aria-label="Close"
+                aria-label={ariaLabels?.close?.[language] || 'Close'}
               >
                 <X className="w-5 h-5" />
               </button>

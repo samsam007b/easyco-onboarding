@@ -27,6 +27,7 @@ import {
   ArrowRight,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface InvitationCTAProps {
   type: 'owner' | 'resident';
@@ -60,7 +61,7 @@ export function InvitationCTA({
     if (result.success && result.data) {
       setInviteLink(result.data.link);
     } else {
-      toast.error('Erreur lors de la génération du lien');
+      toast.error(getHookTranslation('invitation', 'linkGenerationFailed'));
     }
   };
 
@@ -68,7 +69,7 @@ export function InvitationCTA({
     if (inviteLink) {
       navigator.clipboard.writeText(inviteLink);
       setCopied(true);
-      toast.success('Lien copié !');
+      toast.success(getHookTranslation('invitation', 'linkCopied'));
       setTimeout(() => setCopied(false), 2000);
     }
   };
@@ -76,7 +77,7 @@ export function InvitationCTA({
   const handleCopyWithMessage = () => {
     const fullMessage = `${customMessage}\n\n${inviteLink}`;
     navigator.clipboard.writeText(fullMessage);
-    toast.success('Message et lien copiés !');
+    toast.success(getHookTranslation('invitation', 'messageAndLinkCopied'));
   };
 
   const handleShare = async () => {

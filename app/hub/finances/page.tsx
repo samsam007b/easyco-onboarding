@@ -42,6 +42,7 @@ import {
   PenLine,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -169,7 +170,7 @@ export default function ModernFinancesPage() {
 
   const handleSplitComplete = async (splitConfig: SplitConfig) => {
     if (!currentUserId || !propertyId || !scanResult) {
-      toast.error('Error: Missing data');
+      toast.error(getHookTranslation('finance', 'missingData'));
       return;
     }
 
@@ -194,15 +195,15 @@ export default function ModernFinancesPage() {
         setCreateMode(null);
         setScanResult(null);
         await loadData();
-        toast.success('Expense created successfully! 🎉', {
+        toast.success(getHookTranslation('finance', 'expenseCreated'), {
           description: `${scanResult.title} - €${scanResult.amount.toFixed(2)}`,
           duration: 5000,
         });
       } else {
-        toast.error('Error creating expense', { description: result.error });
+        toast.error(getHookTranslation('finance', 'expenseCreateFailed'), { description: result.error });
       }
     } catch (error: any) {
-      toast.error('Unexpected error', { description: error.message });
+      toast.error(getHookTranslation('finance', 'unexpectedError'), { description: error.message });
     } finally {
       setIsCreating(false);
     }
@@ -219,14 +220,14 @@ export default function ModernFinancesPage() {
       a.click();
       URL.revokeObjectURL(url);
     } catch (error) {
-      toast.error('Error exporting');
+      toast.error(getHookTranslation('finance', 'exportFailed'));
     }
   };
 
   const handleMarkAsPaid = async (expenseId: string, userId: string) => {
     const result = await expenseService.markSplitAsPaid(expenseId, userId);
     if (result.success) {
-      toast.success('Marked as paid!');
+      toast.success(getHookTranslation('finance', 'markedAsPaid'));
       await loadData();
       if (selectedExpense?.id === expenseId) {
         const updatedExpenses = await expenseService.getPropertyExpenses(propertyId!, currentUserId!);
@@ -234,7 +235,7 @@ export default function ModernFinancesPage() {
         if (updated) setSelectedExpense(updated);
       }
     } else {
-      toast.error('Error', { description: result.error });
+      toast.error(getHookTranslation('finance', 'error'), { description: result.error });
     }
   };
 

@@ -17,12 +17,18 @@ import { AlertsService } from '@/lib/services/alerts-service';
 import { PropertyNotification } from '@/types/alerts.types';
 import { useRouter } from 'next/navigation';
 import { formatDistanceToNow } from 'date-fns';
-import { fr } from 'date-fns/locale';
+import { fr, enUS, nl, de } from 'date-fns/locale';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+const dateLocales: Record<string, typeof fr> = { fr, en: enUS, nl, de };
 
 export default function PropertyAlertsNotificationBell() {
   const router = useRouter();
   const supabase = createClient();
   const alertsService = new AlertsService(supabase);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
+  const locale = dateLocales[language] || fr;
 
   const [notifications, setNotifications] = useState<PropertyNotification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
@@ -113,7 +119,7 @@ export default function PropertyAlertsNotificationBell() {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="relative" aria-label="Notifications">
+        <Button variant="ghost" size="icon" className="relative" aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}>
           <Bell className="h-5 w-5" />
           {unreadCount > 0 && (
             <Badge
@@ -176,7 +182,7 @@ export default function PropertyAlertsNotificationBell() {
                     <p className="text-xs text-gray-400 mt-1">
                       {formatDistanceToNow(new Date(notification.created_at), {
                         addSuffix: true,
-                        locale: fr,
+                        locale,
                       })}
                     </p>
                   </div>

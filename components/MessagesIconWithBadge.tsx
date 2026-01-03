@@ -6,6 +6,7 @@ import { MessageCircle } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
 import { getTotalUnreadCount, subscribeToConversationList } from '@/lib/services/messaging-service';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface MessagesIconWithBadgeProps {
   userId: string;
@@ -17,6 +18,8 @@ export default function MessagesIconWithBadge({ userId, role }: MessagesIconWith
   const supabase = createClient();
   const [unreadCount, setUnreadCount] = useState<number>(0);
   const [userRole, setUserRole] = useState<string | null>(role || null);
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   useEffect(() => {
     // Update userRole when role prop changes
@@ -85,7 +88,7 @@ export default function MessagesIconWithBadge({ userId, role }: MessagesIconWith
     <button
       onClick={handleClick}
       className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
-      aria-label="Messages"
+      aria-label={ariaLabels?.messages?.[language] || 'Messages'}
     >
       <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 text-gray-600" />
       {unreadCount > 0 && (

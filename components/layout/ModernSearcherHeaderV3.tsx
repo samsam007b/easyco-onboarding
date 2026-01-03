@@ -338,7 +338,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
           {/* Logo */}
           <Link href="/dashboard/searcher" className="flex items-center group">
             <img
-              src="/logos/izzico-trademark-gradient.svg"
+              src="/logos/izzico-trademark-text-gradient.svg"
               alt="IzzIco"
               className="h-10 w-auto transition-transform group-hover:scale-105"
             />

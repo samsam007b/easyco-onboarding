@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Image, Loader2, X } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface ImageUploadButtonProps {
   onImageSelected: (imageUrl: string, width: number, height: number) => void;
@@ -27,13 +28,13 @@ export function ImageUploadButton({
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      toast.error('Please select an image file');
+      toast.error(getHookTranslation('upload', 'selectImage'));
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      toast.error('Image size must be less than 5MB');
+      toast.error(getHookTranslation('upload', 'imageTooLarge'));
       return;
     }
 
@@ -44,7 +45,7 @@ export function ImageUploadButton({
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error('You must be logged in to upload images');
+        toast.error(getHookTranslation('upload', 'loginRequired'));
         return;
       }
 
@@ -77,10 +78,10 @@ export function ImageUploadButton({
       // Notify parent
       onImageSelected(publicUrl, width, height);
 
-      toast.success('Image uploaded successfully');
+      toast.success(getHookTranslation('upload', 'success'));
     } catch (error: any) {
       console.error('Error uploading image:', error);
-      toast.error(error.message || 'Failed to upload image');
+      toast.error(error.message || getHookTranslation('upload', 'uploadFailed'));
     } finally {
       setIsUploading(false);
       // Reset input

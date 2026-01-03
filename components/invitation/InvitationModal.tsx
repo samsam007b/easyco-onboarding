@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { acceptInvitation, refuseInvitation } from '@/lib/services/invitation-service';
 import { clearPendingInvitation, type InvitedRole } from '@/types/invitation.types';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface InvitationModalProps {
   isOpen: boolean;
@@ -63,15 +64,15 @@ export function InvitationModal({
       if (result.success) {
         clearPendingInvitation();
         toast.success(result.already_member
-          ? 'Vous êtes déjà membre de cette résidence'
-          : 'Bienvenue dans la résidence !');
+          ? getHookTranslation('invitation', 'alreadyMember')
+          : getHookTranslation('invitation', 'welcomeToResidence'));
         onAccepted?.(result.property_id!);
         onClose();
       } else {
-        toast.error(result.message || 'Erreur lors de l\'acceptation');
+        toast.error(result.message || getHookTranslation('invitation', 'acceptError'));
       }
     } catch (error) {
-      toast.error('Une erreur est survenue');
+      toast.error(getHookTranslation('invitation', 'errorOccurred'));
     } finally {
       setIsAccepting(false);
     }
@@ -84,14 +85,14 @@ export function InvitationModal({
 
       if (result.success) {
         clearPendingInvitation();
-        toast.success('Invitation refusée');
+        toast.success(getHookTranslation('invitation', 'refused'));
         onRefused?.();
         onClose();
       } else {
-        toast.error(result.message || 'Erreur lors du refus');
+        toast.error(result.message || getHookTranslation('invitation', 'refuseError'));
       }
     } catch (error) {
-      toast.error('Une erreur est survenue');
+      toast.error(getHookTranslation('invitation', 'errorOccurred'));
     } finally {
       setIsRefusing(false);
     }

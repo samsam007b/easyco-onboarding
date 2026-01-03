@@ -120,7 +120,7 @@ export default function ModernPublicHeader({
             onClick={() => onNavigate?.(null)}
           >
             <img
-              src="/logos/izzico-trademark-gradient.svg"
+              src="/logos/izzico-trademark-text-gradient.svg"
               alt="IzzIco"
               className="h-10 w-auto transition-transform group-hover:scale-105"
             />

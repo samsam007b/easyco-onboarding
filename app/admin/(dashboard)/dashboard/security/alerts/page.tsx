@@ -20,6 +20,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils/cn';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { acknowledgeAlert, bulkAcknowledgeAlerts } from '../actions';
 import {
   Dialog,
@@ -115,7 +116,7 @@ export default function AlertsPage() {
       setTotalCount(count || 0);
     } catch (error) {
       console.error('[AlertsPage] Error loading:', error);
-      toast.error('Erreur lors du chargement');
+      toast.error(getHookTranslation('security', 'loadError'));
     } finally {
       setIsLoading(false);
     }
@@ -138,7 +139,7 @@ export default function AlertsPage() {
     startTransition(async () => {
       const result = await acknowledgeAlert(alertId);
       if (result.success) {
-        toast.success('Alerte acquittee');
+        toast.success(getHookTranslation('security', 'alertAcknowledged'));
         loadAlerts();
         setSelectedAlerts(prev => {
           const next = new Set(prev);

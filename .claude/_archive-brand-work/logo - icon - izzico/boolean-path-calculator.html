@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>IzzIco Icon - Boolean Path Calculator</title>
+  <script src="https://unpkg.com/paper@0.12.17/dist/paper-full.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #1a1a2e;
+      color: white;
+      padding: 40px;
+    }
+    h1 { color: #ff7c10; margin-bottom: 10px; }
+    .subtitle { color: #888; margin-bottom: 30px; }
+
+    .container { display: flex; gap: 40px; flex-wrap: wrap; }
+
+    .preview-section {
+      background: #252542;
+      border-radius: 16px;
+      padding: 30px;
+      flex: 1;
+      min-width: 400px;
+    }
+
+    h2 { color: #e05747; margin-bottom: 20px; font-size: 18px; }
+
+    .canvas-container {
+      background: #0a0a12;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    canvas { display: block; margin: 0 auto; }
+
+    .output-section {
+      background: #252542;
+      border-radius: 16px;
+      padding: 30px;
+      flex: 2;
+      min-width: 500px;
+    }
+
+    .code-output {
+      background: #0a0a12;
+      border-radius: 8px;
+      padding: 20px;
+      font-family: 'SF Mono', Monaco, monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: #9c5698;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #9c5698, #e05747, #ff7c10, #ffc800);
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .btn:hover { opacity: 0.9; }
+
+    .status {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    .status.success { background: rgba(76, 175, 80, 0.2); color: #4caf50; }
+    .status.info { background: rgba(255, 124, 16, 0.2); color: #ff7c10; }
+
+    .zoom-view {
+      margin-top: 30px;
+      background: #0a0a12;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .zoom-view h3 {
+      color: #ffc800;
+      margin-bottom: 15px;
+    }
+
+    #zoom-container {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .zoom-wrapper {
+      background: #0a0a12;
+      padding: 40px;
+      border-radius: 12px;
+    }
+
+    .zoom-svg {
+      width: 600px;
+      height: 600px;
+    }
+  </style>
+</head>
+<body>
+  <h1>IzzIco Icon - Boolean Path Calculator</h1>
+  <p class="subtitle">Calcul des opérations booléennes pour vectorisation complète</p>
+
+  <div class="container">
+    <div class="preview-section">
+      <h2>Calcul en cours</h2>
+      <div class="canvas-container">
+        <canvas id="canvas" width="400" height="400"></canvas>
+      </div>
+      <button class="btn" onclick="calculateBoolean()">Recalculer les intersections</button>
+      <div id="status" class="status info">Prêt pour le calcul...</div>
+    </div>
+
+    <div class="output-section">
+      <h2>SVG Vectorisé - Paths calculés</h2>
+      <div id="output" class="code-output">Cliquez sur "Recalculer" pour générer les paths...</div>
+      <button class="btn" onclick="copyToClipboard()">Copier le SVG</button>
+      <button class="btn" onclick="downloadSVG()">Télécharger SVG</button>
+    </div>
+  </div>
+
+  <div class="zoom-view">
+    <h3>Vue zoomée 600% - Vérification vectorisation</h3>
+    <div id="zoom-container">
+      <div class="zoom-wrapper">
+        <svg id="zoom-svg" class="zoom-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="preview-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#9c5698"/>
+              <stop offset="30%" stop-color="#d15659"/>
+              <stop offset="50%" stop-color="#e05747"/>
+              <stop offset="70%" stop-color="#ff7c10"/>
+              <stop offset="100%" stop-color="#ffc800"/>
+            </linearGradient>
+          </defs>
+          <g id="preview-group"></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    paper.install(window);
+    paper.setup('canvas');
+
+    // Circle parameters
+    const CENTER = new Point(50, 41);
+    const OUTER_RADIUS = 18.75;
+    const INNER_RADIUS = 11.25;
+
+    // Original paths data
+    const LOUPE_HANDLE = "M 38.723 54.778 L 26.723 65.21 C 25.66 66.134 24.05 66.021 23.126 64.958 L 22.535 64.279 C 21.611 63.216 21.724 61.605 22.787 60.682 L 34.787 50.25 C 35.85 49.326 37.46 49.439 38.384 50.502 L 38.975 51.181 C 39.899 52.244 39.786 53.855 38.723 54.778 Z";
+
+    const KEY_HANDLE = "M 65.962 48.89 L 78.825 58.236 C 79.964 59.064 80.217 60.658 79.389 61.798 L 78.86 62.526 C 78.032 63.665 76.438 63.918 75.298 63.09 L 62.435 53.744 C 61.296 52.916 61.043 51.322 61.871 50.182 L 62.4 49.454 C 63.228 48.315 64.822 48.062 65.962 48.89 Z";
+
+    const KEY_TOOTH_1 = "M 71.096 57.902 L 68.481 61.502 C 68.067 62.071 67.269 62.198 66.7 61.784 L 66.336 61.519 C 65.766 61.105 65.64 60.308 66.054 59.738 L 68.669 56.138 C 69.083 55.569 69.881 55.442 70.45 55.856 L 70.814 56.121 C 71.384 56.535 71.51 57.332 71.096 57.902 Z";
+
+    const KEY_TOOTH_2 = "M 76.191 61.602 L 73.576 65.202 C 73.162 65.771 72.364 65.898 71.795 65.484 L 71.431 65.219 C 70.861 64.805 70.735 64.008 71.149 63.438 L 73.764 59.838 C 74.178 59.269 74.976 59.142 75.545 59.556 L 75.909 59.821 C 76.479 60.235 76.605 61.032 76.191 61.602 Z";
+
+    const BUST_CURVE = "M 34.821 81.275 Q 50 64.4 65.179 81.275 L 69.821 76.725 Q 50 57.9 30.179 76.725 Z";
+
+    const BUST_CAP_LEFT = "M 29.837 77.074 L 30.519 76.378 C 31.587 75.288 33.336 75.269 34.426 76.337 L 35.122 77.019 C 36.212 78.087 36.231 79.836 35.163 80.926 L 34.481 81.622 C 33.413 82.712 31.664 82.731 30.574 81.663 L 29.878 80.981 C 28.788 79.913 28.769 78.164 29.837 77.074 Z";
+
+    const BUST_CAP_RIGHT = "M 69.481 76.378 L 70.163 77.074 C 71.231 78.164 71.212 79.913 70.122 80.981 L 69.426 81.663 C 68.336 82.731 66.587 82.712 65.519 81.622 L 64.837 80.926 C 63.769 79.836 63.788 78.087 64.878 77.019 L 65.574 76.337 C 66.664 75.269 68.413 75.288 69.481 76.378 Z";
+
+    const CIRCLE_DONUT = "M 31.25 41 A 18.75 18.75 0 1 1 68.75 41 A 18.75 18.75 0 1 1 31.25 41 M 38.75 41 A 11.25 11.25 0 1 0 61.25 41 A 11.25 11.25 0 1 0 38.75 41";
+
+    let calculatedPaths = {};
+
+    function calculateBoolean() {
+      project.clear();
+      const status = document.getElementById('status');
+      status.textContent = "Calcul des intersections...";
+      status.className = "status info";
+
+      // Scale for canvas (400px canvas, 100 viewBox)
+      const scale = 4;
+
+      // Create circle (for boolean subtraction)
+      const outerCircle = new Path.Circle(CENTER.multiply(scale), OUTER_RADIUS * scale);
+
+      // Create loupe handle path
+      const loupePath = new Path(LOUPE_HANDLE);
+      loupePath.scale(scale, new Point(0, 0));
+
+      // Create key handle path
+      const keyPath = new Path(KEY_HANDLE);
+      keyPath.scale(scale, new Point(0, 0));
+
+      // Boolean subtraction: handle - circle = parts outside circle
+      const loupeSubtracted = loupePath.subtract(outerCircle);
+      const keySubtracted = keyPath.subtract(outerCircle);
+
+      // Store the calculated paths (scale back to viewBox coordinates)
+      calculatedPaths.loupeHandle = getScaledPathData(loupeSubtracted, 1/scale);
+      calculatedPaths.keyHandle = getScaledPathData(keySubtracted, 1/scale);
+
+      // Draw result on canvas
+      project.clear();
+
+      // Draw background circle for reference
+      const bgCircle = new Path.Circle(CENTER.multiply(scale), OUTER_RADIUS * scale);
+      bgCircle.strokeColor = '#333';
+      bgCircle.strokeWidth = 1;
+
+      // Recreate and draw subtracted handles
+      const finalLoupe = new Path(LOUPE_HANDLE);
+      finalLoupe.scale(scale, new Point(0, 0));
+      const finalLoupeResult = finalLoupe.subtract(outerCircle);
+      finalLoupeResult.fillColor = '#ff7c10';
+
+      const finalKey = new Path(KEY_HANDLE);
+      finalKey.scale(scale, new Point(0, 0));
+      const finalKeyResult = finalKey.subtract(outerCircle);
+      finalKeyResult.fillColor = '#ff7c10';
+
+      // Draw key teeth
+      const tooth1 = new Path(KEY_TOOTH_1);
+      tooth1.scale(scale, new Point(0, 0));
+      tooth1.fillColor = '#ff7c10';
+
+      const tooth2 = new Path(KEY_TOOTH_2);
+      tooth2.scale(scale, new Point(0, 0));
+      tooth2.fillColor = '#ff7c10';
+
+      // Draw circle donut
+      const donutOuter = new Path.Circle(CENTER.multiply(scale), OUTER_RADIUS * scale);
+      const donutInner = new Path.Circle(CENTER.multiply(scale), INNER_RADIUS * scale);
+      const donut = donutOuter.subtract(donutInner);
+      donut.fillColor = '#ff7c10';
+
+      // Draw bust
+      const bustCurve = new Path(BUST_CURVE);
+      bustCurve.scale(scale, new Point(0, 0));
+      bustCurve.fillColor = '#ff7c10';
+
+      const bustCapL = new Path(BUST_CAP_LEFT);
+      bustCapL.scale(scale, new Point(0, 0));
+      bustCapL.fillColor = '#ff7c10';
+
+      const bustCapR = new Path(BUST_CAP_RIGHT);
+      bustCapR.scale(scale, new Point(0, 0));
+      bustCapR.fillColor = '#ff7c10';
+
+      // Generate SVG output
+      generateSVGOutput();
+
+      status.textContent = "Calcul terminé - Paths vectorisés générés";
+      status.className = "status success";
+
+      // Update zoom preview using DOM methods
+      updateZoomPreview();
+    }
+
+    function getScaledPathData(path, scale) {
+      const clone = path.clone();
+      clone.scale(scale, new Point(0, 0));
+      const pathData = clone.pathData;
+      clone.remove();
+      return pathData;
+    }
+
+    function generateSVGOutput() {
+      const loupeData = calculatedPaths.loupeHandle;
+      const keyData = calculatedPaths.keyHandle;
+
+      const svg = '<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">\n' +
+        '  <!-- IzzIco Icon V1 - FULLY VECTORIZED -->\n' +
+        '  <!-- Boolean operations applied: handles trimmed at circle intersection -->\n' +
+        '  <!-- No hidden geometry - 100% clean vectors -->\n\n' +
+        '  <defs>\n' +
+        '    <linearGradient id="izzico-gradient" x1="0%" y1="0%" x2="100%" y2="100%">\n' +
+        '      <stop offset="0%" stop-color="#9c5698"/>\n' +
+        '      <stop offset="30%" stop-color="#d15659"/>\n' +
+        '      <stop offset="50%" stop-color="#e05747"/>\n' +
+        '      <stop offset="70%" stop-color="#ff7c10"/>\n' +
+        '      <stop offset="100%" stop-color="#ffc800"/>\n' +
+        '    </linearGradient>\n' +
+        '  </defs>\n\n' +
+        '  <!-- LOUPE HANDLE - Boolean subtracted -->\n' +
+        '  <path d="' + loupeData + '" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- KEY HANDLE - Boolean subtracted -->\n' +
+        '  <path d="' + keyData + '" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- KEY TEETH -->\n' +
+        '  <path d="' + KEY_TOOTH_1 + '" fill="url(#izzico-gradient)"/>\n' +
+        '  <path d="' + KEY_TOOTH_2 + '" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- CIRCLE DONUT -->\n' +
+        '  <path d="' + CIRCLE_DONUT + '" fill-rule="evenodd" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- BUST CURVE -->\n' +
+        '  <path d="' + BUST_CURVE + '" fill="url(#izzico-gradient)"/>\n\n' +
+        '  <!-- BUST CAPS -->\n' +
+        '  <path d="' + BUST_CAP_LEFT + '" fill="url(#izzico-gradient)"/>\n' +
+        '  <path d="' + BUST_CAP_RIGHT + '" fill="url(#izzico-gradient)"/>\n' +
+        '</svg>';
+
+      document.getElementById('output').textContent = svg;
+      calculatedPaths.fullSVG = svg;
+    }
+
+    function updateZoomPreview() {
+      const group = document.getElementById('preview-group');
+      // Clear existing paths
+      while (group.firstChild) {
+        group.removeChild(group.firstChild);
+      }
+
+      const ns = "http://www.w3.org/2000/svg";
+
+      // Create paths using DOM methods
+      const paths = [
+        { d: calculatedPaths.loupeHandle, fill: "url(#preview-gradient)" },
+        { d: calculatedPaths.keyHandle, fill: "url(#preview-gradient)" },
+        { d: KEY_TOOTH_1, fill: "url(#preview-gradient)" },
+        { d: KEY_TOOTH_2, fill: "url(#preview-gradient)" },
+        { d: CIRCLE_DONUT, fill: "url(#preview-gradient)", fillRule: "evenodd" },
+        { d: BUST_CURVE, fill: "url(#preview-gradient)" },
+        { d: BUST_CAP_LEFT, fill: "url(#preview-gradient)" },
+        { d: BUST_CAP_RIGHT, fill: "url(#preview-gradient)" }
+      ];
+
+      paths.forEach(function(pathData) {
+        const path = document.createElementNS(ns, "path");
+        path.setAttribute("d", pathData.d);
+        path.setAttribute("fill", pathData.fill);
+        if (pathData.fillRule) {
+          path.setAttribute("fill-rule", pathData.fillRule);
+        }
+        group.appendChild(path);
+      });
+    }
+
+    function copyToClipboard() {
+      if (calculatedPaths.fullSVG) {
+        navigator.clipboard.writeText(calculatedPaths.fullSVG);
+        const status = document.getElementById('status');
+        status.textContent = "SVG copié dans le presse-papier";
+        status.className = "status success";
+      }
+    }
+
+    function downloadSVG() {
+      if (calculatedPaths.fullSVG) {
+        const blob = new Blob([calculatedPaths.fullSVG], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'izzico-icon-v1-fully-vectorized.svg';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      }
+    }
+
+    // Auto-calculate on load
+    window.onload = function() {
+      setTimeout(calculateBoolean, 500);
+    };
+  </script>
+</body>
+</html>

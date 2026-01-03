@@ -21,6 +21,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/auth/supabase-client';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 interface AdminHeaderProps {
   userEmail: string;
@@ -41,6 +42,8 @@ export default function AdminHeader({ userEmail, userRole }: AdminHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -76,7 +79,7 @@ export default function AdminHeader({ userEmail, userRole }: AdminHeaderProps) {
           type="button"
           className="lg:hidden -m-2.5 p-2.5 text-slate-400"
           onClick={() => setMobileMenuOpen(true)}
-          aria-label="Ouvrir le menu"
+          aria-label={ariaLabels?.openMenu?.[language] || 'Ouvrir le menu'}
         >
           <Menu className="h-6 w-6" />
         </button>
@@ -108,7 +111,7 @@ export default function AdminHeader({ userEmail, userRole }: AdminHeaderProps) {
             <button
               type="button"
               className="p-2 text-slate-400 hover:text-white transition-colors"
-              aria-label="Notifications"
+              aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
             >
               <Bell className="h-5 w-5" />
             </button>
@@ -150,7 +153,7 @@ export default function AdminHeader({ userEmail, userRole }: AdminHeaderProps) {
               <button
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-slate-400 hover:text-white"
-                aria-label="Fermer le menu"
+                aria-label={ariaLabels?.closeMenu?.[language] || 'Fermer le menu'}
               >
                 <X className="h-6 w-6" />
               </button>

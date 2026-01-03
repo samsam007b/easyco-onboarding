@@ -22,6 +22,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface Admin {
   id: string;
@@ -82,15 +83,13 @@ export default function AdminsList({ admins }: AdminsListProps) {
 
       if (error) throw error;
 
-      toast.success('Administrateur supprimé', {
-        description: `${confirmDelete.adminEmail} n'a plus accès au panneau d'administration.`,
-      });
+      toast.success(getHookTranslation('admin', 'adminDeleted'));
 
       setConfirmDelete({ isOpen: false, adminId: null, adminEmail: null });
       router.refresh();
     } catch (error) {
       logger.error('Delete admin error', error);
-      toast.error('Erreur lors de la suppression');
+      toast.error(getHookTranslation('admin', 'deleteError'));
     } finally {
       setIsLoading(false);
     }

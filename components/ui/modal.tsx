@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils/cn'
 import { X } from 'lucide-react'
+import { useLanguage } from '@/lib/i18n/use-language'
 
 export interface ModalProps {
   /**
@@ -74,6 +75,9 @@ export function Modal({
   footer,
   className,
 }: ModalProps) {
+  const { language, getSection } = useLanguage()
+  const ariaLabels = getSection('ariaLabels')
+
   // Handle escape key
   React.useEffect(() => {
     if (typeof window === 'undefined') return
@@ -162,7 +166,7 @@ export function Modal({
                 type="button"
                 onClick={onClose}
                 className="ml-4 text-gray-400 hover:text-gray-600 transition-colors p-1 rounded-full hover:bg-gray-100"
-                aria-label="Close modal"
+                aria-label={ariaLabels?.closeModal?.[language] || 'Close modal'}
               >
                 <X className="w-6 h-6" />
               </button>

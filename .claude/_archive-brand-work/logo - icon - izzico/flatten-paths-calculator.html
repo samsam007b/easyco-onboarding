@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>IzzIco - Calcul des Paths Aplatis</title>
+  <style>
+    body {
+      font-family: 'SF Pro', system-ui, sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 40px;
+      margin: 0;
+    }
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    h1 {
+      text-align: center;
+      background: linear-gradient(135deg, #9c5698, #e05747, #ffc800);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .preview-section {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      margin: 40px 0;
+    }
+    .preview-box {
+      background: #0a0a12;
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+    }
+    .preview-box h3 {
+      margin-bottom: 20px;
+      color: #888;
+    }
+    svg {
+      width: 200px;
+      height: 200px;
+    }
+    .output-section {
+      background: #0d0d1a;
+      border-radius: 16px;
+      padding: 30px;
+      margin: 20px 0;
+    }
+    .output-section h2 {
+      color: #ffc800;
+      margin-bottom: 20px;
+    }
+    pre {
+      background: #000;
+      padding: 20px;
+      border-radius: 12px;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .copy-btn {
+      background: linear-gradient(135deg, #9c5698, #e05747);
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .copy-btn:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>IzzIco - Calcul des Paths Vectorisés Aplatis</h1>
+
+    <div class="preview-section">
+      <div class="preview-box">
+        <h3>Avec Transforms (actuel)</h3>
+        <svg id="svg-transforms" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Layer 1: Loupe -->
+          <g transform="translate(30.755, 57.73) rotate(139)">
+            <rect x="-10.5" y="-3" width="21" height="6" rx="2.55" ry="2.55" fill="white"/>
+          </g>
+          <!-- Layer 2: Key -->
+          <g transform="translate(70.63, 55.99) rotate(36)">
+            <rect x="-10.5" y="-3" width="21" height="6" rx="2.55" ry="2.55" fill="white"/>
+          </g>
+          <!-- Layer 3: Teeth -->
+          <g transform="translate(68.575, 58.82) rotate(126)">
+            <rect x="-3.5" y="-1.5" width="7" height="3" rx="1.275" ry="1.275" fill="white"/>
+          </g>
+          <g transform="translate(73.67, 62.52) rotate(126)">
+            <rect x="-3.5" y="-1.5" width="7" height="3" rx="1.275" ry="1.275" fill="white"/>
+          </g>
+          <!-- Layer 4: Circle -->
+          <circle cx="50" cy="41" r="15" stroke="white" stroke-width="7.5" fill="none"/>
+          <!-- Layer 5: Bust caps -->
+          <g transform="translate(32.5, 79) rotate(-45.6)">
+            <rect x="-3.25" y="-3.25" width="6.5" height="6.5" rx="2.7625" ry="2.7625" fill="white"/>
+          </g>
+          <g transform="translate(67.5, 79) rotate(45.6)">
+            <rect x="-3.25" y="-3.25" width="6.5" height="6.5" rx="2.7625" ry="2.7625" fill="white"/>
+          </g>
+          <!-- Layer 6: Bust curve -->
+          <path d="M 32.5 79 Q 50 61.15 67.5 79" stroke="white" stroke-width="6.5" stroke-linecap="butt" fill="none"/>
+        </svg>
+      </div>
+
+      <div class="preview-box">
+        <h3>Aplati (vectorisé)</h3>
+        <svg id="svg-flattened" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Will be filled by JavaScript -->
+        </svg>
+      </div>
+    </div>
+
+    <div class="output-section">
+      <h2>SVG Aplati Complet</h2>
+      <pre id="output-svg"></pre>
+      <button class="copy-btn" onclick="copyToClipboard()">Copier le SVG</button>
+    </div>
+  </div>
+
+  <script>
+    // Utility functions for path calculation
+    function degToRad(deg) {
+      return deg * Math.PI / 180;
+    }
+
+    function rotatePoint(x, y, angle) {
+      const rad = degToRad(angle);
+      const cos = Math.cos(rad);
+      const sin = Math.sin(rad);
+      return {
+        x: x * cos - y * sin,
+        y: x * sin + y * cos
+      };
+    }
+
+    function transformPoint(x, y, tx, ty, angle) {
+      const rotated = rotatePoint(x, y, angle);
+      return {
+        x: rotated.x + tx,
+        y: rotated.y + ty
+      };
+    }
+
+    // Round number to 3 decimal places
+    function r(n) {
+      return Math.round(n * 1000) / 1000;
+    }
+
+    // Generate rounded rectangle path with pre-computed coordinates
+    function generateRoundedRectPath(cx, cy, w, h, rx, ry, angle) {
+      // Half dimensions
+      const hw = w / 2;
+      const hh = h / 2;
+
+      // Points of the rectangle (before rotation), going clockwise from top-left
+      // With rounded corners, we need arc control points
+      const points = [
+        // Top edge start (after top-left corner)
+        { x: -hw + rx, y: -hh },
+        // Top edge end (before top-right corner)
+        { x: hw - rx, y: -hh },
+        // Top-right corner arc end
+        { x: hw, y: -hh + ry },
+        // Right edge end (before bottom-right corner)
+        { x: hw, y: hh - ry },
+        // Bottom-right corner arc end
+        { x: hw - rx, y: hh },
+        // Bottom edge end (before bottom-left corner)
+        { x: -hw + rx, y: hh },
+        // Bottom-left corner arc end
+        { x: -hw, y: hh - ry },
+        // Left edge end (before top-left corner)
+        { x: -hw, y: -hh + ry }
+      ];
+
+      // Corner centers for arcs
+      const corners = [
+        { x: hw - rx, y: -hh + ry },   // top-right
+        { x: hw - rx, y: hh - ry },    // bottom-right
+        { x: -hw + rx, y: hh - ry },   // bottom-left
+        { x: -hw + rx, y: -hh + ry }   // top-left
+      ];
+
+      // Transform all points
+      const tp = points.map(p => transformPoint(p.x, p.y, cx, cy, angle));
+      const tc = corners.map(c => transformPoint(c.x, c.y, cx, cy, angle));
+
+      // For rotated arcs, we need to use the elliptical arc command with rotation
+      // A rx ry x-axis-rotation large-arc-flag sweep-flag x y
+      const rotRad = degToRad(angle);
+
+      // Build path - using cubic bezier approximation for rotated rounded corners
+      // Since SVG arcs don't rotate well, we'll use bezier curves
+      // Bezier approximation of quarter circle: control point distance = r * 0.5522847498
+      const k = 0.5522847498;
+
+      // Helper to get bezier control points for a corner
+      function getCornerBezier(cornerIdx, startPt, endPt) {
+        const c = tc[cornerIdx];
+        const rxRot = rx;
+        const ryRot = ry;
+
+        // Direction vectors from corner center to start and end points
+        const d1x = startPt.x - c.x;
+        const d1y = startPt.y - c.y;
+        const d2x = endPt.x - c.x;
+        const d2y = endPt.y - c.y;
+
+        // Control points
+        const cp1 = {
+          x: startPt.x + k * d2x,
+          y: startPt.y + k * d2y
+        };
+        const cp2 = {
+          x: endPt.x + k * d1x,
+          y: endPt.y + k * d1y
+        };
+
+        return { cp1, cp2 };
+      }
+
+      // Build path string
+      let d = `M ${r(tp[0].x)} ${r(tp[0].y)}`;
+
+      // Top edge
+      d += ` L ${r(tp[1].x)} ${r(tp[1].y)}`;
+
+      // Top-right corner (bezier)
+      const b0 = getCornerBezier(0, tp[1], tp[2]);
+      d += ` C ${r(b0.cp1.x)} ${r(b0.cp1.y)} ${r(b0.cp2.x)} ${r(b0.cp2.y)} ${r(tp[2].x)} ${r(tp[2].y)}`;
+
+      // Right edge
+      d += ` L ${r(tp[3].x)} ${r(tp[3].y)}`;
+
+      // Bottom-right corner (bezier)
+      const b1 = getCornerBezier(1, tp[3], tp[4]);
+      d += ` C ${r(b1.cp1.x)} ${r(b1.cp1.y)} ${r(b1.cp2.x)} ${r(b1.cp2.y)} ${r(tp[4].x)} ${r(tp[4].y)}`;
+
+      // Bottom edge
+      d += ` L ${r(tp[5].x)} ${r(tp[5].y)}`;
+
+      // Bottom-left corner (bezier)
+      const b2 = getCornerBezier(2, tp[5], tp[6]);
+      d += ` C ${r(b2.cp1.x)} ${r(b2.cp1.y)} ${r(b2.cp2.x)} ${r(b2.cp2.y)} ${r(tp[6].x)} ${r(tp[6].y)}`;
+
+      // Left edge
+      d += ` L ${r(tp[7].x)} ${r(tp[7].y)}`;
+
+      // Top-left corner (bezier)
+      const b3 = getCornerBezier(3, tp[7], tp[0]);
+      d += ` C ${r(b3.cp1.x)} ${r(b3.cp1.y)} ${r(b3.cp2.x)} ${r(b3.cp2.y)} ${r(tp[0].x)} ${r(tp[0].y)}`;
+
+      d += ' Z';
+
+      return d;
+    }
+
+    // Generate circle as path (for true vectorization)
+    function generateCirclePath(cx, cy, r) {
+      // Circle as two arcs
+      return `M ${cx - r} ${cy} A ${r} ${r} 0 1 1 ${cx + r} ${cy} A ${r} ${r} 0 1 1 ${cx - r} ${cy} Z`;
+    }
+
+    // Generate donut (stroked circle as filled path)
+    function generateDonutPath(cx, cy, outerR, innerR) {
+      // Outer circle clockwise, inner circle counter-clockwise
+      const outer = `M ${cx - outerR} ${cy} A ${outerR} ${outerR} 0 1 1 ${cx + outerR} ${cy} A ${outerR} ${outerR} 0 1 1 ${cx - outerR} ${cy}`;
+      const inner = `M ${cx - innerR} ${cy} A ${innerR} ${innerR} 0 1 0 ${cx + innerR} ${cy} A ${innerR} ${innerR} 0 1 0 ${cx - innerR} ${cy}`;
+      return outer + ' ' + inner;
+    }
+
+    // Generate quadratic bezier stroke as filled path
+    function generateStrokedQuadBezierPath(x1, y1, cx, cy, x2, y2, strokeWidth) {
+      const hw = strokeWidth / 2;
+
+      // Get normals at start and end points
+      // Tangent at start: direction from (x1,y1) toward control point
+      const t1x = cx - x1;
+      const t1y = cy - y1;
+      const t1len = Math.sqrt(t1x * t1x + t1y * t1y);
+      const n1x = -t1y / t1len;
+      const n1y = t1x / t1len;
+
+      // Tangent at end: direction from control point toward (x2,y2)
+      const t2x = x2 - cx;
+      const t2y = y2 - cy;
+      const t2len = Math.sqrt(t2x * t2x + t2y * t2y);
+      const n2x = -t2y / t2len;
+      const n2y = t2x / t2len;
+
+      // Offset points
+      const p1a = { x: x1 + n1x * hw, y: y1 + n1y * hw };
+      const p1b = { x: x1 - n1x * hw, y: y1 - n1y * hw };
+      const p2a = { x: x2 + n2x * hw, y: y2 + n2y * hw };
+      const p2b = { x: x2 - n2x * hw, y: y2 - n2y * hw };
+
+      // Control point offset (average normal)
+      const nmx = (n1x + n2x) / 2;
+      const nmy = (n1y + n2y) / 2;
+      const nmlen = Math.sqrt(nmx * nmx + nmy * nmy);
+      const ncx = nmx / nmlen;
+      const ncy = nmy / nmlen;
+
+      const ca = { x: cx + ncx * hw, y: cy + ncy * hw };
+      const cb = { x: cx - ncx * hw, y: cy - ncy * hw };
+
+      // Build path: outer curve forward, inner curve backward
+      let d = `M ${r(p1a.x)} ${r(p1a.y)}`;
+      d += ` Q ${r(ca.x)} ${r(ca.y)} ${r(p2a.x)} ${r(p2a.y)}`;
+      d += ` L ${r(p2b.x)} ${r(p2b.y)}`;
+      d += ` Q ${r(cb.x)} ${r(cb.y)} ${r(p1b.x)} ${r(p1b.y)}`;
+      d += ' Z';
+
+      return d;
+    }
+
+    // Generate all flattened paths
+    function generateFlattenedPaths() {
+      const paths = [];
+
+      // Layer 1: Loupe handle
+      // translate(30.755, 57.73) rotate(139), rect width=21 height=6 rx=2.55
+      paths.push({
+        name: 'Loupe handle',
+        d: generateRoundedRectPath(30.755, 57.73, 21, 6, 2.55, 2.55, 139)
+      });
+
+      // Layer 2: Key handle
+      // translate(70.63, 55.99) rotate(36), rect width=21 height=6 rx=2.55
+      paths.push({
+        name: 'Key handle',
+        d: generateRoundedRectPath(70.63, 55.99, 21, 6, 2.55, 2.55, 36)
+      });
+
+      // Layer 3: Tooth 1
+      // translate(68.575, 58.82) rotate(126), rect width=7 height=3 rx=1.275
+      paths.push({
+        name: 'Tooth 1',
+        d: generateRoundedRectPath(68.575, 58.82, 7, 3, 1.275, 1.275, 126)
+      });
+
+      // Layer 3: Tooth 2
+      // translate(73.67, 62.52) rotate(126), rect width=7 height=3 rx=1.275
+      paths.push({
+        name: 'Tooth 2',
+        d: generateRoundedRectPath(73.67, 62.52, 7, 3, 1.275, 1.275, 126)
+      });
+
+      // Layer 4: Circle (donut path)
+      // cx=50 cy=41 r=15 stroke-width=7.5
+      // outer radius = 15 + 3.75 = 18.75, inner radius = 15 - 3.75 = 11.25
+      paths.push({
+        name: 'Circle (donut)',
+        d: generateDonutPath(50, 41, 18.75, 11.25),
+        fillRule: 'evenodd'
+      });
+
+      // Layer 5: Bust cap left
+      // translate(32.5, 79) rotate(-45.6), rect width=6.5 height=6.5 rx=2.7625
+      paths.push({
+        name: 'Bust cap left',
+        d: generateRoundedRectPath(32.5, 79, 6.5, 6.5, 2.7625, 2.7625, -45.6)
+      });
+
+      // Layer 5: Bust cap right
+      // translate(67.5, 79) rotate(45.6), rect width=6.5 height=6.5 rx=2.7625
+      paths.push({
+        name: 'Bust cap right',
+        d: generateRoundedRectPath(67.5, 79, 6.5, 6.5, 2.7625, 2.7625, 45.6)
+      });
+
+      // Layer 6: Bust curve
+      // M 32.5 79 Q 50 61.15 67.5 79, stroke-width=6.5
+      paths.push({
+        name: 'Bust curve',
+        d: generateStrokedQuadBezierPath(32.5, 79, 50, 61.15, 67.5, 79, 6.5)
+      });
+
+      return paths;
+    }
+
+    // Render flattened SVG
+    function renderFlattenedSVG() {
+      const paths = generateFlattenedPaths();
+      const svg = document.getElementById('svg-flattened');
+
+      // Clear existing content
+      while (svg.firstChild) {
+        svg.removeChild(svg.firstChild);
+      }
+
+      // Add each path
+      paths.forEach(p => {
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', p.d);
+        path.setAttribute('fill', 'white');
+        if (p.fillRule) {
+          path.setAttribute('fill-rule', p.fillRule);
+        }
+        svg.appendChild(path);
+      });
+
+      // Generate full SVG code
+      const svgCode = generateFullSVGCode(paths);
+      document.getElementById('output-svg').textContent = svgCode;
+    }
+
+    // Generate complete SVG code
+    function generateFullSVGCode(paths) {
+      let code = '<svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">\n';
+      code += '  <!-- IzzIco Icon V1 - Fully Vectorized (Flattened Paths) -->\n';
+      code += '  <!-- All transforms pre-computed, no transform attributes -->\n\n';
+
+      paths.forEach((p, i) => {
+        code += `  <!-- ${p.name} -->\n`;
+        code += `  <path d="${p.d}"`;
+        if (p.fillRule) {
+          code += ` fill-rule="${p.fillRule}"`;
+        }
+        code += ' fill="white"/>\n';
+        if (i < paths.length - 1) code += '\n';
+      });
+
+      code += '</svg>';
+      return code;
+    }
+
+    // Copy to clipboard
+    function copyToClipboard() {
+      const text = document.getElementById('output-svg').textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('SVG copié dans le presse-papier!');
+      });
+    }
+
+    // Initialize
+    renderFlattenedSVG();
+  </script>
+</body>
+</html>

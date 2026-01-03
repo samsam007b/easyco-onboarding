@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Stroke Editor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --owner-start: #9b6b9e;
+            --resident-mid: #e8837c;
+            --searcher-end: #f5b73f;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background: #0a0a12;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            padding: 25px 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .header-info {
+            font-size: 0.85rem;
+            opacity: 0.5;
+        }
+
+        /* Main layout */
+        .main-container {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            min-height: calc(100vh - 80px);
+        }
+
+        /* Preview area */
+        .preview-area {
+            background: linear-gradient(135deg, var(--owner-start) 0%, var(--resident-mid) 50%, var(--searcher-end) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            position: relative;
+        }
+
+        .preview-area.dark-bg {
+            background: #1a1a2e;
+        }
+
+        .preview-area.white-bg {
+            background: #ffffff;
+        }
+
+        .preview-area.white-bg .icon-display svg path,
+        .preview-area.white-bg .trademark-display svg path {
+            fill: #1a1a2e;
+        }
+
+        /* Same scale container */
+        .same-scale-container {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .element-column {
+            text-align: center;
+        }
+
+        .element-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.6;
+            margin-bottom: 15px;
+        }
+
+        /* Icon display */
+        .icon-display {
+            width: 200px;
+            height: 200px;
+        }
+
+        .icon-display svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Trademark display - showing just the ZZ part for comparison */
+        .trademark-display {
+            height: 200px;
+            display: flex;
+            align-items: center;
+        }
+
+        .trademark-display svg {
+            height: 100%;
+            width: auto;
+        }
+
+        /* Stroke measurement overlay */
+        .measurement-bar {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.6);
+            padding: 15px 30px;
+            border-radius: 12px;
+            display: flex;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .measurement-item {
+            text-align: center;
+        }
+
+        .measurement-item .label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            opacity: 0.5;
+            margin-bottom: 4px;
+        }
+
+        .measurement-item .value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .measurement-item .bar {
+            height: 8px;
+            background: white;
+            border-radius: 4px;
+            margin-top: 6px;
+        }
+
+        /* Controls panel */
+        .controls-panel {
+            background: #0f0f1a;
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 35px;
+        }
+
+        .control-section h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            opacity: 0.4;
+            margin-bottom: 18px;
+        }
+
+        .control-item {
+            margin-bottom: 20px;
+        }
+
+        .control-item label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            opacity: 0.8;
+        }
+
+        .control-item input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255,255,255,0.12);
+            -webkit-appearance: none;
+            cursor: pointer;
+        }
+
+        .control-item input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+            cursor: pointer;
+        }
+
+        .control-item .value-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 6px;
+            font-size: 0.8rem;
+        }
+
+        .control-item .value-display .current {
+            font-weight: 600;
+            color: #f5b73f;
+        }
+
+        /* Background switcher */
+        .bg-switcher {
+            display: flex;
+            gap: 8px;
+        }
+
+        .bg-switcher button {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .bg-switcher button:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .bg-switcher button.active {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Info panel */
+        .info-panel {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 18px;
+            margin-top: 20px;
+        }
+
+        .info-panel h4 {
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-row .label {
+            opacity: 0.5;
+        }
+
+        .info-row .value {
+            font-weight: 500;
+        }
+
+        .info-row.match .value {
+            color: #4ade80;
+        }
+
+        .info-row.mismatch .value {
+            color: #f87171;
+        }
+
+        /* Export button */
+        .export-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--owner-start), var(--searcher-end));
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(245, 183, 63, 0.3);
+        }
+
+        /* Technique selector */
+        .technique-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .technique-tabs button {
+            flex: 1;
+            padding: 10px 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: transparent;
+            color: white;
+            border-radius: 8px;
+            font-family: 'Fredoka', sans-serif;
+            font-size: 0.7rem;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: all 0.2s;
+        }
+
+        .technique-tabs button:hover {
+            opacity: 0.8;
+        }
+
+        .technique-tabs button.active {
+            background: rgba(255,255,255,0.1);
+            border-color: var(--searcher-end);
+            opacity: 1;
+        }
+
+        .technique-note {
+            font-size: 0.75rem;
+            opacity: 0.4;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Stroke Editor - Harmonisation Icon / Trademark</h1>
+        <span class="header-info">Ajuste l'epaisseur des traits pour uniformiser</span>
+    </div>
+
+    <div class="main-container">
+        <div class="preview-area" id="previewArea">
+            <div class="same-scale-container">
+                <!-- Icon with adjustable stroke -->
+                <div class="element-column">
+                    <div class="element-label">Icon (ajustable)</div>
+                    <div class="icon-display" id="iconDisplay">
+                        <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg" id="iconSvg">
+                            <defs>
+                                <filter id="strokeFilter" x="-20%" y="-20%" width="140%" height="140%">
+                                    <feMorphology id="morphology" operator="dilate" radius="0"/>
+                                </filter>
+                            </defs>
+                            <g id="iconPaths" filter="url(#strokeFilter)">
+                                <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+                                <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Trademark (reference) - Cropped to show ZZ for stroke comparison -->
+                <div class="element-column">
+                    <div class="element-label">Trademark (reference)</div>
+                    <div class="trademark-display">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 5800 1880" id="trademarkSvg">
+                            <!-- First I letter -->
+                            <path fill="white" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                            <!-- First I dot -->
+                            <path fill="white" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                            <!-- ZZ letters -->
+                            <path fill="white" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                            <!-- Second I letter -->
+                            <path fill="white" d="M1474.33 1350.33C1460.87 1381.25 1413.05 1378.28 1385.75 1373.47C1376.72 1371.88 1356.59 1360.1 1355.23 1351.74C1348.53 1310.68 1351.43 1265.25 1351.83 1223.54L1352.17 1107.1C1352.28 1077.45 1352.17 1047.8 1351.83 1018.15C1351.29 982.56 1348.28 934.783 1355.21 899.228C1358.68 890.227 1370.03 881.13 1378.51 878.643C1407.68 870.095 1461.19 866.305 1474.41 901.686C1480.17 915.181 1479.37 949.569 1479.73 965.402C1482.28 1078.58 1479.62 1191.83 1481.28 1305.04C1481.43 1315.01 1478.38 1342.45 1474.33 1350.33Z"/>
+                            <!-- Second I dot -->
+                            <path fill="white" d="M1369.87 650.3C1398.82 639.004 1466.62 634.108 1478.69 672.509C1481.31 681.001 1483.42 688.154 1483.74 697.07C1484.51 718.785 1485.83 756.767 1466.85 771.906C1449.94 785.405 1416.42 784.214 1396.26 782.645C1341.63 778.392 1346.28 718.857 1350.36 679.158C1351.29 670.214 1358.58 658.094 1366.26 653.355C1368.3 652.091 1368.29 652.183 1369.87 650.3Z"/>
+                            <!-- c letter -->
+                            <path fill="white" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                            <!-- O letter -->
+                            <path fill="white" d="M2590.49 1169.34C2586.63 1184.96 2583.85 1203.38 2577.43 1218.48C2548.83 1285.22 2504.09 1332.59 2437.33 1362.35C2280.22 1432.38 2090.78 1317.8 2078.78 1146.46C2076.14 1108.65 2080.79 1066.14 2095.05 1030.31C2121.67 964.455 2173.12 911.708 2238.3 883.458C2297.45 858.224 2372.3 857.752 2431.88 882.076C2492.55 906.882 2541.86 953.317 2570.25 1012.39C2574.44 1021.15 2577.7 1029.24 2580.45 1038.54C2581.86 1043.33 2583.21 1049.51 2585.23 1053.91C2593.87 1081.44 2597.14 1140.78 2590.49 1169.34ZM2345.5 1250.06C2415.49 1244.76 2467.99 1183.8 2462.86 1113.79C2457.73 1043.78 2396.9 991.132 2326.88 996.093C2256.62 1001.07 2203.75 1062.15 2208.9 1132.41C2214.05 1202.66 2275.26 1255.38 2345.5 1250.06Z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <div class="measurement-bar">
+                <div class="measurement-item">
+                    <div class="label">Stroke Icon</div>
+                    <div class="value" id="iconStrokeDisplay">80px</div>
+                    <div class="bar" id="iconStrokeBar" style="width: 40px;"></div>
+                </div>
+                <div class="measurement-item">
+                    <div class="label">Stroke Trademark</div>
+                    <div class="value">~150px</div>
+                    <div class="bar" style="width: 75px;"></div>
+                </div>
+                <div class="measurement-item">
+                    <div class="label">Difference</div>
+                    <div class="value" id="differenceDisplay">-70px</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls-panel">
+            <div class="control-section">
+                <h3>Technique d'epaississement</h3>
+                <div class="technique-tabs">
+                    <button id="techDilate" class="active">Dilate</button>
+                    <button id="techErode">Erode</button>
+                </div>
+                <p class="technique-note">
+                    Dilate = epaissit les traits<br>
+                    Erode = amincit les traits
+                </p>
+            </div>
+
+            <div class="control-section">
+                <h3>Ajustement Icon</h3>
+
+                <div class="control-item">
+                    <label>Epaisseur (radius) :</label>
+                    <input type="range" id="strokeRadius" min="0" max="80" value="0" step="1">
+                    <div class="value-display">
+                        <span>0</span>
+                        <span class="current" id="strokeRadiusValue">+0px</span>
+                        <span>+80</span>
+                    </div>
+                </div>
+
+                <div class="control-item">
+                    <label>Taille affichage :</label>
+                    <input type="range" id="displaySize" min="100" max="400" value="200">
+                    <div class="value-display">
+                        <span>100px</span>
+                        <span class="current" id="displaySizeValue">200px</span>
+                        <span>400px</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>Fond</h3>
+                <div class="bg-switcher">
+                    <button id="bgGradient" class="active">Gradient</button>
+                    <button id="bgDark">Sombre</button>
+                    <button id="bgWhite">Blanc</button>
+                </div>
+            </div>
+
+            <div class="info-panel">
+                <h4>Analyse</h4>
+                <div class="info-row">
+                    <span class="label">Stroke original</span>
+                    <span class="value">~80px (viewBox)</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Stroke actuel</span>
+                    <span class="value" id="currentStroke">80px</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Stroke trademark</span>
+                    <span class="value">~150px (viewBox)</span>
+                </div>
+                <div class="info-row" id="matchRow">
+                    <span class="label">Harmonie</span>
+                    <span class="value" id="harmonyStatus">Trop fin</span>
+                </div>
+            </div>
+
+            <div class="info-panel" style="margin-top: 15px;">
+                <h4>Valeurs pour export</h4>
+                <div class="info-row">
+                    <span class="label">feMorphology radius</span>
+                    <span class="value" id="exportRadius">0</span>
+                </div>
+                <div class="info-row">
+                    <span class="label">Operator</span>
+                    <span class="value" id="exportOperator">dilate</span>
+                </div>
+            </div>
+
+            <button class="export-btn" id="exportBtn">
+                Copier SVG modifie
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Elements
+        const morphology = document.getElementById('morphology');
+        const iconDisplay = document.getElementById('iconDisplay');
+        const iconSvg = document.getElementById('iconSvg');
+        const previewArea = document.getElementById('previewArea');
+
+        // Sliders
+        const strokeRadius = document.getElementById('strokeRadius');
+        const displaySize = document.getElementById('displaySize');
+
+        // Value displays
+        const strokeRadiusValue = document.getElementById('strokeRadiusValue');
+        const displaySizeValue = document.getElementById('displaySizeValue');
+        const iconStrokeDisplay = document.getElementById('iconStrokeDisplay');
+        const iconStrokeBar = document.getElementById('iconStrokeBar');
+        const differenceDisplay = document.getElementById('differenceDisplay');
+        const currentStroke = document.getElementById('currentStroke');
+        const harmonyStatus = document.getElementById('harmonyStatus');
+        const matchRow = document.getElementById('matchRow');
+        const exportRadius = document.getElementById('exportRadius');
+        const exportOperator = document.getElementById('exportOperator');
+
+        // Technique buttons
+        const techDilate = document.getElementById('techDilate');
+        const techErode = document.getElementById('techErode');
+
+        // Background buttons
+        const bgGradient = document.getElementById('bgGradient');
+        const bgDark = document.getElementById('bgDark');
+        const bgWhite = document.getElementById('bgWhite');
+
+        // Base stroke in viewBox units (estimated from the icon)
+        const BASE_STROKE = 80;
+        const TARGET_STROKE = 150; // Trademark stroke width
+
+        let currentOperator = 'dilate';
+
+        function updateDisplay() {
+            const radius = parseInt(strokeRadius.value);
+            const size = parseInt(displaySize.value);
+
+            // Update morphology filter
+            morphology.setAttribute('radius', radius);
+            morphology.setAttribute('operator', currentOperator);
+
+            // Update display size
+            iconDisplay.style.width = size + 'px';
+            iconDisplay.style.height = size + 'px';
+
+            // Calculate current stroke
+            let currentStrokeWidth;
+            if (currentOperator === 'dilate') {
+                currentStrokeWidth = BASE_STROKE + (radius * 2); // Dilate adds to both sides
+            } else {
+                currentStrokeWidth = Math.max(0, BASE_STROKE - (radius * 2));
+            }
+
+            // Update value displays
+            const sign = currentOperator === 'dilate' ? '+' : '-';
+            strokeRadiusValue.textContent = sign + radius + 'px';
+            displaySizeValue.textContent = size + 'px';
+            iconStrokeDisplay.textContent = currentStrokeWidth + 'px';
+            iconStrokeBar.style.width = (currentStrokeWidth / 2) + 'px';
+            currentStroke.textContent = currentStrokeWidth + 'px';
+
+            // Calculate difference
+            const diff = currentStrokeWidth - TARGET_STROKE;
+            differenceDisplay.textContent = (diff >= 0 ? '+' : '') + diff + 'px';
+
+            // Harmony status
+            const ratio = currentStrokeWidth / TARGET_STROKE;
+            if (ratio >= 0.9 && ratio <= 1.1) {
+                harmonyStatus.textContent = 'Excellent !';
+                matchRow.className = 'info-row match';
+            } else if (ratio >= 0.75 && ratio <= 1.25) {
+                harmonyStatus.textContent = 'Proche';
+                matchRow.className = 'info-row';
+            } else if (currentStrokeWidth < TARGET_STROKE) {
+                harmonyStatus.textContent = 'Trop fin';
+                matchRow.className = 'info-row mismatch';
+            } else {
+                harmonyStatus.textContent = 'Trop epais';
+                matchRow.className = 'info-row mismatch';
+            }
+
+            // Export values
+            exportRadius.textContent = radius;
+            exportOperator.textContent = currentOperator;
+        }
+
+        // Event listeners
+        strokeRadius.addEventListener('input', updateDisplay);
+        displaySize.addEventListener('input', updateDisplay);
+
+        // Technique toggle
+        techDilate.addEventListener('click', function() {
+            currentOperator = 'dilate';
+            techDilate.classList.add('active');
+            techErode.classList.remove('active');
+            updateDisplay();
+        });
+
+        techErode.addEventListener('click', function() {
+            currentOperator = 'erode';
+            techErode.classList.add('active');
+            techDilate.classList.remove('active');
+            updateDisplay();
+        });
+
+        // Background toggle
+        bgGradient.addEventListener('click', function() {
+            previewArea.className = 'preview-area';
+            bgGradient.classList.add('active');
+            bgDark.classList.remove('active');
+            bgWhite.classList.remove('active');
+        });
+
+        bgDark.addEventListener('click', function() {
+            previewArea.className = 'preview-area dark-bg';
+            bgDark.classList.add('active');
+            bgGradient.classList.remove('active');
+            bgWhite.classList.remove('active');
+        });
+
+        bgWhite.addEventListener('click', function() {
+            previewArea.className = 'preview-area white-bg';
+            bgWhite.classList.add('active');
+            bgGradient.classList.remove('active');
+            bgDark.classList.remove('active');
+        });
+
+        // Export button
+        document.getElementById('exportBtn').addEventListener('click', function() {
+            const radius = parseInt(strokeRadius.value);
+            const svgContent = `<svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="thicken" x="-20%" y="-20%" width="140%" height="140%">
+      <feMorphology operator="${currentOperator}" radius="${radius}"/>
+    </filter>
+  </defs>
+  <g filter="url(#thicken)">
+    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="white"/>
+    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="white"/>
+  </g>
+</svg>`;
+
+            navigator.clipboard.writeText(svgContent).then(function() {
+                const btn = document.getElementById('exportBtn');
+                btn.textContent = 'Copie !';
+                setTimeout(function() {
+                    btn.textContent = 'Copier SVG modifie';
+                }, 2000);
+            });
+        });
+
+        // Initial update
+        updateDisplay();
+    </script>
+</body>
+</html>

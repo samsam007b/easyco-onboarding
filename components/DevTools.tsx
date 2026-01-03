@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from './ui/button';
 import { Settings, RefreshCw, LogOut, User, Home, Search } from 'lucide-react';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 /**
  * DevTools component for development and testing
@@ -35,7 +36,7 @@ export function DevTools() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error('Not authenticated');
+        toast.error(getHookTranslation('devtools', 'notAuthenticated'));
         return;
       }
 
@@ -50,16 +51,16 @@ export function DevTools() {
 
       if (error) {
         // FIXME: Use logger.error('Error switching role:', error);
-        toast.error('Failed to switch role');
+        toast.error(getHookTranslation('devtools', 'switchRoleFailed'));
         return;
       }
 
-      toast.success(`Switched to ${role}!`);
+      toast.success(`${getHookTranslation('devtools', 'switchedTo')} ${role}!`);
       router.push(`/dashboard/${role}`);
       router.refresh();
     } catch (error) {
       // FIXME: Use logger.error('Error:', error);
-      toast.error('An error occurred');
+      toast.error(getHookTranslation('devtools', 'errorOccurred'));
     } finally {
       setIsChangingRole(false);
     }
@@ -70,7 +71,7 @@ export function DevTools() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error('Not authenticated');
+        toast.error(getHookTranslation('devtools', 'notAuthenticated'));
         return;
       }
 
@@ -86,21 +87,21 @@ export function DevTools() {
         .eq('id', user.id);
 
       if (error) {
-        toast.error('Failed to reset onboarding');
+        toast.error(getHookTranslation('devtools', 'resetOnboardingFailed'));
         return;
       }
 
-      toast.success('Onboarding reset!');
+      toast.success(getHookTranslation('devtools', 'onboardingReset'));
       router.push(`/onboarding/${userData?.user_type || 'searcher'}/basic-info`);
     } catch (error) {
       // FIXME: Use logger.error('Error:', error);
-      toast.error('An error occurred');
+      toast.error(getHookTranslation('devtools', 'errorOccurred'));
     }
   };
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
-    toast.success('Logged out');
+    toast.success(getHookTranslation('devtools', 'loggedOut'));
     router.push('/login');
   };
 

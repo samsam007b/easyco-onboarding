@@ -19,6 +19,207 @@ import { toast } from 'sonner';
 import { vendorService, type CreateRatingData } from '@/lib/services/vendor-service';
 import { ownerGradient } from '@/lib/constants/owner-theme';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/i18n/use-language';
+
+type Language = 'fr' | 'en' | 'nl' | 'de';
+
+const translations = {
+  modal: {
+    title: {
+      fr: 'Évaluer le prestataire',
+      en: 'Rate the vendor',
+      nl: 'Beoordeel de leverancier',
+      de: 'Dienstleister bewerten',
+    },
+  },
+  categories: {
+    quality: {
+      label: {
+        fr: 'Qualité du travail',
+        en: 'Work quality',
+        nl: 'Kwaliteit van het werk',
+        de: 'Arbeitsqualität',
+      },
+      description: {
+        fr: "Qualité de l'intervention",
+        en: 'Quality of the intervention',
+        nl: 'Kwaliteit van de interventie',
+        de: 'Qualität der Intervention',
+      },
+    },
+    punctuality: {
+      label: {
+        fr: 'Ponctualité',
+        en: 'Punctuality',
+        nl: 'Stiptheid',
+        de: 'Pünktlichkeit',
+      },
+      description: {
+        fr: 'Respect des horaires',
+        en: 'Schedule adherence',
+        nl: 'Tijdschema naleven',
+        de: 'Einhaltung der Termine',
+      },
+    },
+    price: {
+      label: {
+        fr: 'Rapport qualité/prix',
+        en: 'Value for money',
+        nl: 'Prijs-kwaliteitverhouding',
+        de: 'Preis-Leistungs-Verhältnis',
+      },
+      description: {
+        fr: 'Prix justifié',
+        en: 'Fair pricing',
+        nl: 'Eerlijke prijs',
+        de: 'Angemessener Preis',
+      },
+    },
+    communication: {
+      label: {
+        fr: 'Communication',
+        en: 'Communication',
+        nl: 'Communicatie',
+        de: 'Kommunikation',
+      },
+      description: {
+        fr: 'Échanges et suivi',
+        en: 'Updates and follow-up',
+        nl: 'Updates en opvolging',
+        de: 'Updates und Nachverfolgung',
+      },
+    },
+  },
+  labels: {
+    overallRating: {
+      fr: 'Note globale',
+      en: 'Overall rating',
+      nl: 'Algemene beoordeling',
+      de: 'Gesamtbewertung',
+    },
+    detailedRatings: {
+      fr: 'Notes détaillées (optionnel)',
+      en: 'Detailed ratings (optional)',
+      nl: 'Gedetailleerde beoordelingen (optioneel)',
+      de: 'Detaillierte Bewertungen (optional)',
+    },
+    wouldRecommend: {
+      fr: 'Recommanderiez-vous ce prestataire?',
+      en: 'Would you recommend this vendor?',
+      nl: 'Zou u deze leverancier aanbevelen?',
+      de: 'Würden Sie diesen Dienstleister empfehlen?',
+    },
+    title: {
+      fr: "Titre de l'évaluation (optionnel)",
+      en: 'Review title (optional)',
+      nl: 'Titel van de beoordeling (optioneel)',
+      de: 'Bewertungstitel (optional)',
+    },
+    titlePlaceholder: {
+      fr: 'Ex: Intervention rapide et efficace',
+      en: 'Ex: Fast and efficient service',
+      nl: 'Bijv: Snelle en efficiënte service',
+      de: 'Z.B.: Schneller und effizienter Service',
+    },
+    comment: {
+      fr: 'Commentaire (optionnel)',
+      en: 'Comment (optional)',
+      nl: 'Opmerking (optioneel)',
+      de: 'Kommentar (optional)',
+    },
+    commentPlaceholder: {
+      fr: 'Décrivez votre expérience avec ce prestataire...',
+      en: 'Describe your experience with this vendor...',
+      nl: 'Beschrijf uw ervaring met deze leverancier...',
+      de: 'Beschreiben Sie Ihre Erfahrung mit diesem Dienstleister...',
+    },
+  },
+  ratings: {
+    clickToRate: {
+      fr: 'Cliquez pour noter',
+      en: 'Click to rate',
+      nl: 'Klik om te beoordelen',
+      de: 'Klicken zum Bewerten',
+    },
+    veryDissatisfied: {
+      fr: 'Très insatisfait',
+      en: 'Very dissatisfied',
+      nl: 'Zeer ontevreden',
+      de: 'Sehr unzufrieden',
+    },
+    dissatisfied: {
+      fr: 'Insatisfait',
+      en: 'Dissatisfied',
+      nl: 'Ontevreden',
+      de: 'Unzufrieden',
+    },
+    neutral: {
+      fr: 'Correct',
+      en: 'Neutral',
+      nl: 'Neutraal',
+      de: 'Neutral',
+    },
+    satisfied: {
+      fr: 'Satisfait',
+      en: 'Satisfied',
+      nl: 'Tevreden',
+      de: 'Zufrieden',
+    },
+    verySatisfied: {
+      fr: 'Très satisfait',
+      en: 'Very satisfied',
+      nl: 'Zeer tevreden',
+      de: 'Sehr zufrieden',
+    },
+  },
+  buttons: {
+    yes: { fr: 'Oui', en: 'Yes', nl: 'Ja', de: 'Ja' },
+    no: { fr: 'Non', en: 'No', nl: 'Nee', de: 'Nein' },
+    cancel: { fr: 'Annuler', en: 'Cancel', nl: 'Annuleren', de: 'Abbrechen' },
+    submit: { fr: "Envoyer l'évaluation", en: 'Submit review', nl: 'Beoordeling versturen', de: 'Bewertung senden' },
+    submitting: { fr: 'Envoi...', en: 'Sending...', nl: 'Verzenden...', de: 'Senden...' },
+  },
+  success: {
+    title: {
+      fr: 'Merci pour votre évaluation!',
+      en: 'Thank you for your review!',
+      nl: 'Bedankt voor uw beoordeling!',
+      de: 'Vielen Dank für Ihre Bewertung!',
+    },
+    message: {
+      fr: 'Votre avis aide à améliorer la qualité des prestataires.',
+      en: 'Your feedback helps improve vendor quality.',
+      nl: 'Uw feedback helpt de kwaliteit van leveranciers te verbeteren.',
+      de: 'Ihr Feedback hilft, die Qualität der Dienstleister zu verbessern.',
+    },
+  },
+  toasts: {
+    ratingRequired: {
+      fr: 'Veuillez donner une note globale',
+      en: 'Please provide an overall rating',
+      nl: 'Geef een algemene beoordeling',
+      de: 'Bitte geben Sie eine Gesamtbewertung ab',
+    },
+    loginRequired: {
+      fr: 'Vous devez être connecté',
+      en: 'You must be logged in',
+      nl: 'U moet ingelogd zijn',
+      de: 'Sie müssen angemeldet sein',
+    },
+    success: {
+      fr: 'Évaluation enregistrée',
+      en: 'Review submitted',
+      nl: 'Beoordeling verzonden',
+      de: 'Bewertung gesendet',
+    },
+    error: {
+      fr: "Erreur lors de l'enregistrement",
+      en: 'Error saving review',
+      nl: 'Fout bij opslaan beoordeling',
+      de: 'Fehler beim Speichern der Bewertung',
+    },
+  },
+};
 
 interface VendorRatingModalProps {
   open: boolean;
@@ -33,36 +234,14 @@ interface VendorRatingModalProps {
 
 interface RatingCategory {
   key: 'quality' | 'punctuality' | 'price' | 'communication';
-  label: string;
   icon: React.ElementType;
-  description: string;
 }
 
 const ratingCategories: RatingCategory[] = [
-  {
-    key: 'quality',
-    label: 'Qualite du travail',
-    icon: Wrench,
-    description: 'Qualite de l\'intervention',
-  },
-  {
-    key: 'punctuality',
-    label: 'Ponctualite',
-    icon: Clock,
-    description: 'Respect des horaires',
-  },
-  {
-    key: 'price',
-    label: 'Rapport qualite/prix',
-    icon: DollarSign,
-    description: 'Prix justifie',
-  },
-  {
-    key: 'communication',
-    label: 'Communication',
-    icon: MessageSquare,
-    description: 'Echanges et suivi',
-  },
+  { key: 'quality', icon: Wrench },
+  { key: 'punctuality', icon: Clock },
+  { key: 'price', icon: DollarSign },
+  { key: 'communication', icon: MessageSquare },
 ];
 
 export function VendorRatingModal({
@@ -75,6 +254,10 @@ export function VendorRatingModal({
   jobType,
   onRatingSubmitted,
 }: VendorRatingModalProps) {
+  const { language } = useLanguage();
+  const lang = language as Language;
+  const t = translations;
+
   const [overallRating, setOverallRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
   const [detailedRatings, setDetailedRatings] = useState<Record<string, number>>({
@@ -95,7 +278,7 @@ export function VendorRatingModal({
 
   const handleSubmit = async () => {
     if (overallRating === 0) {
-      toast.error('Veuillez donner une note globale');
+      toast.error(t.toasts.ratingRequired[lang]);
       return;
     }
 
@@ -107,7 +290,7 @@ export function VendorRatingModal({
       } = await (await import('@/lib/auth/supabase-client')).createClient().auth.getUser();
 
       if (!user) {
-        toast.error('Vous devez etre connecte');
+        toast.error(t.toasts.loginRequired[lang]);
         return;
       }
 
@@ -131,17 +314,17 @@ export function VendorRatingModal({
 
       if (result) {
         setIsSubmitted(true);
-        toast.success('Evaluation enregistree');
+        toast.success(t.toasts.success[lang]);
         setTimeout(() => {
           onRatingSubmitted?.();
           onClose();
         }, 1500);
       } else {
-        toast.error('Erreur lors de l\'enregistrement');
+        toast.error(t.toasts.error[lang]);
       }
     } catch (error) {
       console.error('Error submitting rating:', error);
-      toast.error('Erreur lors de l\'enregistrement');
+      toast.error(t.toasts.error[lang]);
     } finally {
       setIsSubmitting(false);
     }
@@ -185,7 +368,7 @@ export function VendorRatingModal({
                   <Star className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <h2 className="font-bold text-lg">Evaluer le prestataire</h2>
+                  <h2 className="font-bold text-lg">{t.modal.title[lang]}</h2>
                   <p className="text-white/80 text-sm">{vendorName}</p>
                 </div>
               </div>
@@ -214,10 +397,10 @@ export function VendorRatingModal({
                   <CheckCircle className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">
-                  Merci pour votre evaluation!
+                  {t.success.title[lang]}
                 </h3>
                 <p className="text-gray-600">
-                  Votre avis aide a ameliorer la qualite des prestataires.
+                  {t.success.message[lang]}
                 </p>
               </motion.div>
             ) : (
@@ -225,7 +408,7 @@ export function VendorRatingModal({
                 {/* Overall Rating */}
                 <div className="text-center">
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Note globale <span className="text-red-500">*</span>
+                    {t.labels.overallRating[lang]} <span className="text-red-500">*</span>
                   </label>
                   <div className="flex justify-center gap-2">
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -250,23 +433,23 @@ export function VendorRatingModal({
                   </div>
                   <p className="text-sm text-gray-500 mt-2">
                     {overallRating === 0
-                      ? 'Cliquez pour noter'
+                      ? t.ratings.clickToRate[lang]
                       : overallRating === 1
-                      ? 'Tres insatisfait'
+                      ? t.ratings.veryDissatisfied[lang]
                       : overallRating === 2
-                      ? 'Insatisfait'
+                      ? t.ratings.dissatisfied[lang]
                       : overallRating === 3
-                      ? 'Correct'
+                      ? t.ratings.neutral[lang]
                       : overallRating === 4
-                      ? 'Satisfait'
-                      : 'Tres satisfait'}
+                      ? t.ratings.satisfied[lang]
+                      : t.ratings.verySatisfied[lang]}
                   </p>
                 </div>
 
                 {/* Detailed Ratings */}
                 <div className="space-y-4">
                   <label className="block text-sm font-medium text-gray-700">
-                    Notes detaillees (optionnel)
+                    {t.labels.detailedRatings[lang]}
                   </label>
                   <div className="grid grid-cols-2 gap-4">
                     {ratingCategories.map((category) => (
@@ -277,7 +460,7 @@ export function VendorRatingModal({
                         <div className="flex items-center gap-2 mb-2">
                           <category.icon className="w-4 h-4 text-gray-500" />
                           <span className="text-sm font-medium text-gray-700">
-                            {category.label}
+                            {t.categories[category.key].label[lang]}
                           </span>
                         </div>
                         <div className="flex gap-1">
@@ -307,7 +490,7 @@ export function VendorRatingModal({
                 {/* Would Recommend */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-3">
-                    Recommanderiez-vous ce prestataire?
+                    {t.labels.wouldRecommend[lang]}
                   </label>
                   <div className="flex gap-4">
                     <button
@@ -321,7 +504,7 @@ export function VendorRatingModal({
                       )}
                     >
                       <ThumbsUp className="w-5 h-5" />
-                      <span className="font-medium">Oui</span>
+                      <span className="font-medium">{t.buttons.yes[lang]}</span>
                     </button>
                     <button
                       type="button"
@@ -334,7 +517,7 @@ export function VendorRatingModal({
                       )}
                     >
                       <ThumbsDown className="w-5 h-5" />
-                      <span className="font-medium">Non</span>
+                      <span className="font-medium">{t.buttons.no[lang]}</span>
                     </button>
                   </div>
                 </div>
@@ -342,13 +525,13 @@ export function VendorRatingModal({
                 {/* Title */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Titre de l'evaluation (optionnel)
+                    {t.labels.title[lang]}
                   </label>
                   <input
                     type="text"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    placeholder="Ex: Intervention rapide et efficace"
+                    placeholder={t.labels.titlePlaceholder[lang]}
                     maxLength={100}
                     className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
                   />
@@ -357,12 +540,12 @@ export function VendorRatingModal({
                 {/* Comment */}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Commentaire (optionnel)
+                    {t.labels.comment[lang]}
                   </label>
                   <textarea
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
-                    placeholder="Decrivez votre experience avec ce prestataire..."
+                    placeholder={t.labels.commentPlaceholder[lang]}
                     rows={3}
                     maxLength={500}
                     className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 resize-none"
@@ -384,7 +567,7 @@ export function VendorRatingModal({
                 disabled={isSubmitting}
                 className="rounded-full"
               >
-                Annuler
+                {t.buttons.cancel[lang]}
               </Button>
               <Button
                 onClick={handleSubmit}
@@ -395,12 +578,12 @@ export function VendorRatingModal({
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                    Envoi...
+                    {t.buttons.submitting[lang]}
                   </>
                 ) : (
                   <>
                     <Star className="w-4 h-4 mr-2" />
-                    Envoyer l'evaluation
+                    {t.buttons.submit[lang]}
                   </>
                 )}
               </Button>
