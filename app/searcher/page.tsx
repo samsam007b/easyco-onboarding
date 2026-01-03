@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -33,25 +33,34 @@ import {
   Send,
   MapPin,
   Euro,
+  Plus,
 } from 'lucide-react';
 
-// V3-FUN Searcher Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)';
+// V3-FUN Searcher Palette - Matching Resident Style
+const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
 const SEARCHER_PRIMARY = '#F59E0B';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)';
+const ACCENT_SHADOW = 'rgba(245, 158, 11, 0.15)';
+// Semantic Pastel Colors
+const SEMANTIC_SUCCESS = '#7CB89B';
+const SEMANTIC_SUCCESS_BG = 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)';
+const SEMANTIC_PURPLE = '#8B5CF6';
+const SEMANTIC_PURPLE_BG = 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)';
+const SEMANTIC_BLUE = '#3B82F6';
+const SEMANTIC_BLUE_BG = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)';
 
 // Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: { staggerChildren: 0.06 }
+    transition: { staggerChildren: 0.08 }
   }
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 16 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' as const } }
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 400, damping: 25 } }
 };
 
 interface UserStats {
@@ -73,7 +82,7 @@ interface RecommendedProperty {
   match_score?: number;
 }
 
-export default function SearcherHub() {
+const SearcherHub = memo(function SearcherHub() {
   const router = useRouter();
   const supabase = createClient();
   const { language } = useLanguage();
@@ -91,6 +100,25 @@ export default function SearcherHub() {
   });
   const [recommendations, setRecommendations] = useState<RecommendedProperty[]>([]);
   const [greeting, setGreeting] = useState('Bonjour');
+
+  // Get locale code for date formatting
+  const localeMap: { [key: string]: string } = {
+    fr: 'fr-FR',
+    en: 'en-US',
+    nl: 'nl-NL',
+    de: 'de-DE',
+  };
+  const locale = localeMap[language] || 'fr-FR';
+
+  // Get current date
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString(locale, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long'
+  });
+  // Capitalize first letter
+  const displayDate = formattedDate.charAt(0).toUpperCase() + formattedDate.slice(1);
 
   useEffect(() => {
     const hour = new Date().getHours();
@@ -157,7 +185,7 @@ export default function SearcherHub() {
         favorites: favoritesRes.count || 0,
         applications: applicationsRes.count || 0,
         visits: visitsRes.count || 0,
-        matches: 0, // Will be calculated
+        matches: 0,
         groups: groupsRes.count || 0,
         unreadMessages: unreadRes.data || 0,
         profileCompletion: Math.min(completion, 100)
@@ -184,364 +212,474 @@ export default function SearcherHub() {
     loadData();
   }, [supabase, router]);
 
+  // KPI Cards Configuration - V3 Fun Style
+  const kpiCards = [
+    {
+      title: 'Favoris',
+      value: stats.favorites,
+      subtitle: 'Biens sauvegardés',
+      icon: Bookmark,
+      iconGradient: SEMANTIC_PURPLE_BG,
+      iconColor: SEMANTIC_PURPLE,
+      bgGradient: 'white',
+      shadowColor: 'rgba(139, 92, 246, 0.12)',
+      href: '/searcher/favorites',
+    },
+    {
+      title: 'Candidatures',
+      value: stats.applications,
+      subtitle: 'En cours',
+      icon: FileText,
+      iconGradient: SEMANTIC_BLUE_BG,
+      iconColor: SEMANTIC_BLUE,
+      bgGradient: 'white',
+      shadowColor: 'rgba(59, 130, 246, 0.12)',
+      href: '/searcher/applications',
+    },
+    {
+      title: 'Visites',
+      value: stats.visits,
+      subtitle: 'Planifiées',
+      icon: Calendar,
+      iconGradient: SEMANTIC_SUCCESS_BG,
+      iconColor: SEMANTIC_SUCCESS,
+      bgGradient: 'white',
+      shadowColor: 'rgba(124, 184, 155, 0.12)',
+      href: '/searcher/visits',
+    },
+    {
+      title: 'Messages',
+      value: stats.unreadMessages,
+      subtitle: 'Non lus',
+      icon: MessageCircle,
+      iconGradient: CARD_BG_GRADIENT,
+      iconColor: SEARCHER_PRIMARY,
+      bgGradient: 'white',
+      shadowColor: ACCENT_SHADOW,
+      href: '/messages',
+      badge: stats.unreadMessages > 0,
+    },
+  ];
+
+  // Quick Actions
+  const quickActions = [
+    { label: '+ Dépense', icon: Plus, href: '/searcher/alerts', primary: true },
+    { label: 'Documents', icon: FileText, href: '/searcher/applications' },
+    { label: 'Règles', icon: FileText, href: '/searcher/groups' },
+    { label: 'Inviter', icon: UserPlus, href: '/searcher/groups/create' },
+    { label: 'Paramètres', icon: Star, href: '/profile/searcher' },
+  ];
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-white to-yellow-50/30">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
-          <LoadingHouse size={80} />
+          <LoadingHouse size={64} />
           <p className="text-gray-600 font-medium mt-4">Chargement de votre espace...</p>
         </div>
       </div>
     );
   }
 
-  // Navigation tiles configuration
-  const navigationTiles = [
-    {
-      id: 'explore',
-      title: 'Explorer',
-      description: 'Découvrir les biens disponibles',
-      icon: Compass,
-      href: '/searcher/explore',
-      gradient: 'from-amber-500 to-yellow-400',
-      shadowColor: '#F59E0B',
-      primary: true
-    },
-    {
-      id: 'matching',
-      title: 'Matching',
-      description: 'Biens & colocataires compatibles',
-      icon: Heart,
-      href: '/searcher/matching',
-      gradient: 'from-pink-500 to-rose-400',
-      shadowColor: '#EC4899',
-      badge: stats.matches > 0 ? stats.matches : undefined
-    },
-    {
-      id: 'favorites',
-      title: 'Favoris',
-      description: 'Vos biens sauvegardés',
-      icon: Bookmark,
-      href: '/searcher/favorites',
-      gradient: 'from-violet-500 to-purple-400',
-      shadowColor: '#8B5CF6',
-      badge: stats.favorites > 0 ? stats.favorites : undefined
-    },
-    {
-      id: 'applications',
-      title: 'Candidatures',
-      description: 'Suivre vos demandes',
-      icon: FileText,
-      href: '/searcher/applications',
-      gradient: 'from-blue-500 to-cyan-400',
-      shadowColor: '#3B82F6',
-      badge: stats.applications > 0 ? stats.applications : undefined
-    },
-    {
-      id: 'visits',
-      title: 'Visites',
-      description: 'Rendez-vous planifiés',
-      icon: Calendar,
-      href: '/searcher/visits',
-      gradient: 'from-emerald-500 to-teal-400',
-      shadowColor: '#10B981',
-      badge: stats.visits > 0 ? stats.visits : undefined
-    },
-    {
-      id: 'groups',
-      title: 'Groupes',
-      description: 'Chercher en colocation',
-      icon: Users,
-      href: '/searcher/groups',
-      gradient: 'from-orange-500 to-amber-400',
-      shadowColor: '#F97316',
-      badge: stats.groups > 0 ? stats.groups : undefined
-    },
-    {
-      id: 'map',
-      title: 'Carte',
-      description: 'Vue géographique',
-      icon: Map,
-      href: '/searcher/map',
-      gradient: 'from-indigo-500 to-blue-400',
-      shadowColor: '#6366F1'
-    },
-    {
-      id: 'messages',
-      title: 'Messages',
-      description: 'Vos conversations',
-      icon: MessageCircle,
-      href: '/messages',
-      gradient: 'from-slate-600 to-gray-500',
-      shadowColor: '#475569',
-      badge: stats.unreadMessages > 0 ? stats.unreadMessages : undefined
-    }
-  ];
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50/50 via-white to-yellow-50/30">
+    <div className="min-h-screen relative overflow-hidden">
+      {/* Glassmorphism background - V3 Searcher Amber */}
+      <div className="fixed inset-0 -z-10">
+        {/* Base gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-yellow-400/5 to-amber-300/3" />
+
+        {/* Animated gradient blobs */}
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+
+        {/* Glass effect overlay */}
+        <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
+      </div>
+
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6"
       >
-        {/* Hero Section */}
-        <motion.div variants={itemVariants} className="mb-8">
-          <div className="relative overflow-hidden rounded-3xl p-6 sm:p-8" style={{ background: SEARCHER_GRADIENT }}>
-            {/* Decorative elements */}
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-white/10 -translate-y-1/2 translate-x-1/3" />
-            <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-white/10 translate-y-1/2 -translate-x-1/4" />
+        {/* Hero Header - Split Layout like Resident */}
+        <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Left: Property Card (or Search CTA for Searcher) */}
+          <div
+            className="relative overflow-hidden rounded-3xl p-6"
+            style={{ background: SEARCHER_GRADIENT }}
+          >
+            {/* Decorative circles */}
+            <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/10 -translate-y-1/2 translate-x-1/4" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white/10 translate-y-1/2 -translate-x-1/4" />
 
-            <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6">
-              <div className="text-white">
-                <motion.h1
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  className="text-2xl sm:text-3xl font-bold mb-2"
-                >
-                  {greeting}, {userName || 'Chercheur'} !
-                </motion.h1>
-                <p className="text-white/80 text-lg">
-                  Trouvez votre colocation idéale
-                </p>
+            <div className="relative z-10">
+              <motion.div
+                whileHover={{ rotate: 5 }}
+                className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4"
+              >
+                <Search className="w-6 h-6 text-white" />
+              </motion.div>
+
+              <h2 className="text-xl font-bold text-white mb-1">
+                Trouvez votre colocation
+              </h2>
+              <p className="text-white/80 text-sm mb-4">
+                Explorer les biens disponibles
+              </p>
+
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-xl px-3 py-2">
+                  <MapPin className="w-4 h-4 text-white" />
+                  <span className="text-white text-sm font-medium">Belgique</span>
+                </div>
+
+                {/* Profile completion circle */}
+                {stats.profileCompletion < 100 && (
+                  <div className="relative w-12 h-12">
+                    <svg className="w-12 h-12 transform -rotate-90">
+                      <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="3" />
+                      <circle
+                        cx="24" cy="24" r="20" fill="none" stroke="white" strokeWidth="3"
+                        strokeDasharray={`${(stats.profileCompletion / 100) * 125.6} 125.6`}
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                    <span className="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">
+                      {stats.profileCompletion}%
+                    </span>
+                  </div>
+                )}
               </div>
 
               <Link href="/searcher/explore">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center gap-3 bg-white text-amber-600 font-semibold px-6 py-3 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="mt-4 w-full bg-white text-amber-600 font-semibold px-4 py-3 rounded-xl shadow-lg flex items-center justify-center gap-2"
                 >
-                  <Search className="w-5 h-5" />
-                  <span>Explorer les biens</span>
-                  <ArrowRight className="w-5 h-5" />
+                  <Compass className="w-5 h-5" />
+                  <span>Explorer</span>
                 </motion.button>
               </Link>
             </div>
+          </div>
 
-            {/* Profile Completion Banner */}
-            {stats.profileCompletion < 100 && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="relative z-10 mt-6 bg-white/15 backdrop-blur-sm rounded-2xl p-4"
-              >
-                <Link href="/profile/searcher" className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="relative w-12 h-12">
-                      <svg className="w-12 h-12 transform -rotate-90">
-                        <circle cx="24" cy="24" r="20" fill="none" stroke="rgba(255,255,255,0.3)" strokeWidth="4" />
-                        <circle
-                          cx="24" cy="24" r="20" fill="none" stroke="white" strokeWidth="4"
-                          strokeDasharray={`${(stats.profileCompletion / 100) * 125.6} 125.6`}
-                          strokeLinecap="round"
-                        />
-                      </svg>
-                      <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-white">
-                        {stats.profileCompletion}%
-                      </span>
-                    </div>
-                    <div className="text-white">
-                      <p className="font-semibold">Complétez votre profil</p>
-                      <p className="text-sm text-white/70">Plus de matchs avec un profil complet</p>
-                    </div>
-                  </div>
-                  <ChevronRight className="w-5 h-5 text-white/60" />
+          {/* Right: Welcome + Quick Actions */}
+          <div className="lg:col-span-2 space-y-4">
+            {/* Welcome Section */}
+            <div className="bg-white rounded-2xl p-5" style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}>
+              {/* Decorative blob */}
+              <div
+                className="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-30 pointer-events-none"
+                style={{ background: SEARCHER_GRADIENT }}
+              />
+
+              <div className="relative z-10">
+                <div className="flex items-center gap-2 text-gray-500 text-sm mb-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>{displayDate}</span>
+                </div>
+
+                <h1 className="text-2xl font-bold text-gray-900 mb-1">
+                  {greeting}, {userName || 'Chercheur'} !
+                </h1>
+                <p className="text-gray-500">
+                  Voici un aperçu de votre recherche
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Actions */}
+            <div className="flex flex-wrap gap-2">
+              {quickActions.map((action, index) => (
+                <Link key={index} href={action.href}>
+                  <motion.button
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.97 }}
+                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+                      action.primary
+                        ? 'text-white shadow-lg'
+                        : 'bg-white text-gray-700 border border-gray-200 hover:border-amber-200'
+                    }`}
+                    style={action.primary ? {
+                      background: SEARCHER_GRADIENT,
+                      boxShadow: '0 4px 14px rgba(245, 158, 11, 0.35)'
+                    } : undefined}
+                  >
+                    <action.icon className="w-4 h-4" />
+                    {action.label}
+                  </motion.button>
                 </Link>
-              </motion.div>
-            )}
-          </div>
-        </motion.div>
-
-        {/* Navigation Grid */}
-        <motion.div variants={itemVariants} className="mb-8">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Compass className="w-5 h-5 text-amber-500" />
-            Accès rapide
-          </h2>
-
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
-            {navigationTiles.map((tile, index) => (
-              <Link key={tile.id} href={tile.href}>
-                <motion.div
-                  variants={{
-                    hidden: { opacity: 0, y: 20 },
-                    visible: { opacity: 1, y: 0, transition: { delay: index * 0.05 } }
-                  }}
-                  whileHover={{ y: -4, scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className={`relative overflow-hidden rounded-2xl p-4 sm:p-5 cursor-pointer bg-gradient-to-br ${tile.gradient} text-white`}
-                  style={{
-                    boxShadow: `0 8px 20px ${tile.shadowColor}30`,
-                    minHeight: tile.primary ? '140px' : '120px'
-                  }}
-                >
-                  {tile.badge !== undefined && (
-                    <div className="absolute top-3 right-3">
-                      <Badge className="bg-white/25 text-white border-0 backdrop-blur-sm text-xs font-bold">
-                        {tile.badge}
-                      </Badge>
-                    </div>
-                  )}
-
-                  <tile.icon className={`${tile.primary ? 'w-8 h-8' : 'w-6 h-6'} mb-2 sm:mb-3 opacity-90`} />
-                  <p className={`font-bold ${tile.primary ? 'text-lg' : 'text-base'}`}>{tile.title}</p>
-                  <p className="text-xs sm:text-sm text-white/75 line-clamp-1">{tile.description}</p>
-
-                  {/* Decorative circle */}
-                  <div className="absolute -bottom-4 -right-4 w-16 h-16 rounded-full bg-white/10" />
-                </motion.div>
-              </Link>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Stats Summary */}
-        <motion.div variants={itemVariants} className="mb-8">
-          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <TrendingUp className="w-5 h-5 text-amber-500" />
-              Votre activité
-            </h2>
-
-            <div className="grid grid-cols-4 gap-4 sm:gap-6">
-              <Link href="/searcher/favorites" className="text-center group">
-                <div className="w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center bg-violet-100 group-hover:bg-violet-200 transition-colors">
-                  <Bookmark className="w-6 h-6 text-violet-600" />
-                </div>
-                <p className="text-2xl font-bold text-gray-900">{stats.favorites}</p>
-                <p className="text-xs text-gray-500">Favoris</p>
-              </Link>
-
-              <Link href="/searcher/applications" className="text-center group">
-                <div className="w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center bg-blue-100 group-hover:bg-blue-200 transition-colors">
-                  <FileText className="w-6 h-6 text-blue-600" />
-                </div>
-                <p className="text-2xl font-bold text-gray-900">{stats.applications}</p>
-                <p className="text-xs text-gray-500">Candidatures</p>
-              </Link>
-
-              <Link href="/searcher/visits" className="text-center group">
-                <div className="w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center bg-emerald-100 group-hover:bg-emerald-200 transition-colors">
-                  <Calendar className="w-6 h-6 text-emerald-600" />
-                </div>
-                <p className="text-2xl font-bold text-gray-900">{stats.visits}</p>
-                <p className="text-xs text-gray-500">Visites</p>
-              </Link>
-
-              <Link href="/messages" className="text-center group">
-                <div className="w-12 h-12 mx-auto mb-2 rounded-xl flex items-center justify-center bg-gray-100 group-hover:bg-gray-200 transition-colors relative">
-                  <MessageCircle className="w-6 h-6 text-gray-600" />
-                  {stats.unreadMessages > 0 && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-xs text-white font-bold">{stats.unreadMessages}</span>
-                    </div>
-                  )}
-                </div>
-                <p className="text-2xl font-bold text-gray-900">{stats.unreadMessages}</p>
-                <p className="text-xs text-gray-500">Messages</p>
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Recommendations */}
-        {recommendations.length > 0 && (
-          <motion.div variants={itemVariants}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                <Sparkles className="w-5 h-5 text-amber-500" />
-                Recommandés pour vous
-              </h2>
-              <Link href="/searcher/explore">
-                <Button variant="ghost" size="sm" className="text-amber-600 hover:text-amber-700 hover:bg-amber-50">
-                  Voir tout
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </Link>
-            </div>
-
-            <div className="grid sm:grid-cols-3 gap-4">
-              {recommendations.map((property, index) => (
-                <motion.div
-                  key={property.id}
-                  variants={{
-                    hidden: { opacity: 0, scale: 0.95 },
-                    visible: { opacity: 1, scale: 1, transition: { delay: 0.1 + index * 0.1 } }
-                  }}
-                  whileHover={{ y: -4 }}
-                  className="group"
-                >
-                  <Link href={`/properties/${property.id}`}>
-                    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-md transition-shadow">
-                      <div className="relative h-36 bg-gray-100">
-                        {property.main_image ? (
-                          <Image
-                            src={property.main_image}
-                            alt={property.title}
-                            fill
-                            className="object-cover group-hover:scale-105 transition-transform duration-300"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Home className="w-10 h-10 text-gray-300" />
-                          </div>
-                        )}
-                        {property.match_score && (
-                          <div className="absolute top-2 left-2">
-                            <Badge className="bg-amber-500 text-white border-0">
-                              {property.match_score}% match
-                            </Badge>
-                          </div>
-                        )}
-                      </div>
-                      <div className="p-4">
-                        <h3 className="font-semibold text-gray-900 line-clamp-1 mb-1">{property.title}</h3>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-gray-500 flex items-center gap-1">
-                            <MapPin className="w-3.5 h-3.5" />
-                            {property.city}
-                          </span>
-                          <span className="font-bold text-amber-600 flex items-center gap-0.5">
-                            <Euro className="w-4 h-4" />
-                            {property.monthly_rent}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
               ))}
             </div>
-          </motion.div>
-        )}
 
-        {/* Quick Actions Footer */}
-        <motion.div variants={itemVariants} className="mt-8 pt-6 border-t border-gray-100">
-          <div className="flex flex-wrap justify-center gap-3">
-            <Link href="/searcher/alerts">
-              <Button variant="outline" className="rounded-xl border-amber-200 text-amber-700 hover:bg-amber-50">
-                <Bell className="w-4 h-4 mr-2" />
-                Créer une alerte
-              </Button>
-            </Link>
-            <Link href="/searcher/groups/create">
-              <Button variant="outline" className="rounded-xl border-violet-200 text-violet-700 hover:bg-violet-50">
-                <UserPlus className="w-4 h-4 mr-2" />
-                Créer un groupe
-              </Button>
-            </Link>
+            {/* Next Step Banner */}
             <Link href="/profile/searcher">
-              <Button variant="outline" className="rounded-xl border-gray-200 text-gray-700 hover:bg-gray-50">
-                <Star className="w-4 h-4 mr-2" />
-                Améliorer mon profil
-              </Button>
+              <motion.div
+                whileHover={{ scale: 1.01, x: 4 }}
+                className="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer"
+                style={{ boxShadow: `0 4px 16px ${ACCENT_SHADOW}` }}
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    style={{ background: SEARCHER_GRADIENT }}
+                  >
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <span className="text-sm text-gray-500">Prochaine étape:</span>
+                    <p className="font-semibold text-gray-900">Compléter votre profil</p>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-gray-400" />
+              </motion.div>
             </Link>
           </div>
+        </motion.div>
+
+        {/* KPI Cards Grid - V3 Style */}
+        <motion.div
+          variants={containerVariants}
+          className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6"
+        >
+          {kpiCards.map((card, index) => {
+            const Icon = card.icon;
+
+            return (
+              <Link key={card.title} href={card.href}>
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{ scale: 1.02, y: -3 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative overflow-hidden rounded-2xl p-4 cursor-pointer bg-white"
+                  style={{ boxShadow: `0 8px 24px ${card.shadowColor}` }}
+                >
+                  {/* Decorative circle */}
+                  <div
+                    className="absolute -right-6 -top-6 w-20 h-20 rounded-full opacity-40"
+                    style={{ background: card.iconGradient }}
+                  />
+
+                  <div className="relative z-10">
+                    {/* Icon with badge */}
+                    <div className="flex items-start justify-between mb-3">
+                      <motion.div
+                        whileHover={{ rotate: 5 }}
+                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        style={{ background: card.iconGradient }}
+                      >
+                        <Icon className="w-5 h-5" style={{ color: card.iconColor }} />
+                      </motion.div>
+
+                      {card.badge && (
+                        <div className="w-5 h-5 bg-red-500 rounded-full flex items-center justify-center">
+                          <span className="text-xs text-white font-bold">{card.value}</span>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="text-xs font-medium text-gray-500 mb-0.5">
+                      {card.title}
+                    </h3>
+
+                    {/* Value */}
+                    <p className="text-xl font-black text-gray-900 mb-1">
+                      {card.value}
+                    </p>
+
+                    {/* Subtitle */}
+                    <p className="text-xs text-gray-500">{card.subtitle}</p>
+                  </div>
+                </motion.div>
+              </Link>
+            );
+          })}
+        </motion.div>
+
+        {/* Two Column Layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+          {/* Navigation Tiles - Compact */}
+          <motion.div
+            variants={itemVariants}
+            className="relative overflow-hidden bg-white rounded-2xl p-5 border-l-4 border-amber-400"
+            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+          >
+            <div
+              className="absolute -right-10 -top-10 w-28 h-28 rounded-full opacity-20 pointer-events-none"
+              style={{ background: SEARCHER_GRADIENT }}
+            />
+
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
+                  <motion.div
+                    whileHover={{ rotate: 5 }}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ background: SEARCHER_GRADIENT }}
+                  >
+                    <Compass className="w-4 h-4 text-white" />
+                  </motion.div>
+                  Accès rapide
+                </h3>
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { icon: Compass, label: 'Explorer', href: '/searcher/explore', bgColor: '#FEF3C7', iconColor: '#F59E0B' },
+                  { icon: Heart, label: 'Matching', href: '/searcher/matching', bgColor: '#FCE7F3', iconColor: '#EC4899' },
+                  { icon: Map, label: 'Carte', href: '/searcher/map', bgColor: '#DBEAFE', iconColor: '#3B82F6' },
+                  { icon: Users, label: 'Groupes', href: '/searcher/groups', bgColor: '#EDE9FE', iconColor: '#8B5CF6' },
+                  { icon: Bell, label: 'Alertes', href: '/searcher/alerts', bgColor: '#D1FAE5', iconColor: '#10B981' },
+                  { icon: Star, label: 'Profil', href: '/profile/searcher', bgColor: '#F3F4F6', iconColor: '#6B7280' },
+                ].map((item, index) => (
+                  <Link key={index} href={item.href}>
+                    <motion.div
+                      whileHover={{ scale: 1.02, x: 3 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-amber-50/50 transition-all cursor-pointer"
+                    >
+                      <div
+                        className="w-9 h-9 rounded-lg flex items-center justify-center"
+                        style={{ backgroundColor: item.bgColor }}
+                      >
+                        <item.icon className="w-4 h-4" style={{ color: item.iconColor }} />
+                      </div>
+                      <span className="font-medium text-gray-900 text-sm">{item.label}</span>
+                    </motion.div>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Recommendations */}
+          <motion.div
+            variants={itemVariants}
+            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+          >
+            <div
+              className="absolute -left-10 -bottom-10 w-28 h-28 rounded-full opacity-20 pointer-events-none"
+              style={{ background: SEARCHER_GRADIENT }}
+            />
+
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
+                  <motion.div
+                    whileHover={{ rotate: 5 }}
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ background: SEARCHER_GRADIENT }}
+                  >
+                    <Sparkles className="w-4 h-4 text-white" />
+                  </motion.div>
+                  Recommandés pour vous
+                </h3>
+                <Link href="/searcher/explore">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-full font-medium text-xs h-8 px-3"
+                    style={{ color: SEARCHER_PRIMARY }}
+                  >
+                    Tout voir
+                    <ArrowRight className="w-3.5 h-3.5 ml-1" />
+                  </Button>
+                </Link>
+              </div>
+
+              <div className="space-y-2">
+                {recommendations.length > 0 ? (
+                  recommendations.slice(0, 3).map((property, index) => (
+                    <Link key={property.id} href={`/properties/${property.id}`}>
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.06 }}
+                        whileHover={{ x: 3, backgroundColor: 'rgba(245, 158, 11, 0.04)' }}
+                        className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 transition-all cursor-pointer"
+                      >
+                        <div className="w-12 h-12 rounded-xl bg-gray-200 overflow-hidden flex-shrink-0">
+                          {property.main_image ? (
+                            <Image
+                              src={property.main_image}
+                              alt={property.title}
+                              width={48}
+                              height={48}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center">
+                              <Home className="w-5 h-5 text-gray-400" />
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-gray-900 text-sm truncate">{property.title}</p>
+                          <p className="text-xs text-gray-500 flex items-center gap-1">
+                            <MapPin className="w-3 h-3" />
+                            {property.city}
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <p className="font-bold text-amber-600 text-sm">€{property.monthly_rent}</p>
+                          {property.match_score && (
+                            <Badge
+                              className="text-xs border-none mt-1"
+                              style={{ background: 'rgba(245, 158, 11, 0.15)', color: SEARCHER_PRIMARY }}
+                            >
+                              {property.match_score}%
+                            </Badge>
+                          )}
+                        </div>
+                      </motion.div>
+                    </Link>
+                  ))
+                ) : (
+                  <div className="text-center py-8">
+                    <div
+                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3"
+                      style={{ background: CARD_BG_GRADIENT }}
+                    >
+                      <Search className="w-7 h-7" style={{ color: SEARCHER_PRIMARY }} />
+                    </div>
+                    <p className="font-medium text-gray-900 mb-1">Aucun bien pour le moment</p>
+                    <p className="text-sm text-gray-500">Explorez les biens disponibles</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Bottom Actions */}
+        <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3">
+          <Link href="/searcher/alerts">
+            <Button variant="outline" className="rounded-xl border-amber-200 text-amber-700 hover:bg-amber-50">
+              <Bell className="w-4 h-4 mr-2" />
+              Créer une alerte
+            </Button>
+          </Link>
+          <Link href="/searcher/groups/create">
+            <Button variant="outline" className="rounded-xl border-violet-200 text-violet-700 hover:bg-violet-50">
+              <UserPlus className="w-4 h-4 mr-2" />
+              Créer un groupe
+            </Button>
+          </Link>
+          <Link href="/profile/searcher">
+            <Button variant="outline" className="rounded-xl border-gray-200 text-gray-700 hover:bg-gray-50">
+              <Star className="w-4 h-4 mr-2" />
+              Améliorer mon profil
+            </Button>
+          </Link>
         </motion.div>
       </motion.div>
     </div>
   );
-}
+});
+
+export default SearcherHub;
