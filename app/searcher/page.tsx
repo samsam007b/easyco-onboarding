@@ -261,14 +261,57 @@ const SearcherHub = memo(function SearcherHub() {
     },
   ];
 
-  // Quick Actions
+  // Quick Actions - Pertinentes pour un Searcher
   const quickActions = [
-    { label: '+ Dépense', icon: Plus, href: '/searcher/alerts', primary: true },
-    { label: 'Documents', icon: FileText, href: '/searcher/applications' },
-    { label: 'Règles', icon: FileText, href: '/searcher/groups' },
-    { label: 'Inviter', icon: UserPlus, href: '/searcher/groups/create' },
-    { label: 'Paramètres', icon: Star, href: '/profile/searcher' },
+    { label: 'Nouvelle alerte', icon: Bell, href: '/searcher/alerts', primary: true },
+    { label: 'Matching', icon: Heart, href: '/searcher/matching' },
+    { label: 'Carte', icon: Map, href: '/searcher/map' },
+    { label: 'Créer un groupe', icon: Users, href: '/searcher/groups/create' },
   ];
+
+  // Determine next step based on user progress
+  const getNextStep = () => {
+    if (stats.profileCompletion < 70) {
+      return {
+        icon: Star,
+        label: 'Compléter votre profil',
+        description: 'Un profil complet augmente vos chances de matching',
+        href: '/profile/searcher',
+      };
+    }
+    if (stats.favorites === 0) {
+      return {
+        icon: Compass,
+        label: 'Explorer les biens',
+        description: 'Découvrez les colocations disponibles',
+        href: '/searcher/explore',
+      };
+    }
+    if (stats.applications === 0 && stats.favorites > 0) {
+      return {
+        icon: Send,
+        label: 'Envoyer une candidature',
+        description: `Vous avez ${stats.favorites} favori${stats.favorites > 1 ? 's' : ''}, postulez !`,
+        href: '/searcher/favorites',
+      };
+    }
+    if (stats.groups === 0) {
+      return {
+        icon: Users,
+        label: 'Créer ou rejoindre un groupe',
+        description: 'Cherchez à plusieurs pour plus de chances',
+        href: '/searcher/groups',
+      };
+    }
+    return {
+      icon: Sparkles,
+      label: 'Continuer votre recherche',
+      description: 'Explorez de nouveaux biens',
+      href: '/searcher/explore',
+    };
+  };
+
+  const nextStep = getNextStep();
 
   if (loading) {
     return (
@@ -415,8 +458,8 @@ const SearcherHub = memo(function SearcherHub() {
               ))}
             </div>
 
-            {/* Next Step Banner */}
-            <Link href="/profile/searcher">
+            {/* Next Step Banner - Dynamic based on user progress */}
+            <Link href={nextStep.href}>
               <motion.div
                 whileHover={{ scale: 1.01, x: 4 }}
                 className="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer"
@@ -427,11 +470,11 @@ const SearcherHub = memo(function SearcherHub() {
                     className="w-10 h-10 rounded-xl flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
-                    <Sparkles className="w-5 h-5 text-white" />
+                    <nextStep.icon className="w-5 h-5 text-white" />
                   </div>
                   <div>
                     <span className="text-sm text-gray-500">Prochaine étape:</span>
-                    <p className="font-semibold text-gray-900">Compléter votre profil</p>
+                    <p className="font-semibold text-gray-900">{nextStep.label}</p>
                   </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-gray-400" />
