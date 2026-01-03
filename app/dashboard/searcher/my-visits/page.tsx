@@ -373,14 +373,13 @@ export default function MyVisitsPage() {
             <TabsList className="bg-white/80 backdrop-blur-sm rounded-2xl p-1 shadow-lg border border-gray-200">
               <TabsTrigger
                 value="upcoming"
-                className="rounded-xl data-[state=active]:text-white transition-all"
-                style={{ ['--tw-bg-opacity' as string]: 1 }}
+                className="rounded-xl data-[state=active]:bg-amber-500 data-[state=active]:text-white transition-all"
               >
                 {t?.tabs?.upcoming?.[language] || 'À venir'} ({upcomingVisits.length})
               </TabsTrigger>
               <TabsTrigger
                 value="past"
-                className="rounded-xl data-[state=active]:text-white transition-all"
+                className="rounded-xl data-[state=active]:bg-amber-500 data-[state=active]:text-white transition-all"
               >
                 {t?.tabs?.past?.[language] || 'Passées'} ({pastVisits.length})
               </TabsTrigger>
