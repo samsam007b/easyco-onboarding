@@ -6,6 +6,7 @@ import { User, Users, ChevronDown, Plus, Baby, UsersRound, UserPlus, Handshake }
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import IconBadge from './IconBadge';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface Profile {
   profile_id: string;
@@ -45,7 +46,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
 
       if (error) {
         // FIXME: Use logger.error('Error loading profiles:', error);
-        toast.error('Failed to load profiles');
+        toast.error(getHookTranslation('profile', 'loadProfilesFailed'));
         return;
       }
 
@@ -75,7 +76,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
       onProfileChange(profile.profile_id, profile.profile_type);
     }
 
-    toast.success(`Switched to ${profile.profile_name}`);
+    toast.success(`${getHookTranslation('profile', 'switchedTo')} ${profile.profile_name}`);
   };
 
   const handleCreateNewProfile = () => {
@@ -187,7 +188,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
               className="w-full px-4 py-3 flex items-center gap-3 border-t-2 border-gray-100 hover:bg-gray-50 transition text-[color:var(--easy-purple)] font-medium"
             >
               <Plus className="w-5 h-5" />
-              Create New Profile
+              {getHookTranslation('profile', 'createNewProfile')}
             </button>
           </div>
         </>

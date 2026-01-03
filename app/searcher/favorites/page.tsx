@@ -26,6 +26,7 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 // V3-FUN Palette
 const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
@@ -109,10 +110,10 @@ export default function SearcherFavoritesPage() {
     setRemoving(favoriteId);
     const { error } = await supabase.from('favorites').delete().eq('id', favoriteId);
     if (error) {
-      toast.error('Erreur lors de la suppression');
+      toast.error(getHookTranslation('alerts', 'deleteFailed'));
     } else {
       setFavorites(prev => prev.filter(f => f.id !== favoriteId));
-      toast.success('Retiré des favoris');
+      toast.success(getHookTranslation('alerts', 'removedFromFavorites'));
     }
     setRemoving(null);
   };

@@ -67,6 +67,7 @@ import { VendorDirectory } from '@/components/owner/maintenance/VendorDirectory'
 import { vendorService, type Vendor, type VendorCategory } from '@/lib/services/vendor-service';
 import type { CreateMaintenanceForm } from '@/types/maintenance.types';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 import { ownerGradient, ownerGradientLight } from '@/lib/constants/owner-theme';
 
@@ -226,7 +227,7 @@ export default function MaintenancePage() {
 
       if (propError) {
         console.error('[Maintenance] Failed to fetch properties:', propError);
-        toast.error('Impossible de charger vos propriétés');
+        toast.error(getHookTranslation('maintenance', 'loadPropertiesFailed'));
         setIsLoading(false);
         return;
       }
@@ -274,7 +275,7 @@ export default function MaintenancePage() {
 
     } catch (error) {
       console.error('[Maintenance] Error fetching data:', error);
-      toast.error('Erreur lors du chargement des données');
+      toast.error(getHookTranslation('maintenance', 'loadDataFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -312,22 +313,22 @@ export default function MaintenancePage() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user) {
-        toast.error('Vous devez etre connecte pour creer une demande');
+        toast.error(getHookTranslation('maintenance', 'loginRequired'));
         return;
       }
 
       const result = await maintenanceService.createRequest(propertyId, user.id, form);
 
       if (result.success) {
-        toast.success('Demande de maintenance creee avec succes');
+        toast.success(getHookTranslation('maintenance', 'requestCreated'));
         setShowCreateModal(false);
         await fetchMaintenanceData();
       } else {
-        toast.error(result.error || 'Erreur lors de la creation');
+        toast.error(result.error || getHookTranslation('maintenance', 'createFailed'));
       }
     } catch (error) {
       console.error('[Maintenance] Error creating ticket:', error);
-      toast.error('Erreur lors de la creation de la demande');
+      toast.error(getHookTranslation('maintenance', 'createFailed'));
     } finally {
       setIsCreating(false);
     }
@@ -343,9 +344,11 @@ export default function MaintenancePage() {
       setVendors(prev => prev.map(v =>
         v.id === vendorId ? { ...v, isFavorite: !v.isFavorite } : v
       ));
-      toast.success(vendor.isFavorite ? 'Retire des favoris' : 'Ajoute aux favoris');
+      toast.success(vendor.isFavorite
+        ? getHookTranslation('maintenance', 'removedFromFavorites')
+        : getHookTranslation('maintenance', 'addedToFavorites'));
     } else {
-      toast.error('Erreur lors de la mise a jour');
+      toast.error(getHookTranslation('maintenance', 'updateFailed'));
     }
   };
 

@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 interface ComparisonContextType {
   selectedPropertyIds: string[];
@@ -26,10 +27,10 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
         return prev;
       }
       if (prev.length >= 3) {
-        toast.error('Tu ne peux comparer que 3 propriétés maximum');
+        toast.error(getHookTranslation('comparison', 'maxProperties'));
         return prev;
       }
-      toast.success('Ajouté à la comparaison');
+      toast.success(getHookTranslation('comparison', 'added'));
       return [...prev, propertyId];
     });
   }, []);
@@ -37,14 +38,14 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
   const removeFromComparison = useCallback((propertyId: string) => {
     setSelectedPropertyIds((prev) => {
       const filtered = prev.filter((id) => id !== propertyId);
-      toast.success('Retiré de la comparaison');
+      toast.success(getHookTranslation('comparison', 'removed'));
       return filtered;
     });
   }, []);
 
   const clearComparison = useCallback(() => {
     setSelectedPropertyIds([]);
-    toast.success('Sélection effacée');
+    toast.success(getHookTranslation('comparison', 'cleared'));
   }, []);
 
   const isSelected = useCallback(
@@ -56,7 +57,7 @@ export function ComparisonProvider({ children }: { children: React.ReactNode }) 
 
   const goToComparison = useCallback(() => {
     if (selectedPropertyIds.length < 2) {
-      toast.error('Sélectionne au moins 2 propriétés à comparer');
+      toast.error(getHookTranslation('comparison', 'minRequired'));
       return;
     }
     router.push(`/properties/compare?ids=${selectedPropertyIds.join(',')}`);

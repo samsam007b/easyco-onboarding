@@ -11,6 +11,7 @@ import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
 import { useLanguage } from '@/lib/i18n/use-language'
+import { getHookTranslation } from '@/lib/i18n/get-language'
 import ProfilePictureUpload from '@/components/ProfilePictureUpload'
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion, AnimatePresence } from 'framer-motion'
@@ -184,7 +185,7 @@ export default function MyProfileOwnerPage() {
         .single()
 
       if (error) {
-        toast.error('Failed to load profile')
+        toast.error(getHookTranslation('profile', 'loadFailed'))
         return
       }
 
@@ -203,7 +204,7 @@ export default function MyProfileOwnerPage() {
         setUserProfile(profileData)
       }
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(getHookTranslation('profile', 'unexpectedError'))
     } finally {
       setIsLoading(false)
       setIsRefreshing(false)
@@ -219,7 +220,7 @@ export default function MyProfileOwnerPage() {
     if (!userData) return
 
     if (!fullName.trim()) {
-      toast.error('Name cannot be empty')
+      toast.error(getHookTranslation('profile', 'nameEmpty'))
       return
     }
 
@@ -232,15 +233,15 @@ export default function MyProfileOwnerPage() {
         .eq('id', userData.id)
 
       if (error) {
-        toast.error('Failed to update name')
+        toast.error(getHookTranslation('profile', 'nameUpdateFailed'))
         return
       }
 
       setUserData({ ...userData, full_name: fullName })
       setIsEditingName(false)
-      toast.success('Name updated successfully')
+      toast.success(getHookTranslation('profile', 'nameUpdated'))
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(getHookTranslation('profile', 'unexpectedError'))
     } finally {
       setIsSavingName(false)
     }
@@ -251,7 +252,7 @@ export default function MyProfileOwnerPage() {
     if (!userData) return
 
     if (selectedUserType === userData.user_type) {
-      toast.error('Please select a different role')
+      toast.error(getHookTranslation('profile', 'selectDifferentRole'))
       return
     }
 
@@ -290,11 +291,11 @@ export default function MyProfileOwnerPage() {
         .eq('id', userData.id)
 
       if (error) {
-        toast.error('Failed to change role')
+        toast.error(getHookTranslation('profile', 'roleChangeFailed'))
         return
       }
 
-      toast.success('Role switched successfully!')
+      toast.success(getHookTranslation('profile', 'roleSwitched'))
 
       setTimeout(() => {
         if (hasCompletedNewRoleOnboarding) {
@@ -308,7 +309,7 @@ export default function MyProfileOwnerPage() {
         }
       }, 1000)
     } catch (error) {
-      toast.error('An unexpected error occurred')
+      toast.error(getHookTranslation('profile', 'unexpectedError'))
     } finally {
       setIsChangingUserType(false)
       setShowRoleSwitchModal(false)
@@ -332,7 +333,7 @@ export default function MyProfileOwnerPage() {
 
       if (error) throw error
 
-      toast.success('Onboarding reset! Redirecting...')
+      toast.success(getHookTranslation('profile', 'onboardingReset'))
       setShowResetOnboardingDialog(false)
 
       setTimeout(() => {
@@ -348,7 +349,7 @@ export default function MyProfileOwnerPage() {
         }
       }, 1000)
     } catch (error) {
-      toast.error('Failed to reset onboarding')
+      toast.error(getHookTranslation('profile', 'onboardingResetFailed'))
     }
   }
 
@@ -881,7 +882,7 @@ export default function MyProfileOwnerPage() {
                     onClick={(e) => {
                       e.stopPropagation()
                       fetchUserData()
-                      toast.success('Données actualisées')
+                      toast.success(getHookTranslation('profile', 'dataRefreshed'))
                     }}
                     disabled={isRefreshing}
                     className="p-2 hover:bg-white/50 rounded-lg transition-colors disabled:opacity-50"

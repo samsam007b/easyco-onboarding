@@ -111,13 +111,13 @@ export default function SearcherAlertsPage() {
     setAlerts(prev => prev.map(a =>
       a.id === alertId ? { ...a, is_active: isActive } : a
     ));
-    toast.success(isActive ? 'Alerte activée' : 'Alerte désactivée');
+    toast.success(isActive ? getHookTranslation('alerts', 'activated') : getHookTranslation('alerts', 'deactivated'));
   };
 
   const handleDeleteAlert = async (alertId: string) => {
     if (!confirm('Supprimer cette alerte ?')) return;
     setAlerts(prev => prev.filter(a => a.id !== alertId));
-    toast.success('Alerte supprimée');
+    toast.success(getHookTranslation('alerts', 'deleted'));
   };
 
   const formatTimeAgo = (dateStr?: string) => {

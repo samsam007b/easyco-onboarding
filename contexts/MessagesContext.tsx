@@ -13,6 +13,7 @@ import {
   SendMessageParams,
 } from '@/types/message.types';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 const MessagesContext = createContext<MessagesContextValue | undefined>(undefined);
 
@@ -126,7 +127,7 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
 
     } catch (error) {
       console.error('Error loading conversations:', error);
-      toast.error('Failed to load conversations');
+      toast.error(getHookTranslation('conversations', 'loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -192,7 +193,7 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
 
     } catch (error) {
       console.error('Error loading conversation:', error);
-      toast.error('Failed to load conversation');
+      toast.error(getHookTranslation('conversations', 'loadConversationFailed'));
     }
   }, [user, supabase]);
 
@@ -237,7 +238,7 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
       return data;
     } catch (error) {
       console.error('Error sending message:', error);
-      toast.error('Failed to send message');
+      toast.error(getHookTranslation('conversations', 'sendFailed'));
       return null;
     }
   }, [user, supabase, activeConversation, loadConversations]);
@@ -282,12 +283,12 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
       // Reload conversations
       await loadConversations();
 
-      toast.success('Conversation created');
+      toast.success(getHookTranslation('conversations', 'created'));
       return conv;
 
     } catch (error) {
       console.error('Error creating conversation:', error);
-      toast.error('Failed to create conversation');
+      toast.error(getHookTranslation('conversations', 'createFailed'));
       return null;
     }
   }, [user, supabase, sendMessage, loadConversations]);
@@ -339,10 +340,10 @@ export function MessagesProvider({ children }: { children: ReactNode }) {
         setActiveConversation(null);
       }
 
-      toast.success('Conversation archived');
+      toast.success(getHookTranslation('conversations', 'archived'));
     } catch (error) {
       console.error('Error archiving conversation:', error);
-      toast.error('Failed to archive conversation');
+      toast.error(getHookTranslation('conversations', 'archiveFailed'));
     }
   }, [user, supabase, activeConversation]);
 

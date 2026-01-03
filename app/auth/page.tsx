@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { ArrowLeft, Eye, EyeOff, Mail, Lock, User, Check, X, Gift, CheckCircle, AlertCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import HoneypotField from '@/components/security/HoneypotField';
@@ -216,7 +217,7 @@ function AuthContent() {
         }
       }
     } catch (error: any) {
-      toast.error('An error occurred', { description: error.message });
+      toast.error(getHookTranslation('auth', 'error'), { description: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -322,7 +323,7 @@ function AuthContent() {
         router.push('/welcome');
       }
     } catch (error: any) {
-      toast.error('An error occurred', { description: error.message });
+      toast.error(getHookTranslation('auth', 'error'), { description: error.message });
     } finally {
       setIsLoading(false);
     }
@@ -340,11 +341,11 @@ function AuthContent() {
       });
 
       if (error) {
-        toast.error('Google sign-in failed', { description: error.message });
+        toast.error(getHookTranslation('auth', 'googleFailed'), { description: error.message });
         setIsGoogleLoading(false);
       }
     } catch (error: any) {
-      toast.error('An error occurred', { description: error.message });
+      toast.error(getHookTranslation('auth', 'error'), { description: error.message });
       setIsGoogleLoading(false);
     }
   };

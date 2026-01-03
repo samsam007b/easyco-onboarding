@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 // V3-FUN Searcher Palette
 const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
@@ -169,7 +170,7 @@ export default function SearcherCreateGroupPage() {
 
   const copyInviteCode = () => {
     navigator.clipboard.writeText(inviteCode);
-    toast.success('Code copié !');
+    toast.success(getHookTranslation('alerts', 'codeCopied'));
   };
 
   return (

@@ -6,6 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import {
   BellRing,
   ArrowLeft,
@@ -191,10 +192,10 @@ export default function PropertyAlertsPage() {
 
       if (error) throw error;
 
-      toast.success('Préférences sauvegardées');
+      toast.success(getHookTranslation('alerts', 'saved'));
     } catch (error) {
       console.error('Error saving settings:', error);
-      toast.error('Erreur lors de la sauvegarde');
+      toast.error(getHookTranslation('alerts', 'saveFailed'));
     } finally {
       setIsSaving(false);
     }
