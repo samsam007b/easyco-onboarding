@@ -1,13 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useApplications } from '@/lib/hooks/use-applications';
 import { createClient } from '@/lib/auth/supabase-client';
 import type { Application } from '@/lib/hooks/use-applications';
@@ -28,14 +25,43 @@ import {
   Sparkles,
   Send,
   ArrowLeft,
+  Search,
+  Heart,
+  Bookmark,
+  MessageCircle,
+  ClipboardList,
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-// V3-FUN Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFF9E6 0%, #FEF3C7 100%)';
+// V3-FUN Applications Palette - Teal/Cyan theme (documents/forms feel)
+const APPS_GRADIENT = 'linear-gradient(135deg, #0891B2 0%, #22D3EE 50%, #67E8F9 100%)';
+const APPS_PRIMARY = '#0891B2';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #ECFEFF 0%, #CFFAFE 100%)';
+const ACCENT_SHADOW = 'rgba(8, 145, 178, 0.15)';
+// Searcher colors for nav
+const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
+const SEARCHER_PRIMARY = '#F59E0B';
+// Semantic Colors
+const SEMANTIC_SUCCESS = '#10B981';
+const SEMANTIC_PINK = '#EC4899';
+const SEMANTIC_WARNING = '#F59E0B';
+const SEMANTIC_DANGER = '#EF4444';
 
-export default function SearcherApplicationsPage() {
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 400, damping: 25 } }
+};
+
+const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
   const router = useRouter();
   const { language, getSection } = useLanguage();
   const t = getSection('dashboard')?.searcher?.applications;
@@ -43,6 +69,8 @@ export default function SearcherApplicationsPage() {
   const [applications, setApplications] = useState<Application[]>([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState<'all' | Application['status']>('all');
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const [favorites, setFavorites] = useState(0);
 
   const { applications: hookApplications, loadApplications, withdrawApplication, deleteApplication } = useApplications(userId || undefined);
 
@@ -57,7 +85,17 @@ export default function SearcherApplicationsPage() {
       }
 
       setUserId(user.id);
-      await loadApplications(false); // false = as applicant
+
+      // Load sidebar stats
+      const [messagesRes, favoritesRes] = await Promise.all([
+        supabase.rpc('get_unread_count', { target_user_id: user.id }),
+        supabase.from('favorites').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
+      ]);
+
+      setUnreadMessages(messagesRes.data || 0);
+      setFavorites(favoritesRes.count || 0);
+
+      await loadApplications(false);
       setLoading(false);
     };
 
@@ -98,23 +136,16 @@ export default function SearcherApplicationsPage() {
     }
   };
 
-  const getStatusBadge = (status: Application['status']) => {
+  const getStatusConfig = (status: Application['status']) => {
     const config = {
-      pending: { variant: 'warning' as const, icon: Clock, label: t?.status?.pending?.[language] || 'En attente', color: 'bg-amber-100 text-amber-700' },
-      reviewing: { variant: 'default' as const, icon: Eye, label: t?.status?.reviewing?.[language] || 'En cours d\'examen', color: 'bg-blue-100 text-blue-700' },
-      approved: { variant: 'success' as const, icon: CheckCircle, label: t?.status?.approved?.[language] || 'Acceptée', color: 'bg-emerald-100 text-emerald-700' },
-      rejected: { variant: 'default' as const, icon: XCircle, label: t?.status?.rejected?.[language] || 'Refusée', color: 'bg-red-100 text-red-700' },
-      withdrawn: { variant: 'default' as const, icon: XCircle, label: t?.status?.withdrawn?.[language] || 'Retirée', color: 'bg-gray-100 text-gray-700' },
-      expired: { variant: 'default' as const, icon: Clock, label: t?.status?.expired?.[language] || 'Expirée', color: 'bg-gray-100 text-gray-500' },
+      pending: { icon: Clock, label: 'En attente', color: SEMANTIC_WARNING, bgColor: '#FEF3C7' },
+      reviewing: { icon: Eye, label: 'En examen', color: APPS_PRIMARY, bgColor: '#CFFAFE' },
+      approved: { icon: CheckCircle, label: 'Acceptée', color: SEMANTIC_SUCCESS, bgColor: '#D1FAE5' },
+      rejected: { icon: XCircle, label: 'Refusée', color: SEMANTIC_DANGER, bgColor: '#FEE2E2' },
+      withdrawn: { icon: XCircle, label: 'Retirée', color: '#6B7280', bgColor: '#F3F4F6' },
+      expired: { icon: Clock, label: 'Expirée', color: '#6B7280', bgColor: '#F3F4F6' },
     };
-
-    const { icon: Icon, label, color } = config[status];
-    return (
-      <Badge className={`${color} border-0 rounded-lg`}>
-        <Icon className="w-3 h-3 mr-1" />
-        {label}
-      </Badge>
-    );
+    return config[status];
   };
 
   const filteredApplications = applications.filter((app) =>
@@ -128,355 +159,457 @@ export default function SearcherApplicationsPage() {
     rejected: applications.filter((a) => a.status === 'rejected').length,
   };
 
+  // Stats cards
+  const statsCards = [
+    {
+      icon: Send,
+      value: stats.total,
+      label: 'Total',
+      color: APPS_PRIMARY,
+      bgColor: '#CFFAFE',
+    },
+    {
+      icon: Clock,
+      value: stats.pending,
+      label: 'En attente',
+      color: SEMANTIC_WARNING,
+      bgColor: '#FEF3C7',
+    },
+    {
+      icon: CheckCircle,
+      value: stats.approved,
+      label: 'Acceptées',
+      color: SEMANTIC_SUCCESS,
+      bgColor: '#D1FAE5',
+    },
+    {
+      icon: XCircle,
+      value: stats.rejected,
+      label: 'Refusées',
+      color: SEMANTIC_DANGER,
+      bgColor: '#FEE2E2',
+    },
+  ];
+
+  // Filter tabs
+  const filterTabs = [
+    { id: 'all', label: 'Toutes', count: stats.total },
+    { id: 'pending', label: 'En attente', count: stats.pending },
+    { id: 'approved', label: 'Acceptées', count: stats.approved },
+    { id: 'rejected', label: 'Refusées', count: stats.rejected },
+  ];
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingHouse size={80} />
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+        <div className="fixed inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-teal-400/5 to-cyan-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-cyan-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-teal-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-cyan-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
+        </div>
+        <div className="text-center">
+          <LoadingHouse size={64} />
+          <p className="text-gray-600 font-medium mt-4">Chargement de vos candidatures...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Link href="/searcher">
-                <Button variant="ghost" size="icon" className="rounded-xl">
-                  <ArrowLeft className="w-5 h-5" />
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                  <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
-                    style={{ background: SEARCHER_GRADIENT }}
-                  >
-                    <FileText className="w-6 h-6 text-white" />
-                  </div>
-                  {t?.title?.[language] || 'Mes Candidatures'}
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  {stats.total} {stats.total === 1 ? 'candidature envoyée' : 'candidatures envoyées'}
-                </p>
-              </div>
-            </div>
+    <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
+      {/* Glassmorphism background - Teal for Applications */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-teal-400/5 to-cyan-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-cyan-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-teal-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-cyan-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
+      </div>
 
-            {stats.total > 0 && (
-              <Button
-                onClick={() => router.push('/searcher/explore')}
-                className="rounded-xl text-white shadow-lg"
-                style={{ background: SEARCHER_GRADIENT }}
-              >
-                <Sparkles className="w-4 h-4 mr-2" />
-                Découvrir plus
-              </Button>
-            )}
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-cyan-100/50">
+          <div className="max-w-4xl mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              {/* Left: Back + Title */}
+              <div className="flex items-center gap-3">
+                <Link href="/searcher">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                  >
+                    <ArrowLeft className="w-5 h-5 text-gray-600" />
+                  </motion.button>
+                </Link>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    style={{ background: APPS_GRADIENT }}
+                  >
+                    <ClipboardList className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="font-bold text-gray-900">{t?.title?.[language] || 'Mes Candidatures'}</h1>
+                    <p className="text-xs text-gray-500">{stats.total} candidature{stats.total !== 1 ? 's' : ''} envoyée{stats.total !== 1 ? 's' : ''}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Discover Button */}
+              {stats.total > 0 && (
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => router.push('/searcher/explore')}
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium shadow-md"
+                  style={{ background: SEARCHER_GRADIENT }}
+                >
+                  <Sparkles className="w-4 h-4" />
+                  <span className="hidden sm:inline">Découvrir plus</span>
+                </motion.button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/60 backdrop-blur-md border-b border-cyan-100/30"
+        >
+          <div className="max-w-4xl mx-auto px-4 py-2">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+              {statsCards.map((stat, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100 flex-shrink-0"
+                >
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    style={{ backgroundColor: stat.bgColor }}
+                  >
+                    <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-bold text-gray-900 text-sm">{stat.value}</span>
+                    <span className="text-[10px] text-gray-500 hidden sm:inline">{stat.label}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
-        {/* Stats KPIs */}
+        {/* Filter Tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
+          className="bg-white/40 backdrop-blur-sm border-b border-cyan-100/20"
         >
-          <Card className="rounded-2xl border-amber-100">
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: `${SEARCHER_GRADIENT}20` }}>
-                <Send className="w-6 h-6" style={{ color: '#F59E0B' }} />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
-                <p className="text-sm text-gray-600">Total</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl border-amber-100">
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-amber-100">
-                <Clock className="w-6 h-6 text-amber-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.pending}</p>
-                <p className="text-sm text-gray-600">En attente</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl border-emerald-100">
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-100">
-                <CheckCircle className="w-6 h-6 text-emerald-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.approved}</p>
-                <p className="text-sm text-gray-600">Acceptées</p>
-              </div>
-            </CardContent>
-          </Card>
-          <Card className="rounded-2xl border-red-100">
-            <CardContent className="p-4 flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center bg-red-100">
-                <XCircle className="w-6 h-6 text-red-600" />
-              </div>
-              <div>
-                <p className="text-2xl font-bold text-gray-900">{stats.rejected}</p>
-                <p className="text-sm text-gray-600">Refusées</p>
-              </div>
-            </CardContent>
-          </Card>
+          <div className="max-w-4xl mx-auto px-4 py-2">
+            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
+              {filterTabs.map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setFilterStatus(tab.id as typeof filterStatus)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex-shrink-0 ${
+                    filterStatus === tab.id
+                      ? 'text-white shadow-md'
+                      : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
+                  }`}
+                  style={filterStatus === tab.id ? { background: APPS_GRADIENT } : {}}
+                >
+                  {tab.label} ({tab.count})
+                </motion.button>
+              ))}
+            </div>
+          </div>
         </motion.div>
+      </header>
 
-        {/* Filters */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex gap-2 flex-wrap mb-6"
-        >
-          {(['all', 'pending', 'approved', 'rejected'] as const).map((status) => (
-            <Button
-              key={status}
-              variant={filterStatus === status ? 'default' : 'outline'}
-              onClick={() => setFilterStatus(status)}
-              size="sm"
-              className={`rounded-xl transition-all ${filterStatus === status ? 'text-white shadow-lg' : 'hover:border-amber-300'}`}
-              style={filterStatus === status ? { background: SEARCHER_GRADIENT } : {}}
-            >
-              {status === 'all' && `Toutes (${stats.total})`}
-              {status === 'pending' && `En attente (${stats.pending})`}
-              {status === 'approved' && `Acceptées (${stats.approved})`}
-              {status === 'rejected' && `Refusées (${stats.rejected})`}
-            </Button>
-          ))}
-        </motion.div>
-
-        {/* Applications List */}
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-4 py-6">
         {filteredApplications.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl border-2 border-amber-100 shadow-lg"
-            style={{ background: SEARCHER_GRADIENT_SOFT }}
+            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20" style={{ background: SEARCHER_GRADIENT }} />
-            <div className="relative flex flex-col items-center justify-center py-20 px-8">
+            {/* Decorative circles */}
+            <div
+              className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
+              style={{ background: APPS_GRADIENT }}
+            />
+
+            <div className="relative flex flex-col items-center justify-center py-16 px-8">
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-xl"
-                style={{ background: SEARCHER_GRADIENT }}
+                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                style={{ background: APPS_GRADIENT }}
               >
-                <FileText className="w-12 h-12 text-white" />
+                <FileText className="w-10 h-10 text-white" />
               </motion.div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
                 {filterStatus === 'all' ? 'Pas encore de candidatures' : `Aucune candidature ${filterStatus === 'pending' ? 'en attente' : filterStatus === 'approved' ? 'acceptée' : 'refusée'}`}
               </h3>
-              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+              <p className="text-gray-600 text-center max-w-md mb-6">
                 {filterStatus === 'all' ? 'Explorez les propriétés et postulez à celles qui vous plaisent' : 'Essayez de sélectionner un autre filtre'}
               </p>
               {filterStatus === 'all' && (
-                <Button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/searcher/explore')}
-                  className="text-white px-8 py-6 text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                  className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Sparkles className="w-4 h-4" />
                   Découvrir les propriétés
-                </Button>
+                </motion.button>
               )}
             </div>
           </motion.div>
         ) : (
           <motion.div
+            variants={containerVariants}
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
-            }}
-            className="space-y-4"
+            className="space-y-3"
           >
-            {filteredApplications.map((application) => (
-              <motion.div
-                key={application.id}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-              >
-                <Card className="hover:shadow-lg transition-all border-gray-200 hover:border-amber-200 rounded-2xl overflow-hidden">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
-                      {/* Left: Property Info */}
-                      <div className="flex-1">
-                        <div className="flex items-start gap-3 mb-3">
+            <AnimatePresence mode="popLayout">
+              {filteredApplications.map((application) => {
+                const statusConfig = getStatusConfig(application.status);
+                const StatusIcon = statusConfig.icon;
+
+                return (
+                  <motion.div
+                    key={application.id}
+                    variants={itemVariants}
+                    layout
+                    exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
+                  >
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-cyan-200 transition-all">
+                      <div className="p-4">
+                        <div className="flex items-start gap-3">
+                          {/* Property Image */}
                           <div
-                            className="w-24 h-24 bg-gray-200 rounded-xl flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity overflow-hidden"
-                            onClick={() =>
-                              application.property?.id && router.push(`/properties/${application.property.id}`)
-                            }
+                            className="w-20 h-20 rounded-xl bg-gray-100 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity overflow-hidden"
+                            onClick={() => application.property?.id && router.push(`/properties/${application.property.id}`)}
                           >
                             {application.property?.main_image ? (
                               <Image
                                 src={application.property.main_image}
                                 alt={application.property.title || 'Property'}
-                                width={96}
-                                height={96}
-                                sizes="96px"
+                                width={80}
+                                height={80}
                                 className="w-full h-full object-cover"
                                 loading="lazy"
                               />
                             ) : (
                               <div className="w-full h-full flex items-center justify-center">
-                                <Home className="w-8 h-8 text-gray-400" />
+                                <Home className="w-8 h-8 text-gray-300" />
                               </div>
                             )}
                           </div>
 
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          {/* Content */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap mb-1">
                               <h3
-                                className="text-lg font-semibold text-gray-900 cursor-pointer hover:text-amber-600 transition-colors"
-                                onClick={() =>
-                                  application.property?.id && router.push(`/properties/${application.property.id}`)
-                                }
+                                className="font-semibold text-gray-900 cursor-pointer hover:text-cyan-600 transition-colors"
+                                onClick={() => application.property?.id && router.push(`/properties/${application.property.id}`)}
                               >
                                 {application.property?.title || 'Propriété'}
                               </h3>
-                              {getStatusBadge(application.status)}
+                              <span
+                                className="px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1"
+                                style={{ backgroundColor: statusConfig.bgColor, color: statusConfig.color }}
+                              >
+                                <StatusIcon className="w-3 h-3" />
+                                {statusConfig.label}
+                              </span>
                             </div>
 
                             {application.property && (
-                              <div className="space-y-1 text-sm">
-                                <div className="flex items-center gap-2 text-gray-600">
-                                  <MapPin className="w-4 h-4" />
-                                  <span>
-                                    {application.property.city}, {application.property.postal_code}
-                                  </span>
-                                </div>
-                                <div className="flex items-center gap-2 text-gray-700">
-                                  <Euro className="w-4 h-4" />
-                                  <span className="font-semibold">
-                                    {application.property.monthly_rent.toLocaleString()}€/mois
-                                  </span>
-                                </div>
-                              </div>
-                            )}
-
-                            {application.desired_move_in_date && (
-                              <div className="flex items-center gap-2 text-sm text-gray-600 mt-2">
-                                <Calendar className="w-4 h-4" />
-                                <span>
-                                  Emménagement: {new Date(application.desired_move_in_date).toLocaleDateString('fr-FR')}
+                              <div className="flex flex-wrap gap-2 text-xs text-gray-500 mb-2">
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" />
+                                  {application.property.city}
+                                </span>
+                                <span className="flex items-center gap-1 font-medium text-gray-700">
+                                  <Euro className="w-3 h-3" />
+                                  {application.property.monthly_rent.toLocaleString()}€/mois
                                 </span>
                               </div>
                             )}
 
+                            {application.desired_move_in_date && (
+                              <div className="flex items-center gap-1 text-xs text-gray-500 mb-2">
+                                <Calendar className="w-3 h-3" />
+                                <span>Emménagement: {new Date(application.desired_move_in_date).toLocaleDateString('fr-FR')}</span>
+                              </div>
+                            )}
+
                             {application.message && (
-                              <div className="mt-3 p-3 bg-amber-50/50 rounded-xl border border-amber-100">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <MessageSquare className="w-4 h-4 text-amber-600" />
-                                  <span className="text-sm font-medium text-gray-700">Votre message:</span>
+                              <div className="p-2 rounded-lg bg-gray-50 border border-gray-100 mb-2">
+                                <div className="flex items-center gap-1 text-[10px] text-gray-500 mb-0.5">
+                                  <MessageSquare className="w-3 h-3" />
+                                  Votre message:
                                 </div>
-                                <p className="text-sm text-gray-600 line-clamp-2">{application.message}</p>
+                                <p className="text-xs text-gray-600 line-clamp-1">{application.message}</p>
                               </div>
                             )}
 
-                            <p className="text-xs text-gray-500 mt-3">
-                              Candidature envoyée le {new Date(application.created_at).toLocaleDateString('fr-FR')}
-                            </p>
-
-                            {/* Approval Message */}
+                            {/* Approval/Rejection Message */}
                             {application.status === 'approved' && (
-                              <div className="mt-3 p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
-                                <div className="flex items-center gap-2">
-                                  <CheckCircle className="w-5 h-5 text-emerald-600" />
-                                  <p className="text-sm font-medium text-emerald-800">
-                                    Félicitations ! Votre candidature a été acceptée.
-                                  </p>
+                              <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-100">
+                                <div className="flex items-center gap-1 text-xs text-emerald-700">
+                                  <CheckCircle className="w-3.5 h-3.5" />
+                                  <span className="font-medium">Félicitations ! Votre candidature a été acceptée.</span>
                                 </div>
-                                {application.reviewed_at && (
-                                  <p className="text-xs text-emerald-700 mt-1">
-                                    Acceptée le {new Date(application.reviewed_at).toLocaleDateString('fr-FR')}
-                                  </p>
-                                )}
                               </div>
                             )}
 
-                            {/* Rejection Message */}
                             {application.status === 'rejected' && (
-                              <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl">
-                                <div className="flex items-center gap-2">
-                                  <XCircle className="w-5 h-5 text-red-600" />
-                                  <p className="text-sm font-medium text-red-800">
-                                    Votre candidature n'a pas été retenue.
-                                  </p>
+                              <div className="p-2 rounded-lg bg-red-50 border border-red-100">
+                                <div className="flex items-center gap-1 text-xs text-red-700">
+                                  <XCircle className="w-3.5 h-3.5" />
+                                  <span className="font-medium">Votre candidature n'a pas été retenue.</span>
                                 </div>
                                 {application.rejection_reason && (
-                                  <p className="text-sm text-red-700 mt-2">
-                                    Raison: {application.rejection_reason}
-                                  </p>
+                                  <p className="text-[10px] text-red-600 mt-1">{application.rejection_reason}</p>
                                 )}
                               </div>
+                            )}
+
+                            <p className="text-[10px] text-gray-400 mt-2">
+                              Envoyée le {new Date(application.created_at).toLocaleDateString('fr-FR')}
+                            </p>
+                          </div>
+
+                          {/* Actions */}
+                          <div className="flex flex-col gap-1.5">
+                            {application.property?.id && (
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => router.push(`/properties/${application.property.id}`)}
+                                className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
+                              >
+                                <Eye className="w-3.5 h-3.5 text-gray-500" />
+                              </motion.button>
+                            )}
+                            {(application.status === 'pending' || application.status === 'reviewing') && (
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => handleWithdraw(application.id)}
+                                className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
+                              >
+                                <XCircle className="w-3.5 h-3.5 text-amber-600" />
+                              </motion.button>
+                            )}
+                            {(application.status === 'rejected' || application.status === 'withdrawn') && (
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => handleDelete(application.id)}
+                                className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors"
+                              >
+                                <Trash2 className="w-3.5 h-3.5 text-red-500" />
+                              </motion.button>
                             )}
                           </div>
                         </div>
                       </div>
-
-                      {/* Right: Actions */}
-                      <div className="flex md:flex-col gap-2">
-                        {application.property?.id && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => router.push(`/properties/${application.property.id}`)}
-                            className="rounded-xl"
-                          >
-                            <Eye className="w-4 h-4 mr-1" />
-                            Voir
-                          </Button>
-                        )}
-
-                        {(application.status === 'pending' || application.status === 'reviewing') && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleWithdraw(application.id)}
-                            className="text-amber-600 hover:text-amber-700 hover:border-amber-300 rounded-xl"
-                          >
-                            <XCircle className="w-4 h-4 mr-1" />
-                            Retirer
-                          </Button>
-                        )}
-
-                        {(application.status === 'rejected' || application.status === 'withdrawn') && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            onClick={() => handleDelete(application.id)}
-                            className="text-red-600 hover:text-red-700 hover:border-red-300 rounded-xl"
-                          >
-                            <Trash2 className="w-4 h-4 mr-1" />
-                            Supprimer
-                          </Button>
-                        )}
-                      </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </motion.div>
         )}
+      </main>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-amber-100/50 px-4 py-3 safe-area-pb">
+          <div className="flex items-center justify-around">
+            <Link href="/searcher">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Home className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Accueil</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/explore">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Search className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Explorer</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/matching">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Heart className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Matching</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/favorites">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1 relative"
+              >
+                <Bookmark className="w-5 h-5 text-gray-400" />
+                {favorites > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: SEMANTIC_PINK }}
+                  >
+                    {favorites}
+                  </span>
+                )}
+                <span className="text-[10px] text-gray-500">Favoris</span>
+              </motion.div>
+            </Link>
+            <Link href="/messages">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1 relative"
+              >
+                <MessageCircle className="w-5 h-5 text-gray-400" />
+                {unreadMessages > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
+                    style={{ background: SEARCHER_GRADIENT }}
+                  >
+                    {unreadMessages}
+                  </span>
+                )}
+                <span className="text-[10px] text-gray-500">Messages</span>
+              </motion.div>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+});
+
+export default SearcherApplicationsPage;
