@@ -837,7 +837,7 @@ export default function ProfilePage() {
 
                   {/* Large Profile Card */}
                   <div className={`relative overflow-hidden rounded-3xl border-2 ${colors.border} bg-white/90 backdrop-blur-sm p-6 shadow-xl hover:shadow-2xl transition-all`}>
-                    <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-orange-50 opacity-50" />
+                    <div className={`absolute inset-0 bg-gradient-to-br ${colors.lightBg} opacity-50`} />
                     <div className="relative">
                       {/* Header: Photo + Basic Info */}
                       <div className="flex items-start gap-4 mb-4">
@@ -848,7 +848,7 @@ export default function ProfilePage() {
                             <circle
                               cx="44" cy="44" r="42"
                               fill="none"
-                              stroke="#FFA040"
+                              stroke={colors.primary}
                               strokeWidth="3"
                               strokeLinecap="round"
                               strokeDasharray="264"
@@ -863,7 +863,10 @@ export default function ProfilePage() {
                               className="w-20 h-20 rounded-full object-cover"
                             />
                           ) : (
-                            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFD080] flex items-center justify-center text-white text-2xl font-bold">
+                            <div
+                              className="w-20 h-20 rounded-full flex items-center justify-center text-white text-2xl font-bold"
+                              style={{ background: colors.gradientStyle }}
+                            >
                               {userData.full_name?.charAt(0)?.toUpperCase() || 'U'}
                             </div>
                           )}
@@ -900,8 +903,8 @@ export default function ProfilePage() {
                             )}
                             <span className={`px-2 py-0.5 text-xs font-semibold rounded-full ${
                               profileCompletion === 100 ? 'bg-green-100 text-green-700' :
-                              profileCompletion >= 60 ? 'bg-[#FFF9E6] text-[#F9A825]' :
-                              'bg-orange-100 text-orange-700'
+                              profileCompletion >= 60 ? `${colors.bg} ${colors.text}` :
+                              'bg-gray-100 text-gray-600'
                             }`}>
                               {profileCompletion}% {t('profile.complete')}
                             </span>
@@ -923,7 +926,7 @@ export default function ProfilePage() {
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="text-xs font-semibold text-gray-600">🎨 {t('profile.sections.hobbies')}:</span>
                             {userProfile.hobbies.slice(0, 3).map((hobby, idx) => (
-                              <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
+                              <span key={idx} className={`px-2 py-1 ${colors.bg} ${colors.text} text-xs rounded-full`}>
                                 {hobby}
                               </span>
                             ))}
@@ -940,7 +943,7 @@ export default function ProfilePage() {
                           <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="text-xs font-semibold text-gray-600">❤️ {t('profile.sections.values')}:</span>
                             {userProfile.core_values.slice(0, 3).map((value, idx) => (
-                              <span key={idx} className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded-full">
+                              <span key={idx} className={`px-2 py-1 ${colors.bg} ${colors.text} text-xs rounded-full`}>
                                 {value}
                               </span>
                             ))}
