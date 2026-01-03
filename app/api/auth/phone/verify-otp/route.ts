@@ -23,6 +23,7 @@ import {
   isValidPhoneNumber,
   maskPhoneNumber,
 } from '@/lib/auth/phone-verification';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 // Rate limit config for OTP verification attempts
 const VERIFY_OTP_RATE_LIMIT = {
@@ -31,6 +32,8 @@ const VERIFY_OTP_RATE_LIMIT = {
 };
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const body = await request.json();
     const { phoneNumber, code } = body;
@@ -38,14 +41,14 @@ export async function POST(request: NextRequest) {
     // Validate inputs
     if (!phoneNumber || typeof phoneNumber !== 'string') {
       return NextResponse.json(
-        { error: 'Le numéro de téléphone est requis.' },
+        { error: apiT('phone.phoneRequired', lang) },
         { status: 400 }
       );
     }
 
     if (!code || typeof code !== 'string') {
       return NextResponse.json(
-        { error: 'Le code de vérification est requis.' },
+        { error: apiT('phone.codeRequired', lang) },
         { status: 400 }
       );
     }
@@ -54,7 +57,7 @@ export async function POST(request: NextRequest) {
     const cleanCode = code.replace(/\s/g, '');
     if (!/^\d{6}$/.test(cleanCode)) {
       return NextResponse.json(
-        { error: 'Le code doit contenir exactement 6 chiffres.' },
+        { error: apiT('phone.codeMust6Digits', lang) },
         { status: 400 }
       );
     }
@@ -64,7 +67,7 @@ export async function POST(request: NextRequest) {
 
     if (!isValidPhoneNumber(normalizedPhone)) {
       return NextResponse.json(
-        { error: 'Format de numéro invalide.' },
+        { error: apiT('phone.invalidFormatShort', lang) },
         { status: 400 }
       );
     }
@@ -87,9 +90,7 @@ export async function POST(request: NextRequest) {
       });
 
       return NextResponse.json(
-        {
-          error: 'Trop de tentatives. Veuillez demander un nouveau code.',
-        },
+        { error: apiT('phone.tooManyVerifyAttempts', lang) },
         {
           status: 429,
           headers: createRateLimitHeaders(rateLimitResult),
@@ -103,7 +104,7 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Vous devez être connecté pour vérifier votre téléphone.' },
+        { error: apiT('phone.mustBeLoggedIn', lang) },
         { status: 401 }
       );
     }
@@ -137,13 +138,13 @@ export async function POST(request: NextRequest) {
       // Handle specific errors
       if (verifyError.message.includes('expired') || verifyError.message.includes('Token has expired')) {
         return NextResponse.json(
-          { error: 'Le code a expiré. Veuillez demander un nouveau code.' },
+          { error: apiT('phone.codeExpired', lang) },
           { status: 400 }
         );
       }
 
       return NextResponse.json(
-        { error: 'Code incorrect. Veuillez vérifier et réessayer.' },
+        { error: apiT('phone.codeIncorrect', lang) },
         { status: 400 }
       );
     }
@@ -172,7 +173,7 @@ export async function POST(request: NextRequest) {
       });
 
       return NextResponse.json(
-        { error: 'Erreur lors de la mise à jour. Veuillez réessayer.' },
+        { error: apiT('phone.updateError', lang) },
         { status: 500 }
       );
     }
@@ -206,7 +207,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Numéro de téléphone vérifié avec succès!',
+      message: apiT('phone.verifiedSuccess', lang),
       phoneVerified: true,
       verifiedAt: now,
     });
@@ -214,7 +215,7 @@ export async function POST(request: NextRequest) {
     logger.error('Unexpected error in phone OTP verify', error as Error);
 
     return NextResponse.json(
-      { error: 'Une erreur inattendue s\'est produite.' },
+      { error: apiT('common.unexpectedError', lang) },
       { status: 500 }
     );
   }

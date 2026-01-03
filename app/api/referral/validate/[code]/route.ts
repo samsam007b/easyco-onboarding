@@ -4,24 +4,35 @@
  * Public endpoint - no auth required
  */
 
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
-import { NextResponse } from 'next/server';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
+
+// i18n for "Izzico User" fallback name
+const izzicoUserTranslations = {
+  fr: 'Utilisateur Izzico',
+  en: 'Izzico User',
+  nl: 'Izzico Gebruiker',
+  de: 'Izzico Benutzer',
+};
 
 interface RouteParams {
   params: Promise<{ code: string }>;
 }
 
-export async function GET(request: Request, { params }: RouteParams) {
+export async function GET(request: NextRequest, { params }: RouteParams) {
+  const lang = getApiLanguage(request);
+
   try {
     const { code } = await params;
 
     if (!code || code.length < 4) {
       return NextResponse.json({
         valid: false,
-        error: 'Code invalide',
+        error: apiT('referral.invalidCode', lang),
       });
     }
 
@@ -37,14 +48,14 @@ export async function GET(request: Request, { params }: RouteParams) {
       console.error('Error validating referral code:', error);
       return NextResponse.json({
         valid: false,
-        error: 'Erreur de validation',
+        error: apiT('common.serverError', lang),
       });
     }
 
     if (!referrerId) {
       return NextResponse.json({
         valid: false,
-        error: 'Code invalide ou inactif',
+        error: apiT('referral.invalidCode', lang),
       });
     }
 
@@ -58,13 +69,13 @@ export async function GET(request: Request, { params }: RouteParams) {
     return NextResponse.json({
       valid: true,
       referrer_id: referrerId,
-      referrer_name: referrer?.full_name || 'Utilisateur Izzico',
+      referrer_name: referrer?.full_name || izzicoUserTranslations[lang],
     });
   } catch (error) {
     console.error('Error in /api/referral/validate:', error);
     return NextResponse.json({
       valid: false,
-      error: 'Erreur serveur',
+      error: apiT('common.serverError', lang),
     });
   }
 }

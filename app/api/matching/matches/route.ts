@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/auth/supabase-server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { findMatchesForSearcher, getMatchStatistics } from '@/lib/services/enhanced-matching-service';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,7 +10,9 @@ export const dynamic = 'force-dynamic';
  * GET /api/matching/matches
  * Get matches for the current user with optional filters
  */
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
     const { searchParams } = new URL(request.url);
@@ -21,7 +24,7 @@ export async function GET(request: Request) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
     // Parse query params
@@ -51,6 +54,6 @@ export async function GET(request: Request) {
     });
   } catch (error) {
     console.error('Error fetching matches:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
   }
 }

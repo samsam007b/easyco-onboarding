@@ -4,13 +4,16 @@
  * Fetches notification logs for the security dashboard.
  */
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify authentication
     const supabase = await createClient();
@@ -18,7 +21,7 @@ export async function GET() {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -33,7 +36,7 @@ export async function GET() {
 
     if (!admin) {
       return NextResponse.json(
-        { error: 'Admin access required' },
+        { error: apiT('admin.accessRequired', lang) },
         { status: 403 }
       );
     }
@@ -51,7 +54,7 @@ export async function GET() {
     if (error) {
       console.error('[SecurityNotifications] Error fetching notifications:', error);
       return NextResponse.json(
-        { error: 'Failed to fetch notifications' },
+        { error: apiT('security.fetchNotificationsError', lang) },
         { status: 500 }
       );
     }
@@ -63,7 +66,7 @@ export async function GET() {
   } catch (error) {
     console.error('[SecurityNotifications] Error:', error);
     return NextResponse.json(
-      { error: 'Internal error' },
+      { error: apiT('security.internalError', lang) },
       { status: 500 }
     );
   }

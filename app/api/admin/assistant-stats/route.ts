@@ -5,9 +5,10 @@
  * Including cost tracking, provider distribution, and FAQ efficiency
  */
 
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getUsageStats } from '@/lib/services/assistant';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 interface ConversationStat {
   id: string;
@@ -17,14 +18,16 @@ interface ConversationStat {
   created_at: string;
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify admin access using RPC (same as layout)
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
     // Use is_admin RPC function (bypasses RLS)
@@ -32,7 +35,7 @@ export async function GET() {
       .rpc('is_admin', { user_email: user.email });
 
     if (adminError || !isAdmin) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: apiT('admin.forbidden', lang) }, { status: 403 });
     }
 
     // Get real-time usage stats from memory
@@ -100,10 +103,10 @@ export async function GET() {
       topPages: pageStats || [],
       updatedAt: new Date().toISOString(),
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('[Admin Stats] Error:', error);
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { error: apiT('common.internalServerError', lang) },
       { status: 500 }
     );
   }

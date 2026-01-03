@@ -3,13 +3,16 @@
  * Get referral statistics for the current user
  */
 
+import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
-import { NextResponse } from 'next/server';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
 
@@ -20,7 +23,7 @@ export async function GET() {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Non authentifié' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.notAuthenticated', lang) }, { status: 401 });
     }
 
     // Call database function
@@ -31,7 +34,7 @@ export async function GET() {
     if (error) {
       console.error('Error getting referral stats:', error);
       return NextResponse.json(
-        { error: 'Erreur lors du chargement des statistiques' },
+        { error: apiT('referral.statsLoadError', lang) },
         { status: 500 }
       );
     }
@@ -43,6 +46,6 @@ export async function GET() {
     });
   } catch (error) {
     console.error('Error in /api/referral/stats:', error);
-    return NextResponse.json({ error: 'Erreur serveur' }, { status: 500 });
+    return NextResponse.json({ error: apiT('common.serverError', lang) }, { status: 500 });
   }
 }

@@ -4,8 +4,11 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders, RateLimitConfig } from '@/lib/security/rate-limiter';
 import { logger } from '@/lib/security/logger';
 import { sanitizeEmail, sanitizePlainText } from '@/lib/security/sanitizer';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const body = await request.json();
     const { email: rawEmail, password, fullName: rawFullName, userType } = body;
@@ -16,7 +19,7 @@ export async function POST(request: NextRequest) {
 
     if (!email || !password || !fullName || !userType) {
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: apiT('auth.allFieldsRequired', lang) },
         { status: 400 }
       );
     }
@@ -24,14 +27,14 @@ export async function POST(request: NextRequest) {
     // Validate password type and length
     if (typeof password !== 'string') {
       return NextResponse.json(
-        { error: 'Invalid password format' },
+        { error: apiT('auth.invalidPasswordFormat', lang) },
         { status: 400 }
       );
     }
 
     if (password.length < 8 || password.length > 128) {
       return NextResponse.json(
-        { error: 'Password must be between 8 and 128 characters' },
+        { error: apiT('auth.passwordLength', lang) },
         { status: 400 }
       );
     }
@@ -39,7 +42,7 @@ export async function POST(request: NextRequest) {
     // Validate full name length
     if (fullName.length < 2 || fullName.length > 100) {
       return NextResponse.json(
-        { error: 'Name must be between 2 and 100 characters' },
+        { error: apiT('auth.nameLength', lang) },
         { status: 400 }
       );
     }
@@ -48,7 +51,7 @@ export async function POST(request: NextRequest) {
     const validUserTypes = ['searcher', 'owner', 'resident'];
     if (!validUserTypes.includes(userType)) {
       return NextResponse.json(
-        { error: 'Invalid user type' },
+        { error: apiT('auth.invalidUserType', lang) },
         { status: 400 }
       );
     }
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          error: 'Too many signup attempts. Please try again later.',
+          error: apiT('auth.tooManySignupAttempts', lang),
         },
         {
           status: 429,
@@ -101,7 +104,7 @@ export async function POST(request: NextRequest) {
       // Check for specific errors
       if (error.message.includes('already registered')) {
         return NextResponse.json(
-          { error: 'An account with this email already exists' },
+          { error: apiT('auth.emailAlreadyExists', lang) },
           {
             status: 409,
             headers: createRateLimitHeaders(rateLimitResult),
@@ -110,7 +113,7 @@ export async function POST(request: NextRequest) {
       }
 
       return NextResponse.json(
-        { error: error.message || 'Failed to create account' },
+        { error: error.message || apiT('auth.failedToCreateAccount', lang) },
         {
           status: 400,
           headers: createRateLimitHeaders(rateLimitResult),
@@ -156,7 +159,7 @@ export async function POST(request: NextRequest) {
     logger.error('Signup error', error as Error);
 
     return NextResponse.json(
-      { error: 'An unexpected error occurred' },
+      { error: apiT('common.unexpectedError', lang) },
       { status: 500 }
     );
   }

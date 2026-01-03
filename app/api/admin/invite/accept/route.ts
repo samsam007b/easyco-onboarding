@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,20 +31,22 @@ interface AdminInvitation {
  * Accept invitation and create admin account
  */
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const body: AcceptInviteRequest = await request.json();
     const { token, password, fullName } = body;
 
     if (!token || !password) {
       return NextResponse.json(
-        { error: 'Token et mot de passe requis' },
+        { error: apiT('admin.tokenAndPasswordRequired', lang) },
         { status: 400 }
       );
     }
 
     if (password.length < 8) {
       return NextResponse.json(
-        { error: 'Le mot de passe doit contenir au moins 8 caracteres' },
+        { error: apiT('admin.passwordTooShort', lang) },
         { status: 400 }
       );
     }
@@ -61,7 +64,7 @@ export async function POST(request: NextRequest) {
 
     if (inviteError || !invitationData) {
       return NextResponse.json(
-        { error: 'Invitation invalide ou expiree' },
+        { error: apiT('admin.inviteInvalidOrExpired', lang) },
         { status: 400 }
       );
     }
@@ -76,7 +79,7 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'Un compte existe deja avec cet email. Contactez un administrateur.' },
+        { error: apiT('admin.accountExistsContactAdmin', lang) },
         { status: 400 }
       );
     }
@@ -96,7 +99,7 @@ export async function POST(request: NextRequest) {
     if (signUpError || !authData.user) {
       console.error('[AdminInviteAccept] Signup error:', signUpError);
       return NextResponse.json(
-        { error: signUpError?.message || 'Erreur lors de la creation du compte' },
+        { error: signUpError?.message || apiT('admin.accountCreateError', lang) },
         { status: 500 }
       );
     }
@@ -118,7 +121,7 @@ export async function POST(request: NextRequest) {
       // Rollback: delete the user if admin record creation failed
       await adminClient.auth.admin.deleteUser(authData.user.id);
       return NextResponse.json(
-        { error: 'Erreur lors de la creation du profil admin' },
+        { error: apiT('admin.adminProfileCreateError', lang) },
         { status: 500 }
       );
     }
@@ -169,7 +172,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('[AdminInviteAccept] Error:', error);
     return NextResponse.json(
-      { error: 'Erreur interne' },
+      { error: apiT('admin.internalError', lang) },
       { status: 500 }
     );
   }

@@ -9,8 +9,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { sendSecurityNotification } from '@/lib/services/security-notifications';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify authentication
     const supabase = await createClient();
@@ -18,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -33,7 +36,7 @@ export async function POST(request: NextRequest) {
 
     if (!admin) {
       return NextResponse.json(
-        { error: 'Admin access required' },
+        { error: apiT('admin.accessRequired', lang) },
         { status: 403 }
       );
     }
@@ -58,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: result.success,
-      message: 'Test alert sent',
+      message: apiT('security.testAlertSent', lang),
       channels: result.channels,
       errors: result.errors,
       config: {
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('[TestSecurityAlert] Error:', error);
     return NextResponse.json(
-      { error: 'Failed to send test alert', details: String(error) },
+      { error: apiT('security.sendTestAlertError', lang), details: String(error) },
       { status: 500 }
     );
   }
@@ -80,6 +83,8 @@ export async function POST(request: NextRequest) {
 
 // GET endpoint to check configuration status
 export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify authentication
     const supabase = await createClient();
@@ -87,7 +92,7 @@ export async function GET(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -102,7 +107,7 @@ export async function GET(request: NextRequest) {
 
     if (!admin) {
       return NextResponse.json(
-        { error: 'Admin access required' },
+        { error: apiT('admin.accessRequired', lang) },
         { status: 403 }
       );
     }
@@ -129,7 +134,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('[TestSecurityAlert] Error:', error);
     return NextResponse.json(
-      { error: 'Failed to check configuration' },
+      { error: apiT('security.checkConfigError', lang) },
       { status: 500 }
     );
   }

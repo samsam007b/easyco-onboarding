@@ -23,6 +23,7 @@ import {
   isValidPhoneNumber,
   maskPhoneNumber,
 } from '@/lib/auth/phone-verification';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 // Rate limit config for phone OTP
 const PHONE_OTP_RATE_LIMIT = {
@@ -31,6 +32,8 @@ const PHONE_OTP_RATE_LIMIT = {
 };
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const body = await request.json();
     const { phoneNumber } = body;
@@ -38,7 +41,7 @@ export async function POST(request: NextRequest) {
     // Validate phone number presence
     if (!phoneNumber || typeof phoneNumber !== 'string') {
       return NextResponse.json(
-        { error: 'Le numéro de téléphone est requis.' },
+        { error: apiT('phone.phoneRequired', lang) },
         { status: 400 }
       );
     }
@@ -48,9 +51,7 @@ export async function POST(request: NextRequest) {
 
     if (!isValidPhoneNumber(normalizedPhone)) {
       return NextResponse.json(
-        {
-          error: 'Format de numéro invalide. Utilisez un numéro français (+33) ou belge (+32).',
-        },
+        { error: apiT('phone.invalidFormat', lang) },
         { status: 400 }
       );
     }
@@ -73,9 +74,7 @@ export async function POST(request: NextRequest) {
       });
 
       return NextResponse.json(
-        {
-          error: 'Trop de codes envoyés à ce numéro. Réessayez dans une heure.',
-        },
+        { error: apiT('phone.tooManyCodesToNumber', lang) },
         {
           status: 429,
           headers: createRateLimitHeaders(phoneLimitResult),
@@ -97,9 +96,7 @@ export async function POST(request: NextRequest) {
       });
 
       return NextResponse.json(
-        {
-          error: 'Trop de tentatives depuis cette adresse. Réessayez plus tard.',
-        },
+        { error: apiT('phone.tooManyAttemptsFromIP', lang) },
         {
           status: 429,
           headers: createRateLimitHeaders(ipLimitResult),
@@ -113,7 +110,7 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Vous devez être connecté pour vérifier votre téléphone.' },
+        { error: apiT('phone.mustBeLoggedIn', lang) },
         { status: 401 }
       );
     }
@@ -135,15 +132,13 @@ export async function POST(request: NextRequest) {
       // Handle specific errors
       if (otpError.message.includes('Phone provider is not enabled')) {
         return NextResponse.json(
-          {
-            error: 'La vérification par téléphone n\'est pas configurée. Contactez le support.',
-          },
+          { error: apiT('phone.providerNotConfigured', lang) },
           { status: 503 }
         );
       }
 
       return NextResponse.json(
-        { error: 'Erreur lors de l\'envoi du SMS. Veuillez réessayer.' },
+        { error: apiT('phone.sendError', lang) },
         { status: 500 }
       );
     }
@@ -169,14 +164,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Code envoyé par SMS.',
+      message: apiT('phone.codeSent', lang),
       maskedPhone: maskPhoneNumber(normalizedPhone),
     });
   } catch (error) {
     logger.error('Unexpected error in phone OTP send', error as Error);
 
     return NextResponse.json(
-      { error: 'Une erreur inattendue s\'est produite.' },
+      { error: apiT('common.unexpectedError', lang) },
       { status: 500 }
     );
   }

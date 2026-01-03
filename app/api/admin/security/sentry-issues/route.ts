@@ -8,6 +8,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const dynamic = 'force-dynamic';
 
@@ -45,6 +46,8 @@ function parseLinkHeader(linkHeader: string | null): { next?: string; prev?: str
 }
 
 export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify authentication
     const supabase = await createClient();
@@ -52,7 +55,7 @@ export async function GET(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -67,7 +70,7 @@ export async function GET(request: NextRequest) {
 
     if (!admin) {
       return NextResponse.json(
-        { error: 'Admin access required' },
+        { error: apiT('admin.accessRequired', lang) },
         { status: 403 }
       );
     }
@@ -221,7 +224,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('[SentryIssues] Error:', error);
     return NextResponse.json(
-      { error: 'Internal error', issues: [], total: 0 },
+      { error: apiT('security.internalError', lang), issues: [], total: 0 },
       { status: 500 }
     );
   }

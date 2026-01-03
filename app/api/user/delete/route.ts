@@ -4,12 +4,15 @@ import { cookies } from 'next/headers'
 import { createServerClient } from '@supabase/ssr'
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders, RateLimitConfig } from '@/lib/security/rate-limiter'
 import { logger } from '@/lib/security/logger'
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations'
 
 /**
  * DELETE /api/user/delete
  * Deletes the current user's account from both auth.users and users table
  */
 export async function DELETE(request: NextRequest) {
+  const lang = getApiLanguage(request)
+
   try {
     // Get client identifier (IP address)
     const clientId = getClientIdentifier(request)
@@ -30,7 +33,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: 'Too many deletion requests. Please try again later.',
+          error: apiT('user.tooManyDeletionRequests', lang),
         },
         {
           status: 429,
@@ -65,7 +68,7 @@ export async function DELETE(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { success: false, error: 'Not authenticated' },
+        { success: false, error: apiT('common.notAuthenticated', lang) },
         {
           status: 401,
           headers: createRateLimitHeaders(rateLimitResult),
@@ -98,7 +101,7 @@ export async function DELETE(request: NextRequest) {
     if (deleteError) {
       // FIXME: Use logger.error('Error deleting user from auth:', deleteError)
       return NextResponse.json(
-        { success: false, error: 'Failed to delete account' },
+        { success: false, error: apiT('user.failedToDeleteAccount', lang) },
         { status: 500 }
       )
     }
@@ -141,7 +144,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     logger.error('Unexpected error deleting account', error as Error)
     return NextResponse.json(
-      { success: false, error: 'An unexpected error occurred' },
+      { success: false, error: apiT('common.unexpectedError', lang) },
       { status: 500 }
     )
   }

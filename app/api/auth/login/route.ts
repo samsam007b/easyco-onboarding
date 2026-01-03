@@ -4,8 +4,11 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { checkRateLimit, getClientIdentifier, createRateLimitHeaders, RateLimitConfig } from '@/lib/security/rate-limiter';
 import { logger } from '@/lib/security/logger';
 import { sanitizeEmail } from '@/lib/security/sanitizer';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const body = await request.json();
     const { email: rawEmail, password } = body;
@@ -16,7 +19,7 @@ export async function POST(request: NextRequest) {
     // Validate email and password
     if (!email || !password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
+        { error: apiT('auth.emailPasswordRequired', lang) },
         { status: 400 }
       );
     }
@@ -24,14 +27,14 @@ export async function POST(request: NextRequest) {
     // Validate password type and length
     if (typeof password !== 'string') {
       return NextResponse.json(
-        { error: 'Invalid password format' },
+        { error: apiT('auth.invalidPasswordFormat', lang) },
         { status: 400 }
       );
     }
 
     if (password.length < 8 || password.length > 128) {
       return NextResponse.json(
-        { error: 'Password must be between 8 and 128 characters' },
+        { error: apiT('auth.passwordLength', lang) },
         { status: 400 }
       );
     }
@@ -55,7 +58,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          error: 'Too many login attempts. Please try again in a few minutes.',
+          error: apiT('auth.tooManyLoginAttempts', lang),
         },
         {
           status: 429,
@@ -82,7 +85,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json(
         {
-          error: 'Account temporarily locked due to multiple failed login attempts. Please try again in 15 minutes or reset your password.',
+          error: apiT('auth.accountLocked', lang),
         },
         {
           status: 403,
@@ -118,7 +121,7 @@ export async function POST(request: NextRequest) {
           if (is_locked) {
             return NextResponse.json(
               {
-                error: `Account locked after ${attempts} failed attempts. Please try again in 15 minutes or reset your password.`,
+                error: apiT('auth.accountLocked', lang),
               },
               {
                 status: 403,
@@ -127,11 +130,11 @@ export async function POST(request: NextRequest) {
             );
           }
 
-          // Warn user about remaining attempts
+          // Warn user about remaining attempts - keep dynamic message in English/French
           const remainingAttempts = 5 - attempts;
           return NextResponse.json(
             {
-              error: `Invalid email or password. ${remainingAttempts} attempt${remainingAttempts !== 1 ? 's' : ''} remaining before account lockout.`,
+              error: `${apiT('auth.invalidCredentials', lang)} ${remainingAttempts} ${lang === 'fr' ? 'tentative(s) restante(s)' : lang === 'nl' ? 'poging(en) over' : lang === 'de' ? 'Versuch(e) übrig' : 'attempt(s) remaining'}.`,
             },
             {
               status: 401,
@@ -144,7 +147,7 @@ export async function POST(request: NextRequest) {
       }
 
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: apiT('auth.invalidCredentials', lang) },
         {
           status: 401,
           headers: createRateLimitHeaders(rateLimitResult),
@@ -195,7 +198,7 @@ export async function POST(request: NextRequest) {
     logger.error('Login error', error as Error);
 
     return NextResponse.json(
-      { error: 'An unexpected error occurred' },
+      { error: apiT('common.unexpectedError', lang) },
       { status: 500 }
     );
   }

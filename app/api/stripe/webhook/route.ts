@@ -11,6 +11,7 @@ import { stripe } from '@/lib/stripe';
 import { createClient } from '@supabase/supabase-js';
 import Stripe from 'stripe';
 import { logger } from '@/lib/security/logger';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 // Initialize Supabase with service role (needed for webhook context)
 const supabase = createClient(
@@ -19,13 +20,14 @@ const supabase = createClient(
 );
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
   const body = await request.text();
   const headersList = await headers();
   const signature = headersList.get('stripe-signature');
 
   if (!signature) {
     return NextResponse.json(
-      { error: 'Missing stripe-signature header' },
+      { error: apiT('stripe.missingSignatureHeader', lang) },
       { status: 400 }
     );
   }
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest) {
   } catch (err: any) {
     logger.security('Webhook signature verification failed', { error: err.message });
     return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
+      { error: `${apiT('stripe.webhookError', lang)}: ${err.message}` },
       { status: 400 }
     );
   }
@@ -90,7 +92,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     logger.error('Error processing Stripe webhook', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
-      { error: error.message || 'Webhook handler failed' },
+      { error: error.message || apiT('stripe.webhookError', lang) },
       { status: 500 }
     );
   }

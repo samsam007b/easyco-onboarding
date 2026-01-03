@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 import type { CreateInvitationRequest, CreateInvitationResponse } from '@/types/invitation.types';
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
 
@@ -10,7 +13,7 @@ export async function POST(request: NextRequest) {
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
       return NextResponse.json(
-        { success: false, error: 'not_authenticated', message: 'Vous devez être connecté' },
+        { success: false, error: 'not_authenticated', message: apiT('common.notAuthenticated', lang) },
         { status: 401 }
       );
     }
@@ -20,14 +23,14 @@ export async function POST(request: NextRequest) {
 
     if (!body.property_id || !body.invited_role) {
       return NextResponse.json(
-        { success: false, error: 'missing_fields', message: 'property_id et invited_role sont requis' },
+        { success: false, error: 'missing_fields', message: apiT('invitations.propertyRoleRequired', lang) },
         { status: 400 }
       );
     }
 
     if (!['owner', 'resident'].includes(body.invited_role)) {
       return NextResponse.json(
-        { success: false, error: 'invalid_role', message: 'Role invalide' },
+        { success: false, error: 'invalid_role', message: apiT('invitations.invalidRole', lang) },
         { status: 400 }
       );
     }
@@ -64,7 +67,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in create invitation API:', error);
     return NextResponse.json(
-      { success: false, error: 'server_error', message: 'Erreur serveur' },
+      { success: false, error: 'server_error', message: apiT('common.serverError', lang) },
       { status: 500 }
     );
   }

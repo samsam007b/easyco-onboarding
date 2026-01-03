@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/auth/supabase-server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { hideMatch } from '@/lib/services/enhanced-matching-service';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,7 +10,9 @@ export const dynamic = 'force-dynamic';
  * POST /api/matching/matches/[matchId]/hide
  * Hide a match from the user's list
  */
-export async function POST(request: Request, { params }: { params: { matchId: string } }) {
+export async function POST(request: NextRequest, { params }: { params: { matchId: string } }) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
     const { matchId } = params;
@@ -21,7 +24,7 @@ export async function POST(request: Request, { params }: { params: { matchId: st
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
     // Hide the match
@@ -29,10 +32,10 @@ export async function POST(request: Request, { params }: { params: { matchId: st
 
     return NextResponse.json({
       success: true,
-      message: 'Match hidden',
+      message: apiT('matching.matchHidden', lang),
     });
   } catch (error) {
     console.error('Error hiding match:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
   }
 }

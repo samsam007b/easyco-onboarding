@@ -7,6 +7,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,13 +16,15 @@ const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify admin access
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
     // Check admin status using RPC
@@ -29,7 +32,7 @@ export async function POST(request: NextRequest) {
       .rpc('is_admin', { user_email: user.email });
 
     if (adminError || !isAdmin) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: apiT('admin.forbidden', lang) }, { status: 403 });
     }
 
     // Parse form data
@@ -38,17 +41,17 @@ export async function POST(request: NextRequest) {
     const versionId = formData.get('versionId') as string | null;
 
     if (!file) {
-      return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+      return NextResponse.json({ error: apiT('admin.noFileProvided', lang) }, { status: 400 });
     }
 
     if (!versionId) {
-      return NextResponse.json({ error: 'No versionId provided' }, { status: 400 });
+      return NextResponse.json({ error: apiT('admin.noVersionIdProvided', lang) }, { status: 400 });
     }
 
     // Validate file type
     if (!ALLOWED_TYPES.includes(file.type)) {
       return NextResponse.json(
-        { error: 'Invalid file type. Allowed: JPEG, PNG, WebP' },
+        { error: apiT('admin.invalidFileType', lang) },
         { status: 400 }
       );
     }
@@ -56,7 +59,7 @@ export async function POST(request: NextRequest) {
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { error: 'File too large. Maximum size: 10MB' },
+        { error: apiT('admin.fileTooLarge', lang) },
         { status: 400 }
       );
     }
@@ -73,7 +76,7 @@ export async function POST(request: NextRequest) {
 
     if (!isJPEG && !isPNG && !isWebP) {
       return NextResponse.json(
-        { error: 'Invalid image file. The file may be corrupted or not a real image.' },
+        { error: apiT('admin.invalidImage', lang) },
         { status: 400 }
       );
     }
@@ -105,13 +108,13 @@ export async function POST(request: NextRequest) {
       // Check if bucket doesn't exist
       if (uploadError.message.includes('Bucket not found')) {
         return NextResponse.json(
-          { error: 'Storage bucket not configured. Please contact administrator.' },
+          { error: apiT('admin.storageBucketNotConfigured', lang) },
           { status: 500 }
         );
       }
 
       return NextResponse.json(
-        { error: uploadError.message },
+        { error: apiT('common.internalServerError', lang) },
         { status: 500 }
       );
     }
@@ -133,9 +136,8 @@ export async function POST(request: NextRequest) {
 
   } catch (error: unknown) {
     console.error('[Design Screenshots] Error:', error);
-    const message = error instanceof Error ? error.message : 'Internal server error';
     return NextResponse.json(
-      { error: message },
+      { error: apiT('common.internalServerError', lang) },
       { status: 500 }
     );
   }
@@ -145,26 +147,28 @@ export async function POST(request: NextRequest) {
  * GET: List all screenshots for a version
  */
 export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
     const { data: isAdmin, error: adminError } = await supabase
       .rpc('is_admin', { user_email: user.email });
 
     if (adminError || !isAdmin) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: apiT('admin.forbidden', lang) }, { status: 403 });
     }
 
     const { searchParams } = new URL(request.url);
     const versionId = searchParams.get('versionId');
 
     if (!versionId) {
-      return NextResponse.json({ error: 'versionId required' }, { status: 400 });
+      return NextResponse.json({ error: apiT('admin.versionIdRequired', lang) }, { status: 400 });
     }
 
     // List files in the version folder
@@ -176,7 +180,7 @@ export async function GET(request: NextRequest) {
 
     if (listError) {
       console.error('[Design Screenshots] List error:', listError);
-      return NextResponse.json({ error: listError.message }, { status: 500 });
+      return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
     }
 
     // Generate URLs for each file
@@ -205,8 +209,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error: unknown) {
     console.error('[Design Screenshots] Error:', error);
-    const message = error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
   }
 }
 
@@ -214,26 +217,28 @@ export async function GET(request: NextRequest) {
  * DELETE: Remove a screenshot
  */
 export async function DELETE(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
     const { data: { user } } = await supabase.auth.getUser();
 
     if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
     const { data: isAdmin, error: adminError } = await supabase
       .rpc('is_admin', { user_email: user.email });
 
     if (adminError || !isAdmin) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: apiT('admin.forbidden', lang) }, { status: 403 });
     }
 
     const { searchParams } = new URL(request.url);
     const path = searchParams.get('path');
 
     if (!path) {
-      return NextResponse.json({ error: 'path required' }, { status: 400 });
+      return NextResponse.json({ error: apiT('admin.pathRequired', lang) }, { status: 400 });
     }
 
     const { error: deleteError } = await supabase.storage
@@ -242,14 +247,13 @@ export async function DELETE(request: NextRequest) {
 
     if (deleteError) {
       console.error('[Design Screenshots] Delete error:', deleteError);
-      return NextResponse.json({ error: deleteError.message }, { status: 500 });
+      return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
     }
 
     return NextResponse.json({ success: true });
 
   } catch (error: unknown) {
     console.error('[Design Screenshots] Error:', error);
-    const message = error instanceof Error ? error.message : 'Internal server error';
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
   }
 }

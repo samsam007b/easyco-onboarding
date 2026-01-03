@@ -7,14 +7,17 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { stripe } from '@/lib/stripe';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const sessionId = request.nextUrl.searchParams.get('session_id');
 
     if (!sessionId) {
       return NextResponse.json(
-        { error: 'Session ID is required', verified: false },
+        { error: apiT('stripe.sessionIdRequired', lang), verified: false },
         { status: 400 }
       );
     }
@@ -33,7 +36,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         verified: false,
         status: session.status,
-        message: 'La session de paiement n\'est pas complète',
+        message: apiT('stripe.sessionNotComplete', lang),
       });
     }
 
@@ -64,14 +67,14 @@ export async function GET(request: NextRequest) {
     if (error.code === 'resource_missing') {
       return NextResponse.json({
         verified: false,
-        error: 'Session introuvable',
-        message: 'Cette session de paiement n\'existe pas ou a expiré',
+        error: apiT('stripe.sessionNotFound', lang),
+        message: apiT('stripe.sessionExpired', lang),
       }, { status: 404 });
     }
 
     return NextResponse.json({
       verified: false,
-      error: error.message || 'Erreur de vérification',
+      error: error.message || apiT('stripe.verificationError', lang),
     }, { status: 500 });
   }
 }

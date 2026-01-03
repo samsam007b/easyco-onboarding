@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/auth/supabase-server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { updateMatchStatus } from '@/lib/services/enhanced-matching-service';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,7 +10,9 @@ export const dynamic = 'force-dynamic';
  * POST /api/matching/matches/[matchId]/contact
  * Mark a match as contacted and create a conversation
  */
-export async function POST(request: Request, { params }: { params: { matchId: string } }) {
+export async function POST(request: NextRequest, { params }: { params: { matchId: string } }) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
     const { matchId } = params;
@@ -21,7 +24,7 @@ export async function POST(request: Request, { params }: { params: { matchId: st
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
     // Get match details to find the owner
@@ -32,12 +35,12 @@ export async function POST(request: Request, { params }: { params: { matchId: st
       .single();
 
     if (matchError || !match) {
-      return NextResponse.json({ error: 'Match not found' }, { status: 404 });
+      return NextResponse.json({ error: apiT('matching.matchNotFound', lang) }, { status: 404 });
     }
 
     // Verify user is the searcher
     if (match.searcher_id !== user.id) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      return NextResponse.json({ error: apiT('matching.forbidden', lang) }, { status: 403 });
     }
 
     // Check if conversation already exists
@@ -66,7 +69,7 @@ export async function POST(request: Request, { params }: { params: { matchId: st
       if (conversationError) {
         console.error('Error creating conversation:', conversationError);
         return NextResponse.json(
-          { error: 'Failed to create conversation' },
+          { error: apiT('matching.failedCreateConversation', lang) },
           { status: 500 }
         );
       }
@@ -77,7 +80,7 @@ export async function POST(request: Request, { params }: { params: { matchId: st
     // Update match status to contacted
     await updateMatchStatus(matchId, 'contacted');
 
-    // Create a notification for the owner
+    // Create a notification for the owner (notification content stays in user's language)
     await supabase.rpc('create_notification', {
       p_user_id: match.owner_id,
       p_type: 'match',
@@ -92,10 +95,10 @@ export async function POST(request: Request, { params }: { params: { matchId: st
     return NextResponse.json({
       success: true,
       conversationId,
-      message: 'Match marked as contacted',
+      message: apiT('matching.matchContacted', lang),
     });
   } catch (error) {
     console.error('Error contacting match:', error);
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
   }
 }

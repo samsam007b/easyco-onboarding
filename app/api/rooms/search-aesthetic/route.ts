@@ -1,8 +1,11 @@
 import { createClient } from '@/lib/auth/supabase-server';
 import { NextRequest, NextResponse } from 'next/server';
 import { AestheticSearchFilters } from '@/types/room-aesthetics.types';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
     const filters: AestheticSearchFilters = await request.json();
@@ -23,14 +26,14 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error('Search error:', error);
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      return NextResponse.json({ error: apiT('common.internalServerError', lang) }, { status: 500 });
     }
 
     return NextResponse.json({ results: data || [] });
   } catch (error) {
     console.error('Unexpected error:', error);
     return NextResponse.json(
-      { error: 'An unexpected error occurred' },
+      { error: apiT('common.unexpectedError', lang) },
       { status: 500 }
     );
   }

@@ -10,6 +10,7 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { sendAdminInvitationEmail } from '@/lib/emails/admin-invitation';
 import { logger } from '@/lib/security/logger';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const dynamic = 'force-dynamic';
 
@@ -18,6 +19,8 @@ export const dynamic = 'force-dynamic';
  * Create a new admin invitation and send email
  */
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify authentication
     const supabase = await createClient();
@@ -25,7 +28,7 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Non autorise' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -40,7 +43,7 @@ export async function POST(request: NextRequest) {
 
     if (!admin || admin.role !== 'super_admin') {
       return NextResponse.json(
-        { error: 'Seuls les super admins peuvent inviter' },
+        { error: apiT('admin.superAdminOnly', lang) },
         { status: 403 }
       );
     }
@@ -51,14 +54,14 @@ export async function POST(request: NextRequest) {
 
     if (!email || !role) {
       return NextResponse.json(
-        { error: 'Email et role requis' },
+        { error: apiT('admin.emailAndRoleRequired', lang) },
         { status: 400 }
       );
     }
 
     if (!['admin', 'super_admin'].includes(role)) {
       return NextResponse.json(
-        { error: 'Role invalide' },
+        { error: apiT('admin.invalidAdminRole', lang) },
         { status: 400 }
       );
     }
@@ -72,7 +75,7 @@ export async function POST(request: NextRequest) {
 
     if (existingAdmin) {
       return NextResponse.json(
-        { error: 'Cet email est deja administrateur' },
+        { error: apiT('admin.emailAlreadyAdmin', lang) },
         { status: 400 }
       );
     }
@@ -88,7 +91,7 @@ export async function POST(request: NextRequest) {
 
     if (existingInvite) {
       return NextResponse.json(
-        { error: 'Une invitation est deja en attente pour cet email' },
+        { error: apiT('admin.invitePending', lang) },
         { status: 400 }
       );
     }
@@ -118,7 +121,7 @@ export async function POST(request: NextRequest) {
     if (insertError) {
       logger.error('[AdminInvite] Insert error', insertError instanceof Error ? insertError : new Error(String(insertError)));
       return NextResponse.json(
-        { error: 'Erreur lors de la creation de l\'invitation' },
+        { error: apiT('admin.inviteCreateError', lang) },
         { status: 500 }
       );
     }
@@ -169,7 +172,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     logger.error('[AdminInvite] Error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
-      { error: 'Erreur interne' },
+      { error: apiT('admin.internalError', lang) },
       { status: 500 }
     );
   }
@@ -179,7 +182,9 @@ export async function POST(request: NextRequest) {
  * GET /api/admin/invite
  * List pending invitations
  */
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify authentication
     const supabase = await createClient();
@@ -187,7 +192,7 @@ export async function GET() {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Non autorise' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -202,7 +207,7 @@ export async function GET() {
 
     if (!admin) {
       return NextResponse.json(
-        { error: 'Acces admin requis' },
+        { error: apiT('admin.accessRequired', lang) },
         { status: 403 }
       );
     }
@@ -232,7 +237,7 @@ export async function GET() {
     if (error) {
       logger.error('[AdminInvite] Fetch error', error instanceof Error ? error : new Error(String(error)));
       return NextResponse.json(
-        { error: 'Erreur lors de la recuperation des invitations' },
+        { error: apiT('admin.inviteFetchError', lang) },
         { status: 500 }
       );
     }
@@ -259,7 +264,7 @@ export async function GET() {
   } catch (error) {
     logger.error('[AdminInvite] Error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
-      { error: 'Erreur interne' },
+      { error: apiT('admin.internalError', lang) },
       { status: 500 }
     );
   }
@@ -270,13 +275,15 @@ export async function GET() {
  * Cancel an invitation
  */
 export async function DELETE(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const { searchParams } = new URL(request.url);
     const invitationId = searchParams.get('id');
 
     if (!invitationId) {
       return NextResponse.json(
-        { error: 'ID d\'invitation requis' },
+        { error: apiT('admin.inviteIdRequired', lang) },
         { status: 400 }
       );
     }
@@ -287,7 +294,7 @@ export async function DELETE(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Non autorise' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -302,7 +309,7 @@ export async function DELETE(request: NextRequest) {
 
     if (!admin || admin.role !== 'super_admin') {
       return NextResponse.json(
-        { error: 'Seuls les super admins peuvent annuler les invitations' },
+        { error: apiT('admin.superAdminOnly', lang) },
         { status: 403 }
       );
     }
@@ -317,7 +324,7 @@ export async function DELETE(request: NextRequest) {
 
     if (!invitation) {
       return NextResponse.json(
-        { error: 'Invitation non trouvee ou deja traitee' },
+        { error: apiT('admin.inviteNotFound', lang) },
         { status: 404 }
       );
     }
@@ -331,7 +338,7 @@ export async function DELETE(request: NextRequest) {
     if (updateError) {
       logger.error('[AdminInvite] Cancel error', updateError instanceof Error ? updateError : new Error(String(updateError)));
       return NextResponse.json(
-        { error: 'Erreur lors de l\'annulation' },
+        { error: apiT('admin.inviteCancelError', lang) },
         { status: 500 }
       );
     }
@@ -354,7 +361,7 @@ export async function DELETE(request: NextRequest) {
   } catch (error) {
     logger.error('[AdminInvite] Error', error instanceof Error ? error : new Error(String(error)));
     return NextResponse.json(
-      { error: 'Erreur interne' },
+      { error: apiT('admin.internalError', lang) },
       { status: 500 }
     );
   }

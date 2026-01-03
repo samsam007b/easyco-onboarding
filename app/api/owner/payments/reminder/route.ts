@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPaymentReminder, type PaymentReminderData } from '@/lib/services/email-service';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 // Create admin client for server-side operations
 const supabaseAdmin = createClient(
@@ -9,13 +10,15 @@ const supabaseAdmin = createClient(
 );
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const body = await request.json();
     const { paymentId } = body;
 
     if (!paymentId) {
       return NextResponse.json(
-        { error: 'Payment ID is required' },
+        { error: apiT('owner.paymentIdRequired', lang) },
         { status: 400 }
       );
     }
@@ -47,7 +50,7 @@ export async function POST(request: NextRequest) {
     if (paymentError || !payment) {
       console.error('[PaymentReminder] Payment not found:', paymentError);
       return NextResponse.json(
-        { error: 'Payment not found' },
+        { error: apiT('owner.paymentNotFound', lang) },
         { status: 404 }
       );
     }
@@ -62,14 +65,14 @@ export async function POST(request: NextRequest) {
     if (tenantError || !tenant) {
       console.error('[PaymentReminder] Tenant not found:', tenantError);
       return NextResponse.json(
-        { error: 'Tenant not found' },
+        { error: apiT('owner.tenantNotFound', lang) },
         { status: 404 }
       );
     }
 
     if (!tenant.email) {
       return NextResponse.json(
-        { error: 'Tenant email not available' },
+        { error: apiT('owner.tenantEmailNotAvailable', lang) },
         { status: 400 }
       );
     }
@@ -99,7 +102,7 @@ export async function POST(request: NextRequest) {
     if (!result.success) {
       console.error('[PaymentReminder] Failed to send:', result.error);
       return NextResponse.json(
-        { error: result.error || 'Failed to send reminder' },
+        { error: result.error || apiT('owner.reminderError', lang) },
         { status: 500 }
       );
     }
@@ -115,14 +118,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Reminder sent successfully',
+      message: apiT('owner.reminderSentSuccess', lang),
       messageId: result.messageId,
       sentTo: tenant.email,
     });
   } catch (error) {
     console.error('[PaymentReminder] Error:', error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: apiT('common.internalServerError', lang) },
       { status: 500 }
     );
   }

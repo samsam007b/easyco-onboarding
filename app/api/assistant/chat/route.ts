@@ -24,6 +24,7 @@ import {
 } from '@/lib/services/assistant';
 import { type UserContext, DEFAULT_USER_CONTEXT } from '@/lib/services/assistant/faq-system';
 import { checkRateLimit, getClientIdentifier } from '@/lib/security/rate-limiter';
+import { getApiLanguage, apiT, type Language } from '@/lib/i18n/api-translations';
 
 // =====================================================
 // RATE LIMIT CONFIG FOR ASSISTANT
@@ -428,8 +429,9 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
 /**
  * Create an error response as a valid stream
  */
-function createErrorStreamResponse(errorMessage: string) {
-  const userFriendlyMessage = `⚠️ ${errorMessage}\n\nVeuillez réessayer ou contacter le support si le problème persiste.`;
+function createErrorStreamResponse(errorMessage: string, lang: Language = 'fr') {
+  const retryMessage = apiT('assistant.retryOrContact', lang);
+  const userFriendlyMessage = `⚠️ ${errorMessage}\n\n${retryMessage}`;
   return createManualSSEResponse(userFriendlyMessage, { provider: 'error' });
 }
 
@@ -461,6 +463,9 @@ function extractMessageContent(message: any): string {
 export async function POST(req: Request) {
   const startTime = Date.now();
 
+  // Get language from request (cookie or Accept-Language header)
+  const lang = getApiLanguage(req as any);
+
   try {
     // =====================================================
     // RATE LIMITING
@@ -478,7 +483,8 @@ export async function POST(req: Request) {
     if (!burstCheck.success) {
       console.log(`[Assistant API] Burst rate limit exceeded for ${clientIP}`);
       return createErrorStreamResponse(
-        'Veuillez patienter quelques secondes avant de renvoyer un message.'
+        apiT('assistant.rateLimitBurst', lang),
+        lang
       );
     }
 
@@ -493,7 +499,8 @@ export async function POST(req: Request) {
     if (!ipCheck.success) {
       console.log(`[Assistant API] IP rate limit exceeded for ${clientIP}`);
       return createErrorStreamResponse(
-        'Vous avez atteint la limite de messages. Veuillez réessayer dans une minute.'
+        apiT('assistant.rateLimitGeneral', lang),
+        lang
       );
     }
 
@@ -505,13 +512,13 @@ export async function POST(req: Request) {
       .pop();
 
     if (!lastUserMessage) {
-      return createErrorStreamResponse('Aucun message reçu. Veuillez réessayer.');
+      return createErrorStreamResponse(apiT('assistant.noMessageReceived', lang), lang);
     }
 
     // Safely extract content
     const userMessageContent = extractMessageContent(lastUserMessage);
     if (!userMessageContent.trim()) {
-      return createErrorStreamResponse('Message vide. Veuillez saisir une question.');
+      return createErrorStreamResponse(apiT('assistant.emptyMessage', lang), lang);
     }
 
     // Build personalized user context (fetches from Supabase)
@@ -529,7 +536,8 @@ export async function POST(req: Request) {
       if (!userCheck.success) {
         console.log(`[Assistant API] User rate limit exceeded for ${userContext.userId}`);
         return createErrorStreamResponse(
-          'Vous avez atteint la limite de messages. Veuillez réessayer dans une minute.'
+          apiT('assistant.rateLimitGeneral', lang),
+          lang
         );
       }
     }
@@ -638,13 +646,11 @@ export async function POST(req: Request) {
       console.error('[Assistant API] OPENAI_API_KEY not configured');
 
       // Return a helpful fallback message instead of an error
+      const faqIntro = apiT('assistant.faqModeIntro', lang);
+      const faqHelp = apiT('assistant.faqModeHelp', lang);
+      const faqContact = apiT('assistant.faqModeContactSupport', lang);
       return createFAQStreamResponse(
-        "Je suis l'assistant IzzIco en mode FAQ.\n\n" +
-        "Je peux vous aider avec les questions courantes sur :\n" +
-        "• Les **tarifs** et abonnements\n" +
-        "• La **navigation** sur la plateforme\n" +
-        "• Les **fonctionnalités** principales\n\n" +
-        "Pour des questions plus complexes, n'hésitez pas à contacter notre support.",
+        `${faqIntro}\n\n${faqHelp}\n\n${faqContact}`,
         { provider: 'faq', latencyMs: Date.now() - startTime }
       );
     }
@@ -672,7 +678,8 @@ export async function POST(req: Request) {
     } catch (openaiError: any) {
       console.error('[Assistant API] OpenAI error:', openaiError);
       return createErrorStreamResponse(
-        "L'assistant est temporairement indisponible. Veuillez réessayer plus tard."
+        apiT('assistant.temporarilyUnavailable', lang),
+        lang
       );
     }
   } catch (error: any) {
@@ -680,8 +687,11 @@ export async function POST(req: Request) {
 
     // Return a streaming error response so the client can handle it properly
     // This prevents the "undefined is not an object" error from useChat
+    // Note: lang may not be defined if error occurred before language detection
+    const errorLang = typeof lang !== 'undefined' ? lang : 'fr';
     return createErrorStreamResponse(
-      "Désolé, je rencontre un problème technique. Veuillez réessayer."
+      apiT('assistant.technicalProblem', errorLang),
+      errorLang
     );
   }
 }
