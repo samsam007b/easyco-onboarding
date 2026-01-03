@@ -1,15 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useLanguage } from '@/lib/i18n/use-language';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import {
   Calendar,
@@ -25,12 +22,41 @@ import {
   Phone,
   Video,
   Plus,
+  Search,
+  Heart,
+  Bookmark,
+  CalendarCheck,
+  CalendarClock,
 } from 'lucide-react';
 
-// V3-FUN Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFF9E6 0%, #FEF3C7 100%)';
-const SUCCESS_GRADIENT = 'linear-gradient(135deg, #10B981 0%, #34D399 100%)';
+// V3-FUN Visits Palette - Emerald/Green theme (calendar/scheduling feel)
+const VISITS_GRADIENT = 'linear-gradient(135deg, #10B981 0%, #34D399 50%, #6EE7B7 100%)';
+const VISITS_PRIMARY = '#10B981';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)';
+const ACCENT_SHADOW = 'rgba(16, 185, 129, 0.15)';
+// Searcher colors for nav
+const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
+const SEARCHER_PRIMARY = '#F59E0B';
+// Semantic Colors
+const SEMANTIC_SUCCESS = '#10B981';
+const SEMANTIC_PINK = '#EC4899';
+const SEMANTIC_WARNING = '#F59E0B';
+const SEMANTIC_DANGER = '#EF4444';
+const SEMANTIC_BLUE = '#3B82F6';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 400, damping: 25 } }
+};
 
 interface Visit {
   id: string;
@@ -54,7 +80,7 @@ interface Visit {
   };
 }
 
-export default function SearcherVisitsPage() {
+const SearcherVisitsPage = memo(function SearcherVisitsPage() {
   const router = useRouter();
   const supabase = createClient();
   const { language } = useLanguage();
@@ -62,11 +88,22 @@ export default function SearcherVisitsPage() {
   const [loading, setLoading] = useState(true);
   const [visits, setVisits] = useState<Visit[]>([]);
   const [filter, setFilter] = useState<'upcoming' | 'past' | 'all'>('upcoming');
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const [favorites, setFavorites] = useState(0);
 
   useEffect(() => {
     const loadVisits = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/login'); return; }
+
+      // Load sidebar stats
+      const [messagesRes, favoritesRes] = await Promise.all([
+        supabase.rpc('get_unread_count', { target_user_id: user.id }),
+        supabase.from('favorites').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
+      ]);
+
+      setUnreadMessages(messagesRes.data || 0);
+      setFavorites(favoritesRes.count || 0);
 
       // Mock visits data (would be fetched from property_visits table)
       const mockVisits: Visit[] = [
@@ -149,19 +186,16 @@ export default function SearcherVisitsPage() {
     return d >= new Date() && v.status !== 'cancelled';
   }).length;
 
-  const getStatusBadge = (status: Visit['status']) => {
+  const confirmedCount = visits.filter(v => v.status === 'confirmed').length;
+
+  const getStatusConfig = (status: Visit['status']) => {
     const config = {
-      pending: { color: '#F59E0B', bg: '#FEF3C7', label: 'En attente' },
-      confirmed: { color: '#10B981', bg: '#D1FAE5', label: 'Confirmée' },
-      cancelled: { color: '#EF4444', bg: '#FEE2E2', label: 'Annulée' },
-      completed: { color: '#6B7280', bg: '#F3F4F6', label: 'Terminée' }
+      pending: { color: SEMANTIC_WARNING, bgColor: '#FEF3C7', label: 'En attente' },
+      confirmed: { color: SEMANTIC_SUCCESS, bgColor: '#D1FAE5', label: 'Confirmée' },
+      cancelled: { color: SEMANTIC_DANGER, bgColor: '#FEE2E2', label: 'Annulée' },
+      completed: { color: '#6B7280', bgColor: '#F3F4F6', label: 'Terminée' }
     };
-    const { color, bg, label } = config[status];
-    return (
-      <Badge style={{ background: bg, color }} className="border-0 font-medium">
-        {label}
-      </Badge>
-    );
+    return config[status];
   };
 
   const formatDate = (dateStr: string) => {
@@ -173,228 +207,413 @@ export default function SearcherVisitsPage() {
     }).format(date);
   };
 
+  const formatShortDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return new Intl.DateTimeFormat('fr-FR', {
+      day: 'numeric',
+      month: 'short'
+    }).format(date);
+  };
+
+  // Stats cards
+  const statsCards = [
+    {
+      icon: Calendar,
+      value: visits.length,
+      label: 'Total',
+      color: VISITS_PRIMARY,
+      bgColor: '#D1FAE5',
+    },
+    {
+      icon: CalendarClock,
+      value: upcomingCount,
+      label: 'À venir',
+      color: SEMANTIC_BLUE,
+      bgColor: '#DBEAFE',
+    },
+    {
+      icon: CalendarCheck,
+      value: confirmedCount,
+      label: 'Confirmées',
+      color: SEMANTIC_SUCCESS,
+      bgColor: '#D1FAE5',
+    },
+  ];
+
+  // Filter tabs
+  const filterTabs = [
+    { id: 'upcoming', label: 'À venir' },
+    { id: 'past', label: 'Passées' },
+    { id: 'all', label: 'Toutes' },
+  ];
+
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingHouse size={80} />
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+        <div className="fixed inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/8 via-green-400/5 to-emerald-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-emerald-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-green-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-emerald-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
+        </div>
+        <div className="text-center">
+          <LoadingHouse size={64} />
+          <p className="text-gray-600 font-medium mt-4">Chargement de vos visites...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-emerald-50/30">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Link href="/searcher">
-                <Button variant="ghost" size="icon" className="rounded-xl">
-                  <ArrowLeft className="w-5 h-5" />
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                  <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
-                    style={{ background: SUCCESS_GRADIENT }}
-                  >
-                    <Calendar className="w-6 h-6 text-white" />
-                  </div>
-                  Mes Visites
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  {upcomingCount} visite{upcomingCount !== 1 ? 's' : ''} à venir
-                </p>
-              </div>
-            </div>
+    <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
+      {/* Glassmorphism background - Emerald for Visits */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/8 via-green-400/5 to-emerald-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-emerald-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-green-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-emerald-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
+      </div>
 
-            <Button
-              className="rounded-xl text-white shadow-lg"
-              style={{ background: SEARCHER_GRADIENT }}
-              onClick={() => router.push('/searcher/explore')}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Planifier une visite
-            </Button>
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-emerald-100/50">
+          <div className="max-w-4xl mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              {/* Left: Back + Title */}
+              <div className="flex items-center gap-3">
+                <Link href="/searcher">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                  >
+                    <ArrowLeft className="w-5 h-5 text-gray-600" />
+                  </motion.button>
+                </Link>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    style={{ background: VISITS_GRADIENT }}
+                  >
+                    <Calendar className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <h1 className="font-bold text-gray-900">Mes Visites</h1>
+                    <p className="text-xs text-gray-500">{upcomingCount} visite{upcomingCount !== 1 ? 's' : ''} à venir</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Plan Visit Button */}
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => router.push('/searcher/explore')}
+                className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium shadow-md"
+                style={{ background: SEARCHER_GRADIENT }}
+              >
+                <Plus className="w-4 h-4" />
+                <span className="hidden sm:inline">Planifier</span>
+              </motion.button>
+            </div>
+          </div>
+        </div>
+
+        {/* Stats Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="bg-white/60 backdrop-blur-md border-b border-emerald-100/30"
+        >
+          <div className="max-w-4xl mx-auto px-4 py-2">
+            <div className="flex items-center gap-3">
+              {statsCards.map((stat, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100"
+                >
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    style={{ backgroundColor: stat.bgColor }}
+                  >
+                    <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
+                  </div>
+                  <div className="flex items-baseline gap-1">
+                    <span className="font-bold text-gray-900 text-sm">{stat.value}</span>
+                    <span className="text-[10px] text-gray-500 hidden sm:inline">{stat.label}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </motion.div>
 
         {/* Filter Tabs */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex gap-2 mb-6"
+          className="bg-white/40 backdrop-blur-sm border-b border-emerald-100/20"
         >
-          {[
-            { id: 'upcoming', label: 'À venir' },
-            { id: 'past', label: 'Passées' },
-            { id: 'all', label: 'Toutes' }
-          ].map((tab) => (
-            <Button
-              key={tab.id}
-              variant={filter === tab.id ? 'default' : 'outline'}
-              size="sm"
-              className={`rounded-xl transition-all ${filter === tab.id ? 'text-white shadow-lg' : ''}`}
-              style={filter === tab.id ? { background: SEARCHER_GRADIENT } : {}}
-              onClick={() => setFilter(tab.id as typeof filter)}
-            >
-              {tab.label}
-            </Button>
-          ))}
+          <div className="max-w-4xl mx-auto px-4 py-2">
+            <div className="flex items-center gap-2">
+              {filterTabs.map((tab) => (
+                <motion.button
+                  key={tab.id}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setFilter(tab.id as typeof filter)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                    filter === tab.id
+                      ? 'text-white shadow-md'
+                      : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
+                  }`}
+                  style={filter === tab.id ? { background: VISITS_GRADIENT } : {}}
+                >
+                  {tab.label}
+                </motion.button>
+              ))}
+            </div>
+          </div>
         </motion.div>
+      </header>
 
-        {/* Visits List */}
+      {/* Main Content */}
+      <main className="max-w-4xl mx-auto px-4 py-6">
         {filteredVisits.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl border-2 border-emerald-100 shadow-lg"
-            style={{ background: 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)' }}
+            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20" style={{ background: SUCCESS_GRADIENT }} />
-            <div className="relative flex flex-col items-center justify-center py-20 px-8">
+            {/* Decorative circles */}
+            <div
+              className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
+              style={{ background: VISITS_GRADIENT }}
+            />
+
+            <div className="relative flex flex-col items-center justify-center py-16 px-8">
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-xl"
-                style={{ background: SUCCESS_GRADIENT }}
+                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                style={{ background: VISITS_GRADIENT }}
               >
-                <Calendar className="w-12 h-12 text-white" />
+                <Calendar className="w-10 h-10 text-white" />
               </motion.div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
                 {filter === 'upcoming' ? 'Aucune visite planifiée' : 'Aucune visite'}
               </h3>
-              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+              <p className="text-gray-600 text-center max-w-md mb-6">
                 {filter === 'upcoming'
                   ? 'Explorez les propriétés et planifiez vos visites'
                   : 'Aucune visite dans cette catégorie'}
               </p>
               {filter === 'upcoming' && (
-                <Button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/searcher/explore')}
-                  className="text-white px-8 py-6 text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                  className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
-                  <Sparkles className="w-5 h-5 mr-2" />
+                  <Sparkles className="w-4 h-4" />
                   Explorer les propriétés
-                </Button>
+                </motion.button>
               )}
             </div>
           </motion.div>
         ) : (
           <motion.div
+            variants={containerVariants}
             initial="hidden"
             animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-            }}
-            className="space-y-4"
+            className="space-y-3"
           >
-            {filteredVisits.map((visit) => (
-              <motion.div
-                key={visit.id}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
-              >
-                <Card className="overflow-hidden rounded-2xl border-gray-100 hover:border-amber-200 hover:shadow-lg transition-all">
-                  <CardContent className="p-0">
-                    <div className="flex flex-col md:flex-row">
-                      {/* Property Image */}
-                      <div className="relative w-full md:w-48 h-40 md:h-auto bg-gray-100 flex-shrink-0">
-                        {visit.property.main_image ? (
-                          <Image
-                            src={visit.property.main_image}
-                            alt={visit.property.title}
-                            fill
-                            className="object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center">
-                            <Home className="w-10 h-10 text-gray-300" />
-                          </div>
-                        )}
-                        {/* Visit Type Badge */}
-                        <div className="absolute top-3 left-3">
-                          <Badge className="bg-white/90 backdrop-blur-sm text-gray-700 border-0">
-                            {visit.visit_type === 'video' ? (
-                              <><Video className="w-3 h-3 mr-1" /> Vidéo</>
-                            ) : (
-                              <><MapPin className="w-3 h-3 mr-1" /> Sur place</>
-                            )}
-                          </Badge>
-                        </div>
-                      </div>
+            <AnimatePresence mode="popLayout">
+              {filteredVisits.map((visit) => {
+                const statusConfig = getStatusConfig(visit.status);
 
-                      {/* Content */}
-                      <div className="flex-1 p-5">
-                        <div className="flex items-start justify-between mb-3">
-                          <div>
-                            <h3 className="font-semibold text-lg text-gray-900">
-                              {visit.property.title}
-                            </h3>
-                            <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
-                              <MapPin className="w-4 h-4" />
-                              <span>{visit.property.city}, {visit.property.postal_code}</span>
+                return (
+                  <motion.div
+                    key={visit.id}
+                    variants={itemVariants}
+                    layout
+                    exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
+                  >
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all">
+                      <div className="flex">
+                        {/* Property Image */}
+                        <div className="relative w-28 md:w-36 flex-shrink-0">
+                          {visit.property.main_image ? (
+                            <Image
+                              src={visit.property.main_image}
+                              alt={visit.property.title}
+                              fill
+                              className="object-cover"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-gray-100 flex items-center justify-center">
+                              <Home className="w-8 h-8 text-gray-300" />
                             </div>
-                          </div>
-                          {getStatusBadge(visit.status)}
-                        </div>
-
-                        {/* Date & Time */}
-                        <div className="flex items-center gap-4 mb-4 p-3 rounded-xl bg-gray-50">
-                          <div className="flex items-center gap-2 text-gray-700">
-                            <Calendar className="w-5 h-5 text-amber-600" />
-                            <span className="font-medium capitalize">{formatDate(visit.visit_date)}</span>
-                          </div>
-                          <div className="flex items-center gap-2 text-gray-700">
-                            <Clock className="w-5 h-5 text-amber-600" />
-                            <span className="font-medium">{visit.visit_time}</span>
-                          </div>
-                        </div>
-
-                        {/* Owner Info */}
-                        {visit.owner && (
-                          <div className="flex items-center justify-between">
-                            <p className="text-sm text-gray-600">
-                              Propriétaire: <span className="font-medium text-gray-900">{visit.owner.full_name}</span>
-                            </p>
-                            <div className="flex gap-2">
-                              {visit.owner.phone && visit.status === 'confirmed' && (
-                                <Button variant="outline" size="sm" className="rounded-xl">
-                                  <Phone className="w-4 h-4 mr-1" />
-                                  Appeler
-                                </Button>
+                          )}
+                          {/* Visit Type Badge */}
+                          <div className="absolute top-2 left-2">
+                            <span className="px-2 py-0.5 rounded-md bg-white/90 backdrop-blur-sm text-gray-700 text-[10px] font-medium flex items-center gap-1">
+                              {visit.visit_type === 'video' ? (
+                                <><Video className="w-3 h-3" /> Vidéo</>
+                              ) : (
+                                <><MapPin className="w-3 h-3" /> Sur place</>
                               )}
-                              <Button
-                                variant="outline"
-                                size="sm"
-                                className="rounded-xl"
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Content */}
+                        <div className="flex-1 p-4">
+                          <div className="flex items-start justify-between gap-3">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap mb-1">
+                                <h3 className="font-semibold text-gray-900">
+                                  {visit.property.title}
+                                </h3>
+                                <span
+                                  className="px-2 py-0.5 rounded-md text-[10px] font-bold"
+                                  style={{ backgroundColor: statusConfig.bgColor, color: statusConfig.color }}
+                                >
+                                  {statusConfig.label}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-1 text-xs text-gray-500 mb-2">
+                                <MapPin className="w-3 h-3" />
+                                <span>{visit.property.city}, {visit.property.postal_code}</span>
+                              </div>
+
+                              {/* Date & Time */}
+                              <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 border border-gray-100 mb-2">
+                                <div className="flex items-center gap-1.5 text-gray-700">
+                                  <Calendar className="w-4 h-4 text-emerald-600" />
+                                  <span className="text-xs font-medium capitalize">{formatShortDate(visit.visit_date)}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 text-gray-700">
+                                  <Clock className="w-4 h-4 text-emerald-600" />
+                                  <span className="text-xs font-medium">{visit.visit_time}</span>
+                                </div>
+                              </div>
+
+                              {/* Owner Info */}
+                              {visit.owner && (
+                                <p className="text-xs text-gray-500">
+                                  Propriétaire: <span className="font-medium text-gray-700">{visit.owner.full_name}</span>
+                                </p>
+                              )}
+                            </div>
+
+                            {/* Actions */}
+                            <div className="flex flex-col gap-1.5">
+                              {visit.owner?.phone && visit.status === 'confirmed' && (
+                                <motion.button
+                                  whileHover={{ scale: 1.1 }}
+                                  whileTap={{ scale: 0.9 }}
+                                  className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center hover:bg-emerald-100 transition-colors"
+                                >
+                                  <Phone className="w-3.5 h-3.5" style={{ color: VISITS_PRIMARY }} />
+                                </motion.button>
+                              )}
+                              <motion.button
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
                                 onClick={() => router.push(`/properties/${visit.property_id}`)}
+                                className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
                               >
-                                <Eye className="w-4 h-4 mr-1" />
-                                Voir le bien
-                              </Button>
+                                <Eye className="w-3.5 h-3.5 text-gray-500" />
+                              </motion.button>
                             </div>
                           </div>
-                        )}
+                        </div>
                       </div>
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </motion.div>
         )}
+      </main>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-amber-100/50 px-4 py-3 safe-area-pb">
+          <div className="flex items-center justify-around">
+            <Link href="/searcher">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Home className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Accueil</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/explore">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Search className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Explorer</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/matching">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Heart className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Matching</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/favorites">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1 relative"
+              >
+                <Bookmark className="w-5 h-5 text-gray-400" />
+                {favorites > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: SEMANTIC_PINK }}
+                  >
+                    {favorites}
+                  </span>
+                )}
+                <span className="text-[10px] text-gray-500">Favoris</span>
+              </motion.div>
+            </Link>
+            <Link href="/messages">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1 relative"
+              >
+                <MessageCircle className="w-5 h-5 text-gray-400" />
+                {unreadMessages > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
+                    style={{ background: SEARCHER_GRADIENT }}
+                  >
+                    {unreadMessages}
+                  </span>
+                )}
+                <span className="text-[10px] text-gray-500">Messages</span>
+              </motion.div>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+});
+
+export default SearcherVisitsPage;
