@@ -204,6 +204,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
   const { language, getSection } = useLanguage();
   const nav = getSection('dashboard')?.searcher?.header || {};
   const common = getSection('common') || {};
+  const ariaLabels = getSection('ariaLabels');
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -336,13 +337,10 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
 
           {/* Logo */}
           <Link href="/dashboard/searcher" className="flex items-center group">
-            <Image
-              src="/logos/izzico-logo-small.png"
+            <img
+              src="/logos/izzico-trademark-dark.svg"
               alt="IzzIco"
-              width={90}
-              height={28}
-              className="transition-transform group-hover:scale-105"
-              priority
+              className="h-7 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
@@ -569,7 +567,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
-                aria-label="Notifications"
+                aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(matchesCount > 0 || unreadMessages > 0 || pendingApplications > 0) && (

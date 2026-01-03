@@ -1,64 +1,76 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-type LogoVariant = 'text-full' | 'text-compact' | 'icon';
-type LogoSize = 'sm' | 'md' | 'lg' | 'xl';
+type LogoVariant = 'trademark' | 'icon';
+type LogoTheme = 'gradient' | 'white' | 'dark';
+type LogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
 interface IzzicoLogoProps {
   variant?: LogoVariant;
+  theme?: LogoTheme;
   size?: LogoSize;
   className?: string;
 }
 
-const sizeClasses = {
-  icon: {
-    sm: 'w-8 h-8',
-    md: 'w-12 h-12',
-    lg: 'w-16 h-16',
-    xl: 'w-24 h-24',
-  },
-  'text-compact': {
-    sm: 'h-8',
-    md: 'h-12',
-    lg: 'h-16',
-    xl: 'h-24',
-  },
-  'text-full': {
-    sm: 'h-12',
-    md: 'h-16',
-    lg: 'h-24',
-    xl: 'h-32',
-  },
+// Tailles pour l'icône (carrée)
+const iconSizeClasses: Record<LogoSize, string> = {
+  xs: 'w-6 h-6',
+  sm: 'w-8 h-8',
+  md: 'w-10 h-10',
+  lg: 'w-12 h-12',
+  xl: 'w-16 h-16',
+  '2xl': 'w-24 h-24',
 };
 
+// Tailles pour le trademark (rectangle ~3:1)
+const trademarkSizeClasses: Record<LogoSize, string> = {
+  xs: 'h-5 w-auto',
+  sm: 'h-6 w-auto',
+  md: 'h-8 w-auto',
+  lg: 'h-10 w-auto',
+  xl: 'h-14 w-auto',
+  '2xl': 'h-20 w-auto',
+};
+
+// Sources SVG vectorisées (nouveau système)
 const logoSources = {
-  'text-full': '/logos/izzico-logo-final.png',
-  'text-compact': '/logos/izzico-logo-final.png',
-  icon: '/logos/izzico-icon.png',
+  icon: {
+    gradient: '/logos/izzico-icon-gradient.svg',
+    white: '/logos/izzico-icon-white.svg',
+    dark: '/logos/izzico-icon-dark.svg',
+  },
+  trademark: {
+    gradient: '/logos/izzico-trademark-gradient.svg',
+    white: '/logos/izzico-trademark-white.svg',
+    dark: '/logos/izzico-trademark-dark.svg',
+  },
 };
 
 /**
- * Composant Logo IzzIco avec variantes et tailles
+ * Composant Logo IzzIco avec variantes SVG vectorisées
  *
  * @example
- * // Logo textuel complet (pour headers desktop)
- * <IzzicoLogo variant="text-full" size="lg" />
+ * // Icône avec gradient (pour headers sur fond clair)
+ * <IzzicoLogo variant="icon" theme="gradient" size="md" />
  *
  * @example
- * // Logo compact (pour navigation)
- * <IzzicoLogo variant="text-compact" size="md" />
+ * // Trademark blanc (pour headers sur fond coloré/sombre)
+ * <IzzicoLogo variant="trademark" theme="white" size="lg" />
  *
  * @example
- * // Icône seule (pour favicon, app mobile)
- * <IzzicoLogo variant="icon" size="sm" />
+ * // Icône sombre (pour fonds clairs/blancs)
+ * <IzzicoLogo variant="icon" theme="dark" size="sm" />
  */
 export function IzzicoLogo({
-  variant = 'text-full',
+  variant = 'icon',
+  theme = 'gradient',
   size = 'md',
   className,
 }: IzzicoLogoProps) {
-  const sizeClass = sizeClasses[variant][size];
-  const src = logoSources[variant];
+  const sizeClass = variant === 'icon'
+    ? iconSizeClasses[size]
+    : trademarkSizeClasses[size];
+  const src = logoSources[variant][theme];
 
   return (
     <img
@@ -72,28 +84,39 @@ export function IzzicoLogo({
 }
 
 /**
- * Logo textuel complet avec gradient signature
- * Format: 600×200px
- * Usage: Headers desktop, bannières marketing
+ * Icône IzzIco seule
+ * Usage: Headers, navigation compacte, favicon
  */
-export function IzzicoLogoFull({ size = 'md', className }: Omit<IzzicoLogoProps, 'variant'>) {
-  return <IzzicoLogo variant="text-full" size={size} className={className} />;
+export function IzzicoIcon({
+  theme = 'gradient',
+  size = 'md',
+  className
+}: Omit<IzzicoLogoProps, 'variant'>) {
+  return <IzzicoLogo variant="icon" theme={theme} size={size} className={className} />;
 }
 
 /**
- * Logo compact pour headers
- * Format: 400×120px
- * Usage: Navigation web, signatures email
+ * Trademark IzzIco (texte complet)
+ * Usage: Headers desktop, landing page, marketing
  */
-export function IzzicoLogoCompact({ size = 'md', className }: Omit<IzzicoLogoProps, 'variant'>) {
-  return <IzzicoLogo variant="text-compact" size={size} className={className} />;
+export function IzzicoTrademark({
+  theme = 'gradient',
+  size = 'md',
+  className
+}: Omit<IzzicoLogoProps, 'variant'>) {
+  return <IzzicoLogo variant="trademark" theme={theme} size={size} className={className} />;
 }
 
-/**
- * Icône maison seule
- * Format: 200×200px (carré)
- * Usage: Favicon, app mobile, menus compacts
- */
-export function IzzicoIcon({ size = 'md', className }: Omit<IzzicoLogoProps, 'variant'>) {
-  return <IzzicoLogo variant="icon" size={size} className={className} />;
+// ============================================
+// Aliases pour compatibilité avec l'ancien système
+// ============================================
+
+/** @deprecated Use IzzicoTrademark instead */
+export function IzzicoLogoFull({ size = 'md', className }: { size?: LogoSize; className?: string }) {
+  return <IzzicoTrademark theme="gradient" size={size} className={className} />;
+}
+
+/** @deprecated Use IzzicoTrademark instead */
+export function IzzicoLogoCompact({ size = 'md', className }: { size?: LogoSize; className?: string }) {
+  return <IzzicoTrademark theme="gradient" size={size} className={className} />;
 }

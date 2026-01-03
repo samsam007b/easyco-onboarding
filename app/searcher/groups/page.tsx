@@ -43,6 +43,7 @@ const SEARCHER_PRIMARY = '#FFA040';
 const SEMANTIC_SUCCESS = '#10B981';
 const SEMANTIC_AMBER = '#F59E0B';
 const SEMANTIC_BLUE = '#3B82F6';
+const SEMANTIC_PINK = '#EC4899';
 
 // Animation variants
 const containerVariants = {

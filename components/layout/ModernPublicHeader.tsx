@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import NotificationBell from '@/components/notifications/NotificationBell';
 import { Menu, X, Home, Search, Users, Building2, Globe, ChevronDown } from 'lucide-react';
@@ -120,13 +119,10 @@ export default function ModernPublicHeader({
             className="flex items-center group"
             onClick={() => onNavigate?.(null)}
           >
-            <Image
-              src="/logos/izzico-logo-small.png"
+            <img
+              src="/logos/izzico-trademark-dark.svg"
               alt="IzzIco"
-              width={90}
-              height={28}
-              className="transition-transform group-hover:scale-105"
-              priority
+              className="h-7 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 

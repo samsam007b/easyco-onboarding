@@ -48,6 +48,7 @@ const SEMANTIC_SUCCESS = '#10B981';
 const SEMANTIC_AMBER = '#F59E0B';
 const SEMANTIC_WARNING = '#F59E0B';
 const SEMANTIC_DANGER = '#EF4444';
+const SEMANTIC_PINK = '#EC4899';
 
 // Animation variants
 const containerVariants = {

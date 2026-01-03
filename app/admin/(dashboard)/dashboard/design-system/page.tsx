@@ -1741,9 +1741,9 @@ function IconsSection() {
             <h4 className="font-semibold text-white">Sur fond blanc</h4>
             <div className="bg-white rounded-xl p-8 flex items-center justify-center border-2 border-slate-200">
               <img
-                src="/logos/izzico-logo-final.png"
-                alt="Nouveau Logo IzzIco 2025 - Fond blanc"
-                className="w-full max-w-md"
+                src="/logos/izzico-trademark-dark.svg"
+                alt="Logo IzzIco - Version sombre"
+                className="h-16 w-auto"
               />
             </div>
           </div>
@@ -1753,21 +1753,21 @@ function IconsSection() {
             <h4 className="font-semibold text-white">Sur fond sombre</h4>
             <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center border-2 border-slate-700">
               <img
-                src="/logos/izzico-logo-final.png"
-                alt="Nouveau Logo IzzIco 2025 - Fond sombre"
-                className="w-full max-w-md"
+                src="/logos/izzico-trademark-white.svg"
+                alt="Logo IzzIco - Version blanche"
+                className="h-16 w-auto"
               />
             </div>
           </div>
 
           {/* Fond gradient */}
           <div className="space-y-3">
-            <h4 className="font-semibold text-white">Sur gradient</h4>
-            <div className="bg-gradient-to-br from-purple-600 via-orange-500 to-yellow-400 rounded-xl p-8 flex items-center justify-center">
+            <h4 className="font-semibold text-white">Sur gradient signature</h4>
+            <div className="rounded-xl p-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698, #d15659, #e05747, #ff7c10, #ffc800)' }}>
               <img
-                src="/logos/izzico-logo-final.png"
-                alt="Nouveau Logo IzzIco 2025 - Gradient"
-                className="w-full max-w-md"
+                src="/logos/izzico-trademark-white.svg"
+                alt="Logo IzzIco - Sur gradient signature"
+                className="h-16 w-auto"
               />
             </div>
           </div>
@@ -1781,12 +1781,12 @@ function IconsSection() {
               Caractéristiques
             </h4>
             <ul className="text-sm text-slate-300 space-y-2">
-              <li>✅ Format SVG vectoriel (3712×1152px)</li>
+              <li>✅ Format SVG vectoriel optimisé</li>
+              <li>✅ 3 thèmes: dark, white, gradient</li>
+              <li>✅ 2 variants: icon (2048×2048) & trademark (5800×1880)</li>
+              <li>✅ Gradient signature: #9c5698 → #ffc800</li>
               <li>✅ Fond transparent natif</li>
-              <li>✅ Dégradé violet → orange → jaune</li>
-              <li>✅ Taille fichier: 446KB</li>
-              <li>✅ Scalable sans perte de qualité</li>
-              <li>✅ Génération Gemini AI</li>
+              <li>✅ Vectorisé via Recraft AI</li>
             </ul>
           </div>
 
@@ -1798,10 +1798,10 @@ function IconsSection() {
             </h4>
             <div className="text-sm space-y-2">
               <div className="bg-slate-900 rounded p-2 font-mono text-xs text-green-400">
-                <code>{`<IzzicoLogo variant="text-full" size="lg" />`}</code>
+                <code>{`<IzzicoLogo variant="trademark" theme="dark" />`}</code>
               </div>
               <div className="bg-slate-900 rounded p-2 font-mono text-xs text-slate-400">
-                src: /logos/izzico-logo-final.png
+                src: /logos/izzico-trademark-dark.svg
               </div>
               <p className="text-slate-300">
                 Component: <code className="bg-slate-900 px-2 py-1 rounded">components/ui/IzzicoLogo.tsx</code>
@@ -1961,21 +1961,21 @@ function IconsSection() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex flex-col items-center gap-3">
             <div className="bg-white rounded-xl p-6 w-full flex items-center justify-center border-2 border-slate-200">
-              <img src="/logos/izzico-icon.svg" alt="Icône IzzIco" className="h-24 w-24" />
+              <img src="/logos/izzico-icon-dark.svg" alt="Icône IzzIco - Version sombre" className="h-24 w-24" />
             </div>
-            <span className="text-sm text-slate-400">200×200px (SVG)</span>
+            <span className="text-sm text-slate-400">Sur fond clair</span>
           </div>
           <div className="flex flex-col items-center gap-3">
             <div className="bg-slate-900 rounded-xl p-6 w-full flex items-center justify-center">
-              <img src="/logos/izzico-icon.svg" alt="Icône IzzIco" className="h-24 w-24" />
+              <img src="/logos/izzico-icon-white.svg" alt="Icône IzzIco - Version blanche" className="h-24 w-24" />
             </div>
             <span className="text-sm text-slate-400">Sur fond sombre</span>
           </div>
           <div className="flex flex-col items-center gap-3">
-            <div className="bg-gradient-to-br from-purple-600 via-orange-500 to-yellow-400 rounded-xl p-6 w-full flex items-center justify-center">
-              <img src="/logos/izzico-icon.svg" alt="Icône IzzIco" className="h-24 w-24 drop-shadow-lg" />
+            <div className="rounded-xl p-6 w-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698, #d15659, #e05747, #ff7c10, #ffc800)' }}>
+              <img src="/logos/izzico-icon-white.svg" alt="Icône IzzIco - Sur gradient" className="h-24 w-24 drop-shadow-lg" />
             </div>
-            <span className="text-sm text-slate-400">Sur gradient</span>
+            <span className="text-sm text-slate-400">Sur gradient signature</span>
           </div>
         </div>
 
@@ -1984,7 +1984,7 @@ function IconsSection() {
             <strong>Usage :</strong> Favicon navigateur, icône d'app iOS/Android, notifications push, menus compacts
           </p>
           <p className="text-xs text-slate-400 mt-2">
-            Gradient diagonal (135deg) • Maison stylisée • Format carré parfait pour petites tailles
+            ViewBox 2048×2048 • Loupe + clé + buste • 3 thèmes: dark, white, gradient
           </p>
         </div>
       </div>

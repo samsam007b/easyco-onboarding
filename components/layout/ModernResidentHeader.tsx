@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, memo } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import {
   CheckSquare,
@@ -69,6 +68,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
   const { language, setLanguage, getSection } = useLanguage();
   const header = getSection('header');
   const common = getSection('common');
+  const ariaLabels = getSection('ariaLabels');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showQuickActions, setShowQuickActions] = useState(false);
@@ -220,13 +220,10 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
             href="/dashboard/resident"
             className="flex items-center group"
           >
-            <Image
-              src="/logos/izzico-logo-small.png"
+            <img
+              src="/logos/izzico-trademark-dark.svg"
               alt="IzzIco"
-              width={90}
-              height={28}
-              className="transition-transform group-hover:scale-105"
-              priority
+              className="h-7 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
@@ -680,7 +677,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
               exit={{ height: 0, opacity: 0 }}
               className="lg:hidden overflow-hidden border-t border-gray-200"
             >
-              <nav id="mobile-navigation" className="py-4 flex flex-col gap-2" aria-label="Navigation mobile">
+              <nav id="mobile-navigation" className="py-4 flex flex-col gap-2" aria-label={ariaLabels?.mobileNavigation?.[language] || 'Navigation mobile'}>
                 {navItems.map((item) => {
                   const Icon = item.icon;
                   const isActive = pathname === item.href || pathname?.startsWith(item.href + '/');

@@ -40,6 +40,7 @@ import { Button } from '@/components/ui/button';
 import { createClient } from '@/lib/auth/supabase-client';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { toast } from 'sonner';
 import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
 import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
@@ -222,6 +223,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
   const supabase = createClient();
   const { language, getSection } = useLanguage();
   const common = getSection('common');
+  const ariaLabels = getSection('ariaLabels');
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
@@ -327,13 +329,13 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
       setShowProfileMenu(false);
       const { error } = await supabase.auth.signOut();
       if (error) {
-        toast.error('Erreur lors de la déconnexion');
+        toast.error(getHookTranslation('logout', 'error'));
         return;
       }
-      toast.success('Déconnecté avec succès');
+      toast.success(getHookTranslation('logout', 'success'));
       window.location.href = '/';
     } catch (error) {
-      toast.error('Erreur lors de la déconnexion');
+      toast.error(getHookTranslation('logout', 'error'));
     }
   };
 
@@ -379,13 +381,10 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
 
           {/* Logo */}
           <Link href="/searcher" className="flex items-center group">
-            <Image
-              src="/logos/izzico-logo-small.png"
+            <img
+              src="/logos/izzico-trademark-dark.svg"
               alt="IzzIco"
-              width={90}
-              height={28}
-              className="transition-transform group-hover:scale-105"
-              priority
+              className="h-7 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
@@ -614,7 +613,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl hover:bg-amber-50 transition-all"
-                aria-label="Notifications"
+                aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {totalNotifications > 0 && (

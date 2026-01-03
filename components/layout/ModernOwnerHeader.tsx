@@ -36,6 +36,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 
@@ -150,7 +151,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
 }: ModernOwnerHeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
-  const { getSection } = useLanguage();
+  const { language, getSection } = useLanguage();
+  const ariaLabels = getSection('ariaLabels');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
@@ -177,15 +179,15 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
 
       if (error) {
         console.error('Logout error:', error);
-        toast.error('Error signing out');
+        toast.error(getHookTranslation('logout', 'error'));
         return;
       }
 
-      toast.success('Signed out successfully');
+      toast.success(getHookTranslation('logout', 'success'));
       window.location.href = '/';
     } catch (error) {
       console.error('Logout error:', error);
-      toast.error('Error signing out');
+      toast.error(getHookTranslation('logout', 'error'));
     }
   };
 
@@ -229,13 +231,10 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
 
           {/* Logo */}
           <Link href="/dashboard/owner" className="flex items-center group">
-            <Image
-              src="/logos/izzico-logo-small.png"
+            <img
+              src="/logos/izzico-trademark-dark.svg"
               alt="IzzIco"
-              width={90}
-              height={28}
-              className="transition-transform group-hover:scale-105"
-              priority
+              className="h-7 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
@@ -451,7 +450,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
                 className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
-                aria-label="Notifications"
+                aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(pendingApplications > 0 || unreadMessages > 0) && (
