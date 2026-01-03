@@ -6,6 +6,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,13 +15,15 @@ export const dynamic = 'force-dynamic';
  * Validate invitation token
  */
 export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const { searchParams } = new URL(request.url);
     const token = searchParams.get('token');
 
     if (!token) {
       return NextResponse.json(
-        { valid: false, error: 'missing_token', message: 'Token manquant' },
+        { valid: false, error: 'missing_token', message: apiT('admin.inviteTokenMissing', lang) },
         { status: 400 }
       );
     }
@@ -55,7 +58,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         valid: false,
         error: 'not_found',
-        message: 'Invitation non trouvee',
+        message: apiT('admin.inviteTokenNotFound', lang),
       });
     }
 
@@ -64,7 +67,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         valid: false,
         error: 'already_used',
-        message: 'Cette invitation a deja ete utilisee',
+        message: apiT('admin.inviteAlreadyUsed', lang),
       });
     }
 
@@ -72,7 +75,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         valid: false,
         error: 'cancelled',
-        message: 'Cette invitation a ete annulee',
+        message: apiT('admin.inviteCancelled', lang),
       });
     }
 
@@ -80,7 +83,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         valid: false,
         error: 'expired',
-        message: 'Cette invitation a expire',
+        message: apiT('admin.inviteExpired', lang),
       });
     }
 
@@ -95,7 +98,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({
         valid: false,
         error: 'expired',
-        message: 'Cette invitation a expire',
+        message: apiT('admin.inviteExpired', lang),
       });
     }
 
@@ -118,7 +121,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('[AdminInviteValidate] Error:', error);
     return NextResponse.json(
-      { valid: false, error: 'internal', message: 'Erreur interne' },
+      { valid: false, error: 'internal', message: apiT('admin.internalError', lang) },
       { status: 500 }
     );
   }

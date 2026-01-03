@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useLanguage } from '@/lib/i18n/use-language';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { RangeSlider } from '@/components/ui/range-slider';
@@ -191,6 +192,8 @@ export function AdvancedFilters({
   onReset,
   activeFiltersCount,
 }: AdvancedFiltersProps) {
+  const { t } = useLanguage();
+
   const updateFilters = (updates: Partial<AdvancedFiltersState>) => {
     onFiltersChange({ ...filters, ...updates });
   };
@@ -431,9 +434,9 @@ export function AdvancedFilters({
                     <Label className="text-sm font-medium mb-3 block">Fumeur</Label>
                     <div className="flex gap-2">
                       {[
-                        { value: 'no', label: 'Non' },
-                        { value: 'flexible', label: 'Flexible' },
-                        { value: 'yes', label: 'Oui' },
+                        { value: 'no', label: t('common.no') },
+                        { value: 'flexible', label: t('common.flexible') },
+                        { value: 'yes', label: t('common.yes') },
                       ].map((option) => (
                         <Badge
                           key={option.value}
@@ -461,9 +464,9 @@ export function AdvancedFilters({
                     </Label>
                     <div className="flex gap-2">
                       {[
-                        { value: 'no', label: 'Non' },
-                        { value: 'flexible', label: 'Flexible' },
-                        { value: 'yes', label: 'Oui' },
+                        { value: 'no', label: t('common.no') },
+                        { value: 'flexible', label: t('common.flexible') },
+                        { value: 'yes', label: t('common.yes') },
                       ].map((option) => (
                         <Badge
                           key={option.value}

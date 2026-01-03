@@ -14,8 +14,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { alertsNotificationService } from '@/lib/services/alerts-notification-service';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Verify cron secret for security (optional but recommended)
     const cronSecret = request.headers.get('x-cron-secret');
@@ -25,7 +28,7 @@ export async function POST(request: NextRequest) {
     if (expectedSecret && cronSecret !== expectedSecret) {
       console.warn('[API/alerts/run] Unauthorized request - invalid cron secret');
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -68,8 +71,8 @@ export async function POST(request: NextRequest) {
     console.error('[API/alerts/run] Error:', error);
     return NextResponse.json(
       {
-        error: 'Failed to run alerts',
-        message: error instanceof Error ? error.message : 'Unknown error',
+        error: apiT('alerts.runError', lang),
+        message: error instanceof Error ? error.message : apiT('common.unexpectedError', lang),
       },
       { status: 500 }
     );
@@ -78,10 +81,12 @@ export async function POST(request: NextRequest) {
 
 // Allow GET for easy testing in development
 export async function GET(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   // Only allow in development
   if (process.env.NODE_ENV === 'production') {
     return NextResponse.json(
-      { error: 'Use POST method in production' },
+      { error: apiT('alerts.usePostInProduction', lang) },
       { status: 405 }
     );
   }

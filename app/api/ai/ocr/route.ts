@@ -11,6 +11,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import type { OCRResult, OCRLineItem, ExpenseCategory } from '@/lib/services/ai/types';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 // Route configuration for larger payloads (images can be large)
 export const maxDuration = 60; // 60 seconds timeout
@@ -424,6 +425,7 @@ OTHER RULES:
 }
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
   console.log('[API OCR] Request received');
   const startTime = Date.now();
 
@@ -438,7 +440,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           provider: 'none',
-          error: 'Invalid request body - could not parse JSON',
+          error: apiT('ocr.invalidRequestBody', lang),
           latencyMs: Date.now() - startTime,
         },
         { status: 400 }
@@ -453,7 +455,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           provider: 'none',
-          error: 'Missing imageBase64 or mimeType',
+          error: apiT('ocr.missingImageData', lang),
           latencyMs: Date.now() - startTime,
         },
         { status: 400 }
@@ -531,7 +533,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: false,
       provider: 'none',
-      error: 'All AI providers failed or unavailable. Use client-side Tesseract fallback.',
+      error: apiT('ocr.allProvidersFailed', lang),
       debug: {
         googleKeyPresent: !!googleKey,
         visionCanUse: canUseProvider('vision'),
@@ -547,7 +549,7 @@ export async function POST(request: NextRequest) {
       {
         success: false,
         provider: 'none',
-        error: error.message || 'Internal server error',
+        error: error.message || apiT('common.internalServerError', lang),
         latencyMs: Date.now() - startTime,
       },
       { status: 500 }

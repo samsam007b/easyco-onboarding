@@ -1,14 +1,17 @@
 import { createClient } from '@/lib/auth/supabase-server';
 import { NextRequest, NextResponse } from 'next/server';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     const supabase = await createClient();
     const { data: { user }, error: authError } = await supabase.auth.getUser();
 
     if (authError || !user) {
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -18,7 +21,7 @@ export async function POST(request: NextRequest) {
 
     if (!section || !data) {
       return NextResponse.json(
-        { success: false, error: 'Missing section or data' },
+        { success: false, error: apiT('profile.missingSectionOrData', lang) },
         { status: 400 }
       );
     }
@@ -69,7 +72,7 @@ export async function POST(request: NextRequest) {
 
       default:
         return NextResponse.json(
-          { success: false, error: 'Invalid section' },
+          { success: false, error: apiT('profile.invalidSection', lang) },
           { status: 400 }
         );
     }
@@ -125,7 +128,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error('Server error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Internal server error' },
+      { success: false, error: error.message || apiT('common.internalServerError', lang) },
       { status: 500 }
     );
   }

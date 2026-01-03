@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/auth/supabase-server';
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { generateMatchesForSearcher } from '@/lib/services/enhanced-matching-service';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -9,12 +10,14 @@ export const dynamic = 'force-dynamic';
  * POST /api/matching/generate
  * Generate matches for the current user
  */
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   // 🔴 CLOSED BETA: Matching feature temporarily unavailable
   return NextResponse.json(
     {
-      error: 'Feature coming soon',
-      message: 'La fonction de matching sera disponible prochainement. Inscrivez-vous à la liste d\'attente !',
+      error: apiT('matching.comingSoon', lang),
+      message: apiT('matching.comingSoonMessage', lang),
       status: 'coming_soon',
       redirect: '/coming-soon/searcher'
     },

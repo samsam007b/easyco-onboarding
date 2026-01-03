@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { checkRateLimit, getClientIdentifier } from '@/lib/security/rate-limiter';
 import { logger } from '@/lib/security/logger';
+import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 
 // Schema validation for analytics events
 interface AnalyticsEvent {
@@ -37,6 +38,8 @@ function validateAnalyticsEvent(body: any): body is AnalyticsEvent {
 }
 
 export async function POST(request: NextRequest) {
+  const lang = getApiLanguage(request);
+
   try {
     // Rate limiting
     const clientId = getClientIdentifier(request);
@@ -49,7 +52,7 @@ export async function POST(request: NextRequest) {
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
-        { error: 'Rate limit exceeded' },
+        { error: apiT('common.rateLimitExceeded', lang) },
         {
           status: 429,
           headers: {
@@ -66,7 +69,7 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json(
-        { error: 'Unauthorized' },
+        { error: apiT('common.unauthorized', lang) },
         { status: 401 }
       );
     }
@@ -78,7 +81,7 @@ export async function POST(request: NextRequest) {
     } catch (parseError) {
       logger.error('Invalid JSON in analytics request', parseError as Error);
       return NextResponse.json(
-        { error: 'Invalid JSON format' },
+        { error: apiT('analytics.invalidJsonFormat', lang) },
         { status: 400 }
       );
     }
@@ -86,7 +89,7 @@ export async function POST(request: NextRequest) {
     // Validate event schema
     if (!validateAnalyticsEvent(body)) {
       return NextResponse.json(
-        { error: 'Invalid analytics event format' },
+        { error: apiT('analytics.invalidEventFormat', lang) },
         { status: 400 }
       );
     }
@@ -102,13 +105,13 @@ export async function POST(request: NextRequest) {
     // In production, you would send this to your analytics service
     // For now, we just acknowledge receipt
     return NextResponse.json(
-      { ok: true, message: 'Event received' },
+      { ok: true, message: apiT('analytics.eventReceived', lang) },
       { status: 200 }
     );
   } catch (error) {
     logger.error('Analytics error', error as Error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: apiT('common.internalServerError', lang) },
       { status: 500 }
     );
   }

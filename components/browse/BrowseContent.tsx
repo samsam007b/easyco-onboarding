@@ -21,6 +21,7 @@ import { useUserMatching, type UserWithCompatibility } from '@/lib/hooks/use-use
 import { cn } from '@/lib/utils';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 const SafePropertyMap = dynamic(() => import('@/components/SafePropertyMap'), {
   ssr: false,
@@ -36,6 +37,7 @@ const ITEMS_PER_PAGE = 12;
 export default function BrowseContent({ userId }: BrowseContentProps) {
   const router = useRouter();
   const supabase = createClient();
+  const { t } = useLanguage();
 
   // User matching hook for People mode
   const {
@@ -590,7 +592,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
             className="lg:hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-medium"
           >
             {showMobileMap ? <List className="w-5 h-5" /> : <MapIcon className="w-5 h-5" />}
-            {showMobileMap ? 'Liste' : 'Carte'}
+            {showMobileMap ? t('common.viewList') : t('common.viewMap')}
           </button>
         </div>
       )}
@@ -611,13 +613,13 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
           {/* Header */}
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
-              Trouve tes futurs{' '}
+              {t('searcher.matching.browse.findRoommates')}{' '}
               <span className="bg-gradient-to-r from-[#FFA040] to-[#FFD080] bg-clip-text text-transparent">
-                colocataires
+                {t('searcher.matching.browse.roommates')}
               </span>
             </h2>
             <p className="text-sm text-gray-600">
-              Swipe pour créer ton groupe idéal
+              {t('searcher.matching.browse.swipeToCreate')}
             </p>
           </div>
 
