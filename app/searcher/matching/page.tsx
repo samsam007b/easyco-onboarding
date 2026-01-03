@@ -1,14 +1,13 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import {
@@ -26,12 +25,39 @@ import {
   Filter,
   RefreshCw,
   Zap,
+  ChevronRight,
+  Search,
+  Bookmark,
+  MessageCircle,
+  Building2,
+  Bed,
+  Calendar,
 } from 'lucide-react';
 
-// V3-FUN Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFF9E6 0%, #FEF3C7 100%)';
-const MATCH_GRADIENT = 'linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)';
+// V3-FUN Matching Palette - Pink/Magenta theme
+const MATCHING_GRADIENT = 'linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)';
+const MATCHING_PRIMARY = '#EC4899';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%)';
+const ACCENT_SHADOW = 'rgba(236, 72, 153, 0.15)';
+// Semantic Colors
+const SEMANTIC_SUCCESS = '#10B981';
+const SEMANTIC_AMBER = '#F59E0B';
+const SEMANTIC_BLUE = '#3B82F6';
+const SEMANTIC_PURPLE = '#8B5CF6';
+
+// Animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08 }
+  }
+};
+
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring' as const, stiffness: 400, damping: 25 } }
+};
 
 interface PropertyMatch {
   id: string;
@@ -51,53 +77,59 @@ interface PropertyMatch {
   };
 }
 
-export default function SearcherMatchingPage() {
+const SearcherMatchingPage = memo(function SearcherMatchingPage() {
   const router = useRouter();
   const supabase = createClient();
   const { language } = useLanguage();
 
   const [loading, setLoading] = useState(true);
   const [matches, setMatches] = useState<PropertyMatch[]>([]);
-  const [sortBy, setSortBy] = useState<'score' | 'price' | 'recent'>('score');
+  const [activeTab, setActiveTab] = useState<'properties' | 'people'>('properties');
+  const [unreadMessages, setUnreadMessages] = useState(0);
+  const [favorites, setFavorites] = useState(0);
 
   useEffect(() => {
     const loadMatches = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { router.push('/login'); return; }
 
-      // Load property matches
-      // Note: This assumes a matching_property_scores or similar table exists
-      // For now, we'll simulate with favorites and random scores
-      const { data: favorites } = await supabase
-        .from('favorites')
-        .select(`
-          id,
-          property_id,
-          property:properties(
+      // Parallel fetch
+      const [favoritesRes, messagesRes, countRes] = await Promise.all([
+        supabase
+          .from('favorites')
+          .select(`
             id,
-            title,
-            city,
-            postal_code,
-            monthly_rent,
-            available_rooms,
-            max_roommates,
-            main_image,
-            property_type
-          )
-        `)
-        .eq('user_id', user.id)
-        .limit(10);
+            property_id,
+            property:properties(
+              id,
+              title,
+              city,
+              postal_code,
+              monthly_rent,
+              available_rooms,
+              max_roommates,
+              main_image,
+              property_type
+            )
+          `)
+          .eq('user_id', user.id)
+          .limit(20),
+        supabase.rpc('get_unread_count', { target_user_id: user.id }),
+        supabase.from('favorites').select('*', { count: 'exact', head: true }).eq('user_id', user.id),
+      ]);
 
-      if (favorites) {
-        const matchData: PropertyMatch[] = favorites
+      setUnreadMessages(messagesRes.data || 0);
+      setFavorites(countRes.count || 0);
+
+      if (favoritesRes.data) {
+        const matchData: PropertyMatch[] = favoritesRes.data
           .filter(f => f.property !== null)
           .map(f => {
-            // Supabase returns relations as arrays, handle both cases
             const property = Array.isArray(f.property) ? f.property[0] : f.property;
             return {
               id: f.id,
               property_id: f.property_id,
-              compatibility_score: Math.floor(Math.random() * 30) + 70, // 70-100%
+              compatibility_score: Math.floor(Math.random() * 30) + 70,
               match_reasons: [
                 'Budget correspondant',
                 'Localisation idéale',
@@ -117,247 +149,471 @@ export default function SearcherMatchingPage() {
   }, [supabase, router]);
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return '#10B981'; // green
-    if (score >= 80) return '#F59E0B'; // amber
-    if (score >= 70) return '#3B82F6'; // blue
-    return '#6B7280'; // gray
+    if (score >= 90) return SEMANTIC_SUCCESS;
+    if (score >= 80) return SEMANTIC_AMBER;
+    if (score >= 70) return SEMANTIC_BLUE;
+    return '#6B7280';
   };
+
+  const getScoreBg = (score: number) => {
+    if (score >= 90) return '#D1FAE5';
+    if (score >= 80) return '#FEF3C7';
+    if (score >= 70) return '#DBEAFE';
+    return '#F3F4F6';
+  };
+
+  // Stats cards
+  const statsCards = [
+    {
+      icon: Heart,
+      value: matches.length,
+      label: 'Matchs',
+      color: MATCHING_PRIMARY,
+      bgColor: '#FCE7F3',
+    },
+    {
+      icon: Zap,
+      value: matches.filter(m => m.compatibility_score >= 85).length,
+      label: 'Top matchs',
+      color: SEMANTIC_SUCCESS,
+      bgColor: '#D1FAE5',
+    },
+    {
+      icon: TrendingUp,
+      value: matches.length > 0 ? Math.round(matches.reduce((a, b) => a + b.compatibility_score, 0) / matches.length) + '%' : '0%',
+      label: 'Score moyen',
+      color: SEMANTIC_AMBER,
+      bgColor: '#FEF3C7',
+    },
+  ];
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <LoadingHouse size={80} />
+      <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+        {/* Glassmorphism background */}
+        <div className="fixed inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/8 via-rose-400/5 to-pink-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-pink-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-rose-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
+        </div>
+        <div className="text-center">
+          <LoadingHouse size={64} />
+          <p className="text-gray-600 font-medium mt-4">Recherche de vos matchs...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-amber-50/30">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
-        >
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <Link href="/searcher">
-                <Button variant="ghost" size="icon" className="rounded-xl">
-                  <ArrowLeft className="w-5 h-5" />
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                  <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
-                    style={{ background: MATCH_GRADIENT }}
+    <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
+      {/* Glassmorphism background - Pink/Magenta for Matching */}
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/8 via-rose-400/5 to-pink-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-pink-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-rose-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
+      </div>
+
+      {/* Sticky Header */}
+      <header className="sticky top-0 z-50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-pink-100/50">
+          <div className="max-w-7xl mx-auto px-4 py-3">
+            <div className="flex items-center justify-between">
+              {/* Left: Back + Title */}
+              <div className="flex items-center gap-3">
+                <Link href="/searcher">
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
-                    <Heart className="w-6 h-6 text-white" />
+                    <ArrowLeft className="w-5 h-5 text-gray-600" />
+                  </motion.button>
+                </Link>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    style={{ background: MATCHING_GRADIENT }}
+                  >
+                    <Heart className="w-5 h-5 text-white" />
                   </div>
-                  Matching Hub
-                </h1>
-                <p className="text-gray-600 mt-1">
-                  Propriétés compatibles avec votre profil
-                </p>
+                  <div>
+                    <h1 className="font-bold text-gray-900">Matching</h1>
+                    <p className="text-xs text-gray-500">Trouve ta coloc idéale</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right: Quick Actions */}
+              <div className="flex items-center gap-2">
+                <Link href="/messages">
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="relative w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100 cursor-pointer"
+                  >
+                    <MessageCircle className="w-5 h-5 text-gray-600" />
+                    {unreadMessages > 0 && (
+                      <span
+                        className="absolute -top-1 -right-1 w-5 h-5 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
+                        style={{ background: MATCHING_GRADIENT }}
+                      >
+                        {unreadMessages}
+                      </span>
+                    )}
+                  </motion.div>
+                </Link>
               </div>
             </div>
+          </div>
+        </div>
 
-            {/* Tabs */}
-            <div className="flex gap-2">
-              <Link href="/searcher/matching">
-                <Button
-                  variant="default"
-                  className="rounded-xl text-white shadow-lg"
-                  style={{ background: MATCH_GRADIENT }}
+        {/* Tabs Bar */}
+        <div className="bg-white/60 backdrop-blur-md border-b border-pink-100/30">
+          <div className="max-w-7xl mx-auto px-4 py-2">
+            <div className="flex items-center justify-between">
+              {/* Tabs */}
+              <div className="flex items-center gap-2">
+                <motion.button
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveTab('properties')}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                    activeTab === 'properties'
+                      ? 'text-white shadow-md'
+                      : 'text-gray-600 bg-white border border-gray-100 hover:bg-pink-50'
+                  }`}
+                  style={activeTab === 'properties' ? { background: MATCHING_GRADIENT } : {}}
                 >
-                  <Home className="w-4 h-4 mr-2" />
+                  <Building2 className="w-4 h-4" />
                   Propriétés
-                </Button>
-              </Link>
-              <Link href="/searcher/matching/people">
-                <Button variant="outline" className="rounded-xl">
-                  <Users className="w-4 h-4 mr-2" />
-                  Colocataires
-                </Button>
-              </Link>
+                </motion.button>
+                <Link href="/searcher/matching/people">
+                  <motion.button
+                    whileTap={{ scale: 0.98 }}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-600 bg-white border border-gray-100 hover:bg-pink-50 transition-all"
+                  >
+                    <Users className="w-4 h-4" />
+                    Colocataires
+                  </motion.button>
+                </Link>
+              </div>
+
+              {/* Mini Stats */}
+              <div className="hidden md:flex items-center gap-3">
+                {statsCards.map((stat, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100"
+                  >
+                    <div
+                      className="w-7 h-7 rounded-lg flex items-center justify-center"
+                      style={{ backgroundColor: stat.bgColor }}
+                    >
+                      <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
+                    </div>
+                    <div className="flex items-baseline gap-1">
+                      <span className="font-bold text-gray-900 text-sm">{stat.value}</span>
+                      <span className="text-[10px] text-gray-500">{stat.label}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-        </motion.div>
+        </div>
+      </header>
 
-        {/* Stats Banner */}
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 py-6">
+        {/* Mobile Stats */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1 }}
-          className="mb-8 p-6 rounded-2xl border border-pink-200"
-          style={{ background: 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%)' }}
+          className="md:hidden flex items-center gap-3 mb-6 overflow-x-auto pb-2"
         >
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: MATCH_GRADIENT }}>
-                <TrendingUp className="w-7 h-7 text-white" />
+          {statsCards.map((stat, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white shadow-sm border border-gray-100 flex-shrink-0"
+            >
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                style={{ backgroundColor: stat.bgColor }}
+              >
+                <stat.icon className="w-4 h-4" style={{ color: stat.color }} />
               </div>
               <div>
-                <p className="text-2xl font-bold text-gray-900">{matches.length} matchs</p>
-                <p className="text-gray-600">avec plus de 70% de compatibilité</p>
+                <p className="font-bold text-gray-900 text-sm">{stat.value}</p>
+                <p className="text-[10px] text-gray-500">{stat.label}</p>
               </div>
             </div>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="rounded-xl">
-                <Filter className="w-4 h-4 mr-2" />
-                Filtrer
-              </Button>
-              <Button variant="outline" size="sm" className="rounded-xl">
-                <RefreshCw className="w-4 h-4 mr-2" />
-                Actualiser
-              </Button>
-            </div>
-          </div>
+          ))}
         </motion.div>
 
-        {/* Matches Grid */}
+        {/* Empty State */}
         {matches.length === 0 ? (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl border-2 border-pink-100 shadow-lg"
-            style={{ background: 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%)' }}
+            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
-            <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20" style={{ background: MATCH_GRADIENT }} />
-            <div className="relative flex flex-col items-center justify-center py-20 px-8">
+            {/* Decorative circles */}
+            <div
+              className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
+              style={{ background: MATCHING_GRADIENT }}
+            />
+            <div
+              className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-15"
+              style={{ background: MATCHING_GRADIENT }}
+            />
+
+            <div className="relative flex flex-col items-center justify-center py-16 px-8">
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-xl"
-                style={{ background: MATCH_GRADIENT }}
+                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                style={{ background: MATCHING_GRADIENT }}
               >
-                <Heart className="w-12 h-12 text-white" />
+                <Heart className="w-10 h-10 text-white" />
               </motion.div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-3">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
                 Pas encore de matchs
               </h3>
-              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
-                Complétez votre profil et vos préférences pour découvrir les propriétés qui vous correspondent
+              <p className="text-gray-600 text-center max-w-md mb-6">
+                Complétez votre profil et explorez les propriétés pour découvrir vos matchs
               </p>
-              <Button
-                onClick={() => router.push('/profile/searcher')}
-                className="text-white px-8 py-6 text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
-                style={{ background: MATCH_GRADIENT }}
-              >
-                <Sparkles className="w-5 h-5 mr-2" />
-                Compléter mon profil
-              </Button>
+              <div className="flex gap-3">
+                <Link href="/profile/searcher">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
+                    style={{ background: MATCHING_GRADIENT }}
+                  >
+                    <Star className="w-4 h-4" />
+                    Mon profil
+                  </motion.button>
+                </Link>
+                <Link href="/searcher/explore">
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="px-6 py-3 rounded-xl bg-white border border-gray-200 font-medium shadow-sm flex items-center gap-2 hover:bg-gray-50"
+                  >
+                    <Search className="w-4 h-4" />
+                    Explorer
+                  </motion.button>
+                </Link>
+              </div>
             </div>
           </motion.div>
         ) : (
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={{
-              hidden: { opacity: 0 },
-              visible: { opacity: 1, transition: { staggerChildren: 0.1 } }
-            }}
-            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          >
-            {matches.map((match, index) => (
-              <motion.div
-                key={match.id}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 }
-                }}
+          <>
+            {/* Results Header */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="flex items-center justify-between mb-4"
+            >
+              <p className="text-gray-600">
+                <span className="font-semibold text-gray-900">{matches.length}</span> propriétés compatibles
+              </p>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-gray-100 shadow-sm text-sm text-gray-600 hover:bg-pink-50"
               >
-                <Card className="overflow-hidden rounded-2xl border-gray-100 hover:border-pink-200 hover:shadow-lg transition-all group">
-                  {/* Image */}
-                  <div className="relative h-48 bg-gray-100">
-                    {match.property.main_image ? (
-                      <Image
-                        src={match.property.main_image}
-                        alt={match.property.title}
-                        fill
-                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Home className="w-12 h-12 text-gray-300" />
+                <Filter className="w-4 h-4" />
+                Filtrer
+              </motion.button>
+            </motion.div>
+
+            {/* Matches Grid */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4"
+            >
+              {matches.map((match, index) => (
+                <motion.div
+                  key={match.id}
+                  variants={itemVariants}
+                >
+                  <div
+                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-pink-200 transition-all group cursor-pointer"
+                    onClick={() => router.push(`/properties/${match.property.id}`)}
+                  >
+                    {/* Image */}
+                    <div className="relative h-40 bg-gray-100">
+                      {match.property.main_image ? (
+                        <Image
+                          src={match.property.main_image}
+                          alt={match.property.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                      ) : (
+                        <div
+                          className="w-full h-full flex items-center justify-center"
+                          style={{ background: CARD_BG_GRADIENT }}
+                        >
+                          <Building2 className="w-10 h-10 text-pink-300" />
+                        </div>
+                      )}
+
+                      {/* Match Score Badge */}
+                      <div
+                        className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-sm font-bold flex items-center gap-1 shadow-md"
+                        style={{
+                          backgroundColor: getScoreBg(match.compatibility_score),
+                          color: getScoreColor(match.compatibility_score)
+                        }}
+                      >
+                        <Zap className="w-3.5 h-3.5" />
+                        {match.compatibility_score}%
                       </div>
-                    )}
-                    {/* Match Score Badge */}
-                    <div
-                      className="absolute top-3 right-3 px-3 py-1.5 rounded-xl text-white font-bold text-lg shadow-lg flex items-center gap-1"
-                      style={{ background: getScoreColor(match.compatibility_score) }}
-                    >
-                      <Zap className="w-4 h-4" />
-                      {match.compatibility_score}%
+
+                      {/* Rank Badge for top 3 */}
+                      {index < 3 && (
+                        <div
+                          className="absolute top-3 left-3 w-7 h-7 rounded-lg flex items-center justify-center shadow-md"
+                          style={{ background: MATCHING_GRADIENT }}
+                        >
+                          <span className="font-bold text-white text-xs">#{index + 1}</span>
+                        </div>
+                      )}
                     </div>
-                    {/* Rank Badge */}
-                    {index < 3 && (
-                      <div className="absolute top-3 left-3 w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-lg">
-                        <span className="font-bold text-gray-900">#{index + 1}</span>
+
+                    {/* Content */}
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 mb-1 line-clamp-1">
+                        {match.property.title}
+                      </h3>
+
+                      <div className="flex items-center gap-1.5 text-gray-500 text-sm mb-3">
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span>{match.property.city}</span>
                       </div>
-                    )}
+
+                      {/* Match Reasons */}
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {match.match_reasons.slice(0, 2).map((reason, i) => (
+                          <span
+                            key={i}
+                            className="px-2 py-0.5 rounded-md text-[10px] font-medium"
+                            style={{ backgroundColor: '#FCE7F3', color: MATCHING_PRIMARY }}
+                          >
+                            {reason}
+                          </span>
+                        ))}
+                      </div>
+
+                      {/* Price & Actions */}
+                      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                        <div className="flex items-baseline gap-1">
+                          <span className="text-lg font-bold text-gray-900">
+                            {match.property.monthly_rent.toLocaleString()}€
+                          </span>
+                          <span className="text-xs text-gray-500">/mois</span>
+                        </div>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            router.push(`/properties/${match.property.id}/apply`);
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-sm font-medium shadow-sm"
+                          style={{ background: MATCHING_GRADIENT }}
+                        >
+                          <Send className="w-3.5 h-3.5" />
+                          Postuler
+                        </motion.button>
+                      </div>
+                    </div>
                   </div>
-
-                  <CardContent className="p-5">
-                    <h3 className="font-semibold text-lg text-gray-900 mb-2 line-clamp-1">
-                      {match.property.title}
-                    </h3>
-
-                    <div className="space-y-2 mb-4">
-                      <div className="flex items-center gap-2 text-gray-600 text-sm">
-                        <MapPin className="w-4 h-4" />
-                        <span>{match.property.city}, {match.property.postal_code}</span>
-                      </div>
-                    </div>
-
-                    {/* Match Reasons */}
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {match.match_reasons.slice(0, 2).map((reason, i) => (
-                        <Badge key={i} variant="secondary" className="rounded-lg bg-pink-50 text-pink-700 border-0 text-xs">
-                          {reason}
-                        </Badge>
-                      ))}
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1">
-                        <Euro className="w-5 h-5 text-amber-600" />
-                        <span className="text-xl font-bold text-gray-900">
-                          {match.property.monthly_rent.toLocaleString()}
-                        </span>
-                        <span className="text-gray-500 text-sm">/mois</span>
-                      </div>
-                    </div>
-
-                    {/* Actions */}
-                    <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="flex-1 rounded-xl"
-                        onClick={() => router.push(`/properties/${match.property.id}`)}
-                      >
-                        <Eye className="w-4 h-4 mr-1" />
-                        Voir
-                      </Button>
-                      <Button
-                        size="sm"
-                        className="flex-1 rounded-xl text-white"
-                        style={{ background: MATCH_GRADIENT }}
-                        onClick={() => router.push(`/properties/${match.property.id}/apply`)}
-                      >
-                        <Send className="w-4 h-4 mr-1" />
-                        Postuler
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </>
         )}
+      </main>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-pink-100/50 px-4 py-3 safe-area-pb">
+          <div className="flex items-center justify-around">
+            <Link href="/searcher">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Home className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Accueil</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/explore">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Search className="w-5 h-5 text-gray-400" />
+                <span className="text-[10px] text-gray-500">Explorer</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/matching">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1"
+              >
+                <Heart className="w-5 h-5" style={{ color: MATCHING_PRIMARY }} />
+                <span className="text-[10px] font-medium" style={{ color: MATCHING_PRIMARY }}>Matching</span>
+              </motion.div>
+            </Link>
+            <Link href="/searcher/favorites">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1 relative"
+              >
+                <Bookmark className="w-5 h-5 text-gray-400" />
+                {favorites > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
+                    style={{ backgroundColor: MATCHING_PRIMARY }}
+                  >
+                    {favorites}
+                  </span>
+                )}
+                <span className="text-[10px] text-gray-500">Favoris</span>
+              </motion.div>
+            </Link>
+            <Link href="/messages">
+              <motion.div
+                whileTap={{ scale: 0.95 }}
+                className="flex flex-col items-center gap-1 relative"
+              >
+                <MessageCircle className="w-5 h-5 text-gray-400" />
+                {unreadMessages > 0 && (
+                  <span
+                    className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
+                    style={{ background: MATCHING_GRADIENT }}
+                  >
+                    {unreadMessages}
+                  </span>
+                )}
+                <span className="text-[10px] text-gray-500">Messages</span>
+              </motion.div>
+            </Link>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+});
+
+export default SearcherMatchingPage;
