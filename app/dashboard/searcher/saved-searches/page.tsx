@@ -6,11 +6,20 @@ import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Search, Bell, BellOff, Trash2, Play, Edit, MapPin, Home, DollarSign, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Search, Bell, BellOff, Trash2, Play, MapPin, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import Link from 'next/link';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { useLanguage } from '@/lib/i18n/use-language';
+import {
+  SearcherPageHeader,
+  SearcherKPICard,
+  SearcherKPIGrid,
+  searcherGradientVibrant,
+  searcherGradientLight,
+  searcherAnimations,
+} from '@/components/searcher';
 
 interface SavedSearch {
   id: string;
@@ -161,151 +170,197 @@ export default function SavedSearchesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center py-12">
-            <LoadingHouse size={80} />
-            <p className="text-gray-600">{t?.loading?.[language] || 'Loading...'}</p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-white flex items-center justify-center">
+        <div className="text-center">
+          <LoadingHouse size={80} />
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement de vos recherches...'}</p>
         </div>
       </div>
     );
   }
 
+  // Calculate stats
+  const activeAlerts = savedSearches.filter(s => s.email_alerts).length;
+  const totalMatches = savedSearches.reduce((sum, s) => sum + (s.last_match_count || 0), 0);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 to-orange-100 p-6">
-      <div className="max-w-5xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => router.back()}
-              className="gap-2"
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          {...searcherAnimations.fadeInUp}
+          className="space-y-6"
+        >
+          {/* Header */}
+          <SearcherPageHeader
+            icon={Search}
+            title={t?.title?.[language] || 'Mes Recherches Sauvegardées'}
+            subtitle={`${savedSearches.length} ${savedSearches.length === 1 ? (t?.count?.singular?.[language] || 'recherche sauvegardée') : (t?.count?.plural?.[language] || 'recherches sauvegardées')}`}
+            breadcrumb={{ label: 'Accueil', href: '/dashboard/searcher' }}
+            currentPage="Recherches"
+            actions={
+              savedSearches.length > 0 && (
+                <Button
+                  onClick={() => router.push('/properties/browse')}
+                  className="rounded-2xl text-white font-semibold"
+                  style={{ background: searcherGradientVibrant }}
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  {t?.newSearch?.[language] || 'Nouvelle Recherche'}
+                </Button>
+              )
+            }
+          />
+
+          {/* Empty State */}
+          {savedSearches.length === 0 ? (
+            <motion.div
+              {...searcherAnimations.cardHover}
+              className="relative overflow-hidden rounded-3xl border-2 border-amber-100 shadow-lg"
+              style={{ background: searcherGradientLight }}
             >
-              <ArrowLeft className="w-4 h-4" />
-              {t?.back?.[language] || 'Back'}
-            </Button>
+              <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20" style={{ background: searcherGradientVibrant }} />
+              <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2 opacity-10" style={{ background: searcherGradientVibrant }} />
 
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center shadow-md">
-                  <Search className="w-6 h-6 text-white" />
-                </div>
-                {t?.title?.[language] || 'My Saved Searches'}
-              </h1>
-              <p className="text-gray-600 mt-1">
-                {savedSearches.length} {savedSearches.length === 1
-                  ? (t?.count?.singular?.[language] || 'recherche sauvegardée')
-                  : (t?.count?.plural?.[language] || 'recherches sauvegardées')}
-              </p>
-            </div>
-          </div>
-
-          <Button
-            onClick={() => router.push('/properties/browse')}
-            className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] gap-2"
-          >
-            <Search className="w-4 h-4" />
-            {t?.newSearch?.[language] || 'Nouvelle Recherche'}
-          </Button>
-        </div>
-
-        {/* Empty State */}
-        {savedSearches.length === 0 ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-orange-50 via-white to-orange-50 rounded-3xl border-2 border-orange-100 shadow-lg">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-orange-200/30 to-orange-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-orange-100/40 to-orange-200/30 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
-
-            <div className="relative flex flex-col items-center justify-center py-20 px-8">
-              <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-orange-500/30 animate-pulse">
-                <Search className="w-12 h-12 text-white" />
+              <div className="relative flex flex-col items-center justify-center py-20 px-8">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-xl"
+                  style={{ background: searcherGradientVibrant, boxShadow: '0 12px 32px rgba(255, 140, 32, 0.3)' }}
+                >
+                  <Search className="w-12 h-12 text-white" />
+                </motion.div>
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                  {t?.empty?.title?.[language] || 'Aucune recherche sauvegardée'}
+                </h3>
+                <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+                  {t?.empty?.description?.[language] || 'Sauvegarde tes recherches pour recevoir des alertes quand de nouvelles propriétés correspondent à tes critères'}
+                </p>
+                <Button
+                  onClick={() => router.push('/properties/browse')}
+                  className="text-white px-8 py-6 text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                  style={{ background: searcherGradientVibrant, boxShadow: '0 8px 24px rgba(255, 140, 32, 0.3)' }}
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  {t?.empty?.button?.[language] || 'Créer une recherche'}
+                </Button>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                {t?.empty?.title?.[language] || 'Aucune recherche sauvegardée'}
-              </h3>
-              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
-                {t?.empty?.description?.[language] || 'Sauvegarde tes recherches pour recevoir des alertes quand de nouvelles propriétés correspondent à tes critères'}
-              </p>
-              <Button
-                onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548] px-8 py-6 text-lg rounded-2xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-all"
+            </motion.div>
+          ) : (
+            <>
+              {/* Stats KPIs */}
+              <SearcherKPIGrid columns={3}>
+                <SearcherKPICard
+                  title={t?.stats?.total?.[language] || 'Total recherches'}
+                  value={savedSearches.length}
+                  icon={Search}
+                  variant="primary"
+                />
+                <SearcherKPICard
+                  title={t?.stats?.activeAlerts?.[language] || 'Alertes actives'}
+                  value={activeAlerts}
+                  icon={Bell}
+                  variant="success"
+                />
+                <SearcherKPICard
+                  title={t?.stats?.matches?.[language] || 'Propriétés trouvées'}
+                  value={totalMatches}
+                  icon={MapPin}
+                  variant="info"
+                />
+              </SearcherKPIGrid>
+
+              {/* Searches List */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+                }}
+                className="space-y-4"
               >
-                <Sparkles className="w-5 h-5 mr-2" />
-                {t?.empty?.button?.[language] || 'Créer une recherche'}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {savedSearches.map((search) => (
-              <Card key={search.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="text-xl mb-2">{search.name}</CardTitle>
-                      <p className="text-sm text-gray-600 mb-3">
-                        {renderFilterSummary(search.filters)}
-                      </p>
+                  {savedSearches.map((search) => (
+                  <motion.div
+                    key={search.id}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                  >
+                    <Card className="hover:shadow-lg transition-shadow bg-white/80 backdrop-blur-sm border-gray-200 rounded-2xl">
+                      <CardHeader>
+                        <div className="flex items-start justify-between">
+                          <div className="flex-1">
+                            <CardTitle className="text-xl mb-2">{search.name}</CardTitle>
+                            <p className="text-sm text-gray-600 mb-3">
+                              {renderFilterSummary(search.filters)}
+                            </p>
 
-                      <div className="flex flex-wrap gap-2">
-                        <Badge variant={search.email_alerts ? 'default' : 'secondary'} className="gap-1">
-                          {search.email_alerts ? <Bell className="w-3 h-3" /> : <BellOff className="w-3 h-3" />}
-                          {search.email_alerts
-                            ? `${t?.card?.alerts?.[language] || 'Alertes'} ${search.alert_frequency}`
-                            : (t?.card?.alertsDisabled?.[language] || 'Alertes désactivées')}
-                        </Badge>
+                            <div className="flex flex-wrap gap-2">
+                              <Badge variant={search.email_alerts ? 'default' : 'secondary'} className="gap-1">
+                                {search.email_alerts ? <Bell className="w-3 h-3" /> : <BellOff className="w-3 h-3" />}
+                                {search.email_alerts
+                                  ? `${t?.card?.alerts?.[language] || 'Alertes'} ${search.alert_frequency}`
+                                  : (t?.card?.alertsDisabled?.[language] || 'Alertes désactivées')}
+                              </Badge>
 
-                        {search.last_match_count > 0 && (
-                          <Badge className="bg-green-100 text-green-800 border-green-200">
-                            {search.last_match_count} {search.last_match_count === 1
-                              ? (t?.card?.propertyFound?.singular?.[language] || 'propriété trouvée')
-                              : (t?.card?.propertyFound?.plural?.[language] || 'propriétés trouvées')}
-                          </Badge>
-                        )}
+                              {search.last_match_count > 0 && (
+                                <Badge className="bg-green-100 text-green-800 border-green-200">
+                                  {search.last_match_count} {search.last_match_count === 1
+                                    ? (t?.card?.propertyFound?.singular?.[language] || 'propriété trouvée')
+                                    : (t?.card?.propertyFound?.plural?.[language] || 'propriétés trouvées')}
+                                </Badge>
+                              )}
 
-                        <Badge variant="secondary">
-                          {t?.card?.createdOn?.[language] || 'Créé le'} {new Date(search.created_at).toLocaleDateString(
-                            language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB'
-                          )}
-                        </Badge>
-                      </div>
-                    </div>
+                              <Badge variant="secondary">
+                                {t?.card?.createdOn?.[language] || 'Créé le'} {new Date(search.created_at).toLocaleDateString(
+                                  language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB'
+                                )}
+                              </Badge>
+                            </div>
+                          </div>
 
-                    <div className="flex gap-2">
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleToggleAlerts(search.id, search.email_alerts)}
-                        className="gap-2"
-                      >
-                        {search.email_alerts ? <BellOff className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
-                      </Button>
+                          <div className="flex gap-2">
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleToggleAlerts(search.id, search.email_alerts)}
+                              className="gap-2"
+                            >
+                              {search.email_alerts ? <BellOff className="w-4 h-4" /> : <Bell className="w-4 h-4" />}
+                            </Button>
 
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(search.id, search.name)}
-                        className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardHeader>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDelete(search.id, search.name)}
+                              className="gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </div>
+                      </CardHeader>
 
-                <CardContent>
-                  <Link href={buildSearchUrl(search.filters)}>
-                    <Button className="w-full gap-2 bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white hover:from-[#FF8C30] hover:to-[#FFA548]">
-                      <Play className="w-4 h-4" />
-                      {t?.card?.launch?.[language] || 'Lancer cette recherche'}
-                    </Button>
-                  </Link>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
+                      <CardContent>
+                        <Link href={buildSearchUrl(search.filters)}>
+                          <Button
+                            className="w-full gap-2 text-white rounded-xl"
+                            style={{ background: searcherGradientVibrant }}
+                          >
+                            <Play className="w-4 h-4" />
+                            {t?.card?.launch?.[language] || 'Lancer cette recherche'}
+                          </Button>
+                        </Link>
+                      </CardContent>
+                    </Card>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </>
+          )}
+        </motion.div>
       </div>
     </div>
   );

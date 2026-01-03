@@ -4,14 +4,24 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Heart, MapPin, Trash2, Home, Users, Star, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Heart, MapPin, Home, Sparkles, Euro, TrendingUp } from 'lucide-react';
 import PropertyCard from '@/components/PropertyCard';
 import { toast } from 'sonner';
 import { getResidentsForProperties } from '@/lib/services/rooms.service';
 import { useLanguage } from '@/lib/i18n/use-language';
-import { SkeletonGrid, SkeletonPropertyCard } from '@/components/ui/skeleton';
+import { SkeletonGrid } from '@/components/ui/skeleton';
 import { logger } from '@/lib/utils/logger';
+import {
+  SearcherPageHeader,
+  SearcherKPICard,
+  SearcherKPIGrid,
+  searcherGradientVibrant,
+  searcherGradientLight,
+  searcherColors,
+  searcherAnimations,
+} from '@/components/searcher';
+import LoadingHouse from '@/components/ui/LoadingHouse';
 
 interface Property {
   id: string;
@@ -144,172 +154,154 @@ export default function FavoritesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 p-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-4 mb-8">
-            <Button
-              variant="ghost"
-              onClick={() => router.back()}
-              className="gap-2"
-              aria-label={t?.back?.[language] || 'Back'}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              {t?.back?.[language] || 'Back'}
-            </Button>
-          </div>
-
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <div className="w-12 h-12 bg-gradient-to-br from-searcher-400 to-searcher-600 rounded-2xl flex items-center justify-center shadow-md">
-                <Heart className="w-6 h-6 text-white fill-white" />
-              </div>
-              {t?.title?.[language] || 'My Favorites'}
-            </h1>
-            <p className="text-gray-600 mt-1">{t?.loading?.[language] || 'Loading...'}</p>
-          </div>
-
-          <SkeletonGrid columns={3} items={6} cardType="property" />
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-white flex items-center justify-center">
+        <div className="text-center">
+          <LoadingHouse size={80} />
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement de vos favoris...'}</p>
         </div>
       </div>
     );
   }
 
+  // Calculate stats
+  const uniqueCities = new Set(favorites.map(f => f.property.city)).size;
+  const averagePrice = favorites.length > 0
+    ? Math.round(favorites.reduce((sum, f) => sum + f.property.monthly_rent, 0) / favorites.length)
+    : 0;
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
-              onClick={() => router.back()}
-              className="gap-2"
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          {...searcherAnimations.fadeInUp}
+          className="space-y-6"
+        >
+          {/* Header */}
+          <SearcherPageHeader
+            icon={Heart}
+            title={t?.title?.[language] || 'Mes Favoris'}
+            subtitle={`${favorites.length} ${favorites.length === 1 ? (t?.count?.singular?.[language] || 'propriété sauvegardée') : (t?.count?.plural?.[language] || 'propriétés sauvegardées')}`}
+            breadcrumb={{ label: 'Accueil', href: '/dashboard/searcher' }}
+            currentPage="Favoris"
+            actions={
+              favorites.length > 0 && (
+                <Button
+                  onClick={() => router.push('/properties/browse')}
+                  className="rounded-2xl text-white font-semibold"
+                  style={{ background: searcherGradientVibrant }}
+                >
+                  <Sparkles className="w-4 h-4 mr-2" />
+                  Découvrir plus
+                </Button>
+              )
+            }
+          />
+
+          {/* Empty State */}
+          {favorites.length === 0 ? (
+            <motion.div
+              {...searcherAnimations.cardHover}
+              className="relative overflow-hidden rounded-3xl border-2 border-amber-100 shadow-lg"
+              style={{ background: searcherGradientLight }}
             >
-              <ArrowLeft className="w-4 h-4" />
-              {t?.back?.[language] || 'Back'}
-            </Button>
+              <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20" style={{ background: searcherGradientVibrant }} />
+              <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2 opacity-10" style={{ background: searcherGradientVibrant }} />
 
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <div className="w-12 h-12 bg-gradient-to-br from-searcher-400 to-searcher-600 rounded-2xl flex items-center justify-center shadow-md">
-                  <Heart className="w-6 h-6 text-white fill-white" />
-                </div>
-                {t?.title?.[language] || 'My Favorites'}
-              </h1>
-              <p className="text-gray-600 mt-1">
-                {favorites.length} {favorites.length === 1
-                  ? (t?.count?.singular?.[language] || 'saved property')
-                  : (t?.count?.plural?.[language] || 'saved properties')}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Empty State */}
-        {favorites.length === 0 ? (
-          <div className="relative overflow-hidden bg-gradient-to-br from-searcher-50 via-white to-searcher-50 rounded-3xl border-2 border-searcher-100 shadow-lg">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-searcher-200/30 to-searcher-300/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-gradient-to-tr from-searcher-100/40 to-searcher-200/30 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2"></div>
-
-            <div className="relative flex flex-col items-center justify-center py-20 px-8">
-              <div className="w-24 h-24 bg-gradient-searcher rounded-3xl flex items-center justify-center mb-6 shadow-xl shadow-searcher-500/30 animate-pulse">
-                <Heart className="w-12 h-12 text-white" />
+              <div className="relative flex flex-col items-center justify-center py-20 px-8">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-xl"
+                  style={{ background: searcherGradientVibrant, boxShadow: '0 12px 32px rgba(255, 140, 32, 0.3)' }}
+                >
+                  <Heart className="w-12 h-12 text-white" />
+                </motion.div>
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                  {t?.empty?.title?.[language] || 'Pas encore de favoris'}
+                </h3>
+                <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+                  {t?.empty?.description?.[language] || 'Sauvegardez vos propriétés préférées en cliquant sur le'}
+                  <Heart className="w-4 h-4 inline-block mx-1" style={{ color: searcherColors.primary }} />
+                  {t?.empty?.descriptionSuffix?.[language] || 'pour les retrouver facilement ici'}
+                </p>
+                <Button
+                  onClick={() => router.push('/properties/browse')}
+                  className="text-white px-8 py-6 text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                  style={{ background: searcherGradientVibrant, boxShadow: '0 8px 24px rgba(255, 140, 32, 0.3)' }}
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  {t?.empty?.button?.[language] || 'Découvrir les propriétés'}
+                </Button>
               </div>
-              <h3 className="text-3xl font-bold text-gray-900 mb-3">
-                {t?.empty?.title?.[language] || 'No favorites yet'}
-              </h3>
-              <p className="text-lg text-gray-600 text-center max-w-md mb-8">
-                {t?.empty?.description?.[language] || 'Save your favorite properties by clicking on the heart'}
-                <Heart className="w-4 h-4 inline-block mx-1 text-searcher-600" />
-                {t?.empty?.descriptionSuffix?.[language] || 'to easily find them here'}
-              </p>
-              <Button
-                onClick={() => router.push('/properties/browse')}
-                className="bg-gradient-searcher text-white hover:opacity-90 px-8 py-6 text-lg rounded-2xl shadow-lg shadow-searcher-500/30 hover:shadow-xl hover:shadow-searcher-500/40 transition-all"
+            </motion.div>
+          ) : (
+            <>
+              {/* Stats KPIs */}
+              <SearcherKPIGrid columns={3}>
+                <SearcherKPICard
+                  title={t?.stats?.total?.[language] || 'Total favoris'}
+                  value={favorites.length}
+                  icon={Heart}
+                  variant="primary"
+                />
+                <SearcherKPICard
+                  title={t?.stats?.cities?.[language] || 'Villes'}
+                  value={uniqueCities}
+                  icon={MapPin}
+                  variant="info"
+                />
+                <SearcherKPICard
+                  title={t?.stats?.averagePrice?.[language] || 'Prix moyen'}
+                  value={`€${averagePrice}`}
+                  icon={Euro}
+                  variant="success"
+                  subtext="/mois"
+                />
+              </SearcherKPIGrid>
+
+              {/* Favorites Grid */}
+              <motion.div
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+                }}
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
               >
-                <Sparkles className="w-5 h-5 mr-2" />
-                {t?.empty?.button?.[language] || 'Discover properties'}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <>
-            {/* Summary Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <Card className="bg-white border-searcher-100 shadow-lg hover:shadow-xl transition-shadow rounded-2xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-searcher rounded-2xl flex items-center justify-center shadow-md">
-                      <Heart className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">{t?.stats?.total?.[language] || 'Total favorites'}</p>
-                      <p className="text-2xl font-bold text-gray-900">{favorites.length}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+                {favorites.map((favorite, index) => {
+                  const residents = residentsData.get(favorite.property.id) || [];
 
-              <Card className="bg-white border-searcher-100 shadow-lg hover:shadow-xl transition-shadow rounded-2xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-searcher rounded-2xl flex items-center justify-center shadow-md">
-                      <MapPin className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">{t?.stats?.cities?.[language] || 'Cities'}</p>
-                      <p className="text-2xl font-bold text-gray-900">
-                        {new Set(favorites.map(f => f.property.city)).size}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card className="bg-white border-searcher-100 shadow-lg hover:shadow-xl transition-shadow rounded-2xl">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 bg-gradient-searcher rounded-2xl flex items-center justify-center shadow-md">
-                      <Home className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <p className="text-sm text-gray-600 font-medium">{t?.stats?.averagePrice?.[language] || 'Average price'}</p>
-                      <p className="text-2xl font-bold text-gray-900">
-                        €{Math.round(favorites.reduce((sum, f) => sum + f.property.monthly_rent, 0) / favorites.length)}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Favorites Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {favorites.map((favorite) => {
-                const residents = residentsData.get(favorite.property.id) || [];
-
-                return (
-                  <div key={favorite.id} className="relative">
-                    <PropertyCard
-                      property={favorite.property}
-                      residents={residents}
-                      variant="default"
-                      isFavorite={true}
-                      onFavoriteClick={handleFavoriteClick}
-                    />
-                    <div className="mt-2 text-xs text-gray-500 text-center">
-                      {t?.addedOn?.[language] || 'Added on'} {new Date(favorite.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB', {
-                        day: 'numeric',
-                        month: 'long',
-                        year: 'numeric'
-                      })}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        )}
+                  return (
+                    <motion.div
+                      key={favorite.id}
+                      variants={{
+                        hidden: { opacity: 0, y: 20 },
+                        visible: { opacity: 1, y: 0 },
+                      }}
+                      className="relative"
+                    >
+                      <PropertyCard
+                        property={favorite.property}
+                        residents={residents}
+                        variant="default"
+                        isFavorite={true}
+                        onFavoriteClick={handleFavoriteClick}
+                      />
+                      <div className="mt-2 text-xs text-gray-500 text-center">
+                        {t?.addedOn?.[language] || 'Ajouté le'} {new Date(favorite.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB', {
+                          day: 'numeric',
+                          month: 'long',
+                          year: 'numeric'
+                        })}
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </motion.div>
+            </>
+          )}
+        </motion.div>
       </div>
     </div>
   );

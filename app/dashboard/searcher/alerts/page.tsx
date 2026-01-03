@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
-import { Bell, Trash2, Edit, Plus, BellOff, MapPin, Euro, Home, Calendar } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Bell, Trash2, Edit, Plus, BellOff, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -23,6 +24,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
+import {
+  SearcherPageHeader,
+  SearcherKPICard,
+  SearcherKPIGrid,
+  searcherGradientVibrant,
+  searcherGradientLight,
+  searcherAnimations,
+} from '@/components/searcher';
 
 export default function AlertsPage() {
   const router = useRouter();
@@ -128,190 +137,214 @@ export default function AlertsPage() {
 
   if (isLoading) {
     return (
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-center min-h-[400px]">
-          <div className="text-center">
-            <LoadingHouse size={64} />
-            <p className="text-gray-600">{t?.loading?.[language] || 'Loading alerts...'}</p>
-          </div>
+      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-white flex items-center justify-center">
+        <div className="text-center">
+          <LoadingHouse size={80} />
+          <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Chargement de vos alertes...'}</p>
         </div>
       </div>
     );
   }
 
+  const activeCount = alerts.filter((a) => a.is_active).length;
+  const inactiveCount = alerts.filter((a) => !a.is_active).length;
+
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      {/* Header */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'My Alerts'}</h1>
-            <p className="text-gray-600">
-              {t?.subtitle?.[language] || 'Get notified when a property matches your criteria'}
-            </p>
-          </div>
-          <Button onClick={() => router.push('/properties/browse')} className="bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548]">
-            <Plus className="w-4 h-4 mr-2" />
-            {t?.createButton?.[language] || 'Create an alert'}
-          </Button>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-                  <Bell className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Total</p>
-                  <p className="text-2xl font-bold">{alerts.length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                  <Bell className="w-6 h-6 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">{t?.stats?.active?.[language] || 'Active'}</p>
-                  <p className="text-2xl font-bold">{alerts.filter((a) => a.is_active).length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="pt-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
-                  <BellOff className="w-6 h-6 text-gray-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">{t?.stats?.inactive?.[language] || 'Inactive'}</p>
-                  <p className="text-2xl font-bold">{alerts.filter((a) => !a.is_active).length}</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Alerts List */}
-      <div className="space-y-4">
-        {alerts.length === 0 ? (
-          <Card>
-            <CardContent className="py-12 text-center">
-              <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">{t?.empty?.title?.[language] || 'No alerts'}</h3>
-              <p className="text-gray-600 mb-6">
-                {t?.empty?.description?.[language] || 'Create your first alert to get notified of new properties'}
-              </p>
-              <Button onClick={() => router.push('/properties/browse')}>
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-orange-50/30 to-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <motion.div
+          {...searcherAnimations.fadeInUp}
+          className="space-y-6"
+        >
+          {/* Header */}
+          <SearcherPageHeader
+            icon={Bell}
+            title={t?.title?.[language] || 'Mes Alertes'}
+            subtitle={t?.subtitle?.[language] || 'Recevez des notifications quand une propriété correspond à vos critères'}
+            breadcrumb={{ label: 'Accueil', href: '/dashboard/searcher' }}
+            currentPage="Alertes"
+            actions={
+              <Button
+                onClick={() => router.push('/properties/browse')}
+                className="rounded-2xl text-white font-semibold"
+                style={{ background: searcherGradientVibrant }}
+              >
                 <Plus className="w-4 h-4 mr-2" />
-                {t?.createButton?.[language] || 'Create an alert'}
+                {t?.createButton?.[language] || 'Créer une alerte'}
               </Button>
-            </CardContent>
-          </Card>
-        ) : (
-          alerts.map((alert) => (
-            <Card key={alert.id} className={!alert.is_active ? 'opacity-60' : ''}>
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-2">
-                      <CardTitle className="text-xl">{alert.name}</CardTitle>
-                      {alert.is_active ? (
-                        <Badge className="bg-green-100 text-green-700">{t?.badge?.active?.[language] || 'Active'}</Badge>
-                      ) : (
-                        <Badge variant="secondary">{t?.badge?.inactive?.[language] || 'Inactive'}</Badge>
-                      )}
-                    </div>
-                    <CardDescription>
-                      {t?.card?.created?.[language] || 'Created'} {new Date(alert.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB')}
-                      {alert.last_notified_at && (
-                        <> • {t?.card?.lastNotification?.[language] || 'Last notification'} {new Date(alert.last_notified_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB')}</>
-                      )}
-                    </CardDescription>
-                  </div>
-                  <Switch
-                    checked={alert.is_active}
-                    onCheckedChange={() => handleToggleAlert(alert.id, alert.is_active)}
-                  />
-                </div>
-              </CardHeader>
-              <CardContent>
-                {/* Criteria */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">{t?.card?.searchCriteria?.[language] || 'Search criteria'}</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {formatCriteria(alert).map((criterion, index) => (
-                      <Badge key={index} variant="default" className="text-sm">
-                        {criterion}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
+            }
+          />
 
-                {/* Notification Settings */}
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-gray-700 mb-2">{t?.card?.notifications?.[language] || 'Notifications'}</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {alert.email_notifications && (
-                      <Badge variant="default" className="text-sm">
-                        📧 Email
-                      </Badge>
-                    )}
-                    {alert.in_app_notifications && (
-                      <Badge variant="default" className="text-sm">
-                        🔔 In-app
-                      </Badge>
-                    )}
-                    <Badge variant="default" className="text-sm">
-                      📅 {getFrequencyLabel(alert.notification_frequency)}
-                    </Badge>
-                  </div>
-                </div>
+          {/* Stats KPIs */}
+          <SearcherKPIGrid columns={3}>
+            <SearcherKPICard
+              title="Total alertes"
+              value={alerts.length}
+              icon={Bell}
+              variant="primary"
+            />
+            <SearcherKPICard
+              title={t?.stats?.active?.[language] || 'Actives'}
+              value={activeCount}
+              icon={Bell}
+              variant="success"
+            />
+            <SearcherKPICard
+              title={t?.stats?.inactive?.[language] || 'Inactives'}
+              value={inactiveCount}
+              icon={BellOff}
+              variant="secondary"
+            />
+          </SearcherKPIGrid>
 
-                {/* Actions */}
-                <div className="flex gap-2 pt-4 border-t">
-                  <Button variant="outline" size="sm" onClick={() => router.push(`/dashboard/searcher/alerts/${alert.id}/edit`)}>
-                    <Edit className="w-4 h-4 mr-2" />
-                    {t?.actions?.edit?.[language] || 'Edit'}
-                  </Button>
-                  <Button variant="outline" size="sm" onClick={() => setAlertToDelete(alert.id)} className="text-red-600 hover:text-red-700">
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    {t?.actions?.delete?.[language] || 'Delete'}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))
-        )}
+          {/* Alerts List */}
+          {alerts.length === 0 ? (
+            <motion.div
+              {...searcherAnimations.cardHover}
+              className="relative overflow-hidden rounded-3xl border-2 border-amber-100 shadow-lg"
+              style={{ background: searcherGradientLight }}
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20" style={{ background: searcherGradientVibrant }} />
+              <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-2xl translate-y-1/2 -translate-x-1/2 opacity-10" style={{ background: searcherGradientVibrant }} />
+
+              <div className="relative flex flex-col items-center justify-center py-20 px-8">
+                <motion.div
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="w-24 h-24 rounded-3xl flex items-center justify-center mb-6 shadow-xl"
+                  style={{ background: searcherGradientVibrant, boxShadow: '0 12px 32px rgba(255, 140, 32, 0.3)' }}
+                >
+                  <Bell className="w-12 h-12 text-white" />
+                </motion.div>
+                <h3 className="text-3xl font-bold text-gray-900 mb-3">
+                  {t?.empty?.title?.[language] || 'Aucune alerte configurée'}
+                </h3>
+                <p className="text-lg text-gray-600 text-center max-w-md mb-8">
+                  {t?.empty?.description?.[language] || 'Créez votre première alerte pour être notifié des nouvelles propriétés'}
+                </p>
+                <Button
+                  onClick={() => router.push('/properties/browse')}
+                  className="text-white px-8 py-6 text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all"
+                  style={{ background: searcherGradientVibrant, boxShadow: '0 8px 24px rgba(255, 140, 32, 0.3)' }}
+                >
+                  <Sparkles className="w-5 h-5 mr-2" />
+                  {t?.createButton?.[language] || 'Créer une alerte'}
+                </Button>
+              </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
+              }}
+              className="space-y-4"
+            >
+              {alerts.map((alert) => (
+                <motion.div
+                  key={alert.id}
+                  variants={{
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 },
+                  }}
+                >
+                  <Card className={`bg-white/80 backdrop-blur-sm border-gray-200 rounded-2xl hover:shadow-lg transition-shadow ${!alert.is_active ? 'opacity-60' : ''}`}>
+                    <CardHeader>
+                      <div className="flex items-start justify-between">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-3 mb-2">
+                            <CardTitle className="text-xl">{alert.name}</CardTitle>
+                            {alert.is_active ? (
+                              <Badge className="bg-green-100 text-green-700">{t?.badge?.active?.[language] || 'Active'}</Badge>
+                            ) : (
+                              <Badge variant="secondary">{t?.badge?.inactive?.[language] || 'Inactive'}</Badge>
+                            )}
+                          </div>
+                          <CardDescription>
+                            {t?.card?.created?.[language] || 'Créé le'} {new Date(alert.created_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB')}
+                            {alert.last_notified_at && (
+                              <> • {t?.card?.lastNotification?.[language] || 'Dernière notification'} {new Date(alert.last_notified_at).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB')}</>
+                            )}
+                          </CardDescription>
+                        </div>
+                        <Switch
+                          checked={alert.is_active}
+                          onCheckedChange={() => handleToggleAlert(alert.id, alert.is_active)}
+                        />
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      {/* Criteria */}
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">{t?.card?.searchCriteria?.[language] || 'Critères de recherche'}</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {formatCriteria(alert).map((criterion, index) => (
+                            <Badge key={index} variant="default" className="text-sm">
+                              {criterion}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Notification Settings */}
+                      <div className="mb-4">
+                        <h4 className="text-sm font-medium text-gray-700 mb-2">{t?.card?.notifications?.[language] || 'Notifications'}</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {alert.email_notifications && (
+                            <Badge variant="default" className="text-sm">
+                              📧 Email
+                            </Badge>
+                          )}
+                          {alert.in_app_notifications && (
+                            <Badge variant="default" className="text-sm">
+                              🔔 In-app
+                            </Badge>
+                          )}
+                          <Badge variant="default" className="text-sm">
+                            📅 {getFrequencyLabel(alert.notification_frequency)}
+                          </Badge>
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="flex gap-2 pt-4 border-t">
+                        <Button variant="outline" size="sm" className="rounded-xl" onClick={() => router.push(`/dashboard/searcher/alerts/${alert.id}/edit`)}>
+                          <Edit className="w-4 h-4 mr-2" />
+                          {t?.actions?.edit?.[language] || 'Modifier'}
+                        </Button>
+                        <Button variant="outline" size="sm" className="rounded-xl text-red-600 hover:text-red-700 hover:bg-red-50" onClick={() => setAlertToDelete(alert.id)}>
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          {t?.actions?.delete?.[language] || 'Supprimer'}
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Delete Confirmation Dialog */}
+          <AlertDialog open={!!alertToDelete} onOpenChange={() => setAlertToDelete(null)}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{t?.deleteDialog?.title?.[language] || 'Supprimer l\'alerte ?'}</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {t?.deleteDialog?.description?.[language] || 'Cette action est irréversible. Vous ne recevrez plus de notifications pour cette alerte.'}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>{t?.deleteDialog?.cancel?.[language] || 'Annuler'}</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDeleteAlert} className="bg-red-600 hover:bg-red-700">
+                  {t?.deleteDialog?.confirm?.[language] || 'Supprimer'}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </motion.div>
       </div>
-
-      {/* Delete Confirmation Dialog */}
-      <AlertDialog open={!!alertToDelete} onOpenChange={() => setAlertToDelete(null)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{t?.deleteDialog?.title?.[language] || 'Delete alert?'}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {t?.deleteDialog?.description?.[language] || 'This action cannot be undone. You will no longer receive notifications for this alert.'}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>{t?.deleteDialog?.cancel?.[language] || 'Cancel'}</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteAlert} className="bg-red-600 hover:bg-red-700">
-              {t?.deleteDialog?.confirm?.[language] || 'Delete'}
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   );
 }
