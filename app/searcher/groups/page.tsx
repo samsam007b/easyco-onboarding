@@ -29,17 +29,19 @@ import {
   Target,
 } from 'lucide-react';
 
-// V3-FUN Groups Palette - Purple/Violet theme (community feel)
-const GROUPS_GRADIENT = 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%)';
-const GROUPS_PRIMARY = '#8B5CF6';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)';
-const ACCENT_SHADOW = 'rgba(139, 92, 246, 0.15)';
+// V3-FUN Groups Palette - Searcher Soft Gradient (community feel)
+const GROUPS_GRADIENT = 'linear-gradient(135deg, #FFF9E6 0%, #FFD080 100%)'; // --gradient-searcher-soft
+const GROUPS_PRIMARY = '#FFD080';
+const GROUPS_DARK = '#FFA040';
+const GROUPS_LIGHT = '#FFF9E6';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFEF5 0%, #FFF9E6 100%)';
+const ACCENT_SHADOW = 'rgba(255, 208, 128, 0.15)';
 // Searcher colors for nav
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
+const SEARCHER_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)';
+const SEARCHER_PRIMARY = '#FFA040';
 // Semantic Colors
 const SEMANTIC_SUCCESS = '#10B981';
-const SEMANTIC_PINK = '#EC4899';
+const SEMANTIC_AMBER = '#F59E0B';
 const SEMANTIC_BLUE = '#3B82F6';
 
 // Animation variants
@@ -150,7 +152,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
       value: groups.length,
       label: 'Groupes',
       color: GROUPS_PRIMARY,
-      bgColor: '#EDE9FE',
+      bgColor: '#FFF9E6',
     },
     {
       icon: Users,
@@ -172,10 +174,10 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-500/8 via-purple-400/5 to-violet-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-violet-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-purple-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-violet-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-orange-200/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -188,18 +190,18 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
-      {/* Glassmorphism background - Purple for Groups */}
+      {/* Glassmorphism background - Searcher Soft for Groups */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/8 via-purple-400/5 to-violet-300/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-violet-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-purple-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-violet-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-orange-200/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-violet-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
           <div className="max-w-4xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -246,7 +248,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-violet-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-3">
@@ -332,7 +334,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                   <motion.div
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-violet-200 transition-all cursor-pointer"
+                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all cursor-pointer"
                     onClick={() => router.push(`/searcher/groups/${group.id}`)}
                   >
                     <div className="p-4">
@@ -434,7 +436,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                                 e.stopPropagation();
                                 router.push(`/messages?group=${group.id}`);
                               }}
-                              className="w-9 h-9 rounded-xl bg-violet-50 flex items-center justify-center hover:bg-violet-100 transition-colors"
+                              className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
                             >
                               <MessageCircle className="w-4 h-4" style={{ color: GROUPS_PRIMARY }} />
                             </motion.button>

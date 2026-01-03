@@ -30,17 +30,19 @@ import {
 import { toast } from 'sonner';
 import { getHookTranslation } from '@/lib/i18n/get-language';
 
-// V3-FUN Alerts Palette - Purple theme
-const ALERTS_GRADIENT = 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 50%, #C4B5FD 100%)';
-const ALERTS_PRIMARY = '#8B5CF6';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)';
-const ACCENT_SHADOW = 'rgba(139, 92, 246, 0.15)';
+// V3-FUN Alerts Palette - Searcher Medium Gradient
+const ALERTS_GRADIENT = 'linear-gradient(135deg, #FFB85C 0%, #FFA040 100%)'; // --gradient-searcher-medium
+const ALERTS_PRIMARY = '#FFB85C';
+const ALERTS_DARK = '#FFA040';
+const ALERTS_LIGHT = '#FFD080';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBF0 0%, #FFF8E6 100%)';
+const ACCENT_SHADOW = 'rgba(255, 184, 92, 0.15)';
 // Searcher colors for nav
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
+const SEARCHER_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)';
+const SEARCHER_PRIMARY = '#FFA040';
 // Semantic Colors
 const SEMANTIC_SUCCESS = '#10B981';
-const SEMANTIC_PINK = '#EC4899';
+const SEMANTIC_AMBER = '#F59E0B';
 
 // Animation variants
 const containerVariants = {
@@ -175,7 +177,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
       value: alerts.length,
       label: 'Alertes',
       color: ALERTS_PRIMARY,
-      bgColor: '#EDE9FE',
+      bgColor: '#FFF8E6',
     },
     {
       icon: Zap,
@@ -197,10 +199,10 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-violet-500/8 via-purple-400/5 to-violet-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-violet-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-purple-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-violet-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -213,18 +215,18 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
-      {/* Glassmorphism background - Purple for Alerts */}
+      {/* Glassmorphism background - Searcher Medium for Alerts */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-500/8 via-purple-400/5 to-violet-300/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-violet-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-purple-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-violet-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-violet-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
           <div className="max-w-4xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -271,7 +273,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-violet-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-3">

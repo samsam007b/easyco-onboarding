@@ -29,11 +29,13 @@ import {
   CalendarClock,
 } from 'lucide-react';
 
-// V3-FUN Visits Palette - Emerald/Green theme (calendar/scheduling feel)
-const VISITS_GRADIENT = 'linear-gradient(135deg, #10B981 0%, #34D399 50%, #6EE7B7 100%)';
-const VISITS_PRIMARY = '#10B981';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%)';
-const ACCENT_SHADOW = 'rgba(16, 185, 129, 0.15)';
+// V3-FUN Visits Palette - Searcher Light Gradient (calendar/scheduling feel)
+const VISITS_GRADIENT = 'linear-gradient(135deg, #FFD080 0%, #FFE5A0 100%)'; // --gradient-searcher-light
+const VISITS_PRIMARY = '#FFD080';
+const VISITS_DARK = '#FFA040';
+const VISITS_LIGHT = '#FFE5A0';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBF0 0%, #FFF4E0 100%)';
+const ACCENT_SHADOW = 'rgba(255, 208, 128, 0.15)';
 // Searcher colors for nav
 const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
 const SEARCHER_PRIMARY = '#F59E0B';
@@ -221,8 +223,8 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
       icon: Calendar,
       value: visits.length,
       label: 'Total',
-      color: VISITS_PRIMARY,
-      bgColor: '#D1FAE5',
+      color: VISITS_DARK,
+      bgColor: '#FFF4E0',
     },
     {
       icon: CalendarClock,
@@ -251,10 +253,10 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/8 via-green-400/5 to-emerald-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-emerald-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-green-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-emerald-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-yellow-200/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -267,18 +269,18 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
-      {/* Glassmorphism background - Emerald for Visits */}
+      {/* Glassmorphism background - Searcher Light for Visits */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/8 via-green-400/5 to-emerald-300/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-emerald-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-green-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-emerald-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-yellow-200/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-emerald-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
           <div className="max-w-4xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -325,7 +327,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-emerald-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-3">
@@ -355,7 +357,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/40 backdrop-blur-sm border-b border-emerald-100/20"
+          className="bg-white/40 backdrop-blur-sm border-b border-amber-100/20"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-2">
@@ -444,7 +446,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                     layout
                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-emerald-200 transition-all">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all">
                       <div className="flex">
                         {/* Property Image */}
                         <div className="relative w-28 md:w-36 flex-shrink-0">
@@ -495,11 +497,11 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                               {/* Date & Time */}
                               <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 border border-gray-100 mb-2">
                                 <div className="flex items-center gap-1.5 text-gray-700">
-                                  <Calendar className="w-4 h-4 text-emerald-600" />
+                                  <Calendar className="w-4 h-4 text-amber-600" />
                                   <span className="text-xs font-medium capitalize">{formatShortDate(visit.visit_date)}</span>
                                 </div>
                                 <div className="flex items-center gap-1.5 text-gray-700">
-                                  <Clock className="w-4 h-4 text-emerald-600" />
+                                  <Clock className="w-4 h-4 text-amber-600" />
                                   <span className="text-xs font-medium">{visit.visit_time}</span>
                                 </div>
                               </div>
@@ -518,7 +520,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                                 <motion.button
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
-                                  className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center hover:bg-emerald-100 transition-colors"
+                                  className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
                                 >
                                   <Phone className="w-3.5 h-3.5" style={{ color: VISITS_PRIMARY }} />
                                 </motion.button>

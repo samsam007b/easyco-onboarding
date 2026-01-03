@@ -34,11 +34,13 @@ import {
   Calendar,
 } from 'lucide-react';
 
-// V3-FUN Matching Palette - Pink/Magenta theme
-const MATCHING_GRADIENT = 'linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)';
-const MATCHING_PRIMARY = '#EC4899';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%)';
-const ACCENT_SHADOW = 'rgba(236, 72, 153, 0.15)';
+// V3-FUN Matching Palette - Searcher Dark Gradient (intense for matching energy)
+const MATCHING_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FF8C20 100%)'; // --gradient-searcher-dark
+const MATCHING_PRIMARY = '#FFA040';
+const MATCHING_DARK = '#FF8C20';
+const MATCHING_LIGHT = '#FFD080';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBF0 0%, #FFF4E0 100%)'; // Warm background
+const ACCENT_SHADOW = 'rgba(255, 160, 64, 0.2)';
 // Semantic Colors
 const SEMANTIC_SUCCESS = '#10B981';
 const SEMANTIC_AMBER = '#F59E0B';
@@ -169,7 +171,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
       value: matches.length,
       label: 'Matchs',
       color: MATCHING_PRIMARY,
-      bgColor: '#FCE7F3',
+      bgColor: '#FFF4E0',
     },
     {
       icon: Zap,
@@ -190,12 +192,12 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
   if (loading) {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
-        {/* Glassmorphism background */}
+        {/* Glassmorphism background - Searcher Dark Orange */}
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-pink-500/8 via-rose-400/5 to-pink-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-pink-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-rose-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -208,18 +210,18 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
-      {/* Glassmorphism background - Pink/Magenta for Matching */}
+      {/* Glassmorphism background - Searcher Dark Orange for Matching */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-pink-500/8 via-rose-400/5 to-pink-300/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-pink-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-rose-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-pink-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-pink-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
           <div className="max-w-7xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -272,7 +274,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
         </div>
 
         {/* Tabs Bar */}
-        <div className="bg-white/60 backdrop-blur-md border-b border-pink-100/30">
+        <div className="bg-white/60 backdrop-blur-md border-b border-amber-100/30">
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex items-center justify-between">
               {/* Tabs */}
@@ -283,7 +285,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                   className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
                     activeTab === 'properties'
                       ? 'text-white shadow-md'
-                      : 'text-gray-600 bg-white border border-gray-100 hover:bg-pink-50'
+                      : 'text-gray-600 bg-white border border-gray-100 hover:bg-amber-50'
                   }`}
                   style={activeTab === 'properties' ? { background: MATCHING_GRADIENT } : {}}
                 >
@@ -293,7 +295,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 <Link href="/searcher/matching/people">
                   <motion.button
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-600 bg-white border border-gray-100 hover:bg-pink-50 transition-all"
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-600 bg-white border border-gray-100 hover:bg-amber-50 transition-all"
                   >
                     <Users className="w-4 h-4" />
                     Colocataires
@@ -425,7 +427,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-gray-100 shadow-sm text-sm text-gray-600 hover:bg-pink-50"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-gray-100 shadow-sm text-sm text-gray-600 hover:bg-amber-50"
               >
                 <Filter className="w-4 h-4" />
                 Filtrer
@@ -445,7 +447,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                   variants={itemVariants}
                 >
                   <div
-                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-pink-200 transition-all group cursor-pointer"
+                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all group cursor-pointer"
                     onClick={() => router.push(`/properties/${match.property.id}`)}
                   >
                     {/* Image */}
@@ -462,7 +464,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                           className="w-full h-full flex items-center justify-center"
                           style={{ background: CARD_BG_GRADIENT }}
                         >
-                          <Building2 className="w-10 h-10 text-pink-300" />
+                          <Building2 className="w-10 h-10 text-amber-300" />
                         </div>
                       )}
 
@@ -506,7 +508,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                           <span
                             key={i}
                             className="px-2 py-0.5 rounded-md text-[10px] font-medium"
-                            style={{ backgroundColor: '#FCE7F3', color: MATCHING_PRIMARY }}
+                            style={{ backgroundColor: '#FFF4E0', color: MATCHING_PRIMARY }}
                           >
                             {reason}
                           </span>
@@ -546,7 +548,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        <div className="bg-white/90 backdrop-blur-xl border-t border-pink-100/50 px-4 py-3 safe-area-pb">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-amber-100/50 px-4 py-3 safe-area-pb">
           <div className="flex items-center justify-around">
             <Link href="/searcher">
               <motion.div

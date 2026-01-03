@@ -36,11 +36,12 @@ import {
   Building2,
 } from 'lucide-react';
 
-// V3-FUN Matching People Palette - Pink/Magenta theme (consistent with /matching)
-const MATCHING_GRADIENT = 'linear-gradient(135deg, #EC4899 0%, #F472B6 50%, #F9A8D4 100%)';
-const MATCHING_PRIMARY = '#EC4899';
-const MATCHING_LIGHT = '#F9A8D4';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 100%)';
+// V3-FUN Matching People Palette - Searcher Dark Gradient (intense for matching energy)
+const MATCHING_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FF8C20 100%)'; // --gradient-searcher-dark
+const MATCHING_PRIMARY = '#FFA040';
+const MATCHING_DARK = '#FF8C20';
+const MATCHING_LIGHT = '#FFD080';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBF0 0%, #FFF4E0 100%)'; // Warm background
 
 // Semantic Colors
 const SEMANTIC_SUCCESS = '#10B981';
@@ -104,7 +105,7 @@ const StatsBar = memo(function StatsBar({
       </div>
       <div className="flex items-center gap-2">
         <div className="w-8 h-8 rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm">
-          <Heart className="w-4 h-4" style={{ color: '#EC4899' }} />
+          <Heart className="w-4 h-4" style={{ color: MATCHING_PRIMARY }} />
         </div>
         <div>
           <p className="font-bold text-gray-900">{matchesCount}</p>
@@ -498,10 +499,10 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
     <div className="min-h-screen relative overflow-hidden pb-24 md:pb-8">
       {/* Glassmorphism Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #FDF2F8 0%, #FCE7F3 30%, #FECDD3 60%, #FDF2F8 100%)' }} />
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #FFFBF0 0%, #FFF4E0 30%, #FFE5C0 60%, #FFFBF0 100%)' }} />
         {/* Animated blobs */}
         <div className="absolute top-20 -left-32 w-96 h-96 rounded-full opacity-40 blur-3xl animate-blob" style={{ background: MATCHING_PRIMARY }} />
-        <div className="absolute top-40 -right-32 w-80 h-80 rounded-full opacity-30 blur-3xl animate-blob animation-delay-2000" style={{ background: '#F472B6' }} />
+        <div className="absolute top-40 -right-32 w-80 h-80 rounded-full opacity-30 blur-3xl animate-blob animation-delay-2000" style={{ background: MATCHING_DARK }} />
         <div className="absolute -bottom-32 left-1/2 w-96 h-96 rounded-full opacity-25 blur-3xl animate-blob animation-delay-4000" style={{ background: MATCHING_LIGHT }} />
       </div>
 
@@ -512,7 +513,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Link href="/searcher/matching">
-                  <Button variant="ghost" size="icon" className="rounded-xl hover:bg-pink-50">
+                  <Button variant="ghost" size="icon" className="rounded-xl hover:bg-amber-50">
                     <ArrowLeft className="w-5 h-5" />
                   </Button>
                 </Link>
@@ -639,7 +640,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className="fixed bottom-28 md:bottom-8 left-4 right-4 max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-4 flex items-center gap-4 border border-pink-100 z-50"
+            className="fixed bottom-28 md:bottom-8 left-4 right-4 max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-4 flex items-center gap-4 border border-amber-100 z-50"
           >
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}

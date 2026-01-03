@@ -33,17 +33,19 @@ import {
 } from 'lucide-react';
 import { toast } from 'sonner';
 
-// V3-FUN Applications Palette - Teal/Cyan theme (documents/forms feel)
-const APPS_GRADIENT = 'linear-gradient(135deg, #0891B2 0%, #22D3EE 50%, #67E8F9 100%)';
-const APPS_PRIMARY = '#0891B2';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #ECFEFF 0%, #CFFAFE 100%)';
-const ACCENT_SHADOW = 'rgba(8, 145, 178, 0.15)';
+// V3-FUN Applications Palette - Searcher Main Gradient
+const APPS_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'; // --gradient-searcher
+const APPS_PRIMARY = '#FFA040';
+const APPS_SECONDARY = '#FFB85C';
+const APPS_LIGHT = '#FFD080';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBF0 0%, #FFF4E0 100%)';
+const ACCENT_SHADOW = 'rgba(255, 160, 64, 0.15)';
 // Searcher colors for nav
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
+const SEARCHER_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)';
+const SEARCHER_PRIMARY = '#FFA040';
 // Semantic Colors
 const SEMANTIC_SUCCESS = '#10B981';
-const SEMANTIC_PINK = '#EC4899';
+const SEMANTIC_AMBER = '#F59E0B';
 const SEMANTIC_WARNING = '#F59E0B';
 const SEMANTIC_DANGER = '#EF4444';
 
@@ -139,7 +141,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
   const getStatusConfig = (status: Application['status']) => {
     const config = {
       pending: { icon: Clock, label: 'En attente', color: SEMANTIC_WARNING, bgColor: '#FEF3C7' },
-      reviewing: { icon: Eye, label: 'En examen', color: APPS_PRIMARY, bgColor: '#CFFAFE' },
+      reviewing: { icon: Eye, label: 'En examen', color: APPS_PRIMARY, bgColor: '#FFF4E0' },
       approved: { icon: CheckCircle, label: 'Acceptée', color: SEMANTIC_SUCCESS, bgColor: '#D1FAE5' },
       rejected: { icon: XCircle, label: 'Refusée', color: SEMANTIC_DANGER, bgColor: '#FEE2E2' },
       withdrawn: { icon: XCircle, label: 'Retirée', color: '#6B7280', bgColor: '#F3F4F6' },
@@ -166,7 +168,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
       value: stats.total,
       label: 'Total',
       color: APPS_PRIMARY,
-      bgColor: '#CFFAFE',
+      bgColor: '#FFF4E0',
     },
     {
       icon: Clock,
@@ -203,10 +205,10 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-teal-400/5 to-cyan-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-cyan-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-teal-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-cyan-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -219,18 +221,18 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
-      {/* Glassmorphism background - Teal for Applications */}
+      {/* Glassmorphism background - Searcher for Applications */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-teal-400/5 to-cyan-300/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-cyan-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-teal-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-cyan-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-cyan-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
           <div className="max-w-4xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -279,7 +281,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-cyan-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
@@ -309,7 +311,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/40 backdrop-blur-sm border-b border-cyan-100/20"
+          className="bg-white/40 backdrop-blur-sm border-b border-amber-100/20"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
@@ -397,7 +399,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                     layout
                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-cyan-200 transition-all">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all">
                       <div className="p-4">
                         <div className="flex items-start gap-3">
                           {/* Property Image */}
@@ -425,7 +427,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap mb-1">
                               <h3
-                                className="font-semibold text-gray-900 cursor-pointer hover:text-cyan-600 transition-colors"
+                                className="font-semibold text-gray-900 cursor-pointer hover:text-amber-600 transition-colors"
                                 onClick={() => application.property?.id && router.push(`/properties/${application.property.id}`)}
                               >
                                 {application.property?.title || 'Propriété'}
