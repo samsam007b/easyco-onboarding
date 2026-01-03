@@ -11,11 +11,24 @@ import {
   Users,
   Target,
   CheckCircle2,
+  Sparkles,
+  ChevronRight,
+  Search,
+  Calendar,
+  Home,
 } from 'lucide-react';
 import Image from 'next/image';
 import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
 import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
 import { useLanguage } from '@/lib/i18n/use-language';
+
+// V3-FUN Searcher Palette (Amber/Gold theme)
+const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
+const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFF9E6 0%, #FEF3C7 100%)';
+const SEARCHER_PRIMARY = '#FFB10B';
+const SEARCHER_DARK = '#F59E0B';
+const ACCENT_SHADOW = 'rgba(255, 177, 11, 0.15)';
+const SEMANTIC_SUCCESS = '#7CB89B';
 
 interface SearcherDashboardCompactProps {
   userId: string;
@@ -151,113 +164,304 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
     }
   };
 
+  // Animation variants for staggered children
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08 }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+  };
+
+  // Get current date formatted
+  const currentDate = new Date().toLocaleDateString('fr-FR', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+  });
+
   if (isLoading) {
     return (
-      <div className="animate-pulse p-4">
-        <div className="h-48 bg-[#FFF9E6]/40 rounded-3xl" />
+      <div className="px-4 pt-1 pb-2">
+        <div className="relative overflow-hidden rounded-3xl p-4" style={{ background: SEARCHER_GRADIENT_SOFT }}>
+          <div className="animate-pulse space-y-4">
+            <div className="flex items-center gap-3">
+              <div className="w-12 h-12 rounded-2xl bg-amber-200/50" />
+              <div className="space-y-2">
+                <div className="h-4 w-32 bg-amber-200/50 rounded" />
+                <div className="h-3 w-24 bg-amber-200/30 rounded" />
+              </div>
+            </div>
+            <div className="grid grid-cols-4 gap-2">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-20 rounded-2xl bg-white/60" />
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
     <div className="px-4 pt-1 pb-2">
-      {/* Floating White Card with Glass Effect */}
+      {/* Main Card with V3-FUN Design */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden rounded-3xl bg-white border border-gray-100 shadow-lg p-4"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+        className="relative overflow-hidden rounded-3xl bg-white border border-amber-100/50"
+        style={{
+          boxShadow: `0 8px 32px ${ACCENT_SHADOW}, 0 2px 8px rgba(0,0,0,0.04)`,
+        }}
       >
-        {/* Gradient blob inside */}
-        <div className="absolute top-0 right-0 w-24 h-24 bg-[#FFF9E6]/60 rounded-full blur-2xl" />
+        {/* Decorative blobs - V3-FUN style */}
+        <div
+          className="absolute -top-8 -right-8 w-32 h-32 rounded-full blur-3xl opacity-60"
+          style={{ background: SEARCHER_GRADIENT }}
+        />
+        <div
+          className="absolute -bottom-12 -left-8 w-28 h-28 rounded-full blur-3xl opacity-40"
+          style={{ background: 'linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%)' }}
+        />
 
-            <div className="relative">
-          {/* Header: Profile + Quick actions */}
-          <div className="flex items-start justify-between mb-4">
+        <div className="relative p-4">
+          {/* Header: Profile + Welcome + Date */}
+          <motion.div variants={itemVariants} className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              {/* Avatar */}
+              {/* Avatar with V3-FUN styling */}
               <motion.button
                 onClick={() => router.push('/dashboard/my-profile')}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 className="relative group cursor-pointer flex-shrink-0"
               >
+                {/* Gradient ring around avatar */}
+                <div
+                  className="absolute -inset-0.5 rounded-2xl opacity-60 group-hover:opacity-100 transition-opacity"
+                  style={{ background: SEARCHER_GRADIENT }}
+                />
+
                 {/* Avatar container */}
-                <div className="relative w-11 h-11 rounded-xl bg-gradient-to-br from-[#FFF9E6] to-[#FFE082] flex items-center justify-center overflow-hidden shadow-md transition-all group-hover:shadow-lg group-hover:from-[#FFE082] group-hover:to-[#FFB10B]">
+                <div className="relative w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shadow-md transition-all bg-white">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
                       alt={userData.full_name}
-                      width={44}
-                      height={44}
+                      width={48}
+                      height={48}
                       className="object-cover w-full h-full transition-transform group-hover:scale-110"
                     />
                   ) : (
-                    <span className="text-base font-bold text-[#F9A825] transition-all group-hover:scale-110">
-                      {userData.full_name.charAt(0)}
-                    </span>
-                  )}
-                </div>
-
-                {/* Verification Badge - positioned at bottom right */}
-                <div className="absolute -bottom-0.5 -right-0.5 z-10">
-                  <VerificationBadge level={stats.verificationLevel} size="sm" />
-                </div>
-
-                {/* Minimal progress bar below avatar */}
-                {stats.profileCompletion < 100 && (
-                  <div className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-gray-200 rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-[#FFB10B] transition-all duration-500 group-hover:bg-[#F9A825]"
-                      style={{ width: `${stats.profileCompletion}%` }}
-                    />
-                  </div>
-                )}
-              </motion.button>
-
-              {/* Welcome text */}
-              <div>
-                <h1 className="text-sm font-bold text-gray-900">
-                  {searcher?.hiUser || 'Salut,'} {userData.full_name.split(' ')[0]}!
-                </h1>
-                <p className="text-[10px] text-gray-600">
-                  {preferences.cities.length > 0
-                    ? `${preferences.cities.slice(0, 2).join(', ')} • ${preferences.minBudget}-${preferences.maxBudget}€`
-                    : (searcher?.configureSearch || 'Configure ta recherche')}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Stats inline */}
-          <div className="grid grid-cols-4 gap-2">
-            {[
-              { label: searcher?.groups || 'Groupes', value: stats.likedProfiles.toString(), icon: Users, route: '/dashboard/searcher/groups' },
-              { label: searcher?.favorites || 'Favoris', value: stats.favoritesCount.toString(), icon: Bookmark, route: '/dashboard/searcher/favorites' },
-              { label: searcher?.messages || 'Messages', value: stats.unreadMessages.toString(), icon: MessageCircle, route: '/dashboard/searcher/messages', badge: stats.unreadMessages },
-              { label: searcher?.profileLabel || 'Profil', value: `${stats.profileCompletion}%`, icon: stats.profileCompletion >= 100 ? CheckCircle2 : Target, route: '/dashboard/profile-completion' }
-            ].map((stat) => {
-              const Icon = stat.icon;
-              return (
-                <button
-                  key={stat.label}
-                  onClick={() => router.push(stat.route)}
-                  className="relative rounded-2xl p-2.5 text-center overflow-hidden shadow-sm border border-[#FFB10B]/30 bg-[#FFF9E6] transition-transform hover:scale-105"
-                >
-                  <div className="absolute inset-0 grain-subtle opacity-40" />
-                  {stat.badge && stat.badge > 0 && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center shadow-md z-10">
-                      <span className="text-[9px] font-bold text-white">{stat.badge}</span>
+                      className="w-full h-full flex items-center justify-center"
+                      style={{ background: SEARCHER_GRADIENT_SOFT }}
+                    >
+                      <span className="text-lg font-bold" style={{ color: SEARCHER_DARK }}>
+                        {userData.full_name.charAt(0)}
+                      </span>
                     </div>
                   )}
-                  <div className="relative">
-                    <Icon className="w-4 h-4 mx-auto mb-1 text-[#F9A825]" />
-                    <p className="text-base font-bold text-gray-900">{stat.value}</p>
-                    <p className="text-[9px] text-gray-600 font-medium">{stat.label}</p>
+                </div>
+
+                {/* Verification Badge */}
+                <div className="absolute -bottom-1 -right-1 z-10">
+                  <VerificationBadge level={stats.verificationLevel} size="sm" />
+                </div>
+              </motion.button>
+
+              {/* Welcome text with date pill */}
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h1 className="text-sm font-bold text-gray-900">
+                    {searcher?.hiUser || 'Salut,'} {userData.full_name.split(' ')[0]} !
+                  </h1>
+                  <Sparkles className="w-3.5 h-3.5" style={{ color: SEARCHER_PRIMARY }} />
+                </div>
+                <div
+                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium"
+                  style={{ background: `${SEARCHER_PRIMARY}15`, color: SEARCHER_DARK }}
+                >
+                  <Calendar className="w-2.5 h-2.5" />
+                  {currentDate}
+                </div>
+              </div>
+            </div>
+
+            {/* Quick search button */}
+            <motion.button
+              onClick={() => router.push('/properties/browse')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-white text-xs font-semibold transition-all"
+              style={{
+                background: SEARCHER_GRADIENT,
+                boxShadow: `0 4px 12px ${ACCENT_SHADOW}`,
+              }}
+            >
+              <Search className="w-3.5 h-3.5" />
+              {searcher?.exploreButton || 'Explorer'}
+            </motion.button>
+          </motion.div>
+
+          {/* Profile completion hint - only if < 100% */}
+          {stats.profileCompletion < 100 && (
+            <motion.button
+              variants={itemVariants}
+              onClick={() => router.push('/dashboard/profile-completion')}
+              className="w-full mb-4 p-3 rounded-2xl border transition-all hover:shadow-md group"
+              style={{
+                background: SEARCHER_GRADIENT_SOFT,
+                borderColor: `${SEARCHER_PRIMARY}30`,
+              }}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-9 h-9 rounded-xl flex items-center justify-center"
+                    style={{ background: `${SEARCHER_PRIMARY}20` }}
+                  >
+                    <Target className="w-4.5 h-4.5" style={{ color: SEARCHER_DARK }} />
                   </div>
-                </button>
+                  <div className="text-left">
+                    <p className="text-xs font-semibold text-gray-900">
+                      {searcher?.completeProfile || 'Complete ton profil'}
+                    </p>
+                    <p className="text-[10px] text-gray-600">
+                      {stats.profileCompletion}% {searcher?.completed || 'complété'} • {searcher?.betterMatches || 'Plus de matchs'}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  {/* Mini progress bar */}
+                  <div className="w-16 h-1.5 bg-gray-200 rounded-full overflow-hidden">
+                    <div
+                      className="h-full rounded-full transition-all duration-500"
+                      style={{
+                        width: `${stats.profileCompletion}%`,
+                        background: SEARCHER_GRADIENT
+                      }}
+                    />
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors" />
+                </div>
+              </div>
+            </motion.button>
+          )}
+
+          {/* Stats Grid - V3-FUN KPI Cards */}
+          <motion.div variants={itemVariants} className="grid grid-cols-4 gap-2">
+            {[
+              {
+                label: searcher?.groups || 'Groupes',
+                value: stats.likedProfiles.toString(),
+                icon: Users,
+                route: '/dashboard/searcher/groups',
+                color: '#8B5CF6',
+                bgColor: '#8B5CF620'
+              },
+              {
+                label: searcher?.favorites || 'Favoris',
+                value: stats.favoritesCount.toString(),
+                icon: Bookmark,
+                route: '/dashboard/searcher/favorites',
+                color: '#EC4899',
+                bgColor: '#EC489920'
+              },
+              {
+                label: searcher?.messages || 'Messages',
+                value: stats.unreadMessages.toString(),
+                icon: MessageCircle,
+                route: '/dashboard/searcher/messages',
+                badge: stats.unreadMessages,
+                color: '#3B82F6',
+                bgColor: '#3B82F620'
+              },
+              {
+                label: searcher?.profileLabel || 'Profil',
+                value: `${stats.profileCompletion}%`,
+                icon: stats.profileCompletion >= 100 ? CheckCircle2 : Target,
+                route: '/dashboard/profile-completion',
+                color: stats.profileCompletion >= 100 ? SEMANTIC_SUCCESS : SEARCHER_DARK,
+                bgColor: stats.profileCompletion >= 100 ? `${SEMANTIC_SUCCESS}20` : `${SEARCHER_PRIMARY}20`
+              }
+            ].map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <motion.button
+                  key={stat.label}
+                  onClick={() => router.push(stat.route)}
+                  whileHover={{ scale: 1.03, y: -2 }}
+                  whileTap={{ scale: 0.97 }}
+                  className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-white transition-all"
+                  style={{
+                    boxShadow: `0 4px 16px ${ACCENT_SHADOW}`,
+                    border: '1px solid rgba(0,0,0,0.04)',
+                  }}
+                >
+                  {/* Decorative circle - V3-FUN pattern */}
+                  <div
+                    className="absolute -top-3 -right-3 w-10 h-10 rounded-full opacity-30"
+                    style={{ background: stat.bgColor }}
+                  />
+
+                  {/* Badge for unread */}
+                  {stat.badge && stat.badge > 0 && (
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 border-2 border-white rounded-full flex items-center justify-center shadow-md z-10"
+                    >
+                      <span className="text-[9px] font-bold text-white">{stat.badge}</span>
+                    </motion.div>
+                  )}
+
+                  <div className="relative z-10">
+                    {/* Icon with colored background */}
+                    <div
+                      className="w-8 h-8 mx-auto mb-1.5 rounded-xl flex items-center justify-center"
+                      style={{ background: stat.bgColor }}
+                    >
+                      <Icon className="w-4 h-4" style={{ color: stat.color }} />
+                    </div>
+                    <p className="text-base font-bold text-gray-900">{stat.value}</p>
+                    <p className="text-[9px] text-gray-500 font-medium">{stat.label}</p>
+                  </div>
+                </motion.button>
               );
             })}
-          </div>
+          </motion.div>
+
+          {/* Quick Actions Row */}
+          <motion.div variants={itemVariants} className="flex gap-2 mt-3">
+            {[
+              { label: searcher?.matching || 'Matching', icon: Home, route: '/matching/properties' },
+              { label: searcher?.visits || 'Visites', icon: Calendar, route: '/dashboard/searcher/visits' },
+            ].map((action) => {
+              const Icon = action.icon;
+              return (
+                <motion.button
+                  key={action.label}
+                  onClick={() => router.push(action.route)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium transition-all"
+                  style={{
+                    background: `${SEARCHER_PRIMARY}10`,
+                    color: SEARCHER_DARK,
+                  }}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  {action.label}
+                </motion.button>
+              );
+            })}
+          </motion.div>
         </div>
       </motion.div>
     </div>
