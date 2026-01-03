@@ -10,6 +10,7 @@ import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertC
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
+import { useLanguage } from '@/lib/i18n/use-language'
 import ProfilePictureUpload from '@/components/ProfilePictureUpload'
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { motion, AnimatePresence } from 'framer-motion'
@@ -123,6 +124,9 @@ type TabType = 'profile' | 'settings'
 export default function MyProfileOwnerPage() {
   const router = useRouter()
   const { activeRole } = useRole()
+  const { language, getSection } = useLanguage()
+  const common = getSection('common')
+  const settings = getSection('settings')
   const [isLoading, setIsLoading] = useState(true)
   const [userData, setUserData] = useState<UserData | null>(null)
   const [userProfile, setUserProfile] = useState<UserProfile | null>(null)
@@ -1346,19 +1350,22 @@ export default function MyProfileOwnerPage() {
       <AlertDialog open={showResetOnboardingDialog} onOpenChange={setShowResetOnboardingDialog}>
         <AlertDialogContent className="bg-white">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-gray-900">Réinitialiser l'Onboarding</AlertDialogTitle>
+            <AlertDialogTitle className="text-gray-900">
+              {settings?.resetOnboarding?.title?.[language] || 'Reset Onboarding'}
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-gray-600">
-              Cela réinitialisera votre progression d'onboarding. Vos informations de profil seront préservées.
-              Êtes-vous sûr de vouloir continuer ?
+              {settings?.resetOnboarding?.description?.[language] || 'This will reset your onboarding progress. Your profile information will be preserved. Are you sure you want to continue?'}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-100">Annuler</AlertDialogCancel>
+            <AlertDialogCancel className="border-gray-300 text-gray-700 hover:bg-gray-100">
+              {common?.cancel?.[language] || 'Cancel'}
+            </AlertDialogCancel>
             <AlertDialogAction
               onClick={confirmResetOnboarding}
               className={`bg-gradient-to-r ${colors.gradient} text-white`}
             >
-              Réinitialiser
+              {settings?.resetOnboarding?.confirm?.[language] || 'Reset'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

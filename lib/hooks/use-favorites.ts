@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 export interface Favorite {
   id: string;
@@ -37,7 +38,7 @@ export function useFavorites(userId?: string) {
       setFavoriteIds(new Set((data || []).map(f => f.property_id)));
     } catch (error: any) {
       // FIXME: Use logger.error - 'Error loading favorites:', error);
-      toast.error('Failed to load favorites');
+      toast.error(getHookTranslation('favorites', 'loadFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +56,7 @@ export function useFavorites(userId?: string) {
   // Add a property to favorites
   const addFavorite = async (propertyId: string): Promise<boolean> => {
     if (!userId) {
-      toast.error('Please login to save favorites');
+      toast.error(getHookTranslation('favorites', 'loginRequired'));
       return false;
     }
 
@@ -75,15 +76,15 @@ export function useFavorites(userId?: string) {
       // Reload to get the full favorite object
       await loadFavorites();
 
-      toast.success('Added to favorites');
+      toast.success(getHookTranslation('favorites', 'added'));
       return true;
     } catch (error: any) {
       // FIXME: Use logger.error - 'Error adding favorite:', error);
 
       if (error.code === '23505') {
-        toast.error('Already in favorites');
+        toast.error(getHookTranslation('favorites', 'alreadyExists'));
       } else {
-        toast.error('Failed to add favorite');
+        toast.error(getHookTranslation('favorites', 'addFailed'));
       }
 
       return false;
@@ -115,11 +116,11 @@ export function useFavorites(userId?: string) {
       // Reload favorites list
       await loadFavorites();
 
-      toast.success('Removed from favorites');
+      toast.success(getHookTranslation('favorites', 'removed'));
       return true;
     } catch (error: any) {
       // FIXME: Use logger.error - 'Error removing favorite:', error);
-      toast.error('Failed to remove favorite');
+      toast.error(getHookTranslation('favorites', 'removeFailed'));
       return false;
     }
   };

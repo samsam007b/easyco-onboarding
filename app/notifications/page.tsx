@@ -22,10 +22,14 @@ import { useNotifications } from '@/lib/hooks/use-notifications';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import { useLanguage } from '@/lib/i18n/use-language';
 
 export default function NotificationsPage() {
   const router = useRouter();
   const supabase = createClient();
+  const { language, getSection } = useLanguage();
+  const common = getSection('common');
+  const notificationsT = getSection('notifications');
   const [userId, setUserId] = useState<string>('');
   const [filter, setFilter] = useState<'all' | 'unread' | 'read'>('all');
   const [typeFilter, setTypeFilter] = useState<string>('all');
@@ -106,18 +110,18 @@ export default function NotificationsPage() {
   const handleMarkAllAsRead = async () => {
     const success = await markAllAsRead();
     if (success) {
-      toast.success('All notifications marked as read');
+      toast.success(notificationsT?.toast?.allMarkedAsRead?.[language] || 'All notifications marked as read');
     } else {
-      toast.error('Error marking notifications');
+      toast.error(notificationsT?.toast?.markError?.[language] || 'Error marking notifications');
     }
   };
 
   const handleClearRead = async () => {
     const success = await clearReadNotifications();
     if (success) {
-      toast.success('Read notifications deleted');
+      toast.success(notificationsT?.toast?.readDeleted?.[language] || 'Read notifications deleted');
     } else {
-      toast.error('Error deleting notifications');
+      toast.error(notificationsT?.toast?.deleteError?.[language] || 'Error deleting notifications');
     }
   };
 
@@ -125,9 +129,9 @@ export default function NotificationsPage() {
     e.stopPropagation();
     const success = await deleteNotification(notificationId);
     if (success) {
-      toast.success('Notification deleted');
+      toast.success(notificationsT?.toast?.notificationDeleted?.[language] || 'Notification deleted');
     } else {
-      toast.error('Error deleting');
+      toast.error(notificationsT?.toast?.deleteSingleError?.[language] || 'Error deleting');
     }
   };
 
@@ -174,7 +178,7 @@ export default function NotificationsPage() {
                 className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
-                <span>Back</span>
+                <span>{common?.back?.[language] || 'Back'}</span>
               </button>
 
               <div className="h-6 w-px bg-gray-300" />
@@ -198,7 +202,7 @@ export default function NotificationsPage() {
                 className="flex items-center gap-2"
               >
                 <Filter className="w-4 h-4" />
-                Filters
+                {common?.filters?.[language] || 'Filters'}
               </Button>
 
               {unreadCount > 0 && (
@@ -209,7 +213,7 @@ export default function NotificationsPage() {
                   className="flex items-center gap-2"
                 >
                   <CheckCheck className="w-4 h-4" />
-                  Mark all as read
+                  {common?.markAllAsRead?.[language] || 'Mark all as read'}
                 </Button>
               )}
 
@@ -221,7 +225,7 @@ export default function NotificationsPage() {
                   className="flex items-center gap-2 text-red-600 hover:text-red-700"
                 >
                   <Trash2 className="w-4 h-4" />
-                  Delete read
+                  {common?.deleteRead?.[language] || 'Delete read'}
                 </Button>
               )}
             </div>
@@ -233,7 +237,7 @@ export default function NotificationsPage() {
               <div className="flex items-center gap-6">
                 {/* Read Status Filter */}
                 <div className="flex items-center gap-2">
-                  <span className="text-sm font-medium text-gray-700">Status:</span>
+                  <span className="text-sm font-medium text-gray-700">{common?.status?.[language] || 'Status'}:</span>
                   <div className="flex gap-2">
                     {(['all', 'unread', 'read'] as const).map((f) => (
                       <button
@@ -245,9 +249,9 @@ export default function NotificationsPage() {
                             : 'bg-white text-gray-700 hover:bg-gray-100'
                         }`}
                       >
-                        {f === 'all' && 'All'}
-                        {f === 'unread' && 'Unread'}
-                        {f === 'read' && 'Read'}
+                        {f === 'all' && (common?.all?.[language] || 'All')}
+                        {f === 'unread' && (common?.unread?.[language] || 'Unread')}
+                        {f === 'read' && (common?.read?.[language] || 'Read')}
                       </button>
                     ))}
                   </div>
@@ -258,7 +262,7 @@ export default function NotificationsPage() {
                   <>
                     <div className="h-6 w-px bg-gray-300" />
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-medium text-gray-700">Type:</span>
+                      <span className="text-sm font-medium text-gray-700">{common?.type?.[language] || 'Type'}:</span>
                       <div className="flex gap-2">
                         <button
                           onClick={() => setTypeFilter('all')}
@@ -268,7 +272,7 @@ export default function NotificationsPage() {
                               : 'bg-white text-gray-700 hover:bg-gray-100'
                           }`}
                         >
-                          All
+                          {common?.all?.[language] || 'All'}
                         </button>
                         {notificationTypes.map((type) => (
                           <button
@@ -299,14 +303,14 @@ export default function NotificationsPage() {
           <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
             <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
-              {filter === 'unread' && 'No unread notifications'}
-              {filter === 'read' && 'No read notifications'}
-              {filter === 'all' && 'No notifications'}
+              {filter === 'unread' && (notificationsT?.emptyState?.noUnread?.[language] || 'No unread notifications')}
+              {filter === 'read' && (notificationsT?.emptyState?.noRead?.[language] || 'No read notifications')}
+              {filter === 'all' && (notificationsT?.emptyState?.noNotifications?.[language] || 'No notifications')}
             </h2>
             <p className="text-gray-600">
-              {filter === 'unread' && 'All your notifications have been read'}
-              {filter === 'read' && 'You haven\'t read any notifications yet'}
-              {filter === 'all' && 'You will receive your notifications here'}
+              {filter === 'unread' && (notificationsT?.emptyState?.allRead?.[language] || 'All your notifications have been read')}
+              {filter === 'read' && (notificationsT?.emptyState?.noneReadYet?.[language] || 'You haven\'t read any notifications yet')}
+              {filter === 'all' && (notificationsT?.emptyState?.willReceiveHere?.[language] || 'You will receive your notifications here')}
             </p>
           </div>
         ) : (
@@ -369,7 +373,7 @@ export default function NotificationsPage() {
                         <button
                           onClick={(e) => handleDelete(e, notification.id)}
                           className="p-2 hover:bg-red-100 rounded-lg transition-colors group"
-                          title="Delete"
+                          title={common?.delete?.[language] || 'Delete'}
                         >
                           <Trash2 className="w-4 h-4 text-gray-400 group-hover:text-red-600" />
                         </button>
@@ -386,7 +390,7 @@ export default function NotificationsPage() {
         {filteredNotifications.length >= 50 && (
           <div className="mt-6 text-center">
             <Button variant="outline" className="w-full sm:w-auto">
-              Load more
+              {common?.loadMore?.[language] || 'Load more'}
             </Button>
           </div>
         )}

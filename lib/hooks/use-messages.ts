@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 import type { RealtimeChannel } from '@supabase/supabase-js';
 
 export interface Message {
@@ -137,7 +138,7 @@ export function useMessages(userId?: string) {
       setConversations(enrichedConversations);
     } catch (error: any) {
       // FIXME: Use logger.error - 'Error loading conversations:', error);
-      toast.error('Failed to load conversations');
+      toast.error(getHookTranslation('messages', 'loadConversationsFailed'));
     } finally {
       setIsLoading(false);
     }
@@ -186,7 +187,7 @@ export function useMessages(userId?: string) {
         await markConversationAsRead(conversationId);
       } catch (error: any) {
         // FIXME: Use logger.error - 'Error loading messages:', error);
-        toast.error('Failed to load messages');
+        toast.error(getHookTranslation('messages', 'loadMessagesFailed'));
       }
     },
     [markConversationAsRead]
@@ -211,7 +212,7 @@ export function useMessages(userId?: string) {
         return true;
       } catch (error: any) {
         // FIXME: Use logger.error - 'Error sending message:', error);
-        toast.error('Failed to send message');
+        toast.error(getHookTranslation('messages', 'sendFailed'));
         return false;
       }
     },
@@ -251,7 +252,7 @@ export function useMessages(userId?: string) {
         return true;
       } catch (error: any) {
         // FIXME: Use logger.error - 'Error sending message with attachment:', error);
-        toast.error('Failed to send message');
+        toast.error(getHookTranslation('messages', 'sendFailed'));
         return false;
       }
     },
@@ -298,7 +299,7 @@ export function useMessages(userId?: string) {
         return newConv.id;
       } catch (error: any) {
         // FIXME: Use logger.error - 'Error creating conversation:', error);
-        toast.error('Failed to start conversation');
+        toast.error(getHookTranslation('messages', 'startConversationFailed'));
         return null;
       }
     },

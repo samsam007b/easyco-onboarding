@@ -1078,6 +1078,60 @@ export const translations = {
       nl: 'Flexibel',
       de: 'Flexibel',
     },
+    all: {
+      fr: 'Tout',
+      en: 'All',
+      nl: 'Alle',
+      de: 'Alle',
+    },
+    unread: {
+      fr: 'Non lu',
+      en: 'Unread',
+      nl: 'Ongelezen',
+      de: 'Ungelesen',
+    },
+    read: {
+      fr: 'Lu',
+      en: 'Read',
+      nl: 'Gelezen',
+      de: 'Gelesen',
+    },
+    type: {
+      fr: 'Type',
+      en: 'Type',
+      nl: 'Type',
+      de: 'Typ',
+    },
+    status: {
+      fr: 'Statut',
+      en: 'Status',
+      nl: 'Status',
+      de: 'Status',
+    },
+    filters: {
+      fr: 'Filtres',
+      en: 'Filters',
+      nl: 'Filters',
+      de: 'Filter',
+    },
+    markAllAsRead: {
+      fr: 'Tout marquer comme lu',
+      en: 'Mark all as read',
+      nl: 'Alles als gelezen markeren',
+      de: 'Alle als gelesen markieren',
+    },
+    deleteRead: {
+      fr: 'Supprimer les lus',
+      en: 'Delete read',
+      nl: 'Gelezen verwijderen',
+      de: 'Gelesene löschen',
+    },
+    loadMore: {
+      fr: 'Charger plus',
+      en: 'Load more',
+      nl: 'Meer laden',
+      de: 'Mehr laden',
+    },
     errors: {
       saveFailed: {
         fr: 'Échec de la sauvegarde',
@@ -1784,6 +1838,82 @@ export const translations = {
       en: 'new applications',
       nl: 'nieuwe aanvragen',
       de: 'neue Bewerbungen',
+    },
+    toast: {
+      allMarkedAsRead: {
+        fr: 'Toutes les notifications marquées comme lues',
+        en: 'All notifications marked as read',
+        nl: 'Alle meldingen als gelezen gemarkeerd',
+        de: 'Alle Benachrichtigungen als gelesen markiert',
+      },
+      markError: {
+        fr: 'Erreur lors du marquage des notifications',
+        en: 'Error marking notifications',
+        nl: 'Fout bij het markeren van meldingen',
+        de: 'Fehler beim Markieren der Benachrichtigungen',
+      },
+      readDeleted: {
+        fr: 'Notifications lues supprimées',
+        en: 'Read notifications deleted',
+        nl: 'Gelezen meldingen verwijderd',
+        de: 'Gelesene Benachrichtigungen gelöscht',
+      },
+      deleteError: {
+        fr: 'Erreur lors de la suppression des notifications',
+        en: 'Error deleting notifications',
+        nl: 'Fout bij het verwijderen van meldingen',
+        de: 'Fehler beim Löschen der Benachrichtigungen',
+      },
+      notificationDeleted: {
+        fr: 'Notification supprimée',
+        en: 'Notification deleted',
+        nl: 'Melding verwijderd',
+        de: 'Benachrichtigung gelöscht',
+      },
+      deleteSingleError: {
+        fr: 'Erreur lors de la suppression',
+        en: 'Error deleting',
+        nl: 'Fout bij het verwijderen',
+        de: 'Fehler beim Löschen',
+      },
+    },
+    emptyState: {
+      noUnread: {
+        fr: 'Aucune notification non lue',
+        en: 'No unread notifications',
+        nl: 'Geen ongelezen meldingen',
+        de: 'Keine ungelesenen Benachrichtigungen',
+      },
+      noRead: {
+        fr: 'Aucune notification lue',
+        en: 'No read notifications',
+        nl: 'Geen gelezen meldingen',
+        de: 'Keine gelesenen Benachrichtigungen',
+      },
+      noNotifications: {
+        fr: 'Aucune notification',
+        en: 'No notifications',
+        nl: 'Geen meldingen',
+        de: 'Keine Benachrichtigungen',
+      },
+      allRead: {
+        fr: 'Toutes vos notifications ont été lues',
+        en: 'All your notifications have been read',
+        nl: 'Al je meldingen zijn gelezen',
+        de: 'Alle Ihre Benachrichtigungen wurden gelesen',
+      },
+      noneReadYet: {
+        fr: 'Vous n\'avez pas encore lu de notifications',
+        en: 'You haven\'t read any notifications yet',
+        nl: 'Je hebt nog geen meldingen gelezen',
+        de: 'Sie haben noch keine Benachrichtigungen gelesen',
+      },
+      willReceiveHere: {
+        fr: 'Vous recevrez vos notifications ici',
+        en: 'You will receive your notifications here',
+        nl: 'Je ontvangt hier je meldingen',
+        de: 'Sie erhalten hier Ihre Benachrichtigungen',
+      },
     },
   },
 

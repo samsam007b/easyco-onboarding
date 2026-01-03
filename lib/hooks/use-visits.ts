@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 export type VisitType = 'in_person' | 'virtual';
 export type VisitStatus =
@@ -123,7 +124,7 @@ export function useVisits() {
       setError(null);
     } catch (err: any) {
       setError(err.message);
-      toast.error('Failed to load visits');
+      toast.error(getHookTranslation('visits', 'loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -157,7 +158,7 @@ export function useVisits() {
       setError(null);
     } catch (err: any) {
       setError(err.message);
-      toast.error('Failed to load visits');
+      toast.error(getHookTranslation('visits', 'loadFailed'));
     } finally {
       setLoading(false);
     }
@@ -195,7 +196,7 @@ export function useVisits() {
       });
 
       if (!isAvailable) {
-        toast.error('This time slot is no longer available');
+        toast.error(getHookTranslation('visits', 'slotUnavailable'));
         return null;
       }
 
@@ -216,11 +217,11 @@ export function useVisits() {
 
       if (error) throw error;
 
-      toast.success('Visit booked successfully! The owner will confirm shortly.');
+      toast.success(getHookTranslation('visits', 'bookSuccess'));
       await fetchMyVisits(); // Refresh list
       return data;
     } catch (err: any) {
-      toast.error(err.message || 'Failed to book visit');
+      toast.error(err.message || getHookTranslation('visits', 'bookFailed'));
       return null;
     }
   };
@@ -239,11 +240,11 @@ export function useVisits() {
 
       if (error) throw error;
 
-      toast.success('Visit cancelled');
+      toast.success(getHookTranslation('visits', 'cancelled'));
       await fetchMyVisits();
       return true;
     } catch (err: any) {
-      toast.error(err.message || 'Failed to cancel visit');
+      toast.error(err.message || getHookTranslation('visits', 'cancelFailed'));
       return false;
     }
   };
@@ -263,11 +264,11 @@ export function useVisits() {
 
       if (error) throw error;
 
-      toast.success('Visit confirmed');
+      toast.success(getHookTranslation('visits', 'confirmed'));
       await fetchPropertyVisits();
       return true;
     } catch (err: any) {
-      toast.error(err.message || 'Failed to confirm visit');
+      toast.error(err.message || getHookTranslation('visits', 'confirmFailed'));
       return false;
     }
   };
@@ -285,10 +286,10 @@ export function useVisits() {
 
       if (error) throw error;
 
-      toast.success('Visit marked as completed');
+      toast.success(getHookTranslation('visits', 'completed'));
       return true;
     } catch (err: any) {
-      toast.error(err.message || 'Failed to complete visit');
+      toast.error(err.message || getHookTranslation('visits', 'completeFailed'));
       return false;
     }
   };
@@ -312,11 +313,11 @@ export function useVisits() {
 
       if (error) throw error;
 
-      toast.success('Thank you for your feedback!');
+      toast.success(getHookTranslation('visits', 'feedbackSuccess'));
       await fetchMyVisits();
       return true;
     } catch (err: any) {
-      toast.error(err.message || 'Failed to submit feedback');
+      toast.error(err.message || getHookTranslation('visits', 'feedbackFailed'));
       return false;
     }
   };
@@ -356,7 +357,7 @@ export function useVisitAvailability(propertyId?: string) {
       if (error) throw error;
       setTimeSlots(data || []);
     } catch (err: any) {
-      toast.error('Failed to load time slots');
+      toast.error(getHookTranslation('visits', 'loadSlotsFailed'));
     }
   };
 
@@ -375,7 +376,7 @@ export function useVisitAvailability(propertyId?: string) {
       if (error) throw error;
       setAvailability(data || []);
     } catch (err: any) {
-      toast.error('Failed to load availability');
+      toast.error(getHookTranslation('visits', 'loadAvailabilityFailed'));
     } finally {
       setLoading(false);
     }
@@ -392,7 +393,7 @@ export function useVisitAvailability(propertyId?: string) {
       if (error) throw error;
       return data || [];
     } catch (err: any) {
-      toast.error('Failed to load available slots');
+      toast.error(getHookTranslation('visits', 'loadSlotsFailed'));
       return [];
     }
   };
@@ -419,11 +420,11 @@ export function useVisitAvailability(propertyId?: string) {
 
       if (error) throw error;
 
-      toast.success('Availability updated');
+      toast.success(getHookTranslation('visits', 'availabilityUpdated'));
       await fetchAvailability(params.property_id);
       return true;
     } catch (err: any) {
-      toast.error(err.message || 'Failed to update availability');
+      toast.error(err.message || getHookTranslation('visits', 'availabilityUpdateFailed'));
       return false;
     }
   };
