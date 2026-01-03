@@ -27,6 +27,7 @@ import {
   BellOff,
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { getHookTranslation } from '@/lib/i18n/get-language';
 
 // V3-FUN Palette
 const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';

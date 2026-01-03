@@ -147,12 +147,65 @@ const nextConfig = {
 
   async redirects() {
     return [
-      // Rediriger les anciennes URLs si nécessaire
-      // {
-      //   source: '/old-path',
-      //   destination: '/new-path',
-      //   permanent: true,
-      // },
+      // ============================================================================
+      // REDIRECTIONS SEARCHER: /dashboard/searcher -> /searcher
+      // ============================================================================
+      {
+        source: '/dashboard/searcher',
+        destination: '/searcher',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/my-applications',
+        destination: '/searcher/applications',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/calendar',
+        destination: '/searcher/calendar',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/favorites',
+        destination: '/searcher/favorites',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/groups',
+        destination: '/searcher/groups',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/groups/create',
+        destination: '/searcher/groups/create',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/my-visits',
+        destination: '/searcher/visits',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/saved-searches',
+        destination: '/searcher/saved-searches',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/alerts',
+        destination: '/searcher/alerts',
+        permanent: true,
+      },
+      {
+        source: '/dashboard/searcher/notifications',
+        destination: '/searcher/notifications',
+        permanent: true,
+      },
+      // Redirect /properties/browse to new explore page
+      {
+        source: '/properties/browse',
+        destination: '/searcher/explore',
+        permanent: true,
+      },
     ]
   },
 
