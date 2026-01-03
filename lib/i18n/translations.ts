@@ -1108,12 +1108,6 @@ export const translations = {
       nl: 'Status',
       de: 'Status',
     },
-    filters: {
-      fr: 'Filtres',
-      en: 'Filters',
-      nl: 'Filters',
-      de: 'Filter',
-    },
     markAllAsRead: {
       fr: 'Tout marquer comme lu',
       en: 'Mark all as read',
