@@ -207,6 +207,19 @@ const nextConfig = {
         permanent: true,
       },
       // ============================================================================
+      // REDIRECTIONS SEARCHER: Profile and Settings to global pages
+      // ============================================================================
+      {
+        source: '/searcher/profile',
+        destination: '/profile',
+        permanent: false, // Not permanent - may create dedicated pages later
+      },
+      {
+        source: '/searcher/settings',
+        destination: '/settings',
+        permanent: false,
+      },
+      // ============================================================================
       // REDIRECTIONS MESSAGES: Only for legacy paths without dedicated pages
       // ============================================================================
       // Note: /searcher/messages has its own page, no redirect needed
