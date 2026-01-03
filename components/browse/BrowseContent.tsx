@@ -452,7 +452,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
           <div className="relative inline-flex items-center bg-gray-100 rounded-full p-2 shadow-lg">
             {/* Sliding pill background */}
             <motion.div
-              className="absolute top-2 bottom-2 rounded-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] shadow-lg"
+              className="absolute top-2 bottom-2 rounded-full bg-gradient-to-r from-[#F59E0B] to-[#FCD34D] shadow-lg"
               initial={false}
               animate={{
                 left: viewMode === 'list' ? '8px' : viewMode === 'map' ? 'calc(33.33% + 4px)' : 'calc(66.66% + 0px)',
@@ -469,7 +469,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               onClick={() => setViewMode('list')}
               className={cn(
                 "relative z-10 px-8 py-4 rounded-full flex items-center gap-3 transition-colors font-semibold text-base",
-                viewMode === 'list' ? 'text-white' : 'text-gray-600 hover:text-orange-600'
+                viewMode === 'list' ? 'text-white' : 'text-gray-600 hover:text-amber-600'
               )}
             >
               <List className="w-5 h-5" />
@@ -479,7 +479,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               onClick={() => setViewMode('map')}
               className={cn(
                 "relative z-10 px-8 py-4 rounded-full flex items-center gap-3 transition-colors font-semibold text-base",
-                viewMode === 'map' ? 'text-white' : 'text-gray-600 hover:text-orange-600'
+                viewMode === 'map' ? 'text-white' : 'text-gray-600 hover:text-amber-600'
               )}
             >
               <MapIcon className="w-5 h-5" />
@@ -489,7 +489,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               onClick={() => setViewMode('matching')}
               className={cn(
                 "relative z-10 px-8 py-4 rounded-full flex items-center gap-3 transition-colors font-semibold text-base",
-                viewMode === 'matching' ? 'text-white' : 'text-gray-600 hover:text-orange-600'
+                viewMode === 'matching' ? 'text-white' : 'text-gray-600 hover:text-amber-600'
               )}
             >
               <Users className="w-5 h-5" />
@@ -506,12 +506,12 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 border-orange-200 text-orange-700 hover:bg-orange-50 relative rounded-full"
+                className="flex items-center gap-2 border-amber-200 text-amber-700 hover:bg-amber-50 relative rounded-full"
               >
                 <SlidersHorizontal className="w-4 h-4" />
                 Filtres
                 {activeFiltersCount > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-orange-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 bg-amber-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                     {activeFiltersCount}
                   </span>
                 )}
@@ -589,7 +589,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
           {/* Mobile map toggle */}
           <button
             onClick={() => setShowMobileMap(!showMobileMap)}
-            className="lg:hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-medium"
+            className="lg:hidden fixed bottom-6 right-6 z-50 bg-gradient-to-r from-amber-500 to-amber-600 text-white px-5 py-3 rounded-full shadow-xl flex items-center gap-2 font-medium"
           >
             {showMobileMap ? <List className="w-5 h-5" /> : <MapIcon className="w-5 h-5" />}
             {showMobileMap ? t('common.viewList') : t('common.viewMap')}
@@ -614,7 +614,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
           <div className="text-center mb-6">
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               {t('searcher.matching.browse.findRoommates')}{' '}
-              <span className="bg-gradient-to-r from-[#FFA040] to-[#FFD080] bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-[#F59E0B] to-[#FCD34D] bg-clip-text text-transparent">
                 {t('searcher.matching.browse.roommates')}
               </span>
             </h2>
@@ -630,7 +630,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               <span className="font-semibold text-gray-700">{likedProfiles.length}</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full shadow-sm text-xs">
-              <Users className="w-3.5 h-3.5 text-orange-600" />
+              <Users className="w-3.5 h-3.5 text-amber-600" />
               <span className="font-semibold text-gray-700">{potentialMatches.length - matchingIndex}</span>
             </div>
             <div className="flex items-center gap-1.5 px-3 py-1.5 bg-white rounded-full shadow-sm text-xs">
@@ -693,7 +693,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                   animate={{ opacity: 1, scale: 1 }}
                   className="absolute inset-0 bg-white rounded-3xl shadow-xl flex flex-col items-center justify-center p-6 text-center"
                 >
-                  <div className="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-4">
+                  <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-4">
                     <Sparkles className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">Bravo !</h3>
@@ -709,7 +709,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                       toast.success('Profils rechargés !');
                     }}
                     disabled={isAnimatingReload}
-                    className="bg-gradient-to-r from-orange-500 to-orange-600"
+                    className="bg-gradient-to-r from-amber-500 to-amber-600"
                   >
                     <RotateCcw className={`w-4 h-4 mr-2 ${isAnimatingReload ? 'animate-spin' : ''}`} />
                     Recharger
@@ -848,7 +848,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                     setMatchingIndex(prev => prev + 1);
                   }
                 }}
-                className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
+                className="w-14 h-14 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 shadow-lg flex items-center justify-center hover:scale-110 transition-transform"
               >
                 <Heart className="w-7 h-7 text-white fill-current" />
               </button>
