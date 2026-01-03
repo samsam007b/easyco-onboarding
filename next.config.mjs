@@ -207,21 +207,12 @@ const nextConfig = {
         permanent: true,
       },
       // ============================================================================
-      // REDIRECTIONS MESSAGES: Role-specific message paths -> /messages
+      // REDIRECTIONS MESSAGES: Only for legacy paths without dedicated pages
       // ============================================================================
-      {
-        source: '/searcher/messages',
-        destination: '/messages',
-        permanent: true,
-      },
-      {
-        source: '/owner/messages',
-        destination: '/messages',
-        permanent: true,
-      },
+      // Note: /searcher/messages has its own page, no redirect needed
       {
         source: '/resident/messages',
-        destination: '/messages',
+        destination: '/hub/messages',
         permanent: true,
       },
     ]
