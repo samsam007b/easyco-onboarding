@@ -206,6 +206,24 @@ const nextConfig = {
         destination: '/searcher/explore',
         permanent: true,
       },
+      // ============================================================================
+      // REDIRECTIONS MESSAGES: Role-specific message paths -> /messages
+      // ============================================================================
+      {
+        source: '/searcher/messages',
+        destination: '/messages',
+        permanent: true,
+      },
+      {
+        source: '/owner/messages',
+        destination: '/messages',
+        permanent: true,
+      },
+      {
+        source: '/resident/messages',
+        destination: '/messages',
+        permanent: true,
+      },
     ]
   },
 

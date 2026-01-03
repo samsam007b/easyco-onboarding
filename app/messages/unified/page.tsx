@@ -61,21 +61,9 @@ export default function UnifiedMessagesRedirectPage() {
 
         const userType = userData?.user_type;
 
-        // Redirect based on user type
-        switch (userType) {
-          case 'resident':
-            router.replace('/hub/messages');
-            break;
-          case 'owner':
-            router.replace('/dashboard/owner/messages');
-            break;
-          case 'searcher':
-            router.replace('/dashboard/searcher/messages');
-            break;
-          default:
-            // Fallback to hub messages for unknown types
-            router.replace('/hub/messages');
-        }
+        // All roles use the unified hub/messages page which is role-agnostic
+        // The hub/messages page uses getUserRole() to determine the user's role dynamically
+        router.replace('/hub/messages');
       } catch (err) {
         console.error('Error redirecting:', err);
         setHasError(true);
