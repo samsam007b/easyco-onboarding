@@ -21,6 +21,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { InvitePopup } from '@/components/referral';
 import { useLanguage } from '@/lib/i18n/use-language';
+import Superellipse from '@/components/ui/Superellipse';
 
 // V3 Option C - Official Resident Palette
 const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
@@ -273,8 +274,9 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
           animate={{ opacity: 1, x: 0 }}
           className="w-full lg:w-72 flex-shrink-0"
         >
-          <div
-            className="relative overflow-hidden rounded-3xl p-5 h-full min-h-[200px]"
+          <Superellipse
+            n={5}
+            className="relative overflow-hidden p-5 h-full min-h-[200px]"
             style={{
               background: RESIDENT_GRADIENT,
               boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -287,12 +289,15 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
             <div className="relative z-10 flex flex-col h-full justify-between">
               {/* Property icon and title */}
               <div>
-                <motion.div
-                  whileHover={{ rotate: 5, scale: 1.05 }}
-                  className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center mb-4"
+                <Superellipse
+                  n={5}
+                  as="div"
+                  className="w-12 h-12 bg-white/20 backdrop-blur flex items-center justify-center mb-4"
                 >
-                  <Home className="w-6 h-6 text-white" />
-                </motion.div>
+                  <motion.div whileHover={{ rotate: 5, scale: 1.05 }}>
+                    <Home className="w-6 h-6 text-white" />
+                  </motion.div>
+                </Superellipse>
 
                 <h3 className="text-xl font-black text-white mb-2 leading-tight">
                   {propertyInfo.title}
@@ -304,12 +309,12 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 </div>
 
                 {/* Member pills */}
-                <div className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 rounded-xl w-fit">
+                <Superellipse n={5} className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 w-fit">
                   <Users className="w-4 h-4 text-white" />
                   <span className="text-white font-semibold text-sm">
                     {propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocs' : 'coloc'}
                   </span>
-                </div>
+                </Superellipse>
               </div>
 
               {/* Bottom: Progress or Invite button */}
@@ -317,28 +322,30 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 {!isComplete ? (
                   <CircularProgress percentage={completion.percentage} />
                 ) : (
-                  <motion.div
-                    animate={{ scale: [1, 1.1, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                    className="flex items-center gap-2 bg-white/20 backdrop-blur px-3 py-2 rounded-xl"
-                  >
-                    <Sparkles className="w-4 h-4 text-white" />
-                    <span className="text-white font-bold text-sm">Complet!</span>
-                  </motion.div>
+                  <Superellipse n={5} className="flex items-center gap-2 bg-white/20 backdrop-blur px-3 py-2">
+                    <motion.div
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="flex items-center gap-2"
+                    >
+                      <Sparkles className="w-4 h-4 text-white" />
+                      <span className="text-white font-bold text-sm">Complet!</span>
+                    </motion.div>
+                  </Superellipse>
                 )}
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <Superellipse
+                  n={5}
+                  as="button"
                   onClick={() => setShowInviteModal(true)}
-                  className="flex items-center gap-1.5 bg-white text-gray-900 px-4 py-2 rounded-xl font-bold text-sm shadow-lg"
+                  className="flex items-center gap-1.5 bg-white text-gray-900 px-4 py-2 font-bold text-sm shadow-lg hover:scale-105 active:scale-95 transition-transform"
                 >
                   <UserPlus className="w-4 h-4" />
                   <span>Inviter</span>
-                </motion.button>
+                </Superellipse>
               </div>
             </div>
-          </div>
+          </Superellipse>
         </motion.div>
 
         {/* RIGHT: Welcome + Quick Actions */}
@@ -349,8 +356,9 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
           className="flex-1 flex flex-col gap-4"
         >
           {/* Welcome Section */}
-          <div
-            className="relative overflow-hidden rounded-3xl p-6 bg-white"
+          <Superellipse
+            n={5}
+            className="relative overflow-hidden p-6 bg-white"
             style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative gradient blob */}
@@ -361,10 +369,10 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
 
             <div className="relative z-10">
               {/* Date pill */}
-              <div className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1.5 rounded-full mb-3">
+              <Superellipse n={5} className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1.5 mb-3">
                 <Calendar className="w-3.5 h-3.5 text-gray-500" />
                 <span className="text-sm text-gray-600 font-medium capitalize">{currentDate}</span>
-              </div>
+              </Superellipse>
 
               {/* Welcome message */}
               <h2 className="text-2xl lg:text-3xl font-black text-gray-900 mb-1">
@@ -374,25 +382,27 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 {resident?.welcomeSubtitle || 'Voici un aperçu de ta coloc'}
               </p>
             </div>
-          </div>
+          </Superellipse>
 
           {/* Quick Actions Row */}
-          <div
-            className="relative overflow-hidden rounded-2xl p-4 bg-white"
+          <Superellipse
+            n={5}
+            className="relative overflow-hidden p-4 bg-white"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {quickActions.map((action, index) => {
                 const Icon = action.icon;
                 return (
-                  <motion.button
+                  <Superellipse
                     key={index}
-                    whileHover={{ scale: 1.03, y: -2 }}
-                    whileTap={{ scale: 0.97 }}
+                    n={5}
+                    as="button"
                     onClick={action.onClick}
                     className={`
-                      flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm
+                      flex items-center gap-2 px-4 py-2.5 font-semibold text-sm
                       transition-all whitespace-nowrap flex-shrink-0
+                      hover:scale-103 hover:-translate-y-0.5 active:scale-97
                       ${action.primary
                         ? 'text-white shadow-lg'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -402,43 +412,48 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                   >
                     <Icon className="w-4 h-4" />
                     <span>{action.label}</span>
-                  </motion.button>
+                  </Superellipse>
                 );
               })}
 
               {/* Settings shortcut */}
-              <motion.button
-                whileHover={{ scale: 1.03, y: -2 }}
-                whileTap={{ scale: 0.97 }}
+              <Superellipse
+                n={5}
+                as="button"
                 onClick={() => router.push('/settings/residence-profile')}
-                className="flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all whitespace-nowrap flex-shrink-0"
+                className="flex items-center gap-2 px-4 py-2.5 font-semibold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all whitespace-nowrap flex-shrink-0 hover:scale-103 hover:-translate-y-0.5 active:scale-97"
               >
                 <Settings className="w-4 h-4" />
                 <span>{hub?.actionSettings || 'Paramètres'}</span>
-              </motion.button>
+              </Superellipse>
             </div>
-          </div>
+          </Superellipse>
 
           {/* Next steps hint (if not complete) */}
           {!isComplete && completion.nextSteps.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center gap-3 px-4 py-3 rounded-2xl"
+            <Superellipse
+              n={5}
+              className="flex items-center gap-3 px-4 py-3"
               style={{ background: RESIDENT_GRADIENT_SOFT }}
             >
               <motion.div
-                animate={{ rotate: [0, 10, -10, 0] }}
-                transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                className="flex items-center gap-3 w-full"
               >
-                <Sparkles className="w-5 h-5" style={{ color: RESIDENT_PRIMARY }} />
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                >
+                  <Sparkles className="w-5 h-5" style={{ color: RESIDENT_PRIMARY }} />
+                </motion.div>
+                <span className="text-sm font-medium text-gray-700">
+                  {hub?.nextStep || 'Prochaine étape'}: <span className="font-bold">{completion.nextSteps[0]}</span>
+                </span>
+                <ChevronRight className="w-4 h-4 text-gray-400 ml-auto" />
               </motion.div>
-              <span className="text-sm font-medium text-gray-700">
-                {hub?.nextStep || 'Prochaine étape'}: <span className="font-bold">{completion.nextSteps[0]}</span>
-              </span>
-              <ChevronRight className="w-4 h-4 text-gray-400 ml-auto" />
-            </motion.div>
+            </Superellipse>
           )}
         </motion.div>
       </div>
