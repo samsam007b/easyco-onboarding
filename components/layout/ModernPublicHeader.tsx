@@ -110,7 +110,7 @@ export default function ModernPublicHeader({
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
 
           {/* Logo - Official Izzico Logo */}
@@ -122,7 +122,7 @@ export default function ModernPublicHeader({
             <img
               src="/logos/izzico-trademark-text-gradient.svg?v=5"
               alt="IzzIco"
-              className="h-7 w-auto transition-transform group-hover:scale-105"
+              className="h-6 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
