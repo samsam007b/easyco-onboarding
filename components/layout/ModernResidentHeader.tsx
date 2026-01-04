@@ -223,7 +223,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
             <img
               src="/logos/izzico-trademark-text-gradient.svg?v=5"
               alt="IzzIco"
-              className="h-5 w-auto transition-transform group-hover:scale-105"
+              className="h-6 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 
