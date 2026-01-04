@@ -244,15 +244,12 @@
 
   /* ============================================
      Typography - Izzico Brand Fonts
-     Source: brand-identity/izzico-brand-folder.html
+     Source: Brand Guidelines PDF (page 6)
+     - Fredoka (540, 600): Logo & Wordmark only
+     - Nunito (400, 600, 700): Headings & Titles
+     - Inter (400, 500, 600): Body text & UI
      ============================================ */
-  /* Inter → Body text, UI elements (via next/font) */
-  --font-body: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  /* Nunito → Headings, section titles (via next/font) */
-  --font-heading: var(--font-nunito), 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
-  /* Fredoka → Brand wordmark "Izzico" only (via next/font) */
-  --font-brand: var(--font-fredoka), 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
-  /* Monospace for code */
+  /* Monospace for code - static, no next/font dependency */
   --font-mono: 'Fira Code', 'Courier New', monospace;
 
   /* Font Sizes */
@@ -311,6 +308,11 @@
 
 body {
   @apply bg-gray-50 text-gray-900;
+  /* Font variables defined here because next/font classes are on body */
+  --font-body: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: var(--font-nunito), 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-brand: var(--font-fredoka), 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
+
   font-family: var(--font-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -428,9 +430,6 @@ html::after {
 
 body {
   @apply bg-white text-gray-900;
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   /* S'assure que le body a un fond pour ne pas montrer le fond HTML sauf lors du bounce */
   min-height: 100vh;
   position: relative;
@@ -1890,7 +1889,7 @@ html.dark::before {
               0 0 0 1px rgba(173, 86, 132, 0.1) !important;
   margin-top: 8px !important;
   padding: 8px !important;
-  font-family: var(--font-body) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   overflow: hidden !important;
   backdrop-filter: blur(10px);
 }
