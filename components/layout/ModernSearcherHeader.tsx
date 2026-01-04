@@ -247,7 +247,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                     href={item.href}
                     prefetch={true}
                     className={cn(
-                      "nav-item-searcher relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                      "nav-item-searcher relative z-10 flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                       isActive
                         ? "active font-semibold bg-orange-50"
                         : "text-gray-600 hover:bg-orange-50/50"
@@ -277,7 +277,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
             {favoritesCount > 0 && (
               <Link
                 href="/dashboard/searcher/favorites"
-                className="hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100/50 hover:shadow-md transition-all"
+                className="hidden xl:flex items-center gap-2 px-4 py-2 superellipse-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100/50 hover:shadow-md transition-all"
               >
                 <Bookmark className="w-4 h-4 text-orange-600" />
                 <span className="text-sm font-medium text-orange-900">{favoritesCount} {common?.favorites?.[language] || 'favorites'}</span>
@@ -288,7 +288,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-xl hover:bg-gray-100 transition-all"
+                className="relative p-2 superellipse-xl hover:bg-gray-100 transition-all"
                 aria-label={`${common?.notifications?.[language] || 'Notifications'}${(matchesCount > 0 || unreadMessages > 0) ? ` (${matchesCount + unreadMessages} ${common?.unreadNotifications?.[language] || 'unread'})` : ''}`}
                 aria-expanded={showNotifications}
                 aria-haspopup="true"
@@ -311,7 +311,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2 z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl superellipse-2xl shadow-2xl border border-white/20 py-2 z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-200">
                         <h3 className="font-semibold text-gray-900">{common?.notifications?.[language] || 'Notifications'}</h3>
@@ -385,7 +385,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl rounded-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-2xl superellipse-3xl shadow-2xl border border-white/20 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
                       <div className="relative px-6 py-5 bg-gradient-to-br from-[#FFA040] via-[#FFB85C] to-[#FFD080] text-white">
@@ -472,7 +472,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                           className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <User className="w-4 h-4 text-orange-700" />
                           </div>
                           <div className="flex-1">
@@ -487,7 +487,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                           className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Save className="w-4 h-4 text-blue-700" />
                           </div>
                           <div className="flex-1">
@@ -502,7 +502,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                           className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Settings className="w-4 h-4 text-purple-700" />
                           </div>
                           <div className="flex-1">
@@ -517,7 +517,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       <div className="px-4 pb-3">
                         <Link
                           href="/profile"
-                          className="block w-full px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-medium text-center hover:shadow-lg hover:scale-[1.02] transition-all"
+                          className="block w-full px-4 py-2.5 superellipse-xl bg-gradient-to-r from-[#FFA040] to-[#FFB85C] text-white font-medium text-center hover:shadow-lg hover:scale-[1.02] transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="flex items-center justify-center gap-2">
@@ -535,7 +535,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                         onClick={handleLogout}
                         className="w-full flex items-center gap-3 px-4 py-3 hover:bg-red-50 transition-all text-red-600 group"
                       >
-                        <div className="w-9 h-9 rounded-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
+                        <div className="w-9 h-9 superellipse-xl bg-red-50 flex items-center justify-center group-hover:bg-red-100 group-hover:scale-110 transition-all">
                           <LogOut className="w-4 h-4 text-red-600" />
                         </div>
                         <span className="font-medium">{common?.logout?.[language] || 'Log out'}</span>
@@ -549,7 +549,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
+              className="lg:hidden p-2 superellipse-xl hover:bg-gray-100 transition-all"
               aria-label={mobileMenuOpen ? (common?.closeMenu?.[language] || 'Close menu') : (common?.openMenu?.[language] || 'Open menu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"

@@ -152,7 +152,7 @@ function ResetPasswordContent() {
           </div>
         </header>
         <main className="flex-1 flex items-center justify-center px-6">
-          <div className="w-full max-w-md bg-white rounded-3xl shadow-lg p-8 border border-gray-100 text-center">
+          <div className="w-full max-w-md bg-white superellipse-3xl shadow-lg p-8 border border-gray-100 text-center">
             <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <AlertCircle className="w-8 h-8 text-red-600" />
             </div>
@@ -187,7 +187,7 @@ function ResetPasswordContent() {
           </div>
         </header>
         <main className="flex-1 flex items-center justify-center px-6">
-          <div className="w-full max-w-md bg-white rounded-3xl shadow-lg p-8 border border-gray-100 text-center">
+          <div className="w-full max-w-md bg-white superellipse-3xl shadow-lg p-8 border border-gray-100 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <Check className="w-8 h-8 text-green-600" />
             </div>
@@ -228,7 +228,7 @@ function ResetPasswordContent() {
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-6 py-12">
         <div className="w-full max-w-md">
-          <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
+          <div className="bg-white superellipse-3xl shadow-lg p-8 border border-gray-100">
             {/* Title */}
             <div className="text-center mb-8">
               <div className="w-16 h-16 bg-[#4A148C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -298,7 +298,7 @@ function ResetPasswordContent() {
 
               {/* Password Requirements */}
               {password && (
-                <div className="bg-gray-50 rounded-2xl p-4">
+                <div className="bg-gray-50 superellipse-2xl p-4">
                   <p className="text-xs font-medium text-gray-700 mb-2">{t('auth.resetPassword.requirements.title')}</p>
                   <ul className="space-y-1.5">
                     {requirements.map((req, index) => (

@@ -44,7 +44,7 @@ function EmailVerifiedContent() {
 
       {/* Main Content */}
       <main className="flex-1 flex items-center justify-center px-6">
-        <div className="w-full max-w-md bg-white rounded-3xl shadow-lg p-8 border border-gray-100 text-center">
+        <div className="w-full max-w-md bg-white superellipse-3xl shadow-lg p-8 border border-gray-100 text-center">
           {/* Success Icon */}
           <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
             <Check className="w-10 h-10 text-green-600" />
@@ -61,7 +61,7 @@ function EmailVerifiedContent() {
           </p>
 
           {/* Countdown */}
-          <div className="bg-gray-50 rounded-2xl p-4 mb-4">
+          <div className="bg-gray-50 superellipse-2xl p-4 mb-4">
             <p className="text-sm text-gray-600">
               {t('auth.verified.redirecting')} <span className="font-bold text-[#4A148C]">{countdown}</span> {countdown !== 1 ? t('auth.verified.seconds') : t('auth.verified.second')}...
             </p>

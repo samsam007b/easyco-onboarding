@@ -77,7 +77,7 @@ export default function ForgotPasswordPage() {
         <div className="w-full max-w-md">
           {!emailSent ? (
             /* Reset Form */
-            <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
+            <div className="bg-white superellipse-3xl shadow-lg p-8 border border-gray-100">
               {/* Title */}
               <div className="text-center mb-8">
                 <div className="w-16 h-16 bg-[#4A148C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -145,7 +145,7 @@ export default function ForgotPasswordPage() {
             </div>
           ) : (
             /* Success Message */
-            <div className="bg-white rounded-3xl shadow-lg p-8 border border-gray-100">
+            <div className="bg-white superellipse-3xl shadow-lg p-8 border border-gray-100">
               <div className="text-center">
                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Check className="w-8 h-8 text-green-600" />
@@ -157,7 +157,7 @@ export default function ForgotPasswordPage() {
                   {t('auth.forgotPassword.success.subtitle')}{' '}
                   <span className="font-semibold text-gray-900">{email}</span>
                 </p>
-                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6 text-left">
+                <div className="bg-blue-50 border border-blue-200 superellipse-2xl p-4 mb-6 text-left">
                   <p className="text-sm text-blue-900 mb-2 font-medium">
                     {t('auth.forgotPassword.success.nextSteps')}
                   </p>

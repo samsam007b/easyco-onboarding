@@ -182,7 +182,7 @@ export default function SmartSplitter({
               key={m.value}
               onClick={() => setMethod(m.value)}
               className={cn(
-                'relative overflow-hidden rounded-2xl p-6 text-left transition-all border-2',
+                'relative overflow-hidden superellipse-2xl p-6 text-left transition-all border-2',
                 method === m.value
                   ? 'border-resident-500 bg-gradient-to-br from-resident-50 to-resident-100 shadow-lg'
                   : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
@@ -207,14 +207,14 @@ export default function SmartSplitter({
       </div>
 
       {/* Allocations */}
-      <div className="bg-gray-50 rounded-3xl p-6 space-y-4">
+      <div className="bg-gray-50 superellipse-3xl p-6 space-y-4">
         {allocations.map((allocation, index) => (
           <motion.div
             key={allocation.user_id}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.05 }}
-            className="flex items-center gap-4 bg-white rounded-2xl p-4 shadow-sm"
+            className="flex items-center gap-4 bg-white superellipse-2xl p-4 shadow-sm"
           >
             {/* User Avatar */}
             <div className="flex-shrink-0">
@@ -246,7 +246,7 @@ export default function SmartSplitter({
                   onChange={(e) =>
                     updateAmount(allocation.user_id, parseFloat(e.target.value) || 0)
                   }
-                  className="w-24 rounded-xl text-right font-semibold"
+                  className="w-24 superellipse-xl text-right font-semibold"
                 />
               </div>
             )}
@@ -260,7 +260,7 @@ export default function SmartSplitter({
                   onChange={(e) =>
                     updatePercentage(allocation.user_id, parseFloat(e.target.value) || 0)
                   }
-                  className="w-20 rounded-xl text-right font-semibold"
+                  className="w-20 superellipse-xl text-right font-semibold"
                 />
                 <Percent className="w-4 h-4 text-gray-400 flex-shrink-0" />
               </div>
@@ -279,7 +279,7 @@ export default function SmartSplitter({
       {/* Validation Summary */}
       <div
         className={cn(
-          'rounded-2xl p-6 border-2',
+          'superellipse-2xl p-6 border-2',
           isValid
             ? 'bg-green-50 border-green-200'
             : 'bg-yellow-50 border-yellow-200'

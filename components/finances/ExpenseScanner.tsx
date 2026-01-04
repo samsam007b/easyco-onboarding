@@ -404,7 +404,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   animate={isCurrent ? { scale: [1, 1.05, 1] } : {}}
                   transition={isCurrent ? { repeat: Infinity, duration: 2 } : {}}
                   className={cn(
-                    'relative flex items-center justify-center w-12 h-12 rounded-2xl text-sm font-bold transition-all',
+                    'relative flex items-center justify-center w-12 h-12 superellipse-2xl text-sm font-bold transition-all',
                     isActive
                       ? 'text-white'
                       : 'bg-gray-100 text-gray-400 border-2 border-gray-200'
@@ -423,7 +423,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   <StepIcon className="w-5 h-5" />
                   {isCurrent && (
                     <motion.div
-                      className="absolute inset-0 rounded-2xl"
+                      className="absolute inset-0 superellipse-2xl"
                       animate={{ opacity: [0, 0.3, 0] }}
                       transition={{ repeat: Infinity, duration: 1.5 }}
                       style={{ background: 'rgba(255,255,255,0.5)' }}
@@ -476,7 +476,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
             >
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 5 }}
-                className="inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-4"
+                className="inline-flex items-center justify-center w-20 h-20 superellipse-3xl mb-4"
                 style={{
                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                   boxShadow: '0 12px 30px rgba(255, 101, 30, 0.35)',
@@ -520,7 +520,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 whileHover={{ scale: 1.03, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => fileInputRef.current?.click()}
-                className="group relative overflow-hidden rounded-3xl p-8 text-white transition-all"
+                className="group relative overflow-hidden superellipse-3xl p-8 text-white transition-all"
                 style={{
                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                   boxShadow: '0 12px 30px rgba(255, 101, 30, 0.35)',
@@ -555,7 +555,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 whileHover={{ scale: 1.03, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => fileInputRef.current?.click()}
-                className="group relative overflow-hidden rounded-3xl p-8 text-white transition-all"
+                className="group relative overflow-hidden superellipse-3xl p-8 text-white transition-all"
                 style={{
                   background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%)',
                   boxShadow: '0 12px 30px rgba(124, 58, 237, 0.35)',
@@ -593,7 +593,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <Button
                 variant="outline"
                 onClick={onCancel}
-                className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
                 style={{ color: '#ff651e' }}
               >
                 <X className="w-4 h-4 mr-2" />
@@ -631,7 +631,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               />
               {/* Core animated icon */}
               <motion.div
-                className="absolute inset-8 rounded-3xl flex items-center justify-center"
+                className="absolute inset-8 superellipse-3xl flex items-center justify-center"
                 animate={{
                   rotate: [0, 5, -5, 0],
                   scale: [1, 1.05, 1],
@@ -783,7 +783,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 rounded-2xl p-4 flex items-center gap-3"
+                className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 superellipse-2xl p-4 flex items-center gap-3"
               >
                 <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0" />
                 <p className="text-sm text-yellow-800 font-medium">{scanError}</p>
@@ -795,7 +795,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="relative rounded-2xl overflow-hidden border-2 border-gray-200 shadow-md"
+                className="relative superellipse-2xl overflow-hidden border-2 border-gray-200 shadow-md"
                 style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.08)' }}
               >
                 <div className="absolute top-3 left-3 z-10">
@@ -825,7 +825,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div variants={itemVariants}>
                 <Label htmlFor="title" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                   <div
-                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    className="w-6 h-6 superellipse-lg flex items-center justify-center"
                     style={{ background: 'rgba(255, 101, 30, 0.15)' }}
                   >
                     <Tag className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
@@ -837,14 +837,14 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={scanner?.titlePlaceholder?.[language] || 'E.g.: Weekly groceries'}
-                  className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                 />
               </motion.div>
 
               <motion.div variants={itemVariants}>
                 <Label htmlFor="amount" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                   <div
-                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    className="w-6 h-6 superellipse-lg flex items-center justify-center"
                     style={{ background: 'rgba(16, 185, 129, 0.15)' }}
                   >
                     <DollarSign className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
@@ -860,7 +860,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all text-xl font-bold"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all text-xl font-bold"
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">€</span>
                 </div>
@@ -870,7 +870,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <motion.div variants={itemVariants}>
                   <Label htmlFor="date" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      className="w-6 h-6 superellipse-lg flex items-center justify-center"
                       style={{ background: 'rgba(59, 130, 246, 0.15)' }}
                     >
                       <Edit3 className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
@@ -882,14 +882,14 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </motion.div>
 
                 <motion.div variants={itemVariants}>
                   <Label htmlFor="description" className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      className="w-6 h-6 superellipse-lg flex items-center justify-center"
                       style={{ background: 'rgba(236, 72, 153, 0.15)' }}
                     >
                       <FileText className="w-3.5 h-3.5" style={{ color: '#ec4899' }} />
@@ -901,7 +901,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder={scanner?.optional?.[language] || 'Optional'}
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </motion.div>
               </div>
@@ -910,7 +910,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
             {/* Editable Line Items - Enhanced */}
             <motion.div
               variants={itemVariants}
-              className="rounded-2xl p-4 border-2"
+              className="superellipse-2xl p-4 border-2"
               style={{
                 background: 'linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(99, 102, 241, 0.08) 100%)',
                 borderColor: 'rgba(59, 130, 246, 0.2)',
@@ -920,7 +920,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="flex items-center gap-2">
                   <motion.div
                     whileHover={{ rotate: 10 }}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 superellipse-lg flex items-center justify-center"
                     style={{ background: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)' }}
                   >
                     <ShoppingCart className="w-4 h-4 text-white" />
@@ -954,7 +954,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                       initial={{ opacity: 0, x: -10 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="bg-white rounded-xl p-3 space-y-2 border border-gray-100 shadow-sm"
+                      className="bg-white superellipse-xl p-3 space-y-2 border border-gray-100 shadow-sm"
                     >
                       <div className="flex items-start gap-2">
                         <div className="flex-1 space-y-2">
@@ -962,7 +962,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                             value={item.name}
                             onChange={(e) => updateLineItem(item.id, 'name', e.target.value)}
                             placeholder={scanner?.articleName?.[language] || 'Item name'}
-                            className="text-sm rounded-lg border-gray-200"
+                            className="text-sm superellipse-lg border-gray-200"
                           />
                           <div className="grid grid-cols-2 gap-2">
                             <Input
@@ -971,7 +971,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                               onChange={(e) => updateLineItem(item.id, 'quantity', parseFloat(e.target.value) || 1)}
                               placeholder="Qté"
                               min="1"
-                              className="text-sm rounded-lg border-gray-200"
+                              className="text-sm superellipse-lg border-gray-200"
                             />
                             <Input
                               type="number"
@@ -979,7 +979,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                               value={item.total_price}
                               onChange={(e) => updateLineItem(item.id, 'total_price', parseFloat(e.target.value) || 0)}
                               placeholder="Prix €"
-                              className="text-sm rounded-lg border-gray-200 font-semibold"
+                              className="text-sm superellipse-lg border-gray-200 font-semibold"
                             />
                           </div>
                         </div>
@@ -1029,7 +1029,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     cleanup();
                     setCurrentStep('upload');
                   }}
-                  className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
                   style={{ color: '#ff651e' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -1039,7 +1039,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                 <Button
                   onClick={handleReviewNext}
-                  className="w-full rounded-2xl text-white border-none py-6 font-semibold transition-all"
+                  className="w-full superellipse-2xl text-white border-none py-6 font-semibold transition-all"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     boxShadow: '0 8px 20px rgba(255, 101, 30, 0.35)',
@@ -1095,7 +1095,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setCategory(cat.value)}
                     className={cn(
-                      'group relative overflow-hidden rounded-2xl p-6 text-center transition-all border-2',
+                      'group relative overflow-hidden superellipse-2xl p-6 text-center transition-all border-2',
                       isSelected
                         ? 'text-white border-transparent'
                         : 'border-gray-200 bg-white hover:border-gray-300'
@@ -1151,7 +1151,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <Button
                   variant="outline"
                   onClick={() => setCurrentStep('review')}
-                  className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
                   style={{ color: '#ff651e' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -1161,7 +1161,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                 <Button
                   onClick={() => setCurrentStep('confirm')}
-                  className="w-full rounded-2xl text-white border-none py-6 font-semibold transition-all"
+                  className="w-full superellipse-2xl text-white border-none py-6 font-semibold transition-all"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     boxShadow: '0 8px 20px rgba(255, 101, 30, 0.35)',
@@ -1211,7 +1211,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="rounded-3xl p-6 space-y-5 border-2"
+              className="superellipse-3xl p-6 space-y-5 border-2"
               style={{
                 background: 'linear-gradient(135deg, rgba(224, 87, 71, 0.05) 0%, rgba(255, 144, 20, 0.05) 100%)',
                 borderColor: 'rgba(224, 87, 71, 0.15)',
@@ -1221,7 +1221,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div
                 initial={{ scale: 0.9 }}
                 animate={{ scale: 1 }}
-                className="text-center py-4 rounded-2xl"
+                className="text-center py-4 superellipse-2xl"
                 style={{
                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                   boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -1295,7 +1295,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     <FileText className="w-4 h-4" />
                     {scanner?.description?.[language] || 'Description'}
                   </span>
-                  <p className="text-sm text-gray-700 bg-white rounded-xl p-3 border border-gray-100">
+                  <p className="text-sm text-gray-700 bg-white superellipse-xl p-3 border border-gray-100">
                     {description}
                   </p>
                 </div>
@@ -1324,7 +1324,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <Button
                   variant="outline"
                   onClick={() => setCurrentStep('category')}
-                  className="w-full rounded-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
                   style={{ color: '#ff651e' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -1334,7 +1334,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div whileHover={{ scale: 1.02, y: -2 }} whileTap={{ scale: 0.98 }} className="flex-1">
                 <Button
                   onClick={handleConfirm}
-                  className="w-full rounded-2xl text-white border-none py-6 font-bold text-base transition-all"
+                  className="w-full superellipse-2xl text-white border-none py-6 font-bold text-base transition-all"
                   style={{
                     background: 'linear-gradient(135deg, #22c55e 0%, #16a34a 100%)',
                     boxShadow: '0 8px 24px rgba(34, 197, 94, 0.4)',

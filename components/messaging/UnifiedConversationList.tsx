@@ -135,7 +135,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
         <div className="flex items-center gap-3 mb-4">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 5 }}
-            className="relative w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+            className="relative w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
             style={{
               background: styles.accentGradient,
               boxShadow: `0 8px 24px ${styles.primary}59`,
@@ -143,7 +143,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
           >
             <MessageCircle className="w-6 h-6 text-white" />
             <motion.div
-              className="absolute inset-0 rounded-2xl bg-white/20"
+              className="absolute inset-0 superellipse-2xl bg-white/20"
               animate={{ opacity: [0, 0.3, 0] }}
               transition={{ repeat: Infinity, duration: 2 }}
             />
@@ -177,7 +177,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
             placeholder={unifiedMessaging?.searchPlaceholder || "Rechercher une conversation..."}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-11 pr-4 py-3 rounded-2xl border-2 border-gray-200 bg-white shadow-sm text-sm"
+            className="pl-11 pr-4 py-3 superellipse-2xl border-2 border-gray-200 bg-white shadow-sm text-sm"
             style={{
               background: 'linear-gradient(135deg, #fff 0%, #fafafa 100%)',
               // @ts-expect-error CSS custom property for focus state
@@ -356,7 +356,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
             >
               {/* Glow */}
               <motion.div
-                className="absolute inset-0 rounded-2xl opacity-40"
+                className="absolute inset-0 superellipse-2xl opacity-40"
                 style={{
                   background: styles.accentGradient,
                   filter: 'blur(15px)',
@@ -365,7 +365,7 @@ export const UnifiedConversationList = memo(function UnifiedConversationList({
                 transition={{ repeat: Infinity, duration: 3 }}
               />
               <div
-                className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                className="relative w-20 h-20 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{
                   background: styles.accentGradient,
                   boxShadow: `0 8px 24px ${styles.primary}59`,
@@ -471,7 +471,7 @@ function ConversationItem({
     if (conversation.type === 'residence_group') {
       return (
         <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+          className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
           style={{
             background: 'linear-gradient(135deg, #7CB89B 0%, #9ECDB5 100%)',
             boxShadow: '0 4px 12px rgba(124, 184, 155, 0.35)',
@@ -484,7 +484,7 @@ function ConversationItem({
     if (conversation.type === 'residence_owner') {
       return (
         <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+          className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
           style={{
             background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
             boxShadow: '0 4px 12px rgba(124, 58, 237, 0.35)',
@@ -503,7 +503,7 @@ function ConversationItem({
     <button
       onClick={onClick}
       className={cn(
-        'w-full p-3 flex items-center gap-3 rounded-2xl transition-all duration-200',
+        'w-full p-3 flex items-center gap-3 superellipse-2xl transition-all duration-200',
         'hover:bg-white active:scale-[0.99]',
         isSelected
           ? 'bg-white shadow-md border-2'

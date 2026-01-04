@@ -375,7 +375,7 @@ function AuthContent() {
           </div>
 
           {/* Auth Form */}
-          <div className="bg-white rounded-3xl shadow-xl p-8">
+          <div className="bg-white superellipse-3xl shadow-xl p-8">
             {/* Mode Toggle */}
             <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-full">
               <button

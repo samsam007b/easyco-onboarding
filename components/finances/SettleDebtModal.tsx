@@ -273,7 +273,7 @@ export default function SettleDebtModal({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center"
+              className="w-10 h-10 superellipse-xl flex items-center justify-center"
               style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
             >
               <Smartphone className="w-5 h-5 text-white" />
@@ -353,7 +353,7 @@ export default function SettleDebtModal({
               <div className="space-y-3">
                 <Button
                   onClick={handleMarkAsPaid}
-                  className="w-full h-12 rounded-xl text-white font-semibold"
+                  className="w-full h-12 superellipse-xl text-white font-semibold"
                   style={{ background: 'linear-gradient(135deg, #7CB89B, #6BA888)' }}
                 >
                   <Check className="w-5 h-5 mr-2" />
@@ -383,10 +383,10 @@ export default function SettleDebtModal({
                   whileTap={{ scale: 0.98 }}
                   onClick={handlePayconiqClick}
                   disabled={isLoadingFullIBAN}
-                  className="w-full p-4 rounded-xl border-2 border-[#FF4785]/30 bg-gradient-to-r from-[#FF4785]/10 to-[#FF4785]/5 hover:border-[#FF4785]/50 transition-all group disabled:opacity-50"
+                  className="w-full p-4 superellipse-xl border-2 border-[#FF4785]/30 bg-gradient-to-r from-[#FF4785]/10 to-[#FF4785]/5 hover:border-[#FF4785]/50 transition-all group disabled:opacity-50"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-[#FF4785] flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 superellipse-xl bg-[#FF4785] flex items-center justify-center shadow-lg">
                       {isLoadingFullIBAN ? (
                         <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                       ) : (
@@ -413,11 +413,11 @@ export default function SettleDebtModal({
               {(payeeInfo?.iban || payeeInfo?.iban_masked) && (
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="p-4 rounded-xl border-2 border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50"
+                  className="p-4 superellipse-xl border-2 border-indigo-200 bg-gradient-to-r from-indigo-50 to-purple-50"
                 >
                   <div className="flex items-center gap-4 mb-3">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                      className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-lg"
                       style={{ background: 'linear-gradient(135deg, #6366F1, #8B5CF6)' }}
                     >
                       <Building2 className="w-6 h-6 text-white" />
@@ -433,7 +433,7 @@ export default function SettleDebtModal({
                   <div className="space-y-2">
                     {/* IBAN - Masked or Full */}
                     <div className="flex items-center gap-2">
-                      <div className="flex-1 px-3 py-2 bg-white rounded-lg border border-gray-200 font-mono text-sm">
+                      <div className="flex-1 px-3 py-2 bg-white superellipse-lg border border-gray-200 font-mono text-sm">
                         {showFullIBAN && payeeInfo.iban
                           ? formatIBAN(payeeInfo.iban)
                           : payeeInfo.iban_masked || '•••• •••• •••• ••••'}
@@ -469,7 +469,7 @@ export default function SettleDebtModal({
 
                     {/* Amount */}
                     <div className="flex items-center gap-2">
-                      <div className="flex-1 px-3 py-2 bg-white rounded-lg border border-gray-200 text-sm">
+                      <div className="flex-1 px-3 py-2 bg-white superellipse-lg border border-gray-200 text-sm">
                         <span className="text-gray-500">Amount:</span>{' '}
                         <span className="font-semibold">€{Math.abs(amount).toFixed(2)}</span>
                       </div>
@@ -488,7 +488,7 @@ export default function SettleDebtModal({
 
                     {/* Bank name & holder */}
                     {(payeeInfo.bank_name || payeeInfo.account_holder_name) && (
-                      <div className="px-3 py-2 bg-white/50 rounded-lg text-xs text-gray-500">
+                      <div className="px-3 py-2 bg-white/50 superellipse-lg text-xs text-gray-500">
                         {payeeInfo.account_holder_name && (
                           <span>{payeeInfo.account_holder_name}</span>
                         )}
@@ -515,10 +515,10 @@ export default function SettleDebtModal({
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleRevolutClick}
-                  className="w-full p-4 rounded-xl border-2 border-gray-200 hover:border-gray-300 transition-all group"
+                  className="w-full p-4 superellipse-xl border-2 border-gray-200 hover:border-gray-300 transition-all group"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-black flex items-center justify-center">
+                    <div className="w-12 h-12 superellipse-xl bg-black flex items-center justify-center">
                       <span className="text-white font-bold text-xl">R</span>
                     </div>
                     <div className="flex-1 text-left">
@@ -533,7 +533,7 @@ export default function SettleDebtModal({
               )}
 
               {/* Info box */}
-              <div className="flex items-start gap-3 p-3 bg-blue-50 rounded-xl border border-blue-100">
+              <div className="flex items-start gap-3 p-3 bg-blue-50 superellipse-xl border border-blue-100">
                 <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                 <p className="text-xs text-blue-800">
                   These payments are made directly between you, outside of the app.

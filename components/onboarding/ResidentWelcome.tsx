@@ -63,7 +63,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl my-8 p-8"
+        className="bg-white superellipse-3xl max-w-2xl w-full shadow-2xl my-8 p-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -75,7 +75,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
         </button>
 
         <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center"
+          <div className="w-20 h-20 superellipse-3xl mx-auto mb-4 flex items-center justify-center"
                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
             <Home className="w-10 h-10 text-white" />
           </div>
@@ -105,8 +105,8 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
             {availableFeatures.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <div key={index} className="flex items-start gap-3 bg-white rounded-lg p-3">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
+                <div key={index} className="flex items-start gap-3 bg-white superellipse-lg p-3">
+                  <div className="w-8 h-8 superellipse-lg bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center flex-shrink-0">
                     <Icon className="w-4 h-4 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -126,7 +126,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
         {/* Limitations Info */}
         <Card className="p-6 mb-6 border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50">
           <div className="flex items-start gap-3">
-            <div className="w-10 h-10 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+            <div className="w-10 h-10 superellipse-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
               <Info className="w-5 h-5 text-white" />
             </div>
             <div className="flex-1">
@@ -157,7 +157,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
               router.push('/hub/finances');
             }}
             variant="outline"
-            className="rounded-xl border-2 hover:border-orange-300"
+            className="superellipse-xl border-2 hover:border-orange-300"
           >
             <DollarSign className="w-4 h-4 mr-2" />
             Finances
@@ -168,7 +168,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
               router.push('/hub/messages');
             }}
             variant="outline"
-            className="rounded-xl border-2 hover:border-orange-300"
+            className="superellipse-xl border-2 hover:border-orange-300"
           >
             <MessageSquare className="w-4 h-4 mr-2" />
             Messages
@@ -177,7 +177,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
 
         <Button
           onClick={onClose}
-          className="w-full rounded-xl text-white shadow-lg hover:shadow-xl transition-all text-lg py-6"
+          className="w-full superellipse-xl text-white shadow-lg hover:shadow-xl transition-all text-lg py-6"
           style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
         >
           Découvrir ma résidence

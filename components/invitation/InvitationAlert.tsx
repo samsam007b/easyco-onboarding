@@ -39,7 +39,7 @@ export function InvitationAlert({
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
-      className={`relative rounded-2xl p-4 text-white shadow-lg ${className}`}
+      className={`relative superellipse-2xl p-4 text-white shadow-lg ${className}`}
       style={{ background: gradientStyle }}
     >
       {onDismiss && (

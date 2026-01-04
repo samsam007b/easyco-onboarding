@@ -92,7 +92,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white rounded-3xl max-w-2xl w-full shadow-2xl my-8"
+        className="bg-white superellipse-3xl max-w-2xl w-full shadow-2xl my-8"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}
@@ -114,7 +114,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
               className="p-8"
             >
               <div className="text-center mb-8">
-                <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center"
+                <div className="w-20 h-20 superellipse-3xl mx-auto mb-4 flex items-center justify-center"
                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                   <Home className="w-10 h-10 text-white" />
                 </div>
@@ -131,7 +131,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
 
               <Card className="p-6 mb-6 border-2 border-orange-200 bg-gradient-to-br from-orange-50 to-red-50">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <div className="w-12 h-12 superellipse-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
                     <Shield className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
@@ -162,7 +162,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
 
               <Button
                 onClick={() => setCurrentStep('codes')}
-                className="w-full rounded-xl text-white shadow-lg hover:shadow-xl transition-all text-lg py-6"
+                className="w-full superellipse-xl text-white shadow-lg hover:shadow-xl transition-all text-lg py-6"
                 style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
               >
                 Voir mes codes d'accès
@@ -181,7 +181,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
               className="p-8"
             >
               <div className="text-center mb-6">
-                <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600">
+                <div className="w-16 h-16 superellipse-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600">
                   <Key className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -199,12 +199,12 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                   <h3 className="font-bold text-gray-900">Code pour les Colocataires</h3>
                 </div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="flex-1 bg-white rounded-lg px-4 py-3 font-mono text-2xl font-bold text-blue-900 text-center">
+                  <div className="flex-1 bg-white superellipse-lg px-4 py-3 font-mono text-2xl font-bold text-blue-900 text-center">
                     {propertyData.invitation_code}
                   </div>
                   <button
                     onClick={() => copyToClipboard(propertyData.invitation_code, 'invitation')}
-                    className="p-3 rounded-lg text-white transition-all hover:scale-105 bg-gradient-to-r from-blue-500 to-indigo-600"
+                    className="p-3 superellipse-lg text-white transition-all hover:scale-105 bg-gradient-to-r from-blue-500 to-indigo-600"
                   >
                     {copiedCode === 'invitation' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                   </button>
@@ -221,12 +221,12 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                   <h3 className="font-bold text-gray-900">Code Propriétaire</h3>
                 </div>
                 <div className="flex items-center gap-2 mb-2">
-                  <div className="flex-1 bg-white rounded-lg px-4 py-3 font-mono text-xl font-bold text-purple-900 text-center">
+                  <div className="flex-1 bg-white superellipse-lg px-4 py-3 font-mono text-xl font-bold text-purple-900 text-center">
                     {propertyData.owner_code}
                   </div>
                   <button
                     onClick={() => copyToClipboard(propertyData.owner_code, 'owner')}
-                    className="p-3 rounded-lg text-white transition-all hover:scale-105 bg-gradient-to-r from-purple-500 to-pink-600"
+                    className="p-3 superellipse-lg text-white transition-all hover:scale-105 bg-gradient-to-r from-purple-500 to-pink-600"
                   >
                     {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                   </button>
@@ -240,13 +240,13 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                 <Button
                   onClick={() => setCurrentStep('welcome')}
                   variant="outline"
-                  className="flex-1 rounded-xl"
+                  className="flex-1 superellipse-xl"
                 >
                   Retour
                 </Button>
                 <Button
                   onClick={() => setCurrentStep('next-steps')}
-                  className="flex-1 rounded-xl text-white shadow-lg"
+                  className="flex-1 superellipse-xl text-white shadow-lg"
                   style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                 >
                   Prochaines étapes
@@ -266,7 +266,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
               className="p-8"
             >
               <div className="text-center mb-6">
-                <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
+                <div className="w-16 h-16 superellipse-2xl mx-auto mb-4 flex items-center justify-center"
                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                   <Sparkles className="w-8 h-8 text-white" />
                 </div>
@@ -288,7 +288,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                       className="p-4 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-orange-200"
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br ${step.color} flex-shrink-0`}>
+                        <div className={`w-10 h-10 superellipse-lg flex items-center justify-center bg-gradient-to-br ${step.color} flex-shrink-0`}>
                           <Icon className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">
@@ -309,13 +309,13 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                 <Button
                   onClick={() => setCurrentStep('codes')}
                   variant="outline"
-                  className="flex-1 rounded-xl"
+                  className="flex-1 superellipse-xl"
                 >
                   Retour
                 </Button>
                 <Button
                   onClick={onClose}
-                  className="flex-1 rounded-xl text-white shadow-lg"
+                  className="flex-1 superellipse-xl text-white shadow-lg"
                   style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                 >
                   Commencer

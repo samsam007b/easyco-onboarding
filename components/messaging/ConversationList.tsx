@@ -99,7 +99,7 @@ export function ConversationList({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={cn(
-              'pl-11 pr-4 py-3 rounded-xl border-gray-200 bg-white shadow-sm transition-all',
+              'pl-11 pr-4 py-3 superellipse-xl border-gray-200 bg-white shadow-sm transition-all',
               styles.searchFocus
             )}
           />
@@ -147,7 +147,7 @@ interface EmptyStateProps {
 function EmptyState({ showArchived, variant, styles, messaging }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center p-8">
-      <div className={cn('w-16 h-16 rounded-2xl flex items-center justify-center mb-4 shadow-md', styles.accent)}>
+      <div className={cn('w-16 h-16 superellipse-2xl flex items-center justify-center mb-4 shadow-md', styles.accent)}>
         {showArchived ? (
           <Archive className="h-8 w-8 text-white" />
         ) : (
@@ -194,7 +194,7 @@ function ConversationItem({
     <button
       onClick={onClick}
       className={cn(
-        'w-full p-3 flex items-center gap-3 rounded-xl transition-all duration-200',
+        'w-full p-3 flex items-center gap-3 superellipse-xl transition-all duration-200',
         'hover:bg-gray-100/80 active:scale-[0.99]',
         isSelected ? styles.selected : 'bg-transparent',
         hasUnread && !isSelected && 'bg-white shadow-sm'

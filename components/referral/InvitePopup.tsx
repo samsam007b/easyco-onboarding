@@ -272,14 +272,14 @@ export function InvitePopup({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
+          className="bg-white superellipse-3xl max-w-md w-full shadow-2xl overflow-hidden max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           <div className="p-6 text-white" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
+                <div className="w-12 h-12 superellipse-xl bg-white/20 backdrop-blur flex items-center justify-center">
                   <Users className="w-6 h-6" />
                 </div>
                 <div>
@@ -304,7 +304,7 @@ export function InvitePopup({
           ) : (
             <div className="p-6 space-y-6">
               {/* Rewards Banner */}
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 superellipse-xl p-4 border border-green-200">
                 <div className="flex items-center gap-2 mb-2">
                   <Sparkles className="w-5 h-5 text-green-600" />
                   <span className="font-semibold text-green-800">{t.automaticRewards[lang]}</span>
@@ -334,7 +334,7 @@ export function InvitePopup({
               {showResidenceCodes && residenceData?.invitationCode && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center">
+                    <div className="w-8 h-8 superellipse-lg bg-orange-100 flex items-center justify-center">
                       <Home className="w-4 h-4 text-orange-600" />
                     </div>
                     <div>
@@ -344,14 +344,14 @@ export function InvitePopup({
                   </div>
 
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="flex-1 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl px-4 py-3 border-2 border-orange-200">
+                    <div className="flex-1 bg-gradient-to-r from-orange-50 to-yellow-50 superellipse-xl px-4 py-3 border-2 border-orange-200">
                       <p className="font-mono text-lg font-bold text-orange-700 break-all text-center">
                         {residenceData.invitationCode}
                       </p>
                     </div>
                     <button
                       onClick={() => copyToClipboard(residenceData.invitationCode!, 'residence')}
-                      className="p-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg transition-all"
+                      className="p-3 superellipse-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg transition-all"
                     >
                       {copiedCode === 'residence' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>
@@ -361,14 +361,14 @@ export function InvitePopup({
                   <div className="flex gap-2">
                     <button
                       onClick={shareResidenceViaWhatsApp}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-green-200 text-green-600 hover:bg-green-50 transition-colors text-sm font-medium"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 superellipse-xl border-2 border-green-200 text-green-600 hover:bg-green-50 transition-colors text-sm font-medium"
                     >
                       <MessageCircle className="w-4 h-4" />
                       WhatsApp
                     </button>
                     <button
                       onClick={shareResidenceViaEmail}
-                      className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl border-2 border-blue-200 text-blue-600 hover:bg-blue-50 transition-colors text-sm font-medium"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 superellipse-xl border-2 border-blue-200 text-blue-600 hover:bg-blue-50 transition-colors text-sm font-medium"
                     >
                       <Mail className="w-4 h-4" />
                       Email
@@ -381,7 +381,7 @@ export function InvitePopup({
               {showResidenceCodes && residenceData?.isCreator && residenceData?.ownerCode && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <div className="w-8 h-8 superellipse-lg bg-purple-100 flex items-center justify-center">
                       <Building2 className="w-4 h-4 text-purple-600" />
                     </div>
                     <div>
@@ -391,14 +391,14 @@ export function InvitePopup({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl px-4 py-3 border-2 border-purple-200">
+                    <div className="flex-1 bg-gradient-to-r from-purple-50 to-pink-50 superellipse-xl px-4 py-3 border-2 border-purple-200">
                       <p className="font-mono text-lg font-bold text-purple-700 break-all text-center">
                         {residenceData.ownerCode}
                       </p>
                     </div>
                     <button
                       onClick={() => copyToClipboard(residenceData.ownerCode!, 'owner')}
-                      className="p-3 rounded-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:shadow-lg transition-all"
+                      className="p-3 superellipse-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:shadow-lg transition-all"
                     >
                       {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>

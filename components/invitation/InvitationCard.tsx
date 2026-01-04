@@ -159,7 +159,7 @@ export function InvitationCard({
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`bg-white rounded-2xl p-5 border-2 ${statusConfig.borderColor} shadow-sm`}
+      className={`bg-white superellipse-2xl p-5 border-2 ${statusConfig.borderColor} shadow-sm`}
     >
       {/* Header with inviter info */}
       <div className="flex items-start justify-between mb-4">
@@ -193,7 +193,7 @@ export function InvitationCard({
       </div>
 
       {/* Property info */}
-      <div className={`p-4 rounded-xl mb-4 ${
+      <div className={`p-4 superellipse-xl mb-4 ${
         isOwner ? 'bg-purple-50' : 'bg-orange-50'
       }`}>
         <div className="flex items-center gap-2 mb-2">
@@ -235,7 +235,7 @@ export function InvitationCard({
             onClick={handleRefuse}
             disabled={isLoading}
             variant="outline"
-            className="flex-1 rounded-xl border-red-200 text-red-600 hover:bg-red-50"
+            className="flex-1 superellipse-xl border-red-200 text-red-600 hover:bg-red-50"
           >
             <X className="w-4 h-4 mr-2" />
             {t?.decline?.[language] || 'Decline'}
@@ -243,7 +243,7 @@ export function InvitationCard({
           <Button
             onClick={handleAccept}
             disabled={isLoading}
-            className={`flex-1 rounded-xl text-white ${
+            className={`flex-1 superellipse-xl text-white ${
               isOwner
                 ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
                 : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90'

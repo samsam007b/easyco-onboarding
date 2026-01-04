@@ -216,7 +216,7 @@ export default function ExpenseCalendarView({
       </div>
 
       {/* Calendar Grid */}
-      <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+      <div className="bg-white superellipse-2xl border border-gray-100 overflow-hidden">
         {/* Days of week header */}
         <div className="grid grid-cols-7 border-b border-gray-100">
           {DAYS.map((day) => (
@@ -325,15 +325,15 @@ export default function ExpenseCalendarView({
 
       {/* Monthly Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div className="bg-gray-50 rounded-xl p-3 text-center">
+        <div className="bg-gray-50 superellipse-xl p-3 text-center">
           <p className="text-2xl font-bold text-gray-900">{expenses.length}</p>
           <p className="text-xs text-gray-500">{calendar?.totalExpenses || 'Dépenses totales'}</p>
         </div>
-        <div className="bg-gray-50 rounded-xl p-3 text-center">
+        <div className="bg-gray-50 superellipse-xl p-3 text-center">
           <p className="text-2xl font-bold text-[#ff651e]">€{monthlyTotal.toFixed(0)}</p>
           <p className="text-xs text-gray-500">{calendar?.thisMonth || 'Ce mois'}</p>
         </div>
-        <div className="bg-gray-50 rounded-xl p-3 text-center">
+        <div className="bg-gray-50 superellipse-xl p-3 text-center">
           <p className="text-2xl font-bold text-gray-900">
             {Array.from(expensesByDate.keys()).filter((date) => {
               const d = new Date(date);
@@ -342,7 +342,7 @@ export default function ExpenseCalendarView({
           </p>
           <p className="text-xs text-gray-500">{calendar?.daysWithExpenses || 'Jours avec dépenses'}</p>
         </div>
-        <div className="bg-gray-50 rounded-xl p-3 text-center">
+        <div className="bg-gray-50 superellipse-xl p-3 text-center">
           <p className="text-2xl font-bold text-gray-900">
             €{expenses.length > 0 ? (monthlyTotal / Math.max(1, expenses.filter((e) => {
               const d = new Date(e.date);

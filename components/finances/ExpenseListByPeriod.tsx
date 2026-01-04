@@ -295,7 +295,7 @@ export default function ExpenseListByPeriod({
         >
           {/* Animated glow rings */}
           <motion.div
-            className="absolute inset-0 rounded-3xl"
+            className="absolute inset-0 superellipse-3xl"
             animate={{
               scale: [1, 1.2, 1],
               opacity: [0.3, 0, 0.3],
@@ -306,7 +306,7 @@ export default function ExpenseListByPeriod({
             }}
           />
           <div
-            className="relative w-full h-full rounded-3xl overflow-hidden flex items-center justify-center shadow-xl"
+            className="relative w-full h-full superellipse-3xl overflow-hidden flex items-center justify-center shadow-xl"
             style={{
               background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
               boxShadow: '0 12px 32px rgba(255, 101, 30, 0.4)',
@@ -424,7 +424,7 @@ export default function ExpenseListByPeriod({
                     }}
                     whileTap={{ scale: 0.98 }}
                     onClick={() => onExpenseClick(expense)}
-                    className="w-full group flex items-center justify-between p-4 rounded-2xl transition-all cursor-pointer text-left relative overflow-hidden"
+                    className="w-full group flex items-center justify-between p-4 superellipse-2xl transition-all cursor-pointer text-left relative overflow-hidden"
                     style={{
                       background: 'linear-gradient(135deg, #ffffff 0%, #fafafa 50%, #fff5f3 100%)',
                       boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04)',
@@ -447,7 +447,7 @@ export default function ExpenseListByPeriod({
                         transition={{ duration: 0.4 }}
                       >
                         <div
-                          className="w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center flex-shrink-0 shadow-lg"
+                          className="w-14 h-14 superellipse-2xl overflow-hidden flex items-center justify-center flex-shrink-0 shadow-lg"
                           style={{
                             background: catGradient.gradient,
                             boxShadow: `0 8px 20px ${catGradient.shadow}`,

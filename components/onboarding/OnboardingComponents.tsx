@@ -54,7 +54,7 @@ export const OnboardingInput = forwardRef<HTMLInputElement, OnboardingInputProps
           )}
           <input
             ref={ref}
-            className={`w-full ${Icon ? 'pl-12' : 'pl-4'} pr-4 py-3 border border-gray-300 rounded-lg ${theme.focusRing} focus:ring-2 focus:border-transparent outline-none transition-all`}
+            className={`w-full ${Icon ? 'pl-12' : 'pl-4'} pr-4 py-3 border border-gray-300 superellipse-lg ${theme.focusRing} focus:ring-2 focus:border-transparent outline-none transition-all`}
             {...props}
           />
         </div>
@@ -92,7 +92,7 @@ export function OnboardingButton({
 }: OnboardingButtonProps) {
   const theme = roleThemes[role];
 
-  const baseClasses = 'w-full py-4 rounded-lg font-semibold text-lg transition-all';
+  const baseClasses = 'w-full py-4 superellipse-lg font-semibold text-lg transition-all';
 
   const variantClasses = {
     primary: disabled
@@ -139,7 +139,7 @@ export function OnboardingSelectionCard({
     <button
       type="button"
       onClick={onClick}
-      className={`p-4 rounded-xl border-2 transition-all text-left ${
+      className={`p-4 superellipse-xl border-2 transition-all text-left ${
         selected
           ? `${theme.selectedBorder} ${theme.selectedBg}`
           : 'border-gray-300 hover:border-gray-400'
@@ -188,7 +188,7 @@ export function OnboardingSlider({
           max={max}
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
-          className={`w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer ${theme.accent}`}
+          className={`w-full h-2 bg-gray-200 superellipse-lg appearance-none cursor-pointer ${theme.accent}`}
         />
         <div className="flex justify-between items-center">
           {minLabel && <span className="text-sm text-gray-500">{minLabel}</span>}

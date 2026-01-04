@@ -133,8 +133,8 @@ export function ReferralCodeCard({
 
   if (variant === 'compact') {
     return (
-      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-owner-50 to-purple-50 rounded-xl border border-owner-200">
-        <div className="p-2 bg-owner-100 rounded-lg">
+      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-owner-50 to-purple-50 superellipse-xl border border-owner-200">
+        <div className="p-2 bg-owner-100 superellipse-lg">
           <Gift className="w-5 h-5 text-owner-600" />
         </div>
         <div className="flex-1 min-w-0">
@@ -161,12 +161,12 @@ export function ReferralCodeCard({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+      className="bg-white superellipse-2xl shadow-lg border border-gray-100 overflow-hidden"
     >
       {/* Header */}
       <div className="bg-gradient-to-r from-owner-600 to-purple-600 p-6 text-white">
         <div className="flex items-center gap-3 mb-2">
-          <div className="p-2 bg-white/20 rounded-lg">
+          <div className="p-2 bg-white/20 superellipse-lg">
             <Gift className="w-6 h-6" />
           </div>
           <h3 className="text-xl font-bold">{t.yourReferralCode[lang]}</h3>
@@ -178,7 +178,7 @@ export function ReferralCodeCard({
 
       {/* Code Display */}
       <div className="p-6">
-        <div className="flex items-center justify-center gap-4 p-4 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200 mb-6">
+        <div className="flex items-center justify-center gap-4 p-4 bg-gray-50 superellipse-xl border-2 border-dashed border-gray-200 mb-6">
           <span className="text-3xl font-bold text-owner-700 tracking-[0.3em] font-mono">
             {code}
           </span>
@@ -198,12 +198,12 @@ export function ReferralCodeCard({
 
         {/* Rewards Info */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="p-4 bg-orange-50 rounded-xl text-center">
+          <div className="p-4 bg-orange-50 superellipse-xl text-center">
             <p className="text-2xl font-bold text-orange-600">+2</p>
             <p className="text-sm text-gray-600">{t.freeMonths[lang]}</p>
             <p className="text-xs text-gray-500 mt-1">{t.forInvitedResident[lang]}</p>
           </div>
-          <div className="p-4 bg-purple-50 rounded-xl text-center">
+          <div className="p-4 bg-purple-50 superellipse-xl text-center">
             <p className="text-2xl font-bold text-purple-600">+3</p>
             <p className="text-sm text-gray-600">{t.freeMonths[lang]}</p>
             <p className="text-xs text-gray-500 mt-1">{t.forInvitedOwner[lang]}</p>

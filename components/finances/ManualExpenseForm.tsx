@@ -158,7 +158,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
         <motion.div
           animate={{ scale: [1, 1.05, 1] }}
           transition={{ duration: 2, repeat: Infinity }}
-          className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+          className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
           style={{
             background: RESIDENT_GRADIENT,
             boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,
@@ -176,7 +176,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
         <div>
           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
             <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              className="w-6 h-6 superellipse-lg flex items-center justify-center"
               style={{ background: `${RESIDENT_PRIMARY}15` }}
             >
               <FileText className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
@@ -188,7 +188,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="ex: Courses Carrefour"
-            className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+            className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
               errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
             } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
           />
@@ -201,7 +201,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
         <div>
           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
             <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              className="w-6 h-6 superellipse-lg flex items-center justify-center"
               style={{ background: '#10b98115' }}
             >
               <DollarSign className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
@@ -216,7 +216,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
-              className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all text-xl font-bold ${
+              className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all text-xl font-bold ${
                 errors.amount ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
               } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
             />
@@ -231,7 +231,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
         <div>
           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3">
             <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              className="w-6 h-6 superellipse-lg flex items-center justify-center"
               style={{ background: '#8b5cf615' }}
             >
               <Tag className="w-3.5 h-3.5" style={{ color: '#8b5cf6' }} />
@@ -249,7 +249,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={() => setCategory(cat.value)}
-                  className={`relative p-4 rounded-2xl border-2 transition-all ${
+                  className={`relative p-4 superellipse-2xl border-2 transition-all ${
                     isSelected
                       ? 'border-transparent shadow-lg'
                       : 'border-gray-200 hover:border-gray-300 bg-white'
@@ -293,7 +293,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
         <div>
           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
             <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              className="w-6 h-6 superellipse-lg flex items-center justify-center"
               style={{ background: '#3b82f615' }}
             >
               <Calendar className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
@@ -304,7 +304,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
             type="date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
-            className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+            className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
               errors.date ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
             } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
           />
@@ -317,7 +317,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
         <div>
           <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
             <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              className="w-6 h-6 superellipse-lg flex items-center justify-center"
               style={{ background: '#ec489915' }}
             >
               <FileText className="w-3.5 h-3.5" style={{ color: '#ec4899' }} />
@@ -329,7 +329,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Détails supplémentaires..."
             rows={2}
-            className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
+            className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
           />
         </div>
 
@@ -338,7 +338,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="rounded-2xl p-4"
+            className="superellipse-2xl p-4"
             style={{ background: CARD_BG_GRADIENT }}
           >
             <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3">Récapitulatif</p>
@@ -346,7 +346,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
               <div className="flex items-center gap-3">
                 {selectedCategory && (
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: selectedCategory.gradient }}
                   >
                     <selectedCategory.icon className="w-5 h-5 text-white" />
@@ -374,7 +374,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
               type="button"
               onClick={onCancel}
               variant="outline"
-              className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
+              className="w-full superellipse-2xl py-6 font-semibold border-2 transition-all"
               style={{
                 borderColor: `${RESIDENT_PRIMARY}30`,
                 color: RESIDENT_PRIMARY,
@@ -387,7 +387,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
           <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
             <Button
               type="submit"
-              className="w-full rounded-2xl py-6 font-bold text-white border-none"
+              className="w-full superellipse-2xl py-6 font-bold text-white border-none"
               style={{
                 background: RESIDENT_GRADIENT,
                 boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,

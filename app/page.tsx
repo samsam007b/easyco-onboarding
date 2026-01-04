@@ -21,7 +21,7 @@ import InfinitePropertyCarousel from '@/components/landing/InfinitePropertyCarou
 const PropertyPreviewGrid = dynamic(() => import('@/components/PropertyPreviewGrid'), {
   loading: () => (
     <div className="max-w-7xl mx-auto px-6 py-12">
-      <div className="h-96 bg-gray-100 rounded-3xl animate-pulse" />
+      <div className="h-96 bg-gray-100 superellipse-3xl animate-pulse" />
     </div>
   ),
 });
@@ -29,7 +29,7 @@ const PropertyPreviewGrid = dynamic(() => import('@/components/PropertyPreviewGr
 const HowItWorks = dynamic(() => import('@/components/HowItWorks'), {
   loading: () => (
     <div className="max-w-6xl mx-auto px-6 py-20">
-      <div className="h-96 bg-gray-100 rounded-3xl animate-pulse" />
+      <div className="h-96 bg-gray-100 superellipse-3xl animate-pulse" />
     </div>
   ),
 });
@@ -37,7 +37,7 @@ const HowItWorks = dynamic(() => import('@/components/HowItWorks'), {
 const StatsSection = dynamic(() => import('@/components/StatsSection'), {
   loading: () => (
     <div className="max-w-6xl mx-auto px-6 py-12">
-      <div className="h-32 bg-gray-100 rounded-2xl animate-pulse" />
+      <div className="h-32 bg-gray-100 superellipse-2xl animate-pulse" />
     </div>
   ),
 });
@@ -53,7 +53,7 @@ const Testimonials = dynamic(() => import('@/components/Testimonials'), {
 const FAQ = dynamic(() => import('@/components/FAQ'), {
   loading: () => (
     <div className="max-w-3xl mx-auto px-6 py-20">
-      <div className="h-96 bg-gray-100 rounded-2xl animate-pulse" />
+      <div className="h-96 bg-gray-100 superellipse-2xl animate-pulse" />
     </div>
   ),
 });
@@ -106,7 +106,7 @@ export default function Home() {
             <div className="relative group">
               {/* Background gradient on hover */}
               <div
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
                     ? 'linear-gradient(to bottom right, #ad568420, #ad568420)'
@@ -115,7 +115,7 @@ export default function Home() {
               />
 
               <div
-                className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                className="relative text-center space-y-4 p-8 superellipse-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
                   borderColor: resolvedTheme === 'dark' ? '#ad568440' : '#ad568430',
@@ -123,7 +123,7 @@ export default function Home() {
                 }}
               >
                 <div
-                  className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                  className="w-20 h-20 mx-auto superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
                     background: '#ad5684',
                   }}
@@ -148,7 +148,7 @@ export default function Home() {
             <div className="relative group">
               {/* Background gradient on hover */}
               <div
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
                     ? 'linear-gradient(to bottom right, #ff651e20, #ff651e20)'
@@ -157,7 +157,7 @@ export default function Home() {
               />
 
               <div
-                className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                className="relative text-center space-y-4 p-8 superellipse-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
                   borderColor: resolvedTheme === 'dark' ? '#ff651e40' : '#ff651e30',
@@ -165,7 +165,7 @@ export default function Home() {
                 }}
               >
                 <div
-                  className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                  className="w-20 h-20 mx-auto superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
                     background: '#ff651e',
                   }}
@@ -190,7 +190,7 @@ export default function Home() {
             <div className="relative group">
               {/* Background gradient on hover */}
               <div
-                className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
                     ? 'linear-gradient(to bottom right, #ff981120, #ff981120)'
@@ -199,7 +199,7 @@ export default function Home() {
               />
 
               <div
-                className="relative text-center space-y-4 p-8 rounded-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
+                className="relative text-center space-y-4 p-8 superellipse-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
                   borderColor: resolvedTheme === 'dark' ? '#ff981140' : '#ff981130',
@@ -207,7 +207,7 @@ export default function Home() {
                 }}
               >
                 <div
-                  className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-lg"
+                  className="w-20 h-20 mx-auto superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
                     background: '#ff9811',
                   }}

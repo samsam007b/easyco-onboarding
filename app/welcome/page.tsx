@@ -192,7 +192,7 @@ export default function WelcomePage() {
       <header className={`absolute top-0 right-0 p-6 z-50 flex items-center gap-4 ${pendingInvitation ? 'mt-20' : ''}`}>
         <button
           onClick={() => router.push('/settings')}
-          className="p-2 text-gray-600 hover:text-[var(--easy-purple)] transition rounded-lg hover:bg-white/50"
+          className="p-2 text-gray-600 hover:text-[var(--easy-purple)] transition superellipse-lg hover:bg-white/50"
           title="Settings"
         >
           <Settings className="w-5 h-5" />
@@ -200,7 +200,7 @@ export default function WelcomePage() {
         <LanguageSwitcher />
         <button
           onClick={handleLogout}
-          className="p-2 text-gray-600 hover:text-red-600 transition rounded-lg hover:bg-white/50"
+          className="p-2 text-gray-600 hover:text-red-600 transition superellipse-lg hover:bg-white/50"
           title="Logout"
         >
           <LogOut className="w-5 h-5" />
@@ -237,7 +237,7 @@ export default function WelcomePage() {
                 <div
                   key={card.id}
                   className={`
-                    group relative bg-white rounded-3xl p-4 sm:p-8
+                    group relative bg-white superellipse-3xl p-4 sm:p-8
                     border-2 ${isDisabled ? 'border-gray-300' : isInvited ? 'border-green-400 ring-2 ring-green-200' : card.borderColor}
                     shadow-lg
                     transition-all duration-300
@@ -292,7 +292,7 @@ export default function WelcomePage() {
 
                   {/* CLOSED BETA: Message explicatif pour Searcher */}
                   {isDisabled && (
-                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                    <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 superellipse-lg">
                       <p className="text-xs sm:text-sm text-yellow-800 font-medium text-center">
                         Cette fonctionnalité arrive très prochainement !
                       </p>
@@ -312,7 +312,7 @@ export default function WelcomePage() {
                   {/* Hover Effect Overlay */}
                   {!isDisabled && (
                     <div
-                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"
+                      className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-10 transition-opacity pointer-events-none"
                       style={{ backgroundColor: card.color }}
                     />
                   )}

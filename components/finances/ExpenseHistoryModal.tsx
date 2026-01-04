@@ -154,7 +154,7 @@ export default function ExpenseHistoryModal({
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent
-        className="max-w-4xl max-h-[90vh] overflow-hidden p-0 rounded-3xl border-2 border-orange-100"
+        className="max-w-4xl max-h-[90vh] overflow-hidden p-0 superellipse-3xl border-2 border-orange-100"
         style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
       >
         <DialogTitle className="sr-only">{history?.title || 'Historique des dépenses'}</DialogTitle>
@@ -185,7 +185,7 @@ export default function ExpenseHistoryModal({
                 <motion.div
                   animate={{ scale: [1, 1.05, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="relative w-14 h-14 rounded-2xl overflow-hidden flex items-center justify-center"
+                  className="relative w-14 h-14 superellipse-2xl overflow-hidden flex items-center justify-center"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     boxShadow: '0 12px 32px rgba(255, 101, 30, 0.35)',
@@ -289,7 +289,7 @@ export default function ExpenseHistoryModal({
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={onClose}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white transition-all"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center text-white transition-all"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
                     boxShadow: '0 4px 12px rgba(255, 101, 30, 0.3)',
@@ -313,7 +313,7 @@ export default function ExpenseHistoryModal({
                   placeholder={history?.searchPlaceholder || 'Rechercher une dépense...'}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-14 py-6 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 focus:bg-orange-50/30 text-base transition-all"
+                  className="pl-14 py-6 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 focus:bg-orange-50/30 text-base transition-all"
                 />
               </div>
 
@@ -322,7 +322,7 @@ export default function ExpenseHistoryModal({
                   variant="outline"
                   onClick={() => setShowFilters(!showFilters)}
                   className={cn(
-                    'rounded-2xl px-5 py-6 border-2 font-semibold shadow-sm transition-all',
+                    'superellipse-2xl px-5 py-6 border-2 font-semibold shadow-sm transition-all',
                     selectedCategory !== 'all'
                       ? 'border-orange-300 text-orange-600 bg-orange-50'
                       : 'border-gray-200 hover:border-gray-300'

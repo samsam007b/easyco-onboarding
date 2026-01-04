@@ -132,7 +132,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
     return (
       <motion.div
         className={cn(
-          "absolute inset-0 rounded-3xl shadow-2xl overflow-hidden pointer-events-none transition-all duration-300",
+          "absolute inset-0 superellipse-3xl shadow-2xl overflow-hidden pointer-events-none transition-all duration-300",
           index === 1 ? "scale-[0.95] opacity-40 blur-sm" : "scale-[0.90] opacity-20 blur-md"
         )}
         style={{
@@ -166,7 +166,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
           transition: { type: 'spring' as const, stiffness: 300, damping: 30 }
         }}
       >
-        <div className="relative w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="relative w-full h-full bg-white superellipse-3xl shadow-2xl overflow-hidden">
           {/* Main Image */}
           <div className="relative h-[55%]">
             {property.main_image || (property.images && property.images[0]) ? (
@@ -197,7 +197,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 className="absolute top-4 right-4"
               >
                 <div className={cn(
-                  "px-4 py-2.5 rounded-2xl backdrop-blur-xl shadow-lg flex items-center gap-2",
+                  "px-4 py-2.5 superellipse-2xl backdrop-blur-xl shadow-lg flex items-center gap-2",
                   getCompatibilityColor(compatibilityScore)
                 )}>
                   <span className="text-2xl">{getCompatibilityEmoji(compatibilityScore)}</span>
@@ -282,7 +282,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
             {/* Residents Preview */}
             {residents.length > 0 && (
-              <div className="mb-4 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl">
+              <div className="mb-4 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 superellipse-xl">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm font-semibold text-gray-700 flex items-center gap-2">
                     <Users className="w-4 h-4 text-orange-600" />
@@ -345,7 +345,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 e.stopPropagation();
                 onCardClick?.();
               }}
-              className="w-full py-3 bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 rounded-xl flex items-center justify-center gap-2 text-orange-700 font-semibold hover:from-orange-100 hover:to-yellow-100 transition-all group"
+              className="w-full py-3 bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 superellipse-xl flex items-center justify-center gap-2 text-orange-700 font-semibold hover:from-orange-100 hover:to-yellow-100 transition-all group"
             >
               <span>{matching.swipe?.viewAllDetails || 'Voir tous les détails'}</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -358,7 +358,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             className="absolute top-1/3 left-8 pointer-events-none z-20"
             style={{ opacity: likeOpacity }}
           >
-            <div className="px-6 py-3 bg-green-500 text-white text-3xl font-bold rounded-2xl rotate-[-20deg] shadow-2xl border-4 border-white">
+            <div className="px-6 py-3 bg-green-500 text-white text-3xl font-bold superellipse-2xl rotate-[-20deg] shadow-2xl border-4 border-white">
               {matching.swipe?.like || "❤️ J'AIME"}
             </div>
           </motion.div>
@@ -367,7 +367,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             className="absolute top-1/3 right-8 pointer-events-none z-20"
             style={{ opacity: passOpacity }}
           >
-            <div className="px-6 py-3 bg-red-500 text-white text-3xl font-bold rounded-2xl rotate-[20deg] shadow-2xl border-4 border-white">
+            <div className="px-6 py-3 bg-red-500 text-white text-3xl font-bold superellipse-2xl rotate-[20deg] shadow-2xl border-4 border-white">
               {matching.swipe?.pass || '❌ PASSE'}
             </div>
           </motion.div>
@@ -376,7 +376,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             className="absolute top-20 left-1/2 -translate-x-1/2 pointer-events-none z-20"
             style={{ opacity: superLikeOpacity }}
           >
-            <div className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-3xl font-bold rounded-2xl shadow-2xl border-4 border-white flex items-center gap-2">
+            <div className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-3xl font-bold superellipse-2xl shadow-2xl border-4 border-white flex items-center gap-2">
               <Star className="w-8 h-8 fill-current" />
               {matching.swipe?.superLike || 'SUPER LIKE'}
             </div>
@@ -399,7 +399,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: '100%', opacity: 0 }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="bg-white rounded-t-3xl md:rounded-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
+              className="bg-white rounded-t-3xl md:superellipse-3xl max-w-2xl w-full max-h-[85vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between z-10">
@@ -443,7 +443,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
                 {/* Compatibility Breakdown */}
                 {compatibilityScore && (
-                  <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+                  <div className="p-4 bg-gradient-to-br from-green-50 to-emerald-50 superellipse-xl">
                     <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <Shield className="w-5 h-5 text-green-600" />
                       {matching.swipe?.whyMatch || 'Pourquoi ce match ?'}

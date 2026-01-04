@@ -131,7 +131,7 @@ export default function ExpenseDetailModal({
             </button>
 
             <div className="flex items-start gap-4">
-              <div className="w-14 h-14 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center">
+              <div className="w-14 h-14 bg-white/20 backdrop-blur superellipse-2xl flex items-center justify-center">
                 <Receipt className="w-7 h-7 text-white" />
               </div>
               <div className="flex-1 min-w-0">
@@ -163,8 +163,8 @@ export default function ExpenseDetailModal({
           <div className="flex-1 overflow-y-auto p-6 space-y-6">
             {/* Metadata */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+              <div className="flex items-center gap-3 p-3 bg-gray-50 superellipse-xl">
+                <div className="w-10 h-10 superellipse-lg bg-gray-100 flex items-center justify-center">
                   <User className="w-5 h-5 text-gray-600" />
                 </div>
                 <div>
@@ -173,8 +173,8 @@ export default function ExpenseDetailModal({
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
-                <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center">
+              <div className="flex items-center gap-3 p-3 bg-gray-50 superellipse-xl">
+                <div className="w-10 h-10 superellipse-lg bg-gray-100 flex items-center justify-center">
                   <Calendar className="w-5 h-5 text-gray-600" />
                 </div>
                 <div>
@@ -192,7 +192,7 @@ export default function ExpenseDetailModal({
 
             {/* Description */}
             {expense.description && (
-              <div className="p-4 bg-gray-50 rounded-xl">
+              <div className="p-4 bg-gray-50 superellipse-xl">
                 <p className="text-sm text-gray-500 font-medium mb-1">{detail?.description || 'Description'}</p>
                 <p className="text-gray-900">{expense.description}</p>
               </div>
@@ -203,10 +203,10 @@ export default function ExpenseDetailModal({
               <div className="space-y-3">
                 <button
                   onClick={() => setShowReceipt(!showReceipt)}
-                  className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl hover:shadow-md transition-all"
+                  className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-green-50 to-emerald-50 superellipse-xl hover:shadow-md transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-green-100 flex items-center justify-center">
+                    <div className="w-10 h-10 superellipse-lg bg-green-100 flex items-center justify-center">
                       <Receipt className="w-5 h-5 text-green-600" />
                     </div>
                     <div className="text-left">
@@ -229,18 +229,18 @@ export default function ExpenseDetailModal({
                       exit={{ opacity: 0, height: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="relative bg-gray-900 rounded-xl p-4">
+                      <div className="relative bg-gray-900 superellipse-xl p-4">
                         {/* Zoom Controls */}
                         <div className="absolute top-2 right-2 flex gap-2 z-10">
                           <button
                             onClick={() => setReceiptZoom(Math.max(0.5, receiptZoom - 0.25))}
-                            className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center hover:bg-white transition-colors"
+                            className="w-8 h-8 bg-white/90 superellipse-lg flex items-center justify-center hover:bg-white transition-colors"
                           >
                             <ZoomOut className="w-4 h-4 text-gray-700" />
                           </button>
                           <button
                             onClick={() => setReceiptZoom(Math.min(3, receiptZoom + 0.25))}
-                            className="w-8 h-8 bg-white/90 rounded-lg flex items-center justify-center hover:bg-white transition-colors"
+                            className="w-8 h-8 bg-white/90 superellipse-lg flex items-center justify-center hover:bg-white transition-colors"
                           >
                             <ZoomIn className="w-4 h-4 text-gray-700" />
                           </button>
@@ -266,10 +266,10 @@ export default function ExpenseDetailModal({
               <div className="space-y-3">
                 <button
                   onClick={() => setShowOCRDetails(!showOCRDetails)}
-                  className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl hover:shadow-md transition-all"
+                  className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 superellipse-xl hover:shadow-md transition-all"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center">
+                    <div className="w-10 h-10 superellipse-lg bg-blue-100 flex items-center justify-center">
                       <Scan className="w-5 h-5 text-blue-600" />
                     </div>
                     <div className="text-left">
@@ -294,7 +294,7 @@ export default function ExpenseDetailModal({
                       exit={{ opacity: 0, height: 0 }}
                       className="overflow-hidden"
                     >
-                      <div className="bg-gray-50 rounded-xl p-4 space-y-4">
+                      <div className="bg-gray-50 superellipse-xl p-4 space-y-4">
                         {/* Merchant */}
                         {ocrData.merchant && (
                           <div className="flex items-center gap-3">
@@ -330,7 +330,7 @@ export default function ExpenseDetailModal({
                               {ocrData.items.map((item, idx) => (
                                 <div
                                   key={idx}
-                                  className="flex items-center justify-between py-1.5 px-3 bg-white rounded-lg text-sm"
+                                  className="flex items-center justify-between py-1.5 px-3 bg-white superellipse-lg text-sm"
                                 >
                                   <span className="text-gray-900">{item.name}</span>
                                   {item.total_price && (
@@ -366,7 +366,7 @@ export default function ExpenseDetailModal({
                     <div
                       key={split.id}
                       className={cn(
-                        'flex items-center justify-between p-3 rounded-xl border transition-all',
+                        'flex items-center justify-between p-3 superellipse-xl border transition-all',
                         split.paid
                           ? 'bg-green-50 border-green-200'
                           : 'bg-gray-50 border-gray-200'

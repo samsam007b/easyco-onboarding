@@ -328,7 +328,7 @@ export function ChatWindow({
               onChange={(e) => handleInputChange(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder={messaging?.placeholder || "Écrivez votre message..."}
-              className="min-h-[48px] max-h-32 resize-none rounded-2xl border-gray-200 bg-gray-50 focus:bg-white focus:border-gray-300 transition-colors"
+              className="min-h-[48px] max-h-32 resize-none superellipse-2xl border-gray-200 bg-gray-50 focus:bg-white focus:border-gray-300 transition-colors"
               rows={1}
             />
           </div>
@@ -415,8 +415,8 @@ function MessageBubble({
           className={cn(
             'px-4 py-2.5 shadow-sm',
             isSender
-              ? cn(styles.senderBubble, 'rounded-2xl', isFirstInGroup ? 'rounded-tr-md' : '', showAvatar ? 'rounded-br-md' : '')
-              : cn(styles.receiverBubble, 'rounded-2xl', isFirstInGroup ? 'rounded-tl-md' : '', showAvatar ? 'rounded-bl-md' : '')
+              ? cn(styles.senderBubble, 'superellipse-2xl', isFirstInGroup ? 'rounded-tr-md' : '', showAvatar ? 'rounded-br-md' : '')
+              : cn(styles.receiverBubble, 'superellipse-2xl', isFirstInGroup ? 'rounded-tl-md' : '', showAvatar ? 'rounded-bl-md' : '')
           )}
         >
           {/* Image if present */}

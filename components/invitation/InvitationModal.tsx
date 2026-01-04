@@ -113,7 +113,7 @@ export function InvitationModal({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="bg-white rounded-3xl max-w-md w-full shadow-2xl overflow-hidden"
+          className="bg-white superellipse-3xl max-w-md w-full shadow-2xl overflow-hidden"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header with gradient */}
@@ -144,7 +144,7 @@ export function InvitationModal({
               </button>
             </div>
 
-            <div className="bg-white/20 backdrop-blur rounded-xl p-4">
+            <div className="bg-white/20 backdrop-blur superellipse-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <RoleIcon className="w-5 h-5" />
                 <span className="font-medium">Devenir {roleText}</span>
@@ -164,7 +164,7 @@ export function InvitationModal({
           {/* Content */}
           <div className="p-6">
             {propertyImage && (
-              <div className="mb-4 rounded-xl overflow-hidden">
+              <div className="mb-4 superellipse-xl overflow-hidden">
                 <img
                   src={propertyImage}
                   alt={propertyTitle}
@@ -183,7 +183,7 @@ export function InvitationModal({
                 onClick={handleRefuse}
                 variant="outline"
                 disabled={isAccepting || isRefusing}
-                className="flex-1 rounded-xl h-12 border-gray-300"
+                className="flex-1 superellipse-xl h-12 border-gray-300"
               >
                 {isRefusing ? (
                   <Loader2 className="w-5 h-5 animate-spin" />
@@ -198,7 +198,7 @@ export function InvitationModal({
               <Button
                 onClick={handleAccept}
                 disabled={isAccepting || isRefusing}
-                className="flex-1 rounded-xl h-12 text-white font-medium"
+                className="flex-1 superellipse-xl h-12 text-white font-medium"
                 style={{ background: gradientStyle }}
               >
                 {isAccepting ? (

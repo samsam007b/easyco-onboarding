@@ -124,7 +124,7 @@ export function MessagesLayout({
 
       {/* Main Container - accounts for fixed header (pt-24 = 6rem in parent layout) */}
       <div className="h-[calc(100vh-8rem)] md:h-[calc(100vh-7rem)] max-w-7xl mx-auto px-2 sm:px-4 lg:px-6">
-        <div className="h-full bg-white rounded-2xl md:rounded-3xl shadow-xl border border-gray-100 overflow-hidden flex">
+        <div className="h-full bg-white superellipse-2xl md:superellipse-3xl shadow-xl border border-gray-100 overflow-hidden flex">
           {/* Sidebar - Conversation List */}
           <aside
             className={cn(
@@ -201,7 +201,7 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
       >
         {/* Glow rings */}
         <motion.div
-          className="absolute inset-0 rounded-3xl opacity-30"
+          className="absolute inset-0 superellipse-3xl opacity-30"
           style={{
             background: accentGradient,
             filter: 'blur(20px)',
@@ -212,7 +212,7 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
 
         {/* Main icon container */}
         <div
-          className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg"
+          className="relative w-24 h-24 superellipse-3xl flex items-center justify-center shadow-lg"
           style={{
             background: accentGradient,
             boxShadow: `0 8px 24px ${styles.shadow}`,
@@ -222,7 +222,7 @@ function DefaultEmptyState({ variant, styles }: DefaultEmptyStateProps) {
 
           {/* Shine effect */}
           <motion.div
-            className="absolute inset-0 rounded-3xl bg-white/20"
+            className="absolute inset-0 superellipse-3xl bg-white/20"
             animate={{ opacity: [0, 0.3, 0] }}
             transition={{ repeat: Infinity, duration: 2.5 }}
           />

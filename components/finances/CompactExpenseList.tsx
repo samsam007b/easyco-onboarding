@@ -90,7 +90,7 @@ export default function CompactExpenseList({
   if (displayExpenses.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-3 shadow-sm">
+        <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-3 shadow-sm">
           <Receipt className="w-6 h-6 text-white" />
         </div>
         <p className="text-sm font-medium text-gray-900 mb-1">{list?.noExpenses || 'Aucune dépense'}</p>
@@ -110,13 +110,13 @@ export default function CompactExpenseList({
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: index * 0.02 }}
           onClick={() => onExpenseClick(expense)}
-          className="w-full p-2.5 flex items-center gap-2.5 rounded-xl transition-all duration-200 hover:bg-white active:scale-[0.99] text-left group"
+          className="w-full p-2.5 flex items-center gap-2.5 superellipse-xl transition-all duration-200 hover:bg-white active:scale-[0.99] text-left group"
         >
           {/* Category indicator */}
           <div className="relative flex-shrink-0">
             <div
               className={cn(
-                'w-9 h-9 rounded-lg flex items-center justify-center',
+                'w-9 h-9 superellipse-lg flex items-center justify-center',
                 categoryColors[expense.category] || categoryColors.other
               )}
             >
@@ -279,7 +279,7 @@ export function GroupedExpenseList({
   if (expenses.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-center">
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-4 shadow-md">
+        <div className="w-14 h-14 superellipse-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-4 shadow-md">
           <Receipt className="w-7 h-7 text-white" />
         </div>
         <p className="text-sm font-semibold text-gray-900 mb-1">{list?.noExpenses || 'Aucune dépense'}</p>
@@ -305,7 +305,7 @@ export function GroupedExpenseList({
           </div>
 
           {/* Expenses */}
-          <div className="bg-gray-50/50 rounded-xl p-1">
+          <div className="bg-gray-50/50 superellipse-xl p-1">
             <CompactExpenseList
               expenses={group.expenses}
               onExpenseClick={onExpenseClick}

@@ -106,7 +106,7 @@ export function InvitationCTA({
           {/* Icon */}
           <div
             className={cn(
-              'w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-lg',
+              'w-24 h-24 superellipse-3xl flex items-center justify-center mx-auto mb-6 shadow-lg',
               type === 'owner'
                 ? 'bg-gradient-to-br from-purple-500 to-indigo-500'
                 : 'bg-gradient-to-br from-[#7CB89B] to-[#9ECDB5]'
@@ -164,7 +164,7 @@ export function InvitationCTA({
                 value={customMessage}
                 onChange={(e) => setCustomMessage(e.target.value)}
                 placeholder="Votre message personnalisé..."
-                className="min-h-[120px] rounded-xl"
+                className="min-h-[120px] superellipse-xl"
               />
 
               {/* Link display */}
@@ -172,13 +172,13 @@ export function InvitationCTA({
                 <Input
                   value={inviteLink}
                   readOnly
-                  className="rounded-xl bg-gray-50 text-sm"
+                  className="superellipse-xl bg-gray-50 text-sm"
                 />
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={handleCopyLink}
-                  className="rounded-xl flex-shrink-0"
+                  className="superellipse-xl flex-shrink-0"
                 >
                   {copied ? (
                     <Check className="w-4 h-4 text-[#7CB89B]" />
@@ -225,7 +225,7 @@ export function InvitationCTA({
     return (
       <div
         className={cn(
-          'p-4 rounded-xl border',
+          'p-4 superellipse-xl border',
           type === 'owner'
             ? 'bg-purple-50 border-purple-200'
             : 'bg-[#F0F7F4] border-[#7CB89B]/30'
@@ -234,7 +234,7 @@ export function InvitationCTA({
         <div className="flex items-start gap-3">
           <div
             className={cn(
-              'w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0',
+              'w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0',
               type === 'owner' ? 'bg-purple-100' : 'bg-[#E8F5EE]'
             )}
           >

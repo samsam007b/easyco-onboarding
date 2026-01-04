@@ -144,7 +144,7 @@ export default function OnboardingLayout({
         )}
 
         {/* Card Content */}
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-white superellipse-3xl shadow-lg p-8">
           {children}
         </div>
       </main>

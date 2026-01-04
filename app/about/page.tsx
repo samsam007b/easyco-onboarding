@@ -109,7 +109,7 @@ export default function AboutPage() {
                   {t?.mission?.description2?.[language] || 'Our intelligent matching algorithm analyzes your preferences, lifestyle, and personality to connect you with truly compatible roommates.'}
                 </p>
               </div>
-              <div className="bg-gradient-to-br from-purple-100 to-yellow-100 rounded-2xl p-8 h-96 flex items-center justify-center">
+              <div className="bg-gradient-to-br from-purple-100 to-yellow-100 superellipse-2xl p-8 h-96 flex items-center justify-center">
                 <div className="text-center">
                   <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Users className="w-16 h-16 text-purple-600" />
@@ -141,9 +141,9 @@ export default function AboutPage() {
               {values.map((value, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition"
+                  className="bg-white superellipse-xl p-6 shadow-sm hover:shadow-md transition"
                 >
-                  <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-14 h-14 bg-purple-100 superellipse-lg flex items-center justify-center mb-4">
                     <value.icon className="w-7 h-7 text-purple-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -201,7 +201,7 @@ export default function AboutPage() {
               {team.map((member, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-xl border-2 border-gray-200 p-6 hover:border-purple-300 transition text-center"
+                  className="bg-white superellipse-xl border-2 border-gray-200 p-6 hover:border-purple-300 transition text-center"
                 >
                   <div className="relative w-24 h-24 mx-auto mb-4">
                     <Image

@@ -85,7 +85,7 @@ export default function GettingStartedChecklist({
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative overflow-hidden rounded-3xl p-8 text-center"
+        className="relative overflow-hidden superellipse-3xl p-8 text-center"
         style={{
           background: colors.bg,
           boxShadow: `0 20px 60px ${colors.shadow}`,
@@ -106,7 +106,7 @@ export default function GettingStartedChecklist({
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-            className="w-20 h-20 mx-auto mb-5 rounded-2xl flex items-center justify-center"
+            className="w-20 h-20 mx-auto mb-5 superellipse-2xl flex items-center justify-center"
             style={{
               background: colors.primary,
               boxShadow: `0 12px 32px ${colors.shadow}`,
@@ -141,7 +141,7 @@ export default function GettingStartedChecklist({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="relative overflow-hidden rounded-3xl bg-white"
+      className="relative overflow-hidden superellipse-3xl bg-white"
       style={{
         boxShadow: `0 20px 60px ${colors.shadow}`,
       }}
@@ -162,7 +162,7 @@ export default function GettingStartedChecklist({
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center"
+                className="w-12 h-12 superellipse-xl bg-white/20 backdrop-blur flex items-center justify-center"
               >
                 <Rocket className="w-6 h-6" />
               </motion.div>
@@ -182,7 +182,7 @@ export default function GettingStartedChecklist({
                   e.stopPropagation();
                   onDismiss();
                 }}
-                className="p-2 hover:bg-white/20 rounded-xl transition-colors"
+                className="p-2 hover:bg-white/20 superellipse-xl transition-colors"
               >
                 <X className="w-5 h-5" />
               </motion.button>
@@ -227,7 +227,7 @@ export default function GettingStartedChecklist({
                     transition={{ delay: index * 0.05 }}
                     whileHover={!item.isCompleted ? { scale: 1.01, x: 4 } : {}}
                     className={cn(
-                      'relative overflow-hidden flex items-center gap-4 p-4 rounded-2xl transition-all',
+                      'relative overflow-hidden flex items-center gap-4 p-4 superellipse-2xl transition-all',
                       item.isCompleted
                         ? 'bg-gray-50'
                         : 'hover:bg-gray-50 cursor-pointer'
@@ -246,7 +246,7 @@ export default function GettingStartedChecklist({
                     <motion.div
                       whileHover={!item.isCompleted ? { rotate: 5 } : {}}
                       className={cn(
-                        'relative z-10 w-10 h-10 rounded-xl flex items-center justify-center transition-all flex-shrink-0',
+                        'relative z-10 w-10 h-10 superellipse-xl flex items-center justify-center transition-all flex-shrink-0',
                         item.isCompleted
                           ? 'text-white'
                           : 'text-gray-400'
@@ -293,7 +293,7 @@ export default function GettingStartedChecklist({
                             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                               <Button
                                 size="sm"
-                                className="rounded-xl h-9 px-4 text-sm font-semibold text-white border-none"
+                                className="superellipse-xl h-9 px-4 text-sm font-semibold text-white border-none"
                                 style={{
                                   background: colors.primary,
                                   boxShadow: `0 4px 12px ${colors.shadow}`,
@@ -308,7 +308,7 @@ export default function GettingStartedChecklist({
                           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Button
                               size="sm"
-                              className="rounded-xl h-9 px-4 text-sm font-semibold text-white border-none"
+                              className="superellipse-xl h-9 px-4 text-sm font-semibold text-white border-none"
                               onClick={item.action.onClick}
                               style={{
                                 background: colors.primary,
@@ -331,7 +331,7 @@ export default function GettingStartedChecklist({
             <div className="px-4 pb-5">
               <motion.div
                 whileHover={{ scale: 1.01 }}
-                className="relative overflow-hidden p-4 rounded-2xl text-center"
+                className="relative overflow-hidden p-4 superellipse-2xl text-center"
                 style={{ background: colors.bg }}
               >
                 {/* Decorative circle */}

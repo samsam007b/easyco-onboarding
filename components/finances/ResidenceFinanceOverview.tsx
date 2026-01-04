@@ -45,7 +45,7 @@ function StatCard({ label, value, subValue, icon, trend, sparkline, accent }: St
   return (
     <div
       className={cn(
-        'p-3 rounded-xl border transition-all',
+        'p-3 superellipse-xl border transition-all',
         accent
           ? 'bg-gradient-to-br from-orange-50 to-red-50 border-orange-100'
           : 'bg-white border-gray-100 hover:border-gray-200'
@@ -65,7 +65,7 @@ function StatCard({ label, value, subValue, icon, trend, sparkline, accent }: St
         <div className="flex flex-col items-end gap-1">
           <div
             className={cn(
-              'w-8 h-8 rounded-lg flex items-center justify-center',
+              'w-8 h-8 superellipse-lg flex items-center justify-center',
               accent
                 ? 'bg-gradient-to-br from-orange-500 to-red-500 text-white'
                 : 'bg-gray-100 text-gray-600'
@@ -275,9 +275,9 @@ export default function ResidenceFinanceOverview({
 
       {/* Contributors Breakdown */}
       {contributors.length > 0 && (
-        <div className="bg-white rounded-xl border border-gray-100 p-3">
+        <div className="bg-white superellipse-xl border border-gray-100 p-3">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-6 h-6 rounded-lg bg-gray-100 flex items-center justify-center">
+            <div className="w-6 h-6 superellipse-lg bg-gray-100 flex items-center justify-center">
               <Users className="w-3.5 h-3.5 text-gray-600" />
             </div>
             <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">

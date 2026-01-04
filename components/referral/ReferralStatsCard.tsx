@@ -12,13 +12,13 @@ interface ReferralStatsCardProps {
 export function ReferralStatsCard({ stats, isLoading }: ReferralStatsCardProps) {
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+      <div className="bg-white superellipse-2xl shadow-lg border border-gray-100 p-6">
         <div className="animate-pulse space-y-4">
           <div className="h-6 bg-gray-200 rounded w-1/3" />
           <div className="grid grid-cols-3 gap-4">
-            <div className="h-20 bg-gray-100 rounded-xl" />
-            <div className="h-20 bg-gray-100 rounded-xl" />
-            <div className="h-20 bg-gray-100 rounded-xl" />
+            <div className="h-20 bg-gray-100 superellipse-xl" />
+            <div className="h-20 bg-gray-100 superellipse-xl" />
+            <div className="h-20 bg-gray-100 superellipse-xl" />
           </div>
         </div>
       </div>
@@ -54,12 +54,12 @@ export function ReferralStatsCard({ stats, isLoading }: ReferralStatsCardProps) 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.1 }}
-      className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden"
+      className="bg-white superellipse-2xl shadow-lg border border-gray-100 overflow-hidden"
     >
       {/* Header */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-owner-100 rounded-lg">
+          <div className="p-2 bg-owner-100 superellipse-lg">
             <TrendingUp className="w-5 h-5 text-owner-600" />
           </div>
           <h3 className="text-lg font-bold text-gray-900">Vos Statistiques</h3>
@@ -75,7 +75,7 @@ export function ReferralStatsCard({ stats, isLoading }: ReferralStatsCardProps) 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.1 + index * 0.05 }}
-              className={`p-4 ${item.bgColor} rounded-xl text-center`}
+              className={`p-4 ${item.bgColor} superellipse-xl text-center`}
             >
               <item.icon className={`w-6 h-6 ${item.color} mx-auto mb-2`} />
               <p className={`text-2xl font-bold ${item.color}`}>{item.value}</p>
@@ -85,7 +85,7 @@ export function ReferralStatsCard({ stats, isLoading }: ReferralStatsCardProps) 
         </div>
 
         {/* Credits Display */}
-        <div className="p-4 bg-gradient-to-r from-owner-50 to-purple-50 rounded-xl border border-owner-200">
+        <div className="p-4 bg-gradient-to-r from-owner-50 to-purple-50 superellipse-xl border border-owner-200">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Gift className="w-5 h-5 text-owner-600" />
@@ -128,7 +128,7 @@ export function ReferralStatsCard({ stats, isLoading }: ReferralStatsCardProps) 
             {stats.recent_referrals.slice(0, 5).map((referral) => (
               <div
                 key={referral.id}
-                className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                className="flex items-center justify-between p-3 bg-gray-50 superellipse-lg"
               >
                 <div>
                   <p className="font-medium text-gray-900">
