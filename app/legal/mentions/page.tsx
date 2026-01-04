@@ -49,7 +49,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.company.title}
             </h2>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 space-y-6">
+            <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8 space-y-6">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {mentions.company.name}
@@ -86,7 +86,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.headquarters.title}
             </h2>
-            <div className="bg-purple-50 rounded-2xl border-2 border-purple-200 p-8">
+            <div className="bg-purple-50 superellipse-2xl border-2 border-purple-200 p-8">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">
                 {mentions.headquarters.address}
               </h3>
@@ -101,7 +101,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.contact.title}
             </h2>
-            <div className="bg-yellow-50 rounded-2xl border-2 border-yellow-200 p-8 space-y-4">
+            <div className="bg-yellow-50 superellipse-2xl border-2 border-yellow-200 p-8 space-y-4">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900 mb-2">
                   {mentions.contact.emailLabel}
@@ -134,7 +134,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.director.title}
             </h2>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8">
+            <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8">
               <p className="text-gray-700">
                 {mentions.director.content}
               </p>
@@ -146,7 +146,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.hosting.title}
             </h2>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8">
+            <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8">
               <p className="text-gray-700 mb-4">
                 {mentions.hosting.content}
               </p>
@@ -166,7 +166,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.activity.title}
             </h2>
-            <div className="bg-purple-50 rounded-2xl border-2 border-purple-200 p-8">
+            <div className="bg-purple-50 superellipse-2xl border-2 border-purple-200 p-8">
               <p className="text-gray-700 text-lg leading-relaxed">
                 {mentions.activity.content}
               </p>
@@ -178,7 +178,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.intellectualProperty.title}
             </h2>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8">
+            <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8">
               <p className="text-gray-700 leading-relaxed">
                 {mentions.intellectualProperty.content}
               </p>
@@ -190,7 +190,7 @@ export default function LegalMentionsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-6">
               {mentions.disputes.title}
             </h2>
-            <div className="bg-blue-50 rounded-2xl border-2 border-blue-200 p-8">
+            <div className="bg-blue-50 superellipse-2xl border-2 border-blue-200 p-8">
               <p className="text-gray-700 leading-relaxed">
                 {mentions.disputes.content}
               </p>

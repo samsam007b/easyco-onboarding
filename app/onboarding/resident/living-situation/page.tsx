@@ -202,7 +202,7 @@ export default function ResidentLivingSituationPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-white superellipse-3xl shadow-lg p-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-2">
               {resident.livingSituation.heading}

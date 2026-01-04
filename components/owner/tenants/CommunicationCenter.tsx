@@ -125,7 +125,7 @@ export function CommunicationCenter({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm overflow-hidden",
+        "bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm overflow-hidden",
         className
       )}
     >
@@ -134,7 +134,7 @@ export function CommunicationCenter({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
               style={{ background: ownerGradient }}
             >
               <MessageCircle className="w-5 h-5 text-white" />
@@ -190,7 +190,7 @@ export function CommunicationCenter({
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.05 }}
                     className={cn(
-                      "flex items-center gap-3 p-3 rounded-xl transition-all cursor-pointer",
+                      "flex items-center gap-3 p-3 superellipse-xl transition-all cursor-pointer",
                       conv.unread
                         ? "bg-purple-50/50 border border-purple-100"
                         : "bg-gray-50/50 hover:bg-gray-100 border border-transparent"
@@ -203,11 +203,11 @@ export function CommunicationCenter({
                         <img
                           src={conv.tenantPhoto}
                           alt={conv.tenantName}
-                          className="w-10 h-10 rounded-xl object-cover"
+                          className="w-10 h-10 superellipse-xl object-cover"
                         />
                       ) : (
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm"
+                          className="w-10 h-10 superellipse-xl flex items-center justify-center text-white font-bold text-sm"
                           style={{ background: ownerGradient }}
                         >
                           {getInitials(conv.tenantName)}
@@ -268,7 +268,7 @@ export function CommunicationCenter({
                     }
                   }}
                   className={cn(
-                    "flex flex-col items-center gap-2 p-3 rounded-xl border transition-all text-center",
+                    "flex flex-col items-center gap-2 p-3 superellipse-xl border transition-all text-center",
                     template.bgColor,
                     isSelected && "ring-2 ring-purple-400"
                   )}
@@ -286,7 +286,7 @@ export function CommunicationCenter({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             onClick={() => router.push('/dashboard/owner/messages/compose?bulk=true')}
-            className="w-full mt-4 flex items-center justify-center gap-2 p-3 rounded-xl border-2 border-dashed border-gray-200 text-gray-500 hover:border-purple-300 hover:text-purple-600 transition-all"
+            className="w-full mt-4 flex items-center justify-center gap-2 p-3 superellipse-xl border-2 border-dashed border-gray-200 text-gray-500 hover:border-purple-300 hover:text-purple-600 transition-all"
           >
             <Send className="w-4 h-4" />
             <span className="text-sm font-medium">Message à tous ({tenantCount})</span>

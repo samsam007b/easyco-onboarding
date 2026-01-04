@@ -15,14 +15,14 @@ export default function LogoComparisonPage() {
         </p>
 
         {/* Version actuelle - Icône maison */}
-        <section className="mb-12 bg-white rounded-2xl shadow-lg p-8">
+        <section className="mb-12 bg-white superellipse-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-slate-900">
             Version actuelle : Icône maison
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond blanc</h3>
-              <div className="bg-white border-2 border-slate-200 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-white border-2 border-slate-200 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-icon.svg"
                   alt="IzzIco Icon - Fond blanc"
@@ -38,7 +38,7 @@ export default function LogoComparisonPage() {
             </div>
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond sombre</h3>
-              <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-slate-900 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-icon.svg"
                   alt="IzzIco Icon - Fond sombre"
@@ -59,14 +59,14 @@ export default function LogoComparisonPage() {
         </section>
 
         {/* Version 1 - Logo textuel (stop à 50%) */}
-        <section className="mb-12 bg-white rounded-2xl shadow-lg p-8">
+        <section className="mb-12 bg-white superellipse-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-slate-900">
             Version 1 : Logo textuel (stop orange à 50%)
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond blanc</h3>
-              <div className="bg-white border-2 border-slate-200 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-white border-2 border-slate-200 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-text-v1.svg"
                   alt="IzzIco Logo V1 - Fond blanc"
@@ -82,7 +82,7 @@ export default function LogoComparisonPage() {
             </div>
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond sombre</h3>
-              <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-slate-900 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-text-v1.svg"
                   alt="IzzIco Logo V1 - Fond sombre"
@@ -106,14 +106,14 @@ export default function LogoComparisonPage() {
         </section>
 
         {/* Version 2 - Logo textuel (stop à 55%) */}
-        <section className="mb-12 bg-white rounded-2xl shadow-lg p-8">
+        <section className="mb-12 bg-white superellipse-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-slate-900">
             Version 2 : Logo textuel (stop orange à 55%)
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond blanc</h3>
-              <div className="bg-white border-2 border-slate-200 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-white border-2 border-slate-200 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-text-v2.svg"
                   alt="IzzIco Logo V2 - Fond blanc"
@@ -129,7 +129,7 @@ export default function LogoComparisonPage() {
             </div>
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond sombre</h3>
-              <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-slate-900 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-text-v2.svg"
                   alt="IzzIco Logo V2 - Fond sombre"
@@ -153,7 +153,7 @@ export default function LogoComparisonPage() {
         </section>
 
         {/* Version FINALE - Logo textuel avec Z miroir et gradient diagonal */}
-        <section className="mb-12 bg-gradient-to-br from-purple-50 via-orange-50 to-amber-50 rounded-2xl shadow-2xl p-8 border-4 border-purple-200">
+        <section className="mb-12 bg-gradient-to-br from-purple-50 via-orange-50 to-amber-50 superellipse-2xl shadow-2xl p-8 border-4 border-purple-200">
           <div className="flex items-center gap-3 mb-4">
             <h2 className="text-3xl font-bold text-slate-900">
               ⭐ Version FINALE - Z miroir + Gradient diagonal CODE
@@ -166,7 +166,7 @@ export default function LogoComparisonPage() {
           <div className="grid md:grid-cols-2 gap-8">
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond blanc</h3>
-              <div className="bg-white border-2 border-slate-200 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-white border-2 border-slate-200 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-text-final.svg"
                   alt="IzzIco Logo Final - Fond blanc"
@@ -182,7 +182,7 @@ export default function LogoComparisonPage() {
             </div>
             <div>
               <h3 className="font-semibold text-slate-700 mb-3">Fond sombre</h3>
-              <div className="bg-slate-900 rounded-xl p-8 flex items-center justify-center">
+              <div className="bg-slate-900 superellipse-xl p-8 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-text-final.svg"
                   alt="IzzIco Logo Final - Fond sombre"
@@ -208,7 +208,7 @@ export default function LogoComparisonPage() {
               📱 Version compacte (pour headers)
             </h3>
             <div className="grid md:grid-cols-2 gap-8">
-              <div className="bg-white border-2 border-slate-200 rounded-xl p-6 flex items-center justify-center">
+              <div className="bg-white border-2 border-slate-200 superellipse-xl p-6 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-compact.svg"
                   alt="IzzIco Logo Compact - Fond blanc"
@@ -216,7 +216,7 @@ export default function LogoComparisonPage() {
                   height={120}
                 />
               </div>
-              <div className="bg-slate-900 rounded-xl p-6 flex items-center justify-center">
+              <div className="bg-slate-900 superellipse-xl p-6 flex items-center justify-center">
                 <Image
                   src="/logos/izzico-logo-compact.svg"
                   alt="IzzIco Logo Compact - Fond sombre"
@@ -234,13 +234,13 @@ export default function LogoComparisonPage() {
         </section>
 
         {/* Analyse comparative */}
-        <section className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-2xl shadow-lg p-8">
+        <section className="bg-gradient-to-br from-indigo-50 to-purple-50 superellipse-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-6 text-slate-900">
             🎨 Analyse comparative
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-white rounded-xl p-6">
+            <div className="bg-white superellipse-xl p-6">
               <h3 className="font-bold text-lg mb-3 text-purple-700">Icône actuelle</h3>
               <ul className="space-y-2 text-sm text-slate-700">
                 <li>✓ Reconnaissable (maison)</li>
@@ -251,7 +251,7 @@ export default function LogoComparisonPage() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-6">
+            <div className="bg-white superellipse-xl p-6">
               <h3 className="font-bold text-lg mb-3 text-orange-700">Logo textuel V1</h3>
               <ul className="space-y-2 text-sm text-slate-700">
                 <li>✓ Nom de marque visible</li>
@@ -262,7 +262,7 @@ export default function LogoComparisonPage() {
               </ul>
             </div>
 
-            <div className="bg-white rounded-xl p-6">
+            <div className="bg-white superellipse-xl p-6">
               <h3 className="font-bold text-lg mb-3 text-amber-700">Logo textuel V2</h3>
               <ul className="space-y-2 text-sm text-slate-700">
                 <li>✓ Nom de marque visible</li>
@@ -274,7 +274,7 @@ export default function LogoComparisonPage() {
             </div>
           </div>
 
-          <div className="mt-8 bg-white rounded-xl p-6">
+          <div className="mt-8 bg-white superellipse-xl p-6">
             <h3 className="font-bold text-lg mb-4 text-slate-900">📋 Recommandations</h3>
             <div className="space-y-3 text-sm text-slate-700">
               <div className="flex items-start gap-3">
@@ -304,7 +304,7 @@ export default function LogoComparisonPage() {
         </section>
 
         {/* Gradient technique */}
-        <section className="mt-8 bg-white rounded-2xl shadow-lg p-8">
+        <section className="mt-8 bg-white superellipse-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-slate-900">
             🔧 Spécifications techniques
           </h2>

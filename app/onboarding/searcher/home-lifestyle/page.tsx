@@ -102,7 +102,7 @@ export default function HomeLifestylePage() {
 
       <div className="space-y-6">
         {/* Cleanliness preference */}
-        <div className="p-4 rounded-xl bg-orange-50 border border-orange-200">
+        <div className="p-4 superellipse-xl bg-orange-50 border border-orange-200">
           <OnboardingLabel>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">

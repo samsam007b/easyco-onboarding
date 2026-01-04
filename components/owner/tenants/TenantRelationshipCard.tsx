@@ -136,7 +136,7 @@ export function TenantRelationshipCard({
       animate={{ opacity: 1, y: 0 }}
       whileHover={{ scale: 1.01, y: -2 }}
       transition={{ delay: 0.05 + index * 0.02 }}
-      className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
+      className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
       onClick={() => onOpenDetails?.(tenant.id)}
     >
       {/* Health indicator strip at top */}
@@ -153,24 +153,24 @@ export function TenantRelationshipCard({
           {/* Avatar with health ring */}
           <div className="flex-shrink-0 relative">
             <div
-              className="absolute inset-0 rounded-2xl"
+              className="absolute inset-0 superellipse-2xl"
               style={{
                 background: healthConfig.gradient,
                 padding: '2px',
               }}
             >
-              <div className="w-full h-full rounded-2xl bg-white" />
+              <div className="w-full h-full superellipse-2xl bg-white" />
             </div>
             {tenant.photoUrl ? (
               <img
                 src={tenant.photoUrl}
                 alt={`${tenant.firstName} ${tenant.lastName}`}
-                className="relative w-16 h-16 rounded-2xl object-cover"
+                className="relative w-16 h-16 superellipse-2xl object-cover"
                 style={{ border: '2px solid transparent' }}
               />
             ) : (
               <div
-                className="relative w-16 h-16 rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-sm"
+                className="relative w-16 h-16 superellipse-2xl flex items-center justify-center text-white font-bold text-xl shadow-sm"
                 style={{ background: ownerGradient }}
               >
                 {getInitials(tenant.firstName, tenant.lastName)}

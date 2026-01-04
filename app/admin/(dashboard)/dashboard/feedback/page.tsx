@@ -285,7 +285,7 @@ export default async function FeedbackDashboardPage() {
                     </p>
                   )}
                 </div>
-                <div className={`p-3 rounded-xl bg-${stat.color}-100`}>
+                <div className={`p-3 superellipse-xl bg-${stat.color}-100`}>
                   <stat.icon className={`w-6 h-6 text-${stat.color}-600`} />
                 </div>
               </div>

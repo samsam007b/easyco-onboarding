@@ -69,7 +69,7 @@ export default function ProfileTypePage() {
 
         {/* Heading */}
         <div className="text-center mb-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 mb-4 shadow-lg">
+          <div className="inline-flex items-center justify-center w-16 h-16 superellipse-2xl bg-gradient-to-br from-orange-500 to-amber-500 mb-4 shadow-lg">
             <User className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-3">
@@ -86,14 +86,14 @@ export default function ProfileTypePage() {
           <button
             type="button"
             onClick={() => setProfileType('self')}
-            className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 text-left group ${
+            className={`w-full p-6 superellipse-2xl border-2 transition-all duration-300 text-left group ${
               profileType === 'self'
                 ? 'border-orange-500 bg-white shadow-lg scale-[1.02]'
                 : 'border-gray-200 bg-white hover:border-orange-300 hover:shadow-md'
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+              <div className={`w-14 h-14 superellipse-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                 profileType === 'self'
                   ? 'bg-gradient-to-br from-orange-500 to-amber-500 shadow-md'
                   : 'bg-gray-100 group-hover:bg-orange-50'
@@ -122,14 +122,14 @@ export default function ProfileTypePage() {
           <button
             type="button"
             onClick={() => setProfileType('dependent')}
-            className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 text-left group ${
+            className={`w-full p-6 superellipse-2xl border-2 transition-all duration-300 text-left group ${
               profileType === 'dependent'
                 ? 'border-orange-500 bg-white shadow-lg scale-[1.02]'
                 : 'border-gray-200 bg-white hover:border-orange-300 hover:shadow-md'
             }`}
           >
             <div className="flex items-start gap-4">
-              <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
+              <div className={`w-14 h-14 superellipse-xl flex items-center justify-center flex-shrink-0 transition-all duration-300 ${
                 profileType === 'dependent'
                   ? 'bg-gradient-to-br from-orange-500 to-amber-500 shadow-md'
                   : 'bg-gray-100 group-hover:bg-orange-50'
@@ -144,7 +144,7 @@ export default function ProfileTypePage() {
                   {onboarding.profileType.forSomeoneElseDesc}
                 </p>
                 {profileType === 'dependent' && (
-                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 rounded-xl animate-in slide-in-from-top duration-300">
+                  <div className="mt-4 p-3 bg-amber-50 border border-amber-200 superellipse-xl animate-in slide-in-from-top duration-300">
                     <p className="text-xs text-amber-900 leading-relaxed">
                       {onboarding.profileType.multipleProfilesNote}
                     </p>
@@ -163,7 +163,7 @@ export default function ProfileTypePage() {
         </div>
 
         {/* Info Box */}
-        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-2xl p-5 mb-8">
+        <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 superellipse-2xl p-5 mb-8">
           <div className="flex items-start gap-3">
             <div className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5">
               <Info className="w-5 h-5" />
@@ -183,7 +183,7 @@ export default function ProfileTypePage() {
         <button
           onClick={handleContinue}
           disabled={!profileType}
-          className={`w-full py-4 rounded-xl font-bold text-lg transition-all duration-300 ${
+          className={`w-full py-4 superellipse-xl font-bold text-lg transition-all duration-300 ${
             profileType
               ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0'
               : 'bg-gray-200 text-gray-400 cursor-not-allowed'

@@ -217,7 +217,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
             <img
               src="/logos/izzico-trademark-text-gradient.svg?v=5"
               alt="IzzIco"
-              className="h-8 w-auto transition-transform group-hover:scale-105"
+              className="h-7 w-auto transition-transform group-hover:scale-105"
             />
           </Link>
 

@@ -236,7 +236,7 @@ function JoinGroupContent() {
 
         <div className="space-y-6">
           {/* Join with Code */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white superellipse-3xl p-6 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('groupJoin.inviteCode.title')}</h2>
 
             <div className="flex gap-2 mb-4">
@@ -258,7 +258,7 @@ function JoinGroupContent() {
             </div>
 
             {foundGroup && (
-              <div className="p-4 bg-purple-50 rounded-xl border-2 border-purple-200">
+              <div className="p-4 bg-purple-50 superellipse-xl border-2 border-purple-200">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <h3 className="font-semibold text-gray-900 flex items-center gap-2">
@@ -305,7 +305,7 @@ function JoinGroupContent() {
           </div>
 
           {/* Open Groups */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white superellipse-3xl p-6 shadow-sm">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-gray-900">{t('groupJoin.openGroups.title')}</h2>
               <Button
@@ -334,7 +334,7 @@ function JoinGroupContent() {
 
             <div className="space-y-3">
               {openGroups.map((group) => (
-                <div key={group.id} className="p-4 border-2 border-gray-200 rounded-xl hover:border-[#4A148C] transition">
+                <div key={group.id} className="p-4 border-2 border-gray-200 superellipse-xl hover:border-[#4A148C] transition">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-900">{group.name}</h3>
@@ -362,7 +362,7 @@ function JoinGroupContent() {
           </div>
 
           {/* Info */}
-          <div className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-4 border border-blue-200">
+          <div className="bg-gradient-to-br from-blue-50 to-purple-50 superellipse-2xl p-4 border border-blue-200">
             <div className="flex gap-3">
               <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm text-gray-700">

@@ -135,7 +135,7 @@ export default function AcceptInvitePage() {
         {step === 'loading' && (
           <>
             <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl flex items-center justify-center mb-4">
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 superellipse-2xl flex items-center justify-center mb-4">
                 <Loader2 className="w-8 h-8 text-white animate-spin" />
               </div>
               <CardTitle className="text-2xl font-bold text-white">
@@ -152,7 +152,7 @@ export default function AcceptInvitePage() {
         {step === 'invalid' && (
           <>
             <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 rounded-2xl flex items-center justify-center mb-4">
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-red-600 to-red-800 superellipse-2xl flex items-center justify-center mb-4">
                 <AlertCircle className="w-8 h-8 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-white">
@@ -183,7 +183,7 @@ export default function AcceptInvitePage() {
         {step === 'form' && invitation && (
           <>
             <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl flex items-center justify-center mb-4">
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 superellipse-2xl flex items-center justify-center mb-4">
                 <Mail className="w-8 h-8 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-white">
@@ -312,7 +312,7 @@ export default function AcceptInvitePage() {
         {step === 'success' && (
           <>
             <CardHeader className="text-center">
-              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-600 to-green-800 rounded-2xl flex items-center justify-center mb-4">
+              <div className="mx-auto w-16 h-16 bg-gradient-to-br from-green-600 to-green-800 superellipse-2xl flex items-center justify-center mb-4">
                 <CheckCircle className="w-8 h-8 text-white" />
               </div>
               <CardTitle className="text-2xl font-bold text-white">

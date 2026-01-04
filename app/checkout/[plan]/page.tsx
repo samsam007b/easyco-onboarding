@@ -244,7 +244,7 @@ export default function CheckoutPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center"
+          className="bg-white superellipse-2xl shadow-xl p-8 max-w-md text-center"
         >
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-red-600" />
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
           </p>
           <button
             onClick={() => router.push('/dashboard/subscription')}
-            className="px-6 py-3 bg-gradient-to-r from-[#ff651e] to-[#9c5698] text-white rounded-xl font-semibold hover:shadow-lg transition"
+            className="px-6 py-3 bg-gradient-to-r from-[#ff651e] to-[#9c5698] text-white superellipse-xl font-semibold hover:shadow-lg transition"
           >
             {t?.errors?.invalidPlan?.seeAvailablePlans?.[language] || 'See available plans'}
           </button>
@@ -287,7 +287,7 @@ export default function CheckoutPage() {
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="bg-white rounded-2xl shadow-xl p-8 max-w-md text-center"
+          className="bg-white superellipse-2xl shadow-xl p-8 max-w-md text-center"
         >
           <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-red-600" />
@@ -303,13 +303,13 @@ export default function CheckoutPage() {
                 setLoading(true);
                 fetchClientSecret();
               }}
-              className={`w-full px-6 py-3 bg-gradient-to-r ${colors.gradient} text-white rounded-xl font-semibold hover:shadow-lg transition`}
+              className={`w-full px-6 py-3 bg-gradient-to-r ${colors.gradient} text-white superellipse-xl font-semibold hover:shadow-lg transition`}
             >
               {t?.errors?.generic?.retry?.[language] || 'Retry'}
             </button>
             <button
               onClick={() => router.back()}
-              className="w-full px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition"
+              className="w-full px-6 py-3 bg-gray-100 text-gray-700 superellipse-xl font-semibold hover:bg-gray-200 transition"
             >
               {t?.errors?.generic?.back?.[language] || 'Back'}
             </button>
@@ -367,8 +367,8 @@ export default function CheckoutPage() {
             {/* Plan Card with gradient border */}
             <div className="relative">
               {/* Gradient border effect */}
-              <div className={`absolute -inset-0.5 bg-gradient-to-r ${colors.gradientVibrant} rounded-2xl opacity-75 blur-sm`}></div>
-              <div className="relative bg-white rounded-2xl p-6">
+              <div className={`absolute -inset-0.5 bg-gradient-to-r ${colors.gradientVibrant} superellipse-2xl opacity-75 blur-sm`}></div>
+              <div className="relative bg-white superellipse-2xl p-6">
                 {/* Trial Badge */}
                 <div className={`absolute -top-3 -right-3 bg-gradient-to-r ${colors.gradient} text-white px-4 py-1.5 rounded-full shadow-lg flex items-center gap-1.5`}>
                   <Gift className="w-4 h-4" />
@@ -380,7 +380,7 @@ export default function CheckoutPage() {
                 {/* Plan Header */}
                 <div className="flex items-center gap-4 mb-6 pt-2">
                   <div
-                    className={`w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br ${colors.gradient} shadow-lg`}
+                    className={`w-14 h-14 superellipse-2xl flex items-center justify-center bg-gradient-to-br ${colors.gradient} shadow-lg`}
                     style={{ boxShadow: `0 8px 24px ${colors.primary}40` }}
                   >
                     {isOwner ? (
@@ -452,7 +452,7 @@ export default function CheckoutPage() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl shadow-lg p-6 border border-gray-100"
+              className="bg-white superellipse-2xl shadow-lg p-6 border border-gray-100"
             >
               <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
                 <Shield className={`w-5 h-5 ${colors.text}`} />
@@ -460,7 +460,7 @@ export default function CheckoutPage() {
               </h3>
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${colors.bg}`}>
+                  <div className={`w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 ${colors.bg}`}>
                     <Shield className={`w-5 h-5 ${colors.text}`} />
                   </div>
                   <div>
@@ -473,7 +473,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${colors.bg}`}>
+                  <div className={`w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 ${colors.bg}`}>
                     <Lock className={`w-5 h-5 ${colors.text}`} />
                   </div>
                   <div>
@@ -486,7 +486,7 @@ export default function CheckoutPage() {
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${colors.bg}`}>
+                  <div className={`w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 ${colors.bg}`}>
                     <CreditCard className={`w-5 h-5 ${colors.text}`} />
                   </div>
                   <div>
@@ -522,7 +522,7 @@ export default function CheckoutPage() {
             transition={{ delay: 0.1 }}
             className="lg:col-span-3"
           >
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+            <div className="bg-white superellipse-2xl shadow-lg overflow-hidden border border-gray-100">
               {/* Header */}
               <div className={`bg-gradient-to-r ${colors.gradientLight} px-6 lg:px-8 py-4 border-b border-gray-100`}>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -555,7 +555,7 @@ export default function CheckoutPage() {
                     <button
                       onClick={() => fetchClientSecret(true)}
                       disabled={checkoutLoading}
-                      className={`px-6 py-3 bg-gradient-to-r ${colors.gradient} text-white rounded-xl font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed`}
+                      className={`px-6 py-3 bg-gradient-to-r ${colors.gradient} text-white superellipse-xl font-semibold hover:shadow-lg transition disabled:opacity-50 disabled:cursor-not-allowed`}
                     >
                       {checkoutLoading ? (
                         <span className="flex items-center gap-2">

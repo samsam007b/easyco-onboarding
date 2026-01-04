@@ -453,7 +453,7 @@ export default function PropertyApplicationPage() {
           </Card>
 
           {/* Submit */}
-          <div className="flex items-center justify-between bg-white rounded-2xl p-6 shadow-lg border border-orange-100">
+          <div className="flex items-center justify-between bg-white superellipse-2xl p-6 shadow-lg border border-orange-100">
             <div>
               <p className="text-sm text-gray-600">
                 {t('properties.apply.submitDisclaimer')}

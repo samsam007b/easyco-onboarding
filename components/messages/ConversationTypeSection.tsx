@@ -89,7 +89,7 @@ export default function ConversationTypeSection({
           </div>
           <h2 className="text-lg font-bold text-gray-900">{title}</h2>
         </div>
-        <div className="bg-gray-50 rounded-xl p-6 text-center text-gray-500">
+        <div className="bg-gray-50 superellipse-xl p-6 text-center text-gray-500">
           {emptyMessage}
         </div>
       </div>
@@ -117,7 +117,7 @@ export default function ConversationTypeSection({
             transition={{ delay: index * 0.05 }}
             onClick={() => router.push(`/hub/messages/${conversation.id}`)}
             className={cn(
-              "bg-white rounded-xl p-4 cursor-pointer transition-all hover:shadow-md border",
+              "bg-white superellipse-xl p-4 cursor-pointer transition-all hover:shadow-md border",
               conversation.unread_count > 0
                 ? "border-orange-200 bg-orange-50/30"
                 : "border-gray-200"

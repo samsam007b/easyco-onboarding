@@ -5,7 +5,7 @@ export default function OnboardingLoading() {
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center p-4">
       <div className="max-w-2xl w-full">
         {/* Card Skeleton */}
-        <div className="bg-white rounded-2xl shadow-xl p-8 animate-pulse">
+        <div className="bg-white superellipse-2xl shadow-xl p-8 animate-pulse">
           {/* Progress Bar Skeleton */}
           <div className="mb-8">
             <div className="h-2 bg-gray-200 rounded-full mb-2"></div>

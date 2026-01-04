@@ -184,7 +184,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className={`relative p-4 rounded-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
+                className={`relative p-4 superellipse-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
                   suggestion.category
                 )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-orange-500' : ''}`}
               >
@@ -225,7 +225,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className={`relative p-4 rounded-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
+                className={`relative p-4 superellipse-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
                   suggestion.category
                 )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-orange-500' : ''}`}
               >
@@ -265,7 +265,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleSuggestionClick(suggestion)}
-                className={`relative p-4 rounded-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
+                className={`relative p-4 superellipse-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
                   suggestion.category
                 )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-orange-500' : ''}`}
               >
@@ -295,7 +295,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 rounded-xl p-4"
+        className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 superellipse-xl p-4"
       >
         <div className="flex items-start gap-3">
           <Sparkles className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />

@@ -118,7 +118,7 @@ export function DevTools() {
 
       {/* Dev Tools Panel */}
       {isOpen && (
-        <div className="fixed bottom-20 right-4 z-50 w-80 bg-white rounded-2xl shadow-2xl border-2 border-purple-200 p-4">
+        <div className="fixed bottom-20 right-4 z-50 w-80 bg-white superellipse-2xl shadow-2xl border-2 border-purple-200 p-4">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />

@@ -96,7 +96,7 @@ export default function PrivateCodesPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50/30 flex items-center justify-center p-4">
         <Card className="p-8 max-w-md text-center">
-          <div className="w-16 h-16 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 superellipse-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-gray-400" />
           </div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -107,7 +107,7 @@ export default function PrivateCodesPage() {
           </p>
           <Button
             onClick={() => router.push('/onboarding/resident/property-setup')}
-            className="rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
+            className="superellipse-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
           >
             {t?.noResidence?.button?.[language] || 'Set up my residence'}
           </Button>
@@ -134,7 +134,7 @@ export default function PrivateCodesPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600 shadow-xl">
+          <div className="w-20 h-20 superellipse-3xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-purple-500 to-indigo-600 shadow-xl">
             <Lock className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{t?.title?.[language] || 'Private Codes'}</h1>

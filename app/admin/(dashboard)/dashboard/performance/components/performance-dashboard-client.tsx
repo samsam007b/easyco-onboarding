@@ -114,7 +114,7 @@ export function PerformanceDashboardClient({
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-white flex items-center gap-3">
-            <div className="p-2 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-xl">
+            <div className="p-2 bg-gradient-to-br from-cyan-500 to-blue-600 superellipse-xl">
               <Activity className="w-6 h-6 text-white" />
             </div>
             Performance Dashboard
@@ -146,7 +146,7 @@ export function PerformanceDashboardClient({
                   {stats.overallScore}
                 </p>
               </div>
-              <div className="p-3 bg-slate-700/50 rounded-xl">
+              <div className="p-3 bg-slate-700/50 superellipse-xl">
                 {getScoreIcon(stats.overallScore)}
               </div>
             </div>
@@ -163,7 +163,7 @@ export function PerformanceDashboardClient({
                   {stats.webVitalsScore}
                 </p>
               </div>
-              <div className="p-3 bg-cyan-500/20 rounded-xl">
+              <div className="p-3 bg-cyan-500/20 superellipse-xl">
                 <Globe className="w-5 h-5 text-cyan-400" />
               </div>
             </div>
@@ -180,7 +180,7 @@ export function PerformanceDashboardClient({
                   {stats.apiScore}
                 </p>
               </div>
-              <div className="p-3 bg-purple-500/20 rounded-xl">
+              <div className="p-3 bg-purple-500/20 superellipse-xl">
                 <Zap className="w-5 h-5 text-purple-400" />
               </div>
             </div>
@@ -197,7 +197,7 @@ export function PerformanceDashboardClient({
                   {stats.databaseScore}
                 </p>
               </div>
-              <div className="p-3 bg-blue-500/20 rounded-xl">
+              <div className="p-3 bg-blue-500/20 superellipse-xl">
                 <Database className="w-5 h-5 text-blue-400" />
               </div>
             </div>
@@ -214,7 +214,7 @@ export function PerformanceDashboardClient({
                   {stats.bundleScore}
                 </p>
               </div>
-              <div className="p-3 bg-orange-500/20 rounded-xl">
+              <div className="p-3 bg-orange-500/20 superellipse-xl">
                 <Package className="w-5 h-5 text-orange-400" />
               </div>
             </div>
@@ -227,7 +227,7 @@ export function PerformanceDashboardClient({
         <Card className="bg-slate-800/50 border-slate-700">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-emerald-500/20 rounded-xl">
+              <div className="p-3 bg-emerald-500/20 superellipse-xl">
                 <TrendingUp className="w-5 h-5 text-emerald-400" />
               </div>
               <div>
@@ -243,7 +243,7 @@ export function PerformanceDashboardClient({
         <Card className="bg-slate-800/50 border-slate-700">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
-              <div className="p-3 bg-blue-500/20 rounded-xl">
+              <div className="p-3 bg-blue-500/20 superellipse-xl">
                 <Timer className="w-5 h-5 text-blue-400" />
               </div>
               <div>
@@ -259,7 +259,7 @@ export function PerformanceDashboardClient({
         <Card className="bg-slate-800/50 border-slate-700">
           <CardContent className="pt-6">
             <div className="flex items-center gap-4">
-              <div className={`p-3 rounded-xl ${stats.errorRate > 1 ? 'bg-red-500/20' : 'bg-emerald-500/20'}`}>
+              <div className={`p-3 superellipse-xl ${stats.errorRate > 1 ? 'bg-red-500/20' : 'bg-emerald-500/20'}`}>
                 <AlertCircle className={`w-5 h-5 ${stats.errorRate > 1 ? 'text-red-400' : 'text-emerald-400'}`} />
               </div>
               <div>

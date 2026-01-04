@@ -72,7 +72,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           maxLength={maxLength}
           value={value}
           className={cn(
-            'w-full px-4 py-3 rounded-2xl border-2 transition-all duration-200',
+            'w-full px-4 py-3 superellipse-2xl border-2 transition-all duration-200',
             'text-gray-900 placeholder:text-gray-400',
             'focus:outline-none focus:ring-2 focus:ring-offset-1',
             'disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-500',

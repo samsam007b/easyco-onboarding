@@ -45,7 +45,7 @@ export default function PrivacyPolicyPage() {
         {/* Content */}
         <div className="prose prose-lg max-w-none">
           {/* Introduction */}
-          <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 mb-8">
+          <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8 mb-8">
             <p className="text-gray-700 leading-relaxed">
               {privacy.intro}
             </p>
@@ -147,7 +147,7 @@ export default function PrivacyPolicyPage() {
             <p className="text-gray-700 mb-4">
               {privacy.userRights.content}
             </p>
-            <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-6 space-y-3">
+            <div className="bg-purple-50 border-2 border-purple-200 superellipse-xl p-6 space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[var(--easy-purple)] rounded-full mt-2"></div>
                 <p className="text-gray-700">{privacy.userRights.access}</p>
@@ -227,7 +227,7 @@ export default function PrivacyPolicyPage() {
             <p className="text-gray-700 mb-4">
               {privacy.dpo.content}
             </p>
-            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6">
+            <div className="bg-yellow-50 border-2 border-yellow-200 superellipse-xl p-6">
               <p className="text-gray-700 mb-2">
                 <strong>{common.email}:</strong>{' '}
                 <a href="mailto:contact@izzico.be" className="text-[var(--easy-purple)] hover:underline">

@@ -312,7 +312,7 @@ export default function JoinGroupPage() {
             <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('joinGroup.pendingInvitations') || 'Pending Invitations'}</h2>
             <div className="space-y-4">
               {pendingInvitations.map((invitation) => (
-                <div key={invitation.id} className="bg-white rounded-2xl shadow-lg p-6">
+                <div key={invitation.id} className="bg-white superellipse-2xl shadow-lg p-6">
                   <div className="flex items-start justify-between mb-4">
                     <div>
                       <h3 className="text-lg font-bold text-gray-900">{invitation.groups.name}</h3>
@@ -380,7 +380,7 @@ export default function JoinGroupPage() {
         )}
 
         {/* Invite Code Form */}
-        <div className="bg-white rounded-3xl shadow-xl p-8">
+        <div className="bg-white superellipse-3xl shadow-xl p-8">
           <h2 className="text-xl font-semibold text-gray-900 mb-6">
             {pendingInvitations.length > 0
               ? (t('joinGroup.orJoinWithCode') || 'Or join with invite code')

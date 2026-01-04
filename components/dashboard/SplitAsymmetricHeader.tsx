@@ -211,12 +211,12 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
       <div className="flex gap-6 mx-2 sm:mx-6 lg:mx-8 mb-6">
         {/* Loading skeleton - Property card */}
         <div className="w-72 flex-shrink-0">
-          <div className="h-64 bg-gray-100 rounded-3xl animate-pulse" />
+          <div className="h-64 bg-gray-100 superellipse-3xl animate-pulse" />
         </div>
         {/* Loading skeleton - Main content */}
         <div className="flex-1">
-          <div className="h-24 bg-gray-100 rounded-3xl animate-pulse mb-4" />
-          <div className="h-16 bg-gray-100 rounded-3xl animate-pulse" />
+          <div className="h-24 bg-gray-100 superellipse-3xl animate-pulse mb-4" />
+          <div className="h-16 bg-gray-100 superellipse-3xl animate-pulse" />
         </div>
       </div>
     );

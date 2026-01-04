@@ -91,7 +91,7 @@ function VerificationProgress({
   };
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-6">
+    <div className="bg-white superellipse-2xl border border-gray-200 p-6 mb-6">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h3 className="font-semibold text-gray-900">{verification?.trustLevel || 'Trust Level'}</h3>
@@ -167,10 +167,10 @@ function EmailVerificationCard({
   const verification = getSection('verification');
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6 mb-4">
+    <div className="bg-white superellipse-2xl border border-gray-200 p-6 mb-4">
       <div className="flex items-center gap-3">
         <div className={cn(
-          "w-10 h-10 rounded-xl flex items-center justify-center",
+          "w-10 h-10 superellipse-xl flex items-center justify-center",
           verified ? "bg-emerald-100 text-emerald-600" : "bg-gray-100 text-gray-400"
         )}>
           <Mail className="w-5 h-5" />
@@ -204,7 +204,7 @@ function EmailVerificationCard({
 function LoadingState() {
   return (
     <div className="space-y-4">
-      <div className="bg-white rounded-2xl border border-gray-200 p-6 animate-pulse">
+      <div className="bg-white superellipse-2xl border border-gray-200 p-6 animate-pulse">
         <div className="h-6 bg-gray-200 rounded w-1/3 mb-4" />
         <div className="h-3 bg-gray-200 rounded w-full mb-4" />
         <div className="flex justify-between">
@@ -214,9 +214,9 @@ function LoadingState() {
         </div>
       </div>
       {[1, 2, 3].map((i) => (
-        <div key={i} className="bg-white rounded-2xl border border-gray-200 p-6 animate-pulse">
+        <div key={i} className="bg-white superellipse-2xl border border-gray-200 p-6 animate-pulse">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gray-200 rounded-xl" />
+            <div className="w-10 h-10 bg-gray-200 superellipse-xl" />
             <div className="flex-1">
               <div className="h-5 bg-gray-200 rounded w-1/4 mb-2" />
               <div className="h-4 bg-gray-200 rounded w-1/3" />
@@ -357,9 +357,9 @@ function VerificationSettingsContent({ onStatusChange }: VerificationSettingsPro
       />
 
       {/* Benefits callout */}
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 mt-6">
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-50 superellipse-2xl p-6 mt-6">
         <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-blue-100 rounded-xl flex items-center justify-center flex-shrink-0">
+          <div className="w-10 h-10 bg-blue-100 superellipse-xl flex items-center justify-center flex-shrink-0">
             <Shield className="w-5 h-5 text-blue-600" />
           </div>
           <div>

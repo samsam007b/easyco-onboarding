@@ -82,7 +82,7 @@ export function OwnerNavigationCard({
       <div className="relative">
         {/* Icon */}
         <div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-md"
+          className="w-14 h-14 superellipse-2xl flex items-center justify-center mb-4 shadow-md"
           style={{ background: ownerGradient }}
         >
           <Icon className="w-7 h-7 text-white" />

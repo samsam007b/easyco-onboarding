@@ -581,7 +581,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                   properties={propertiesWithRoommateScores || []}
                   selectedPropertyId={selectedPropertyId || null}
                   onPropertySelect={(id) => setSelectedPropertyId(id || undefined)}
-                  className="w-full h-full rounded-2xl overflow-hidden shadow-lg"
+                  className="w-full h-full superellipse-2xl overflow-hidden shadow-lg"
                 />
               </div>
             </div>
@@ -604,7 +604,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
             properties={propertiesData.properties}
             selectedPropertyId={selectedPropertyId || null}
             onPropertySelect={(id) => setSelectedPropertyId(id || undefined)}
-            className="w-full h-[600px] rounded-2xl overflow-hidden shadow-lg"
+            className="w-full h-[600px] superellipse-2xl overflow-hidden shadow-lg"
           />
         </div>
       )}
@@ -685,14 +685,14 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
               isCardExpanded ? "" : "h-[500px]"
             )}>
               {isLoadingMatches ? (
-                <div className="absolute inset-0 bg-white rounded-3xl shadow-xl flex items-center justify-center">
+                <div className="absolute inset-0 bg-white superellipse-3xl shadow-xl flex items-center justify-center">
                   <LoadingHouse size={48} />
                 </div>
               ) : matchingIndex >= potentialMatches.length ? (
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="absolute inset-0 bg-white rounded-3xl shadow-xl flex flex-col items-center justify-center p-6 text-center"
+                  className="absolute inset-0 bg-white superellipse-3xl shadow-xl flex flex-col items-center justify-center p-6 text-center"
                 >
                   <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center mb-4">
                     <Sparkles className="w-8 h-8 text-white" />
@@ -728,7 +728,7 @@ export default function BrowseContent({ userId }: BrowseContentProps) {
                       return (
                         <motion.div
                           key={`preview-${cardIndex}`}
-                          className="absolute inset-0 bg-white rounded-3xl shadow-lg pointer-events-none overflow-hidden"
+                          className="absolute inset-0 bg-white superellipse-3xl shadow-lg pointer-events-none overflow-hidden"
                           animate={{
                             scale: 1 - offset * 0.04,
                             y: -offset * 10,

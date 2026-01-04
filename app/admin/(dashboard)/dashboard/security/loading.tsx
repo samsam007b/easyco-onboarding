@@ -10,7 +10,7 @@ function SkeletonCard() {
             <div className="h-4 w-24 bg-slate-700 rounded animate-pulse" />
             <div className="h-8 w-16 bg-slate-700 rounded animate-pulse" />
           </div>
-          <div className="h-12 w-12 bg-slate-700 rounded-xl animate-pulse" />
+          <div className="h-12 w-12 bg-slate-700 superellipse-xl animate-pulse" />
         </div>
       </CardContent>
     </Card>

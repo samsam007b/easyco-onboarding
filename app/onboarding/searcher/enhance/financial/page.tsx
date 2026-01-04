@@ -125,7 +125,7 @@ export default function OnboardingFinancialInfoPage() {
 
         {/* Guarantor toggle */}
         <EnhanceProfileSection>
-          <div className="p-4 rounded-xl bg-blue-50 border border-blue-200">
+          <div className="p-4 superellipse-xl bg-blue-50 border border-blue-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -203,7 +203,7 @@ export default function OnboardingFinancialInfoPage() {
         <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+          className={`w-full py-4 superellipse-xl font-semibold transition-all duration-300 ${
             canContinue
               ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'

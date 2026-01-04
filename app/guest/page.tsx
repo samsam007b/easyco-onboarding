@@ -148,7 +148,7 @@ function GuestPageContent() {
             {/* Logo */}
             <div className="flex items-center gap-2">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center"
                 style={{ background: 'linear-gradient(135deg, #ad5684 0%, #ff9811 100%)' }}
               >
                 <Home className="w-5 h-5 text-white" />
@@ -190,10 +190,10 @@ function GuestPageContent() {
       <div className="bg-white border-b border-gray-200 sticky top-[65px] z-40">
         <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex justify-center">
-            <div className="relative inline-flex items-center bg-gray-100 rounded-2xl p-1.5">
+            <div className="relative inline-flex items-center bg-gray-100 superellipse-2xl p-1.5">
               {/* Sliding pill background */}
               <motion.div
-                className="absolute top-1.5 bottom-1.5 rounded-xl shadow-lg"
+                className="absolute top-1.5 bottom-1.5 superellipse-xl shadow-lg"
                 style={{
                   background: activeView === 'searcher' ? '#ff9811' : activeView === 'resident' ? '#ff651e' : '#ad5684'
                 }}
@@ -217,7 +217,7 @@ function GuestPageContent() {
                     key={tab.id}
                     onClick={() => setActiveView(tab.id)}
                     className={cn(
-                      "relative z-10 px-6 py-3 rounded-xl flex items-center gap-2 transition-all font-medium text-sm min-w-[140px] justify-center",
+                      "relative z-10 px-6 py-3 superellipse-xl flex items-center gap-2 transition-all font-medium text-sm min-w-[140px] justify-center",
                       isActive ? 'text-white' : 'text-gray-600 hover:text-gray-900'
                     )}
                   >
@@ -307,7 +307,7 @@ function GuestPageContent() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl max-w-md w-full p-8 relative"
+              className="bg-white superellipse-3xl max-w-md w-full p-8 relative"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -319,7 +319,7 @@ function GuestPageContent() {
 
               <div className="text-center">
                 <div
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                  className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                   style={{ background: '#ff981120' }}
                 >
                   <Lock className="w-8 h-8" style={{ color: '#ff9811' }} />
@@ -407,7 +407,7 @@ function SearcherGuestView({
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl shadow-sm p-4"
+          className="bg-white superellipse-2xl shadow-sm p-4"
           style={{ borderColor: '#ff981140', border: '1px solid' }}
         >
           <div className="flex items-center gap-2 mb-3">
@@ -452,7 +452,7 @@ function SearcherGuestView({
       )}
 
       {/* Fake Dashboard Compact */}
-      <div className="relative overflow-hidden rounded-3xl shadow-xl p-4" style={{ background: 'linear-gradient(135deg, #ff9811 0%, #FFB85C 100%)' }}>
+      <div className="relative overflow-hidden superellipse-3xl shadow-xl p-4" style={{ background: 'linear-gradient(135deg, #ff9811 0%, #FFB85C 100%)' }}>
         <div className="absolute inset-0 opacity-20" style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
         }} />
@@ -461,7 +461,7 @@ function SearcherGuestView({
           {/* Profile header */}
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-white/30 flex items-center justify-center border-2 border-white/50">
+              <div className="w-12 h-12 superellipse-xl bg-white/30 flex items-center justify-center border-2 border-white/50">
                 <span className="text-white text-lg font-bold">?</span>
               </div>
               <div>
@@ -492,7 +492,7 @@ function SearcherGuestView({
                   key={idx}
                   onClick={() => item.locked && onLockedFeature('Create your account to access this feature')}
                   className={cn(
-                    "bg-white/25 backdrop-blur-sm rounded-xl py-2.5 px-2 transition text-center shadow-sm relative",
+                    "bg-white/25 backdrop-blur-sm superellipse-xl py-2.5 px-2 transition text-center shadow-sm relative",
                     item.locked && "cursor-pointer hover:bg-white/35"
                   )}
                 >
@@ -510,7 +510,7 @@ function SearcherGuestView({
           </div>
 
           {/* Search preferences teaser */}
-          <div className="bg-white/20 backdrop-blur-sm rounded-xl p-3">
+          <div className="bg-white/20 backdrop-blur-sm superellipse-xl p-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <Target className="w-4 h-4 text-white drop-shadow-sm" />
@@ -551,7 +551,7 @@ function SearcherGuestView({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
-              className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+              className="bg-white superellipse-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
             >
               {/* Property Image */}
               <div className="relative h-40" style={{ background: '#ff981120' }}>
@@ -561,7 +561,7 @@ function SearcherGuestView({
                 {/* Compatibility Badge - Blurred */}
                 <div className="absolute top-3 right-3">
                   <div
-                    className="px-3 py-1.5 rounded-xl flex items-center gap-1.5 cursor-pointer"
+                    className="px-3 py-1.5 superellipse-xl flex items-center gap-1.5 cursor-pointer"
                     style={{ background: '#ff9811' }}
                     onClick={() => onLockedFeature('Create your account to see your compatibility score')}
                   >
@@ -623,12 +623,12 @@ function SearcherGuestView({
       </div>
 
       {/* Matching Section - Teaser */}
-      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: 'linear-gradient(135deg, #ff981115, #ff651e15)', borderColor: '#ff981140', border: '1px solid' }}>
+      <div className="relative overflow-hidden superellipse-3xl p-6" style={{ background: 'linear-gradient(135deg, #ff981115, #ff651e15)', borderColor: '#ff981140', border: '1px solid' }}>
         <div className="flex flex-col lg:flex-row items-center gap-6">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center"
                 style={{ background: 'linear-gradient(135deg, #ff651e, #ff9811)' }}
               >
                 <Users className="w-5 h-5 text-white" />
@@ -656,7 +656,7 @@ function SearcherGuestView({
               <div
                 key={mate.id}
                 className={cn(
-                  "absolute w-48 h-32 bg-white rounded-2xl shadow-lg p-3 border border-gray-200",
+                  "absolute w-48 h-32 bg-white superellipse-2xl shadow-lg p-3 border border-gray-200",
                   idx === 0 && "top-0 left-0 rotate-[-6deg] z-10",
                   idx === 1 && "top-2 left-4 rotate-[3deg] z-20",
                   idx === 2 && "top-4 left-8 rotate-[-2deg] z-30"
@@ -754,13 +754,13 @@ function ResidentGuestView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
               onClick={() => onLockedFeature('Create your account to access the resident dashboard')}
-              className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
+              className="relative overflow-hidden superellipse-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
             >
               <div className="absolute top-2 right-2">
                 <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#ff651e' }} />
               </div>
 
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#ff651e20' }}>
+              <div className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3" style={{ background: '#ff651e20' }}>
                 <Icon className="w-5 h-5" style={{ color: '#ff651e' }} />
               </div>
 
@@ -782,11 +782,11 @@ function ResidentGuestView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + idx * 0.1 }}
               onClick={() => onLockedFeature(`Create your account to access "${feature.title}"`)}
-              className="bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
+              className="bg-white superellipse-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
               style={{ borderColor: '#ff651e40' }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ff651e20' }}>
+                <div className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ff651e20' }}>
                   <Icon className="w-6 h-6" style={{ color: '#ff651e' }} />
                 </div>
                 <div className="flex-1">
@@ -803,10 +803,10 @@ function ResidentGuestView({
       </div>
 
       {/* Mock Residence Card */}
-      <div className="relative overflow-hidden rounded-3xl p-6" style={{ background: '#ff651e10', borderColor: '#ff651e40', border: '1px solid' }}>
+      <div className="relative overflow-hidden superellipse-3xl p-6" style={{ background: '#ff651e10', borderColor: '#ff651e40', border: '1px solid' }}>
         <div className="flex flex-col md:flex-row gap-6 items-center">
           {/* Property preview */}
-          <div className="w-full md:w-64 h-40 rounded-2xl flex items-center justify-center" style={{ background: '#ff651e40' }}>
+          <div className="w-full md:w-64 h-40 superellipse-2xl flex items-center justify-center" style={{ background: '#ff651e40' }}>
             <Home className="w-16 h-16" style={{ color: '#ff651e' }} />
           </div>
 
@@ -897,13 +897,13 @@ function OwnerGuestView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.1 }}
               onClick={() => onLockedFeature('Create your owner account to access the dashboard')}
-              className="relative overflow-hidden rounded-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
+              className="relative overflow-hidden superellipse-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
             >
               <div className="absolute top-2 right-2">
                 <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#ad5684' }} />
               </div>
 
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3" style={{ background: '#ad568420' }}>
+              <div className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3" style={{ background: '#ad568420' }}>
                 <Icon className="w-5 h-5" style={{ color: '#ad5684' }} />
               </div>
 
@@ -931,11 +931,11 @@ function OwnerGuestView({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + idx * 0.1 }}
               onClick={() => onLockedFeature(`Create your account to access "${feature.title}"`)}
-              className="bg-white rounded-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
+              className="bg-white superellipse-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
               style={{ borderColor: '#ad568440' }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ad568420' }}>
+                <div className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ad568420' }}>
                   <Icon className="w-6 h-6" style={{ color: '#ad5684' }} />
                 </div>
                 <div className="flex-1">
@@ -952,9 +952,9 @@ function OwnerGuestView({
       </div>
 
       {/* Add Property CTA */}
-      <div className="relative overflow-hidden rounded-3xl p-8 text-center" style={{ background: '#ad568410', borderColor: '#ad568440', border: '1px solid' }}>
+      <div className="relative overflow-hidden superellipse-3xl p-8 text-center" style={{ background: '#ad568410', borderColor: '#ad568440', border: '1px solid' }}>
         <div className="max-w-md mx-auto">
-          <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4" style={{ background: '#ad5684' }}>
+          <div className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4" style={{ background: '#ad5684' }}>
             <Plus className="w-8 h-8 text-white" />
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -977,7 +977,7 @@ function OwnerGuestView({
       </div>
 
       {/* Mock Chart Preview */}
-      <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-200">
+      <div className="bg-white superellipse-2xl p-6 shadow-sm border border-gray-200">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-bold text-gray-900 flex items-center gap-2">
             <TrendingUp className="w-5 h-5" style={{ color: '#ad5684' }} />
@@ -985,7 +985,7 @@ function OwnerGuestView({
           </h3>
           <Lock className="w-5 h-5" style={{ color: '#ad5684' }} />
         </div>
-        <div className="h-48 rounded-xl flex items-center justify-center border border-dashed" style={{ background: '#ad568410', borderColor: '#ad568440' }}>
+        <div className="h-48 superellipse-xl flex items-center justify-center border border-dashed" style={{ background: '#ad568410', borderColor: '#ad568440' }}>
           <div className="text-center">
             <Eye className="w-10 h-10 mx-auto mb-2" style={{ color: '#ad568460' }} />
             <p className="text-sm text-gray-500">Charts available after registration</p>

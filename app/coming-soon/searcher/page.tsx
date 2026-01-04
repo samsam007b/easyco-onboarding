@@ -130,7 +130,7 @@ export default function SearcherComingSoon() {
                 repeat: Infinity,
                 repeatType: "reverse"
               }}
-              className="w-28 h-28 md:w-32 md:h-32 rounded-3xl flex items-center justify-center"
+              className="w-28 h-28 md:w-32 md:h-32 superellipse-3xl flex items-center justify-center"
               style={{
                 background: SEARCHER_GRADIENT,
                 boxShadow: `0 20px 50px ${ACCENT_SHADOW}`,
@@ -143,7 +143,7 @@ export default function SearcherComingSoon() {
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="absolute -top-2 -right-2 w-10 h-10 rounded-xl flex items-center justify-center bg-white"
+              className="absolute -top-2 -right-2 w-10 h-10 superellipse-xl flex items-center justify-center bg-white"
               style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
             >
               <Sparkles className="w-5 h-5" style={{ color: SEARCHER_PRIMARY }} />
@@ -182,7 +182,7 @@ export default function SearcherComingSoon() {
           {/* Features Card */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-3xl p-8 md:p-10 mb-8"
+            className="relative overflow-hidden bg-white superellipse-3xl p-8 md:p-10 mb-8"
             style={{ boxShadow: `0 20px 60px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circles */}
@@ -199,7 +199,7 @@ export default function SearcherComingSoon() {
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 flex items-center justify-center gap-3">
                 <motion.div
                   whileHover={{ rotate: 5 }}
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Zap className="w-5 h-5 text-white" />
@@ -215,7 +215,7 @@ export default function SearcherComingSoon() {
                       key={index}
                       variants={itemVariants}
                       whileHover={{ scale: 1.03, y: -6 }}
-                      className="relative overflow-hidden rounded-2xl p-6 cursor-default"
+                      className="relative overflow-hidden superellipse-2xl p-6 cursor-default"
                       style={{
                         background: 'white',
                         boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)',
@@ -230,7 +230,7 @@ export default function SearcherComingSoon() {
                       <div className="relative z-10">
                         <motion.div
                           whileHover={{ rotate: 5 }}
-                          className="w-14 h-14 rounded-xl flex items-center justify-center mx-auto mb-4"
+                          className="w-14 h-14 superellipse-xl flex items-center justify-center mx-auto mb-4"
                           style={{ background: feature.bgColor }}
                         >
                           <Icon className="w-7 h-7" style={{ color: feature.gradient.includes('#f59e0b') ? '#f59e0b' : feature.gradient.includes('#ef4444') ? '#ef4444' : '#8b5cf6' }} />
@@ -253,7 +253,7 @@ export default function SearcherComingSoon() {
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.01 }}
-            className="relative overflow-hidden rounded-3xl p-8 md:p-10 text-white mb-8"
+            className="relative overflow-hidden superellipse-3xl p-8 md:p-10 text-white mb-8"
             style={{
               background: SEARCHER_GRADIENT,
               boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -267,7 +267,7 @@ export default function SearcherComingSoon() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 bg-white/20 backdrop-blur-sm"
+                className="w-14 h-14 superellipse-2xl flex items-center justify-center mx-auto mb-4 bg-white/20 backdrop-blur-sm"
               >
                 <Bell className="w-7 h-7 text-white" />
               </motion.div>
@@ -288,13 +288,13 @@ export default function SearcherComingSoon() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder={t?.waitlist?.placeholder?.[language] || 'your@email.com'}
                       required
-                      className="flex-1 px-6 py-4 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30 transition-shadow text-base font-medium"
+                      className="flex-1 px-6 py-4 superellipse-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30 transition-shadow text-base font-medium"
                     />
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       type="submit"
-                      className="bg-white px-8 py-4 rounded-xl font-bold transition-all text-base"
+                      className="bg-white px-8 py-4 superellipse-xl font-bold transition-all text-base"
                       style={{ color: SEARCHER_PRIMARY }}
                     >
                       {t?.waitlist?.button?.[language] || 'Join'}
@@ -305,7 +305,7 @@ export default function SearcherComingSoon() {
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 max-w-md mx-auto"
+                  className="bg-white/20 backdrop-blur-sm superellipse-2xl p-6 max-w-md mx-auto"
                 >
                   <p className="text-xl font-bold">{t?.waitlist?.success?.title?.[language] || '✅ Thanks! You\'re on the list!'}</p>
                   <p className="text-white/90 mt-2">
@@ -319,7 +319,7 @@ export default function SearcherComingSoon() {
           {/* Alternative actions */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-6"
+            className="relative overflow-hidden bg-white superellipse-2xl p-6"
             style={{ boxShadow: `0 8px 24px rgba(0, 0, 0, 0.06)` }}
           >
             <div className="relative z-10">
@@ -331,7 +331,7 @@ export default function SearcherComingSoon() {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button
                     onClick={() => router.push('/welcome')}
-                    className="rounded-xl px-6 py-5 font-semibold text-white border-none"
+                    className="superellipse-xl px-6 py-5 font-semibold text-white border-none"
                     style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)' }}
                   >
                     <Users className="w-4 h-4 mr-2" />
@@ -341,7 +341,7 @@ export default function SearcherComingSoon() {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button
                     onClick={() => router.push('/welcome')}
-                    className="rounded-xl px-6 py-5 font-semibold text-white border-none"
+                    className="superellipse-xl px-6 py-5 font-semibold text-white border-none"
                     style={{ background: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)' }}
                   >
                     <Home className="w-4 h-4 mr-2" />

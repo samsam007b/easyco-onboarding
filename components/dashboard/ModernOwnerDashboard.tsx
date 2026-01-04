@@ -246,7 +246,7 @@ export default function ModernOwnerDashboard() {
           >
             {/* Glow effect */}
             <motion.div
-              className="absolute inset-0 rounded-2xl opacity-30"
+              className="absolute inset-0 superellipse-2xl opacity-30"
               style={{
                 background: ownerGradient,
                 filter: 'blur(12px)',
@@ -256,7 +256,7 @@ export default function ModernOwnerDashboard() {
             />
             {/* Main icon container */}
             <div
-              className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+              className="relative w-16 h-16 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
                 background: ownerGradient,
                 boxShadow: '0 8px 24px rgba(156, 86, 152, 0.3)',
@@ -321,7 +321,7 @@ export default function ModernOwnerDashboard() {
                     {card.title}
                   </span>
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: card.gradient }}
                   >
                     <Icon className="w-5 h-5 text-white" />
@@ -376,7 +376,7 @@ export default function ModernOwnerDashboard() {
 
             <h3 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: ownerGradient }}
               >
                 <TrendingUp className="w-5 h-5 text-white" />
@@ -429,7 +429,7 @@ export default function ModernOwnerDashboard() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
               whileHover={{ scale: 1.01 }}
-              className="relative overflow-hidden bg-white rounded-3xl shadow-lg p-6"
+              className="relative overflow-hidden bg-white superellipse-3xl shadow-lg p-6"
               style={{ boxShadow: '0 8px 32px rgba(156, 86, 152, 0.1)' }}
             >
               {/* Decorative circle */}
@@ -440,7 +440,7 @@ export default function ModernOwnerDashboard() {
 
               <h3 className="text-lg font-bold text-gray-900 mb-1 flex items-center gap-2">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: ownerGradient }}
                 >
                   <Building2 className="w-5 h-5 text-white" />
@@ -488,7 +488,7 @@ export default function ModernOwnerDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="relative overflow-hidden bg-white rounded-3xl shadow-lg p-6"
+        className="relative overflow-hidden bg-white superellipse-3xl shadow-lg p-6"
         style={{ boxShadow: '0 8px 32px rgba(156, 86, 152, 0.1)' }}
       >
         {/* Decorative circles */}
@@ -505,7 +505,7 @@ export default function ModernOwnerDashboard() {
           <div>
             <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: ownerGradient }}
               >
                 <Building2 className="w-5 h-5 text-white" />
@@ -549,7 +549,7 @@ export default function ModernOwnerDashboard() {
             >
               {/* Glow effect */}
               <motion.div
-                className="absolute inset-0 rounded-2xl opacity-30"
+                className="absolute inset-0 superellipse-2xl opacity-30"
                 style={{
                   background: ownerGradient,
                   filter: 'blur(20px)',
@@ -559,7 +559,7 @@ export default function ModernOwnerDashboard() {
               />
               {/* Main icon container */}
               <div
-                className="relative w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg"
+                className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{
                   background: ownerGradient,
                   boxShadow: '0 8px 24px rgba(156, 86, 152, 0.35)',
@@ -568,7 +568,7 @@ export default function ModernOwnerDashboard() {
                 <Building2 className="w-12 h-12 text-white" />
                 {/* Shine effect */}
                 <motion.div
-                  className="absolute inset-0 rounded-2xl bg-white/20"
+                  className="absolute inset-0 superellipse-2xl bg-white/20"
                   animate={{ opacity: [0, 0.3, 0] }}
                   transition={{ repeat: Infinity, duration: 2.5 }}
                 />

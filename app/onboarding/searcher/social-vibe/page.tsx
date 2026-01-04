@@ -123,7 +123,7 @@ export default function SocialVibePage() {
         </div>
 
         {/* Openness to sharing */}
-        <div className="p-4 rounded-xl bg-yellow-50 border border-yellow-200">
+        <div className="p-4 superellipse-xl bg-yellow-50 border border-yellow-200">
           <OnboardingLabel required>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">

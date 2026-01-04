@@ -129,7 +129,7 @@ export default function OnboardingIdealLivingPage() {
               <button
                 key={size.value}
                 onClick={() => setColivingSize(size.value)}
-                className={`p-4 rounded-xl border-2 transition-all ${
+                className={`p-4 superellipse-xl border-2 transition-all ${
                   colivingSize === size.value
                     ? 'border-orange-500 bg-orange-50'
                     : 'border-gray-300 hover:border-gray-400'
@@ -240,7 +240,7 @@ export default function OnboardingIdealLivingPage() {
 
         {/* Quiet Hours Preference */}
         <EnhanceProfileSection>
-          <div className="p-4 rounded-xl bg-blue-50 border-2 border-blue-200">
+          <div className="p-4 superellipse-xl bg-blue-50 border-2 border-blue-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -279,7 +279,7 @@ export default function OnboardingIdealLivingPage() {
       <div className="space-y-3 mt-8">
         <button
           onClick={handleSave}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+          className="w-full py-4 superellipse-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           {t('enhanceSearcher.common.saveAndContinue')}
         </button>

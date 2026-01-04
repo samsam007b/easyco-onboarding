@@ -187,7 +187,7 @@ export function ScreenshotDropZone({
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
         className={`
-          relative border-2 border-dashed rounded-xl p-8 text-center cursor-pointer
+          relative border-2 border-dashed superellipse-xl p-8 text-center cursor-pointer
           transition-all duration-200
           ${isDragging
             ? 'border-orange-500 bg-orange-500/10'
@@ -229,7 +229,7 @@ export function ScreenshotDropZone({
         </div>
 
         {isDragging && (
-          <div className="absolute inset-0 bg-orange-500/5 rounded-xl pointer-events-none" />
+          <div className="absolute inset-0 bg-orange-500/5 superellipse-xl pointer-events-none" />
         )}
       </div>
 

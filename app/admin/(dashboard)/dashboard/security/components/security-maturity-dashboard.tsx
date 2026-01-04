@@ -538,7 +538,7 @@ function MaturityLevelIndicator({ score }: { score: number }) {
       <CardContent>
         {/* Current Level Display */}
         <div className="flex items-center justify-center mb-6">
-          <div className={cn('text-center p-6 rounded-2xl', currentLevel.bgColor)}>
+          <div className={cn('text-center p-6 superellipse-2xl', currentLevel.bgColor)}>
             <div className={cn('text-6xl font-bold mb-2', currentLevel.color)}>
               {currentLevel.level}
             </div>

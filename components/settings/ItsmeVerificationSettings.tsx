@@ -161,10 +161,10 @@ export default function ItsmeVerificationSettings({
 
   if (!ITSME_VERIFICATION_ENABLED) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+      <div className="bg-white superellipse-2xl border border-gray-200 p-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-100 text-gray-400">
+          <div className="w-10 h-10 superellipse-xl flex items-center justify-center bg-gray-100 text-gray-400">
             <BadgeCheck className="w-5 h-5" />
           </div>
           <div className="flex-1">
@@ -180,7 +180,7 @@ export default function ItsmeVerificationSettings({
         </div>
 
         {/* Coming Soon Content */}
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 superellipse-xl p-5">
           <div className="flex justify-center mb-4">
             <ItsmeLogo className="w-28 h-auto opacity-60" />
           </div>
@@ -216,11 +216,11 @@ export default function ItsmeVerificationSettings({
   // =========================================================================
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6">
+    <div className="bg-white superellipse-2xl border border-gray-200 p-6">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className={cn(
-          "w-10 h-10 rounded-xl flex items-center justify-center",
+          "w-10 h-10 superellipse-xl flex items-center justify-center",
           isVerified
             ? "bg-emerald-100 text-emerald-600"
             : "bg-orange-100 text-orange-600"
@@ -256,7 +256,7 @@ export default function ItsmeVerificationSettings({
             className="space-y-4"
           >
             {/* ITSME Logo & Description */}
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 rounded-xl p-6 text-center">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 superellipse-xl p-6 text-center">
               <div className="flex justify-center mb-4">
                 <ItsmeLogo className="w-32 h-auto" />
               </div>
@@ -363,7 +363,7 @@ export default function ItsmeVerificationSettings({
             className="space-y-4"
           >
             {/* Verified info card */}
-            <div className="bg-emerald-50 rounded-xl p-4 space-y-3">
+            <div className="bg-emerald-50 superellipse-xl p-4 space-y-3">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 bg-emerald-100 rounded-full flex items-center justify-center">
                   <BadgeCheck className="w-6 h-6 text-emerald-600" />
@@ -401,7 +401,7 @@ export default function ItsmeVerificationSettings({
             </div>
 
             {/* Benefits of being verified */}
-            <div className="bg-gray-50 rounded-xl p-4">
+            <div className="bg-gray-50 superellipse-xl p-4">
               <p className="font-medium text-gray-900 mb-2">{verification?.itsme?.verifiedBenefits || 'Benefits of being verified:'}</p>
               <ul className="text-sm text-gray-600 space-y-1">
                 <li className="flex items-center gap-2">

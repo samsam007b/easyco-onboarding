@@ -62,12 +62,12 @@ export default function CookieConsentBanner() {
 
       {/* Cookie banner */}
       <div className="fixed bottom-0 left-0 right-0 z-[9999] p-4 sm:p-6">
-        <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-2xl border border-gray-200">
+        <div className="max-w-6xl mx-auto bg-white superellipse-2xl shadow-2xl border border-gray-200">
           <div className="p-6 sm:p-8">
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <div className="w-12 h-12 bg-orange-100 superellipse-xl flex items-center justify-center flex-shrink-0">
                   <Cookie className="w-6 h-6 text-orange-600" />
                 </div>
                 <div>
@@ -91,7 +91,7 @@ export default function CookieConsentBanner() {
 
             {/* Details section (expandable) */}
             {showDetails && (
-              <div className="mb-6 space-y-4 p-4 bg-gray-50 rounded-xl">
+              <div className="mb-6 space-y-4 p-4 bg-gray-50 superellipse-xl">
                 {/* Necessary cookies */}
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
@@ -181,13 +181,13 @@ export default function CookieConsentBanner() {
                 <>
                   <button
                     onClick={() => setShowDetails(false)}
-                    className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition"
+                    className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-medium superellipse-xl hover:bg-gray-50 transition"
                   >
                     Retour
                   </button>
                   <button
                     onClick={handleSavePreferences}
-                    className="flex-1 px-6 py-3 bg-orange-600 text-white font-medium rounded-xl hover:bg-orange-700 transition shadow-lg shadow-orange-600/30"
+                    className="flex-1 px-6 py-3 bg-orange-600 text-white font-medium superellipse-xl hover:bg-orange-700 transition shadow-lg shadow-orange-600/30"
                   >
                     Enregistrer mes préférences
                   </button>
@@ -196,20 +196,20 @@ export default function CookieConsentBanner() {
                 <>
                   <button
                     onClick={handleRejectAll}
-                    className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-medium rounded-xl hover:bg-gray-50 transition"
+                    className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 font-medium superellipse-xl hover:bg-gray-50 transition"
                   >
                     Refuser tout
                   </button>
                   <button
                     onClick={() => setShowDetails(true)}
-                    className="flex-1 px-6 py-3 border-2 border-orange-600 text-orange-600 font-medium rounded-xl hover:bg-orange-50 transition flex items-center justify-center gap-2"
+                    className="flex-1 px-6 py-3 border-2 border-orange-600 text-orange-600 font-medium superellipse-xl hover:bg-orange-50 transition flex items-center justify-center gap-2"
                   >
                     <Settings className="w-5 h-5" />
                     Personnaliser
                   </button>
                   <button
                     onClick={handleAcceptAll}
-                    className="flex-1 px-6 py-3 bg-orange-600 text-white font-medium rounded-xl hover:bg-orange-700 transition shadow-lg shadow-orange-600/30"
+                    className="flex-1 px-6 py-3 bg-orange-600 text-white font-medium superellipse-xl hover:bg-orange-700 transition shadow-lg shadow-orange-600/30"
                   >
                     Accepter tout
                   </button>

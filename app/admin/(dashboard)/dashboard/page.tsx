@@ -162,7 +162,7 @@ export default async function AdminDashboardPage() {
                         </p>
                       )}
                     </div>
-                    <div className={`p-3 rounded-xl ${colors.bg} ${colors.border} border`}>
+                    <div className={`p-3 superellipse-xl ${colors.bg} ${colors.border} border`}>
                       <stat.icon className={`w-6 h-6 ${colors.text}`} />
                     </div>
                   </div>
@@ -289,28 +289,28 @@ export default async function AdminDashboardPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <Link
               href="/admin/dashboard/users"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
+              className="flex flex-col items-center gap-2 p-4 superellipse-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
             >
               <Users className="w-6 h-6 text-purple-400" />
               <span className="text-sm text-slate-300">Gérer utilisateurs</span>
             </Link>
             <Link
               href="/admin/dashboard/properties"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
+              className="flex flex-col items-center gap-2 p-4 superellipse-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
             >
               <Building2 className="w-6 h-6 text-blue-400" />
               <span className="text-sm text-slate-300">Voir propriétés</span>
             </Link>
             <Link
               href="/admin/dashboard/applications"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
+              className="flex flex-col items-center gap-2 p-4 superellipse-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
             >
               <FileText className="w-6 h-6 text-orange-400" />
               <span className="text-sm text-slate-300">Applications</span>
             </Link>
             <Link
               href="/admin/dashboard/audit-logs"
-              className="flex flex-col items-center gap-2 p-4 rounded-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
+              className="flex flex-col items-center gap-2 p-4 superellipse-xl bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
             >
               <Clock className="w-6 h-6 text-green-400" />
               <span className="text-sm text-slate-300">Logs d'audit</span>

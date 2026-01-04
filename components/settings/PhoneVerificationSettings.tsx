@@ -75,7 +75,7 @@ function OTPInput({
           <div
             key={index}
             className={cn(
-              "w-11 h-13 rounded-xl border-2 flex items-center justify-center text-xl font-bold transition-all",
+              "w-11 h-13 superellipse-xl border-2 flex items-center justify-center text-xl font-bold transition-all",
               value[index]
                 ? "border-emerald-500 bg-emerald-50 text-emerald-700"
                 : "border-gray-300 bg-white text-gray-400",
@@ -305,10 +305,10 @@ export default function PhoneVerificationSettings({
 
   if (!PHONE_VERIFICATION_ENABLED) {
     return (
-      <div className="bg-white rounded-2xl border border-gray-200 p-6">
+      <div className="bg-white superellipse-2xl border border-gray-200 p-6">
         {/* Header */}
         <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-gray-100 text-gray-400">
+          <div className="w-10 h-10 superellipse-xl flex items-center justify-center bg-gray-100 text-gray-400">
             <Phone className="w-5 h-5" />
           </div>
           <div className="flex-1">
@@ -324,7 +324,7 @@ export default function PhoneVerificationSettings({
         </div>
 
         {/* Coming Soon Content */}
-        <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+        <div className="bg-gray-50 superellipse-xl p-4 border border-gray-100">
           <div className="flex items-start gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center flex-shrink-0 mt-0.5">
               <Send className="w-4 h-4 text-blue-600" />
@@ -348,11 +348,11 @@ export default function PhoneVerificationSettings({
   // =========================================================================
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-200 p-6">
+    <div className="bg-white superellipse-2xl border border-gray-200 p-6">
       {/* Header */}
       <div className="flex items-center gap-3 mb-6">
         <div className={cn(
-          "w-10 h-10 rounded-xl flex items-center justify-center",
+          "w-10 h-10 superellipse-xl flex items-center justify-center",
           step === 'verified'
             ? "bg-emerald-100 text-emerald-600"
             : "bg-blue-100 text-blue-600"
@@ -399,7 +399,7 @@ export default function PhoneVerificationSettings({
                   onChange={handlePhoneChange}
                   placeholder="+33 6 12 34 56 78"
                   className={cn(
-                    "w-full pl-10 pr-4 py-3 rounded-xl border-2 transition-colors",
+                    "w-full pl-10 pr-4 py-3 superellipse-xl border-2 transition-colors",
                     "focus:outline-none focus:ring-0",
                     error
                       ? "border-red-300 focus:border-red-500"
@@ -525,7 +525,7 @@ export default function PhoneVerificationSettings({
             animate={{ opacity: 1, scale: 1 }}
             className="space-y-4"
           >
-            <div className="flex items-center justify-between p-4 bg-emerald-50 rounded-xl">
+            <div className="flex items-center justify-between p-4 bg-emerald-50 superellipse-xl">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-emerald-100 rounded-full flex items-center justify-center">
                   <Shield className="w-5 h-5 text-emerald-600" />

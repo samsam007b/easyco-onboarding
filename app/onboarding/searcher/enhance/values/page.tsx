@@ -174,7 +174,7 @@ export default function OnboardingEnhanceValuesPage() {
 
         {/* Deal Breakers */}
         <EnhanceProfileSection>
-          <div className="bg-white p-6 rounded-2xl border-2 border-orange-200">
+          <div className="bg-white p-6 superellipse-2xl border-2 border-orange-200">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="w-5 h-5 text-orange-600" />
               <h2 className="text-lg font-semibold text-orange-600">{t('enhanceSearcher.values.dealBreakers.title')}</h2>
@@ -206,7 +206,7 @@ export default function OnboardingEnhanceValuesPage() {
       <div className="space-y-3 mt-8">
         <button
           onClick={handleNext}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+          className="w-full py-4 superellipse-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           {t('enhanceSearcher.common.saveAndContinue')}
         </button>

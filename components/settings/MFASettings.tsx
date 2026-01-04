@@ -60,7 +60,7 @@ function OTPInput({
         <div
           key={index}
           className={cn(
-            "w-12 h-14 rounded-xl border-2 flex items-center justify-center text-2xl font-bold transition-all",
+            "w-12 h-14 superellipse-xl border-2 flex items-center justify-center text-2xl font-bold transition-all",
             value[index]
               ? "border-emerald-500 bg-emerald-50 text-emerald-700"
               : "border-gray-300 bg-white text-gray-400",
@@ -236,7 +236,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
   // Loading state
   if (isLoading) {
     return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm">
+      <div className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm">
         <div className="flex items-center justify-center py-8">
           <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
         </div>
@@ -247,9 +247,9 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
   // MFA is enabled - show status
   if (mfaStatus?.enabled && setupStep === 'initial') {
     return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm">
+      <div className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm">
         <div className="flex items-center gap-3 mb-6">
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
+          <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
             <Smartphone className="w-6 h-6 text-emerald-700" />
           </div>
           <div>
@@ -259,7 +259,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
         </div>
 
         {/* MFA Enabled Status */}
-        <div className="bg-emerald-50 rounded-xl p-4 mb-6 border border-emerald-200">
+        <div className="bg-emerald-50 superellipse-xl p-4 mb-6 border border-emerald-200">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center">
               <CheckCircle className="w-5 h-5 text-emerald-600" />
@@ -279,7 +279,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
           {mfaStatus.factors.map((factor) => (
             <div
               key={factor.id}
-              className="flex items-center justify-between p-3 bg-gray-50 rounded-xl"
+              className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-lg bg-white flex items-center justify-center border border-gray-200">
@@ -312,7 +312,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
         </div>
 
         {error && (
-          <div className="mt-4 p-3 bg-red-50 rounded-xl text-red-600 text-sm flex items-center gap-2">
+          <div className="mt-4 p-3 bg-red-50 superellipse-xl text-red-600 text-sm flex items-center gap-2">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </div>
@@ -323,9 +323,9 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
 
   // Setup flow
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm">
+    <div className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-violet-100 flex items-center justify-center">
+        <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-purple-100 to-violet-100 flex items-center justify-center">
           <Shield className="w-6 h-6 text-purple-700" />
         </div>
         <div>
@@ -343,7 +343,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <div className="bg-amber-50 rounded-xl p-4 mb-6 border border-amber-200">
+            <div className="bg-amber-50 superellipse-xl p-4 mb-6 border border-amber-200">
               <div className="flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div>
@@ -358,7 +358,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             <div className="space-y-4 mb-6">
               <h3 className="font-semibold text-gray-900">{mfa?.howItWorks || 'How does it work?'}</h3>
               <div className="grid gap-3">
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-gray-50 superellipse-xl">
                   <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
                     1
                   </div>
@@ -369,7 +369,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-gray-50 superellipse-xl">
                   <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
                     2
                   </div>
@@ -380,7 +380,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 p-3 bg-gray-50 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-gray-50 superellipse-xl">
                   <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
                     3
                   </div>
@@ -397,7 +397,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             <Button
               onClick={handleStartSetup}
               disabled={isSubmitting}
-              className="w-full rounded-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
+              className="w-full superellipse-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
             >
               {isSubmitting ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -408,7 +408,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             </Button>
 
             {error && (
-              <div className="mt-4 p-3 bg-red-50 rounded-xl text-red-600 text-sm flex items-center gap-2">
+              <div className="mt-4 p-3 bg-red-50 superellipse-xl text-red-600 text-sm flex items-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 {error}
               </div>
@@ -434,7 +434,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
 
             {/* QR Code */}
             <div className="flex justify-center mb-4">
-              <div className="p-4 bg-white rounded-2xl border-2 border-gray-200 shadow-sm">
+              <div className="p-4 bg-white superellipse-2xl border-2 border-gray-200 shadow-sm">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={setupData.qrCode}
@@ -472,13 +472,13 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               <Button
                 variant="outline"
                 onClick={handleCancel}
-                className="flex-1 rounded-xl"
+                className="flex-1 superellipse-xl"
               >
                 {mfa?.cancel || 'Cancel'}
               </Button>
               <Button
                 onClick={handleProceedToVerify}
-                className="flex-1 rounded-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
+                className="flex-1 superellipse-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
               >
                 {mfa?.continue || 'Continue'}
               </Button>
@@ -513,18 +513,18 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 disabled={isSubmitting}
                 autoFocus
-                className="w-full text-center text-3xl font-mono tracking-[0.5em] py-4 px-6 rounded-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full text-center text-3xl font-mono tracking-[0.5em] py-4 px-6 superellipse-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                 placeholder="------"
               />
               {isSubmitting && (
-                <div className="absolute inset-0 flex items-center justify-center bg-white/80 rounded-xl">
+                <div className="absolute inset-0 flex items-center justify-center bg-white/80 superellipse-xl">
                   <Loader2 className="w-6 h-6 animate-spin text-purple-500" />
                 </div>
               )}
             </div>
 
             {error && (
-              <div className="mb-4 p-3 bg-red-50 rounded-xl text-red-600 text-sm flex items-center justify-center gap-2">
+              <div className="mb-4 p-3 bg-red-50 superellipse-xl text-red-600 text-sm flex items-center justify-center gap-2">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 {error}
               </div>
@@ -535,14 +535,14 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 variant="outline"
                 onClick={handleCancel}
                 disabled={isSubmitting}
-                className="flex-1 rounded-xl"
+                className="flex-1 superellipse-xl"
               >
                 {mfa?.cancel || 'Cancel'}
               </Button>
               <Button
                 onClick={handleVerify}
                 disabled={isSubmitting || verificationCode.length !== 6}
-                className="flex-1 rounded-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
+                className="flex-1 superellipse-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -572,7 +572,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             </p>
             <Button
               onClick={() => setSetupStep('initial')}
-              className="rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600"
+              className="superellipse-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600"
             >
               {mfa?.done || 'Done'}
             </Button>

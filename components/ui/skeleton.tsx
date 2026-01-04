@@ -74,7 +74,7 @@ export function SkeletonText({ lines = 3, className }: { lines?: number; classNa
  */
 export function SkeletonCard({ className }: { className?: string }) {
   return (
-    <div className={cn('rounded-xl border border-gray-200 bg-white p-4', className)}>
+    <div className={cn('superellipse-xl border border-gray-200 bg-white p-4', className)}>
       {/* Image */}
       <Skeleton className="h-48 w-full mb-4" variant="rectangular" />
 
@@ -99,7 +99,7 @@ export function SkeletonCard({ className }: { className?: string }) {
  */
 export function SkeletonPropertyCard({ className }: { className?: string }) {
   return (
-    <div className={cn('rounded-2xl border border-gray-200 bg-white overflow-hidden', className)}>
+    <div className={cn('superellipse-2xl border border-gray-200 bg-white overflow-hidden', className)}>
       {/* Property Image */}
       <Skeleton className="h-64 w-full" variant="rectangular" />
 
@@ -242,7 +242,7 @@ export function SkeletonDashboard({ className }: { className?: string }) {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="rounded-xl border border-gray-200 bg-white p-6">
+          <div key={i} className="superellipse-xl border border-gray-200 bg-white p-6">
             <Skeleton className="h-4 w-20 mb-3" />
             <Skeleton className="h-8 w-16 mb-2" />
             <Skeleton className="h-3 w-24" />

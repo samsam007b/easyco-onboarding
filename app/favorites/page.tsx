@@ -132,7 +132,7 @@ export default function FavoritesPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Header */}
-        <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
+        <div className="bg-white superellipse-3xl shadow-lg p-4 sm:p-8 mb-6 sm:mb-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-2xl sm:text-3xl font-bold text-[#4A148C] mb-2 flex items-center gap-2">
@@ -150,7 +150,7 @@ export default function FavoritesPage() {
 
         {/* Favorites List */}
         {favoriteProperties.length === 0 ? (
-          <div className="bg-white rounded-3xl shadow-lg p-8 sm:p-12 text-center">
+          <div className="bg-white superellipse-3xl shadow-lg p-8 sm:p-12 text-center">
             <Heart className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h3 className="text-xl font-semibold text-gray-900 mb-2">No favorites yet</h3>
             <p className="text-gray-600 mb-6">
@@ -165,7 +165,7 @@ export default function FavoritesPage() {
             {favoriteProperties.map((property) => (
               <div
                 key={property.id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
+                className="bg-white superellipse-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow"
               >
                 {/* Property Image Placeholder */}
                 <div className="h-48 bg-gradient-to-br from-purple-100 to-yellow-100 flex items-center justify-center relative">

@@ -18,7 +18,7 @@ export default function PropertyDetailGuestExample({ isAuthenticated }: { isAuth
     <div className="max-w-4xl mx-auto p-6 space-y-6">
 
       {/* 1. Compatibility Score (Premium Feature) */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white superellipse-xl shadow-lg p-6">
         <h2 className="text-xl font-bold mb-4">Score de Compatibilité</h2>
 
         <TeaserCard
@@ -56,7 +56,7 @@ export default function PropertyDetailGuestExample({ isAuthenticated }: { isAuth
       </div>
 
       {/* 2. Owner Profile (Blurred for Guests) */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white superellipse-xl shadow-lg p-6">
         <h2 className="text-xl font-bold mb-4">Propriétaire</h2>
 
         <TeaserCard
@@ -88,7 +88,7 @@ export default function PropertyDetailGuestExample({ isAuthenticated }: { isAuth
       </div>
 
       {/* 3. Exact Address (Hidden for Guests) */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white superellipse-xl shadow-lg p-6">
         <h2 className="text-xl font-bold mb-4">Localisation</h2>
 
         <div className="space-y-4">
@@ -116,7 +116,7 @@ export default function PropertyDetailGuestExample({ isAuthenticated }: { isAuth
       </div>
 
       {/* 4. Current Residents (Blurred for Guests) */}
-      <div className="bg-white rounded-xl shadow-lg p-6">
+      <div className="bg-white superellipse-xl shadow-lg p-6">
         <h2 className="text-xl font-bold mb-4">Colocataires Actuels (3/4)</h2>
 
         <TeaserCard
@@ -144,7 +144,7 @@ export default function PropertyDetailGuestExample({ isAuthenticated }: { isAuth
       </div>
 
       {/* 5. Application CTA (Always visible, but different for guests) */}
-      <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl shadow-xl p-8 text-center">
+      <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white superellipse-xl shadow-xl p-8 text-center">
         {isAuthenticated ? (
           <>
             <h3 className="text-2xl font-bold mb-2">Intéressé par ce bien ?</h3>

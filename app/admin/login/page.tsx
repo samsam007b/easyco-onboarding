@@ -303,7 +303,7 @@ export default function AdminLoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       <Card className="w-full max-w-md border-slate-700 bg-slate-800/50 backdrop-blur">
         <CardHeader className="text-center">
-          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 rounded-2xl flex items-center justify-center mb-4">
+          <div className="mx-auto w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-800 superellipse-2xl flex items-center justify-center mb-4">
             {step === 'credentials' && <Shield className="w-8 h-8 text-white" />}
             {step === '2fa' && <Lock className="w-8 h-8 text-white" />}
             {step === 'setup-2fa' && <KeyRound className="w-8 h-8 text-white" />}

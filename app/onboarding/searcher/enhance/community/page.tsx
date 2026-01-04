@@ -111,7 +111,7 @@ export default function OnboardingCommunityEventsPage() {
               <button
                 key={level.value}
                 onClick={() => setEventInterest(level.value)}
-                className={`p-4 rounded-xl transition border-2 flex flex-col items-center gap-2 ${
+                className={`p-4 superellipse-xl transition border-2 flex flex-col items-center gap-2 ${
                   eventInterest === level.value
                     ? 'bg-orange-500 text-white border-orange-500'
                     : 'bg-white text-gray-700 border-gray-300 hover:border-orange-500'
@@ -131,7 +131,7 @@ export default function OnboardingCommunityEventsPage() {
 
         {/* Shared meals toggle */}
         <EnhanceProfileSection>
-          <div className="p-4 rounded-xl bg-orange-50 border-2 border-orange-200">
+          <div className="p-4 superellipse-xl bg-orange-50 border-2 border-orange-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
@@ -160,7 +160,7 @@ export default function OnboardingCommunityEventsPage() {
 
         {/* Flatmate meetups toggle */}
         <EnhanceProfileSection>
-          <div className="p-4 rounded-xl bg-blue-50 border-2 border-blue-300">
+          <div className="p-4 superellipse-xl bg-blue-50 border-2 border-blue-300">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -219,7 +219,7 @@ export default function OnboardingCommunityEventsPage() {
         <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+          className={`w-full py-4 superellipse-xl font-semibold transition-all duration-300 ${
             canContinue
               ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'

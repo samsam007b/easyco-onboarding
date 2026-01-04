@@ -520,13 +520,13 @@ export default function OwnerCommandCenter() {
                 className="relative w-16 h-16"
               >
                 <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-30"
+                  className="absolute inset-0 superellipse-2xl opacity-30"
                   style={{ background: ownerGradient, filter: 'blur(12px)' }}
                   animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
                   transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
                 />
                 <div
-                  className="relative w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+                  className="relative w-16 h-16 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{ background: ownerGradient, boxShadow: '0 8px 24px rgba(156, 86, 152, 0.3)' }}
                 >
                   <BarChart3 className="w-8 h-8 text-white" />
@@ -672,7 +672,7 @@ export default function OwnerCommandCenter() {
             >
               <div className="flex items-center gap-2 mb-4">
                 <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  className="w-8 h-8 superellipse-lg flex items-center justify-center"
                   style={{ background: urgentGradient }}
                 >
                   <Bell className="w-4 h-4 text-white" />
@@ -704,7 +704,7 @@ export default function OwnerCommandCenter() {
                     >
                       <div className="flex items-start gap-3">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                          className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0"
                           style={{ background: styles.iconBg }}
                         >
                           <Icon className="w-5 h-5 text-white" />
@@ -748,7 +748,7 @@ export default function OwnerCommandCenter() {
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium text-emerald-700">Revenus du mois</span>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: successGradient }}>
+                <div className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md" style={{ background: successGradient }}>
                   <Wallet className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -783,7 +783,7 @@ export default function OwnerCommandCenter() {
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium" style={{ color: '#9c5698' }}>Propriétés</span>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: ownerGradient }}>
+                <div className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md" style={{ background: ownerGradient }}>
                   <Building2 className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -812,7 +812,7 @@ export default function OwnerCommandCenter() {
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-sm font-medium" style={{ color: '#af5682' }}>Taux d'occupation</span>
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(135deg, #af5682 0%, #c2566b 100%)' }}>
+                <div className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md" style={{ background: 'linear-gradient(135deg, #af5682 0%, #c2566b 100%)' }}>
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
               </div>
@@ -853,7 +853,7 @@ export default function OwnerCommandCenter() {
                   Maintenance
                 </span>
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: stats.urgentMaintenanceCount > 0 ? warningGradient : successGradient }}
                 >
                   <Wrench className="w-5 h-5 text-white" />
@@ -891,7 +891,7 @@ export default function OwnerCommandCenter() {
 
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: ownerGradient }}>
+                <div className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md" style={{ background: ownerGradient }}>
                   <Home className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -912,7 +912,7 @@ export default function OwnerCommandCenter() {
 
             {propertyStatuses.length === 0 ? (
               <div className="text-center py-12 superellipse-2xl" style={{ background: ownerGradientLight }} >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center" style={{ background: ownerGradient }}>
+                <div className="w-16 h-16 mx-auto mb-4 superellipse-2xl flex items-center justify-center" style={{ background: ownerGradient }}>
                   <Building2 className="w-8 h-8 text-white" />
                 </div>
                 <h4 className="font-semibold text-gray-900 mb-2">Aucune propriété</h4>
@@ -1031,7 +1031,7 @@ export default function OwnerCommandCenter() {
             <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-5" style={{ background: ownerGradient }} />
 
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: ownerGradient }}>
+              <div className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md" style={{ background: ownerGradient }}>
                 <Calendar className="w-5 h-5 text-white" />
               </div>
               <div>
@@ -1101,7 +1101,7 @@ export default function OwnerCommandCenter() {
 
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md" style={{ background: successGradient }}>
+                <div className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md" style={{ background: successGradient }}>
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -1193,7 +1193,7 @@ export default function OwnerCommandCenter() {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center"
                   style={{ background: ownerGradientLight }}
                 >
                   <action.icon className="w-5 h-5" style={{ color: '#9c5698' }} />

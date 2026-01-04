@@ -222,7 +222,7 @@ export default function OnboardingEnhanceMenu() {
               <button
                 key={section.id}
                 onClick={() => router.push(section.path)}
-                className="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-left p-6 relative overflow-hidden group"
+                className="bg-white superellipse-2xl shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 text-left p-6 relative overflow-hidden group"
               >
                 {/* Completion badge */}
                 {section.completed && (
@@ -234,7 +234,7 @@ export default function OnboardingEnhanceMenu() {
                 )}
 
                 <div className="flex items-start gap-4">
-                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${section.color} group-hover:scale-110 transition-transform`}>
+                  <div className={`w-14 h-14 superellipse-xl flex items-center justify-center ${section.color} group-hover:scale-110 transition-transform`}>
                     <IconComponent className="w-7 h-7" />
                   </div>
                   <div className="flex-1">

@@ -161,7 +161,7 @@ export default function OnboardingLifestyleDetailsPage() {
               <button
                 key={option.value}
                 onClick={() => setCookingFrequency(option.value)}
-                className={`p-4 rounded-xl border-2 transition-all text-center ${
+                className={`p-4 superellipse-xl border-2 transition-all text-center ${
                   cookingFrequency === option.value
                     ? 'border-orange-500 bg-orange-50'
                     : 'border-gray-300 hover:border-gray-400'
@@ -186,7 +186,7 @@ export default function OnboardingLifestyleDetailsPage() {
               <button
                 key={option.value}
                 onClick={() => setDietType(option.value)}
-                className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
+                className={`w-full p-4 superellipse-xl border-2 transition-all text-left ${
                   dietType === option.value
                     ? 'border-orange-500 bg-orange-50'
                     : 'border-gray-300 hover:border-gray-400'
@@ -211,7 +211,7 @@ export default function OnboardingLifestyleDetailsPage() {
               <button
                 key={option.value}
                 onClick={() => setCommunicationStyle(option.value)}
-                className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
+                className={`w-full p-4 superellipse-xl border-2 transition-all text-left ${
                   communicationStyle === option.value
                     ? 'border-orange-500 bg-orange-50'
                     : 'border-gray-300 hover:border-gray-400'
@@ -236,7 +236,7 @@ export default function OnboardingLifestyleDetailsPage() {
       <div className="space-y-3 mt-8">
         <button
           onClick={handleSave}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+          className="w-full py-4 superellipse-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           {t('enhanceSearcher.common.saveAndContinue')}
         </button>

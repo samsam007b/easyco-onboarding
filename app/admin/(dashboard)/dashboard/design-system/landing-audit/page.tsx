@@ -80,7 +80,7 @@ export default function LandingPageAudit() {
             ← Retour Design System
           </Link>
         </div>
-        <div className="bg-gradient-to-r from-purple-900/50 via-orange-900/50 to-amber-900/50 rounded-xl border border-purple-700/50 p-6">
+        <div className="bg-gradient-to-r from-purple-900/50 via-orange-900/50 to-amber-900/50 superellipse-xl border border-purple-700/50 p-6">
           <h1 className="text-3xl font-bold mb-2">🔍 Audit Landing Page</h1>
           <p className="text-slate-300">
             Analyse des éléments graphiques et détection des incohérences avec le design system
@@ -112,7 +112,7 @@ export default function LandingPageAudit() {
         {/* Overview */}
         {activeSection === 'overview' && (
           <div className="space-y-6">
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h2 className="text-2xl font-bold mb-4">📊 Résumé de l'audit</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
@@ -136,7 +136,7 @@ export default function LandingPageAudit() {
               </div>
             </div>
 
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h3 className="text-xl font-bold mb-4">🎯 Objectifs de l'uniformisation</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
@@ -174,11 +174,11 @@ export default function LandingPageAudit() {
         {/* Boutons */}
         {activeSection === 'buttons' && (
           <div className="space-y-6">
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h2 className="text-2xl font-bold mb-6">🔘 Boutons CTA de la landing page</h2>
 
               {/* Comparaison rapide */}
-              <div className="bg-gradient-to-r from-purple-900/30 via-orange-900/30 to-amber-900/30 rounded-xl border border-purple-700/30 p-6 mb-8">
+              <div className="bg-gradient-to-r from-purple-900/30 via-orange-900/30 to-amber-900/30 superellipse-xl border border-purple-700/30 p-6 mb-8">
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                   ⚖️ Comparaison : Opaque vs Glassmorphism
                 </h3>
@@ -526,7 +526,7 @@ export default function LandingPageAudit() {
         {/* Couleurs */}
         {activeSection === 'colors' && (
           <div className="space-y-6">
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h2 className="text-2xl font-bold mb-4">🎨 Comparaison des couleurs</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -599,11 +599,11 @@ export default function LandingPageAudit() {
         {/* Gradients */}
         {activeSection === 'gradients' && (
           <div className="space-y-6">
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h2 className="text-2xl font-bold mb-4">✨ Gradient Signature</h2>
 
               <div className="bg-slate-900 rounded-lg p-8 mb-6">
-                <div className="h-32 rounded-xl" style={{ background: designSystemColors.signature.gradient }} />
+                <div className="h-32 superellipse-xl" style={{ background: designSystemColors.signature.gradient }} />
                 <p className="text-sm text-slate-400 mt-4">
                   <code className="text-green-400">{designSystemColors.signature.gradient}</code>
                 </p>
@@ -622,7 +622,7 @@ export default function LandingPageAudit() {
         {/* Issues */}
         {activeSection === 'issues' && (
           <div className="space-y-4">
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h2 className="text-2xl font-bold mb-4">⚠️ Issues détectées ({issues.length})</h2>
 
               <div className="space-y-4">
@@ -675,7 +675,7 @@ export default function LandingPageAudit() {
             </div>
 
             {/* Action buttons */}
-            <div className="bg-gradient-to-r from-purple-900/50 via-orange-900/50 to-amber-900/50 rounded-xl border border-purple-700/50 p-6">
+            <div className="bg-gradient-to-r from-purple-900/50 via-orange-900/50 to-amber-900/50 superellipse-xl border border-purple-700/50 p-6">
               <h3 className="text-xl font-bold mb-4">🚀 Prochaines étapes</h3>
               <div className="space-y-3">
                 <button

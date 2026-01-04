@@ -396,7 +396,7 @@ export default function PropertyDetailsPage() {
 
                 {/* Price Highlight */}
                 {cheapestRoom && (
-                  <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 text-center min-w-[200px]">
+                  <div className="bg-white/10 backdrop-blur-xl border border-white/20 superellipse-2xl p-6 text-center min-w-[200px]">
                     <p className="text-sm text-white/80 mb-1">{t('properties.details.startingFrom')}</p>
                     <p className="text-5xl font-bold text-white">€{cheapestRoom.price}</p>
                     <p className="text-sm text-white/70 mt-1">{t('properties.details.perMonth')}</p>
@@ -448,7 +448,7 @@ export default function PropertyDetailsPage() {
                     setLightboxIndex(selectedImageIndex);
                     setIsLightboxOpen(true);
                   }}
-                  className="flex-shrink-0 h-20 px-6 bg-gradient-searcher hover:opacity-90 text-white rounded-xl flex items-center gap-2 transition-all hover:scale-105 shadow-md"
+                  className="flex-shrink-0 h-20 px-6 bg-gradient-searcher hover:opacity-90 text-white superellipse-xl flex items-center gap-2 transition-all hover:scale-105 shadow-md"
                 >
                   <Expand className="w-5 h-5" />
                   <span className="font-medium hidden sm:inline">{t('properties.details.viewAll')}</span>
@@ -601,7 +601,7 @@ export default function PropertyDetailsPage() {
                       longitude={property.longitude}
                       title={property.title}
                       address={`${property.address}, {property.city} ${property.postal_code}`}
-                      className="w-full h-[400px] rounded-b-2xl overflow-hidden"
+                      className="w-full h-[400px] superellipse-2xl overflow-hidden"
                     />
                   </CardContent>
                 </Card>
@@ -692,7 +692,7 @@ export default function PropertyDetailsPage() {
 
             {/* Thumbnail Strip at Bottom */}
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-10">
-              <div className="flex gap-2 p-2 bg-black/50 rounded-xl max-w-[90vw] overflow-x-auto">
+              <div className="flex gap-2 p-2 bg-black/50 superellipse-xl max-w-[90vw] overflow-x-auto">
                 {property.images.map((image, index) => (
                   <img
                     key={index}

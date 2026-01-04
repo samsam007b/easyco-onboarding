@@ -157,7 +157,7 @@ export default function QuickBudgetLocationPage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-orange-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <Euro className="w-8 h-8 text-orange-600" />
         </div>
         <OnboardingHeading
@@ -169,7 +169,7 @@ export default function QuickBudgetLocationPage() {
 
       <div className="space-y-6">
         {/* Budget Range */}
-        <div className="p-5 rounded-xl bg-green-50 border border-green-200">
+        <div className="p-5 superellipse-xl bg-green-50 border border-green-200">
           <OnboardingLabel required>{t('quickOnboarding.budgetLocation.monthlyBudget')}</OnboardingLabel>
 
           {/* Min Budget */}

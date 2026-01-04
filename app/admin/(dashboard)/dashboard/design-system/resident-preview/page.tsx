@@ -38,7 +38,7 @@ export default function ResidentPreviewPage() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <div
-            className="w-12 h-12 rounded-2xl flex items-center justify-center"
+            className="w-12 h-12 superellipse-2xl flex items-center justify-center"
             style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
           >
             <Home className="w-6 h-6 text-white" />
@@ -51,7 +51,7 @@ export default function ResidentPreviewPage() {
       </div>
 
       {/* Version Selector */}
-      <div className="bg-slate-800 rounded-xl p-4 border border-slate-700">
+      <div className="bg-slate-800 superellipse-xl p-4 border border-slate-700">
         <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-orange-400" />
           Sélectionnez une version à visualiser
@@ -66,7 +66,7 @@ export default function ResidentPreviewPage() {
               key={version.id}
               onClick={() => setSelectedVersion(version.id as any)}
               className={cn(
-                'flex-1 px-4 py-3 rounded-xl text-sm font-medium transition-all border-2 relative',
+                'flex-1 px-4 py-3 superellipse-xl text-sm font-medium transition-all border-2 relative',
                 selectedVersion === version.id
                   ? 'text-white border-orange-500'
                   : 'text-slate-400 border-slate-700 hover:border-slate-600'
@@ -101,7 +101,7 @@ export default function ResidentPreviewPage() {
       <Card className="bg-gradient-to-r from-green-900/50 to-emerald-900/50 border-green-700">
         <CardContent className="p-6">
           <div className="flex items-start gap-4">
-            <div className="w-12 h-12 rounded-xl bg-green-500 flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 superellipse-xl bg-green-500 flex items-center justify-center flex-shrink-0">
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -140,12 +140,12 @@ function Version1() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* ResidenceHeader V1 */}
-          <div className="rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
+          <div className="superellipse-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
             style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
             <div className="p-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg flex items-center justify-center">
+                  <div className="w-20 h-20 superellipse-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg flex items-center justify-center">
                     <Home className="w-10 h-10 text-white" />
                   </div>
                   <div>
@@ -166,7 +166,7 @@ function Version1() {
                     </div>
                   </div>
                 </div>
-                <button className="px-6 py-3 bg-white rounded-xl font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                <button className="px-6 py-3 bg-white superellipse-xl font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                   style={{ color: '#ee5736' }}>
                   <UserPlus className="w-5 h-5" />
                   Inviter des Colocs
@@ -175,19 +175,19 @@ function Version1() {
 
               {/* Stats Grid */}
               <div className="grid grid-cols-4 gap-3">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€850</p>
                   <p className="text-xs text-white/70 mt-1">Loyer moyen</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">4.8★</p>
                   <p className="text-xs text-white/70 mt-1">Note globale</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">2</p>
                   <p className="text-xs text-white/70 mt-1">Tâches en cours</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€245</p>
                   <p className="text-xs text-white/70 mt-1">Dépenses ce mois</p>
                 </div>
@@ -199,16 +199,16 @@ function Version1() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Boutons avec Gradient Complet</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 Inviter un colocataire
               </button>
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <Plus className="w-5 h-5" />
                 Nouvelle dépense
               </button>
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <Zap className="w-5 h-5" />
                 Actions Rapides
@@ -220,12 +220,12 @@ function Version1() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Cartes KPI avec Gradient Background</h4>
             <div className="grid grid-cols-2 gap-4">
-              <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+              <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
                   style={{ background: 'linear-gradient(135deg, #d9574f, #ff8017)' }} />
                 <div className="relative z-10">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                     style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                   >
                     <Home className="w-6 h-6 text-white" />
@@ -236,12 +236,12 @@ function Version1() {
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+              <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
                   style={{ background: 'linear-gradient(135deg, #d9574f, #ff8017)' }} />
                 <div className="relative z-10">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                     style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
                   >
                     <Users className="w-6 h-6 text-white" />
@@ -277,12 +277,12 @@ function Version2() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* ResidenceHeader V2 */}
-          <div className="rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
+          <div className="superellipse-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
             style={{ background: '#ee5736' }}>
             <div className="p-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg flex items-center justify-center">
+                  <div className="w-20 h-20 superellipse-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg flex items-center justify-center">
                     <Home className="w-10 h-10 text-white" />
                   </div>
                   <div>
@@ -303,7 +303,7 @@ function Version2() {
                     </div>
                   </div>
                 </div>
-                <button className="px-6 py-3 bg-white rounded-xl font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                <button className="px-6 py-3 bg-white superellipse-xl font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                   style={{ color: '#ee5736' }}>
                   <UserPlus className="w-5 h-5" />
                   Inviter des Colocs
@@ -312,19 +312,19 @@ function Version2() {
 
               {/* Stats Grid */}
               <div className="grid grid-cols-4 gap-3">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€850</p>
                   <p className="text-xs text-white/70 mt-1">Loyer moyen</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">4.8★</p>
                   <p className="text-xs text-white/70 mt-1">Note globale</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">2</p>
                   <p className="text-xs text-white/70 mt-1">Tâches en cours</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€245</p>
                   <p className="text-xs text-white/70 mt-1">Dépenses ce mois</p>
                 </div>
@@ -336,16 +336,16 @@ function Version2() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Boutons avec Couleur Unie</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ee5736' }}>
                 Inviter un colocataire
               </button>
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#ee5736' }}>
                 <Plus className="w-5 h-5" />
                 Nouvelle dépense
               </button>
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#ee5736' }}>
                 <Zap className="w-5 h-5" />
                 Actions Rapides
@@ -357,12 +357,12 @@ function Version2() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Cartes KPI avec Couleur Unie</h4>
             <div className="grid grid-cols-2 gap-4">
-              <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+              <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
                   style={{ background: '#ee5736' }} />
                 <div className="relative z-10">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                     style={{ background: '#ee5736' }}
                   >
                     <Home className="w-6 h-6 text-white" />
@@ -373,12 +373,12 @@ function Version2() {
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+              <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
                   style={{ background: '#ee5736' }} />
                 <div className="relative z-10">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                     style={{ background: '#ee5736' }}
                   >
                     <Users className="w-6 h-6 text-white" />
@@ -415,12 +415,12 @@ function Version4() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* ResidenceHeader V4 */}
-          <div className="rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
+          <div className="superellipse-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
             style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
             <div className="p-6">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-20 h-20 rounded-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg flex items-center justify-center">
+                  <div className="w-20 h-20 superellipse-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg flex items-center justify-center">
                     <Home className="w-10 h-10 text-white" />
                   </div>
                   <div>
@@ -441,7 +441,7 @@ function Version4() {
                     </div>
                   </div>
                 </div>
-                <button className="px-6 py-3 bg-white/20 hover:bg-white/30 backdrop-blur rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2 border border-white/30">
+                <button className="px-6 py-3 bg-white/20 hover:bg-white/30 backdrop-blur superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2 border border-white/30">
                   <UserPlus className="w-5 h-5" />
                   Inviter des Colocs
                 </button>
@@ -449,19 +449,19 @@ function Version4() {
 
               {/* Stats Grid */}
               <div className="grid grid-cols-4 gap-3">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€850</p>
                   <p className="text-xs text-white/70 mt-1">Loyer moyen</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">4.8★</p>
                   <p className="text-xs text-white/70 mt-1">Note globale</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">2</p>
                   <p className="text-xs text-white/70 mt-1">Tâches en cours</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€245</p>
                   <p className="text-xs text-white/70 mt-1">Dépenses ce mois</p>
                 </div>
@@ -473,16 +473,16 @@ function Version4() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Boutons avec Gradient 2 Couleurs</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
                 Inviter un colocataire
               </button>
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
                 <Plus className="w-5 h-5" />
                 Nouvelle dépense
               </button>
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
                 <Zap className="w-5 h-5" />
                 Actions Rapides
@@ -494,12 +494,12 @@ function Version4() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Cartes KPI avec Gradient 2 Couleurs</h4>
             <div className="grid grid-cols-2 gap-4">
-              <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+              <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
                   style={{ background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' }} />
                 <div className="relative z-10">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                     style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                   >
                     <Home className="w-6 h-6 text-white" />
@@ -510,12 +510,12 @@ function Version4() {
                 </div>
               </div>
 
-              <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+              <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
                 <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20"
                   style={{ background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' }} />
                 <div className="relative z-10">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                     style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                   >
                     <Users className="w-6 h-6 text-white" />

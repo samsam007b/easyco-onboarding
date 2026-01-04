@@ -543,7 +543,7 @@ export default function MyProfileResidentPage() {
 
         {/* Tabs Navigation */}
         <div className="flex justify-center mb-8">
-          <div className="inline-flex bg-white rounded-2xl p-1 shadow-lg border border-gray-200">
+          <div className="inline-flex bg-white superellipse-2xl p-1 shadow-lg border border-gray-200">
             {tabs.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.id
@@ -551,7 +551,7 @@ export default function MyProfileResidentPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative px-6 py-3 rounded-xl font-medium transition-all ${
+                  className={`relative px-6 py-3 superellipse-xl font-medium transition-all ${
                     isActive
                       ? `${colors.text} bg-gradient-to-r ${colors.bg}`
                       : 'text-gray-600 hover:text-gray-900'
@@ -564,7 +564,7 @@ export default function MyProfileResidentPage() {
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className={`absolute inset-0 bg-gradient-to-r ${colors.bg} rounded-xl -z-10`}
+                      className={`absolute inset-0 bg-gradient-to-r ${colors.bg} superellipse-xl -z-10`}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
                   )}
@@ -588,7 +588,7 @@ export default function MyProfileResidentPage() {
             {activeTab === 'profile' && (
               <>
                 {/* Personal Information */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <h2 className="text-xl font-semibold text-gray-900 mb-6">Informations Personnelles</h2>
 
                   <div className="space-y-4">
@@ -625,7 +625,7 @@ export default function MyProfileResidentPage() {
                           </Button>
                         </div>
                       ) : (
-                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                        <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-2xl">
                           <span className="text-gray-900">{userData.full_name || 'Not set'}</span>
                           <Button
                             onClick={() => setIsEditingName(true)}
@@ -643,7 +643,7 @@ export default function MyProfileResidentPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Email
                       </label>
-                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                      <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-2xl">
                         <div className="flex items-center gap-2">
                           <Mail className="w-5 h-5 text-gray-400" />
                           <span className="text-gray-900">{userData.email}</span>
@@ -676,7 +676,7 @@ export default function MyProfileResidentPage() {
                   </div>
 
                   {/* Large Profile Card */}
-                  <div className={`relative overflow-hidden rounded-3xl border-2 ${colors.border} bg-white/90 backdrop-blur-sm p-6 shadow-xl hover:shadow-2xl transition-all`}>
+                  <div className={`relative overflow-hidden superellipse-3xl border-2 ${colors.border} bg-white/90 backdrop-blur-sm p-6 shadow-xl hover:shadow-2xl transition-all`}>
                     <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-orange-50 opacity-50" />
                     <div className="relative">
                       {/* Header: Photo + Basic Info */}
@@ -796,14 +796,14 @@ export default function MyProfileResidentPage() {
                       {/* Buttons */}
                       <div className="flex gap-2">
                         <button
-                          className={`flex-1 px-4 py-2 bg-gradient-to-r ${colors.gradient} text-white text-sm font-semibold rounded-xl hover:shadow-lg transition-all`}
+                          className={`flex-1 px-4 py-2 bg-gradient-to-r ${colors.gradient} text-white text-sm font-semibold superellipse-xl hover:shadow-lg transition-all`}
                           onClick={() => router.push('/profile/public-view')}
                         >
                           <Eye className="w-4 h-4 inline mr-1" />
                           Voir en mode public
                         </button>
                         <button
-                          className="px-4 py-2 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                          className="px-4 py-2 border-2 border-gray-200 text-gray-700 text-sm font-semibold superellipse-xl hover:bg-gray-50 transition-colors"
                           onClick={() => setIsEditingName(true)}
                         >
                           <Edit className="w-4 h-4 inline" />
@@ -817,7 +817,7 @@ export default function MyProfileResidentPage() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`bg-gradient-to-br from-orange-50/50 to-pink-50/50 backdrop-blur-sm rounded-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
+                  className={`bg-gradient-to-br from-orange-50/50 to-pink-50/50 backdrop-blur-sm superellipse-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
                 >
                   {/* Header - Always visible */}
                   <div className="flex items-center justify-between">
@@ -1065,7 +1065,7 @@ export default function MyProfileResidentPage() {
                 </motion.div>
 
                 {/* Enhanced Profile Sections - Uniform Style */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-semibold text-gray-900">Améliorer mon profil</h2>
                     <span className="text-sm text-gray-500">Augmentez vos chances de matching</span>
@@ -1075,11 +1075,11 @@ export default function MyProfileResidentPage() {
                     {/* About Me */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/about')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                             <User className="w-6 h-6 text-blue-600" />
                           </div>
                           <div className="flex-1">
@@ -1094,11 +1094,11 @@ export default function MyProfileResidentPage() {
                     {/* Personality */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/personality')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
                             <Heart className="w-6 h-6 text-pink-600" />
                           </div>
                           <div className="flex-1">
@@ -1113,11 +1113,11 @@ export default function MyProfileResidentPage() {
                     {/* Values */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/values')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-purple-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-purple-50 flex items-center justify-center flex-shrink-0">
                             <Shield className="w-6 h-6 text-purple-600" />
                           </div>
                           <div className="flex-1">
@@ -1132,11 +1132,11 @@ export default function MyProfileResidentPage() {
                     {/* Hobbies */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/hobbies')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-green-50 flex items-center justify-center flex-shrink-0">
                             <Sparkles className="w-6 h-6 text-green-600" />
                           </div>
                           <div className="flex-1">
@@ -1151,11 +1151,11 @@ export default function MyProfileResidentPage() {
                     {/* Community Events */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/community')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
                             <Users className="w-6 h-6 text-orange-600" />
                           </div>
                           <div className="flex-1">
@@ -1170,11 +1170,11 @@ export default function MyProfileResidentPage() {
                     {/* Financial Info */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/financial')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-yellow-50 flex items-center justify-center flex-shrink-0">
                             <DollarSign className="w-6 h-6 text-yellow-600" />
                           </div>
                           <div className="flex-1">
@@ -1189,11 +1189,11 @@ export default function MyProfileResidentPage() {
                     {/* Profile Verification */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/verification')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all md:col-span-2 lg:col-span-3"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all md:col-span-2 lg:col-span-3"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-indigo-50 flex items-center justify-center flex-shrink-0">
                             <ShieldCheck className="w-6 h-6 text-indigo-600" />
                           </div>
                           <div className="flex-1">
@@ -1217,7 +1217,7 @@ export default function MyProfileResidentPage() {
 
                 {/* Enhance Profile CTA */}
                 {!userData.onboarding_completed && (
-                  <div className={`bg-gradient-to-r ${colors.gradient} rounded-3xl shadow-xl p-8 text-white`}>
+                  <div className={`bg-gradient-to-r ${colors.gradient} superellipse-3xl shadow-xl p-8 text-white`}>
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <h2 className="text-2xl font-bold mb-2">Perfectionne ton profil</h2>
@@ -1241,7 +1241,7 @@ export default function MyProfileResidentPage() {
             {activeTab === 'settings' && (
               <>
                 {/* Role Management */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <h2 className="text-xl font-semibold text-gray-900 mb-4">Gestion du Rôle</h2>
 
                   <div className="space-y-4">
@@ -1249,7 +1249,7 @@ export default function MyProfileResidentPage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Rôle Actuel
                       </label>
-                      <div className={`p-4 ${colors.bg} rounded-2xl`}>
+                      <div className={`p-4 ${colors.bg} superellipse-2xl`}>
                         <span className="text-gray-900 capitalize font-medium">{userData.user_type}</span>
                         {userData.onboarding_completed && (
                           <span className="ml-3 text-xs text-green-600">
@@ -1301,10 +1301,10 @@ export default function MyProfileResidentPage() {
                 </div>
 
                 {/* Account Status */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <h3 className="font-bold text-gray-900 mb-4">Statut du Compte</h3>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl">
                       <span className="text-sm text-gray-600">Email vérifié</span>
                       {userData.email_verified ? (
                         <Check className="w-5 h-5 text-green-600" />
@@ -1312,7 +1312,7 @@ export default function MyProfileResidentPage() {
                         <X className="w-5 h-5 text-red-600" />
                       )}
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl">
                       <span className="text-sm text-gray-600">Onboarding</span>
                       {userData.onboarding_completed ? (
                         <Check className="w-5 h-5 text-green-600" />
@@ -1320,7 +1320,7 @@ export default function MyProfileResidentPage() {
                         <X className="w-5 h-5 text-red-600" />
                       )}
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl">
                       <span className="text-sm text-gray-600">Photo de profil</span>
                       {userData.avatar_url ? (
                         <Check className="w-5 h-5 text-green-600" />

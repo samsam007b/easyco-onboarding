@@ -127,10 +127,10 @@ export default function PropertyInfoPage() {
           </button>
 
           {/* Main Card */}
-          <div className="bg-white rounded-3xl shadow-xl p-8">
+          <div className="bg-white superellipse-3xl shadow-xl p-8">
             {/* Header */}
             <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-gradient-owner rounded-2xl flex items-center justify-center">
+              <div className="w-16 h-16 bg-gradient-owner superellipse-2xl flex items-center justify-center">
                 <Home className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -151,7 +151,7 @@ export default function PropertyInfoPage() {
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setHasProperty(true)}
-                  className={`p-4 rounded-xl border-2 transition-all ${
+                  className={`p-4 superellipse-xl border-2 transition-all ${
                     hasProperty === true
                       ? 'border-owner-700 bg-owner-50 shadow-md'
                       : 'border-gray-200 hover:border-gray-300'
@@ -172,7 +172,7 @@ export default function PropertyInfoPage() {
                     setPropertyCity('');
                     setPropertyType('');
                   }}
-                  className={`p-4 rounded-xl border-2 transition-all ${
+                  className={`p-4 superellipse-xl border-2 transition-all ${
                     hasProperty === false
                       ? 'border-owner-700 bg-owner-50 shadow-md'
                       : 'border-gray-200 hover:border-gray-300'
@@ -204,7 +204,7 @@ export default function PropertyInfoPage() {
                       value={propertyCity}
                       onChange={(e) => setPropertyCity(e.target.value)}
                       placeholder={onboarding.owner.propertyBasics?.propertyCityPlaceholder || 'e.g., Brussels, Antwerp, Ghent'}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-owner-700 focus:outline-none transition-colors"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 superellipse-xl focus:border-owner-700 focus:outline-none transition-colors"
                     />
                   </div>
                 </div>
@@ -219,7 +219,7 @@ export default function PropertyInfoPage() {
                     <select
                       value={propertyType}
                       onChange={(e) => setPropertyType(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-owner-700 focus:outline-none transition-colors appearance-none bg-white"
+                      className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 superellipse-xl focus:border-owner-700 focus:outline-none transition-colors appearance-none bg-white"
                     >
                       <option value="">
                         {onboarding.owner.propertyBasics?.propertyTypeSelect || 'Select type'}
@@ -250,7 +250,7 @@ export default function PropertyInfoPage() {
               <Button
                 onClick={handleSave}
                 disabled={!canSave || isSaving}
-                className="w-full py-6 text-lg font-semibold bg-gradient-owner hover:opacity-90 text-white rounded-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full py-6 text-lg font-semibold bg-gradient-owner hover:opacity-90 text-white superellipse-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSaving ? (
                   <div className="flex items-center gap-2">

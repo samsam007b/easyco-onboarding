@@ -150,7 +150,7 @@ export default function IdealColivingPage() {
         </div>
 
         {/* Roommate age range */}
-        <div className="p-5 rounded-xl bg-yellow-50 border border-yellow-200">
+        <div className="p-5 superellipse-xl bg-yellow-50 border border-yellow-200">
           <OnboardingLabel>
             <div className="flex items-center gap-2">
               <IconBadge icon={Calendar} variant="yellow" size="sm" />
@@ -196,7 +196,7 @@ export default function IdealColivingPage() {
         </div>
 
         {/* Shared space importance */}
-        <div className="p-5 rounded-xl bg-blue-50 border border-blue-200">
+        <div className="p-5 superellipse-xl bg-blue-50 border border-blue-200">
           <OnboardingSlider
             role="searcher"
             label={t('onboarding.idealColiving.sharedSpaceImportance')}

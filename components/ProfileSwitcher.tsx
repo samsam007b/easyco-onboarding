@@ -86,7 +86,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
 
   if (isLoading) {
     return (
-      <div className="animate-pulse flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-xl">
+      <div className="animate-pulse flex items-center gap-2 px-4 py-2 bg-gray-100 superellipse-xl">
         <div className="w-5 h-5 bg-gray-300 rounded-full" />
         <div className="h-4 w-32 bg-gray-300 rounded" />
       </div>
@@ -112,7 +112,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
       {/* Selected Profile Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 w-full px-4 py-3 bg-white border-2 border-gray-200 rounded-xl hover:border-[color:var(--easy-purple)] transition"
+        className="flex items-center gap-3 w-full px-4 py-3 bg-white border-2 border-gray-200 superellipse-xl hover:border-[color:var(--easy-purple)] transition"
       >
         <div className="flex items-center gap-2 flex-1">
           {selectedProfile?.profile_type === 'own' ? (
@@ -148,7 +148,7 @@ export default function ProfileSwitcher({ currentProfileId, onProfileChange }: P
           />
 
           {/* Menu */}
-          <div className="absolute top-full mt-2 w-full bg-white border-2 border-gray-200 rounded-xl shadow-lg z-20 overflow-hidden">
+          <div className="absolute top-full mt-2 w-full bg-white border-2 border-gray-200 superellipse-xl shadow-lg z-20 overflow-hidden">
             {/* Profiles List */}
             {profiles.map((profile) => (
               <button

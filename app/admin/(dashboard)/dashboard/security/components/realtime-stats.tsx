@@ -85,7 +85,7 @@ export function RealtimeStats({ stats, isConnected }: RealtimeStatsProps) {
                     {stat.value}{stat.suffix || ''}
                   </p>
                 </div>
-                <div className={cn('p-3 rounded-xl', stat.bgColor)}>
+                <div className={cn('p-3 superellipse-xl', stat.bgColor)}>
                   <stat.icon className={cn('w-6 h-6', stat.color)} />
                 </div>
               </div>

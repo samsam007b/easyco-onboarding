@@ -116,7 +116,7 @@ export default function InvitePage() {
           </p>
           <Button
             onClick={() => router.push('/auth')}
-            className="w-full rounded-xl text-white font-medium"
+            className="w-full superellipse-xl text-white font-medium"
             style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
           >
             Créer un compte
@@ -162,7 +162,7 @@ export default function InvitePage() {
               </div>
             </div>
 
-            <div className="bg-white/20 backdrop-blur rounded-xl p-4">
+            <div className="bg-white/20 backdrop-blur superellipse-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <RoleIcon className="w-5 h-5" />
                 <span className="font-medium">
@@ -184,7 +184,7 @@ export default function InvitePage() {
           {/* Content */}
           <div className="p-6">
             {property?.image && (
-              <div className="mb-4 rounded-xl overflow-hidden">
+              <div className="mb-4 superellipse-xl overflow-hidden">
                 <img
                   src={property.image}
                   alt={property.title}
@@ -213,7 +213,7 @@ export default function InvitePage() {
 
             <Button
               onClick={handleContinue}
-              className="w-full rounded-xl text-white font-medium h-12 text-lg"
+              className="w-full superellipse-xl text-white font-medium h-12 text-lg"
               style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
             >
               Continuer

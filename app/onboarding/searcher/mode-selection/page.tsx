@@ -50,7 +50,7 @@ export default function ModeSelectionPage() {
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => handleModeSelect('quick')}
-            className="relative group bg-white rounded-3xl p-8 border-2 border-orange-200 hover:border-orange-400 hover:shadow-2xl transition-all duration-300 text-left"
+            className="relative group bg-white superellipse-3xl p-8 border-2 border-orange-200 hover:border-orange-400 hover:shadow-2xl transition-all duration-300 text-left"
           >
             {/* Recommended Badge */}
             <div className="absolute -top-4 right-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
@@ -58,7 +58,7 @@ export default function ModeSelectionPage() {
             </div>
 
             {/* Icon */}
-            <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 bg-gradient-to-br from-orange-100 to-orange-200 superellipse-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Zap className="w-8 h-8 text-orange-600" />
             </div>
 
@@ -98,7 +98,7 @@ export default function ModeSelectionPage() {
             </div>
 
             {/* Hover Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/5 group-hover:to-orange-600/5 rounded-3xl transition-all pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-orange-500/0 to-orange-600/0 group-hover:from-orange-500/5 group-hover:to-orange-600/5 superellipse-3xl transition-all pointer-events-none" />
           </motion.button>
 
           {/* Full Mode */}
@@ -109,10 +109,10 @@ export default function ModeSelectionPage() {
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => handleModeSelect('full')}
-            className="relative group bg-white rounded-3xl p-8 border-2 border-purple-200 hover:border-purple-400 hover:shadow-2xl transition-all duration-300 text-left"
+            className="relative group bg-white superellipse-3xl p-8 border-2 border-purple-200 hover:border-purple-400 hover:shadow-2xl transition-all duration-300 text-left"
           >
             {/* Icon */}
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+            <div className="w-16 h-16 bg-gradient-to-br from-purple-100 to-purple-200 superellipse-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <ListChecks className="w-8 h-8 text-purple-600" />
             </div>
 
@@ -152,7 +152,7 @@ export default function ModeSelectionPage() {
             </div>
 
             {/* Hover Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-purple-600/0 group-hover:from-purple-500/5 group-hover:to-purple-600/5 rounded-3xl transition-all pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-purple-600/0 group-hover:from-purple-500/5 group-hover:to-purple-600/5 superellipse-3xl transition-all pointer-events-none" />
           </motion.button>
         </div>
 

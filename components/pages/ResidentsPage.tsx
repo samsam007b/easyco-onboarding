@@ -151,7 +151,7 @@ export default function ResidentsPage() {
                 {/* Stat card 1 */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl"
+                  className="bg-white/80 backdrop-blur-xl superellipse-2xl p-6 shadow-xl"
                   style={{ borderColor: `${RESIDENT_COLORS.primary}20`, borderWidth: '1px' }}
                 >
                   <div className="flex items-center justify-between">
@@ -176,7 +176,7 @@ export default function ResidentsPage() {
                 {/* Stat card 2 */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="rounded-2xl p-6 shadow-xl"
+                  className="superellipse-2xl p-6 shadow-xl"
                   style={{ backgroundImage: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
                 >
                   <div className="flex items-center justify-between">
@@ -229,16 +229,16 @@ export default function ResidentsPage() {
                 >
                   {/* Hover gradient effect */}
                   <div
-                    className="absolute inset-0 rounded-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    className="absolute inset-0 superellipse-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"
                     style={{ background: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}08, ${RESIDENT_COLORS.gradient.end}08)` }}
                   />
 
                   <div
-                    className="relative bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-100 transition-all duration-300"
+                    className="relative bg-white/60 backdrop-blur-sm superellipse-2xl p-8 border border-gray-100 transition-all duration-300"
                     style={{ '--hover-border': `${RESIDENT_COLORS.primary}40` } as React.CSSProperties}
                   >
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg"
+                      className="w-14 h-14 superellipse-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg"
                       style={{ backgroundImage: `linear-gradient(to bottom right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
                     >
                       <Icon className="w-7 h-7 text-white" />
@@ -295,7 +295,7 @@ export default function ResidentsPage() {
 
                 {/* Content */}
                 <div
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border transition-all hover:shadow-lg"
+                  className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border transition-all hover:shadow-lg"
                   style={{ borderColor: `${RESIDENT_COLORS.primary}20` }}
                 >
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
@@ -316,7 +316,7 @@ export default function ResidentsPage() {
       >
         <div className="max-w-4xl mx-auto">
           <div
-            className="relative overflow-hidden rounded-3xl p-12 md:p-16 shadow-2xl"
+            className="relative overflow-hidden superellipse-3xl p-12 md:p-16 shadow-2xl"
             style={{ backgroundImage: `linear-gradient(to right, ${RESIDENT_COLORS.gradient.start}, ${RESIDENT_COLORS.gradient.end})` }}
           >
             {/* Animated blobs */}

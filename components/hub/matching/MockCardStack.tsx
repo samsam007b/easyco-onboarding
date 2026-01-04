@@ -65,7 +65,7 @@ export default function MockCardStack() {
         return (
           <motion.div
             key={index}
-            className="absolute w-[260px] rounded-3xl overflow-hidden bg-white cursor-pointer"
+            className="absolute w-[260px] superellipse-3xl overflow-hidden bg-white cursor-pointer"
             style={{
               zIndex,
               boxShadow: index === 0 ? `0 20px 50px ${ACCENT_SHADOW}` : '0 8px 24px rgba(0,0,0,0.1)',
@@ -118,7 +118,7 @@ export default function MockCardStack() {
                   className="absolute top-3 right-3 z-10"
                 >
                   <div
-                    className="px-3 py-2 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/40"
+                    className="px-3 py-2 superellipse-2xl shadow-xl backdrop-blur-md border-2 border-white/40"
                     style={{ background: 'rgba(255,255,255,0.95)' }}
                   >
                     <div className="flex items-center gap-1.5">
@@ -165,14 +165,14 @@ export default function MockCardStack() {
               <div className="p-4 bg-white">
                 <div className="flex items-center gap-2 mb-3">
                   <div
-                    className="flex-1 rounded-xl px-3 py-2"
+                    className="flex-1 superellipse-xl px-3 py-2"
                     style={{ background: CARD_BG_GRADIENT }}
                   >
                     <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wide">Budget</p>
                     <p className="text-sm font-bold text-gray-900">600-800€</p>
                   </div>
                   <div
-                    className="flex-1 rounded-xl px-3 py-2"
+                    className="flex-1 superellipse-xl px-3 py-2"
                     style={{ background: 'rgba(59, 130, 246, 0.08)' }}
                   >
                     <p className="text-[10px] text-gray-500 font-medium uppercase tracking-wide">Style</p>

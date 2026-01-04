@@ -111,7 +111,7 @@ export function PWAInstallPrompt() {
           </button>
 
           <div className="flex items-start gap-4 pr-8">
-            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 bg-white/20 backdrop-blur-sm superellipse-xl flex items-center justify-center flex-shrink-0">
               <Smartphone className="w-6 h-6" />
             </div>
 

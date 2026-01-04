@@ -48,7 +48,7 @@ export default function NotFound() {
           </div>
         </div>
 
-        <div className="bg-white rounded-3xl shadow-xl p-6 sm:p-8 md:p-10 mx-auto">
+        <div className="bg-white superellipse-3xl shadow-xl p-6 sm:p-8 md:p-10 mx-auto">
           <p className="text-gray-600 mb-6 text-base sm:text-lg">
             {t?.description?.[language] || 'Sorry, we couldn\'t find the page you\'re looking for. It might have been moved or deleted.'}
           </p>

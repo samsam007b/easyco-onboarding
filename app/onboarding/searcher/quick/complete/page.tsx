@@ -129,7 +129,7 @@ export default function QuickCompletePage() {
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ delay: 0.5 }}
-          className="bg-white rounded-3xl shadow-xl p-8 mb-8"
+          className="bg-white superellipse-3xl shadow-xl p-8 mb-8"
         >
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-orange-500" />
@@ -138,8 +138,8 @@ export default function QuickCompletePage() {
 
           <div className="space-y-4">
             {/* Feature 1 */}
-            <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-orange-50 transition">
-              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-4 p-4 superellipse-xl hover:bg-orange-50 transition">
+              <div className="w-12 h-12 bg-orange-100 superellipse-xl flex items-center justify-center flex-shrink-0">
                 <Home className="w-6 h-6 text-orange-600" />
               </div>
               <div>
@@ -153,8 +153,8 @@ export default function QuickCompletePage() {
             </div>
 
             {/* Feature 2 */}
-            <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-purple-50 transition">
-              <div className="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-4 p-4 superellipse-xl hover:bg-purple-50 transition">
+              <div className="w-12 h-12 bg-purple-100 superellipse-xl flex items-center justify-center flex-shrink-0">
                 <Heart className="w-6 h-6 text-purple-600" />
               </div>
               <div>
@@ -168,8 +168,8 @@ export default function QuickCompletePage() {
             </div>
 
             {/* Feature 3 */}
-            <div className="flex items-start gap-4 p-4 rounded-xl hover:bg-yellow-50 transition">
-              <div className="w-12 h-12 bg-yellow-100 rounded-xl flex items-center justify-center flex-shrink-0">
+            <div className="flex items-start gap-4 p-4 superellipse-xl hover:bg-yellow-50 transition">
+              <div className="w-12 h-12 bg-yellow-100 superellipse-xl flex items-center justify-center flex-shrink-0">
                 <Users className="w-6 h-6 text-yellow-600" />
               </div>
               <div>
@@ -194,7 +194,7 @@ export default function QuickCompletePage() {
           {/* Primary CTA */}
           <button
             onClick={handleGoToDashboard}
-            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-5 px-8 rounded-2xl flex items-center justify-center gap-3 transition-all hover:shadow-2xl hover:scale-105"
+            className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-bold py-5 px-8 superellipse-2xl flex items-center justify-center gap-3 transition-all hover:shadow-2xl hover:scale-105"
           >
             <span className="text-lg">{t('quickOnboarding.complete.goToDashboard')}</span>
             <ArrowRight className="w-6 h-6" />
@@ -203,7 +203,7 @@ export default function QuickCompletePage() {
           {/* Secondary CTA */}
           <button
             onClick={handleCompleteProfile}
-            className="w-full bg-white hover:bg-gray-50 text-gray-700 font-semibold py-4 px-6 rounded-2xl border-2 border-gray-200 hover:border-orange-300 transition-all flex items-center justify-center gap-2"
+            className="w-full bg-white hover:bg-gray-50 text-gray-700 font-semibold py-4 px-6 superellipse-2xl border-2 border-gray-200 hover:border-orange-300 transition-all flex items-center justify-center gap-2"
           >
             <Sparkles className="w-5 h-5 text-orange-500" />
             <span>{t('quickOnboarding.complete.completeProfile')}</span>
@@ -220,7 +220,7 @@ export default function QuickCompletePage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
-          className="mt-8 bg-blue-50 border border-blue-200 rounded-2xl p-6"
+          className="mt-8 bg-blue-50 border border-blue-200 superellipse-2xl p-6"
         >
           <p className="text-sm text-blue-800">
             💡 <span className="font-semibold">{t('quickOnboarding.complete.proTip.label')}</span> {t('quickOnboarding.complete.proTip.text')}

@@ -491,7 +491,7 @@ const AssistantButton = memo(function AssistantButton() {
             className={cn(
               'fixed bottom-6 right-6 z-50',
               'w-[380px] h-[600px] max-h-[80vh]',
-              'bg-white rounded-2xl shadow-2xl',
+              'bg-white superellipse-2xl shadow-2xl',
               'flex flex-col overflow-hidden',
               'border border-gray-200'
             )}
@@ -528,7 +528,7 @@ const AssistantButton = memo(function AssistantButton() {
                       <Bot className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex-1">
-                      <div className="bg-white rounded-2xl rounded-tl-sm p-4 shadow-sm">
+                      <div className="bg-white superellipse-2xl rounded-tl-sm p-4 shadow-sm">
                         <p className="text-gray-800 text-sm">
                           {assistant?.welcome?.greeting || "Hello! I'm the IzzIco assistant. I can help you:"}
                         </p>
@@ -553,7 +553,7 @@ const AssistantButton = memo(function AssistantButton() {
                       </div>
 
                       {/* Suggestion prompt in welcome */}
-                      <div className="mt-3 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl border border-amber-200">
+                      <div className="mt-3 p-3 bg-gradient-to-r from-amber-50 to-orange-50 superellipse-xl border border-amber-200">
                         <div className="flex items-center gap-2 text-amber-700">
                           <Lightbulb className="w-4 h-4" />
                           <span className="text-xs font-medium">{assistant?.welcome?.opinionMatters || 'Your opinion matters!'}</span>
@@ -573,7 +573,7 @@ const AssistantButton = memo(function AssistantButton() {
                         onClick={() => handleSuggestedAction(action.prompt)}
                         disabled={isLoading}
                         className={cn(
-                          'flex items-center gap-2 p-3 bg-white rounded-xl border border-gray-200 transition text-left group',
+                          'flex items-center gap-2 p-3 bg-white superellipse-xl border border-gray-200 transition text-left group',
                           isLoading
                             ? 'opacity-50 cursor-not-allowed'
                             : 'hover:border-purple-300 hover:bg-purple-50'
@@ -593,7 +593,7 @@ const AssistantButton = memo(function AssistantButton() {
                     onClick={() => setFeedbackMode('suggestion')}
                     disabled={isLoading}
                     className={cn(
-                      'w-full flex items-center justify-center gap-2 p-3 rounded-xl transition font-medium text-sm',
+                      'w-full flex items-center justify-center gap-2 p-3 superellipse-xl transition font-medium text-sm',
                       isLoading
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                         : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600'
@@ -636,7 +636,7 @@ const AssistantButton = memo(function AssistantButton() {
                       </div>
                       <div
                         className={cn(
-                          'max-w-[80%] rounded-2xl p-3 shadow-sm',
+                          'max-w-[80%] superellipse-2xl p-3 shadow-sm',
                           message.role === 'user'
                             ? 'bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-tr-sm'
                             : 'bg-white text-gray-800 rounded-tl-sm'
@@ -699,7 +699,7 @@ const AssistantButton = memo(function AssistantButton() {
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center flex-shrink-0">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
-                  <div className="bg-white rounded-2xl rounded-tl-sm p-3 shadow-sm">
+                  <div className="bg-white superellipse-2xl rounded-tl-sm p-3 shadow-sm">
                     <div className="flex items-center gap-2">
                       <Loader2 className="w-4 h-4 text-purple-600 animate-spin" />
                       <span className="text-sm text-gray-500">{assistant?.thinking || 'Thinking...'}</span>
@@ -713,7 +713,7 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-3 border border-indigo-200"
+                  className="bg-gradient-to-r from-indigo-50 to-purple-50 superellipse-xl p-3 border border-indigo-200"
                 >
                   <div className="flex items-center gap-2 mb-2">
                     <Zap className="w-4 h-4 text-indigo-600" />
@@ -751,7 +751,7 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl p-4 border border-purple-200"
+                  className="bg-gradient-to-r from-purple-50 to-indigo-50 superellipse-xl p-4 border border-purple-200"
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <CheckCircle2 className="w-5 h-5 text-purple-600" />
@@ -781,7 +781,7 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-r from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-200"
+                  className="bg-gradient-to-r from-purple-50 to-pink-50 superellipse-xl p-4 border border-purple-200"
                 >
                   <div className="flex items-center gap-2 mb-3">
                     <Heart className="w-5 h-5 text-pink-500" />
@@ -822,7 +822,7 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
+                  className="bg-white superellipse-xl p-4 shadow-sm border border-gray-200"
                 >
                   <p className="text-sm font-medium text-gray-900 mb-3">{assistant?.feedback?.rateConversation || 'How would you rate this conversation?'}</p>
                   <div className="flex justify-center gap-2 mb-3">
@@ -878,7 +878,7 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-xl p-4 shadow-sm border border-gray-200"
+                  className="bg-white superellipse-xl p-4 shadow-sm border border-gray-200"
                 >
                   <p className="text-sm font-medium text-gray-900 mb-3">
                     {assistant?.suggestion?.shareIdea || 'Share your idea or suggestion!'}
@@ -944,7 +944,7 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200 text-center"
+                  className="bg-gradient-to-r from-green-50 to-emerald-50 superellipse-xl p-4 border border-green-200 text-center"
                 >
                   <div className="w-12 h-12 mx-auto bg-gradient-to-r from-green-500 to-emerald-500 rounded-full flex items-center justify-center mb-3">
                     <ThumbsUp className="w-6 h-6 text-white" />
@@ -968,14 +968,14 @@ const AssistantButton = memo(function AssistantButton() {
                   value={input}
                   onChange={handleInputChange}
                   placeholder={assistant?.inputPlaceholder || 'Ask a question or share an idea...'}
-                  className="flex-1 px-4 py-3 bg-gray-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 transition"
+                  className="flex-1 px-4 py-3 bg-gray-100 superellipse-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 transition"
                   disabled={isLoading || feedbackMode !== 'none'}
                 />
                 <button
                   type="submit"
                   disabled={isLoading || !input.trim() || feedbackMode !== 'none'}
                   className={cn(
-                    'p-3 rounded-xl transition',
+                    'p-3 superellipse-xl transition',
                     input.trim() && !isLoading && feedbackMode === 'none'
                       ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'

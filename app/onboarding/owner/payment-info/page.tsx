@@ -77,7 +77,7 @@ export default function PaymentInfoPage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-green-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-green-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <CreditCard className="w-8 h-8 text-green-600" />
         </div>
         <OnboardingHeading
@@ -118,7 +118,7 @@ export default function PaymentInfoPage() {
         </p>
 
         {/* Security Notice */}
-        <div className="p-4 bg-yellow-50 rounded-xl border border-yellow-200 flex gap-3">
+        <div className="p-4 bg-yellow-50 superellipse-xl border border-yellow-200 flex gap-3">
           <Shield className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
           <div>
             <h3 className="font-medium text-gray-900 mb-1">{onboarding.owner.paymentInfo.securityNoticeTitle}</h3>

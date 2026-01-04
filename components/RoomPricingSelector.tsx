@@ -75,7 +75,7 @@ export default function RoomPricingSelector({
           <div
             key={room.id}
             className={cn(
-              "w-full text-left p-4 rounded-xl border-2 transition-all",
+              "w-full text-left p-4 superellipse-xl border-2 transition-all",
               isSelected
                 ? "border-orange-500 bg-orange-50 shadow-md"
                 : room.is_available

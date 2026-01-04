@@ -101,7 +101,7 @@ export function TenantHealthDashboard({ tenants, className }: TenantHealthDashbo
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm overflow-hidden",
+        "bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm overflow-hidden",
         className
       )}
     >
@@ -109,7 +109,7 @@ export function TenantHealthDashboard({ tenants, className }: TenantHealthDashbo
       <div className="p-5 border-b border-gray-100">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-sm">
+            <div className="w-10 h-10 superellipse-xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center shadow-sm">
               <Heart className="w-5 h-5 text-white" />
             </div>
             <div>
@@ -146,7 +146,7 @@ export function TenantHealthDashboard({ tenants, className }: TenantHealthDashbo
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.1 + index * 0.1 }}
-                className="relative overflow-hidden rounded-xl border-2 transition-all hover:shadow-md cursor-pointer"
+                className="relative overflow-hidden superellipse-xl border-2 transition-all hover:shadow-md cursor-pointer"
                 style={{
                   borderColor: category.borderColor,
                   backgroundColor: category.bgColor

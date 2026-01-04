@@ -197,7 +197,7 @@ export default function BookVisitPage() {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left: Property Info */}
           <div className="lg:col-span-1 space-y-6">
-            <Card className="rounded-2xl shadow-lg overflow-hidden">
+            <Card className="superellipse-2xl shadow-lg overflow-hidden">
               {property.main_image_url && (
                 <img
                   src={property.main_image_url}
@@ -227,7 +227,7 @@ export default function BookVisitPage() {
             </Card>
 
             {/* Info Card */}
-            <Card className="rounded-2xl shadow-lg bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
+            <Card className="superellipse-2xl shadow-lg bg-gradient-to-br from-blue-50 to-purple-50 border-blue-200">
               <CardContent className="p-6">
                 <div className="flex gap-3">
                   <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -248,7 +248,7 @@ export default function BookVisitPage() {
           {/* Right: Booking Form */}
           <div className="lg:col-span-2 space-y-6">
             {/* Visit Type */}
-            <Card className="rounded-2xl shadow-lg">
+            <Card className="superellipse-2xl shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Video className="h-5 w-5 text-purple-700" />
@@ -259,7 +259,7 @@ export default function BookVisitPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     onClick={() => setVisitType('in_person')}
-                    className={`p-4 rounded-xl border-2 transition-all ${
+                    className={`p-4 superellipse-xl border-2 transition-all ${
                       visitType === 'in_person'
                         ? 'border-purple-600 bg-purple-50'
                         : 'border-gray-200 hover:border-gray-300'
@@ -271,7 +271,7 @@ export default function BookVisitPage() {
                   </button>
                   <button
                     onClick={() => setVisitType('virtual')}
-                    className={`p-4 rounded-xl border-2 transition-all ${
+                    className={`p-4 superellipse-xl border-2 transition-all ${
                       visitType === 'virtual'
                         ? 'border-purple-600 bg-purple-50'
                         : 'border-gray-200 hover:border-gray-300'
@@ -286,7 +286,7 @@ export default function BookVisitPage() {
             </Card>
 
             {/* Date Selection */}
-            <Card className="rounded-2xl shadow-lg">
+            <Card className="superellipse-2xl shadow-lg">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <CalendarIcon className="h-5 w-5 text-purple-700" />
@@ -302,7 +302,7 @@ export default function BookVisitPage() {
                         setSelectedDate(day.date);
                         setSelectedSlot('');
                       }}
-                      className={`p-3 rounded-xl text-center transition-all ${
+                      className={`p-3 superellipse-xl text-center transition-all ${
                         selectedDate === day.date
                           ? 'bg-purple-600 text-white shadow-lg'
                           : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -323,7 +323,7 @@ export default function BookVisitPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="rounded-2xl shadow-lg">
+                <Card className="superellipse-2xl shadow-lg">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Clock className="h-5 w-5 text-purple-700" />
@@ -344,7 +344,7 @@ export default function BookVisitPage() {
                             key={slot.slot_start}
                             onClick={() => setSelectedSlot(slot.slot_start)}
                             disabled={!slot.is_available}
-                            className={`p-3 rounded-xl text-sm font-medium transition-all ${
+                            className={`p-3 superellipse-xl text-sm font-medium transition-all ${
                               selectedSlot === slot.slot_start
                                 ? 'bg-purple-600 text-white shadow-lg'
                                 : slot.is_available
@@ -372,7 +372,7 @@ export default function BookVisitPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="rounded-2xl shadow-lg">
+                <Card className="superellipse-2xl shadow-lg">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
                       <Phone className="h-5 w-5 text-purple-700" />
@@ -389,7 +389,7 @@ export default function BookVisitPage() {
                         value={userEmail}
                         onChange={(e) => setUserEmail(e.target.value)}
                         placeholder="your.email@example.com"
-                        className="rounded-xl"
+                        className="superellipse-xl"
                       />
                     </div>
                     <div>
@@ -401,7 +401,7 @@ export default function BookVisitPage() {
                         value={visitorPhone}
                         onChange={(e) => setVisitorPhone(e.target.value)}
                         placeholder="+32 123 456 789"
-                        className="rounded-xl"
+                        className="superellipse-xl"
                       />
                     </div>
                     <div>
@@ -414,7 +414,7 @@ export default function BookVisitPage() {
                         placeholder={t('properties.bookVisit.placeholders.message')}
                         rows={3}
                         maxLength={500}
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none transition"
+                        className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none transition"
                       />
                     </div>
                   </CardContent>
@@ -429,7 +429,7 @@ export default function BookVisitPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
               >
-                <Card className="rounded-2xl shadow-lg bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
+                <Card className="superellipse-2xl shadow-lg bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-3 mb-4">
                       <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
@@ -470,7 +470,7 @@ export default function BookVisitPage() {
                       <Button
                         onClick={() => router.back()}
                         variant="outline"
-                        className="flex-1 rounded-xl"
+                        className="flex-1 superellipse-xl"
                         disabled={booking}
                       >
                         {t('common.cancel')}
@@ -478,7 +478,7 @@ export default function BookVisitPage() {
                       <Button
                         onClick={handleBookVisit}
                         disabled={booking || !visitorPhone.trim()}
-                        className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl shadow-lg"
+                        className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white superellipse-xl shadow-lg"
                       >
                         {booking ? t('properties.bookVisit.booking') : t('properties.bookVisit.confirmBooking')}
                       </Button>

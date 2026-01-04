@@ -84,7 +84,7 @@ export default function GroupSelectionPage() {
               key={option.id}
               onClick={() => setSelectedMode(option.id)}
               className={`
-                relative p-6 rounded-2xl text-center transition-all duration-200
+                relative p-6 superellipse-2xl text-center transition-all duration-200
                 ${isSelected
                   ? 'bg-orange-50 border-2 border-orange-500 shadow-lg'
                   : 'bg-white border-2 border-gray-200 hover:border-orange-300 hover:shadow-md'
@@ -122,7 +122,7 @@ export default function GroupSelectionPage() {
       </OnboardingGrid>
 
       {/* Info Box */}
-      <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 mb-6">
+      <div className="bg-blue-50 border border-blue-200 superellipse-xl p-4 mb-6">
         <div className="flex gap-3">
           <div className="flex-shrink-0">
             <Info className="w-5 h-5 text-blue-600 mt-0.5" />

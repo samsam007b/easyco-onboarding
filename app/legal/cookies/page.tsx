@@ -45,7 +45,7 @@ export default function CookiePolicyPage() {
         {/* Content */}
         <div className="prose prose-lg max-w-none">
           {/* Introduction */}
-          <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 mb-8">
+          <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8 mb-8">
             <p className="text-gray-700 leading-relaxed">
               {cookies.intro}
             </p>
@@ -68,7 +68,7 @@ export default function CookiePolicyPage() {
             </h2>
 
             {/* Essential Cookies */}
-            <div className="bg-green-50 border-2 border-green-200 rounded-xl p-6 mb-6">
+            <div className="bg-green-50 border-2 border-green-200 superellipse-xl p-6 mb-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center gap-2">
                 <span className="text-green-600">✓</span> {cookies.types.essential.title}
               </h3>
@@ -81,7 +81,7 @@ export default function CookiePolicyPage() {
             </div>
 
             {/* Functional Cookies */}
-            <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-6 mb-6">
+            <div className="bg-blue-50 border-2 border-blue-200 superellipse-xl p-6 mb-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 {cookies.types.functional.title}
               </h3>
@@ -94,7 +94,7 @@ export default function CookiePolicyPage() {
             </div>
 
             {/* Analytics Cookies */}
-            <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-6 mb-6">
+            <div className="bg-purple-50 border-2 border-purple-200 superellipse-xl p-6 mb-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 {cookies.types.analytics.title}
               </h3>
@@ -107,7 +107,7 @@ export default function CookiePolicyPage() {
             </div>
 
             {/* Marketing Cookies */}
-            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6">
+            <div className="bg-yellow-50 border-2 border-yellow-200 superellipse-xl p-6">
               <h3 className="text-xl font-bold text-gray-900 mb-3">
                 {cookies.types.marketing.title}
               </h3>
@@ -128,7 +128,7 @@ export default function CookiePolicyPage() {
             <p className="text-gray-700 mb-6">
               {cookies.ourCookies.content}
             </p>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 space-y-4">
+            <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8 space-y-4">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[var(--easy-purple)] rounded-full mt-2"></div>
                 <p className="text-gray-700 font-mono text-sm">{cookies.ourCookies.session}</p>
@@ -177,7 +177,7 @@ export default function CookiePolicyPage() {
             <p className="text-gray-700 mb-4">
               {cookies.management.content}
             </p>
-            <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-6 space-y-3">
+            <div className="bg-purple-50 border-2 border-purple-200 superellipse-xl p-6 space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[var(--easy-purple)] rounded-full mt-2"></div>
                 <p className="text-gray-700">{cookies.management.banner}</p>
@@ -201,7 +201,7 @@ export default function CookiePolicyPage() {
             <p className="text-gray-700 mb-4">
               {cookies.browserSettings.content}
             </p>
-            <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 space-y-3">
+            <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8 space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
                 <p className="text-gray-700">{cookies.browserSettings.chrome}</p>
@@ -230,25 +230,25 @@ export default function CookiePolicyPage() {
               {cookies.impact.content}
             </p>
             <div className="space-y-4">
-              <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
+              <div className="bg-red-50 border-2 border-red-200 superellipse-xl p-4">
                 <p className="text-gray-700">
                   <strong className="text-red-700">⚠️ {cookies.types.essential.title}:</strong>{' '}
                   {cookies.impact.essential}
                 </p>
               </div>
-              <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4">
+              <div className="bg-yellow-50 border-2 border-yellow-200 superellipse-xl p-4">
                 <p className="text-gray-700">
                   <strong className="text-yellow-700">⚡ {cookies.types.functional.title}:</strong>{' '}
                   {cookies.impact.functional}
                 </p>
               </div>
-              <div className="bg-blue-50 border-2 border-blue-200 rounded-xl p-4">
+              <div className="bg-blue-50 border-2 border-blue-200 superellipse-xl p-4">
                 <p className="text-gray-700">
                   <strong className="text-blue-700">📊 {cookies.types.analytics.title}:</strong>{' '}
                   {cookies.impact.analytics}
                 </p>
               </div>
-              <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-4">
+              <div className="bg-purple-50 border-2 border-purple-200 superellipse-xl p-4">
                 <p className="text-gray-700">
                   <strong className="text-purple-700">📢 {cookies.types.marketing.title}:</strong>{' '}
                   {cookies.impact.marketing}
@@ -275,7 +275,7 @@ export default function CookiePolicyPage() {
             <p className="text-gray-700 mb-4">
               {cookies.contact.content}
             </p>
-            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6">
+            <div className="bg-yellow-50 border-2 border-yellow-200 superellipse-xl p-6">
               <p className="text-gray-700 mb-2">
                 <strong>{common.email}:</strong>{' '}
                 <a href="mailto:contact@izzico.be" className="text-[var(--easy-purple)] hover:underline">

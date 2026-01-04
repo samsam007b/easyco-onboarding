@@ -281,7 +281,7 @@ export default function CalendarEventModal({
                   <motion.div
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center"
                     style={{ background: RESIDENT_GRADIENT }}
                   >
                     <Calendar className="w-6 h-6 text-white" />
@@ -300,7 +300,7 @@ export default function CalendarEventModal({
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={onClose}
-                  className="p-2.5 rounded-xl transition-colors"
+                  className="p-2.5 superellipse-xl transition-colors"
                   style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                 >
                   <X className="w-5 h-5" style={{ color: RESIDENT_PRIMARY }} />

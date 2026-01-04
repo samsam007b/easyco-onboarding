@@ -233,7 +233,7 @@ export default function PropertyAlertsPage() {
               </Button>
               <div className="flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #9B7BD9 0%, #B59BE0 100%)' }}
                 >
                   <BellRing className="w-5 h-5 text-white" />
@@ -251,7 +251,7 @@ export default function PropertyAlertsPage() {
             <Button
               onClick={handleSave}
               disabled={isSaving}
-              className="bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-xl"
+              className="bg-gradient-to-r from-purple-500 to-purple-600 text-white superellipse-xl"
             >
               {isSaving ? 'Sauvegarde...' : 'Sauvegarder'}
             </Button>
@@ -288,7 +288,7 @@ export default function PropertyAlertsPage() {
                       key={setting.id}
                       onClick={() => toggleSetting(setting.id)}
                       className={cn(
-                        'w-full p-4 rounded-xl border transition-all text-left flex items-center justify-between',
+                        'w-full p-4 superellipse-xl border transition-all text-left flex items-center justify-between',
                         setting.enabled
                           ? 'bg-purple-50/50 border-purple-200'
                           : 'bg-white/60 border-gray-200 hover:border-gray-300'
@@ -298,7 +298,7 @@ export default function PropertyAlertsPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div className={cn(
-                          'w-10 h-10 rounded-xl flex items-center justify-center',
+                          'w-10 h-10 superellipse-xl flex items-center justify-center',
                           setting.enabled ? 'bg-purple-100' : 'bg-gray-100'
                         )}>
                           <Icon className={cn(

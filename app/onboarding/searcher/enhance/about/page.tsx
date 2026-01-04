@@ -141,7 +141,7 @@ export default function OnboardingEnhanceAboutPage() {
       <div className="space-y-3 mt-8">
         <button
           onClick={handleNext}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+          className="w-full py-4 superellipse-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           {t('enhanceSearcher.common.saveAndContinue')}
         </button>

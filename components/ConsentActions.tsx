@@ -48,7 +48,7 @@ export default function ConsentActions({ source = 'unknown', nextHref = '/onboar
         </div>
 
         {/* Main Description */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+        <div className="bg-white superellipse-2xl p-8 shadow-sm border border-gray-100">
           <p className="text-gray-700 leading-relaxed">
             {consent.description}
           </p>
@@ -56,7 +56,7 @@ export default function ConsentActions({ source = 'unknown', nextHref = '/onboar
 
         {/* Benefits/Guarantees */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-start gap-3 bg-purple-50 rounded-xl p-4">
+          <div className="flex items-start gap-3 bg-purple-50 superellipse-xl p-4">
             <div className="w-10 h-10 rounded-full bg-[var(--easy-purple)] flex items-center justify-center flex-shrink-0">
               <Shield className="w-5 h-5 text-white" />
             </div>
@@ -65,7 +65,7 @@ export default function ConsentActions({ source = 'unknown', nextHref = '/onboar
             </div>
           </div>
 
-          <div className="flex items-start gap-3 bg-purple-50 rounded-xl p-4">
+          <div className="flex items-start gap-3 bg-purple-50 superellipse-xl p-4">
             <div className="w-10 h-10 rounded-full bg-[var(--easy-purple)] flex items-center justify-center flex-shrink-0">
               <Lock className="w-5 h-5 text-white" />
             </div>
@@ -74,7 +74,7 @@ export default function ConsentActions({ source = 'unknown', nextHref = '/onboar
             </div>
           </div>
 
-          <div className="flex items-start gap-3 bg-purple-50 rounded-xl p-4">
+          <div className="flex items-start gap-3 bg-purple-50 superellipse-xl p-4">
             <div className="w-10 h-10 rounded-full bg-[var(--easy-purple)] flex items-center justify-center flex-shrink-0">
               <Zap className="w-5 h-5 text-white" />
             </div>
@@ -83,7 +83,7 @@ export default function ConsentActions({ source = 'unknown', nextHref = '/onboar
             </div>
           </div>
 
-          <div className="flex items-start gap-3 bg-purple-50 rounded-xl p-4">
+          <div className="flex items-start gap-3 bg-purple-50 superellipse-xl p-4">
             <div className="w-10 h-10 rounded-full bg-[var(--easy-purple)] flex items-center justify-center flex-shrink-0">
               <span className="text-white text-lg">✓</span>
             </div>

@@ -128,7 +128,7 @@ export default function QuickLifestylePage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-orange-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <Sparkles className="w-8 h-8 text-orange-600" />
         </div>
         <OnboardingHeading
@@ -140,10 +140,10 @@ export default function QuickLifestylePage() {
 
       <div className="space-y-6">
         {/* Smoking */}
-        <div className="p-4 rounded-xl bg-white border border-gray-200">
+        <div className="p-4 superellipse-xl bg-white border border-gray-200">
           <label className="flex items-center justify-between cursor-pointer group">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-100 group-hover:bg-orange-50 rounded-xl flex items-center justify-center transition">
+              <div className="w-12 h-12 bg-gray-100 group-hover:bg-orange-50 superellipse-xl flex items-center justify-center transition">
                 <Cigarette className="w-6 h-6 text-gray-600 group-hover:text-orange-600 transition" />
               </div>
               <div>
@@ -166,10 +166,10 @@ export default function QuickLifestylePage() {
         </div>
 
         {/* Pets */}
-        <div className="p-4 rounded-xl bg-white border border-gray-200">
+        <div className="p-4 superellipse-xl bg-white border border-gray-200">
           <label className="flex items-center justify-between cursor-pointer group">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gray-100 group-hover:bg-orange-50 rounded-xl flex items-center justify-center transition">
+              <div className="w-12 h-12 bg-gray-100 group-hover:bg-orange-50 superellipse-xl flex items-center justify-center transition">
                 <Dog className="w-6 h-6 text-gray-600 group-hover:text-orange-600 transition" />
               </div>
               <div>
@@ -192,9 +192,9 @@ export default function QuickLifestylePage() {
         </div>
 
         {/* Cleanliness Level */}
-        <div className="p-5 rounded-xl bg-white border border-gray-200">
+        <div className="p-5 superellipse-xl bg-white border border-gray-200">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-gray-100 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-gray-100 superellipse-xl flex items-center justify-center">
               <Trash2 className="w-6 h-6 text-gray-600" />
             </div>
             <div>
@@ -210,7 +210,7 @@ export default function QuickLifestylePage() {
                 key={item.value}
                 onClick={() => setCleanlinessLevel(item.value)}
                 className={`
-                  flex flex-col items-center gap-2 p-3 rounded-xl border-2 transition-all
+                  flex flex-col items-center gap-2 p-3 superellipse-xl border-2 transition-all
                   ${cleanlinessLevel === item.value
                     ? 'border-orange-500 bg-orange-50 shadow-md scale-105'
                     : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'

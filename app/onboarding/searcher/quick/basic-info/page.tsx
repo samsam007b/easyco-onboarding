@@ -189,7 +189,7 @@ export default function QuickBasicInfoPage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-orange-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <User className="w-8 h-8 text-orange-600" />
         </div>
         <OnboardingHeading

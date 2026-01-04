@@ -294,7 +294,7 @@ export default function GroupSettingsPage() {
 
         <div className="space-y-6">
           {/* Basic Settings */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white superellipse-3xl p-6 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('groupSettings.basicInfo.title')}</h2>
 
             <div className="space-y-4">
@@ -317,7 +317,7 @@ export default function GroupSettingsPage() {
                   placeholder={t('groupSettings.basicInfo.descriptionPlaceholder')}
                   rows={3}
                   maxLength={500}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-[#4A148C] focus:ring-2 focus:ring-[#4A148C]/20 outline-none transition"
+                  className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-[#4A148C] focus:ring-2 focus:ring-[#4A148C]/20 outline-none transition"
                 />
               </div>
 
@@ -336,7 +336,7 @@ export default function GroupSettingsPage() {
               </div>
 
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-xl">
                   <div>
                     <div className="font-medium text-gray-900">{t('groupSettings.basicInfo.openToNewMembers.title')}</div>
                     <div className="text-sm text-gray-500">{t('groupSettings.basicInfo.openToNewMembers.description')}</div>
@@ -355,7 +355,7 @@ export default function GroupSettingsPage() {
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-xl">
                   <div>
                     <div className="font-medium text-gray-900">{t('groupSettings.basicInfo.requireApproval.title')}</div>
                     <div className="text-sm text-gray-500">{t('groupSettings.basicInfo.requireApproval.description')}</div>
@@ -389,7 +389,7 @@ export default function GroupSettingsPage() {
 
           {/* Invite Code */}
           {inviteCode && (
-            <div className="bg-white rounded-3xl p-6 shadow-sm">
+            <div className="bg-white superellipse-3xl p-6 shadow-sm">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('groupSettings.inviteCode.title')}</h2>
               <div className="flex gap-2">
                 <Input
@@ -409,7 +409,7 @@ export default function GroupSettingsPage() {
           )}
 
           {/* Members */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm">
+          <div className="bg-white superellipse-3xl p-6 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Users className="w-5 h-5" />
               {t('groupSettings.members.title')} ({members.length}/{maxMembers})
@@ -417,7 +417,7 @@ export default function GroupSettingsPage() {
 
             <div className="space-y-3">
               {members.map((member) => (
-                <div key={member.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl">
+                <div key={member.id} className="flex items-center justify-between p-4 bg-gray-50 superellipse-xl">
                   <div>
                     <div className="font-medium text-gray-900">{member.users.full_name}</div>
                     <div className="text-sm text-gray-500">{member.users.email}</div>
@@ -443,7 +443,7 @@ export default function GroupSettingsPage() {
           </div>
 
           {/* Danger Zone */}
-          <div className="bg-white rounded-3xl p-6 shadow-sm border-2 border-red-200">
+          <div className="bg-white superellipse-3xl p-6 shadow-sm border-2 border-red-200">
             <h2 className="text-xl font-semibold text-red-600 mb-4">{t('groupSettings.dangerZone.title')}</h2>
 
             <div className="space-y-3">
@@ -476,7 +476,7 @@ export default function GroupSettingsPage() {
                       {t('groupSettings.dangerZone.deleteGroup.button')}
                     </Button>
                   ) : (
-                    <div className="p-4 bg-red-50 rounded-xl border-2 border-red-200">
+                    <div className="p-4 bg-red-50 superellipse-xl border-2 border-red-200">
                       <div className="flex items-start gap-2 mb-3">
                         <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                         <div className="text-sm text-red-900">

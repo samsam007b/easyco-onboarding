@@ -136,14 +136,14 @@ export default function PaymentsPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div
-          className="rounded-3xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200"
+          className="superellipse-3xl shadow-lg p-6 sm:p-8 mb-8 border border-gray-200"
           style={{ background: colors.gradient }}
         >
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
               <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center gap-3">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-2xl flex items-center justify-center"
                   style={{
                     background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                   }}
@@ -169,11 +169,11 @@ export default function PaymentsPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6"
+              className="bg-white superellipse-2xl shadow-lg border border-gray-200 p-6"
             >
               <div className="flex items-center justify-between mb-4">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, #FF5722 0%, #FF5722 100%)' }}
                 >
                   <ArrowUpRight className="w-6 h-6 text-white" />
@@ -191,11 +191,11 @@ export default function PaymentsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6"
+              className="bg-white superellipse-2xl shadow-lg border border-gray-200 p-6"
             >
               <div className="flex items-center justify-between mb-4">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, #10B981 0%, #059669 100%)' }}
                 >
                   <ArrowDownLeft className="w-6 h-6 text-white" />
@@ -213,11 +213,11 @@ export default function PaymentsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6"
+              className="bg-white superellipse-2xl shadow-lg border border-gray-200 p-6"
             >
               <div className="flex items-center justify-between mb-4">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, #F59E0B 0%, #D97706 100%)' }}
                 >
                   <Clock className="w-6 h-6 text-white" />
@@ -234,11 +234,11 @@ export default function PaymentsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6"
+              className="bg-white superellipse-2xl shadow-lg border border-gray-200 p-6"
             >
               <div className="flex items-center justify-between mb-4">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, #9c5698 0%, #5B45B8 100%)' }}
                 >
                   <CreditCard className="w-6 h-6 text-white" />
@@ -254,7 +254,7 @@ export default function PaymentsPage() {
 
         {/* Upcoming Payments */}
         {upcomingPayments.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 mb-8">
+          <div className="bg-white superellipse-2xl shadow-lg border border-gray-200 p-6 mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Calendar className="w-5 h-5 text-orange-500" />
               {t('payments.upcomingPayments')}
@@ -263,7 +263,7 @@ export default function PaymentsPage() {
               {upcomingPayments.slice(0, 5).map((payment) => (
                 <div
                   key={payment.schedule_id}
-                  className="flex items-center justify-between p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors"
+                  className="flex items-center justify-between p-4 superellipse-xl bg-gray-50 hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-center gap-4">
                     <div className={`w-2 h-2 rounded-full ${payment.auto_pay_enabled ? 'bg-green-500' : 'bg-orange-500'}`}></div>
@@ -291,7 +291,7 @@ export default function PaymentsPage() {
         )}
 
         {/* Tabs */}
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden">
+        <div className="bg-white superellipse-2xl shadow-lg border border-gray-200 overflow-hidden">
           {/* Tab Headers */}
           <div className="flex border-b border-gray-200">
             <button
@@ -334,7 +334,7 @@ export default function PaymentsPage() {
                 {transactions.length === 0 ? (
                   <div className="text-center py-12">
                     <div
-                      className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 superellipse-3xl flex items-center justify-center mx-auto mb-4"
                       style={{
                         background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                       }}
@@ -349,11 +349,11 @@ export default function PaymentsPage() {
                       key={transaction.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors"
+                      className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 hover:border-gray-300 transition-colors"
                     >
                       <div className="flex items-center gap-4">
                         <div
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                          className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                             transaction.payer_id === user?.id ? 'bg-red-50' : 'bg-green-50'
                           }`}
                         >
@@ -393,7 +393,7 @@ export default function PaymentsPage() {
                 {paymentSchedules.length === 0 ? (
                   <div className="text-center py-12">
                     <div
-                      className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 superellipse-3xl flex items-center justify-center mx-auto mb-4"
                       style={{
                         background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                       }}
@@ -408,7 +408,7 @@ export default function PaymentsPage() {
                       key={schedule.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="p-6 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors"
+                      className="p-6 superellipse-xl border border-gray-200 hover:border-gray-300 transition-colors"
                     >
                       <div className="flex items-start justify-between mb-4">
                         <div>
@@ -449,7 +449,7 @@ export default function PaymentsPage() {
                 {paymentAccounts.length === 0 ? (
                   <div className="text-center py-12">
                     <div
-                      className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-4"
+                      className="w-20 h-20 superellipse-3xl flex items-center justify-center mx-auto mb-4"
                       style={{
                         background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                       }}
@@ -468,12 +468,12 @@ export default function PaymentsPage() {
                       key={account.id}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="p-6 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors"
+                      className="p-6 superellipse-xl border border-gray-200 hover:border-gray-300 transition-colors"
                     >
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-4">
                           <div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center"
+                            className="w-12 h-12 superellipse-xl flex items-center justify-center"
                             style={{
                               background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                             }}

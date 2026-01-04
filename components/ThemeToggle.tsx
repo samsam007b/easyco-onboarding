@@ -33,7 +33,7 @@ export default function ThemeToggle({ variant = 'icon', className = '' }: ThemeT
     return (
       <button
         onClick={toggleTheme}
-        className={`relative p-2.5 rounded-xl transition-all duration-300 group ${className}`}
+        className={`relative p-2.5 superellipse-xl transition-all duration-300 group ${className}`}
         style={{
           background: resolvedTheme === 'dark'
             ? 'linear-gradient(135deg, rgba(139, 111, 207, 0.2), rgba(217, 160, 179, 0.2))'
@@ -64,7 +64,7 @@ export default function ThemeToggle({ variant = 'icon', className = '' }: ThemeT
 
         {/* Glow effect on hover */}
         <div
-          className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-md"
+          className="absolute inset-0 superellipse-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 -z-10 blur-md"
           style={{
             background: resolvedTheme === 'dark'
               ? 'linear-gradient(135deg, #8B6FCF40, #D9A0B340)'
@@ -89,7 +89,7 @@ export default function ThemeToggle({ variant = 'icon', className = '' }: ThemeT
     <div ref={dropdownRef} className={`relative ${className}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 hover:scale-105"
+        className="flex items-center gap-2 px-3 py-2 superellipse-xl transition-all duration-300 hover:scale-105"
         style={{
           background: resolvedTheme === 'dark'
             ? 'rgba(26, 26, 31, 0.8)'
@@ -112,7 +112,7 @@ export default function ThemeToggle({ variant = 'icon', className = '' }: ThemeT
       {/* Dropdown menu */}
       {isOpen && (
         <div
-          className="absolute top-full right-0 mt-2 py-2 rounded-xl shadow-xl z-50 min-w-[140px] overflow-hidden"
+          className="absolute top-full right-0 mt-2 py-2 superellipse-xl shadow-xl z-50 min-w-[140px] overflow-hidden"
           style={{
             background: resolvedTheme === 'dark'
               ? 'rgba(26, 26, 31, 0.95)'

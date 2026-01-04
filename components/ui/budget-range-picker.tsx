@@ -124,7 +124,7 @@ export default function BudgetRangePicker({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.95 }}
       transition={{ duration: 0.2 }}
-      className="fixed z-[99999] bg-white rounded-xl shadow-2xl border border-gray-200 p-4 min-w-[300px]"
+      className="fixed z-[99999] bg-white superellipse-xl shadow-2xl border border-gray-200 p-4 min-w-[300px]"
       style={{
         top: `${pickerPosition.top}px`,
         left: `${pickerPosition.left}px`

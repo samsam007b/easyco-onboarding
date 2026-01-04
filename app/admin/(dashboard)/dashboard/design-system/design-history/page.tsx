@@ -227,7 +227,7 @@ export default function DesignHistoryPage() {
             Retour Design System
           </Link>
         </div>
-        <div className="bg-gradient-to-r from-amber-900/50 via-orange-900/50 to-red-900/50 rounded-xl border border-amber-700/50 p-6">
+        <div className="bg-gradient-to-r from-amber-900/50 via-orange-900/50 to-red-900/50 superellipse-xl border border-amber-700/50 p-6">
           <div className="flex items-center gap-3 mb-2">
             <History className="w-8 h-8 text-amber-400" />
             <h1 className="text-3xl font-bold">Historique des Designs</h1>
@@ -241,7 +241,7 @@ export default function DesignHistoryPage() {
 
       {/* Version Selector */}
       <div className="max-w-7xl mx-auto mb-8">
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-4">
+        <div className="bg-slate-800 superellipse-xl border border-slate-700 p-4">
           <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
             <Tag className="w-5 h-5 text-slate-400" />
             Versions disponibles
@@ -267,7 +267,7 @@ export default function DesignHistoryPage() {
 
       {/* Version Details Header */}
       <div className="max-w-7xl mx-auto mb-6">
-        <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+        <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <div className="flex items-center gap-3 mb-2">
@@ -322,7 +322,7 @@ export default function DesignHistoryPage() {
         {/* Overview Tab */}
         {activeTab === 'overview' && (
           <div className="space-y-6">
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <CheckSquare className="w-5 h-5 text-green-400" />
                 Caractéristiques clés
@@ -340,7 +340,7 @@ export default function DesignHistoryPage() {
             </div>
 
             {/* Quick Color Preview */}
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                 <Palette className="w-5 h-5 text-pink-400" />
                 Aperçu des couleurs principales
@@ -362,10 +362,10 @@ export default function DesignHistoryPage() {
             </div>
 
             {/* Gradient Preview */}
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <h3 className="text-xl font-bold mb-4">Gradient Header Signature</h3>
               <div
-                className="h-24 rounded-xl"
+                className="h-24 superellipse-xl"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
               />
               <p className="mt-3 text-sm text-slate-400 font-mono">
@@ -377,7 +377,7 @@ export default function DesignHistoryPage() {
 
         {/* Colors Tab */}
         {activeTab === 'colors' && (
-          <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+          <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
             <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
               <Palette className="w-5 h-5 text-pink-400" />
               Palette de couleurs complète
@@ -402,9 +402,9 @@ export default function DesignHistoryPage() {
         {activeTab === 'pages' && (
           <div className="space-y-4">
             {currentVersion.pages.map((page, index) => (
-              <div key={index} className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+              <div key={index} className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 flex items-center justify-center flex-shrink-0">
                     <Layout className="w-6 h-6 text-orange-400" />
                   </div>
                   <div className="flex-1">
@@ -432,7 +432,7 @@ export default function DesignHistoryPage() {
         {activeTab === 'screenshots' && (
           <div className="space-y-6">
             {/* Header with actions */}
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-xl font-bold flex items-center gap-2">
                   <Layers className="w-5 h-5 text-blue-400" />
@@ -474,7 +474,7 @@ export default function DesignHistoryPage() {
 
             {/* Upload Zone (collapsible) */}
             {showUploadZone && (
-              <div className="bg-slate-800 rounded-xl border border-orange-700/50 p-6">
+              <div className="bg-slate-800 superellipse-xl border border-orange-700/50 p-6">
                 <h4 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Upload className="w-5 h-5 text-orange-400" />
                   Uploader de nouveaux screenshots
@@ -488,7 +488,7 @@ export default function DesignHistoryPage() {
             )}
 
             {/* Screenshots Grid */}
-            <div className="bg-slate-800 rounded-xl border border-slate-700 p-6">
+            <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
               {isLoadingScreenshots ? (
                 <div className="flex items-center justify-center py-12">
                   <Loader2 className="w-8 h-8 text-orange-400 animate-spin" />
@@ -585,7 +585,7 @@ export default function DesignHistoryPage() {
 
       {/* Footer with instructions */}
       <div className="max-w-7xl mx-auto mt-8">
-        <div className="bg-slate-800/50 rounded-xl border border-slate-700/50 p-6">
+        <div className="bg-slate-800/50 superellipse-xl border border-slate-700/50 p-6">
           <h3 className="text-lg font-semibold mb-3 flex items-center gap-2">
             <Clock className="w-5 h-5 text-slate-400" />
             Comment ajouter une nouvelle version

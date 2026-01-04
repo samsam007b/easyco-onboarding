@@ -44,7 +44,7 @@ export default function InterfaceResidentPage() {
       {/* Header */}
       <div className="flex items-center gap-4">
         <div
-          className="w-12 h-12 rounded-2xl flex items-center justify-center"
+          className="w-12 h-12 superellipse-2xl flex items-center justify-center"
           style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
         >
           <Key className="w-6 h-6 text-white" />
@@ -56,7 +56,7 @@ export default function InterfaceResidentPage() {
       </div>
 
       {/* Tabs */}
-      <div className="bg-slate-800 rounded-xl p-2 border border-slate-700">
+      <div className="bg-slate-800 superellipse-xl p-2 border border-slate-700">
         <div className="flex gap-1">
           {[
             { id: 'overview', label: 'Vue d\'ensemble', icon: Home },
@@ -119,7 +119,7 @@ function OverviewSection() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Visual Gradient Bar */}
-          <div className="relative h-24 rounded-2xl overflow-hidden border-2 border-white shadow-2xl">
+          <div className="relative h-24 superellipse-2xl overflow-hidden border-2 border-white shadow-2xl">
             <div
               className="absolute inset-0"
               style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}
@@ -140,7 +140,7 @@ function OverviewSection() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className="w-20 h-20 rounded-xl border-2 border-white shadow-lg"
+                  className="w-20 h-20 superellipse-xl border-2 border-white shadow-lg"
                   style={{ background: '#d9574f' }}
                 />
                 <div>
@@ -158,7 +158,7 @@ function OverviewSection() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className="w-20 h-20 rounded-xl border-2 border-white shadow-lg"
+                  className="w-20 h-20 superellipse-xl border-2 border-white shadow-lg"
                   style={{ background: '#ff5b21' }}
                 />
                 <div>
@@ -176,7 +176,7 @@ function OverviewSection() {
               </div>
               <div className="flex items-center gap-3">
                 <div
-                  className="w-20 h-20 rounded-xl border-2 border-white shadow-lg"
+                  className="w-20 h-20 superellipse-xl border-2 border-white shadow-lg"
                   style={{ background: '#ff8017' }}
                 />
                 <div>
@@ -265,7 +265,7 @@ function OverviewSection() {
               <label className="text-sm text-slate-400">Couleur Principale</label>
               <div className="flex flex-col gap-3">
                 <div
-                  className="w-full h-24 rounded-xl border-2 border-white shadow-lg flex items-center justify-center"
+                  className="w-full h-24 superellipse-xl border-2 border-white shadow-lg flex items-center justify-center"
                   style={{ background: '#ee5736' }}
                 >
                   <span className="text-white font-bold text-sm">var(--resident-500)</span>
@@ -283,7 +283,7 @@ function OverviewSection() {
               <label className="text-sm text-slate-400">Dégradé 2 couleurs</label>
               <div className="flex flex-col gap-3">
                 <div
-                  className="w-full h-24 rounded-xl border-2 border-white shadow-lg"
+                  className="w-full h-24 superellipse-xl border-2 border-white shadow-lg"
                   style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                 />
                 <div>
@@ -299,7 +299,7 @@ function OverviewSection() {
               <label className="text-sm text-slate-400">Fond Subtil (10%)</label>
               <div className="flex flex-col gap-3">
                 <div
-                  className="w-full h-24 rounded-xl border-2 border-slate-600 shadow-lg"
+                  className="w-full h-24 superellipse-xl border-2 border-slate-600 shadow-lg"
                   style={{ background: '#ee573610' }}
                 />
                 <div>
@@ -315,7 +315,7 @@ function OverviewSection() {
               <label className="text-sm text-slate-400">Bordure (30%)</label>
               <div className="flex flex-col gap-3">
                 <div
-                  className="w-full h-24 rounded-xl border-2 shadow-lg bg-slate-900"
+                  className="w-full h-24 superellipse-xl border-2 shadow-lg bg-slate-900"
                   style={{ borderColor: '#ee573630' }}
                 />
                 <div>
@@ -331,7 +331,7 @@ function OverviewSection() {
           <div className="p-4 bg-slate-900 rounded-lg border border-slate-600">
             <div className="flex items-center gap-4">
               <div
-                className="w-16 h-16 rounded-xl border-2 border-white shadow-lg"
+                className="w-16 h-16 superellipse-xl border-2 border-white shadow-lg"
                 style={{ background: '#c23f21' }}
               />
               <div className="flex-1">
@@ -363,21 +363,21 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 1 - Gradient Signature Complet</h4>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 Action Principale
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <Users className="w-4 h-4 inline mr-2" />
                 Membres
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <Plus className="w-4 h-4 inline mr-2" />
                 Ajouter
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 Valider
               </button>
@@ -391,21 +391,21 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 2 - Couleur Principale Unie (#ee5736)</h4>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ee5736' }}>
                 Action Principale
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ee5736' }}>
                 <Users className="w-4 h-4 inline mr-2" />
                 Membres
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ee5736' }}>
                 <Plus className="w-4 h-4 inline mr-2" />
                 Ajouter
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ee5736' }}>
                 Valider
               </button>
@@ -419,23 +419,23 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 3 - Mix Palette (1 couleur par bouton)</h4>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#d9574f' }}>
                 Couleur 1
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ee5736' }}>
                 Couleur 2
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ff5b21' }}>
                 Couleur 3
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ff6e1c' }}>
                 Couleur 4
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ff8017' }}>
                 Couleur 5
               </button>
@@ -449,21 +449,21 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 4 - Gradient 2 Couleurs (Principal + Transparent)</h4>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
                 Action Principale
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
                 <Users className="w-4 h-4 inline mr-2" />
                 Membres
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
                 <Plus className="w-4 h-4 inline mr-2" />
                 Ajouter
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
                 Valider
               </button>
@@ -477,21 +477,21 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 5 - Outline (Bordure Colorée)</h4>
             </div>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+              <button className="px-4 py-2.5 superellipse-xl font-semibold hover:scale-105 transition-transform border-2"
                 style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
                 Action Principale
               </button>
-              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+              <button className="px-4 py-2.5 superellipse-xl font-semibold hover:scale-105 transition-transform border-2"
                 style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
                 <Users className="w-4 h-4 inline mr-2" />
                 Membres
               </button>
-              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+              <button className="px-4 py-2.5 superellipse-xl font-semibold hover:scale-105 transition-transform border-2"
                 style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
                 <Plus className="w-4 h-4 inline mr-2" />
                 Ajouter
               </button>
-              <button className="px-4 py-2.5 rounded-xl font-semibold hover:scale-105 transition-transform border-2"
+              <button className="px-4 py-2.5 superellipse-xl font-semibold hover:scale-105 transition-transform border-2"
                 style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
                 Valider
               </button>
@@ -519,12 +519,12 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 1 - Gradient Signature Complet</h4>
               <Badge className="bg-blue-500/20 text-blue-300 text-xs">Recommandé pour Actions Rapides</Badge>
             </div>
-            <div className="rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
+            <div className="superellipse-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
               style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <div className="w-12 h-12 superellipse-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <Home className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -532,20 +532,20 @@ function OverviewSection() {
                       <p className="text-sm text-white/80">12 colocataires • 6 chambres</p>
                     </div>
                   </div>
-                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-xl font-semibold transition-all">
+                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white superellipse-xl font-semibold transition-all">
                     Actions Rapides
                   </button>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">€850</p>
                     <p className="text-xs text-white/70">Loyer moyen</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">4.8★</p>
                     <p className="text-xs text-white/70">Note globale</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">2</p>
                     <p className="text-xs text-white/70">Tâches en cours</p>
                   </div>
@@ -561,12 +561,12 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 2 - Couleur Principale Unie (#ee5736)</h4>
               <Badge className="bg-green-500/20 text-green-300 text-xs">Simple & Élégant</Badge>
             </div>
-            <div className="rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
+            <div className="superellipse-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
               style={{ background: '#ee5736' }}>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <div className="w-12 h-12 superellipse-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <Home className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -574,20 +574,20 @@ function OverviewSection() {
                       <p className="text-sm text-white/80">12 colocataires • 6 chambres</p>
                     </div>
                   </div>
-                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-xl font-semibold transition-all">
+                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white superellipse-xl font-semibold transition-all">
                     Actions Rapides
                   </button>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">€850</p>
                     <p className="text-xs text-white/70">Loyer moyen</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">4.8★</p>
                     <p className="text-xs text-white/70">Note globale</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">2</p>
                     <p className="text-xs text-white/70">Tâches en cours</p>
                   </div>
@@ -603,12 +603,12 @@ function OverviewSection() {
               <h4 className="text-base font-bold text-white">Version 4 - Gradient 2 Couleurs (Principal + Transparent)</h4>
               <Badge className="bg-purple-500/20 text-purple-300 text-xs">Doux & Moderne</Badge>
             </div>
-            <div className="rounded-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
+            <div className="superellipse-2xl overflow-hidden border-2 border-white/20 shadow-2xl"
               style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}>
               <div className="p-6">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                    <div className="w-12 h-12 superellipse-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <Home className="w-6 h-6 text-white" />
                     </div>
                     <div>
@@ -616,20 +616,20 @@ function OverviewSection() {
                       <p className="text-sm text-white/80">12 colocataires • 6 chambres</p>
                     </div>
                   </div>
-                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white rounded-xl font-semibold transition-all">
+                  <button className="px-4 py-2 bg-white/20 backdrop-blur-sm hover:bg-white/30 text-white superellipse-xl font-semibold transition-all">
                     Actions Rapides
                   </button>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">€850</p>
                     <p className="text-xs text-white/70">Loyer moyen</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">4.8★</p>
                     <p className="text-xs text-white/70">Note globale</p>
                   </div>
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-3 text-center">
+                  <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-3 text-center">
                     <p className="text-2xl font-bold text-white">2</p>
                     <p className="text-xs text-white/70">Tâches en cours</p>
                   </div>
@@ -639,7 +639,7 @@ function OverviewSection() {
           </div>
 
           {/* Recommandations d'usage */}
-          <div className="mt-6 p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-xl border border-orange-500/30">
+          <div className="mt-6 p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 superellipse-xl border border-orange-500/30">
             <h4 className="text-sm font-bold text-orange-300 mb-3">💡 Recommandations d'usage</h4>
             <div className="space-y-2 text-xs text-slate-300">
               <p><strong className="text-white">Version 1 (Gradient complet):</strong> Idéal pour les sections qui nécessitent une attention maximale - Actions Rapides, Profile Dropdown Background, Logo IzzIco</p>
@@ -669,7 +669,7 @@ function OverviewSection() {
               return (
                 <div
                   key={item.label}
-                  className="flex items-center justify-between p-3 rounded-xl transition-all"
+                  className="flex items-center justify-between p-3 superellipse-xl transition-all"
                   style={{ background: '#ee573610' }}
                 >
                   <div className="flex items-center gap-3">
@@ -715,7 +715,7 @@ function ComponentsSection() {
           {/* Version 1 - Logo avec gradient complet en background */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Version 1 - Background Gradient Complet</h4>
-            <div className="p-6 rounded-xl flex items-center justify-center"
+            <div className="p-6 superellipse-xl flex items-center justify-center"
               style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
               <div className="text-white font-bold text-xl">IzzIco</div>
             </div>
@@ -732,11 +732,11 @@ function ComponentsSection() {
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <User className="w-5 h-5 text-white" />
               </div>
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-lg"
+              <div className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-lg"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <Settings className="w-5 h-5 text-white" />
               </div>
-              <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg"
+              <div className="w-10 h-10 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <Bell className="w-5 h-5 text-white" />
               </div>
@@ -746,7 +746,7 @@ function ComponentsSection() {
           {/* Version 3 - Bouton "Actions Rapides" avec gradient */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Version 3 - Bouton "Actions Rapides"</h4>
-            <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+            <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
               style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
               <Zap className="w-5 h-5" />
               Actions Rapides
@@ -768,7 +768,7 @@ function ComponentsSection() {
           {/* État Actif */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">État Actif (Page courante)</h4>
-            <div className="p-3 rounded-xl relative" style={{ background: '#ee573610', borderLeft: '3px solid #ee5736' }}>
+            <div className="p-3 superellipse-xl relative" style={{ background: '#ee573610', borderLeft: '3px solid #ee5736' }}>
               <div className="flex items-center gap-2">
                 <Home className="w-5 h-5" style={{ color: '#ee5736' }} />
                 <span style={{ color: '#ee5736' }} className="text-sm font-semibold">Dashboard</span>
@@ -779,7 +779,7 @@ function ComponentsSection() {
           {/* État Inactif */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">État Inactif</h4>
-            <div className="p-3 rounded-xl bg-transparent hover:bg-slate-700/50 transition-all cursor-pointer">
+            <div className="p-3 superellipse-xl bg-transparent hover:bg-slate-700/50 transition-all cursor-pointer">
               <div className="flex items-center gap-2">
                 <Users className="w-5 h-5 text-slate-400" />
                 <span className="text-sm font-medium text-slate-400">Membres</span>
@@ -790,7 +790,7 @@ function ComponentsSection() {
           {/* Avec Badge */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Avec Badge de Notification</h4>
-            <div className="p-3 rounded-xl relative" style={{ background: '#ee573610', borderLeft: '3px solid #ee5736' }}>
+            <div className="p-3 superellipse-xl relative" style={{ background: '#ee573610', borderLeft: '3px solid #ee5736' }}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <MessageCircle className="w-5 h-5" style={{ color: '#ee5736' }} />
@@ -819,7 +819,7 @@ function ComponentsSection() {
                 return (
                   <div
                     key={item.label}
-                    className={`p-3 rounded-xl transition-all cursor-pointer ${item.active ? 'border-l-3' : ''}`}
+                    className={`p-3 superellipse-xl transition-all cursor-pointer ${item.active ? 'border-l-3' : ''}`}
                     style={item.active ? { background: '#ee573610', borderLeft: '3px solid #ee5736' } : {}}
                   >
                     <div className="flex items-center justify-between">
@@ -857,7 +857,7 @@ function ComponentsSection() {
           {/* Actions Rapides Dropdown */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Dropdown "Actions Rapides"</h4>
-            <div className="bg-slate-900 rounded-xl border border-slate-700 p-4 space-y-2">
+            <div className="bg-slate-900 superellipse-xl border border-slate-700 p-4 space-y-2">
               {[
                 { icon: UserPlus, label: 'Inviter un colocataire', color: '#ee5736' },
                 { icon: Plus, label: 'Nouvelle dépense', color: '#ee5736' },
@@ -881,7 +881,7 @@ function ComponentsSection() {
           {/* Profile Dropdown */}
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Dropdown "Profile"</h4>
-            <div className="bg-slate-900 rounded-xl border border-slate-700 p-4">
+            <div className="bg-slate-900 superellipse-xl border border-slate-700 p-4">
               {/* User Info */}
               <div className="flex items-center gap-3 pb-3 border-b border-slate-700">
                 <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-lg"
@@ -940,11 +940,11 @@ function ComponentsSection() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Primary CTA - Gradient Complet</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 Inviter un colocataire
               </button>
-              <button className="px-6 py-3 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-6 py-3 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
                 <Plus className="w-5 h-5" />
                 Nouvelle dépense
@@ -956,11 +956,11 @@ function ComponentsSection() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Secondary - Couleur Unie (#ee5736)</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-5 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
+              <button className="px-5 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform"
                 style={{ background: '#ee5736' }}>
                 Sauvegarder
               </button>
-              <button className="px-5 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-5 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#ee5736' }}>
                 <CheckSquare className="w-4 h-4" />
                 Valider
@@ -972,11 +972,11 @@ function ComponentsSection() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Outline - Bordure Colorée</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-5 py-2.5 rounded-xl font-semibold transition-transform hover:scale-105 border-2"
+              <button className="px-5 py-2.5 superellipse-xl font-semibold transition-transform hover:scale-105 border-2"
                 style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
                 Annuler
               </button>
-              <button className="px-5 py-2.5 rounded-xl font-semibold transition-transform hover:scale-105 border-2 flex items-center gap-2"
+              <button className="px-5 py-2.5 superellipse-xl font-semibold transition-transform hover:scale-105 border-2 flex items-center gap-2"
                 style={{ borderColor: '#ee5736', color: '#ee5736', background: 'transparent' }}>
                 <Users className="w-4 h-4" />
                 Voir les membres
@@ -988,11 +988,11 @@ function ComponentsSection() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Ghost - Fond Subtil</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-5 py-2.5 rounded-xl font-semibold transition-all hover:scale-105"
+              <button className="px-5 py-2.5 superellipse-xl font-semibold transition-all hover:scale-105"
                 style={{ background: '#ee573610', color: '#ee5736' }}>
                 Modifier
               </button>
-              <button className="px-5 py-2.5 rounded-xl font-semibold transition-all hover:scale-105 flex items-center gap-2"
+              <button className="px-5 py-2.5 superellipse-xl font-semibold transition-all hover:scale-105 flex items-center gap-2"
                 style={{ background: '#ee573610', color: '#ee5736' }}>
                 <Settings className="w-4 h-4" />
                 Paramètres
@@ -1004,27 +1004,27 @@ function ComponentsSection() {
           <div className="space-y-3">
             <h4 className="text-sm font-semibold text-white">Avec Icônes - Mix Palette</h4>
             <div className="flex flex-wrap gap-3">
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#d9574f' }}>
                 <Home className="w-4 h-4" />
                 Résidence
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#ee5736' }}>
                 <Users className="w-4 h-4" />
                 Membres
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#ff5b21' }}>
                 <CheckSquare className="w-4 h-4" />
                 Tâches
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#ff6e1c' }}>
                 <DollarSign className="w-4 h-4" />
                 Finances
               </button>
-              <button className="px-4 py-2.5 rounded-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+              <button className="px-4 py-2.5 superellipse-xl text-white font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                 style={{ background: '#ff8017' }}>
                 <Calendar className="w-4 h-4" />
                 Calendrier
@@ -1040,9 +1040,9 @@ function ComponentsSection() {
           <CardTitle className="text-white">ResidenceHeader - Bannière Résidence</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="p-6 rounded-2xl" style={{ background: 'linear-gradient(to right, #D97B6F, #E8865D, #FF8C4B)' }}>
+          <div className="p-6 superellipse-2xl" style={{ background: 'linear-gradient(to right, #D97B6F, #E8865D, #FF8C4B)' }}>
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur flex items-center justify-center">
+              <div className="w-12 h-12 superellipse-xl bg-white/20 backdrop-blur flex items-center justify-center">
                 <Home className="w-6 h-6 text-white" />
               </div>
               <div className="flex-1">
@@ -1105,11 +1105,11 @@ function ComponentsSection() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Loyer Card */}
-            <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+            <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20" style={{ background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' }} />
               <div className="relative z-10">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                  className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                   style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                 >
                   <Home className="w-6 h-6 text-white" />
@@ -1121,11 +1121,11 @@ function ComponentsSection() {
             </div>
 
             {/* Colocataires Card */}
-            <div className="relative overflow-hidden rounded-3xl p-6 bg-white shadow-lg">
+            <div className="relative overflow-hidden superellipse-3xl p-6 bg-white shadow-lg">
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl opacity-20" style={{ background: 'linear-gradient(to bottom right, #ee573620, #ee573610)' }} />
               <div className="relative z-10">
                 <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
+                  className="w-12 h-12 superellipse-2xl flex items-center justify-center mb-4 shadow-sm border border-gray-200"
                   style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                 >
                   <Users className="w-6 h-6 text-white" />
@@ -1145,7 +1145,7 @@ function ComponentsSection() {
           <CardTitle className="text-white">Quick Actions Dropdown</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="w-72 bg-white/95 backdrop-blur-2xl rounded-2xl shadow-2xl border border-white/20 py-2">
+          <div className="w-72 bg-white/95 backdrop-blur-2xl superellipse-2xl shadow-2xl border border-white/20 py-2">
             <div className="px-4 py-3 border-b border-gray-100">
               <h3 className="font-semibold text-gray-900 flex items-center gap-2">
                 <Zap className="w-4 h-4" style={{ color: '#ee5736' }} />
@@ -1162,10 +1162,10 @@ function ComponentsSection() {
                 return (
                   <div
                     key={action.label}
-                    className="flex items-start gap-3 px-3 py-3 rounded-xl hover:bg-orange-50 transition group cursor-pointer"
+                    className="flex items-start gap-3 px-3 py-3 superellipse-xl hover:bg-orange-50 transition group cursor-pointer"
                   >
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-gray-200"
+                      className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform border border-gray-200"
                       style={{ background: 'linear-gradient(to bottom right, #ee5736, #ee573680)' }}
                     >
                       <Icon className="w-5 h-5 text-white" />
@@ -1195,14 +1195,14 @@ function ComponentsSection() {
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Header Section avec Photo Résidence */}
-          <div className="rounded-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
+          <div className="superellipse-2xl overflow-hidden border-2 border-white/10 shadow-2xl"
             style={{ background: 'linear-gradient(135deg, #d9574f 0%, #ff5b21 50%, #ff8017 100%)' }}>
             <div className="p-6">
               {/* Top Row - Photo + Infos + CTA Principal */}
               <div className="flex items-start gap-6 mb-6">
                 {/* Photo Résidence (comme photo de profil) */}
                 <div className="relative flex-shrink-0">
-                  <div className="w-24 h-24 rounded-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg">
+                  <div className="w-24 h-24 superellipse-2xl bg-white/20 backdrop-blur-sm border-2 border-white/30 overflow-hidden shadow-lg">
                     <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
                       <Home className="w-12 h-12 text-white" />
                     </div>
@@ -1243,7 +1243,7 @@ function ComponentsSection() {
                 </div>
 
                 {/* CTA Principal - Inviter des colocataires */}
-                <button className="px-6 py-3 bg-white text-orange-600 rounded-xl font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
+                <button className="px-6 py-3 bg-white text-orange-600 superellipse-xl font-semibold shadow-lg hover:scale-105 transition-transform flex items-center gap-2"
                   style={{ color: '#ee5736' }}>
                   <UserPlus className="w-5 h-5" />
                   Inviter des Colocs
@@ -1252,19 +1252,19 @@ function ComponentsSection() {
 
               {/* Stats Grid */}
               <div className="grid grid-cols-4 gap-3">
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€1,250</p>
                   <p className="text-xs text-white/70 mt-1">Loyer Total/mois</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">4.8★</p>
                   <p className="text-xs text-white/70 mt-1">Note Résidence</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">3</p>
                   <p className="text-xs text-white/70 mt-1">Tâches en cours</p>
                 </div>
-                <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
+                <div className="bg-white/10 backdrop-blur-sm superellipse-xl p-4 text-center border border-white/20">
                   <p className="text-3xl font-bold text-white">€245</p>
                   <p className="text-xs text-white/70 mt-1">Dépenses ce mois</p>
                 </div>
@@ -1273,7 +1273,7 @@ function ComponentsSection() {
           </div>
 
           {/* Bonheur de la Résidence - GROS POURCENTAGE */}
-          <div className="relative overflow-hidden rounded-3xl p-8 bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-700 shadow-2xl">
+          <div className="relative overflow-hidden superellipse-3xl p-8 bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-700 shadow-2xl">
             <div className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl opacity-20"
               style={{ background: 'linear-gradient(135deg, #d9574f, #ff8017)' }} />
 
@@ -1337,7 +1337,7 @@ function ComponentsSection() {
 
                 {/* Détails des métriques */}
                 <div className="flex-1 grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                  <div className="p-4 superellipse-xl bg-slate-800/50 border border-slate-700">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                         style={{ background: 'linear-gradient(135deg, #d9574f, #ff5b21)' }}>
@@ -1349,7 +1349,7 @@ function ComponentsSection() {
                     <p className="text-xs text-slate-400 mt-1">4/4 membres actifs</p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                  <div className="p-4 superellipse-xl bg-slate-800/50 border border-slate-700">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                         style={{ background: 'linear-gradient(135deg, #ff5b21, #ff8017)' }}>
@@ -1361,7 +1361,7 @@ function ComponentsSection() {
                     <p className="text-xs text-slate-400 mt-1">À jour ce mois</p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                  <div className="p-4 superellipse-xl bg-slate-800/50 border border-slate-700">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                         style={{ background: 'linear-gradient(135deg, #d9574f, #ff5b21)' }}>
@@ -1373,7 +1373,7 @@ function ComponentsSection() {
                     <p className="text-xs text-slate-400 mt-1">21/27 complétées</p>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-800/50 border border-slate-700">
+                  <div className="p-4 superellipse-xl bg-slate-800/50 border border-slate-700">
                     <div className="flex items-center gap-2 mb-2">
                       <div className="w-8 h-8 rounded-lg flex items-center justify-center"
                         style={{ background: 'linear-gradient(135deg, #ff5b21, #ff8017)' }}>
@@ -1390,10 +1390,10 @@ function ComponentsSection() {
           </div>
 
           {/* Complétion des Détails Résidence */}
-          <div className="p-6 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-700 shadow-xl">
+          <div className="p-6 superellipse-2xl bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-700 shadow-xl">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+                <div className="w-10 h-10 superellipse-xl flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, #d9574f, #ff8017)' }}>
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
@@ -1431,7 +1431,7 @@ function ComponentsSection() {
               ].map((step, index) => (
                 <div
                   key={index}
-                  className={`flex items-center gap-3 p-3 rounded-xl transition-all ${
+                  className={`flex items-center gap-3 p-3 superellipse-xl transition-all ${
                     step.done ? 'bg-slate-800/50' : 'bg-slate-700/30 border-2 border-dashed border-slate-600'
                   }`}
                 >
@@ -1472,9 +1472,9 @@ function ComponentsSection() {
               return (
                 <button
                   key={action.label}
-                  className="p-4 rounded-xl bg-slate-800 border-2 border-slate-700 hover:border-slate-600 transition-all group text-left"
+                  className="p-4 superellipse-xl bg-slate-800 border-2 border-slate-700 hover:border-slate-600 transition-all group text-left"
                 >
-                  <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"
+                  <div className="w-12 h-12 superellipse-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform"
                     style={{ background: action.color }}>
                     <Icon className="w-6 h-6 text-white" />
                   </div>
@@ -1486,7 +1486,7 @@ function ComponentsSection() {
           </div>
 
           {/* Recommendations */}
-          <div className="p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-xl border border-orange-500/30">
+          <div className="p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 superellipse-xl border border-orange-500/30">
             <h4 className="text-sm font-bold text-orange-300 mb-3">💡 Design Principles Appliqués</h4>
             <div className="space-y-2 text-xs text-slate-300">
               <p>✨ <strong className="text-white">Hiérarchie Visuelle:</strong> Photo résidence en haut à gauche (principe F-pattern), CTA principal en haut à droite</p>

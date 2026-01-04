@@ -157,7 +157,7 @@ export default function PropertyBasicsPage() {
         {hasProperty === 'yes' && (
           <>
             {/* Property City */}
-            <div className="p-5 rounded-xl bg-blue-50 border border-blue-200">
+            <div className="p-5 superellipse-xl bg-blue-50 border border-blue-200">
               <OnboardingInput
                 role="owner"
                 label={onboarding.owner.propertyBasics.propertyLocation}
@@ -170,7 +170,7 @@ export default function PropertyBasicsPage() {
             </div>
 
             {/* Property Type */}
-            <div className="p-5 rounded-xl bg-yellow-50 border border-yellow-200">
+            <div className="p-5 superellipse-xl bg-yellow-50 border border-yellow-200">
               <OnboardingLabel required>
                 <div className="flex items-center gap-2">
                   <Home className="w-4 h-4" />
@@ -202,7 +202,7 @@ export default function PropertyBasicsPage() {
 
         {/* Conditional: If no property */}
         {hasProperty === 'no' && (
-          <div className="p-5 rounded-xl bg-purple-50 border border-purple-200">
+          <div className="p-5 superellipse-xl bg-purple-50 border border-purple-200">
             <h3 className="font-semibold text-gray-900 mb-2">{onboarding.owner.propertyBasics.noProblemTitle}</h3>
             <p className="text-sm text-gray-700">
               {onboarding.owner.propertyBasics.noProblemDesc}

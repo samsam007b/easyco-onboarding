@@ -181,7 +181,7 @@ export default function DatePicker({
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: -10, scale: 0.95 }}
       transition={{ duration: 0.2 }}
-      className="fixed z-[99999] bg-white rounded-xl shadow-2xl border border-gray-200 p-3 min-w-[260px]"
+      className="fixed z-[99999] bg-white superellipse-xl shadow-2xl border border-gray-200 p-3 min-w-[260px]"
       style={{
         top: `${calendarPosition.top}px`,
         left: `${calendarPosition.left}px`

@@ -363,7 +363,7 @@ export default function SubscriptionPage() {
                 }
               }}
               disabled={checkoutLoading}
-              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-8 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white superellipse-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {checkoutLoading ? (
                 <>
@@ -386,7 +386,7 @@ export default function SubscriptionPage() {
                 const pricingSection = document.getElementById('pricing-section');
                 pricingSection?.scrollIntoView({ behavior: 'smooth' });
               }}
-              className="px-8 py-4 bg-white text-gray-700 rounded-xl font-semibold border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-all"
+              className="px-8 py-4 bg-white text-gray-700 superellipse-xl font-semibold border-2 border-gray-200 hover:border-purple-300 hover:bg-purple-50 transition-all"
             >
               Voir les tarifs
             </motion.button>
@@ -436,9 +436,9 @@ export default function SubscriptionPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.4 + index * 0.1 }}
                 whileHover={{ scale: 1.02, y: -4 }}
-                className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200"
+                className="group bg-white superellipse-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200"
               >
-                <div className={`w-14 h-14 ${feature.bgColor} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                <div className={`w-14 h-14 ${feature.bgColor} superellipse-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
                   <feature.icon className={`w-7 h-7 ${feature.iconColor}`} />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
@@ -484,12 +484,12 @@ export default function SubscriptionPage() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className={`bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden border-2 ${
+                className={`bg-white superellipse-3xl p-8 shadow-lg relative overflow-hidden border-2 ${
                   userRole === 'owner' ? 'border-purple-200' : 'border-orange-200'
                 }`}
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                  <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                     userRole === 'owner'
                       ? 'bg-gradient-to-br from-purple-100 to-indigo-100'
                       : 'bg-gradient-to-br from-orange-100 to-amber-100'
@@ -547,7 +547,7 @@ export default function SubscriptionPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleSubscribe('monthly')}
                   disabled={checkoutLoading}
-                  className={`w-full py-4 rounded-xl font-semibold transition-all border-2 disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full py-4 superellipse-xl font-semibold transition-all border-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                     userRole === 'owner'
                       ? 'border-purple-300 text-purple-700 bg-purple-50 hover:bg-purple-100'
                       : 'border-orange-300 text-orange-700 bg-orange-50 hover:bg-orange-100'
@@ -569,7 +569,7 @@ export default function SubscriptionPage() {
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className={`bg-white rounded-3xl p-8 shadow-xl relative overflow-hidden ${
+                className={`bg-white superellipse-3xl p-8 shadow-xl relative overflow-hidden ${
                   userRole === 'owner'
                     ? 'border-2 border-purple-400 ring-4 ring-purple-100'
                     : 'border-2 border-orange-400 ring-4 ring-orange-100'
@@ -585,7 +585,7 @@ export default function SubscriptionPage() {
                 </div>
 
                 <div className="flex items-center gap-3 mb-4 mt-2">
-                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                  <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                     userRole === 'owner'
                       ? 'bg-gradient-to-br from-purple-500 to-indigo-500'
                       : 'bg-gradient-to-br from-orange-500 to-amber-500'
@@ -652,7 +652,7 @@ export default function SubscriptionPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => handleSubscribe('annual')}
                   disabled={checkoutLoading}
-                  className={`w-full py-4 text-white rounded-xl font-semibold shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`w-full py-4 text-white superellipse-xl font-semibold shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     userRole === 'owner'
                       ? 'bg-gradient-to-r from-purple-600 to-indigo-600 shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30'
                       : 'bg-gradient-to-r from-orange-500 to-amber-500 shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/30'
@@ -679,14 +679,14 @@ export default function SubscriptionPage() {
                 initial={{ opacity: 0, x: -20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden border-2 border-purple-200"
+                className="bg-white superellipse-3xl p-8 shadow-lg relative overflow-hidden border-2 border-purple-200"
               >
                 <div className="absolute top-0 right-0 px-4 py-1 bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-semibold rounded-bl-xl">
                   POPULAIRE
                 </div>
 
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-indigo-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-indigo-100 superellipse-xl flex items-center justify-center">
                     <Crown className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
@@ -729,7 +729,7 @@ export default function SubscriptionPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => startCheckout('owner_annual')}
                   disabled={checkoutLoading}
-                  className="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white superellipse-xl font-semibold shadow-lg shadow-purple-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -747,10 +747,10 @@ export default function SubscriptionPage() {
                 initial={{ opacity: 0, x: 20 }}
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
-                className="bg-white rounded-3xl p-8 shadow-lg relative overflow-hidden border border-gray-200"
+                className="bg-white superellipse-3xl p-8 shadow-lg relative overflow-hidden border border-gray-200"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-amber-100 rounded-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-amber-100 superellipse-xl flex items-center justify-center">
                     <Users className="w-6 h-6 text-orange-600" />
                   </div>
                   <div>
@@ -793,7 +793,7 @@ export default function SubscriptionPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => startCheckout('resident_annual')}
                   disabled={checkoutLoading}
-                  className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-xl font-semibold shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white superellipse-xl font-semibold shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -815,7 +815,7 @@ export default function SubscriptionPage() {
               animate={{ opacity: 1, y: 0 }}
               className="mt-6 max-w-md mx-auto"
             >
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
+              <div className="bg-red-50 border border-red-200 superellipse-xl p-4 flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-red-800 font-medium">Erreur de paiement</p>
@@ -855,7 +855,7 @@ export default function SubscriptionPage() {
                 }
               }}
               disabled={checkoutLoading}
-              className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white rounded-2xl font-bold text-lg shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white superellipse-2xl font-bold text-lg shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {checkoutLoading ? (
                 <span className="flex items-center gap-3">
@@ -961,7 +961,7 @@ export default function SubscriptionPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-2xl shadow-lg p-6 border-2 border-purple-100"
+              className="bg-white superellipse-2xl shadow-lg p-6 border-2 border-purple-100"
             >
               <div className="flex items-center gap-3 mb-4">
                 <div className="p-3 bg-purple-100 rounded-full">
@@ -976,7 +976,7 @@ export default function SubscriptionPage() {
               </div>
 
               {status.is_trial_active && (
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4 mb-4">
+                <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 superellipse-xl p-4 mb-4">
                   <div className="flex items-start gap-3">
                     <Clock className="w-5 h-5 text-green-600 mt-0.5" />
                     <div className="flex-1">
@@ -1032,7 +1032,7 @@ export default function SubscriptionPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl shadow-lg p-6"
+              className="bg-white superellipse-2xl shadow-lg p-6"
             >
               <h3 className="text-lg font-bold text-gray-900 mb-4">Fonctionnalités incluses</h3>
               <div className="grid sm:grid-cols-2 gap-3">
@@ -1059,7 +1059,7 @@ export default function SubscriptionPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl shadow-lg p-6"
+              className="bg-white superellipse-2xl shadow-lg p-6"
             >
               <h3 className="text-lg font-bold text-gray-900 mb-4">Moyen de paiement</h3>
 
@@ -1103,7 +1103,7 @@ export default function SubscriptionPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.05 }}
-                className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg p-6 text-white"
+                className="bg-gradient-to-br from-green-500 to-emerald-600 superellipse-2xl shadow-lg p-6 text-white"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <Gift className="w-6 h-6" />
@@ -1133,7 +1133,7 @@ export default function SubscriptionPage() {
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.05 }}
-                className="bg-white rounded-2xl shadow-lg p-6 border-2 border-green-100"
+                className="bg-white superellipse-2xl shadow-lg p-6 border-2 border-green-100"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <div className="p-2 bg-green-100 rounded-lg">
@@ -1158,7 +1158,7 @@ export default function SubscriptionPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-gradient-to-br from-purple-600 to-indigo-600 rounded-2xl shadow-lg p-6 text-white"
+              className="bg-gradient-to-br from-purple-600 to-indigo-600 superellipse-2xl shadow-lg p-6 text-white"
             >
               <div className="flex items-center gap-2 mb-3">
                 <Zap className="w-6 h-6" />
@@ -1184,7 +1184,7 @@ export default function SubscriptionPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl shadow-lg p-6"
+              className="bg-white superellipse-2xl shadow-lg p-6"
             >
               <div className="flex items-center gap-2 mb-3">
                 <Shield className="w-5 h-5 text-green-600" />
@@ -1215,7 +1215,7 @@ export default function SubscriptionPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3 }}
-              className="bg-white rounded-2xl shadow-lg p-6"
+              className="bg-white superellipse-2xl shadow-lg p-6"
             >
               <h3 className="text-lg font-bold text-gray-900 mb-3">Gestion de l'abonnement</h3>
 

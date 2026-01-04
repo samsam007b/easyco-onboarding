@@ -134,7 +134,7 @@ export default function OnboardingEnhanceHobbiesPage() {
               value={newHobby}
               onChange={(e) => setNewHobby(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleAddHobby()}
-              className="flex-1 px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
+              className="flex-1 px-4 py-2 border border-gray-300 superellipse-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-orange-500"
               placeholder={t('enhanceSearcher.hobbies.custom.placeholder')}
             />
             <EnhanceProfileButton
@@ -180,7 +180,7 @@ export default function OnboardingEnhanceHobbiesPage() {
       <div className="space-y-3 mt-8">
         <button
           onClick={handleNext}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+          className="w-full py-4 superellipse-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           {t('enhanceSearcher.common.saveAndContinue')}
         </button>

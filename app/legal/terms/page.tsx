@@ -45,7 +45,7 @@ export default function TermsPage() {
         {/* Content */}
         <div className="prose prose-lg max-w-none">
           {/* Introduction */}
-          <div className="bg-white rounded-2xl border-2 border-gray-200 p-8 mb-8">
+          <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8 mb-8">
             <p className="text-gray-700 leading-relaxed">
               {terms.intro}
             </p>
@@ -107,7 +107,7 @@ export default function TermsPage() {
             <p className="text-gray-700 mb-4">
               {terms.userObligations.content}
             </p>
-            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6 space-y-3">
+            <div className="bg-yellow-50 border-2 border-yellow-200 superellipse-xl p-6 space-y-3">
               <div className="flex items-start gap-3">
                 <div className="w-2 h-2 bg-[var(--easy-yellow)] rounded-full mt-2"></div>
                 <p className="text-gray-700">{terms.userObligations.truthful}</p>
@@ -163,7 +163,7 @@ export default function TermsPage() {
                 <span className="text-[var(--easy-purple)] font-semibold">•</span> {terms.liability.transactions}
               </li>
             </ul>
-            <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 rounded-xl">
+            <div className="mt-4 p-4 bg-red-50 border-2 border-red-200 superellipse-xl">
               <p className="text-gray-700 font-medium">
                 {terms.liability.disclaimer}
               </p>
@@ -199,7 +199,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
               {terms.applicableLaw.title}
             </h2>
-            <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-6">
+            <div className="bg-purple-50 border-2 border-purple-200 superellipse-xl p-6">
               <p className="text-gray-700">
                 {terms.applicableLaw.content}
               </p>
@@ -224,7 +224,7 @@ export default function TermsPage() {
             <p className="text-gray-700 mb-4">
               {terms.contact.content}
             </p>
-            <div className="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-6">
+            <div className="bg-yellow-50 border-2 border-yellow-200 superellipse-xl p-6">
               <p className="text-gray-700 mb-2">
                 <strong>{common.email}:</strong>{' '}
                 <a href="mailto:contact@izzico.be" className="text-[var(--easy-purple)] hover:underline">

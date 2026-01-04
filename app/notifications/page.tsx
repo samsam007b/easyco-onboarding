@@ -233,7 +233,7 @@ export default function NotificationsPage() {
 
           {/* Filters Panel */}
           {showFilters && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <div className="mt-4 p-4 bg-gray-50 superellipse-xl border border-gray-200">
               <div className="flex items-center gap-6">
                 {/* Read Status Filter */}
                 <div className="flex items-center gap-2">
@@ -300,7 +300,7 @@ export default function NotificationsPage() {
       {/* Main Content */}
       <main className="max-w-4xl mx-auto px-6 py-8">
         {filteredNotifications.length === 0 ? (
-          <div className="bg-white rounded-3xl shadow-lg p-12 text-center">
+          <div className="bg-white superellipse-3xl shadow-lg p-12 text-center">
             <Bell className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-gray-900 mb-2">
               {filter === 'unread' && (notificationsT?.emptyState?.noUnread?.[language] || 'No unread notifications')}
@@ -319,13 +319,13 @@ export default function NotificationsPage() {
               <div
                 key={notification.id}
                 onClick={() => handleNotificationClick(notification)}
-                className={`bg-white rounded-2xl shadow hover:shadow-lg transition-all cursor-pointer p-5 ${
+                className={`bg-white superellipse-2xl shadow hover:shadow-lg transition-all cursor-pointer p-5 ${
                   !notification.read ? 'border-2 border-[#4A148C]' : 'border border-gray-200'
                 }`}
               >
                 <div className="flex items-start gap-4">
                   {/* Icon */}
-                  <div className={`flex-shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
+                  <div className={`flex-shrink-0 w-12 h-12 superellipse-xl flex items-center justify-center ${
                     !notification.read ? 'bg-purple-100' : 'bg-gray-100'
                   }`}>
                     {getNotificationIcon(notification.type)}

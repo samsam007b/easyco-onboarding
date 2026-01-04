@@ -135,7 +135,7 @@ export default function AssistantDashboardPage() {
       {/* Real-time Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* FAQ Usage */}
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 superellipse-xl p-5">
           <div className="flex items-center justify-between">
             <div className="p-2 bg-green-100 rounded-lg">
               <Zap className="w-5 h-5 text-green-600" />
@@ -156,7 +156,7 @@ export default function AssistantDashboardPage() {
         </div>
 
         {/* Groq Usage */}
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 superellipse-xl p-5">
           <div className="flex items-center justify-between">
             <div className="p-2 bg-blue-100 rounded-lg">
               <MessageSquare className="w-5 h-5 text-blue-600" />
@@ -178,7 +178,7 @@ export default function AssistantDashboardPage() {
         </div>
 
         {/* OpenAI Usage */}
-        <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 superellipse-xl p-5">
           <div className="flex items-center justify-between">
             <div className="p-2 bg-orange-100 rounded-lg">
               <DollarSign className="w-5 h-5 text-orange-600" />
@@ -199,7 +199,7 @@ export default function AssistantDashboardPage() {
         </div>
 
         {/* Cost Savings */}
-        <div className="bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-purple-50 to-violet-50 border border-purple-200 superellipse-xl p-5">
           <div className="flex items-center justify-between">
             <div className="p-2 bg-purple-100 rounded-lg">
               <TrendingUp className="w-5 h-5 text-purple-600" />
@@ -223,7 +223,7 @@ export default function AssistantDashboardPage() {
       {/* Cost Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Monthly Costs */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <DollarSign className="w-5 h-5 text-gray-600" />
             Coûts estimés (30 jours)
@@ -285,7 +285,7 @@ export default function AssistantDashboardPage() {
         </div>
 
         {/* Historical Stats */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Clock className="w-5 h-5 text-gray-600" />
             Statistiques (30 jours)
@@ -333,7 +333,7 @@ export default function AssistantDashboardPage() {
       </div>
 
       {/* Architecture Explanation */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="bg-white border border-gray-200 superellipse-xl overflow-hidden">
         <button
           onClick={() => setShowArchitecture(!showArchitecture)}
           className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
@@ -411,7 +411,7 @@ export default function AssistantDashboardPage() {
 
       {/* Top Pages */}
       {stats?.topPages && stats.topPages.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">
             Pages les plus actives
           </h2>

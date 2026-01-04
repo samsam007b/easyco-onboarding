@@ -192,7 +192,7 @@ export default function QuickAvailabilityPage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-orange-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <Calendar className="w-8 h-8 text-orange-600" />
         </div>
         <OnboardingHeading
@@ -255,7 +255,7 @@ export default function QuickAvailabilityPage() {
 
         {/* ASAP Message */}
         {moveInFlexibility === 'asap' && (
-          <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4">
+          <div className="bg-green-50 border-2 border-green-200 superellipse-xl p-4">
             <p className="text-sm text-green-800 font-medium">
               {t('quickOnboarding.availability.asapMessage')}
             </p>
@@ -263,7 +263,7 @@ export default function QuickAvailabilityPage() {
         )}
 
         {/* Info Box */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+        <div className="bg-blue-50 border border-blue-200 superellipse-xl p-4">
           <p className="text-sm text-blue-800">
             <span className="font-semibold">{t('quickOnboarding.availability.tip.label')}</span> {t('quickOnboarding.availability.tip.text')}
           </p>

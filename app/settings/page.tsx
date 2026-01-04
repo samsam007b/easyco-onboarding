@@ -390,7 +390,7 @@ export default function SettingsPage() {
               >
                 {/* Glow effect */}
                 <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-30"
+                  className="absolute inset-0 superellipse-2xl opacity-30"
                   style={{
                     background: colors.gradientStyle,
                     filter: 'blur(15px)',
@@ -400,7 +400,7 @@ export default function SettingsPage() {
                 />
                 {/* Main icon container */}
                 <div
-                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                  className="relative w-20 h-20 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
                     background: colors.gradientStyle,
                     boxShadow: `0 8px 24px ${colors.shadow}`,

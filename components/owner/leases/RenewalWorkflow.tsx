@@ -120,11 +120,11 @@ export function RenewalWorkflow({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         className={cn(
-          "bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-8 text-center",
+          "bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-8 text-center",
           className
         )}
       >
-        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-green-100 flex items-center justify-center">
+        <div className="w-16 h-16 mx-auto mb-4 superellipse-2xl bg-green-100 flex items-center justify-center">
           <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
         <h3 className="text-lg font-bold text-gray-900 mb-2">Aucun renouvellement en attente</h3>
@@ -138,7 +138,7 @@ export function RenewalWorkflow({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm overflow-hidden",
+        "bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm overflow-hidden",
         className
       )}
     >
@@ -147,7 +147,7 @@ export function RenewalWorkflow({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
               style={{ background: ownerGradient }}
             >
               <Repeat className="w-5 h-5 text-white" />
@@ -229,7 +229,7 @@ export function RenewalWorkflow({
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: index * 0.05 }}
                 className={cn(
-                  "border-2 rounded-xl overflow-hidden transition-all",
+                  "border-2 superellipse-xl overflow-hidden transition-all",
                   getUrgencyBg(lease.daysRemaining)
                 )}
               >
@@ -243,11 +243,11 @@ export function RenewalWorkflow({
                     <img
                       src={lease.tenantPhoto}
                       alt={lease.tenantName}
-                      className="w-12 h-12 rounded-xl object-cover flex-shrink-0"
+                      className="w-12 h-12 superellipse-xl object-cover flex-shrink-0"
                     />
                   ) : (
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold flex-shrink-0"
+                      className="w-12 h-12 superellipse-xl flex items-center justify-center text-white font-bold flex-shrink-0"
                       style={{ background: ownerGradient }}
                     >
                       {getInitials(lease.tenantName)}

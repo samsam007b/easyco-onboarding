@@ -400,7 +400,7 @@ export function PerformanceMaturityDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             {/* Maturity Level */}
             <div className="text-center">
-              <div className={cn('inline-flex items-center justify-center w-20 h-20 rounded-2xl mb-3', maturity.bg)}>
+              <div className={cn('inline-flex items-center justify-center w-20 h-20 superellipse-2xl mb-3', maturity.bg)}>
                 <span className={cn('text-3xl font-bold', maturity.color)}>{maturity.level}</span>
               </div>
               <p className={cn('text-lg font-semibold', maturity.color)}>{maturity.name}</p>

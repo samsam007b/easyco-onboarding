@@ -106,7 +106,7 @@ export function OwnerAlertBanner({
             <div className="flex items-center gap-4">
               {/* Icon */}
               <div
-                className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0"
                 style={{ background: config.gradient }}
               >
                 <IconComponent className="w-6 h-6 text-white" />

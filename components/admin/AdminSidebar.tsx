@@ -66,7 +66,7 @@ export default function AdminSidebar({ userEmail, userRole }: AdminSidebarProps)
       <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-slate-800 px-6 pb-4 border-r border-slate-700">
         {/* Logo */}
         <div className="flex h-16 shrink-0 items-center gap-3 border-b border-slate-700">
-          <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-purple-800 superellipse-xl flex items-center justify-center">
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>

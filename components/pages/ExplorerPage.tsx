@@ -187,7 +187,7 @@ export default function ExplorerPage() {
                 {/* Stat card 1 */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white/80 backdrop-blur-xl rounded-2xl p-6 shadow-xl"
+                  className="bg-white/80 backdrop-blur-xl superellipse-2xl p-6 shadow-xl"
                   style={{ borderColor: `${SEARCHER_COLORS.gradient.end}40`, borderWidth: '1px' }}
                 >
                   <div className="flex items-center justify-between">
@@ -212,7 +212,7 @@ export default function ExplorerPage() {
                 {/* Stat card 2 */}
                 <motion.div
                   whileHover={{ scale: 1.02 }}
-                  className="rounded-2xl p-6 shadow-xl"
+                  className="superellipse-2xl p-6 shadow-xl"
                   style={{ background: `linear-gradient(135deg, ${SEARCHER_COLORS.gradient.start}, ${SEARCHER_COLORS.gradient.end})` }}
                 >
                   <div className="flex items-center justify-between">
@@ -265,16 +265,16 @@ export default function ExplorerPage() {
                 >
                   {/* Hover gradient effect */}
                   <div
-                    className="absolute inset-0 rounded-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"
+                    className="absolute inset-0 superellipse-2xl transition-all duration-300 opacity-0 group-hover:opacity-100"
                     style={{ background: `linear-gradient(135deg, ${SEARCHER_COLORS.gradient.start}08, ${SEARCHER_COLORS.gradient.end}08)` }}
                   />
 
                   <div
-                    className="relative bg-white/60 backdrop-blur-sm rounded-2xl p-8 border border-gray-100 transition-all duration-300"
+                    className="relative bg-white/60 backdrop-blur-sm superellipse-2xl p-8 border border-gray-100 transition-all duration-300"
                     style={{ ['--hover-border' as string]: `${SEARCHER_COLORS.gradient.end}60` }}
                   >
                     <div
-                      className="w-14 h-14 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg"
+                      className="w-14 h-14 superellipse-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg"
                       style={{ background: `linear-gradient(135deg, ${SEARCHER_COLORS.gradient.start}, ${SEARCHER_COLORS.gradient.end})` }}
                     >
                       <Icon className="w-7 h-7 text-white" />
@@ -322,7 +322,7 @@ export default function ExplorerPage() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
                 whileHover={{ y: -5 }}
-                className="group relative bg-white/80 backdrop-blur-sm rounded-2xl overflow-hidden border border-gray-100 transition-all shadow-lg hover:shadow-2xl"
+                className="group relative bg-white/80 backdrop-blur-sm superellipse-2xl overflow-hidden border border-gray-100 transition-all shadow-lg hover:shadow-2xl"
                 style={{ ['--hover-border' as string]: `${SEARCHER_COLORS.gradient.end}60` }}
               >
                 {/* Image */}
@@ -363,7 +363,7 @@ export default function ExplorerPage() {
                   <Link href="/signup">
                     <Button
                       variant="outline"
-                      className="w-full rounded-xl border-2 font-semibold transition-colors"
+                      className="w-full superellipse-xl border-2 font-semibold transition-colors"
                       style={{
                         borderColor: SEARCHER_COLORS.primary,
                         color: SEARCHER_COLORS.text,
@@ -439,7 +439,7 @@ export default function ExplorerPage() {
 
                 {/* Content */}
                 <div
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border transition-all hover:shadow-lg"
+                  className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border transition-all hover:shadow-lg"
                   style={{ borderColor: `${SEARCHER_COLORS.gradient.end}40` }}
                 >
                   <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
@@ -460,7 +460,7 @@ export default function ExplorerPage() {
       >
         <div className="max-w-4xl mx-auto">
           <div
-            className="relative overflow-hidden rounded-3xl p-12 md:p-16 shadow-2xl"
+            className="relative overflow-hidden superellipse-3xl p-12 md:p-16 shadow-2xl"
             style={{ background: `linear-gradient(135deg, ${SEARCHER_COLORS.gradient.start}, ${SEARCHER_COLORS.gradient.end})` }}
           >
             {/* Animated blobs */}

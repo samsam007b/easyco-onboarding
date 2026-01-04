@@ -262,7 +262,7 @@ export default function AgentDashboardPage() {
       {activeTab === 'logs' && <LogsTab stats={stats} />}
 
       {/* Architecture Section (collapsible) */}
-      <div className="bg-white border border-gray-200 rounded-xl overflow-hidden">
+      <div className="bg-white border border-gray-200 superellipse-xl overflow-hidden">
         <button
           onClick={() => toggleSection('architecture')}
           className="w-full p-4 flex items-center justify-between hover:bg-gray-50 transition-colors"
@@ -359,7 +359,7 @@ function OverviewTab({ stats }: { stats: AgentStats | null }) {
       {/* Provider Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Provider Breakdown */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <PieChart className="w-5 h-5 text-gray-600" />
             Distribution des providers (30j)
@@ -396,7 +396,7 @@ function OverviewTab({ stats }: { stats: AgentStats | null }) {
         </div>
 
         {/* User Type Distribution */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Users className="w-5 h-5 text-gray-600" />
             Répartition par type d&apos;utilisateur (30j)
@@ -432,7 +432,7 @@ function OverviewTab({ stats }: { stats: AgentStats | null }) {
 
       {/* Trend Chart (simplified) */}
       {daily?.trend && daily.trend.length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-gray-600" />
             Tendance des requêtes (14 derniers jours)
@@ -474,7 +474,7 @@ function IntentsTab({ stats }: { stats: AgentStats | null }) {
     <div className="space-y-6">
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 superellipse-xl p-5">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-violet-100 rounded-lg">
               <Target className="w-5 h-5 text-violet-600" />
@@ -488,7 +488,7 @@ function IntentsTab({ stats }: { stats: AgentStats | null }) {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 superellipse-xl p-5">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-green-100 rounded-lg">
               <CheckCircle className="w-5 h-5 text-green-600" />
@@ -502,7 +502,7 @@ function IntentsTab({ stats }: { stats: AgentStats | null }) {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-200 superellipse-xl p-5">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-blue-100 rounded-lg">
               <BarChart3 className="w-5 h-5 text-blue-600" />
@@ -518,7 +518,7 @@ function IntentsTab({ stats }: { stats: AgentStats | null }) {
       </div>
 
       {/* Top Intents Table */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
+      <div className="bg-white border border-gray-200 superellipse-xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
           <Target className="w-5 h-5 text-gray-600" />
           Top Intents
@@ -565,7 +565,7 @@ function IntentsTab({ stats }: { stats: AgentStats | null }) {
 
       {/* Categories Grid */}
       {intents?.categories && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <Filter className="w-5 h-5 text-gray-600" />
             Catégories thématiques
@@ -652,7 +652,7 @@ function CostsTab({ stats }: { stats: AgentStats | null }) {
       {/* Cost Analysis */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Token Usage */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-gray-600" />
             Consommation de tokens
@@ -687,7 +687,7 @@ function CostsTab({ stats }: { stats: AgentStats | null }) {
         </div>
 
         {/* Projections */}
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
             <TrendingUp className="w-5 h-5 text-gray-600" />
             Projections
@@ -735,7 +735,7 @@ function ImprovementsTab({ stats }: { stats: AgentStats | null }) {
     <div className="space-y-6">
       {/* Summary */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-orange-50 to-amber-50 border border-orange-200 superellipse-xl p-5">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-orange-100 rounded-lg">
               <AlertTriangle className="w-5 h-5 text-orange-600" />
@@ -749,7 +749,7 @@ function ImprovementsTab({ stats }: { stats: AgentStats | null }) {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-violet-50 to-purple-50 border border-violet-200 superellipse-xl p-5">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-violet-100 rounded-lg">
               <Lightbulb className="w-5 h-5 text-violet-600" />
@@ -763,7 +763,7 @@ function ImprovementsTab({ stats }: { stats: AgentStats | null }) {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-xl p-5">
+        <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 superellipse-xl p-5">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-cyan-100 rounded-lg">
               <Brain className="w-5 h-5 text-cyan-600" />
@@ -778,7 +778,7 @@ function ImprovementsTab({ stats }: { stats: AgentStats | null }) {
 
       {/* By Type */}
       {improvements?.byType && Object.keys(improvements.byType).length > 0 && (
-        <div className="bg-white border border-gray-200 rounded-xl p-6">
+        <div className="bg-white border border-gray-200 superellipse-xl p-6">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">
             Répartition par type d&apos;amélioration
           </h3>
@@ -803,7 +803,7 @@ function ImprovementsTab({ stats }: { stats: AgentStats | null }) {
       )}
 
       {/* Pending Improvements */}
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
+      <div className="bg-white border border-gray-200 superellipse-xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
           <Sparkles className="w-5 h-5 text-gray-600" />
           Candidats à l&apos;amélioration
@@ -854,7 +854,7 @@ function ImprovementsTab({ stats }: { stats: AgentStats | null }) {
       </div>
 
       {/* How it works */}
-      <div className="bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 rounded-xl p-6">
+      <div className="bg-gradient-to-r from-violet-50 to-purple-50 border border-violet-200 superellipse-xl p-6">
         <h3 className="text-lg font-semibold text-violet-900 mb-3 flex items-center gap-2">
           <Brain className="w-5 h-5" />
           Comment fonctionne l&apos;auto-apprentissage ?
@@ -888,7 +888,7 @@ function LogsTab({ stats }: { stats: AgentStats | null }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white border border-gray-200 rounded-xl p-6">
+      <div className="bg-white border border-gray-200 superellipse-xl p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
           <Clock className="w-5 h-5 text-gray-600" />
           Requêtes récentes
@@ -1037,7 +1037,7 @@ interface StatCardProps {
 
 function StatCard({ icon: Icon, iconColor, iconBg, gradient, border, label, value, subtext, badge }: StatCardProps) {
   return (
-    <div className={`bg-gradient-to-br ${gradient} border ${border} rounded-xl p-5`}>
+    <div className={`bg-gradient-to-br ${gradient} border ${border} superellipse-xl p-5`}>
       <div className="flex items-center justify-between">
         <div className={`p-2 ${iconBg} rounded-lg`}>
           <Icon className={`w-5 h-5 ${iconColor}`} />

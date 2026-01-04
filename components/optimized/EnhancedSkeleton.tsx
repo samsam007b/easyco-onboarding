@@ -27,7 +27,7 @@ export default function EnhancedSkeleton({ variant = 'card', count = 1 }: Enhanc
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-5 bg-white rounded-2xl border border-gray-200"
+          className="p-5 bg-white superellipse-2xl border border-gray-200"
         >
           <div className="flex items-start justify-between mb-3">
             <div className="flex items-center gap-3 flex-1">
@@ -63,14 +63,14 @@ export default function EnhancedSkeleton({ variant = 'card', count = 1 }: Enhanc
           <div className="relative z-10">
             {/* Central icon skeleton */}
             <div className="flex justify-center mb-8">
-              <div className="w-24 h-24 bg-white rounded-3xl shadow-2xl animate-pulse" />
+              <div className="w-24 h-24 bg-white superellipse-3xl shadow-2xl animate-pulse" />
             </div>
 
             {/* KPI cards skeleton */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="bg-white/80 backdrop-blur-sm rounded-2xl p-4">
-                  <div className="w-10 h-10 bg-gray-200 rounded-xl mb-3 animate-pulse" />
+                <div key={i} className="bg-white/80 backdrop-blur-sm superellipse-2xl p-4">
+                  <div className="w-10 h-10 bg-gray-200 superellipse-xl mb-3 animate-pulse" />
                   <div className="h-3 bg-gray-200 rounded w-16 mb-1 animate-pulse" />
                   <div className="h-7 bg-gray-200 rounded w-12 animate-pulse" />
                 </div>
@@ -104,7 +104,7 @@ export default function EnhancedSkeleton({ variant = 'card', count = 1 }: Enhanc
             <div className="h-4 bg-gray-200 rounded w-1/2 mx-auto animate-pulse" />
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2 mt-6">
               {[...Array(4)].map((_, i) => (
-                <div key={i} className="h-20 bg-gray-200 rounded-2xl animate-pulse" />
+                <div key={i} className="h-20 bg-gray-200 superellipse-2xl animate-pulse" />
               ))}
             </div>
           </div>
@@ -124,7 +124,7 @@ export default function EnhancedSkeleton({ variant = 'card', count = 1 }: Enhanc
             {/* Nav items skeleton */}
             <div className="hidden lg:flex items-center gap-1">
               {[...Array(6)].map((_, i) => (
-                <div key={i} className="w-24 h-10 bg-gray-200 rounded-xl animate-pulse" />
+                <div key={i} className="w-24 h-10 bg-gray-200 superellipse-xl animate-pulse" />
               ))}
             </div>
 
@@ -148,7 +148,7 @@ export default function EnhancedSkeleton({ variant = 'card', count = 1 }: Enhanc
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="bg-white rounded-xl p-4 shadow-sm relative overflow-hidden"
+            className="bg-white superellipse-xl p-4 shadow-sm relative overflow-hidden"
           >
             <motion.div
               variants={shimmer}
@@ -183,7 +183,7 @@ export default function EnhancedSkeleton({ variant = 'card', count = 1 }: Enhanc
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: i * 0.1 }}
-          className="bg-white rounded-2xl shadow-lg overflow-hidden relative"
+          className="bg-white superellipse-2xl shadow-lg overflow-hidden relative"
         >
           {/* Shimmer effect overlay */}
           <motion.div

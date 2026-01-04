@@ -175,7 +175,7 @@ export default async function UserDetailPage({
           <div className="flex flex-col md:flex-row gap-6">
             {/* Avatar */}
             <div className="flex-shrink-0">
-              <div className="w-24 h-24 bg-purple-600 rounded-2xl flex items-center justify-center overflow-hidden">
+              <div className="w-24 h-24 bg-purple-600 superellipse-2xl flex items-center justify-center overflow-hidden">
                 {profile?.profile_photo ? (
                   <img
                     src={profile.profile_photo}

@@ -50,7 +50,7 @@ export default function VerificationPage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-orange-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <Shield className="w-8 h-8 text-orange-600" />
         </div>
         <OnboardingHeading
@@ -62,7 +62,7 @@ export default function VerificationPage() {
 
       <div className="space-y-6">
         {/* Identity verification (KYC) */}
-        <div className="p-5 rounded-xl bg-white border border-gray-200">
+        <div className="p-5 superellipse-xl bg-white border border-gray-200">
           <div className="flex items-start gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
               <Upload className="w-5 h-5 text-orange-600" />
@@ -103,7 +103,7 @@ export default function VerificationPage() {
         </div>
 
         {/* Email verification */}
-        <div className="p-5 rounded-xl bg-white border border-gray-200">
+        <div className="p-5 superellipse-xl bg-white border border-gray-200">
           <div className="flex items-start gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0">
               <Mail className="w-5 h-5 text-blue-600" />
@@ -124,7 +124,7 @@ export default function VerificationPage() {
         </div>
 
         {/* Phone verification */}
-        <div className="p-5 rounded-xl bg-white border border-gray-200">
+        <div className="p-5 superellipse-xl bg-white border border-gray-200">
           <div className="flex items-start gap-3 mb-4">
             <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center flex-shrink-0">
               <Phone className="w-5 h-5 text-orange-600" />

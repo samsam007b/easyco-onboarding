@@ -85,7 +85,7 @@ export default function CompareGradientsPage() {
     index: number;
     version: 'figma' | 'code';
   }) => (
-    <div className="bg-slate-800 rounded-2xl border border-slate-700 p-6 hover:border-slate-600 transition-all">
+    <div className="bg-slate-800 superellipse-2xl border border-slate-700 p-6 hover:border-slate-600 transition-all">
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div>
@@ -103,7 +103,7 @@ export default function CompareGradientsPage() {
 
       {/* Gradient Preview - Large */}
       <div
-        className="w-full h-32 rounded-2xl shadow-2xl mb-4"
+        className="w-full h-32 superellipse-2xl shadow-2xl mb-4"
         style={{ background: gradient.css }}
       />
 
@@ -201,7 +201,7 @@ export default function CompareGradientsPage() {
         {/* Header */}
         <div className="mb-12">
           <div className="flex items-center gap-4 mb-4">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 via-orange-500 to-yellow-400 flex items-center justify-center shadow-2xl">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-purple-500 via-orange-500 to-yellow-400 flex items-center justify-center shadow-2xl">
               <Eye className="w-8 h-8 text-white" />
             </div>
             <div>
@@ -211,7 +211,7 @@ export default function CompareGradientsPage() {
           </div>
 
           {/* Legend */}
-          <div className="bg-slate-800 rounded-xl border border-slate-700 p-4 flex items-center gap-6">
+          <div className="bg-slate-800 superellipse-xl border border-slate-700 p-4 flex items-center gap-6">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-purple-500"></div>
               <span className="text-sm text-slate-300">Version Figma = Documentation IZZICO_GRADIENTS_FIGMA.md</span>
@@ -262,7 +262,7 @@ export default function CompareGradientsPage() {
         />
 
         {/* Summary */}
-        <div className="mt-12 bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/30 rounded-2xl p-8">
+        <div className="mt-12 bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/30 superellipse-2xl p-8">
           <h3 className="text-xl font-bold text-white mb-4">📊 Résumé des différences</h3>
           <div className="space-y-3 text-slate-300">
             <div className="flex items-start gap-3">
