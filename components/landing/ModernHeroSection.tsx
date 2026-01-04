@@ -110,19 +110,53 @@ export default function ModernHeroSection() {
 
           {/* Section mauve avec logo et texte - Plus compact */}
           <div className="p-8 md:p-10 relative z-10">
-            {/* Logo Badge - Icône Izzico avec glassmorphism */}
+            {/* Logo Badge - 3 couches: gradient arrière + glassmorphism + logo blanc */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex justify-center mb-6"
             >
-              <div className="w-24 h-24 superellipse-2xl bg-white/30 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/40">
-                <img
-                  src="/logos/izzico-icon-gradient.svg"
-                  alt="Izzico"
-                  className="w-[88px] h-[88px]"
+              <div className="relative w-24 h-24">
+                {/* Couche 3 (arrière): App icon avec gradient signature */}
+                <div
+                  className="absolute inset-0 superellipse-2xl shadow-2xl"
+                  style={{
+                    background: 'linear-gradient(135deg, #9c5698 0%, #d15659 30%, #e05747 50%, #ff7c10 70%, #ffc800 100%)',
+                    boxShadow: '0 8px 32px rgba(156, 86, 152, 0.4), 0 4px 16px rgba(255, 124, 16, 0.3)'
+                  }}
                 />
+
+                {/* Couche 2 (milieu): Glassmorphism opaque révélant la lumière */}
+                <div
+                  className="absolute inset-[3px] superellipse-2xl border border-white/50"
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.25)',
+                    backdropFilter: 'blur(20px) saturate(180%)',
+                    WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+                    boxShadow: 'inset 0 0 20px rgba(255, 255, 255, 0.3), inset 0 2px 10px rgba(255, 255, 255, 0.4)'
+                  }}
+                />
+
+                {/* Reflet lumineux sur le glassmorphism */}
+                <div
+                  className="absolute inset-[3px] superellipse-2xl pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%)',
+                  }}
+                />
+
+                {/* Couche 1 (avant): Logo icon blanc (squircle épais) */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <img
+                    src="/logos/izzico-icon-squircle-blanc.svg"
+                    alt="Izzico"
+                    className="w-[60px] h-[60px] drop-shadow-lg"
+                    style={{
+                      filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
+                    }}
+                  />
+                </div>
               </div>
             </motion.div>
 
