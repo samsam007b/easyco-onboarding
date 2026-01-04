@@ -55,18 +55,11 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-8 mb-8">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #ad5684 0%, #ff9811 100%)' }}
-              >
-                <span className="text-white font-bold text-xl">I</span>
-              </div>
-              <span className="text-2xl font-bold">
-                <span style={{ color: '#ad5684' }}>Izzi</span>
-                <span style={{ color: '#ff9811' }}>co</span>
-              </span>
-            </div>
+            <img
+              src="/logos/izzico-lockup-gradient.svg"
+              alt="Izzico"
+              className="h-10 w-auto mb-4"
+            />
             <p className={`mb-4 leading-relaxed ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               La plateforme moderne pour trouver ta colocation idéale à Bruxelles.
               Matching intelligent, groupes de recherche et gestion simplifiée.
