@@ -237,7 +237,7 @@ export default function AboutPage() {
               </p>
             </div>
             <div className="prose prose-lg max-w-none">
-              <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
+              <div className="bg-white superellipse-2xl shadow-lg p-8 md:p-12">
                 <p className="text-gray-700 leading-relaxed mb-6">
                   {t?.story?.paragraph1?.[language] || 'It all started in 2023 when Marie and Thomas, long-time friends, shared their frustrations about searching for roommates in Brussels. Between dubious listings, personality incompatibilities, and archaic processes, they realized a modern solution was needed.'}
                 </p>

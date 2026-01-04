@@ -98,7 +98,7 @@ export function PropertyCarousel({
   };
 
   return (
-    <div className={`relative w-full h-full overflow-hidden rounded-2xl bg-gray-100 ${className}`}>
+    <div className={`relative w-full h-full overflow-hidden superellipse-2xl bg-gray-100 ${className}`}>
       {/* Main Carousel */}
       <div className="relative w-full h-full">
         <AnimatePresence initial={false} custom={direction} mode="wait">

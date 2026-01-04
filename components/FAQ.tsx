@@ -77,7 +77,7 @@ export default function FAQ() {
         <div className="text-center mb-20">
           <div className="inline-flex items-center justify-center mb-6">
             <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-16 h-16 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{ background: `linear-gradient(to bottom right, ${getGradient(ROLE_COLORS.owner).start}, ${getGradient(ROLE_COLORS.owner).end})` }}
             >
               <HelpCircle className="w-8 h-8 text-white" />
@@ -107,12 +107,12 @@ export default function FAQ() {
               >
                 {/* Background glow on hover */}
                 <div
-                  className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10"
+                  className="absolute inset-0 superellipse-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10"
                   style={{ background: `linear-gradient(to bottom right, ${ownerGradient.start}15, ${ownerGradient.end}15)` }}
                 />
 
                 <div
-                  className="relative rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border"
+                  className="relative superellipse-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border"
                   style={{
                     background: isDark ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
                     borderColor: `${ownerGradient.start}${isDark ? '40' : '20'}`,
@@ -128,7 +128,7 @@ export default function FAQ() {
                       {item.question}
                     </span>
                     <div
-                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
+                      className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
                       style={{
                         background: isOpen
                           ? `linear-gradient(to bottom right, ${ownerGradient.start}, ${ownerGradient.end})`
@@ -171,12 +171,12 @@ export default function FAQ() {
         <div className="relative group">
           {/* Background glow */}
           <div
-            className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
+            className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
             style={{ background: `linear-gradient(to bottom right, ${getGradient(ROLE_COLORS.owner).start}20, ${getGradient(ROLE_COLORS.searcher).start}20)` }}
           />
 
           <div
-            className="relative text-center p-10 sm:p-12 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border"
+            className="relative text-center p-10 sm:p-12 superellipse-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border"
             style={{
               background: isDark
                 ? 'linear-gradient(to bottom right, rgba(139, 111, 207, 0.1), rgba(26, 26, 31, 0.8), rgba(255, 176, 80, 0.05))'
@@ -186,7 +186,7 @@ export default function FAQ() {
             }}
           >
             <div
-              className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
+              className="w-16 h-16 mx-auto mb-6 superellipse-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
               style={{ background: `linear-gradient(to bottom right, ${getGradient(ROLE_COLORS.owner).start}, ${getGradient(ROLE_COLORS.owner).end})` }}
             >
               <Mail className="w-8 h-8 text-white" />

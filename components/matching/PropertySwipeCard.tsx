@@ -272,7 +272,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 {coreInfo.map((info, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center gap-2 p-3 bg-gray-50 rounded-xl"
+                    className="flex items-center gap-2 p-3 bg-gray-50 superellipse-xl"
                   >
                     <info.icon className={cn("w-5 h-5", info.color)} />
                     <span className="text-sm font-semibold text-gray-700">{info.label}</span>

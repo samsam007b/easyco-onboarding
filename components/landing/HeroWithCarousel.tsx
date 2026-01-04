@@ -91,7 +91,7 @@ export function HeroWithCarousel() {
 
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -left-6 z-20">
-                <div className="bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3">
+                <div className="bg-white superellipse-2xl shadow-xl p-4 flex items-center gap-3">
                   <div className="w-12 h-12 rounded-full bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
                     <Home className="w-6 h-6 text-white" />
                   </div>
@@ -104,7 +104,7 @@ export function HeroWithCarousel() {
 
               {/* Floating Badge 2 */}
               <div className="absolute -top-6 -right-6 z-20">
-                <div className="bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl shadow-xl p-4 text-white">
+                <div className="bg-gradient-to-br from-purple-600 to-pink-600 superellipse-2xl shadow-xl p-4 text-white">
                   <div className="flex items-center gap-2 mb-1">
                     <Users className="w-4 h-4" />
                     <span className="text-sm font-medium">Match instantané</span>

@@ -92,13 +92,13 @@ export default function HowItWorks() {
               <div key={index} className="relative group">
                 {/* Background glow on hover */}
                 <div
-                  className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
+                  className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
                   style={{ background: `linear-gradient(to bottom right, ${gradient.start}15, ${gradient.end}15)` }}
                 />
 
                 {/* Step Card */}
                 <div
-                  className="relative rounded-3xl p-8 text-center hover:shadow-2xl transition-all duration-300 hover:scale-105 border h-full flex flex-col"
+                  className="relative superellipse-3xl p-8 text-center hover:shadow-2xl transition-all duration-300 hover:scale-105 border h-full flex flex-col"
                   style={{
                     background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
                     borderColor: `${gradient.start}${resolvedTheme === 'dark' ? '40' : '20'}`,
@@ -117,7 +117,7 @@ export default function HowItWorks() {
 
                     {/* Icon Circle */}
                     <div
-                      className="w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
+                      className="w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
                       style={{ background: `linear-gradient(to bottom right, ${gradient.start}, ${gradient.end})` }}
                     >
                       <Icon className="w-12 h-12 text-white" />

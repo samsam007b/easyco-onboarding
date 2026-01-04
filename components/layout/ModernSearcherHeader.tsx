@@ -583,7 +583,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={cn(
-                        "flex items-center justify-between px-4 py-3 rounded-xl transition-all",
+                        "flex items-center justify-between px-4 py-3 superellipse-xl transition-all",
                         isActive
                           ? "bg-orange-50 text-orange-900 font-semibold"
                           : "text-gray-700 hover:bg-gray-100"

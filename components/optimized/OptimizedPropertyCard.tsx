@@ -108,7 +108,7 @@ function OptimizedPropertyCard({
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden">
+          <div className="bg-white superellipse-xl shadow-sm hover:shadow-md transition-all overflow-hidden">
             {/* Image */}
             <div className="relative h-40 bg-gray-200">
               {/* Placeholder while loading */}
@@ -239,7 +239,7 @@ function OptimizedPropertyCard({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
+        <div className="bg-white superellipse-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
           {/* Image */}
           <div className="relative h-48 sm:h-56 bg-gray-200">
             {/* Placeholder while loading */}

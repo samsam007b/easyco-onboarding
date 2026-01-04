@@ -44,12 +44,12 @@ const TestimonialCard = memo(({ testimonial, isDark }: TestimonialCardProps) => 
     <div className="relative group">
       {/* Background glow on hover */}
       <div
-        className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
+        className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
         style={{ background: `linear-gradient(to bottom right, ${gradient.start}15, ${gradient.end}15)` }}
       />
 
       <div
-        className="relative rounded-3xl p-8 hover:shadow-2xl transition-all duration-300 hover:scale-105 border h-full flex flex-col"
+        className="relative superellipse-3xl p-8 hover:shadow-2xl transition-all duration-300 hover:scale-105 border h-full flex flex-col"
         style={{
           background: isDark ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
           borderColor: `${gradient.start}${isDark ? '40' : '20'}`,
@@ -84,7 +84,7 @@ const TestimonialCard = memo(({ testimonial, isDark }: TestimonialCardProps) => 
         {/* Author */}
         <div className="flex items-center gap-4 relative z-10">
           <div
-            className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
+            className="w-16 h-16 superellipse-2xl flex items-center justify-center text-3xl shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
             style={{ background: `linear-gradient(to bottom right, ${gradient.start}, ${gradient.end})` }}
           >
             {testimonial.avatar}

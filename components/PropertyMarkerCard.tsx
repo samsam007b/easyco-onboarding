@@ -37,7 +37,7 @@ export default function PropertyMarkerCard({
       style={{ position: 'relative' }}
     >
       {/* Card Container */}
-      <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+      <div className="bg-white superellipse-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
         {/* Property Image */}
         <div className="relative w-[120px] h-[90px]">
           <Image

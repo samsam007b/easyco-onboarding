@@ -2,7 +2,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 export function PropertyCardSkeleton() {
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div className="bg-white superellipse-2xl shadow-lg overflow-hidden">
       {/* Image skeleton */}
       <Skeleton className="h-48 w-full rounded-none" />
 

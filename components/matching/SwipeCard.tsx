@@ -202,7 +202,7 @@ export const SwipeCard = memo(function SwipeCard({
       whileDrag={{ scale: 1.02 }}
     >
       <motion.div
-        className="relative w-full bg-white rounded-3xl shadow-2xl overflow-hidden"
+        className="relative w-full bg-white superellipse-3xl shadow-2xl overflow-hidden"
         animate={{ height: isExpanded ? 'auto' : '480px' }}
         transition={{ type: 'spring', stiffness: 300, damping: 30 }}
       >
@@ -234,7 +234,7 @@ export const SwipeCard = memo(function SwipeCard({
             {isScoreReliable ? (
               // Normal score badge
               <div
-                className="px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50"
+                className="px-4 py-2.5 superellipse-2xl shadow-xl backdrop-blur-md border-2 border-white/50"
                 style={{
                   background: `linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFCE7E 100%)`
                 }}
@@ -263,7 +263,7 @@ export const SwipeCard = memo(function SwipeCard({
                     e.stopPropagation();
                     setShowIncompleteDropdown(!showIncompleteDropdown);
                   }}
-                  className="px-4 py-2.5 rounded-2xl shadow-xl backdrop-blur-md border-2 border-white/50 cursor-pointer hover:scale-105 transition-transform"
+                  className="px-4 py-2.5 superellipse-2xl shadow-xl backdrop-blur-md border-2 border-white/50 cursor-pointer hover:scale-105 transition-transform"
                   style={{
                     background: `linear-gradient(135deg, #9CA3AF 0%, #6B7280 100%)`
                   }}
@@ -285,7 +285,7 @@ export const SwipeCard = memo(function SwipeCard({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute top-full right-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
+                      className="absolute top-full right-0 mt-2 w-72 bg-white superellipse-2xl shadow-2xl border border-gray-200 overflow-hidden z-50"
                     >
                       {/* Header */}
                       <div className="bg-gradient-to-r from-gray-100 to-gray-50 px-4 py-3 border-b border-gray-200">
@@ -320,7 +320,7 @@ export const SwipeCard = memo(function SwipeCard({
 
                         {/* Missing categories */}
                         {otherUserCompleteness && otherUserCompleteness.missingCategories.length > 0 && (
-                          <div className="bg-amber-50 rounded-xl p-3">
+                          <div className="bg-amber-50 superellipse-xl p-3">
                             <p className="text-xs font-medium text-amber-800 mb-2">{matching.profile?.missingInfo || 'Informations manquantes :'}</p>
                             <div className="flex flex-wrap gap-1">
                               {otherUserCompleteness.missingCategories.map((cat, idx) => (
@@ -388,7 +388,7 @@ export const SwipeCard = memo(function SwipeCard({
           <div className="grid grid-cols-2 gap-3 mb-4">
             {/* Budget */}
             {(user.min_budget || user.max_budget) && (
-              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+              <div className="flex items-center gap-2 bg-gray-50 superellipse-xl px-3 py-2 border border-gray-100">
                 <Euro className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.card?.budget || 'Budget'}</p>
@@ -406,7 +406,7 @@ export const SwipeCard = memo(function SwipeCard({
 
             {/* Cleanliness */}
             {user.cleanliness_level && (
-              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+              <div className="flex items-center gap-2 bg-gray-50 superellipse-xl px-3 py-2 border border-gray-100">
                 <Home className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.profile?.cleanliness?.label || 'Propreté'}</p>
@@ -417,7 +417,7 @@ export const SwipeCard = memo(function SwipeCard({
 
             {/* Social */}
             {user.social_energy && (
-              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+              <div className="flex items-center gap-2 bg-gray-50 superellipse-xl px-3 py-2 border border-gray-100">
                 <Users className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.profile?.social?.label || 'Social'}</p>
@@ -428,7 +428,7 @@ export const SwipeCard = memo(function SwipeCard({
 
             {/* Schedule */}
             {(user.wake_up_time || user.sleep_time) && (
-              <div className="flex items-center gap-2 bg-gray-50 rounded-xl px-3 py-2 border border-gray-100">
+              <div className="flex items-center gap-2 bg-gray-50 superellipse-xl px-3 py-2 border border-gray-100">
                 <Clock className="w-4 h-4 text-gray-500" />
                 <div>
                   <p className="text-[10px] text-gray-500 uppercase font-medium">{matching.profile?.rhythm || 'Rythme'}</p>
@@ -657,14 +657,14 @@ export const SwipeCard = memo(function SwipeCard({
               {/* Tolerances */}
               <div className="grid grid-cols-2 gap-3">
                 <div className={cn(
-                  "flex items-center gap-2 p-2 rounded-lg text-xs",
+                  "flex items-center gap-2 p-2 superellipse-lg text-xs",
                   user.smoking_tolerance ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                 )}>
                   <Cigarette className="w-4 h-4" />
                   <span>{user.smoking_tolerance ? (matching.profile?.toleratesSmokers || 'Tolère fumeurs') : (matching.profile?.noSmokers || 'Ne tolère pas fumeurs')}</span>
                 </div>
                 <div className={cn(
-                  "flex items-center gap-2 p-2 rounded-lg text-xs",
+                  "flex items-center gap-2 p-2 superellipse-lg text-xs",
                   user.pets_tolerance ? "bg-green-50 text-green-700" : "bg-red-50 text-red-700"
                 )}>
                   <Dog className="w-4 h-4" />
@@ -677,14 +677,14 @@ export const SwipeCard = memo(function SwipeCard({
 
         {/* Swipe Indicators */}
         <motion.div
-          className="absolute top-1/4 left-6 px-6 py-3 border-4 border-green-500 rounded-lg pointer-events-none"
+          className="absolute top-1/4 left-6 px-6 py-3 border-4 border-green-500 superellipse-lg pointer-events-none"
           style={{ opacity: likeOpacity, rotate: -20 }}
         >
           <span className="text-4xl font-black text-green-500 tracking-wider">LIKE</span>
         </motion.div>
 
         <motion.div
-          className="absolute top-1/4 right-6 px-6 py-3 border-4 border-red-500 rounded-lg pointer-events-none"
+          className="absolute top-1/4 right-6 px-6 py-3 border-4 border-red-500 superellipse-lg pointer-events-none"
           style={{ opacity: passOpacity, rotate: 20 }}
         >
           <span className="text-4xl font-black text-red-500 tracking-wider">NOPE</span>

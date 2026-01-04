@@ -172,7 +172,7 @@ export default function PropertyComparison({
         animate={{ scale: 1, y: 0 }}
         exit={{ scale: 0.9, y: 20 }}
         onClick={(e) => e.stopPropagation()}
-        className="bg-white rounded-3xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden"
+        className="bg-white superellipse-3xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden"
       >
         {/* Header */}
         <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6">
@@ -217,7 +217,7 @@ export default function PropertyComparison({
                       </button>
 
                       {/* Property image */}
-                      <div className="relative h-32 rounded-xl overflow-hidden mb-3 bg-gray-200">
+                      <div className="relative h-32 superellipse-xl overflow-hidden mb-3 bg-gray-200">
                         <img
                           src={property.main_image || property.images?.[0] || '/placeholder.jpg'}
                           alt={property.title}
@@ -262,7 +262,7 @@ export default function PropertyComparison({
                 >
                   <td className="p-4 border-b border-gray-200">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600">
+                      <div className="w-8 h-8 superellipse-lg bg-orange-100 flex items-center justify-center text-orange-600">
                         {row.icon}
                       </div>
                       <span className="font-medium text-gray-900 text-sm">{row.label}</span>

@@ -68,7 +68,7 @@ export const CardPile = memo(function CardPile({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               className={`
-                absolute inset-0 rounded-xl border-2 border-dashed
+                absolute inset-0 superellipse-xl border-2 border-dashed
                 flex items-center justify-center
                 ${isLike ? 'border-green-300 bg-green-50/50' : 'border-red-300 bg-red-50/50'}
               `}
@@ -115,7 +115,7 @@ export const CardPile = memo(function CardPile({
                     delay: index * 0.01
                   }}
                   className={`
-                    absolute inset-0 rounded-lg overflow-hidden shadow-md
+                    absolute inset-0 superellipse-lg overflow-hidden shadow-md
                     border-2 ${isLike ? 'border-green-400' : 'border-red-400'}
                   `}
                   style={{

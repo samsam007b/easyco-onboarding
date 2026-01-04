@@ -117,11 +117,11 @@ export default function ModernHeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex justify-center mb-6"
             >
-              <div className="w-16 h-16 rounded-2xl bg-white/30 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/40">
+              <div className="w-20 h-20 superellipse-2xl bg-white/30 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/40">
                 <img
                   src="/logos/izzico-icon-gradient.svg"
                   alt="Izzico"
-                  className="w-10 h-10"
+                  className="w-16 h-16"
                 />
               </div>
             </motion.div>
@@ -157,7 +157,7 @@ export default function ModernHeroSection() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
 
               {/* Location Input */}
-              <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all group">
+              <div className="p-4 superellipse-2xl hover:bg-purple-50/50 transition-all group">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Où ?
                 </label>
@@ -170,7 +170,7 @@ export default function ModernHeroSection() {
               </div>
 
               {/* Budget Input */}
-              <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all group border-l-0 md:border-l border-gray-200">
+              <div className="p-4 superellipse-2xl hover:bg-purple-50/50 transition-all group border-l-0 md:border-l border-gray-200">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Budget
                 </label>
@@ -185,7 +185,7 @@ export default function ModernHeroSection() {
               </div>
 
               {/* Date Input */}
-              <div className="p-4 rounded-2xl hover:bg-purple-50/50 transition-all group border-l-0 md:border-l border-gray-200">
+              <div className="p-4 superellipse-2xl hover:bg-purple-50/50 transition-all group border-l-0 md:border-l border-gray-200">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Quand ?
                 </label>
@@ -201,7 +201,7 @@ export default function ModernHeroSection() {
               <div className="p-2 flex items-center justify-center">
                 <Button
                   onClick={handleSearch}
-                  className="w-full h-full group text-white font-semibold rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
+                  className="w-full h-full group text-white font-semibold superellipse-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   style={{
                     background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
                     boxShadow: '0 10px 30px -5px rgba(156, 86, 152, 0.4), 0 4px 10px -2px rgba(255, 87, 34, 0.3)'

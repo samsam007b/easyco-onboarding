@@ -126,7 +126,7 @@ export default function OwnersPage() {
                   {t?.hero?.freeSignup?.[language] || '✓ Free signup • ✓ No commitment • ✓ 24/7 support'}
                 </p>
               </div>
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
+              <div className="bg-white/10 backdrop-blur-sm superellipse-2xl p-8 border border-white/20">
                 <div className="text-center">
                   <div className="text-6xl font-bold mb-2">€3,450</div>
                   <p className="text-xl text-purple-100 mb-6">
@@ -134,7 +134,7 @@ export default function OwnersPage() {
                   </p>
                   <div className="grid grid-cols-2 gap-4">
                     {stats.slice(1).map((stat, index) => (
-                      <div key={index} className="bg-white/10 rounded-lg p-4">
+                      <div key={index} className="bg-white/10 superellipse-lg p-4">
                         <p className="text-3xl font-bold">{stat.value}</p>
                         <p className="text-sm text-purple-100">
                           {t?.stats?.[stat.key]?.[language] || stat.key}
@@ -163,9 +163,9 @@ export default function OwnersPage() {
               {benefits.map((benefit, index) => (
                 <div
                   key={index}
-                  className="bg-white border-2 border-gray-200 rounded-xl p-6 hover:border-purple-300 hover:shadow-lg transition"
+                  className="bg-white border-2 border-gray-200 superellipse-xl p-6 hover:border-purple-300 hover:shadow-lg transition"
                 >
-                  <div className="w-14 h-14 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <div className="w-14 h-14 bg-purple-100 superellipse-lg flex items-center justify-center mb-4">
                     <benefit.icon className="w-7 h-7 text-purple-600" />
                   </div>
                   <h3 className="text-xl font-bold text-gray-900 mb-3">
@@ -192,9 +192,9 @@ export default function OwnersPage() {
               {features.map((feature, index) => (
                 <div
                   key={index}
-                  className="bg-white rounded-xl p-8 shadow-sm hover:shadow-md transition flex gap-6"
+                  className="bg-white superellipse-xl p-8 shadow-sm hover:shadow-md transition flex gap-6"
                 >
-                  <div className="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 bg-yellow-100 superellipse-lg flex items-center justify-center flex-shrink-0">
                     <feature.icon className="w-6 h-6 text-yellow-600" />
                   </div>
                   <div>
@@ -226,7 +226,7 @@ export default function OwnersPage() {
               {testimonials.map((testimonial, index) => (
                 <div
                   key={index}
-                  className="bg-purple-50 rounded-xl p-6 border-2 border-purple-200"
+                  className="bg-purple-50 superellipse-xl p-6 border-2 border-purple-200"
                 >
                   <div className="flex gap-1 mb-4">
                     {[...Array(testimonial.rating)].map((_, i) => (
@@ -272,7 +272,7 @@ export default function OwnersPage() {
             </div>
             <div className="grid md:grid-cols-2 gap-8">
               {/* Free Plan */}
-              <div className="bg-white rounded-2xl border-2 border-gray-200 p-8">
+              <div className="bg-white superellipse-2xl border-2 border-gray-200 p-8">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
                   {t?.pricing?.free?.name?.[language] || 'Free'}
                 </h3>
@@ -297,7 +297,7 @@ export default function OwnersPage() {
               </div>
 
               {/* Premium Plan */}
-              <div className="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-8 text-white relative overflow-hidden">
+              <div className="bg-gradient-to-br from-purple-600 to-purple-700 superellipse-2xl p-8 text-white relative overflow-hidden">
                 <div className="absolute top-4 right-4 bg-yellow-400 text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
                   {t?.pricing?.premium?.popular?.[language] || 'Popular'}
                 </div>

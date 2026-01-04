@@ -140,7 +140,7 @@ function PropertyCard({
           onMouseLeave?.();
         }}
       >
-        <div className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all overflow-hidden">
+        <div className="bg-white superellipse-xl shadow-sm hover:shadow-md transition-all overflow-hidden">
           {/* Image */}
           <div className="relative h-40 bg-gray-200">
             <Image
@@ -260,7 +260,7 @@ function PropertyCard({
           onMouseLeave?.();
         }}
       >
-        <div className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
+        <div className="bg-white superellipse-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
         {/* Image */}
         <div className="relative h-48 sm:h-56 bg-gray-200">
           <Image
@@ -309,7 +309,7 @@ function PropertyCard({
                 </div>
               )}
               {/* Tooltip on hover */}
-              <div className="absolute bottom-full left-0 mb-2 hidden group-hover/residents:block bg-black/90 text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-xl">
+              <div className="absolute bottom-full left-0 mb-2 hidden group-hover/residents:block bg-black/90 text-white text-xs px-3 py-2 superellipse-lg whitespace-nowrap shadow-xl">
                 {residents.length} colocataire{residents.length > 1 ? 's' : ''} · Voir les profils
               </div>
             </div>
