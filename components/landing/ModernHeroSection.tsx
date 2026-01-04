@@ -110,7 +110,7 @@ export default function ModernHeroSection() {
 
           {/* Section mauve avec logo et texte - Plus compact */}
           <div className="p-8 md:p-10 relative z-10">
-            {/* Logo Badge - Signature gradient avec glassmorphism */}
+            {/* Logo Badge - Icône Izzico avec glassmorphism */}
             <motion.div
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
@@ -118,13 +118,10 @@ export default function ModernHeroSection() {
               className="flex justify-center mb-6"
             >
               <div className="w-16 h-16 rounded-2xl bg-white/30 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/40">
-                <div
-                  className="w-8 h-8"
-                  style={{
-                    background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
-                    WebkitMask: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\'/%3E%3Cpolyline points=\'9 22 9 12 15 12 15 22\'/%3E%3C/svg%3E") center / contain no-repeat',
-                    mask: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpath d=\'m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\'/%3E%3Cpolyline points=\'9 22 9 12 15 12 15 22\'/%3E%3C/svg%3E") center / contain no-repeat'
-                  }}
+                <img
+                  src="/logos/izzico-icon-gradient.svg"
+                  alt="Izzico"
+                  className="w-10 h-10"
                 />
               </div>
             </motion.div>
