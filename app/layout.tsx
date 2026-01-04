@@ -126,7 +126,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
+    <html lang="fr" className={`${inter.variable} ${nunito.variable} ${fredoka.variable}`}>
       <head>
         {/* PWA Meta Tags */}
         <meta name="theme-color" content="#FFFFFF" />
@@ -148,7 +148,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrganizationStructuredData />
         <WebsiteStructuredData />
       </head>
-      <body className={`${inter.variable} ${nunito.variable} ${fredoka.variable} min-h-screen`}>
+      <body className="min-h-screen">
         <SkipLink />
         <Analytics />
         <WebVitalsReporter />
