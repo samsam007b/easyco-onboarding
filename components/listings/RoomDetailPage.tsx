@@ -162,7 +162,7 @@ export function RoomDetailPage({
           {/* Left Column - Details */}
           <div className="lg:col-span-2 space-y-8">
             {/* Overview Card */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
+            <div className="bg-white superellipse-xl p-6 shadow-sm">
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <h2 className="text-xl font-semibold mb-2">
@@ -207,7 +207,7 @@ export function RoomDetailPage({
 
             {/* Aesthetic Highlights - Your Innovation! */}
             {aesthetics && (
-              <div className="bg-white rounded-xl p-6 shadow-sm">
+              <div className="bg-white superellipse-xl p-6 shadow-sm">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
                   <Sparkles className="w-5 h-5 text-purple-600" />
                   Room Aesthetics & Atmosphere
@@ -393,7 +393,7 @@ export function RoomDetailPage({
             )}
 
             {/* Standard Features */}
-            <div className="bg-white rounded-xl p-6 shadow-sm">
+            <div className="bg-white superellipse-xl p-6 shadow-sm">
               <h3 className="text-lg font-semibold mb-4">Room Features</h3>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <FeatureItem
@@ -429,7 +429,7 @@ export function RoomDetailPage({
 
             {/* Property Amenities */}
             {room.property_amenities && room.property_amenities.length > 0 && (
-              <div className="bg-white rounded-xl p-6 shadow-sm">
+              <div className="bg-white superellipse-xl p-6 shadow-sm">
                 <h3 className="text-lg font-semibold mb-4">Property Amenities</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   {room.property_amenities.map((amenity) => (
@@ -445,7 +445,7 @@ export function RoomDetailPage({
 
           {/* Right Column - Booking Card */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-xl p-6 shadow-lg sticky top-24">
+            <div className="bg-white superellipse-xl p-6 shadow-lg sticky top-24">
               {/* Price */}
               <div className="mb-6">
                 <div className="flex items-baseline gap-2">

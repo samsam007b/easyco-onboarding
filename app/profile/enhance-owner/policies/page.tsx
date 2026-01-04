@@ -252,7 +252,7 @@ export default function OwnerPoliciesPage() {
         <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+          className={`w-full py-4 superellipse-xl font-semibold transition-all duration-300 ${
             canContinue
               ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'

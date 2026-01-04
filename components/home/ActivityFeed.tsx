@@ -28,7 +28,7 @@ export function ActivityFeed({
   const displayedActivities = activities.slice(0, maxItems);
 
   return (
-    <Card className="rounded-2xl shadow-lg">
+    <Card className="superellipse-2xl shadow-lg">
       <CardHeader>
         <CardTitle className="text-xl font-bold">{title}</CardTitle>
       </CardHeader>
@@ -43,7 +43,7 @@ export function ActivityFeed({
                 <div
                   key={activity.id}
                   className={cn(
-                    'flex items-start gap-4 p-3 rounded-xl hover:bg-gray-50 transition-colors',
+                    'flex items-start gap-4 p-3 superellipse-xl hover:bg-gray-50 transition-colors',
                     activity.onClick && 'cursor-pointer'
                   )}
                   onClick={activity.onClick}

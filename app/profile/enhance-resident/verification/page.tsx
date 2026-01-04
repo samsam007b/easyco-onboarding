@@ -150,7 +150,7 @@ export default function VerificationResidentPage() {
                   const Icon = benefit.icon;
                   return (
                     <div key={index} className="flex gap-4">
-                      <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
+                      <div className="w-12 h-12 superellipse-xl bg-orange-100 flex items-center justify-center flex-shrink-0">
                         <Icon className="w-6 h-6 text-orange-600" />
                       </div>
                       <div>

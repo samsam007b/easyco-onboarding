@@ -320,7 +320,7 @@ export default function PublicViewPage() {
             )}
             {userProfile?.primary_motivation && (
               <div
-                className="rounded-xl p-3 col-span-2"
+                className="superellipse-xl p-3 col-span-2"
                 style={{ background: 'rgba(156, 86, 152, 0.08)' }}
               >
                 <div className="flex items-center gap-2 mb-1">

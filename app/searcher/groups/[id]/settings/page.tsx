@@ -121,7 +121,7 @@ export default function GroupSettingsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link href={`/searcher/groups/${groupId}`}>
-                <Button variant="ghost" size="icon" className="rounded-xl hover:bg-violet-50">
+                <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-violet-50">
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
               </Link>
@@ -136,7 +136,7 @@ export default function GroupSettingsPage() {
             <Button
               onClick={handleSave}
               disabled={saving}
-              className="rounded-xl text-white"
+              className="superellipse-xl text-white"
               style={{ background: GROUPS_GRADIENT }}
             >
               {saving ? (
@@ -166,7 +166,7 @@ export default function GroupSettingsPage() {
       >
         {/* General Info */}
         <motion.div variants={itemVariants}>
-          <Card className="rounded-2xl border-0 shadow-sm">
+          <Card className="superellipse-2xl border-0 shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Users className="w-5 h-5 text-violet-500" />
@@ -180,7 +180,7 @@ export default function GroupSettingsPage() {
                   value={formData.name}
                   onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                   placeholder="Ex: Les Colocs de Bruxelles"
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
               <div>
@@ -189,7 +189,7 @@ export default function GroupSettingsPage() {
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                   placeholder="Decrivez votre groupe et ce que vous recherchez..."
-                  className="rounded-xl min-h-[100px]"
+                  className="superellipse-xl min-h-[100px]"
                 />
               </div>
             </CardContent>
@@ -198,7 +198,7 @@ export default function GroupSettingsPage() {
 
         {/* Search Criteria */}
         <motion.div variants={itemVariants}>
-          <Card className="rounded-2xl border-0 shadow-sm">
+          <Card className="superellipse-2xl border-0 shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <MapPin className="w-5 h-5 text-emerald-500" />
@@ -212,7 +212,7 @@ export default function GroupSettingsPage() {
                   value={formData.target_city}
                   onChange={(e) => setFormData(prev => ({ ...prev, target_city: e.target.value }))}
                   placeholder="Ex: Bruxelles"
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -223,7 +223,7 @@ export default function GroupSettingsPage() {
                     value={formData.budget_min}
                     onChange={(e) => setFormData(prev => ({ ...prev, budget_min: e.target.value }))}
                     placeholder="400"
-                    className="rounded-xl"
+                    className="superellipse-xl"
                   />
                 </div>
                 <div>
@@ -233,7 +233,7 @@ export default function GroupSettingsPage() {
                     value={formData.budget_max}
                     onChange={(e) => setFormData(prev => ({ ...prev, budget_max: e.target.value }))}
                     placeholder="600"
-                    className="rounded-xl"
+                    className="superellipse-xl"
                   />
                 </div>
               </div>
@@ -243,7 +243,7 @@ export default function GroupSettingsPage() {
                   type="date"
                   value={formData.move_in_date}
                   onChange={(e) => setFormData(prev => ({ ...prev, move_in_date: e.target.value }))}
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
             </CardContent>
@@ -252,7 +252,7 @@ export default function GroupSettingsPage() {
 
         {/* Privacy */}
         <motion.div variants={itemVariants}>
-          <Card className="rounded-2xl border-0 shadow-sm">
+          <Card className="superellipse-2xl border-0 shadow-sm">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Lock className="w-5 h-5 text-blue-500" />
@@ -260,7 +260,7 @@ export default function GroupSettingsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+              <div className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl">
                 <div className="flex items-center gap-3">
                   <Eye className="w-5 h-5 text-gray-500" />
                   <div>
@@ -281,7 +281,7 @@ export default function GroupSettingsPage() {
 
         {/* Danger Zone */}
         <motion.div variants={itemVariants}>
-          <Card className="rounded-2xl border-0 shadow-sm border-red-100">
+          <Card className="superellipse-2xl border-0 shadow-sm border-red-100">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2 text-red-600">
                 <AlertTriangle className="w-5 h-5" />
@@ -289,7 +289,7 @@ export default function GroupSettingsPage() {
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-red-50 rounded-xl">
+              <div className="p-4 bg-red-50 superellipse-xl">
                 <h4 className="font-medium text-red-900 mb-2">Supprimer le groupe</h4>
                 <p className="text-sm text-red-600 mb-4">
                   Cette action est irreversible. Tous les membres seront retires et les donnees du groupe seront perdues.
@@ -297,7 +297,7 @@ export default function GroupSettingsPage() {
                 <Button
                   onClick={handleDeleteGroup}
                   variant="outline"
-                  className="rounded-xl border-red-300 text-red-600 hover:bg-red-100"
+                  className="superellipse-xl border-red-300 text-red-600 hover:bg-red-100"
                 >
                   <Trash2 className="w-4 h-4 mr-2" />
                   Supprimer le groupe

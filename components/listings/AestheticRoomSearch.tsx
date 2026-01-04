@@ -83,7 +83,7 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
           </p>
 
           {/* Search Bar */}
-          <div className="bg-white rounded-xl shadow-2xl p-4 flex flex-col md:flex-row gap-4">
+          <div className="bg-white superellipse-xl shadow-2xl p-4 flex flex-col md:flex-row gap-4">
             <div className="flex-1 flex items-center gap-3 px-4 py-3 bg-gray-50 rounded-lg">
               <MapPin className="w-5 h-5 text-gray-400" />
               <input
@@ -214,7 +214,7 @@ function RoomCard({ room, onClick }: RoomCardProps) {
     <motion.div
       whileHover={{ y: -4 }}
       onClick={onClick}
-      className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
+      className="bg-white superellipse-xl overflow-hidden shadow-md hover:shadow-xl transition-all cursor-pointer"
     >
       {/* Image */}
       <div className="relative aspect-[4/3] bg-gray-200">

@@ -283,7 +283,7 @@ export default function LifestyleResidentPage() {
         <button
           onClick={handleSave}
           disabled={isSaving || !sleepSchedule || !cleanliness || !noiseTolerance}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+          className={`w-full py-4 superellipse-xl font-semibold transition-all duration-300 ${
             (!isSaving && sleepSchedule && cleanliness && noiseTolerance)
               ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'

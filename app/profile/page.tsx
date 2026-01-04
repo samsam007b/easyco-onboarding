@@ -1051,7 +1051,7 @@ export default function ProfilePage() {
                       toast.success(t('profile.dataRefreshed'))
                     }}
                     disabled={isRefreshing}
-                    className="p-2 hover:bg-white/50 rounded-lg transition-colors disabled:opacity-50"
+                    className="p-2 hover:bg-white/50 superellipse-lg transition-colors disabled:opacity-50"
                     title={t('profile.refreshData')}
                   >
                     <RefreshCw className={`w-4 h-4 text-gray-600 ${isRefreshing ? 'animate-spin' : ''}`} />
@@ -1245,7 +1245,7 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-blue-50 flex items-center justify-center flex-shrink-0">
                             <User className="w-6 h-6 text-blue-600" />
                           </div>
                           <div className="flex-1">
@@ -1264,7 +1264,7 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-pink-50 flex items-center justify-center flex-shrink-0">
                             <Heart className="w-6 h-6 text-pink-600" />
                           </div>
                           <div className="flex-1">
@@ -1283,7 +1283,7 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className={`w-12 h-12 rounded-xl ${colors.bg} flex items-center justify-center flex-shrink-0`}>
+                          <div className={`w-12 h-12 superellipse-xl ${colors.bg} flex items-center justify-center flex-shrink-0`}>
                             <Shield className={`w-6 h-6 ${colors.text}`} />
                           </div>
                           <div className="flex-1">
@@ -1302,7 +1302,7 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-green-50 flex items-center justify-center flex-shrink-0">
                             <Sparkles className="w-6 h-6 text-green-600" />
                           </div>
                           <div className="flex-1">
@@ -1321,7 +1321,7 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-orange-50 flex items-center justify-center flex-shrink-0">
                             <Users className="w-6 h-6 text-orange-600" />
                           </div>
                           <div className="flex-1">
@@ -1340,7 +1340,7 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-yellow-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-yellow-50 flex items-center justify-center flex-shrink-0">
                             <DollarSign className="w-6 h-6 text-yellow-600" />
                           </div>
                           <div className="flex-1">
@@ -1359,7 +1359,7 @@ export default function ProfilePage() {
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-xl bg-indigo-50 flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 superellipse-xl bg-indigo-50 flex items-center justify-center flex-shrink-0">
                             <ShieldCheck className="w-6 h-6 text-indigo-600" />
                           </div>
                           <div className="flex-1">
@@ -1415,7 +1415,7 @@ export default function ProfilePage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         {t('profile.settings.currentRole')}
                       </label>
-                      <div className={`p-4 ${colors.bg} rounded-2xl`}>
+                      <div className={`p-4 ${colors.bg} superellipse-2xl`}>
                         <span className="text-gray-900 capitalize font-medium">{userData.user_type}</span>
                         {userData.onboarding_completed && (
                           <span className="ml-3 text-xs text-green-600">
@@ -1470,7 +1470,7 @@ export default function ProfilePage() {
                 <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <h3 className="font-bold text-gray-900 mb-4">{t('profile.settings.accountStatus')}</h3>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl">
                       <span className="text-sm text-gray-600">{t('profile.settings.emailVerified')}</span>
                       {userData.email_verified ? (
                         <Check className="w-5 h-5 text-green-600" />
@@ -1478,7 +1478,7 @@ export default function ProfilePage() {
                         <X className="w-5 h-5 text-red-600" />
                       )}
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl">
                       <span className="text-sm text-gray-600">{t('profile.settings.onboarding')}</span>
                       {userData.onboarding_completed ? (
                         <Check className="w-5 h-5 text-green-600" />
@@ -1486,7 +1486,7 @@ export default function ProfilePage() {
                         <X className="w-5 h-5 text-red-600" />
                       )}
                     </div>
-                    <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">
+                    <div className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl">
                       <span className="text-sm text-gray-600">{t('profile.settings.profilePhoto')}</span>
                       {userData.avatar_url ? (
                         <Check className="w-5 h-5 text-green-600" />

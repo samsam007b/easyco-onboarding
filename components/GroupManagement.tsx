@@ -279,7 +279,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
+      <div className="bg-white superellipse-3xl shadow-lg p-8 text-center">
         <LoadingHouse size={64} />
         <p className="text-gray-600">Loading group...</p>
       </div>
@@ -289,7 +289,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
   // No Group - Show Create/Join Options
   if (!currentGroup) {
     return (
-      <div className="bg-white rounded-3xl shadow-lg p-8">
+      <div className="bg-white superellipse-3xl shadow-lg p-8">
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Users className="w-6 h-6 text-purple-600" />
           Search with a Group
@@ -329,7 +329,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
   const pendingMembers = members.filter(m => m.status === 'pending');
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
+    <div className="bg-white superellipse-3xl shadow-lg overflow-hidden">
       {/* Header */}
       <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-6 text-white">
         <div className="flex items-start justify-between mb-4">

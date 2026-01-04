@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="2430" height="780" viewBox="180 620 2430 780">
   <defs>
-    <linearGradient id="izzico-gradient-v2" gradientUnits="userSpaceOnUse" x1="180" y1="1010" x2="2610" y2="1010">
+    <linearGradient id="izzico-gradient-v3" gradientUnits="userSpaceOnUse" x1="180" y1="620" x2="2610" y2="1400">
       <stop offset="0%" stop-color="#9c5698"/>
       <stop offset="20%" stop-color="#9c5698"/>
       <stop offset="35%" stop-color="#d15659"/>
@@ -10,7 +10,7 @@
       <stop offset="100%" stop-color="#ffc800"/>
     </linearGradient>
   </defs>
-  <g fill="url(#izzico-gradient-v2)">
+  <g fill="url(#izzico-gradient-v3)">
     <!-- i dot -->
     <path d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
     <!-- i stem -->

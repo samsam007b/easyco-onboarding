@@ -34,7 +34,7 @@ export function ActionCard({
   return (
     <Card
       className={cn(
-        'rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden',
+        'superellipse-3xl shadow-xl hover:shadow-2xl transition-all duration-300 cursor-pointer overflow-hidden',
         gradient,
         className
       )}
@@ -50,7 +50,7 @@ export function ActionCard({
 
         {/* Icon */}
         <div className="mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
+          <div className="w-16 h-16 superellipse-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
             <Icon className="h-8 w-8 text-white" />
           </div>
         </div>
@@ -101,7 +101,7 @@ export function ActionCard({
 
         {/* Button */}
         <Button
-          className="w-full bg-white text-purple-700 hover:bg-white/90 font-semibold rounded-2xl"
+          className="w-full bg-white text-purple-700 hover:bg-white/90 font-semibold superellipse-2xl"
           onClick={(e) => {
             e.stopPropagation();
             onClick();

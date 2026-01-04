@@ -25,7 +25,7 @@ export default function Stepper() {
           <Link
             key={it.href}
             href={it.href}
-            className={`px-3 py-2 rounded-2xl border ${
+            className={`px-3 py-2 superellipse-2xl border ${
               active ? 'bg-[color:var(--easy-purple)] text-white' : ''
             }`}
           >

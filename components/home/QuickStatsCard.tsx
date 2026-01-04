@@ -29,7 +29,7 @@ export function QuickStatsCard({
   return (
     <Card
       className={cn(
-        'rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer',
+        'superellipse-2xl shadow-lg hover:shadow-xl transition-all duration-300 cursor-pointer',
         gradient,
         onClick && 'hover:scale-105'
       )}
@@ -51,7 +51,7 @@ export function QuickStatsCard({
               </p>
             )}
           </div>
-          <div className={cn('p-3 rounded-xl', iconBgColor)}>
+          <div className={cn('p-3 superellipse-xl', iconBgColor)}>
             <Icon className="h-6 w-6 text-purple-700" />
           </div>
         </div>

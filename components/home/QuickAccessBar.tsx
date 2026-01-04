@@ -32,7 +32,7 @@ export function QuickAccessBar({ items, className }: QuickAccessBarProps) {
           <Button
             key={index}
             variant="outline"
-            className="flex-shrink-0 rounded-2xl px-6 py-6 hover:bg-purple-50 hover:border-purple-300 relative"
+            className="flex-shrink-0 superellipse-2xl px-6 py-6 hover:bg-purple-50 hover:border-purple-300 relative"
             onClick={item.onClick}
           >
             <div className="flex items-center gap-2">

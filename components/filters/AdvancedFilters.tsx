@@ -212,7 +212,7 @@ export function AdvancedFilters({
           <div className="p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 bg-gray-100 rounded-xl flex items-center justify-center">
+                <div className="w-10 h-10 bg-gray-100 superellipse-xl flex items-center justify-center">
                   <Filter className="w-5 h-5 text-gray-600" />
                 </div>
                 <div>
@@ -252,7 +252,7 @@ export function AdvancedFilters({
           <Accordion type="multiple" defaultValue={['price', 'location']} className="space-y-4">
 
             {/* Prix */}
-            <AccordionItem value="price" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="price" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Euro className="w-5 h-5 text-gray-600" />
@@ -280,7 +280,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Localisation */}
-            <AccordionItem value="location" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="location" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <MapPin className="w-5 h-5 text-gray-600" />
@@ -314,7 +314,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Type de logement */}
-            <AccordionItem value="property-type" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="property-type" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Home className="w-5 h-5 text-gray-600" />
@@ -326,7 +326,7 @@ export function AdvancedFilters({
                   {PROPERTY_TYPES.map((type) => (
                     <label
                       key={type.value}
-                      className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
+                      className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
                     >
                       <input
                         type="checkbox"
@@ -346,7 +346,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Chambres & Salles de bain */}
-            <AccordionItem value="rooms" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="rooms" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Home className="w-5 h-5 text-gray-600" />
@@ -420,7 +420,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Lifestyle - Compatibility */}
-            <AccordionItem value="lifestyle" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="lifestyle" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Heart className="w-5 h-5 text-gray-600" />
@@ -540,7 +540,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Horaires */}
-            <AccordionItem value="schedule" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="schedule" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Clock className="w-5 h-5 text-gray-600" />
@@ -556,7 +556,7 @@ export function AdvancedFilters({
                       {WAKE_UP_TIMES.map((time) => (
                         <label
                           key={time.value}
-                          className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
+                          className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
                         >
                           <input
                             type="checkbox"
@@ -581,7 +581,7 @@ export function AdvancedFilters({
                       {SLEEP_TIMES.map((time) => (
                         <label
                           key={time.value}
-                          className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
+                          className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
                         >
                           <input
                             type="checkbox"
@@ -628,7 +628,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Âge & Profil */}
-            <AccordionItem value="profile" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="profile" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Users className="w-5 h-5 text-gray-600" />
@@ -707,7 +707,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Habitudes à la maison */}
-            <AccordionItem value="home-habits" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="home-habits" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Coffee className="w-5 h-5 text-gray-600" />
@@ -801,7 +801,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Équipements */}
-            <AccordionItem value="amenities" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="amenities" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Sparkles className="w-5 h-5 text-gray-600" />
@@ -813,7 +813,7 @@ export function AdvancedFilters({
                   {AMENITIES.map((amenity) => (
                     <label
                       key={amenity.id}
-                      className={`flex items-center gap-2 p-3 rounded-xl border border-gray-200 cursor-pointer transition ${
+                      className={`flex items-center gap-2 p-3 superellipse-xl border border-gray-200 cursor-pointer transition ${
                         filters.amenities.includes(amenity.id)
                           ? 'bg-orange-50 border-orange-600'
                           : 'hover:bg-orange-50'
@@ -837,7 +837,7 @@ export function AdvancedFilters({
             </AccordionItem>
 
             {/* Score de compatibilité */}
-            <AccordionItem value="match-score" className="border border-gray-200 rounded-2xl px-4">
+            <AccordionItem value="match-score" className="border border-gray-200 superellipse-2xl px-4">
               <AccordionTrigger className="hover:no-underline">
                 <div className="flex items-center gap-3">
                   <Sparkles className="w-5 h-5 text-gray-600" />

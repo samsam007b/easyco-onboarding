@@ -64,7 +64,7 @@ export default function ResidentProfileCard({
         <button
           onClick={() => setShowFullProfile(true)}
           className={cn(
-            "flex flex-col items-center gap-4 p-5 rounded-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-orange-100 hover:border-orange-300 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full",
+            "flex flex-col items-center gap-4 p-5 superellipse-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-orange-100 hover:border-orange-300 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full",
             className
           )}
         >

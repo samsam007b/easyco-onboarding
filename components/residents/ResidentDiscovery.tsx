@@ -174,7 +174,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
 
   if (searchers.length === 0 || currentIndex >= searchers.length) {
     return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-12 border border-gray-200 text-center">
+      <div className="bg-white/80 backdrop-blur-sm superellipse-3xl p-12 border border-gray-200 text-center">
         <div className="max-w-md mx-auto">
           <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-100 to-pink-100 flex items-center justify-center mx-auto mb-4">
             <Users className="w-10 h-10 text-gray-600" />
@@ -234,7 +234,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
               onDragEnd={handleDragEnd}
               className="absolute w-full max-w-md cursor-grab active:cursor-grabbing"
             >
-              <div className="bg-white rounded-3xl shadow-2xl overflow-hidden border-2 border-gray-200">
+              <div className="bg-white superellipse-3xl shadow-2xl overflow-hidden border-2 border-gray-200">
                 {/* Image/Avatar Section */}
                 <div className="relative h-80 bg-gradient-to-br from-orange-200 to-pink-200">
                   {currentSearcher.avatar_url ? (

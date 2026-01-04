@@ -154,7 +154,7 @@ export default function OnboardingCompletionPage() {
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-10">
+        <div className="bg-white superellipse-2xl sm:superellipse-3xl shadow-xl p-6 sm:p-10">
           {/* Success Message */}
           <div className="text-center mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
@@ -175,10 +175,10 @@ export default function OnboardingCompletionPage() {
             {/* Go to Home */}
             <button
               onClick={handleGoHome}
-              className={`group relative bg-gradient-to-br ${theme.gradient} rounded-xl sm:rounded-2xl p-6 sm:p-8 text-white hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300`}
+              className={`group relative bg-gradient-to-br ${theme.gradient} superellipse-xl sm:superellipse-2xl p-6 sm:p-8 text-white hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300`}
             >
               <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 backdrop-blur-sm superellipse-xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
                   <Home className="w-5 h-5 sm:w-6 sm:h-6" />
                 </div>
               </div>
@@ -209,12 +209,12 @@ export default function OnboardingCompletionPage() {
                 userType === 'owner'
                   ? 'border-purple-200 bg-purple-50 hover:bg-purple-100 hover:border-purple-300'
                   : 'border-orange-200 bg-orange-50 hover:bg-orange-100 hover:border-orange-300'
-              } rounded-xl sm:rounded-2xl p-6 sm:p-8 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300`}
+              } superellipse-xl sm:superellipse-2xl p-6 sm:p-8 hover:shadow-xl hover:-translate-y-0.5 transition-all duration-300`}
             >
               <div className="absolute top-3 right-3 sm:top-4 sm:right-4">
                 <div className={`w-10 h-10 sm:w-12 sm:h-12 ${
                   userType === 'owner' ? 'bg-purple-100' : 'bg-orange-100'
-                } rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
+                } superellipse-xl flex items-center justify-center group-hover:scale-110 transition-transform`}>
                   <Sparkles className={`w-5 h-5 sm:w-6 sm:h-6 ${
                     userType === 'owner' ? 'text-purple-600' : 'text-orange-600'
                   }`} />
@@ -246,7 +246,7 @@ export default function OnboardingCompletionPage() {
           {/* Info Message */}
           <div className={`${
             userType === 'owner' ? 'bg-purple-50 border-purple-100' : 'bg-orange-50 border-orange-100'
-          } border rounded-xl p-4 text-sm text-gray-700`}>
+          } border superellipse-xl p-4 text-sm text-gray-700`}>
             <p className="flex items-start gap-2">
               <span className="text-base flex-shrink-0">💡</span>
               <span>

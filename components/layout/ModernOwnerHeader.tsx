@@ -232,7 +232,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
           {/* Logo */}
           <Link href="/dashboard/owner" className="flex items-center group">
             <img
-              src="/logos/izzico-trademark-text-gradient.svg?v=2"
+              src="/logos/izzico-trademark-text-gradient.svg?v=3"
               alt="IzzIco"
               className="h-10 w-auto transition-transform group-hover:scale-105"
             />

@@ -102,7 +102,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
   ].filter(Boolean).length;
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+    <div className="bg-white superellipse-xl shadow-sm border overflow-hidden">
       {/* Header */}
       <div className="px-6 py-4 border-b bg-gradient-to-r from-purple-50 to-pink-50">
         <div className="flex items-center justify-between">

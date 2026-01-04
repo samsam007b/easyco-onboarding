@@ -175,7 +175,7 @@ export default function VerificationPage() {
 
       <div className="space-y-6">
         {/* Badge Status Card */}
-        <div className={`p-6 rounded-2xl border ${badgeInfo.bg} ${badgeInfo.border}`}>
+        <div className={`p-6 superellipse-2xl border ${badgeInfo.bg} ${badgeInfo.border}`}>
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-4">
               <div className="bg-white rounded-full p-2 shadow-md">
@@ -202,7 +202,7 @@ export default function VerificationPage() {
 
           {/* Next Badge Info */}
           {badgeLevel !== 'premium' && (
-            <div className="mt-4 p-3 bg-white/50 rounded-lg border border-gray-200">
+            <div className="mt-4 p-3 bg-white/50 superellipse-lg border border-gray-200">
               <p className="text-xs font-medium text-gray-700">
                 {badgeLevel === 'starter' && `✨ ${t('profileEnhance.verification.progress.nextBadge.starter')}`}
                 {badgeLevel === 'basic' && `✨ ${t('profileEnhance.verification.progress.nextBadge.basic')}`}
@@ -214,12 +214,12 @@ export default function VerificationPage() {
 
         {/* Email Verification */}
         <EnhanceProfileSection>
-          <div className={`p-6 rounded-2xl border-2 ${
+          <div className={`p-6 superellipse-2xl border-2 ${
             emailVerified ? 'bg-green-50 border-green-200' : 'bg-orange-50 border-orange-200'
           }`}>
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                   emailVerified ? 'bg-green-100' : 'bg-orange-100'
                 }`}>
                   <Mail className={`w-6 h-6 ${emailVerified ? 'text-green-600' : 'text-orange-600'}`} />
@@ -237,7 +237,7 @@ export default function VerificationPage() {
             </div>
 
             {emailVerified ? (
-              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 superellipse-lg">
                 <CheckCircle className="w-4 h-4" />
                 <span>{t('profileEnhance.verification.email.verified')}</span>
               </div>
@@ -249,7 +249,7 @@ export default function VerificationPage() {
                 </div>
                 <button
                   onClick={handleResendEmailVerification}
-                  className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors text-sm font-medium"
+                  className="px-4 py-2 bg-orange-500 text-white superellipse-lg hover:bg-orange-600 transition-colors text-sm font-medium"
                 >
                   {t('profileEnhance.verification.email.resend')}
                 </button>
@@ -260,12 +260,12 @@ export default function VerificationPage() {
 
         {/* Phone Verification */}
         <EnhanceProfileSection>
-          <div className={`p-6 rounded-2xl border-2 ${
+          <div className={`p-6 superellipse-2xl border-2 ${
             phoneVerified ? 'bg-green-50 border-green-200' : 'bg-blue-50 border-blue-200'
           }`}>
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                   phoneVerified ? 'bg-green-100' : 'bg-blue-100'
                 }`}>
                   <Phone className={`w-6 h-6 ${phoneVerified ? 'text-green-600' : 'text-blue-600'}`} />
@@ -283,7 +283,7 @@ export default function VerificationPage() {
             </div>
 
             {phoneVerified ? (
-              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 superellipse-lg">
                 <CheckCircle className="w-4 h-4" />
                 <span>{t('profileEnhance.verification.phone.verified')}: {phoneNumber}</span>
               </div>
@@ -299,13 +299,13 @@ export default function VerificationPage() {
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     placeholder="+32 123 456 789"
-                    className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="flex-1 px-4 py-2 border border-gray-300 superellipse-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     disabled
                   />
                   <button
                     onClick={handlePhoneVerification}
                     disabled
-                    className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium"
+                    className="px-4 py-2 bg-gray-300 text-gray-500 superellipse-lg cursor-not-allowed text-sm font-medium"
                   >
                     {t('profileEnhance.verification.phone.verify')}
                   </button>
@@ -317,12 +317,12 @@ export default function VerificationPage() {
 
         {/* ID Verification */}
         <EnhanceProfileSection>
-          <div className={`p-6 rounded-2xl border-2 ${
+          <div className={`p-6 superellipse-2xl border-2 ${
             idVerified ? 'bg-green-50 border-green-200' : 'bg-purple-50 border-purple-200'
           }`}>
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                   idVerified ? 'bg-green-100' : 'bg-purple-100'
                 }`}>
                   <Shield className={`w-6 h-6 ${idVerified ? 'text-green-600' : 'text-purple-600'}`} />
@@ -340,7 +340,7 @@ export default function VerificationPage() {
             </div>
 
             {idVerified ? (
-              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 superellipse-lg">
                 <CheckCircle className="w-4 h-4" />
                 <span>{t('profileEnhance.verification.id.verified')}</span>
               </div>
@@ -352,7 +352,7 @@ export default function VerificationPage() {
                 </div>
                 <button
                   disabled
-                  className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
+                  className="px-4 py-2 bg-gray-300 text-gray-500 superellipse-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
                 >
                   <Shield className="w-4 h-4" />
                   {t('profileEnhance.verification.id.verifyWithItsme')}
@@ -364,12 +364,12 @@ export default function VerificationPage() {
 
         {/* Background Check */}
         <EnhanceProfileSection>
-          <div className={`p-6 rounded-2xl border-2 ${
+          <div className={`p-6 superellipse-2xl border-2 ${
             backgroundCheck ? 'bg-green-50 border-green-200' : 'bg-indigo-50 border-indigo-200'
           }`}>
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                   backgroundCheck ? 'bg-green-100' : 'bg-indigo-100'
                 }`}>
                   <Award className={`w-6 h-6 ${backgroundCheck ? 'text-green-600' : 'text-indigo-600'}`} />
@@ -390,7 +390,7 @@ export default function VerificationPage() {
             </div>
 
             {backgroundCheck ? (
-              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 rounded-lg">
+              <div className="flex items-center gap-2 text-sm text-green-700 bg-green-100 px-4 py-2 superellipse-lg">
                 <CheckCircle className="w-4 h-4" />
                 <span>{t('profileEnhance.verification.backgroundCheck.verified')}</span>
               </div>
@@ -402,7 +402,7 @@ export default function VerificationPage() {
                 </div>
                 <button
                   disabled
-                  className="px-4 py-2 bg-gray-300 text-gray-500 rounded-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
+                  className="px-4 py-2 bg-gray-300 text-gray-500 superellipse-lg cursor-not-allowed text-sm font-medium flex items-center gap-2"
                 >
                   <Award className="w-4 h-4" />
                   {t('profileEnhance.verification.backgroundCheck.request')}
@@ -463,14 +463,14 @@ export default function VerificationPage() {
       <div className="mt-8 flex justify-between items-center gap-4">
         <button
           onClick={handleSkip}
-          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
+          className="px-6 py-3 superellipse-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
           {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleSave}
-          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+          className="px-8 py-3 superellipse-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
           {t('profileEnhance.verification.done')}
         </button>

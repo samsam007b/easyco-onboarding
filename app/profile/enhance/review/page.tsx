@@ -171,7 +171,7 @@ export default function EnhanceReviewPage() {
           {/* About Section */}
           {(data.about?.bio || data.about?.aboutMe || data.about?.lookingFor) && (
             <EnhanceProfileSection title={t('profileEnhance.review.sections.about')}>
-              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4">
+              <div className="bg-white p-6 superellipse-xl border border-gray-200 space-y-4">
                 {data.about.bio && (
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-1">{t('profileEnhance.review.fields.bio')}:</p>
@@ -197,7 +197,7 @@ export default function EnhanceReviewPage() {
           {/* Hobbies Section */}
           {data.hobbies?.hobbies && data.hobbies.hobbies.length > 0 && (
             <EnhanceProfileSection title={t('profileEnhance.review.sections.hobbies')}>
-              <div className="bg-white p-6 rounded-xl border border-gray-200">
+              <div className="bg-white p-6 superellipse-xl border border-gray-200">
                 <div className="flex flex-wrap gap-2">
                   {data.hobbies.hobbies.map((hobby: string) => (
                     <EnhanceProfileTag key={hobby} role="searcher">
@@ -214,7 +214,7 @@ export default function EnhanceReviewPage() {
             data.values?.importantQualities?.length > 0 ||
             data.values?.dealBreakers?.length > 0) && (
             <EnhanceProfileSection title={t('profileEnhance.review.sections.values')}>
-              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-4">
+              <div className="bg-white p-6 superellipse-xl border border-gray-200 space-y-4">
                 {data.values.coreValues && data.values.coreValues.length > 0 && (
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">{t('profileEnhance.review.fields.coreValues')}:</p>
@@ -266,7 +266,7 @@ export default function EnhanceReviewPage() {
           {/* Financial Section */}
           {(data.financial?.incomeRange || data.financial?.employmentType) && (
             <EnhanceProfileSection title={t('profileEnhance.review.sections.financial')}>
-              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-3">
+              <div className="bg-white p-6 superellipse-xl border border-gray-200 space-y-3">
                 {data.financial.incomeRange && (
                   <div className="flex justify-between">
                     <span className="text-sm text-gray-600">{t('profileEnhance.review.fields.incomeRange')}:</span>
@@ -292,7 +292,7 @@ export default function EnhanceReviewPage() {
           {/* Community Section */}
           {data.community?.eventInterest && (
             <EnhanceProfileSection title={t('profileEnhance.review.sections.community')}>
-              <div className="bg-white p-6 rounded-xl border border-gray-200 space-y-3">
+              <div className="bg-white p-6 superellipse-xl border border-gray-200 space-y-3">
                 <div className="flex justify-between">
                   <span className="text-sm text-gray-600">{t('profileEnhance.review.fields.eventInterest')}:</span>
                   <span className="text-sm font-medium text-gray-900 capitalize">{data.community.eventInterest}</span>
@@ -320,7 +320,7 @@ export default function EnhanceReviewPage() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${
+          className={`w-full py-4 superellipse-xl font-semibold transition-all duration-300 ${
             !isSaving
               ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'

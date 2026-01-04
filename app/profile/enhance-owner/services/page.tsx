@@ -185,7 +185,7 @@ export default function OwnerServicesPage() {
       <div className="space-y-3 mt-8">
         <button
           onClick={handleContinue}
-          className="w-full py-4 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+          className="w-full py-4 superellipse-xl font-semibold transition-all duration-300 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5"
         >
           {t('enhanceOwner.common.saveChanges')}
         </button>

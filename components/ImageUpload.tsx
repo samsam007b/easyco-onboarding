@@ -202,7 +202,7 @@ export function ImageUpload({
       {/* Upload Area */}
       <div
         className={`
-          relative border-2 border-dashed rounded-2xl p-8 text-center transition-all
+          relative border-2 border-dashed superellipse-2xl p-8 text-center transition-all
           ${dragActive ? 'border-[#4A148C] bg-purple-50' : 'border-gray-300'}
           ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-[#4A148C]'}
         `}
@@ -258,7 +258,7 @@ export function ImageUpload({
             {images.map((url, index) => (
               <div
                 key={index}
-                className="relative aspect-square rounded-xl overflow-hidden bg-gray-100 group"
+                className="relative aspect-square superellipse-xl overflow-hidden bg-gray-100 group"
               >
                 <Image
                   src={url}

@@ -339,7 +339,7 @@ export default function ResidentPropertySetupPage() {
               className="p-8 cursor-pointer hover:shadow-xl transition-all border-2 border-transparent hover:border-orange-300 bg-white"
             >
               <div className="text-center">
-                <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600">
+                <div className="w-16 h-16 superellipse-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600">
                   <LogIn className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-2">

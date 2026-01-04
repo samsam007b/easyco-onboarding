@@ -243,7 +243,7 @@ export default function OwnerEnhanceReviewPage() {
         <button
           onClick={handleSave}
           disabled={isSaving}
-          className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
+          className={`w-full py-4 superellipse-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2 ${
             !isSaving
               ? 'bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5'
               : 'bg-transparent border-2 border-gray-200 text-gray-400 cursor-not-allowed'
