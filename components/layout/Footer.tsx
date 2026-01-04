@@ -58,7 +58,7 @@ export default function Footer() {
             <img
               src="/logos/izzico-lockup-dark.svg"
               alt="Izzico"
-              className="h-10 w-auto mb-4"
+              className="h-14 w-auto mb-4"
             />
             <p className={`mb-4 leading-relaxed ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               La plateforme moderne pour trouver ta colocation idéale à Bruxelles.
