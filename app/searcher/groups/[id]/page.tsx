@@ -88,7 +88,7 @@ const MobileBottomNav = memo(function MobileBottomNav() {
           <span className="text-xs text-gray-500">Explorer</span>
         </Link>
         <Link href="/searcher/groups" className="flex flex-col items-center gap-1 px-4 py-2">
-          <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: GROUPS_GRADIENT }}>
+          <div className="w-10 h-10 superellipse-2xl flex items-center justify-center shadow-lg" style={{ background: GROUPS_GRADIENT }}>
             <Users className="w-5 h-5 text-white" />
           </div>
         </Link>
@@ -179,7 +179,7 @@ export default function GroupDetailPage() {
           <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">Groupe introuvable</h2>
           <p className="text-gray-600 mb-4">Ce groupe n'existe pas ou a ete supprime.</p>
-          <Button onClick={() => router.push('/searcher/groups')} style={{ background: GROUPS_GRADIENT }} className="text-white rounded-xl">
+          <Button onClick={() => router.push('/searcher/groups')} style={{ background: GROUPS_GRADIENT }} className="text-white superellipse-xl">
             Retour aux groupes
           </Button>
         </div>
@@ -202,7 +202,7 @@ export default function GroupDetailPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Link href="/searcher/groups">
-                <Button variant="ghost" size="icon" className="rounded-xl hover:bg-violet-50">
+                <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-violet-50">
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
               </Link>
@@ -216,12 +216,12 @@ export default function GroupDetailPage() {
             <div className="flex items-center gap-2">
               {isAdmin && (
                 <Link href={`/searcher/groups/${groupId}/settings`}>
-                  <Button variant="ghost" size="icon" className="rounded-xl hover:bg-violet-50">
+                  <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-violet-50">
                     <Settings className="w-5 h-5 text-gray-600" />
                   </Button>
                 </Link>
               )}
-              <Button variant="ghost" size="icon" className="rounded-xl hover:bg-violet-50">
+              <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-violet-50">
                 <Share2 className="w-5 h-5 text-gray-600" />
               </Button>
             </div>
@@ -238,7 +238,7 @@ export default function GroupDetailPage() {
       >
         {/* Group Info Card */}
         <motion.div variants={itemVariants}>
-          <Card className="rounded-3xl border-0 shadow-lg overflow-hidden mb-6">
+          <Card className="superellipse-3xl border-0 shadow-lg overflow-hidden mb-6">
             <div className="h-32 relative" style={{ background: GROUPS_GRADIENT }}>
               <div className="absolute inset-0 bg-black/10" />
               <div className="absolute bottom-4 left-4 right-4">
@@ -256,7 +256,7 @@ export default function GroupDetailPage() {
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                 {group.target_city && (
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
+                    <div className="w-10 h-10 superellipse-xl flex items-center justify-center" style={{ background: 'rgba(139, 92, 246, 0.1)' }}>
                       <MapPin className="w-5 h-5 text-violet-500" />
                     </div>
                     <div>
@@ -267,7 +267,7 @@ export default function GroupDetailPage() {
                 )}
                 {(group.budget_min || group.budget_max) && (
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(16, 185, 129, 0.1)' }}>
+                    <div className="w-10 h-10 superellipse-xl flex items-center justify-center" style={{ background: 'rgba(16, 185, 129, 0.1)' }}>
                       <Euro className="w-5 h-5 text-emerald-500" />
                     </div>
                     <div>
@@ -278,7 +278,7 @@ export default function GroupDetailPage() {
                 )}
                 {group.move_in_date && (
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
+                    <div className="w-10 h-10 superellipse-xl flex items-center justify-center" style={{ background: 'rgba(59, 130, 246, 0.1)' }}>
                       <Calendar className="w-5 h-5 text-blue-500" />
                     </div>
                     <div>
@@ -289,7 +289,7 @@ export default function GroupDetailPage() {
                 )}
                 {group.property_types && (
                   <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
+                    <div className="w-10 h-10 superellipse-xl flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
                       <Building2 className="w-5 h-5 text-amber-500" />
                     </div>
                     <div>
@@ -308,7 +308,7 @@ export default function GroupDetailPage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-gray-900">Membres ({group.members.length})</h2>
             {isAdmin && (
-              <Button size="sm" className="rounded-xl text-white" style={{ background: GROUPS_GRADIENT }}>
+              <Button size="sm" className="superellipse-xl text-white" style={{ background: GROUPS_GRADIENT }}>
                 <UserPlus className="w-4 h-4 mr-2" />
                 Inviter
               </Button>
@@ -320,11 +320,11 @@ export default function GroupDetailPage() {
               <motion.div
                 key={member.id}
                 whileHover={{ scale: 1.01 }}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 flex items-center gap-4"
+                className="bg-white/80 backdrop-blur-sm superellipse-2xl p-4 flex items-center gap-4"
                 style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}
               >
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-xl overflow-hidden bg-violet-100">
+                  <div className="w-12 h-12 superellipse-xl overflow-hidden bg-violet-100">
                     {member.user_profile.avatar_url ? (
                       <Image
                         src={member.user_profile.avatar_url}
@@ -352,7 +352,7 @@ export default function GroupDetailPage() {
                   <p className="text-sm text-gray-500">{member.role === 'admin' ? 'Admin' : 'Membre'}</p>
                 </div>
                 {member.user_id !== currentUserId && (
-                  <Button variant="ghost" size="icon" className="rounded-xl hover:bg-violet-50">
+                  <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-violet-50">
                     <MessageCircle className="w-5 h-5 text-gray-400" />
                   </Button>
                 )}
@@ -366,7 +366,7 @@ export default function GroupDetailPage() {
           <div className="grid sm:grid-cols-2 gap-4">
             <Button
               onClick={() => router.push('/searcher/explore')}
-              className="rounded-2xl h-auto py-4 text-white"
+              className="superellipse-2xl h-auto py-4 text-white"
               style={{ background: SEARCHER_GRADIENT }}
             >
               <Search className="w-5 h-5 mr-2" />
@@ -375,7 +375,7 @@ export default function GroupDetailPage() {
             <Button
               onClick={() => {}}
               variant="outline"
-              className="rounded-2xl h-auto py-4 border-violet-200 text-violet-600 hover:bg-violet-50"
+              className="superellipse-2xl h-auto py-4 border-violet-200 text-violet-600 hover:bg-violet-50"
             >
               <MessageCircle className="w-5 h-5 mr-2" />
               Discussion du groupe

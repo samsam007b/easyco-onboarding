@@ -127,7 +127,7 @@ export default function CommunityEventsPage() {
               <button
                 key={level.value}
                 onClick={() => setEventInterest(level.value)}
-                className={`p-4 rounded-xl transition border-2 flex flex-col items-center gap-2 ${
+                className={`p-4 superellipse-xl transition border-2 flex flex-col items-center gap-2 ${
                   eventInterest === level.value
                     ? 'bg-orange-500 text-white border-orange-500'
                     : 'bg-white text-gray-700 border-gray-300 hover:border-orange-500'
@@ -146,7 +146,7 @@ export default function CommunityEventsPage() {
 
         {/* Shared meals toggle */}
         <EnhanceProfileSection>
-          <div className="p-4 rounded-xl bg-orange-50 border-2 border-orange-200">
+          <div className="p-4 superellipse-xl bg-orange-50 border-2 border-orange-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
@@ -175,7 +175,7 @@ export default function CommunityEventsPage() {
 
         {/* Flatmate meetups toggle */}
         <EnhanceProfileSection>
-          <div className="p-4 rounded-xl bg-blue-50 border-2 border-blue-300">
+          <div className="p-4 superellipse-xl bg-blue-50 border-2 border-blue-300">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
@@ -233,7 +233,7 @@ export default function CommunityEventsPage() {
       <div className="mt-8 flex justify-between items-center gap-4">
         <button
           onClick={handleSkip}
-          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
+          className="px-6 py-3 superellipse-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
           {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
@@ -241,7 +241,7 @@ export default function CommunityEventsPage() {
         <button
           onClick={handleContinue}
           disabled={!canContinue}
-          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
+          className="px-8 py-3 superellipse-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
           {t('profileEnhance.common.save')}
         </button>

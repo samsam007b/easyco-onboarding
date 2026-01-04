@@ -198,7 +198,7 @@ export default function AdvancedPreferencesPage() {
           <select
             value={leaseDuration}
             onChange={(e) => setLeaseDuration(e.target.value)}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
+            className="w-full px-4 py-3 superellipse-xl border border-gray-300 bg-white focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
           >
             <option value="">{t('profileEnhance.preferences.leaseDuration.select')}</option>
             {leaseDurationOptions.map((option) => (
@@ -269,7 +269,7 @@ export default function AdvancedPreferencesPage() {
         {/* Toggles */}
         <EnhanceProfileSection>
           {/* Quiet Hours */}
-          <div className="flex items-center justify-between p-4 bg-orange-50 rounded-xl mb-4">
+          <div className="flex items-center justify-between p-4 bg-orange-50 superellipse-xl mb-4">
             <div>
               <span className="font-medium text-gray-700 block">{t('profileEnhance.preferences.quietHours.label')}</span>
               <span className="text-sm text-gray-500">{t('profileEnhance.preferences.quietHours.description')}</span>
@@ -289,7 +289,7 @@ export default function AdvancedPreferencesPage() {
           </div>
 
           {/* Guests Allowed */}
-          <div className="flex items-center justify-between p-4 bg-orange-50 rounded-xl">
+          <div className="flex items-center justify-between p-4 bg-orange-50 superellipse-xl">
             <div>
               <span className="font-medium text-gray-700 block">{t('profileEnhance.preferences.guests.label')}</span>
               <span className="text-sm text-gray-500">{t('profileEnhance.preferences.guests.description')}</span>

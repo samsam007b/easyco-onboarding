@@ -185,7 +185,7 @@ export default function ExtendedPersonalityPage() {
               value={hobbyInput}
               onChange={(e) => setHobbyInput(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addHobby())}
-              className="flex-1 px-4 py-3 rounded-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
+              className="flex-1 px-4 py-3 superellipse-xl border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
               placeholder={t('profileEnhance.personality.addHobbyPlaceholder')}
             />
             <EnhanceProfileButton
@@ -256,14 +256,14 @@ export default function ExtendedPersonalityPage() {
       <div className="mt-8 flex justify-between items-center gap-4">
         <button
           onClick={handleCancel}
-          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
+          className="px-6 py-3 superellipse-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
           {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleSave}
-          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+          className="px-8 py-3 superellipse-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
           {t('profileEnhance.common.save')}
         </button>

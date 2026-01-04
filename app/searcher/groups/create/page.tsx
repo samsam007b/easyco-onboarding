@@ -305,7 +305,7 @@ export default function SearcherCreateGroupPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-amber-50/50 rounded-xl border border-amber-100">
+                  <div className="flex items-center justify-between p-4 bg-amber-50/50 superellipse-xl border border-amber-100">
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900 flex items-center gap-2">
                         {t?.settings?.openToNew?.title?.[language] || 'Ouvert aux nouveaux membres'}
@@ -408,11 +408,11 @@ export default function SearcherCreateGroupPage() {
                         onChange={(e) => setPreferredCity(e.target.value)}
                         onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addCity())}
                         placeholder={t?.preferences?.addCityPlaceholder?.[language] || 'Ajouter une ville...'}
-                        className="text-base rounded-xl"
+                        className="text-base superellipse-xl"
                       />
                       <Button
                         onClick={addCity}
-                        className="text-white px-6 whitespace-nowrap rounded-xl"
+                        className="text-white px-6 whitespace-nowrap superellipse-xl"
                         style={{ background: SEARCHER_GRADIENT }}
                       >
                         {t?.preferences?.add?.[language] || 'Ajouter'}
@@ -450,7 +450,7 @@ export default function SearcherCreateGroupPage() {
                       value={moveInDate}
                       onChange={(e) => setMoveInDate(e.target.value)}
                       min={new Date().toISOString().split('T')[0]}
-                      className="text-base rounded-xl"
+                      className="text-base superellipse-xl"
                     />
                   </div>
                 </div>
@@ -461,7 +461,7 @@ export default function SearcherCreateGroupPage() {
                 <Button
                   onClick={() => router.push('/searcher/groups')}
                   variant="outline"
-                  className="flex-1 py-6 text-base border-2 rounded-xl"
+                  className="flex-1 py-6 text-base border-2 superellipse-xl"
                   disabled={isCreating}
                 >
                   {t?.actions?.cancel?.[language] || 'Annuler'}
@@ -469,7 +469,7 @@ export default function SearcherCreateGroupPage() {
                 <Button
                   onClick={handleCreateGroup}
                   disabled={isCreating || !groupName.trim()}
-                  className="flex-1 py-6 text-base text-white rounded-xl shadow-lg hover:shadow-xl transition-all font-semibold"
+                  className="flex-1 py-6 text-base text-white superellipse-xl shadow-lg hover:shadow-xl transition-all font-semibold"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   {isCreating ? (
@@ -497,7 +497,7 @@ export default function SearcherCreateGroupPage() {
               <div className="sticky top-6 space-y-6">
 
                 {/* Group Preview */}
-                <div className="bg-white rounded-2xl p-6 shadow-lg border border-amber-100">
+                <div className="bg-white superellipse-2xl p-6 shadow-lg border border-amber-100">
                   <div className="flex items-center gap-2 mb-4">
                     <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
                     <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
@@ -508,7 +508,7 @@ export default function SearcherCreateGroupPage() {
                   <div className="space-y-4">
                     <div className="flex items-center gap-3">
                       <div
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md"
+                        className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-md"
                         style={{ background: SEARCHER_GRADIENT }}
                       >
                         <Users className="h-6 w-6 text-white" />
@@ -524,7 +524,7 @@ export default function SearcherCreateGroupPage() {
                     </div>
 
                     {description && (
-                      <p className="text-sm text-gray-600 line-clamp-3 bg-amber-50 p-3 rounded-xl">
+                      <p className="text-sm text-gray-600 line-clamp-3 bg-amber-50 p-3 superellipse-xl">
                         {description}
                       </p>
                     )}
@@ -578,7 +578,7 @@ export default function SearcherCreateGroupPage() {
 
                 {/* Benefits */}
                 <div
-                  className="rounded-2xl p-6 border border-amber-200"
+                  className="superellipse-2xl p-6 border border-amber-200"
                   style={{ background: SEARCHER_GRADIENT_SOFT }}
                 >
                   <div className="flex items-start gap-3">
@@ -625,7 +625,7 @@ export default function SearcherCreateGroupPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white rounded-3xl max-w-2xl w-full p-8 shadow-2xl"
+              className="bg-white superellipse-3xl max-w-2xl w-full p-8 shadow-2xl"
             >
               {/* Success Icon */}
               <div className="text-center mb-6">
@@ -647,7 +647,7 @@ export default function SearcherCreateGroupPage() {
 
               {/* Invite Code */}
               <div
-                className="rounded-2xl p-6 mb-6 border-2 border-amber-200"
+                className="superellipse-2xl p-6 mb-6 border-2 border-amber-200"
                 style={{ background: SEARCHER_GRADIENT_SOFT }}
               >
                 <div className="text-center">
@@ -655,14 +655,14 @@ export default function SearcherCreateGroupPage() {
                     {t?.successModal?.inviteCode?.label?.[language] || 'Code d\'invitation'}
                   </p>
                   <div className="flex items-center justify-center gap-3 mb-3">
-                    <code className="text-3xl font-bold text-amber-600 tracking-wider bg-white px-6 py-3 rounded-xl border-2 border-amber-300">
+                    <code className="text-3xl font-bold text-amber-600 tracking-wider bg-white px-6 py-3 superellipse-xl border-2 border-amber-300">
                       {inviteCode}
                     </code>
                     <Button
                       onClick={copyInviteCode}
                       variant="outline"
                       size="icon"
-                      className="rounded-xl"
+                      className="superellipse-xl"
                     >
                       <Copy className="w-4 h-4" />
                     </Button>
@@ -681,7 +681,7 @@ export default function SearcherCreateGroupPage() {
 
                 <Button
                   onClick={() => router.push(`/groups/${createdGroup.id}`)}
-                  className="w-full text-white rounded-2xl py-6 text-base font-semibold shadow-lg gap-2 group"
+                  className="w-full text-white superellipse-2xl py-6 text-base font-semibold shadow-lg gap-2 group"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Users className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -693,7 +693,7 @@ export default function SearcherCreateGroupPage() {
                   <Button
                     onClick={() => router.push('/searcher/explore')}
                     variant="outline"
-                    className="border-2 rounded-2xl py-4 gap-2"
+                    className="border-2 superellipse-2xl py-4 gap-2"
                   >
                     <Search className="w-4 h-4" />
                     {t?.successModal?.buttons?.search?.[language] || 'Chercher'}
@@ -702,7 +702,7 @@ export default function SearcherCreateGroupPage() {
                   <Button
                     onClick={() => router.push('/searcher/groups')}
                     variant="outline"
-                    className="border-2 rounded-2xl py-4 gap-2"
+                    className="border-2 superellipse-2xl py-4 gap-2"
                   >
                     <Home className="w-4 h-4" />
                     {t?.successModal?.buttons?.myGroups?.[language] || 'Mes groupes'}
@@ -711,7 +711,7 @@ export default function SearcherCreateGroupPage() {
               </div>
 
               {/* Tips */}
-              <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+              <div className="bg-blue-50 superellipse-xl p-4 border border-blue-100">
                 <div className="flex gap-3">
                   <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
                   <div className="text-sm text-gray-700">

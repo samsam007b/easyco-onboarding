@@ -136,7 +136,7 @@ export default function OwnerBasicInfo() {
       />
 
       {/* Info Banner */}
-      <div className="mb-6 p-4 bg-purple-50 rounded-xl border border-purple-100">
+      <div className="mb-6 p-4 bg-purple-50 superellipse-xl border border-purple-100">
         <h3 className="font-semibold text-purple-700 mb-2">{onboarding.owner.profileSetup}</h3>
         <p className="text-sm text-gray-600">{onboarding.owner.profileSetupHelp}</p>
       </div>

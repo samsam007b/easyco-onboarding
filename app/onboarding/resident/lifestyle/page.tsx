@@ -146,7 +146,7 @@ export default function ResidentLifestylePage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-white superellipse-3xl shadow-lg p-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-2">
               {resident.lifestyle.heading}
@@ -176,7 +176,7 @@ export default function ResidentLifestylePage() {
                     key={option.value}
                     type="button"
                     onClick={() => setOccupationStatus(option.value)}
-                    className={`p-4 rounded-xl border-2 transition-all text-left ${
+                    className={`p-4 superellipse-xl border-2 transition-all text-left ${
                       occupationStatus === option.value
                         ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -206,7 +206,7 @@ export default function ResidentLifestylePage() {
                     key={option.value}
                     type="button"
                     onClick={() => setWakeUpTime(option.value)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
+                    className={`p-4 superellipse-xl border-2 transition-all ${
                       wakeUpTime === option.value
                         ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -237,7 +237,7 @@ export default function ResidentLifestylePage() {
                     key={option.value}
                     type="button"
                     onClick={() => setSleepTime(option.value)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
+                    className={`p-4 superellipse-xl border-2 transition-all ${
                       sleepTime === option.value
                         ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -266,7 +266,7 @@ export default function ResidentLifestylePage() {
                     key={option.value.toString()}
                     type="button"
                     onClick={() => setIsSmoker(option.value)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
+                    className={`p-4 superellipse-xl border-2 transition-all ${
                       isSmoker === option.value
                         ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -293,7 +293,7 @@ export default function ResidentLifestylePage() {
                   max="10"
                   value={cleanlinessPreference}
                   onChange={(e) => setCleanlinessPreference(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                  className="w-full h-2 bg-gray-200 superellipse-lg appearance-none cursor-pointer accent-orange-500"
                 />
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">{resident.lifestyle.cleanlinessOptions.relaxed}</span>
@@ -309,7 +309,7 @@ export default function ResidentLifestylePage() {
             <button
               onClick={handleContinue}
               disabled={!canContinue}
-              className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
+              className={`w-full py-4 superellipse-lg font-semibold text-lg transition-all ${
                 canContinue
                   ? 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'

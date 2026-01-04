@@ -210,7 +210,7 @@ export default function ResidentBasicInfoPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-white superellipse-3xl shadow-lg p-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-2">
               {resident.basicInfo.heading}
@@ -234,7 +234,7 @@ export default function ResidentBasicInfoPage() {
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
                   placeholder={resident.basicInfo.firstNamePlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 superellipse-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -251,7 +251,7 @@ export default function ResidentBasicInfoPage() {
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
                   placeholder={resident.basicInfo.lastNamePlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 superellipse-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -268,7 +268,7 @@ export default function ResidentBasicInfoPage() {
                   value={dateOfBirth}
                   onChange={(e) => setDateOfBirth(e.target.value)}
                   max={new Date().toISOString().split('T')[0]}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 superellipse-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -285,7 +285,7 @@ export default function ResidentBasicInfoPage() {
                   value={nationality}
                   onChange={(e) => setNationality(e.target.value)}
                   placeholder={resident.basicInfo.nationalityPlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 superellipse-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>
@@ -302,7 +302,7 @@ export default function ResidentBasicInfoPage() {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder={resident.basicInfo.phoneNumberPlaceholder}
-                  className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3 border border-gray-300 superellipse-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition-all"
                 />
               </div>
             </div>

@@ -144,7 +144,7 @@ export default function ResidentPersonalityPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-3xl shadow-lg p-8">
+        <div className="bg-white superellipse-3xl shadow-lg p-8">
           <div className="mb-6">
             <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-2">
               {resident.personality.heading}
@@ -168,7 +168,7 @@ export default function ResidentPersonalityPage() {
                   max="5"
                   value={introvertExtrovertScale}
                   onChange={(e) => setIntrovertExtrovertScale(Number(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-orange-500"
+                  className="w-full h-2 bg-gray-200 superellipse-lg appearance-none cursor-pointer accent-orange-500"
                 />
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">{resident.personality.personalityLabels?.introvert || 'Introvert'}</span>
@@ -193,7 +193,7 @@ export default function ResidentPersonalityPage() {
                     key={option.value}
                     type="button"
                     onClick={() => setSociabilityLevel(option.value)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
+                    className={`p-4 superellipse-xl border-2 transition-all ${
                       sociabilityLevel === option.value
                         ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -226,7 +226,7 @@ export default function ResidentPersonalityPage() {
                     key={option.value}
                     type="button"
                     onClick={() => setPreferredInteractionType(option.value)}
-                    className={`w-full p-4 rounded-xl border-2 transition-all text-left ${
+                    className={`w-full p-4 superellipse-xl border-2 transition-all text-left ${
                       preferredInteractionType === option.value
                         ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -259,7 +259,7 @@ export default function ResidentPersonalityPage() {
                     key={option.value}
                     type="button"
                     onClick={() => setHomeActivityLevel(option.value)}
-                    className={`p-4 rounded-xl border-2 transition-all ${
+                    className={`p-4 superellipse-xl border-2 transition-all ${
                       homeActivityLevel === option.value
                         ? 'border-orange-500 bg-orange-50'
                         : 'border-gray-300 hover:border-gray-400'
@@ -283,7 +283,7 @@ export default function ResidentPersonalityPage() {
             <button
               onClick={handleContinue}
               disabled={!canContinue}
-              className={`w-full py-4 rounded-lg font-semibold text-lg transition-all ${
+              className={`w-full py-4 superellipse-lg font-semibold text-lg transition-all ${
                 canContinue
                   ? 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'

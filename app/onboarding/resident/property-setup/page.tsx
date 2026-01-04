@@ -281,7 +281,7 @@ export default function ResidentPropertySetupPage() {
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-8"
         >
-          <div className="w-20 h-20 rounded-3xl mx-auto mb-4 flex items-center justify-center"
+          <div className="w-20 h-20 superellipse-3xl mx-auto mb-4 flex items-center justify-center"
                style={{
                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                }}>
@@ -314,7 +314,7 @@ export default function ResidentPropertySetupPage() {
               className="p-8 cursor-pointer hover:shadow-xl transition-all border-2 border-transparent hover:border-orange-300 bg-white"
             >
               <div className="text-center">
-                <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
+                <div className="w-16 h-16 superellipse-2xl mx-auto mb-4 flex items-center justify-center"
                      style={{
                        background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                      }}>
@@ -326,7 +326,7 @@ export default function ResidentPropertySetupPage() {
                 <p className="text-gray-600 mb-4">
                   {t('residentOnboarding.propertySetup.choice.create.description')}
                 </p>
-                <Button className="w-full rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]">
+                <Button className="w-full superellipse-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]">
                   {t('residentOnboarding.propertySetup.choice.create.button')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -348,7 +348,7 @@ export default function ResidentPropertySetupPage() {
                 <p className="text-gray-600 mb-4">
                   {t('residentOnboarding.propertySetup.choice.join.description')}
                 </p>
-                <Button className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600">
+                <Button className="w-full superellipse-xl bg-gradient-to-r from-blue-500 to-indigo-600">
                   {t('residentOnboarding.propertySetup.choice.join.button')}
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
@@ -384,7 +384,7 @@ export default function ResidentPropertySetupPage() {
                     placeholder={t('residentOnboarding.propertySetup.createForm.namePlaceholder')}
                     value={createForm.name}
                     onChange={(e) => setCreateForm({ ...createForm, name: e.target.value })}
-                    className="rounded-xl mt-2"
+                    className="superellipse-xl mt-2"
                   />
                 </div>
 
@@ -397,7 +397,7 @@ export default function ResidentPropertySetupPage() {
                       placeholder={t('residentOnboarding.propertySetup.createForm.addressPlaceholder')}
                       value={createForm.address}
                       onChange={(e) => setCreateForm({ ...createForm, address: e.target.value })}
-                      className="rounded-xl pl-10"
+                      className="superellipse-xl pl-10"
                     />
                   </div>
                 </div>
@@ -410,7 +410,7 @@ export default function ResidentPropertySetupPage() {
                       placeholder={t('residentOnboarding.propertySetup.createForm.cityPlaceholder')}
                       value={createForm.city}
                       onChange={(e) => setCreateForm({ ...createForm, city: e.target.value })}
-                      className="rounded-xl mt-2"
+                      className="superellipse-xl mt-2"
                     />
                   </div>
 
@@ -421,7 +421,7 @@ export default function ResidentPropertySetupPage() {
                       placeholder={t('residentOnboarding.propertySetup.createForm.postalCodePlaceholder')}
                       value={createForm.postal_code}
                       onChange={(e) => setCreateForm({ ...createForm, postal_code: e.target.value })}
-                      className="rounded-xl mt-2"
+                      className="superellipse-xl mt-2"
                     />
                   </div>
                 </div>
@@ -437,7 +437,7 @@ export default function ResidentPropertySetupPage() {
                       max="20"
                       value={createForm.total_rooms}
                       onChange={(e) => setCreateForm({ ...createForm, total_rooms: parseInt(e.target.value) || 2 })}
-                      className="rounded-xl pl-10"
+                      className="superellipse-xl pl-10"
                     />
                   </div>
                 </div>
@@ -445,7 +445,7 @@ export default function ResidentPropertySetupPage() {
                 <Button
                   onClick={createProperty}
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:shadow-lg transition-shadow mt-6"
+                  className="w-full superellipse-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:shadow-lg transition-shadow mt-6"
                 >
                   {isSubmitting ? t('residentOnboarding.propertySetup.createForm.creating') : t('residentOnboarding.propertySetup.createForm.submit')}
                 </Button>
@@ -470,7 +470,7 @@ export default function ResidentPropertySetupPage() {
               </Button>
 
               <div className="text-center mb-8">
-                <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600">
+                <div className="w-16 h-16 superellipse-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-blue-500 to-indigo-600">
                   <Key className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -489,14 +489,14 @@ export default function ResidentPropertySetupPage() {
                     placeholder={t('residentOnboarding.propertySetup.joinForm.codePlaceholder')}
                     value={joinCode}
                     onChange={(e) => setJoinCode(e.target.value)}
-                    className="rounded-xl mt-2 text-center text-lg font-mono"
+                    className="superellipse-xl mt-2 text-center text-lg font-mono"
                   />
                 </div>
 
                 <Button
                   onClick={joinProperty}
                   disabled={isSubmitting}
-                  className="w-full rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-shadow"
+                  className="w-full superellipse-xl bg-gradient-to-r from-blue-500 to-indigo-600 hover:shadow-lg transition-shadow"
                 >
                   {isSubmitting ? t('residentOnboarding.propertySetup.joinForm.connecting') : t('residentOnboarding.propertySetup.joinForm.submit')}
                 </Button>

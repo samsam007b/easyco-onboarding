@@ -109,7 +109,7 @@ export default function OwnerReview() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-purple-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-purple-600" />
         </div>
         <OnboardingHeading
@@ -122,7 +122,7 @@ export default function OwnerReview() {
       {/* Profile Summary */}
       <div className="space-y-4">
         {/* Basic Info */}
-        <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
+        <div className="p-4 bg-purple-50 superellipse-xl border border-purple-100">
           <div className="flex items-center gap-2 mb-3">
             <User className="w-5 h-5 text-purple-600" />
             <h3 className="font-semibold text-gray-900">{onboarding.owner.review.basicInfo}</h3>
@@ -162,7 +162,7 @@ export default function OwnerReview() {
         </div>
 
         {/* About */}
-        <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
+        <div className="p-4 bg-purple-50 superellipse-xl border border-purple-100">
           <div className="flex items-center gap-2 mb-3">
             <Award className="w-5 h-5 text-purple-600" />
             <h3 className="font-semibold text-gray-900">{onboarding.owner.review.profileDetails}</h3>
@@ -187,7 +187,7 @@ export default function OwnerReview() {
 
         {/* Property Basics */}
         {data.propertyBasics && (
-          <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
+          <div className="p-4 bg-purple-50 superellipse-xl border border-purple-100">
             <div className="flex items-center gap-2 mb-3">
               <MapPin className="w-5 h-5 text-purple-600" />
               <h3 className="font-semibold text-gray-900">{onboarding.owner.review.propertyInfo}</h3>
@@ -217,7 +217,7 @@ export default function OwnerReview() {
 
         {/* Verification */}
         {data.verification && (data.verification.phoneNumber || data.verification.idDocument || data.verification.proofOfOwnership) && (
-          <div className="p-4 bg-purple-50 rounded-xl border border-purple-100">
+          <div className="p-4 bg-purple-50 superellipse-xl border border-purple-100">
             <div className="flex items-center gap-2 mb-3">
               <CheckCircle className="w-5 h-5 text-purple-600" />
               <h3 className="font-semibold text-gray-900">{onboarding.owner.review.verificationStatus}</h3>
@@ -246,7 +246,7 @@ export default function OwnerReview() {
         )}
 
         {/* Next Steps */}
-        <div className="p-4 bg-green-50 rounded-xl border border-green-200">
+        <div className="p-4 bg-green-50 superellipse-xl border border-green-200">
           <div className="flex items-start gap-3">
             <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
             <div>

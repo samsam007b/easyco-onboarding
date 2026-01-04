@@ -282,7 +282,7 @@ export default function PublicViewPage() {
         <div className="mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 superellipse-lg flex items-center justify-center"
               style={{ background: 'rgba(156, 86, 152, 0.1)' }}
             >
               <Award className="w-5 h-5" style={{ color: ownerPrimary }} />
@@ -292,7 +292,7 @@ export default function PublicViewPage() {
           <div className="grid grid-cols-2 gap-3">
             {userProfile?.experience_years && (
               <div
-                className="rounded-xl p-3"
+                className="superellipse-xl p-3"
                 style={{ background: 'rgba(156, 86, 152, 0.08)' }}
               >
                 <div className="flex items-center gap-2 mb-1">
@@ -306,7 +306,7 @@ export default function PublicViewPage() {
             )}
             {userProfile?.management_style && (
               <div
-                className="rounded-xl p-3"
+                className="superellipse-xl p-3"
                 style={{ background: 'rgba(156, 86, 152, 0.08)' }}
               >
                 <div className="flex items-center gap-2 mb-1">
@@ -342,7 +342,7 @@ export default function PublicViewPage() {
         <div className="mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 superellipse-lg flex items-center justify-center"
               style={{ background: 'rgba(156, 86, 152, 0.1)' }}
             >
               <Sparkles className="w-5 h-5" style={{ color: ownerPrimary }} />
@@ -375,7 +375,7 @@ export default function PublicViewPage() {
         <div className="mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 superellipse-lg flex items-center justify-center"
               style={{ background: 'rgba(175, 86, 130, 0.1)' }}
             >
               <Shield className="w-5 h-5" style={{ color: '#af5682' }} />
@@ -408,7 +408,7 @@ export default function PublicViewPage() {
         <div className="mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 superellipse-lg flex items-center justify-center"
               style={{ background: 'rgba(184, 86, 118, 0.1)' }}
             >
               <Shield className="w-5 h-5" style={{ color: '#b85676' }} />
@@ -418,7 +418,7 @@ export default function PublicViewPage() {
           <div className="grid grid-cols-2 gap-3">
             {userProfile?.pets_allowed !== undefined && (
               <div
-                className="rounded-xl p-3"
+                className="superellipse-xl p-3"
                 style={{ background: 'rgba(184, 86, 118, 0.08)' }}
               >
                 <div className="flex items-center gap-2">
@@ -431,7 +431,7 @@ export default function PublicViewPage() {
             )}
             {userProfile?.smoking_allowed !== undefined && (
               <div
-                className="rounded-xl p-3"
+                className="superellipse-xl p-3"
                 style={{ background: 'rgba(184, 86, 118, 0.08)' }}
               >
                 <div className="flex items-center gap-2">
@@ -444,7 +444,7 @@ export default function PublicViewPage() {
             )}
             {userProfile?.minimum_lease_duration && (
               <div
-                className="rounded-xl p-3"
+                className="superellipse-xl p-3"
                 style={{ background: 'rgba(184, 86, 118, 0.08)' }}
               >
                 <div className="flex items-center gap-2">
@@ -457,7 +457,7 @@ export default function PublicViewPage() {
             )}
             {userProfile?.deposit_amount && (
               <div
-                className="rounded-xl p-3"
+                className="superellipse-xl p-3"
                 style={{ background: 'rgba(184, 86, 118, 0.08)' }}
               >
                 <div className="flex items-center gap-2">
@@ -477,7 +477,7 @@ export default function PublicViewPage() {
         <div className="mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-2 flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-8 h-8 superellipse-lg flex items-center justify-center"
               style={{ background: 'rgba(194, 86, 107, 0.1)' }}
             >
               <MessageCircle className="w-5 h-5" style={{ color: ownerAccent }} />
@@ -514,7 +514,7 @@ export default function PublicViewPage() {
       {/* Quick Stats */}
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
         {((userProfile?.budget_min || userProfile?.min_budget) && (userProfile?.budget_max || userProfile?.max_budget)) && (
-          <div className="bg-gray-50 rounded-xl p-3">
+          <div className="bg-gray-50 superellipse-xl p-3">
             <div className="flex items-center gap-2 mb-1">
               <Euro className="w-4 h-4 text-gray-600" />
               <span className="text-xs font-semibold text-gray-600">{t('publicView.stats.budget')}</span>
@@ -525,7 +525,7 @@ export default function PublicViewPage() {
           </div>
         )}
         {(userProfile?.move_in_date || userProfile?.preferred_move_in_date) && (
-          <div className="bg-gray-50 rounded-xl p-3">
+          <div className="bg-gray-50 superellipse-xl p-3">
             <div className="flex items-center gap-2 mb-1">
               <Calendar className="w-4 h-4 text-gray-600" />
               <span className="text-xs font-semibold text-gray-600">{t('publicView.stats.moveIn')}</span>
@@ -630,7 +630,7 @@ export default function PublicViewPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-3xl shadow-xl border-2 border-gray-100 overflow-hidden"
+          className="bg-white superellipse-3xl shadow-xl border-2 border-gray-100 overflow-hidden"
         >
           {/* Banner with V3 Owner gradient */}
           <div
@@ -718,7 +718,7 @@ export default function PublicViewPage() {
 
         {/* Info Note with V3 Owner styling */}
         <div
-          className="mt-6 rounded-xl p-4 text-sm border"
+          className="mt-6 superellipse-xl p-4 text-sm border"
           style={{
             background: isOwner ? 'rgba(156, 86, 152, 0.05)' : '#eff6ff',
             borderColor: isOwner ? 'rgba(156, 86, 152, 0.2)' : '#bfdbfe',

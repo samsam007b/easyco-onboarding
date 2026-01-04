@@ -79,7 +79,7 @@ export default function ProfileCompletionPage() {
           </p>
 
           {/* Overall Progress */}
-          <div className="mt-6 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <div className="mt-6 bg-white superellipse-2xl p-6 shadow-sm border border-gray-100">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium text-gray-700">{t('profileCompletion.overallProgress')}</span>
               <span className="text-2xl font-bold text-[#FFB10B]">{completion.percentage}%</span>
@@ -117,11 +117,11 @@ export default function ProfileCompletionPage() {
               onClick={() => router.push(section.route)}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="w-full bg-white rounded-2xl p-4 border border-gray-100 hover:border-[#FFB10B]/50 transition-all hover:shadow-md text-left"
+              className="w-full bg-white superellipse-2xl p-4 border border-gray-100 hover:border-[#FFB10B]/50 transition-all hover:shadow-md text-left"
             >
               <div className="flex items-center gap-4">
                 {/* Icon */}
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-xl ${
+                <div className={`w-12 h-12 superellipse-xl flex items-center justify-center text-xl ${
                   isComplete ? 'bg-green-50' : 'bg-[#FFF9E6]'
                 }`}>
                   {section.icon}
@@ -162,7 +162,7 @@ export default function ProfileCompletionPage() {
       {/* Missing Fields Alert */}
       {completion.missingFields.length > 0 && (
         <div className="max-w-2xl mx-auto px-4 pb-6">
-          <div className="bg-orange-50 border border-orange-200 rounded-2xl p-4">
+          <div className="bg-orange-50 border border-orange-200 superellipse-2xl p-4">
             <div className="flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
@@ -190,7 +190,7 @@ export default function ProfileCompletionPage() {
       <div className="max-w-2xl mx-auto px-4 pb-8">
         <button
           onClick={() => router.push('/dashboard/my-profile')}
-          className="w-full bg-[#FFB10B] hover:bg-[#F9A825] text-white font-semibold py-4 rounded-2xl transition-colors"
+          className="w-full bg-[#FFB10B] hover:bg-[#F9A825] text-white font-semibold py-4 superellipse-2xl transition-colors"
         >
           {t('profileCompletion.completeProfile')}
         </button>

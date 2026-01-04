@@ -120,7 +120,7 @@ export default function EnhanceProfileLayout({
         )}
 
         {/* Content */}
-        <div className="bg-white rounded-2xl sm:rounded-3xl shadow-xl p-6 sm:p-10">
+        <div className="bg-white superellipse-2xl sm:superellipse-3xl shadow-xl p-6 sm:p-10">
           {children}
         </div>
       </div>

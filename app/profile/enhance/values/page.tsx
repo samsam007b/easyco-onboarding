@@ -218,7 +218,7 @@ export default function EnhanceValuesPage() {
 
         {/* Deal Breakers */}
         <EnhanceProfileSection>
-          <div className="bg-white p-6 rounded-2xl border-2 border-orange-200">
+          <div className="bg-white p-6 superellipse-2xl border-2 border-orange-200">
             <div className="flex items-center gap-2 mb-3">
               <AlertTriangle className="w-5 h-5 text-orange-600" />
               <h2 className="text-lg font-semibold text-orange-600">{t('profileEnhance.values.dealBreakers.title')}</h2>
@@ -250,14 +250,14 @@ export default function EnhanceValuesPage() {
       <div className="mt-8 flex justify-between items-center gap-4">
         <button
           onClick={handleSkip}
-          className="px-6 py-3 rounded-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
+          className="px-6 py-3 superellipse-xl font-semibold text-gray-700 hover:bg-gray-50 transition-all flex items-center gap-2"
         >
           {t('profileEnhance.common.skip')}
           <span className="text-lg">→</span>
         </button>
         <button
           onClick={handleNext}
-          className="px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+          className="px-8 py-3 superellipse-xl font-semibold bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
         >
           {t('profileEnhance.common.save')}
         </button>

@@ -156,7 +156,7 @@ export default function ResidentReviewPage() {
         <div className="space-y-4 mb-8">
           {/* Basic Info */}
           {data.coreBasicInfo && Object.keys(data.coreBasicInfo).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-6 superellipse-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
                 {resident.basicInfo?.stepLabel || 'Basic Information'}
               </h2>
@@ -191,7 +191,7 @@ export default function ResidentReviewPage() {
 
           {/* Daily Life */}
           {data.coreDailyLife && Object.keys(data.coreDailyLife).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-6 superellipse-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
                 {resident.review?.dailyLife || 'Daily Life'}
               </h2>
@@ -232,7 +232,7 @@ export default function ResidentReviewPage() {
 
           {/* Social & Personality */}
           {data.coreSocialPersonality && Object.keys(data.coreSocialPersonality).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-6 superellipse-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
                 {resident.review?.socialLife || 'Social Life'}
               </h2>
@@ -255,7 +255,7 @@ export default function ResidentReviewPage() {
 
           {/* Values & Preferences */}
           {data.coreValuesPreferences && Object.keys(data.coreValuesPreferences).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-6 superellipse-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
                 {resident.review?.values || 'Values'}
               </h2>
@@ -266,7 +266,7 @@ export default function ResidentReviewPage() {
                     <dd className="font-medium">
                       <div className="flex flex-wrap gap-1">
                         {data.coreValuesPreferences.coreValues.map((value: string) => (
-                          <span key={value} className="px-2 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs capitalize">
+                          <span key={value} className="px-2 py-1 bg-orange-100 text-orange-700 superellipse-lg text-xs capitalize">
                             {value}
                           </span>
                         ))}
@@ -280,7 +280,7 @@ export default function ResidentReviewPage() {
 
           {/* Living Situation */}
           {data.livingSituation && Object.keys(data.livingSituation).length > 0 && (
-            <div className="bg-white p-6 rounded-2xl shadow">
+            <div className="bg-white p-6 superellipse-2xl shadow">
               <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
                 {resident.livingSituation?.stepLabel || 'Living Situation'}
               </h2>

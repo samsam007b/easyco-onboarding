@@ -17,7 +17,7 @@ export function EnhanceProfileHeading({ role, title, description, icon }: Enhanc
   return (
     <div className="text-center mb-8">
       {icon && (
-        <div className={`w-16 h-16 ${theme.bgLight} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
+        <div className={`w-16 h-16 ${theme.bgLight} superellipse-2xl flex items-center justify-center mx-auto mb-4`}>
           {icon}
         </div>
       )}
@@ -59,7 +59,7 @@ export function EnhanceProfileTextarea({
       )}
       <textarea
         value={value}
-        className={`w-full px-4 py-3 border border-gray-300 rounded-lg ${theme.focusRing} focus:border-transparent outline-none transition-all resize-none`}
+        className={`w-full px-4 py-3 border border-gray-300 superellipse-lg ${theme.focusRing} focus:border-transparent outline-none transition-all resize-none`}
         {...props}
       />
       {maxLength && (
@@ -85,7 +85,7 @@ export function EnhanceProfileButton({
 }: EnhanceProfileButtonProps) {
   const theme = enhanceThemes[role];
 
-  const baseClasses = 'px-6 py-3 sm:py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2';
+  const baseClasses = 'px-6 py-3 sm:py-4 superellipse-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2';
 
   const variantClasses = {
     primary: `bg-gradient-to-r ${theme.gradient} text-white hover:shadow-lg hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0`,
@@ -126,7 +126,7 @@ export function EnhanceProfileSelectionCard({
   return (
     <button
       onClick={onClick}
-      className={`w-full p-4 rounded-xl border transition-all duration-200 font-medium ${
+      className={`w-full p-4 superellipse-xl border transition-all duration-200 font-medium ${
         selected
           ? `bg-gradient-to-br ${theme.gradient} text-white border-transparent shadow-lg hover:shadow-xl transform hover:scale-[1.02]`
           : `bg-white text-gray-700 border-gray-200 hover:border-gray-300 hover:shadow-md`
@@ -175,7 +175,7 @@ export function EnhanceProfileInfoBox({ role, title, children, icon = '💡' }: 
   const theme = enhanceThemes[role];
 
   return (
-    <div className={`${theme.bgLight} ${theme.borderLight} border rounded-xl p-4`}>
+    <div className={`${theme.bgLight} ${theme.borderLight} border superellipse-xl p-4`}>
       {title && (
         <h3 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
           <span>{icon}</span>

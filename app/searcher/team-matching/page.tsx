@@ -172,7 +172,7 @@ export default function TeamMatchingComingSoon() {
         {/* Back button */}
         <motion.div variants={itemVariants} className="mb-8">
           <Link href="/searcher/matching">
-            <Button variant="ghost" className="gap-2 text-gray-600 hover:text-gray-900 hover:bg-amber-50 rounded-xl">
+            <Button variant="ghost" className="gap-2 text-gray-600 hover:text-gray-900 hover:bg-amber-50 superellipse-xl">
               <ArrowLeft className="w-5 h-5" />
               <span className="font-medium">Retour au matching</span>
             </Button>
@@ -195,7 +195,7 @@ export default function TeamMatchingComingSoon() {
                 repeat: Infinity,
                 repeatType: "reverse"
               }}
-              className="w-28 h-28 md:w-32 md:h-32 rounded-3xl flex items-center justify-center"
+              className="w-28 h-28 md:w-32 md:h-32 superellipse-3xl flex items-center justify-center"
               style={{
                 background: MATCHING_GRADIENT,
                 boxShadow: `0 20px 50px ${ACCENT_SHADOW}`,
@@ -208,7 +208,7 @@ export default function TeamMatchingComingSoon() {
             <motion.div
               animate={{ y: [0, -8, 0], rotate: [0, 10, 0] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="absolute -top-2 -right-2 w-10 h-10 rounded-xl flex items-center justify-center bg-white"
+              className="absolute -top-2 -right-2 w-10 h-10 superellipse-xl flex items-center justify-center bg-white"
               style={{ boxShadow: `0 8px 24px rgba(236, 72, 153, 0.3)` }}
             >
               <Heart className="w-5 h-5 text-pink-500" fill="#EC4899" />
@@ -216,7 +216,7 @@ export default function TeamMatchingComingSoon() {
             <motion.div
               animate={{ y: [0, -6, 0], rotate: [0, -10, 0] }}
               transition={{ duration: 2.5, repeat: Infinity, delay: 0.5 }}
-              className="absolute -bottom-1 -left-3 w-8 h-8 rounded-lg flex items-center justify-center bg-white"
+              className="absolute -bottom-1 -left-3 w-8 h-8 superellipse-lg flex items-center justify-center bg-white"
               style={{ boxShadow: `0 8px 24px rgba(139, 92, 246, 0.3)` }}
             >
               <Sparkles className="w-4 h-4 text-violet-500" />
@@ -279,7 +279,7 @@ export default function TeamMatchingComingSoon() {
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.03, y: -6 }}
-                  className="relative overflow-hidden bg-white rounded-3xl p-6 cursor-default"
+                  className="relative overflow-hidden bg-white superellipse-3xl p-6 cursor-default"
                   style={{
                     boxShadow: '0 8px 30px rgba(0, 0, 0, 0.08)',
                   }}
@@ -293,7 +293,7 @@ export default function TeamMatchingComingSoon() {
                   <div className="relative z-10">
                     <motion.div
                       whileHover={{ rotate: 5 }}
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                      className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                       style={{ background: feature.bgColor }}
                     >
                       <Icon className="w-8 h-8" style={{ color: feature.gradient.includes('#EC4899') ? '#EC4899' : feature.gradient.includes('#FF') ? '#FFA040' : '#8B5CF6' }} />
@@ -313,13 +313,13 @@ export default function TeamMatchingComingSoon() {
           {/* How it works */}
           <motion.div
             variants={itemVariants}
-            className="bg-white rounded-3xl p-8 md:p-10 mb-12"
+            className="bg-white superellipse-3xl p-8 md:p-10 mb-12"
             style={{ boxShadow: `0 20px 60px ${ACCENT_SHADOW}` }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 flex items-center justify-center gap-3">
               <motion.div
                 whileHover={{ rotate: 5 }}
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center"
                 style={{ background: MATCHING_GRADIENT }}
               >
                 <Zap className="w-5 h-5 text-white" />
@@ -342,7 +342,7 @@ export default function TeamMatchingComingSoon() {
                   )}
 
                   <div
-                    className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-black text-white"
+                    className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-black text-white"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     {step.number}
@@ -365,11 +365,11 @@ export default function TeamMatchingComingSoon() {
                 <motion.div
                   key={index}
                   whileHover={{ scale: 1.02 }}
-                  className="bg-white/80 backdrop-blur-sm rounded-2xl p-5 text-left"
+                  className="bg-white/80 backdrop-blur-sm superellipse-2xl p-5 text-left"
                   style={{ boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)' }}
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3"
                     style={{ background: `${SEARCHER_PRIMARY}20` }}
                   >
                     <Icon className="w-5 h-5" style={{ color: SEARCHER_DARK }} />
@@ -385,7 +385,7 @@ export default function TeamMatchingComingSoon() {
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.01 }}
-            className="relative overflow-hidden rounded-3xl p-8 md:p-10 text-white mb-8"
+            className="relative overflow-hidden superellipse-3xl p-8 md:p-10 text-white mb-8"
             style={{
               background: MATCHING_GRADIENT,
               boxShadow: `0 20px 60px rgba(255, 140, 32, 0.3)`,
@@ -406,7 +406,7 @@ export default function TeamMatchingComingSoon() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 bg-white/20 backdrop-blur-sm"
+                className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4 bg-white/20 backdrop-blur-sm"
               >
                 <Bell className="w-8 h-8 text-white" />
               </motion.div>
@@ -427,13 +427,13 @@ export default function TeamMatchingComingSoon() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="votre@email.com"
                       required
-                      className="flex-1 px-6 py-4 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30 transition-shadow text-base font-medium"
+                      className="flex-1 px-6 py-4 superellipse-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-4 focus:ring-white/30 transition-shadow text-base font-medium"
                     />
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       type="submit"
-                      className="bg-white px-8 py-4 rounded-xl font-bold transition-all text-base flex items-center justify-center gap-2"
+                      className="bg-white px-8 py-4 superellipse-xl font-bold transition-all text-base flex items-center justify-center gap-2"
                       style={{ color: '#FF8C20' }}
                     >
                       <Sparkles className="w-4 h-4" />
@@ -445,7 +445,7 @@ export default function TeamMatchingComingSoon() {
                 <motion.div
                   initial={{ scale: 0.8, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
-                  className="bg-white/20 backdrop-blur-sm rounded-2xl p-6 max-w-md mx-auto"
+                  className="bg-white/20 backdrop-blur-sm superellipse-2xl p-6 max-w-md mx-auto"
                 >
                   <div className="flex items-center justify-center gap-2 mb-2">
                     <CheckCircle2 className="w-6 h-6" />
@@ -462,7 +462,7 @@ export default function TeamMatchingComingSoon() {
           {/* Alternative actions */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-6"
+            className="relative overflow-hidden bg-white superellipse-2xl p-6"
             style={{ boxShadow: '0 8px 24px rgba(0, 0, 0, 0.06)' }}
           >
             <div className="relative z-10">
@@ -474,7 +474,7 @@ export default function TeamMatchingComingSoon() {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button
                     onClick={() => router.push('/searcher/matching')}
-                    className="rounded-xl px-6 py-5 font-semibold text-white border-none"
+                    className="superellipse-xl px-6 py-5 font-semibold text-white border-none"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Home className="w-4 h-4 mr-2" />
@@ -484,7 +484,7 @@ export default function TeamMatchingComingSoon() {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
                   <Button
                     onClick={() => router.push('/searcher/groups/create')}
-                    className="rounded-xl px-6 py-5 font-semibold text-white border-none"
+                    className="superellipse-xl px-6 py-5 font-semibold text-white border-none"
                     style={{ background: 'linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%)' }}
                   >
                     <UserPlus className="w-4 h-4 mr-2" />
@@ -495,7 +495,7 @@ export default function TeamMatchingComingSoon() {
                   <Button
                     onClick={() => router.push('/searcher/explore')}
                     variant="outline"
-                    className="rounded-xl px-6 py-5 font-semibold border-gray-200"
+                    className="superellipse-xl px-6 py-5 font-semibold border-gray-200"
                   >
                     <MapPin className="w-4 h-4 mr-2" />
                     Explorer les biens
