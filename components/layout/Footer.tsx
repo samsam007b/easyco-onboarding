@@ -75,7 +75,7 @@ export default function Footer() {
                   href="mailto:contact@izzico.be"
                   className="transition"
                   style={{ color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563' }}
-                  onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                  onMouseEnter={(e) => e.currentTarget.style.color = '#9c5698'}
                   onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                 >
                   contact@izzico.be
@@ -100,7 +100,7 @@ export default function Footer() {
                     style={{
                       color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#9c5698'}
                     onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
@@ -122,7 +122,7 @@ export default function Footer() {
                     style={{
                       color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#9c5698'}
                     onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
@@ -144,7 +144,7 @@ export default function Footer() {
                     style={{
                       color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#9c5698'}
                     onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
@@ -166,7 +166,7 @@ export default function Footer() {
                     style={{
                       color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
                     }}
-                    onMouseEnter={(e) => e.currentTarget.style.color = '#ad5684'}
+                    onMouseEnter={(e) => e.currentTarget.style.color = '#9c5698'}
                     onMouseLeave={(e) => e.currentTarget.style.color = resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563'}
                   >
                     {link.label}
@@ -199,20 +199,20 @@ export default function Footer() {
                     : 'bg-gray-50 border border-gray-300 text-gray-900 placeholder-gray-400'
                 }`}
                 style={{
-                  borderColor: resolvedTheme === 'dark' ? '#ad568420' : '#ad568430',
+                  borderColor: resolvedTheme === 'dark' ? 'rgba(156, 86, 152, 0.12)' : 'rgba(156, 86, 152, 0.18)',
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#ad5684';
-                  e.currentTarget.style.boxShadow = `0 0 0 3px ${resolvedTheme === 'dark' ? '#ad568420' : '#ad568410'}`;
+                  e.currentTarget.style.borderColor = '#9c5698';
+                  e.currentTarget.style.boxShadow = `0 0 0 3px ${resolvedTheme === 'dark' ? 'rgba(156, 86, 152, 0.12)' : 'rgba(156, 86, 152, 0.06)'}`;
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = resolvedTheme === 'dark' ? '#ad568420' : '#ad568430';
+                  e.currentTarget.style.borderColor = resolvedTheme === 'dark' ? 'rgba(156, 86, 152, 0.12)' : 'rgba(156, 86, 152, 0.18)';
                   e.currentTarget.style.boxShadow = 'none';
                 }}
               />
               <button
                 className="px-6 py-2 text-white font-semibold rounded-lg transition shadow-md hover:shadow-lg hover:scale-105"
-                style={{ background: '#ad5684' }}
+                style={{ background: '#9c5698' }}
               >
                 S'abonner
               </button>
@@ -241,8 +241,8 @@ export default function Footer() {
                   color: resolvedTheme === 'dark' ? '#9ca3af' : '#4b5563',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = resolvedTheme === 'dark' ? '#ad568420' : '#ad568415';
-                  e.currentTarget.style.color = '#ad5684';
+                  e.currentTarget.style.background = resolvedTheme === 'dark' ? 'rgba(156, 86, 152, 0.12)' : 'rgba(156, 86, 152, 0.08)';
+                  e.currentTarget.style.color = '#9c5698';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.background = resolvedTheme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : '#F3F4F6';

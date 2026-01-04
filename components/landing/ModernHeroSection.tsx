@@ -69,21 +69,21 @@ export default function ModernHeroSection() {
             overflow: 'visible'
           }}
         >
-          {/* Verre trempé avec gradient subtil et effet 3D */}
+          {/* Verre trempé avec gradient subtil et effet 3D - v3 colors */}
           <div className="absolute inset-0 rounded-[40px]"
                style={{
-                 background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.25) 0%, rgba(255, 111, 60, 0.22) 50%, rgba(255, 210, 73, 0.25) 100%)',
+                 background: 'linear-gradient(135deg, rgba(156, 86, 152, 0.25) 0%, rgba(224, 87, 71, 0.22) 50%, rgba(255, 160, 0, 0.25) 100%)',
                  backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
                  WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
-                 boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(110, 86, 207, 0.3)',
+                 boxShadow: 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(156, 86, 152, 0.3)',
                  overflow: 'hidden'
                }}
           />
 
-          {/* Réfraction lumineuse sur les bords - effet prismatique */}
+          {/* Réfraction lumineuse sur les bords - effet prismatique - v3 colors */}
           <div className="absolute inset-0 rounded-[40px]"
                style={{
-                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(110, 86, 207, 0.3) 100%)',
+                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 20%, transparent 80%, rgba(156, 86, 152, 0.3) 100%)',
                  mixBlendMode: 'overlay',
                  overflow: 'hidden'
                }}
@@ -98,10 +98,10 @@ export default function ModernHeroSection() {
                }}
           />
 
-          {/* Bordure extérieure avec effet de réfraction */}
+          {/* Bordure extérieure avec effet de réfraction - v3 colors */}
           <div className="absolute -inset-[2px] rounded-[42px] pointer-events-none"
                style={{
-                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(110, 86, 207, 0.4) 25%, rgba(255, 111, 60, 0.4) 50%, rgba(255, 210, 73, 0.4) 75%, rgba(255, 255, 255, 0.6) 100%)',
+                 background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.6) 0%, rgba(156, 86, 152, 0.4) 25%, rgba(224, 87, 71, 0.4) 50%, rgba(255, 160, 0, 0.4) 75%, rgba(255, 255, 255, 0.6) 100%)',
                  filter: 'blur(1px)',
                  opacity: 0.6,
                  overflow: 'hidden'
@@ -231,14 +231,14 @@ export default function ModernHeroSection() {
                 />
               </div>
 
-              {/* Search Button - Gradient Signature */}
+              {/* Search Button - Gradient Signature v3 */}
               <div className="p-2 flex items-center justify-center">
                 <Button
                   onClick={handleSearch}
                   className="w-full h-full group text-white font-semibold superellipse-2xl shadow-lg hover:shadow-xl transition-all hover:scale-105"
                   style={{
-                    background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)',
-                    boxShadow: '0 10px 30px -5px rgba(156, 86, 152, 0.4), 0 4px 10px -2px rgba(255, 87, 34, 0.3)'
+                    background: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%)',
+                    boxShadow: '0 10px 30px -5px rgba(156, 86, 152, 0.4), 0 4px 10px -2px rgba(224, 87, 71, 0.3)'
                   }}
                 >
                   <div className="flex items-center">
@@ -285,7 +285,7 @@ export default function ModernHeroSection() {
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            {/* Owner CTA - Glassmorphism Style */}
+            {/* Owner CTA - Glassmorphism Style - v3 #9c5698 */}
             <Link href="/onboarding/owner" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -293,8 +293,8 @@ export default function ModernHeroSection() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl transition-all backdrop-blur-xl border border-white/30"
                 style={{
-                  background: '#ad5684d9',
-                  boxShadow: '0 10px 30px -5px rgba(173, 86, 132, 0.4), 0 4px 10px -2px rgba(173, 86, 132, 0.3)'
+                  background: 'rgba(156, 86, 152, 0.85)',
+                  boxShadow: '0 10px 30px -5px rgba(156, 86, 152, 0.4), 0 4px 10px -2px rgba(156, 86, 152, 0.3)'
                 }}
               >
                 <div className="flex items-center justify-center gap-3">
@@ -306,7 +306,7 @@ export default function ModernHeroSection() {
               </motion.button>
             </Link>
 
-            {/* Resident CTA - Glassmorphism Style */}
+            {/* Resident CTA - Glassmorphism Style - v3 #e05747 */}
             <Link href="/onboarding/resident" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -314,8 +314,8 @@ export default function ModernHeroSection() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl transition-all backdrop-blur-xl border border-white/30"
                 style={{
-                  background: '#ff651ed9',
-                  boxShadow: '0 10px 30px -5px rgba(255, 101, 30, 0.4), 0 4px 10px -2px rgba(255, 101, 30, 0.3)'
+                  background: 'rgba(224, 87, 71, 0.85)',
+                  boxShadow: '0 10px 30px -5px rgba(224, 87, 71, 0.4), 0 4px 10px -2px rgba(224, 87, 71, 0.3)'
                 }}
               >
                 <div className="flex items-center justify-center gap-3">
@@ -327,7 +327,7 @@ export default function ModernHeroSection() {
               </motion.button>
             </Link>
 
-            {/* Searcher CTA - Glassmorphism Style */}
+            {/* Searcher CTA - Glassmorphism Style - v3 #ffa000 */}
             <Link href="/guest" className="w-full sm:w-auto">
               <motion.button
                 whileHover={{ scale: 1.05, y: -2 }}
@@ -335,8 +335,8 @@ export default function ModernHeroSection() {
                 transition={{ type: "spring", stiffness: 400, damping: 17 }}
                 className="w-full sm:w-auto group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl transition-all backdrop-blur-xl border border-white/30"
                 style={{
-                  background: '#ff9811d9',
-                  boxShadow: '0 10px 30px -5px rgba(255, 152, 17, 0.4), 0 4px 10px -2px rgba(255, 152, 17, 0.3)'
+                  background: 'rgba(255, 160, 0, 0.85)',
+                  boxShadow: '0 10px 30px -5px rgba(255, 160, 0, 0.4), 0 4px 10px -2px rgba(255, 160, 0, 0.3)'
                 }}
               >
                 <div className="flex items-center justify-center gap-3">

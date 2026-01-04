@@ -6,16 +6,17 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-// Couleurs Owner extraites du logo gradient
+// Couleurs Owner du Design System v3 - couleur primaire exacte
+// Source: brand-identity/izzico-color-system.html
 const OWNER_COLORS = {
-  primary: '#9c5698',
+  primary: '#9c5698',      // Couleur primaire v3
   gradient: {
-    start: '#7B5FB8',
-    middle: '#A67BB8',
-    end: '#C98B9E',
+    start: '#9c5698',      // Mauve v3
+    middle: '#9c5698',     // Mauve v3
+    end: '#9c5698',        // Mauve v3
   },
-  light: '#F3F1FF',
-  text: '#4A148C',
+  light: '#F8F0F7',        // Fond très clair
+  text: '#7C3A77',         // Texte sur fond clair
 };
 
 export default function OwnersPage() {

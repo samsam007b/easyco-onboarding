@@ -120,7 +120,7 @@ export default function PropertyPreviewGrid({
               <span
                 className="bg-clip-text text-transparent"
                 style={{
-                  backgroundImage: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)'
+                  backgroundImage: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%)'
                 }}
               >
                 Bruxelles
@@ -154,7 +154,7 @@ export default function PropertyPreviewGrid({
             href="/properties/browse"
             className="group inline-flex items-center gap-3 px-8 py-5 text-white font-bold rounded-full shadow-2xl hover:shadow-purple-500/50 transition-all hover:scale-105"
             style={{
-              background: 'linear-gradient(135deg, #9c5698 0%, #9b87f5 100%)'
+              background: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%)'
             }}
           >
             <span className="text-base">Voir toutes les {totalCount} annonces</span>

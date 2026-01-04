@@ -5,17 +5,23 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import { useTheme } from '@/contexts/ThemeContext';
 import { ChevronDown, HelpCircle, Mail } from 'lucide-react';
 
-// Couleurs du design system - couleurs dominantes exactes par rôle
+// Couleurs du design system v3 - couleurs primaires exactes par rôle
+// Source: brand-identity/izzico-color-system.html
 const ROLE_COLORS = {
   owner: {
-    gradient: { start: '#ad5684', end: '#ad5684' },
-    gradientDark: { start: '#ad5684', end: '#ad5684' },
-    light: '#F3F1FF',
+    gradient: { start: '#9c5698', end: '#9c5698' },
+    gradientDark: { start: '#9c5698', end: '#9c5698' },
+    light: '#F8F0F7',
+  },
+  resident: {
+    gradient: { start: '#e05747', end: '#e05747' },
+    gradientDark: { start: '#e05747', end: '#e05747' },
+    light: '#FEF2EE',
   },
   searcher: {
-    gradient: { start: '#ff9811', end: '#ff9811' },
-    gradientDark: { start: '#ff9811', end: '#ff9811' },
-    light: '#FFF9E6',
+    gradient: { start: '#ffa000', end: '#ffa000' },
+    gradientDark: { start: '#ffa000', end: '#ffa000' },
+    light: '#FFFBEB',
   },
 };
 

@@ -6,16 +6,17 @@ import { Search, MapPin, Users, ArrowRight, Check, Heart, Home, Filter } from 'l
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-// Couleurs Searcher du Design System (gradient logo)
+// Couleurs Searcher du Design System v3 - couleur primaire exacte
+// Source: brand-identity/izzico-color-system.html
 const SEARCHER_COLORS = {
-  primary: '#FFA040',      // Couleur dominante (centre du gradient)
+  primary: '#ffa000',      // Couleur primaire v3
   gradient: {
-    start: '#FFA040',      // Orange doré
-    middle: '#FFB85C',     // Orange jaune
-    end: '#FFD080',        // Jaune doré
+    start: '#ffa000',      // Gold v3
+    middle: '#ffa000',     // Gold v3
+    end: '#ffa000',        // Gold v3
   },
-  light: '#FFF9E6',        // Fond très clair
-  text: '#B87A00',         // Texte sur fond clair
+  light: '#FFFBEB',        // Fond très clair
+  text: '#92400E',         // Texte sur fond clair (amber-800)
 };
 
 export default function ExplorerPage() {

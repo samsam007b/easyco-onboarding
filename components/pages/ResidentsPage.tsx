@@ -6,16 +6,17 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-// Couleurs Resident extraites du logo gradient
+// Couleurs Resident du Design System v3 - couleur primaire exacte
+// Source: brand-identity/izzico-color-system.html
 const RESIDENT_COLORS = {
-  primary: '#ff651e',
+  primary: '#e05747',      // Couleur primaire v3
   gradient: {
-    start: '#e05747',
-    middle: '#ff651e',
-    end: '#ff9014',
+    start: '#e05747',      // Coral v3
+    middle: '#e05747',     // Coral v3
+    end: '#e05747',        // Coral v3
   },
-  light: '#FFF3EF',
-  text: '#e05747',
+  light: '#FEF2EE',        // Fond très clair
+  text: '#C53929',         // Texte sur fond clair
 };
 
 export default function ResidentsPage() {

@@ -122,16 +122,16 @@ export default function ModernPublicHeader({
 
               return (
                 <div key={item.id} className="relative">
-                  {/* Triangle pointer - avec couleur du dégradé */}
+                  {/* Triangle pointer - avec couleur du dégradé - v3 colors */}
                   {isActive && (
                     <motion.div
                       className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
                       style={{
                         borderTopColor: item.color === 'yellow'
-                          ? '#FFB85C'
+                          ? '#ffa000'
                           : item.color === 'orange'
-                          ? '#ff651e'
-                          : '#A67BB8'
+                          ? '#e05747'
+                          : '#9c5698'
                       }}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}

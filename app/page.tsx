@@ -102,15 +102,15 @@ export default function Home() {
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
 
-            {/* Benefit 1: Verified - Owner colors (mauve) */}
+            {/* Benefit 1: Verified - Owner colors (mauve #9c5698) */}
             <div className="relative group">
               {/* Background gradient on hover */}
               <div
                 className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
-                    ? 'linear-gradient(to bottom right, #ad568420, #ad568420)'
-                    : 'linear-gradient(to bottom right, #ad568415, #ad568415)',
+                    ? 'linear-gradient(to bottom right, rgba(156, 86, 152, 0.12), rgba(156, 86, 152, 0.12))'
+                    : 'linear-gradient(to bottom right, rgba(156, 86, 152, 0.08), rgba(156, 86, 152, 0.08))',
                 }}
               />
 
@@ -118,14 +118,14 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 superellipse-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#ad568440' : '#ad568430',
+                  borderColor: resolvedTheme === 'dark' ? 'rgba(156, 86, 152, 0.25)' : 'rgba(156, 86, 152, 0.18)',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >
                 <div
                   className="w-20 h-20 mx-auto superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: '#ad5684',
+                    background: 'var(--owner-primary)',
                   }}
                 >
                   <Shield className="w-10 h-10 text-white" />
@@ -133,7 +133,7 @@ export default function Home() {
                 <h3
                   className="text-2xl font-bold bg-clip-text text-transparent"
                   style={{
-                    backgroundImage: 'linear-gradient(to right, #ad5684, #ad5684)',
+                    backgroundImage: 'linear-gradient(to right, var(--owner-primary), var(--owner-primary))',
                   }}
                 >
                   {landing.benefits.verified.title}
@@ -144,15 +144,15 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Benefit 2: Compatibility - Resident colors (coral/orange) */}
+            {/* Benefit 2: Compatibility - Resident colors (coral #e05747) */}
             <div className="relative group">
               {/* Background gradient on hover */}
               <div
                 className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
-                    ? 'linear-gradient(to bottom right, #ff651e20, #ff651e20)'
-                    : 'linear-gradient(to bottom right, #ff651e15, #ff651e15)',
+                    ? 'linear-gradient(to bottom right, rgba(224, 87, 71, 0.12), rgba(224, 87, 71, 0.12))'
+                    : 'linear-gradient(to bottom right, rgba(224, 87, 71, 0.08), rgba(224, 87, 71, 0.08))',
                 }}
               />
 
@@ -160,14 +160,14 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 superellipse-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#ff651e40' : '#ff651e30',
+                  borderColor: resolvedTheme === 'dark' ? 'rgba(224, 87, 71, 0.25)' : 'rgba(224, 87, 71, 0.18)',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >
                 <div
                   className="w-20 h-20 mx-auto superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: '#ff651e',
+                    background: 'var(--resident-primary)',
                   }}
                 >
                   <Target className="w-10 h-10 text-white" />
@@ -175,7 +175,7 @@ export default function Home() {
                 <h3
                   className="text-2xl font-bold bg-clip-text text-transparent"
                   style={{
-                    backgroundImage: 'linear-gradient(to right, #ff651e, #ff651e)',
+                    backgroundImage: 'linear-gradient(to right, var(--resident-primary), var(--resident-primary))',
                   }}
                 >
                   {landing.benefits.compatibility.title}
@@ -186,15 +186,15 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Benefit 3: Groups - Searcher colors (orange/yellow gold) */}
+            {/* Benefit 3: Groups - Searcher colors (gold #ffa000) */}
             <div className="relative group">
               {/* Background gradient on hover */}
               <div
                 className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                 style={{
                   background: resolvedTheme === 'dark'
-                    ? 'linear-gradient(to bottom right, #ff981120, #ff981120)'
-                    : 'linear-gradient(to bottom right, #ff981115, #ff981115)',
+                    ? 'linear-gradient(to bottom right, rgba(255, 160, 0, 0.12), rgba(255, 160, 0, 0.12))'
+                    : 'linear-gradient(to bottom right, rgba(255, 160, 0, 0.08), rgba(255, 160, 0, 0.08))',
                 }}
               />
 
@@ -202,14 +202,14 @@ export default function Home() {
                 className="relative text-center space-y-4 p-8 superellipse-3xl border transition-all duration-300 hover:shadow-xl hover:scale-[1.02]"
                 style={{
                   background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                  borderColor: resolvedTheme === 'dark' ? '#ff981140' : '#ff981130',
+                  borderColor: resolvedTheme === 'dark' ? 'rgba(255, 160, 0, 0.25)' : 'rgba(255, 160, 0, 0.18)',
                   backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
                 }}
               >
                 <div
                   className="w-20 h-20 mx-auto superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: '#ff9811',
+                    background: 'var(--searcher-primary)',
                   }}
                 >
                   <Zap className="w-10 h-10 text-white" />
@@ -217,7 +217,7 @@ export default function Home() {
                 <h3
                   className="text-2xl font-bold bg-clip-text text-transparent"
                   style={{
-                    backgroundImage: 'linear-gradient(to right, #ff9811, #ff9811)',
+                    backgroundImage: 'linear-gradient(to right, var(--searcher-primary), var(--searcher-primary))',
                   }}
                 >
                   {landing.benefits.groups.title}
