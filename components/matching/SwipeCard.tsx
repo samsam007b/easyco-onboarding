@@ -182,7 +182,7 @@ export const SwipeCard = memo(function SwipeCard({
     } else {
       controls.start({
         x: 0, y: 0, rotate: 0,
-        transition: { type: 'spring', stiffness: 500, damping: 30 }
+        transition: { type: 'spring' as const, stiffness: 500, damping: 30 }
       });
     }
   }, [onSwipe, controls, likePilePosition, passPilePosition]);

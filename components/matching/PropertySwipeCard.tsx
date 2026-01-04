@@ -163,7 +163,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
         animate={{
           x: exitX,
           y: exitY,
-          transition: { type: 'spring', stiffness: 300, damping: 30 }
+          transition: { type: 'spring' as const, stiffness: 300, damping: 30 }
         }}
       >
         <div className="relative w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden">
