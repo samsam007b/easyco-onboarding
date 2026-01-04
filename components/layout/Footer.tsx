@@ -56,7 +56,7 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-2">
             <img
-              src="/logos/izzico-lockup-gradient.svg"
+              src="/logos/izzico-lockup-dark.svg"
               alt="Izzico"
               className="h-10 w-auto mb-4"
             />
