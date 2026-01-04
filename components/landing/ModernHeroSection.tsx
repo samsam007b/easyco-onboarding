@@ -129,7 +129,7 @@ export default function ModernHeroSection() {
 
                 {/* Couche 2 (milieu): Glassmorphism opaque révélant la lumière */}
                 <div
-                  className="absolute inset-[3px] superellipse-2xl border border-white/50"
+                  className="absolute inset-0 superellipse-2xl border border-white/50"
                   style={{
                     background: 'rgba(255, 255, 255, 0.25)',
                     backdropFilter: 'blur(20px) saturate(180%)',
@@ -140,7 +140,7 @@ export default function ModernHeroSection() {
 
                 {/* Reflet lumineux sur le glassmorphism */}
                 <div
-                  className="absolute inset-[3px] superellipse-2xl pointer-events-none"
+                  className="absolute inset-0 superellipse-2xl pointer-events-none"
                   style={{
                     background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.4) 0%, transparent 50%)',
                   }}
