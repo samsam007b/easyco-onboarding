@@ -256,6 +256,42 @@ linear-gradient(135deg,
 ### Old Versions (Archive Only)
 Located in `brand-identity/logo final izzico/ancienne versions/` - DO NOT USE for production.
 
+## Known Bugs & Solutions
+
+### 🐛 Fonts Not Displaying (Next.js + Tailwind)
+
+**Symptom**: Fonts appear as system default (Arial/Helvetica) instead of Inter/Nunito/Fredoka.
+
+**Root Cause**: CSS variable inheritance conflict between Next.js and Tailwind preflight.
+
+**Technical Details**:
+1. Tailwind preflight applies `font-family: var(--font-inter)...` on `html` element
+2. Next.js `next/font` classes (e.g., `__variable_abc123`) define `--font-inter` on the element they're applied to
+3. CSS variables inherit **DOWNWARD only**, not upward
+4. If font classes are on `<body>`, `html` cannot resolve `var(--font-inter)` → fallback to system fonts
+
+**Solution**: Always apply Next.js font variable classes to `<html>`, not `<body>`:
+
+```tsx
+// ✅ CORRECT - Font classes on <html>
+<html lang="fr" className={`${inter.variable} ${nunito.variable} ${fredoka.variable}`}>
+  <body className="min-h-screen">
+
+// ❌ WRONG - Font classes on <body>
+<html lang="fr">
+  <body className={`${inter.variable} ${nunito.variable} ${fredoka.variable} min-h-screen`}>
+```
+
+**Files involved**:
+- `app/layout.tsx` - Root layout with html/body elements
+- `app/globals.css` - `@layer base` block with font variable definitions
+- `app/fonts.ts` - Next.js font configuration
+- `tailwind.config.ts` - fontFamily configuration
+
+**Diagnostic command**: Run `/diagnose-fonts` to check font configuration.
+
+---
+
 ## Tips for Claude
 
 1. **Always check the user's role** when working on UI - colors and features differ
@@ -264,3 +300,4 @@ Located in `brand-identity/logo final izzico/ancienne versions/` - DO NOT USE fo
 4. **French is primary** - UI text should be in French unless i18n
 5. **V3-fun design** - use gradients, rounded corners, animations
 6. **Brand logos**: ALWAYS use files from `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/` - these are the ONLY official versions
+7. **Font classes on html**: Always put `next/font` variable classes on `<html>`, not `<body>` (see Known Bugs above)
