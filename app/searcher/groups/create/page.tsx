@@ -186,7 +186,7 @@ export default function SearcherCreateGroupPage() {
           >
             <div className="flex items-center gap-4">
               <Link href="/searcher/groups">
-                <Button variant="ghost" size="icon" className="rounded-xl">
+                <Button variant="ghost" size="icon" className="superellipse-xl">
                   <ArrowLeft className="w-5 h-5" />
                 </Button>
               </Link>
@@ -194,7 +194,7 @@ export default function SearcherCreateGroupPage() {
               <div>
                 <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                   <div
-                    className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Sparkles className="w-6 h-6 text-white" />
@@ -218,10 +218,10 @@ export default function SearcherCreateGroupPage() {
               className="lg:col-span-2 space-y-6"
             >
               {/* Basic Info */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <div className="bg-white superellipse-2xl p-6 shadow-lg border border-gray-100">
                 <div className="flex items-center gap-3 mb-6">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Users className="w-5 h-5 text-white" />
@@ -242,7 +242,7 @@ export default function SearcherCreateGroupPage() {
                       onChange={(e) => setGroupName(e.target.value)}
                       placeholder={t?.basicInfo?.groupNamePlaceholder?.[language] || 'ex: Les Aventuriers de Bruxelles'}
                       maxLength={50}
-                      className="text-base rounded-xl"
+                      className="text-base superellipse-xl"
                     />
                     <p className="text-xs text-gray-500 mt-1">
                       {groupName.length}/50 {t?.basicInfo?.characters?.[language] || 'caractères'}
@@ -259,7 +259,7 @@ export default function SearcherCreateGroupPage() {
                       placeholder={t?.basicInfo?.descriptionPlaceholder?.[language] || 'Parlez-nous de votre groupe, vos intérêts, votre style de vie...'}
                       rows={4}
                       maxLength={500}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition text-base"
+                      className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition text-base"
                     />
                     <p className="text-xs text-gray-500 mt-1">
                       {description.length}/500 {t?.basicInfo?.characters?.[language] || 'caractères'}
@@ -291,10 +291,10 @@ export default function SearcherCreateGroupPage() {
               </div>
 
               {/* Group Settings */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <div className="bg-white superellipse-2xl p-6 shadow-lg border border-gray-100">
                 <div className="flex items-center gap-3 mb-6">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Settings className="w-5 h-5 text-white" />
@@ -329,7 +329,7 @@ export default function SearcherCreateGroupPage() {
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-amber-50/50 rounded-xl border border-amber-100">
+                  <div className="flex items-center justify-between p-4 bg-amber-50/50 superellipse-xl border border-amber-100">
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900 flex items-center gap-2">
                         {t?.settings?.approval?.title?.[language] || 'Approbation requise'}
@@ -356,7 +356,7 @@ export default function SearcherCreateGroupPage() {
               </div>
 
               {/* Group Preferences */}
-              <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+              <div className="bg-white superellipse-2xl p-6 shadow-lg border border-gray-100">
                 <h2 className="text-xl font-bold text-gray-900 mb-2">
                   {t?.preferences?.title?.[language] || 'Préférences de recherche'}
                 </h2>
@@ -379,7 +379,7 @@ export default function SearcherCreateGroupPage() {
                           onChange={(e) => setBudgetMin(e.target.value)}
                           placeholder={t?.preferences?.minimum?.[language] || 'Minimum'}
                           min="0"
-                          className="text-base rounded-xl"
+                          className="text-base superellipse-xl"
                         />
                       </div>
                       <div>
@@ -389,7 +389,7 @@ export default function SearcherCreateGroupPage() {
                           onChange={(e) => setBudgetMax(e.target.value)}
                           placeholder={t?.preferences?.maximum?.[language] || 'Maximum'}
                           min="0"
-                          className="text-base rounded-xl"
+                          className="text-base superellipse-xl"
                         />
                       </div>
                     </div>

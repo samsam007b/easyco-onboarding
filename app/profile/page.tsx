@@ -748,7 +748,7 @@ export default function ProfilePage() {
             {activeTab === 'profile' && (
               <>
                 {/* Personal Information */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <h2 className="text-xl font-semibold text-gray-900 mb-6">{t('profile.personalInfo')}</h2>
 
                   <div className="space-y-4">
@@ -785,7 +785,7 @@ export default function ProfilePage() {
                           </Button>
                         </div>
                       ) : (
-                        <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-2xl"
+                        <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-2xl">
                           <span className="text-gray-900">{userData.full_name || t('profile.notSet')}</span>
                           <Button
                             onClick={() => setIsEditingName(true)}
@@ -803,7 +803,7 @@ export default function ProfilePage() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Email
                       </label>
-                      <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                      <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-2xl">
                         <div className="flex items-center gap-2">
                           <Mail className="w-5 h-5 text-gray-400" />
                           <span className="text-gray-900">{userData.email}</span>
@@ -836,7 +836,7 @@ export default function ProfilePage() {
                   </div>
 
                   {/* Large Profile Card */}
-                  <div className={`relative overflow-hidden rounded-3xl border-2 ${colors.border} bg-white/90 backdrop-blur-sm p-6 shadow-xl hover:shadow-2xl transition-all`}>
+                  <div className={`relative overflow-hidden superellipse-3xl border-2 ${colors.border} bg-white/90 backdrop-blur-sm p-6 shadow-xl hover:shadow-2xl transition-all`}>
                     <div className={`absolute inset-0 bg-gradient-to-br ${colors.lightBg} opacity-50`} />
                     <div className="relative">
                       {/* Header: Photo + Basic Info */}
@@ -959,14 +959,14 @@ export default function ProfilePage() {
                       {/* Buttons */}
                       <div className="flex gap-2">
                         <button
-                          className={`flex-1 px-4 py-2 bg-gradient-to-r ${colors.gradient} text-white text-sm font-semibold rounded-xl hover:shadow-lg transition-all`}
+                          className={`flex-1 px-4 py-2 bg-gradient-to-r ${colors.gradient} text-white text-sm font-semibold superellipse-xl hover:shadow-lg transition-all`}
                           onClick={() => router.push('/profile/public-view')}
                         >
                           <Eye className="w-4 h-4 inline mr-1" />
                           {t('profile.viewPublicMode')}
                         </button>
                         <button
-                          className="px-4 py-2 border-2 border-gray-200 text-gray-700 text-sm font-semibold rounded-xl hover:bg-gray-50 transition-colors"
+                          className="px-4 py-2 border-2 border-gray-200 text-gray-700 text-sm font-semibold superellipse-xl hover:bg-gray-50 transition-colors"
                           onClick={() => setIsEditingName(true)}
                         >
                           <Edit className="w-4 h-4 inline" />
@@ -980,7 +980,7 @@ export default function ProfilePage() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className={`bg-gradient-to-br ${colors.lightBg} backdrop-blur-sm rounded-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
+                  className={`bg-gradient-to-br ${colors.lightBg} backdrop-blur-sm superellipse-2xl p-4 border ${colors.border} ${colors.hover} mb-6`}
                 >
                   {/* Header - Always visible */}
                   <div className="flex items-center justify-between">
@@ -1231,7 +1231,7 @@ export default function ProfilePage() {
                 </motion.div>
 
                 {/* Enhanced Profile Sections - Uniform Style */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <div className="flex items-center justify-between mb-6">
                     <h2 className="text-xl font-semibold text-gray-900">{t('profile.enhance.title')}</h2>
                     <span className="text-sm text-gray-500">{t('profile.enhance.subtitle')}</span>
@@ -1241,7 +1241,7 @@ export default function ProfilePage() {
                     {/* About Me */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/about')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -1260,7 +1260,7 @@ export default function ProfilePage() {
                     {/* Personality */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/personality')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -1279,7 +1279,7 @@ export default function ProfilePage() {
                     {/* Values */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/values')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -1298,7 +1298,7 @@ export default function ProfilePage() {
                     {/* Hobbies */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/hobbies')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -1317,7 +1317,7 @@ export default function ProfilePage() {
                     {/* Community Events */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/community')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -1336,7 +1336,7 @@ export default function ProfilePage() {
                     {/* Financial Info */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/financial')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -1355,7 +1355,7 @@ export default function ProfilePage() {
                     {/* Profile Verification */}
                     <motion.div
                       onClick={() => router.push('/profile/enhance/verification')}
-                      className="group cursor-pointer bg-white rounded-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all md:col-span-2 lg:col-span-3"
+                      className="group cursor-pointer bg-white superellipse-2xl p-5 border border-gray-200 hover:border-gray-300 hover:shadow-md transition-all md:col-span-2 lg:col-span-3"
                     >
                       <div className="flex items-start justify-between">
                         <div className="flex items-start gap-4">
@@ -1383,7 +1383,7 @@ export default function ProfilePage() {
 
                 {/* Enhance Profile CTA */}
                 {!userData.onboarding_completed && (
-                  <div className={`bg-gradient-to-r ${colors.gradient} rounded-3xl shadow-xl p-8 text-white`}>
+                  <div className={`bg-gradient-to-r ${colors.gradient} superellipse-3xl shadow-xl p-8 text-white`}>
                     <div className="flex items-start justify-between mb-4">
                       <div>
                         <h2 className="text-2xl font-bold mb-2">{t('profile.enhance.cta.title')}</h2>
@@ -1407,7 +1407,7 @@ export default function ProfilePage() {
             {activeTab === 'settings' && (
               <>
                 {/* Role Management */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <h2 className="text-xl font-semibold text-gray-900 mb-4">{t('profile.settings.roleManagement')}</h2>
 
                   <div className="space-y-4">
@@ -1467,7 +1467,7 @@ export default function ProfilePage() {
                 </div>
 
                 {/* Account Status */}
-                <div className={`bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
+                <div className={`bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg hover:shadow-xl transition-all p-6 border ${colors.border} ${colors.hover}`}>
                   <h3 className="font-bold text-gray-900 mb-4">{t('profile.settings.accountStatus')}</h3>
                   <div className="space-y-3">
                     <div className="flex items-center justify-between p-3 bg-gray-50 rounded-xl">

@@ -274,7 +274,7 @@ export default function ReviewPage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-orange-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <CheckCircle2 className="w-8 h-8 text-orange-600" />
         </div>
         <OnboardingHeading
@@ -287,7 +287,7 @@ export default function ReviewPage() {
       <div className="space-y-4 mb-8">
         {/* Basic Info */}
         {data.coreBasicInfo && Object.keys(data.coreBasicInfo).length > 0 && (
-          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+          <div className="p-4 bg-orange-50 superellipse-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <User className="w-5 h-5 text-orange-600" />
               <h2 className="font-semibold text-gray-900">{t('onboarding.review.basicInfoSection')}</h2>
@@ -335,7 +335,7 @@ export default function ReviewPage() {
 
         {/* Daily Life */}
         {data.coreDailyLife && Object.keys(data.coreDailyLife).length > 0 && (
-          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+          <div className="p-4 bg-orange-50 superellipse-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Clock className="w-5 h-5 text-orange-600" />
               <h2 className="font-semibold text-gray-900">{t('onboarding.review.dailyLifeSection')}</h2>
@@ -391,7 +391,7 @@ export default function ReviewPage() {
 
         {/* Social & Personality */}
         {data.coreSocialPersonality && Object.keys(data.coreSocialPersonality).length > 0 && (
-          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+          <div className="p-4 bg-orange-50 superellipse-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Users className="w-5 h-5 text-orange-600" />
               <h2 className="font-semibold text-gray-900">{t('onboarding.review.socialLifeSection')}</h2>
@@ -427,7 +427,7 @@ export default function ReviewPage() {
 
         {/* Values & Preferences */}
         {data.coreValuesPreferences && Object.keys(data.coreValuesPreferences).length > 0 && (
-          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+          <div className="p-4 bg-orange-50 superellipse-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Home className="w-5 h-5 text-orange-600" />
               <h2 className="font-semibold text-gray-900">{t('onboarding.review.valuesSection')}</h2>
@@ -439,7 +439,7 @@ export default function ReviewPage() {
                   <dd className="font-medium text-gray-900">
                     <div className="flex flex-wrap gap-1">
                       {data.coreValuesPreferences.coreValues.map((value: string) => (
-                        <span key={value} className="px-2 py-1 bg-orange-100 text-orange-700 rounded-lg text-xs capitalize">
+                        <span key={value} className="px-2 py-1 bg-orange-100 text-orange-700 superellipse-lg text-xs capitalize">
                           {value}
                         </span>
                       ))}
@@ -465,7 +465,7 @@ export default function ReviewPage() {
 
         {/* Preferences */}
         {data.preferences && Object.keys(data.preferences).length > 0 && (
-          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+          <div className="p-4 bg-orange-50 superellipse-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <Settings className="w-5 h-5 text-orange-600" />
               <h2 className="font-semibold text-gray-900">{t('onboarding.review.preferencesSection')}</h2>
@@ -487,7 +487,7 @@ export default function ReviewPage() {
 
         {/* Verification */}
         {data.verification && data.verification.phoneNumber && (
-          <div className="p-4 bg-orange-50 rounded-xl border border-orange-100">
+          <div className="p-4 bg-orange-50 superellipse-xl border border-orange-100">
             <div className="flex items-center gap-2 mb-3">
               <CheckCircle2 className="w-5 h-5 text-orange-600" />
               <h2 className="font-semibold text-gray-900">{t('onboarding.review.verificationSection')}</h2>

@@ -46,7 +46,7 @@ export default function PrivacyPage() {
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-16 h-16 bg-orange-100 rounded-2xl flex items-center justify-center mx-auto mb-4">
+        <div className="w-16 h-16 bg-orange-100 superellipse-2xl flex items-center justify-center mx-auto mb-4">
           <Shield className="w-8 h-8 text-orange-600" />
         </div>
         <OnboardingHeading
@@ -59,7 +59,7 @@ export default function PrivacyPage() {
       {/* Privacy consents */}
       <div className="space-y-4 mb-6">
         {/* Terms & Conditions */}
-        <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
+        <label className="flex items-start gap-3 p-4 superellipse-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
           <input
             type="checkbox"
             checked={acceptTerms}
@@ -81,7 +81,7 @@ export default function PrivacyPage() {
         </label>
 
         {/* Privacy Policy */}
-        <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
+        <label className="flex items-start gap-3 p-4 superellipse-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
           <input
             type="checkbox"
             checked={readPrivacy}
@@ -103,7 +103,7 @@ export default function PrivacyPage() {
         </label>
 
         {/* Data processing */}
-        <label className="flex items-start gap-3 p-4 rounded-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
+        <label className="flex items-start gap-3 p-4 superellipse-xl bg-white border border-gray-200 cursor-pointer hover:border-orange-500 transition">
           <input
             type="checkbox"
             checked={consentData}
@@ -122,7 +122,7 @@ export default function PrivacyPage() {
         </label>
 
         {/* Algorithmic matching (optional) */}
-        <label className="flex items-start gap-3 p-4 rounded-xl bg-yellow-50 border-2 border-yellow-200 cursor-pointer hover:border-yellow-300 transition">
+        <label className="flex items-start gap-3 p-4 superellipse-xl bg-yellow-50 border-2 border-yellow-200 cursor-pointer hover:border-yellow-300 transition">
           <input
             type="checkbox"
             checked={agreeMatching}
@@ -143,7 +143,7 @@ export default function PrivacyPage() {
       </div>
 
       {/* Privacy notice */}
-      <div className="p-4 rounded-xl bg-blue-50 border border-blue-200 mb-8">
+      <div className="p-4 superellipse-xl bg-blue-50 border border-blue-200 mb-8">
         <p className="text-sm text-gray-700">
           <strong>{t('onboarding.privacy.privacyMatters')}</strong> {t('onboarding.privacy.privacyNotice')}
         </p>
