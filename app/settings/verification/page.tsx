@@ -31,7 +31,7 @@ export default function VerificationPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-200/70 to-teal-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-emerald-200/70 to-teal-200/70 flex items-center justify-center shadow-sm">
               <BadgeCheck className="w-8 h-8 text-gray-700" />
             </div>
             <div>

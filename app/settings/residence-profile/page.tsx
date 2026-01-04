@@ -328,19 +328,19 @@ export default function ResidenceProfilePage() {
           </h2>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-red-50 rounded-xl">
+            <div className="text-center p-4 bg-gradient-to-br from-orange-50 to-red-50 superellipse-xl">
               <Users className="w-8 h-8 text-orange-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.memberCount}</div>
               <div className="text-sm text-gray-600">{t?.stats?.roommates?.[language] || 'Roommates'}</div>
             </div>
 
-            <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-indigo-50 rounded-xl">
+            <div className="text-center p-4 bg-gradient-to-br from-purple-50 to-indigo-50 superellipse-xl">
               <Home className="w-8 h-8 text-purple-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.total_rooms || 0}</div>
               <div className="text-sm text-gray-600">{t?.stats?.rooms?.[language] || 'Rooms'}</div>
             </div>
 
-            <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl">
+            <div className="text-center p-4 bg-gradient-to-br from-green-50 to-emerald-50 superellipse-xl">
               <Camera className="w-8 h-8 text-green-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.images?.length || 0}</div>
               <div className="text-sm text-gray-600">{t?.stats?.photos?.[language] || 'Photos'}</div>
@@ -357,9 +357,9 @@ export default function ResidenceProfilePage() {
             </h2>
           </div>
 
-          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 rounded-xl p-6 border border-indigo-100">
+          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 superellipse-xl p-6 border border-indigo-100">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-white/80 backdrop-blur flex items-center justify-center flex-shrink-0 shadow-sm">
+              <div className="w-12 h-12 superellipse-xl bg-white/80 backdrop-blur flex items-center justify-center flex-shrink-0 shadow-sm">
                 <FileText className="w-6 h-6 text-indigo-600" />
               </div>
               <div className="flex-1">

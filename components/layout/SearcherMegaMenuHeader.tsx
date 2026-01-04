@@ -383,7 +383,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
           {/* Logo */}
           <Link href="/searcher" className="flex items-center group">
             <img
-              src="/logos/izzico-lockup-gradient.svg"
+              src="/logos/izzico-trademark-text-gradient.svg"
               alt="IzzIco"
               className="h-10 w-auto transition-transform group-hover:scale-105"
             />

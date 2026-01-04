@@ -125,7 +125,7 @@ export function VendorDirectory({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm overflow-hidden",
+        "bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm overflow-hidden",
         className
       )}
     >
@@ -134,7 +134,7 @@ export function VendorDirectory({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
               style={{ background: ownerGradient }}
             >
               <Wrench className="w-5 h-5 text-white" />
@@ -168,7 +168,7 @@ export function VendorDirectory({
             placeholder={t?.searchVendor?.[language] || 'Rechercher un prestataire...'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
           />
         </div>
 
@@ -234,7 +234,7 @@ export function VendorDirectory({
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: index * 0.03 }}
                     className={cn(
-                      "p-4 rounded-xl border transition-all",
+                      "p-4 superellipse-xl border transition-all",
                       vendor.isFavorite
                         ? "bg-purple-50/50 border-purple-200"
                         : "bg-white border-gray-200 hover:border-purple-200"
@@ -243,7 +243,7 @@ export function VendorDirectory({
                     <div className="flex items-start gap-3">
                       {/* Specialty icon */}
                       <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                        className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0"
                         style={{ backgroundColor: config.bgColor }}
                       >
                         <Icon className="w-6 h-6" style={{ color: config.color }} />

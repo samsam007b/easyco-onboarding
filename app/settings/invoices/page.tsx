@@ -142,7 +142,7 @@ export default function InvoicesPage() {
         );
       case 'failed':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-red-100 text-red-800 text-xs font-semibold">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 superellipse-lg bg-red-100 text-red-800 text-xs font-semibold">
             <AlertCircle className="w-3 h-3" />
             {t?.status?.failed?.[language] || 'Failed'}
           </span>
@@ -182,7 +182,7 @@ export default function InvoicesPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-200/70 to-green-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-emerald-200/70 to-green-200/70 flex items-center justify-center shadow-sm">
               <Receipt className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -201,7 +201,7 @@ export default function InvoicesPage() {
         >
           <Button
             onClick={handleOpenStripePortal}
-            className="w-full rounded-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600"
+            className="w-full superellipse-xl bg-gradient-to-r from-emerald-500 to-green-500 text-white hover:from-emerald-600 hover:to-green-600"
           >
             <ExternalLink className="w-5 h-5 mr-2" />
             {t?.stripePortal?.button?.[language] || 'Access Stripe billing portal'}
@@ -219,7 +219,7 @@ export default function InvoicesPage() {
           className="space-y-4"
         >
           {invoices.length === 0 ? (
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 text-center">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl p-8 border border-gray-200 text-center">
               <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-xl font-bold text-gray-900 mb-2">{t?.empty?.title?.[language] || 'No invoices'}</h3>
               <p className="text-gray-600 mb-4">
@@ -228,7 +228,7 @@ export default function InvoicesPage() {
               <Button
                 onClick={() => router.push('/dashboard/subscription')}
                 variant="outline"
-                className="rounded-xl"
+                className="superellipse-xl"
               >
                 {t?.empty?.button?.[language] || 'View my subscription'}
               </Button>
@@ -240,11 +240,11 @@ export default function InvoicesPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + index * 0.05 }}
-                className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm"
+                className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm"
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
+                    <div className="w-14 h-14 superellipse-xl bg-gradient-to-br from-emerald-100 to-green-100 flex items-center justify-center">
                       <Receipt className="w-7 h-7 text-gray-700" />
                     </div>
                     <div>
@@ -274,7 +274,7 @@ export default function InvoicesPage() {
                         onClick={() => handleDownloadInvoice(invoice)}
                         variant="outline"
                         size="sm"
-                        className="rounded-xl"
+                        className="superellipse-xl"
                       >
                         <Download className="w-4 h-4 mr-1" />
                         PDF
@@ -292,7 +292,7 @@ export default function InvoicesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-6 bg-emerald-50 rounded-xl p-4 border border-emerald-200"
+          className="mt-6 bg-emerald-50 superellipse-xl p-4 border border-emerald-200"
         >
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-emerald-600 flex-shrink-0 mt-0.5" />
@@ -310,7 +310,7 @@ export default function InvoicesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.5 }}
-          className="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200"
+          className="mt-6 bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200"
         >
           <h3 className="font-bold text-gray-900 mb-3">{t?.billing?.title?.[language] || 'Billing information'}</h3>
           <div className="space-y-2 text-sm text-gray-600">
@@ -332,7 +332,7 @@ export default function InvoicesPage() {
               onClick={() => router.push('/dashboard/subscription')}
               variant="outline"
               size="sm"
-              className="rounded-xl"
+              className="superellipse-xl"
             >
               {t?.billing?.manage?.[language] || 'Manage my subscription'}
             </Button>

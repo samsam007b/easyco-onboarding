@@ -114,7 +114,7 @@ export default function ReferralsSettingsPage() {
 
             <div className="text-center">
               <div className="inline-flex items-center gap-3 mb-4">
-                <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm"
+                <div className="w-16 h-16 superellipse-2xl flex items-center justify-center shadow-sm"
                    style={{
                      background: 'linear-gradient(135deg, #22C55E 0%, #10B981 50%, #059669 100%)'
                    }}>
@@ -139,9 +139,9 @@ export default function ReferralsSettingsPage() {
           transition={{ delay: 0.1 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8"
         >
-          <div className="bg-white rounded-2xl p-6 border-2 border-gray-100 shadow-sm">
+          <div className="bg-white superellipse-2xl p-6 border-2 border-gray-100 shadow-sm">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+              <div className="w-10 h-10 superellipse-xl bg-blue-100 flex items-center justify-center">
                 <Users className="w-5 h-5 text-blue-600" />
               </div>
               <span className="text-sm font-medium text-gray-600">{t?.stats?.invitations?.[language] || 'Invitations sent'}</span>
@@ -151,9 +151,9 @@ export default function ReferralsSettingsPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 border-2 border-gray-100 shadow-sm">
+          <div className="bg-white superellipse-2xl p-6 border-2 border-gray-100 shadow-sm">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center">
+              <div className="w-10 h-10 superellipse-xl bg-green-100 flex items-center justify-center">
                 <Award className="w-5 h-5 text-green-600" />
               </div>
               <span className="text-sm font-medium text-gray-600">{t?.stats?.successful?.[language] || 'Successful'}</span>
@@ -163,9 +163,9 @@ export default function ReferralsSettingsPage() {
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 border-2 border-gray-100 shadow-sm">
+          <div className="bg-white superellipse-2xl p-6 border-2 border-gray-100 shadow-sm">
             <div className="flex items-center gap-3 mb-2">
-              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center">
+              <div className="w-10 h-10 superellipse-xl bg-purple-100 flex items-center justify-center">
                 <TrendingUp className="w-5 h-5 text-purple-600" />
               </div>
               <span className="text-sm font-medium text-gray-600">{t?.stats?.monthsWon?.[language] || 'Months earned'}</span>
@@ -211,9 +211,9 @@ export default function ReferralsSettingsPage() {
           transition={{ delay: 0.4 }}
           className="mt-8"
         >
-          <div className="bg-white rounded-3xl p-8 border-2 border-gray-100 shadow-sm">
+          <div className="bg-white superellipse-3xl p-8 border-2 border-gray-100 shadow-sm">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center"
+              <div className="w-10 h-10 superellipse-xl flex items-center justify-center"
                    style={{
                      background: 'linear-gradient(135deg, #22C55E 0%, #10B981 50%, #059669 100%)'
                    }}>
@@ -224,7 +224,7 @@ export default function ReferralsSettingsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-green-100 to-emerald-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-green-200">
+                <div className="w-14 h-14 superellipse-2xl bg-gradient-to-br from-green-100 to-emerald-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-green-200">
                   <Share2 className="w-6 h-6 text-green-600" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step1?.title?.[language] || 'Share your code'}</h3>
@@ -234,7 +234,7 @@ export default function ReferralsSettingsPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-blue-200">
+                <div className="w-14 h-14 superellipse-2xl bg-gradient-to-br from-blue-100 to-indigo-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-blue-200">
                   <UserPlus className="w-6 h-6 text-blue-600" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step2?.title?.[language] || 'They sign up'}</h3>
@@ -244,7 +244,7 @@ export default function ReferralsSettingsPage() {
               </div>
 
               <div className="text-center">
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-100 to-pink-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-purple-200">
+                <div className="w-14 h-14 superellipse-2xl bg-gradient-to-br from-purple-100 to-pink-100 shadow-sm flex items-center justify-center mx-auto mb-4 border border-purple-200">
                   <Sparkles className="w-6 h-6 text-purple-600" />
                 </div>
                 <h3 className="font-semibold text-gray-900 mb-2">{t?.howItWorks?.step3?.title?.[language] || 'You get rewarded'}</h3>
@@ -255,12 +255,12 @@ export default function ReferralsSettingsPage() {
             </div>
 
             {/* Rewards table */}
-            <div className="mt-8 bg-gray-50 rounded-2xl p-6 border border-gray-200">
+            <div className="mt-8 bg-gray-50 superellipse-2xl p-6 border border-gray-200">
               <h3 className="font-semibold text-gray-900 mb-4">{t?.rewards?.title?.[language] || 'Rewards'}</h3>
               <div className="space-y-3">
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-orange-100">
+                <div className="flex items-center justify-between p-4 superellipse-xl bg-white border border-orange-100">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center">
+                    <div className="w-10 h-10 superellipse-lg bg-orange-100 flex items-center justify-center">
                       <Home className="w-5 h-5 text-orange-600" />
                     </div>
                     <span className="font-medium text-gray-900">{t?.rewards?.inviteResident?.[language] || 'Invite a resident'}</span>
@@ -274,9 +274,9 @@ export default function ReferralsSettingsPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between p-4 rounded-xl bg-white border border-purple-100">
+                <div className="flex items-center justify-between p-4 superellipse-xl bg-white border border-purple-100">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-purple-100 flex items-center justify-center">
+                    <div className="w-10 h-10 superellipse-lg bg-purple-100 flex items-center justify-center">
                       <Building2 className="w-5 h-5 text-purple-600" />
                     </div>
                     <span className="font-medium text-gray-900">{t?.rewards?.inviteOwner?.[language] || 'Invite an owner'}</span>

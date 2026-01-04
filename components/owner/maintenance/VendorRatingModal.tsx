@@ -355,7 +355,7 @@ export function VendorRatingModal({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative z-10 w-full max-w-lg mx-4 bg-white rounded-2xl shadow-2xl overflow-hidden"
+          className="relative z-10 w-full max-w-lg mx-4 bg-white superellipse-2xl shadow-2xl overflow-hidden"
         >
           {/* Header */}
           <div
@@ -364,7 +364,7 @@ export function VendorRatingModal({
           >
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
+                <div className="w-10 h-10 superellipse-xl bg-white/20 flex items-center justify-center">
                   <Star className="w-5 h-5 text-white" />
                 </div>
                 <div>
@@ -455,7 +455,7 @@ export function VendorRatingModal({
                     {ratingCategories.map((category) => (
                       <div
                         key={category.key}
-                        className="p-3 rounded-xl border border-gray-200 hover:border-purple-200 transition-colors"
+                        className="p-3 superellipse-xl border border-gray-200 hover:border-purple-200 transition-colors"
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <category.icon className="w-4 h-4 text-gray-500" />
@@ -497,7 +497,7 @@ export function VendorRatingModal({
                       type="button"
                       onClick={() => setWouldRecommend(true)}
                       className={cn(
-                        'flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 transition-all',
+                        'flex-1 flex items-center justify-center gap-2 p-3 superellipse-xl border-2 transition-all',
                         wouldRecommend === true
                           ? 'border-green-500 bg-green-50 text-green-700'
                           : 'border-gray-200 hover:border-green-300'
@@ -510,7 +510,7 @@ export function VendorRatingModal({
                       type="button"
                       onClick={() => setWouldRecommend(false)}
                       className={cn(
-                        'flex-1 flex items-center justify-center gap-2 p-3 rounded-xl border-2 transition-all',
+                        'flex-1 flex items-center justify-center gap-2 p-3 superellipse-xl border-2 transition-all',
                         wouldRecommend === false
                           ? 'border-red-500 bg-red-50 text-red-700'
                           : 'border-gray-200 hover:border-red-300'
@@ -533,7 +533,7 @@ export function VendorRatingModal({
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder={t.labels.titlePlaceholder[lang]}
                     maxLength={100}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
+                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
                   />
                 </div>
 
@@ -548,7 +548,7 @@ export function VendorRatingModal({
                     placeholder={t.labels.commentPlaceholder[lang]}
                     rows={3}
                     maxLength={500}
-                    className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 resize-none"
+                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 resize-none"
                   />
                   <p className="text-xs text-gray-500 mt-1 text-right">
                     {comment.length}/500

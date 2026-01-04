@@ -133,7 +133,7 @@ export function CreateTicketModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-lg bg-white rounded-2xl shadow-xl overflow-hidden"
+            className="relative w-full max-w-lg bg-white superellipse-2xl shadow-xl overflow-hidden"
           >
             {/* Header */}
             <div
@@ -162,7 +162,7 @@ export function CreateTicketModal({
                   id="property"
                   value={selectedProperty}
                   onChange={(e) => setSelectedProperty(e.target.value)}
-                  className="mt-1 w-full px-4 py-2.5 rounded-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
+                  className="mt-1 w-full px-4 py-2.5 superellipse-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
                   required
                 >
                   <option value="">{t?.selectProperty?.[language] || 'Select a property'}</option>
@@ -184,7 +184,7 @@ export function CreateTicketModal({
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={t?.titlePlaceholder?.[language] || 'Ex: Water leak under the sink'}
-                  className="mt-1 rounded-xl"
+                  className="mt-1 superellipse-xl"
                   required
                 />
               </div>
@@ -199,7 +199,7 @@ export function CreateTicketModal({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder={t?.descriptionPlaceholder?.[language] || 'Describe the issue in detail...'}
-                  className="mt-1 w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all resize-none"
+                  className="mt-1 w-full px-4 py-3 superellipse-xl border border-gray-300 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all resize-none"
                   rows={3}
                   required
                 />
@@ -215,7 +215,7 @@ export function CreateTicketModal({
                       type="button"
                       onClick={() => setCategory(cat.value)}
                       className={cn(
-                        'flex flex-col items-center p-2 rounded-xl border-2 transition-all',
+                        'flex flex-col items-center p-2 superellipse-xl border-2 transition-all',
                         category === cat.value
                           ? 'border-purple-500 bg-purple-50'
                           : 'border-gray-200 hover:border-gray-300'
@@ -240,7 +240,7 @@ export function CreateTicketModal({
                       type="button"
                       onClick={() => setPriority(prio.value)}
                       className={cn(
-                        'flex-1 py-2 px-3 rounded-xl border-2 text-sm font-medium transition-all',
+                        'flex-1 py-2 px-3 superellipse-xl border-2 text-sm font-medium transition-all',
                         priority === prio.value
                           ? `${prio.color} ${prio.borderColor}`
                           : 'border-gray-200 text-gray-600 hover:border-gray-300'
@@ -251,7 +251,7 @@ export function CreateTicketModal({
                   ))}
                 </div>
                 {priority === 'emergency' && (
-                  <div className="mt-2 flex items-start gap-2 p-3 bg-red-50 rounded-xl text-sm text-red-700">
+                  <div className="mt-2 flex items-start gap-2 p-3 bg-red-50 superellipse-xl text-sm text-red-700">
                     <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                     <span>
                       {t?.emergencyWarning?.[language] || 'Emergencies require immediate intervention (major leak, heating failure in winter, etc.)'}
@@ -270,7 +270,7 @@ export function CreateTicketModal({
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
                   placeholder={t?.locationPlaceholder?.[language] || 'Ex: Bathroom, Kitchen'}
-                  className="mt-1 rounded-xl"
+                  className="mt-1 superellipse-xl"
                 />
               </div>
 
@@ -286,7 +286,7 @@ export function CreateTicketModal({
                     value={estimatedCost}
                     onChange={(e) => setEstimatedCost(e.target.value)}
                     placeholder="0"
-                    className="rounded-xl pr-8"
+                    className="superellipse-xl pr-8"
                     min="0"
                     step="0.01"
                   />
@@ -323,7 +323,7 @@ export function CreateTicketModal({
                     </div>
                   )}
                   {images.length < 5 && (
-                    <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-purple-400 hover:bg-purple-50/50 transition-all">
+                    <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 superellipse-xl cursor-pointer hover:border-purple-400 hover:bg-purple-50/50 transition-all">
                       <Upload className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-500">
                         {t?.addPhotos?.[language] || 'Add photos'}
@@ -346,7 +346,7 @@ export function CreateTicketModal({
                   type="button"
                   variant="outline"
                   onClick={handleClose}
-                  className="flex-1 rounded-xl"
+                  className="flex-1 superellipse-xl"
                   disabled={isSubmitting}
                 >
                   {t?.cancel?.[language] || 'Cancel'}
