@@ -428,7 +428,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 onClick={card.action}
                 data-onboarding={card.onboardingId}
                 className={cn(
-                  "relative overflow-hidden rounded-2xl p-4 cursor-pointer transition-all",
+                  "relative overflow-hidden superellipse-2xl p-4 cursor-pointer transition-all",
                   "bg-white"
                 )}
                 style={{
@@ -445,7 +445,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   {/* Icon */}
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3"
                     style={{ background: card.iconGradient }}
                   >
                     <Icon className="w-5 h-5 text-white" />
@@ -490,7 +490,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
           <motion.div
             variants={itemVariants}
             data-onboarding="tasks-section"
-            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle */}
@@ -504,7 +504,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 superellipse-lg flex items-center justify-center"
                     style={{ background: RESIDENT_GRADIENT }}
                   >
                     <Clock className="w-4 h-4 text-white" />
@@ -531,11 +531,11 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.06 }}
                     whileHover={{ x: 3, backgroundColor: 'rgba(255, 101, 30, 0.04)' }}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-xl transition-all cursor-pointer"
+                    className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl transition-all cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
                       <div className={cn(
-                        "w-8 h-8 rounded-lg flex items-center justify-center",
+                        "w-8 h-8 superellipse-lg flex items-center justify-center",
                         task.priority === 'high' && "bg-[#FDF5F5]",
                         task.priority === 'medium' && "bg-[#FFF5F0]",
                         task.priority === 'low' && "bg-gray-100"
@@ -575,7 +575,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   onClick={() => router.push('/hub/tasks')}
                   variant="outline"
                   size="sm"
-                  className="w-full mt-3 rounded-xl border-2 py-4 font-semibold"
+                  className="w-full mt-3 superellipse-xl border-2 py-4 font-semibold"
                   style={{
                     borderColor: `${RESIDENT_PRIMARY}30`,
                     color: RESIDENT_PRIMARY,
@@ -591,7 +591,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
           {/* Recent Activity - Compact Style */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle - V3 Orange */}
@@ -604,7 +604,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
               <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <motion.div
                   whileHover={{ rotate: 5 }}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  className="w-8 h-8 superellipse-lg flex items-center justify-center"
                   style={{ background: RESIDENT_GRADIENT }}
                 >
                   <Sparkles className="w-4 h-4 text-white" />
@@ -622,10 +622,10 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.06 }}
                       whileHover={{ x: 3 }}
-                      className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
+                      className="flex items-center gap-2.5 p-2.5 superellipse-xl hover:bg-gray-50 transition-all cursor-pointer"
                     >
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                        className="w-8 h-8 superellipse-lg flex items-center justify-center flex-shrink-0"
                         style={{ background: activity.iconBgColor }}
                       >
                         <Icon className="w-4 h-4" style={{ color: activity.iconColor }} />

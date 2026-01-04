@@ -275,6 +275,13 @@
   --radius-2xl: 1.5rem;         /* 24px */
   --radius-full: 9999px;        /* Pills/Circles */
 
+  /* ============================================
+     🔲 Superellipse / Squircle (Fredoka Style)
+     Courbure inspirée de la typographie Fredoka
+     n=5 donne le style iOS/Fredoka (côtés courbés)
+     ============================================ */
+  --superellipse-n: 5;          /* Exposant de la superellipse (iOS-style) */
+
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
   --transition-base: 200ms ease-in-out;
@@ -543,6 +550,98 @@ body {
 
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--easy-purple-900)] to-[var(--easy-purple-500)];
+}
+
+/* ============================================
+   🔲 Superellipse / Squircle Utilities (Fredoka Style)
+   Classes pour appliquer des coins style Fredoka
+   avec progressive enhancement
+   ============================================ */
+
+/*
+   Base superellipse avec corner-shape (Chrome 139+)
+   Fallback: border-radius standard
+*/
+.superellipse {
+  border-radius: var(--radius-2xl);
+  corner-shape: squircle;
+}
+
+.superellipse-sm {
+  border-radius: var(--radius-sm);
+  corner-shape: squircle;
+}
+
+.superellipse-md {
+  border-radius: var(--radius-md);
+  corner-shape: squircle;
+}
+
+.superellipse-lg {
+  border-radius: var(--radius-lg);
+  corner-shape: squircle;
+}
+
+.superellipse-xl {
+  border-radius: var(--radius-xl);
+  corner-shape: squircle;
+}
+
+.superellipse-2xl {
+  border-radius: var(--radius-2xl);
+  corner-shape: squircle;
+}
+
+.superellipse-3xl {
+  border-radius: 1.75rem;
+  corner-shape: squircle;
+}
+
+/*
+   Variante avec SVG clip-path pour forcer la superellipse
+   sur TOUS les navigateurs (performance-intensive)
+   Utiliser uniquement sur les éléments importants
+*/
+.superellipse-forced {
+  /*
+     Superellipse path généré avec n=5 (iOS-style)
+     Cette forme a des côtés légèrement courbés
+  */
+  clip-path: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath id='squircle' d='M50,0 C77,0 93,0 97,3 C100,7 100,23 100,50 C100,77 100,93 97,97 C93,100 77,100 50,100 C23,100 7,100 3,97 C0,93 0,77 0,50 C0,23 0,7 3,3 C7,0 23,0 50,0 Z'/%3E%3C/svg%3E#squircle");
+  border-radius: 0;
+}
+
+/*
+   Cards avec superellipse - style Resident dashboard
+   Combine background, shadow et superellipse
+*/
+.card-superellipse {
+  @apply bg-white shadow-sm p-6 transition-shadow duration-200;
+  border-radius: var(--radius-2xl);
+  corner-shape: squircle;
+}
+
+.card-superellipse:hover {
+  @apply shadow-md;
+}
+
+/* Cards KPI avec superellipse */
+.kpi-card-superellipse {
+  @apply bg-white shadow-sm transition-all duration-200;
+  border-radius: var(--radius-2xl);
+  corner-shape: squircle;
+}
+
+.kpi-card-superellipse:hover {
+  @apply shadow-md;
+  transform: translateY(-2px);
+}
+
+/* Section containers avec superellipse */
+.section-superellipse {
+  @apply bg-white shadow-sm;
+  border-radius: var(--radius-2xl);
+  corner-shape: squircle;
 }
 
 /* Animations */

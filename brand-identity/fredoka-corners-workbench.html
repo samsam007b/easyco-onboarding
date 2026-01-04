@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Fredoka Superellipse Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --owner-primary: #9c5698;
+            --resident-primary: #ff651e;
+            --searcher-primary: #FFB10B;
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--owner-primary), var(--resident-primary), var(--searcher-primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle { color: var(--text-muted); margin-bottom: 2rem; }
+
+        .section {
+            background: var(--bg-panel);
+            border-radius: 16px;
+            padding: 2rem;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .section h3 { font-size: 1rem; margin-bottom: 1rem; }
+        .section p { font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1rem; }
+
+        /* Fredoka Reference */
+        .fredoka-reference {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .fredoka-letter {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 140px;
+            font-weight: 600;
+            color: white;
+            line-height: 1;
+        }
+
+        .fredoka-specs { flex: 1; min-width: 280px; }
+        .fredoka-specs h3 { color: var(--accent); margin-bottom: 0.75rem; }
+        .fredoka-specs ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .fredoka-specs li { display: flex; align-items: center; gap: 0.5rem; font-size: 0.875rem; color: var(--text-muted); }
+        .fredoka-specs li::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--searcher-primary); }
+
+        /* Main comparison */
+        .comparison-container {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            padding: 3rem;
+            background: var(--bg-control);
+            border-radius: 16px;
+            flex-wrap: wrap;
+        }
+
+        .shape-demo {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .shape-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .shape-sublabel {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Sliders */
+        .slider-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .slider-label { width: 140px; font-size: 0.875rem; color: var(--text-muted); }
+        .slider-value { width: 80px; font-family: monospace; color: var(--accent); text-align: right; font-size: 0.9rem; }
+
+        input[type="range"] {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent);
+            cursor: pointer;
+        }
+
+        /* Overlay comparison */
+        .overlay-container {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            margin: 2rem auto;
+        }
+
+        .overlay-container svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; }
+        .legend-color { width: 20px; height: 3px; border-radius: 2px; }
+
+        /* N value presets */
+        .presets {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .preset-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .preset-btn:hover { border-color: var(--accent); }
+        .preset-btn.active { background: var(--accent); border-color: var(--accent); }
+
+        /* Code Block */
+        .code-block {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.75rem;
+            overflow-x: auto;
+            white-space: pre;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            padding: 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-container { flex-direction: column; gap: 2rem; }
+            .fredoka-reference { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Fredoka Superellipse Workbench</h1>
+    <p class="subtitle">Vraies courbes superellipse avec cotes bombes - pas juste des coins arrondis !</p>
+
+    <!-- Fredoka Reference -->
+    <div class="section">
+        <div class="fredoka-reference">
+            <div class="fredoka-letter">O</div>
+            <div class="fredoka-specs">
+                <h3>Formule Superellipse</h3>
+                <ul>
+                    <li>|x/a|^n + |y/b|^n = 1</li>
+                    <li>n=2 : ellipse/cercle (CSS border-radius)</li>
+                    <li>n=4 : squircle classique</li>
+                    <li>n=5 : style Apple iOS</li>
+                    <li>n→∞ : rectangle parfait</li>
+                </ul>
+                <p style="margin-top: 1rem; font-size: 0.8rem;">
+                    <strong>Cle :</strong> Les cotes sont COURBES, pas droits !
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Comparison -->
+    <div class="section">
+        <h3>Comparaison Interactive</h3>
+        <p>Ajustez l'exposant n pour voir comment la forme change - notez que les COTES changent aussi, pas seulement les coins !</p>
+
+        <div class="presets">
+            <button class="preset-btn" data-n="2">n=2 (Ellipse)</button>
+            <button class="preset-btn" data-n="3">n=3</button>
+            <button class="preset-btn active" data-n="4">n=4 (Squircle)</button>
+            <button class="preset-btn" data-n="5">n=5 (iOS)</button>
+            <button class="preset-btn" data-n="6">n=6</button>
+            <button class="preset-btn" data-n="10">n=10</button>
+        </div>
+
+        <div class="slider-row">
+            <span class="slider-label">Exposant n</span>
+            <input type="range" id="n-slider" min="2" max="20" step="0.1" value="4">
+            <span class="slider-value" id="n-value">n = 4.0</span>
+        </div>
+
+        <div class="slider-row">
+            <span class="slider-label">Taille</span>
+            <input type="range" id="size-slider" min="100" max="250" value="180">
+            <span class="slider-value" id="size-value">180px</span>
+        </div>
+
+        <div class="comparison-container">
+            <div class="shape-demo">
+                <svg id="superellipse-svg" width="200" height="200" viewBox="-100 -100 200 200">
+                    <path id="superellipse-path" fill="none" stroke-width="3"/>
+                </svg>
+                <span class="shape-label">Superellipse (n variable)</span>
+                <span class="shape-sublabel" id="current-n-label">n = 4 (Squircle)</span>
+            </div>
+
+            <div class="shape-demo">
+                <svg width="200" height="200" viewBox="-100 -100 200 200">
+                    <rect id="css-rect" x="-90" y="-60" width="180" height="120" rx="24" fill="none" stroke="#9c5698" stroke-width="3"/>
+                </svg>
+                <span class="shape-label">CSS border-radius</span>
+                <span class="shape-sublabel">Coins circulaires, cotes DROITS</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay View -->
+    <div class="section">
+        <h3>Superposition des formes</h3>
+        <p>Voyez clairement comment les COTES du squircle sont bombes par rapport au rectangle arrondi CSS</p>
+
+        <div class="overlay-container">
+            <svg viewBox="-150 -100 300 200">
+                <!-- CSS rounded rect -->
+                <rect x="-145" y="-95" width="290" height="190" rx="32"
+                      fill="none" stroke="#9c5698" stroke-width="2.5" stroke-dasharray="8,4"/>
+                <!-- Superellipse -->
+                <path id="overlay-superellipse" fill="none" stroke="#FFB10B" stroke-width="2.5"/>
+            </svg>
+        </div>
+
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color" style="background: #9c5698;"></div>
+                <span>CSS border-radius (cotes droits)</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #FFB10B;"></div>
+                <span>Superellipse (cotes bombes)</span>
+            </div>
+        </div>
+
+        <div class="note">
+            <strong>Observez :</strong> Au milieu des cotes, le squircle jaune depasse vers l'exterieur.
+            C'est ce qui donne cette sensation de "gonflement" organique typique de Fredoka et iOS !
+        </div>
+    </div>
+
+    <!-- CSS Implementation -->
+    <div class="section">
+        <h3>Implementation pour Izzico</h3>
+        <p>Voici le code CSS avec corner-shape (Chrome 139+) et un fallback SVG</p>
+
+        <div class="code-block">/* ============================================
+   FREDOKA SUPERELLIPSE CORNERS
+   Vrais squircles avec cotes bombes
+   ============================================ */
+
+/* Solution moderne: corner-shape (Chrome 139+) */
+@supports (corner-shape: superellipse(2)) {
+  /* n=4 squircle: utiliser superellipse(2) car k = n/2 */
+  .squircle {
+    border-radius: 20%;
+    corner-shape: superellipse(2); /* Equivalent a n=4 */
+  }
+
+  /* Style iOS (n=5): utiliser superellipse(2.5) */
+  .squircle-ios {
+    border-radius: 22%;
+    corner-shape: superellipse(2.5); /* Equivalent a n=5 */
+  }
+}
+
+/* Fallback: clip-path avec SVG genere */
+.squircle-fallback {
+  clip-path: url(#squircle-clip);
+}
+
+/* Ou utiliser une image de masque SVG inline */
+.squircle-mask {
+  mask-image: url("data:image/svg+xml,...");
+  -webkit-mask-image: url("data:image/svg+xml,...");
+}</div>
+
+        <div class="note">
+            <strong>Note importante :</strong> Pour une implementation complete,
+            il faudra generer les paths SVG dynamiquement en JavaScript
+            car chaque taille de composant necessite un path different.
+        </div>
+    </div>
+
+    <!-- Sources -->
+    <div class="section">
+        <h3>Sources et References</h3>
+        <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.5rem;">
+            <li><a href="https://www.figma.com/blog/desperately-seeking-squircles/" style="color: var(--accent);">Figma Blog - Desperately Seeking Squircles</a></li>
+            <li><a href="https://github.com/phamfoo/figma-squircle" style="color: var(--accent);">figma-squircle - Librairie JavaScript</a></li>
+            <li><a href="https://en.wikipedia.org/wiki/Superellipse" style="color: var(--accent);">Wikipedia - Superellipse</a></li>
+            <li><a href="https://grida.co/docs/math/superellipse" style="color: var(--accent);">Grida - Superellipse Mathematical Reference</a></li>
+        </ul>
+    </div>
+
+    <script>
+        // ============================================
+        // TRUE SUPERELLIPSE PATH GENERATION
+        // Formula: |x/a|^n + |y/b|^n = 1
+        // Parametric: x = a*sign(cos(t))*|cos(t)|^(2/n)
+        //             y = b*sign(sin(t))*|sin(t)|^(2/n)
+        // ============================================
+
+        function sign(x) {
+            return x > 0 ? 1 : x < 0 ? -1 : 0;
+        }
+
+        function superellipsePoint(t, a, b, n) {
+            var cosT = Math.cos(t);
+            var sinT = Math.sin(t);
+            var exp = 2 / n;
+
+            var x = a * sign(cosT) * Math.pow(Math.abs(cosT), exp);
+            var y = b * sign(sinT) * Math.pow(Math.abs(sinT), exp);
+
+            return { x: x, y: y };
+        }
+
+        function generateSuperellipsePath(a, b, n, numPoints) {
+            numPoints = numPoints || 100;
+            var points = [];
+
+            for (var i = 0; i <= numPoints; i++) {
+                var t = (i / numPoints) * 2 * Math.PI;
+                points.push(superellipsePoint(t, a, b, n));
+            }
+
+            // Build SVG path
+            var d = 'M ' + points[0].x.toFixed(3) + ' ' + points[0].y.toFixed(3);
+
+            for (var j = 1; j < points.length; j++) {
+                d += ' L ' + points[j].x.toFixed(3) + ' ' + points[j].y.toFixed(3);
+            }
+
+            d += ' Z';
+            return d;
+        }
+
+        // Smoother version using cubic bezier approximation
+        function generateSmoothSuperellipsePath(a, b, n) {
+            var segments = 32;
+            var points = [];
+
+            for (var i = 0; i <= segments; i++) {
+                var t = (i / segments) * 2 * Math.PI;
+                points.push(superellipsePoint(t, a, b, n));
+            }
+
+            // Use Catmull-Rom to Bezier conversion for smooth curves
+            var d = 'M ' + points[0].x.toFixed(3) + ' ' + points[0].y.toFixed(3);
+
+            for (var j = 0; j < segments; j++) {
+                var p0 = points[(j - 1 + segments) % segments];
+                var p1 = points[j];
+                var p2 = points[(j + 1) % segments];
+                var p3 = points[(j + 2) % segments];
+
+                // Catmull-Rom to Cubic Bezier
+                var cp1x = p1.x + (p2.x - p0.x) / 6;
+                var cp1y = p1.y + (p2.y - p0.y) / 6;
+                var cp2x = p2.x - (p3.x - p1.x) / 6;
+                var cp2y = p2.y - (p3.y - p1.y) / 6;
+
+                d += ' C ' + cp1x.toFixed(3) + ' ' + cp1y.toFixed(3) + ', ';
+                d += cp2x.toFixed(3) + ' ' + cp2y.toFixed(3) + ', ';
+                d += p2.x.toFixed(3) + ' ' + p2.y.toFixed(3);
+            }
+
+            d += ' Z';
+            return d;
+        }
+
+        // ============================================
+        // UI UPDATES
+        // ============================================
+
+        var currentN = 4;
+        var currentSize = 180;
+
+        function getNLabel(n) {
+            if (n === 2) return 'n = 2 (Ellipse/Cercle)';
+            if (n === 4) return 'n = 4 (Squircle classique)';
+            if (n === 5) return 'n = 5 (Style iOS)';
+            if (n >= 10) return 'n = ' + n + ' (Quasi-rectangle)';
+            return 'n = ' + n;
+        }
+
+        function updateShapes() {
+            var a = currentSize / 2;
+            var b = a * 0.667; // 2:3 aspect ratio like cards
+
+            // Main superellipse
+            var mainPath = document.getElementById('superellipse-path');
+            var gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+            mainPath.setAttribute('d', generateSmoothSuperellipsePath(a, b, currentN));
+            mainPath.setAttribute('stroke', 'url(#grad1)');
+
+            // Update stroke with gradient manually
+            mainPath.style.stroke = '#FFB10B';
+
+            // Overlay superellipse (fixed size)
+            var overlayPath = document.getElementById('overlay-superellipse');
+            overlayPath.setAttribute('d', generateSmoothSuperellipsePath(145, 95, currentN));
+
+            // Update CSS rect size
+            var cssRect = document.getElementById('css-rect');
+            cssRect.setAttribute('x', -a);
+            cssRect.setAttribute('y', -b);
+            cssRect.setAttribute('width', a * 2);
+            cssRect.setAttribute('height', b * 2);
+            cssRect.setAttribute('rx', Math.min(a, b) * 0.25);
+
+            // Update labels
+            document.getElementById('n-value').textContent = 'n = ' + currentN.toFixed(1);
+            document.getElementById('current-n-label').textContent = getNLabel(Math.round(currentN * 10) / 10);
+            document.getElementById('size-value').textContent = currentSize + 'px';
+
+            // Update preset buttons
+            var presetBtns = document.querySelectorAll('.preset-btn');
+            presetBtns.forEach(function(btn) {
+                var btnN = parseFloat(btn.getAttribute('data-n'));
+                btn.classList.toggle('active', Math.abs(btnN - currentN) < 0.1);
+            });
+        }
+
+        // Bind sliders
+        document.getElementById('n-slider').addEventListener('input', function(e) {
+            currentN = parseFloat(e.target.value);
+            updateShapes();
+        });
+
+        document.getElementById('size-slider').addEventListener('input', function(e) {
+            currentSize = parseInt(e.target.value);
+            updateShapes();
+        });
+
+        // Bind preset buttons
+        document.querySelectorAll('.preset-btn').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                currentN = parseFloat(this.getAttribute('data-n'));
+                document.getElementById('n-slider').value = currentN;
+                updateShapes();
+            });
+        });
+
+        // Initial render
+        updateShapes();
+    </script>
+</body>
+</html>
