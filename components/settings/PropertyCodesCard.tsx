@@ -66,12 +66,12 @@ export default function PropertyCodesCard({
             {t?.residentCode?.title?.[language] || 'Code pour les colocataires'}
           </label>
           <div className="flex items-center gap-2">
-            <div className="flex-1 bg-gray-100 rounded-lg px-4 py-3 font-mono text-lg font-bold text-gray-900">
+            <div className="flex-1 bg-gray-100 superellipse-lg px-4 py-3 font-mono text-lg font-bold text-gray-900">
               {invitationCode || 'N/A'}
             </div>
             <button
               onClick={() => invitationCode && copyToClipboard(invitationCode, 'Code résidents')}
-              className="p-3 rounded-lg bg-orange-500 hover:bg-orange-600 text-white transition-colors"
+              className="p-3 superellipse-lg bg-orange-500 hover:bg-orange-600 text-white transition-colors"
             >
               {copiedCode === invitationCode ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
             </button>
@@ -88,12 +88,12 @@ export default function PropertyCodesCard({
               {t?.ownerCode?.title?.[language] || 'Code propriétaire'}
             </label>
             <div className="flex items-center gap-2">
-              <div className="flex-1 bg-purple-100 rounded-lg px-4 py-3 font-mono text-sm font-bold text-purple-900">
+              <div className="flex-1 bg-purple-100 superellipse-lg px-4 py-3 font-mono text-sm font-bold text-purple-900">
                 {ownerCode}
               </div>
               <button
                 onClick={() => copyToClipboard(ownerCode, 'Code propriétaire')}
-                className="p-3 rounded-lg bg-purple-500 hover:bg-purple-600 text-white transition-colors"
+                className="p-3 superellipse-lg bg-purple-500 hover:bg-purple-600 text-white transition-colors"
               >
                 {copiedCode === ownerCode ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
               </button>
@@ -126,7 +126,7 @@ export default function PropertyCodesCard({
       >
         <Card className="p-6 bg-white/80 backdrop-blur-sm border-2 border-orange-200 hover:border-orange-300 transition-all">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+            <div className="w-14 h-14 superellipse-2xl bg-gradient-to-br from-orange-400 to-yellow-500 flex items-center justify-center flex-shrink-0 shadow-lg">
               <Users className="w-7 h-7 text-white" />
             </div>
 
@@ -139,7 +139,7 @@ export default function PropertyCodesCard({
               </p>
 
               <div className="flex items-center gap-3">
-                <div className="flex-1 px-6 py-4 bg-gradient-to-r from-orange-50 to-yellow-50 rounded-xl border-2 border-orange-200">
+                <div className="flex-1 px-6 py-4 bg-gradient-to-r from-orange-50 to-yellow-50 superellipse-xl border-2 border-orange-200">
                   <p className="text-3xl font-bold text-gray-900 tracking-wider text-center font-mono">
                     {invitationCode}
                   </p>
@@ -148,7 +148,7 @@ export default function PropertyCodesCard({
                 <Button
                   onClick={() => copyToClipboard(invitationCode, 'Code résidents')}
                   variant="outline"
-                  className="rounded-xl border-2 border-orange-300 hover:bg-orange-50 h-14 px-6"
+                  className="superellipse-xl border-2 border-orange-300 hover:bg-orange-50 h-14 px-6"
                 >
                   {copiedCode === invitationCode ? (
                     <Check className="w-5 h-5 text-green-600" />
@@ -171,7 +171,7 @@ export default function PropertyCodesCard({
         >
           <Card className="p-6 bg-white/80 backdrop-blur-sm border-2 border-purple-200 hover:border-purple-300 transition-all">
             <div className="flex items-start gap-4">
-              <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+              <div className="w-14 h-14 superellipse-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center flex-shrink-0 shadow-lg">
                 <UserCheck className="w-7 h-7 text-white" />
               </div>
 
@@ -189,7 +189,7 @@ export default function PropertyCodesCard({
                 </p>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 px-6 py-4 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border-2 border-purple-200">
+                  <div className="flex-1 px-6 py-4 bg-gradient-to-r from-purple-50 to-indigo-50 superellipse-xl border-2 border-purple-200">
                     <p className="text-2xl font-bold text-gray-900 tracking-wider text-center font-mono">
                       {ownerCode}
                     </p>
@@ -198,7 +198,7 @@ export default function PropertyCodesCard({
                   <Button
                     onClick={() => copyToClipboard(ownerCode, 'Code propriétaire')}
                     variant="outline"
-                    className="rounded-xl border-2 border-purple-300 hover:bg-purple-50 h-14 px-6"
+                    className="superellipse-xl border-2 border-purple-300 hover:bg-purple-50 h-14 px-6"
                   >
                     {copiedCode === ownerCode ? (
                       <Check className="w-5 h-5 text-green-600" />
@@ -208,7 +208,7 @@ export default function PropertyCodesCard({
                   </Button>
                 </div>
 
-                <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-xl">
+                <div className="mt-4 p-4 bg-red-50 border border-red-200 superellipse-xl">
                   <div className="flex gap-3">
                     <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                     <div>

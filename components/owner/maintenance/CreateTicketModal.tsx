@@ -309,7 +309,7 @@ export function CreateTicketModal({
                           <img
                             src={url}
                             alt={`Preview ${idx + 1}`}
-                            className="w-20 h-20 object-cover rounded-lg border border-gray-200"
+                            className="w-20 h-20 object-cover superellipse-lg border border-gray-200"
                           />
                           <button
                             type="button"
@@ -354,7 +354,7 @@ export function CreateTicketModal({
                 <Button
                   type="submit"
                   disabled={isSubmitting || !selectedProperty || !title.trim() || !description.trim()}
-                  className="flex-1 rounded-xl text-white"
+                  className="flex-1 superellipse-xl text-white"
                   style={{ background: ownerGradient }}
                 >
                   {isSubmitting ? (

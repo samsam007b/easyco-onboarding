@@ -138,7 +138,7 @@ function SortableTicketCard({
       ref={setNodeRef}
       style={style}
       className={cn(
-        "bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer",
+        "bg-white superellipse-xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer",
         isDragging && "opacity-50 shadow-lg ring-2 ring-purple-400"
       )}
       onClick={onClick}
@@ -212,7 +212,7 @@ function SortableTicketCard({
 
         {/* Scheduled date if exists */}
         {ticket.scheduledDate && (
-          <div className="flex items-center gap-1 mt-2 text-xs text-blue-600 bg-blue-50 rounded-lg px-2 py-1">
+          <div className="flex items-center gap-1 mt-2 text-xs text-blue-600 bg-blue-50 superellipse-lg px-2 py-1">
             <Calendar className="w-3 h-3" />
             <span>Prévu: {format(ticket.scheduledDate, 'd MMM', { locale: fr })}</span>
           </div>
@@ -220,7 +220,7 @@ function SortableTicketCard({
 
         {/* Vendor if assigned */}
         {ticket.vendorName && (
-          <div className="flex items-center gap-1 mt-2 text-xs text-emerald-600 bg-emerald-50 rounded-lg px-2 py-1">
+          <div className="flex items-center gap-1 mt-2 text-xs text-emerald-600 bg-emerald-50 superellipse-lg px-2 py-1">
             <Wrench className="w-3 h-3" />
             <span>{ticket.vendorName}</span>
           </div>
@@ -236,7 +236,7 @@ function DragOverlayCard({ ticket }: { ticket: MaintenanceTicket }) {
   const priorityConfig = priorityColors[ticket.priority];
 
   return (
-    <div className="bg-white rounded-xl border-2 border-purple-400 shadow-xl p-4 w-[280px]">
+    <div className="bg-white superellipse-xl border-2 border-purple-400 shadow-xl p-4 w-[280px]">
       <div className="flex items-center gap-2 mb-2">
         <Badge
           className={cn(
@@ -363,7 +363,7 @@ export function TicketKanbanBoard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm overflow-hidden",
+        "bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm overflow-hidden",
         className
       )}
     >
@@ -372,7 +372,7 @@ export function TicketKanbanBoard({
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+              className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
               style={{ background: ownerGradient }}
             >
               <Wrench className="w-5 h-5 text-white" />
@@ -412,13 +412,13 @@ export function TicketKanbanBoard({
               return (
                 <div
                   key={column.id}
-                  className="bg-gray-50/80 rounded-xl p-3 min-h-[400px]"
+                  className="bg-gray-50/80 superellipse-xl p-3 min-h-[400px]"
                 >
                   {/* Column header */}
                   <div className="flex items-center justify-between mb-3 px-1">
                     <div className="flex items-center gap-2">
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center"
+                        className="w-8 h-8 superellipse-lg flex items-center justify-center"
                         style={{ background: statusConfig.gradient }}
                       >
                         <StatusIcon className="w-4 h-4 text-white" />
@@ -443,7 +443,7 @@ export function TicketKanbanBoard({
                   >
                     <div
                       className={cn(
-                        "space-y-3 min-h-[300px] p-1 rounded-lg transition-colors",
+                        "space-y-3 min-h-[300px] p-1 superellipse-lg transition-colors",
                         activeId && "bg-purple-50/50 border-2 border-dashed border-purple-200"
                       )}
                       data-column={column.id}

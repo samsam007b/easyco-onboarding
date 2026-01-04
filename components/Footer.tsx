@@ -15,7 +15,11 @@ export default function Footer() {
 
           {/* About */}
           <div>
-            <h3 className="text-white font-bold text-lg mb-4">Izzico</h3>
+            <img
+              src="/logos/izzico-lockup-white.svg"
+              alt="Izzico"
+              className="h-10 w-auto mb-4"
+            />
             <p className="text-sm text-gray-400 leading-relaxed">
               {footer.tagline}
             </p>

@@ -127,7 +127,7 @@ export function CostTracker({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        "bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm overflow-hidden",
+        "bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm overflow-hidden",
         className
       )}
     >
@@ -135,7 +135,7 @@ export function CostTracker({
       <div className="p-5 border-b border-gray-100">
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
             style={{ background: ownerGradient }}
           >
             <Euro className="w-5 h-5 text-white" />
@@ -232,7 +232,7 @@ export function CostTracker({
                     <div className="flex items-center justify-between mb-1">
                       <div className="flex items-center gap-2">
                         <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center"
+                          className="w-7 h-7 superellipse-lg flex items-center justify-center"
                           style={{ backgroundColor: config.bgColor }}
                         >
                           <Icon className="w-4 h-4" style={{ color: config.color }} />

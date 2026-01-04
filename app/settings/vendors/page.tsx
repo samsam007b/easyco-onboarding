@@ -99,7 +99,7 @@ export default function VendorsSettingsPage() {
             </Button>
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #D9A870 0%, #E0C090 100%)' }}
               >
                 <Wrench className="w-5 h-5 text-white" />
@@ -125,7 +125,7 @@ export default function VendorsSettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-16"
           >
-            <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 superellipse-2xl bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
               <Users className="w-10 h-10 text-amber-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -135,7 +135,7 @@ export default function VendorsSettingsPage() {
               Ajoutez vos artisans et prestataires de confiance pour faciliter la gestion de la maintenance de vos propriétés.
             </p>
             <Button
-              className="bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-xl px-6 py-3 font-medium shadow-lg hover:shadow-xl transition-all"
+              className="bg-gradient-to-r from-amber-500 to-orange-500 text-white superellipse-xl px-6 py-3 font-medium shadow-lg hover:shadow-xl transition-all"
               onClick={() => {
                 // TODO: Open add vendor modal
               }}
@@ -156,7 +156,7 @@ export default function VendorsSettingsPage() {
                 { icon: Star, title: 'Notes & avis', desc: 'Évaluez vos prestataires' },
                 { icon: Sparkles, title: 'Historique', desc: 'Suivez les interventions' },
               ].map((feature, i) => (
-                <div key={i} className="p-4 rounded-xl bg-white/60 border border-gray-200/50">
+                <div key={i} className="p-4 superellipse-xl bg-white/60 border border-gray-200/50">
                   <feature.icon className="w-6 h-6 text-amber-500 mb-2" />
                   <h3 className="font-semibold text-gray-900 text-sm">{feature.title}</h3>
                   <p className="text-xs text-gray-500">{feature.desc}</p>
@@ -171,7 +171,7 @@ export default function VendorsSettingsPage() {
                 key={vendor.id}
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="p-4 rounded-xl bg-white/80 border border-gray-200 shadow-sm"
+                className="p-4 superellipse-xl bg-white/80 border border-gray-200 shadow-sm"
               >
                 <div className="flex items-center justify-between">
                   <div>
