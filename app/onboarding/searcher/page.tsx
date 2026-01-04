@@ -53,7 +53,7 @@ export default function SearcherIndex() {
         {features.map((feature, index) => (
           <div
             key={index}
-            className="flex items-start gap-4 p-4 rounded-xl bg-orange-50/50 border border-orange-100"
+            className="flex items-start gap-4 p-4 superellipse-xl bg-orange-50/50 border border-orange-100"
           >
             <div className="flex-shrink-0 w-10 h-10 rounded-full bg-gradient-to-br from-[#FF8C42] to-[#FFB85C] flex items-center justify-center">
               <feature.icon className="w-5 h-5 text-white" />

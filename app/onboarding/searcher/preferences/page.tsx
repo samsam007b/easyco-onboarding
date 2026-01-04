@@ -91,7 +91,7 @@ export default function PreferencesPage() {
 
       <div className="space-y-6">
         {/* Monthly budget */}
-        <div className="p-5 rounded-xl bg-green-50 border border-green-200">
+        <div className="p-5 superellipse-xl bg-green-50 border border-green-200">
           <OnboardingLabel required>
             <div className="flex items-center gap-2">
               <DollarSign className="w-5 h-5 text-green-600" />
@@ -107,7 +107,7 @@ export default function PreferencesPage() {
                   type="number"
                   value={budgetMin}
                   onChange={(e) => setBudgetMin(e.target.value)}
-                  className="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
+                  className="w-full pl-8 pr-4 py-3 superellipse-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
                   placeholder="300"
                   min="0"
                 />
@@ -121,7 +121,7 @@ export default function PreferencesPage() {
                   type="number"
                   value={budgetMax}
                   onChange={(e) => setBudgetMax(e.target.value)}
-                  className="w-full pl-8 pr-4 py-3 rounded-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
+                  className="w-full pl-8 pr-4 py-3 superellipse-lg border border-gray-300 focus:border-orange-500 focus:ring-2 focus:ring-orange-100 outline-none transition"
                   placeholder="1200"
                   min="0"
                 />
@@ -148,7 +148,7 @@ export default function PreferencesPage() {
             <SafeGooglePlacesAutocomplete
               onPlaceSelect={handlePlaceSelect}
               placeholder={t('onboarding.preferences.districtPlaceholder')}
-              inputClassName="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
+              inputClassName="w-full pl-12 pr-4 py-3 border border-gray-300 superellipse-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition"
             />
           </div>
           {preferredDistrict && (

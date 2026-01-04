@@ -175,7 +175,7 @@ export default function BasicInfoPage() {
 
       {/* Dependent Profile Badge */}
       {profileType === 'dependent' && (
-        <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-xl flex items-center gap-3">
+        <div className="mb-6 p-4 bg-orange-50 border border-orange-200 superellipse-xl flex items-center gap-3">
           <Users className="w-5 h-5 text-orange-600" />
           <div>
             <p className="text-sm font-medium text-orange-600">

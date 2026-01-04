@@ -255,7 +255,7 @@ export default function CalendarEventModal({
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
             <div
-              className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden pointer-events-auto relative border-2 border-orange-100"
+              className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden pointer-events-auto relative border-2 border-orange-100"
               style={{
                 boxShadow: `0 25px 80px ${ACCENT_SHADOW}`,
               }}
@@ -325,7 +325,7 @@ export default function CalendarEventModal({
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="ex: Réunion de colocation"
-                    className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+                    className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
                       errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
                     } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
                   />
@@ -350,7 +350,7 @@ export default function CalendarEventModal({
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Ajoutez des détails sur l'événement..."
                     rows={3}
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
                   />
                 </div>
 
@@ -370,7 +370,7 @@ export default function CalendarEventModal({
                       type="date"
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
-                      className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+                      className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
                         errors.date ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
                       } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
                     />
@@ -393,7 +393,7 @@ export default function CalendarEventModal({
                       type="time"
                       value={time}
                       onChange={(e) => setTime(e.target.value)}
-                      className={`w-full px-4 py-3.5 rounded-2xl border-2 transition-all ${
+                      className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
                         errors.time ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
                       } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
                     />
@@ -419,7 +419,7 @@ export default function CalendarEventModal({
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="ex: Salon, cuisine, extérieur..."
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </div>
 
@@ -435,7 +435,7 @@ export default function CalendarEventModal({
                     Participants
                   </label>
                   <div
-                    className="space-y-2 max-h-40 overflow-y-auto rounded-2xl border-2 border-gray-200 p-3"
+                    className="space-y-2 max-h-40 overflow-y-auto superellipse-2xl border-2 border-gray-200 p-3"
                     style={{ background: 'rgba(255, 255, 255, 0.8)' }}
                   >
                     {propertyMembers.length === 0 ? (
@@ -446,7 +446,7 @@ export default function CalendarEventModal({
                           key={member.user_id}
                           whileHover={{ scale: 1.01 }}
                           whileTap={{ scale: 0.99 }}
-                          className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer transition-all ${
+                          className={`flex items-center gap-3 p-3 superellipse-xl cursor-pointer transition-all ${
                             selectedAttendees.includes(member.user_id)
                               ? 'bg-orange-50 border-2 border-orange-200'
                               : 'hover:bg-gray-50 border-2 border-transparent'
@@ -490,7 +490,7 @@ export default function CalendarEventModal({
                       type="button"
                       onClick={onClose}
                       variant="outline"
-                      className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
+                      className="w-full superellipse-2xl py-6 font-semibold border-2 transition-all"
                       style={{
                         borderColor: `${RESIDENT_PRIMARY}30`,
                         color: RESIDENT_PRIMARY,
@@ -503,7 +503,7 @@ export default function CalendarEventModal({
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                     <Button
                       type="submit"
-                      className="w-full rounded-2xl py-6 font-bold text-white border-none"
+                      className="w-full superellipse-2xl py-6 font-bold text-white border-none"
                       style={{
                         background: RESIDENT_GRADIENT,
                         boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,

@@ -180,7 +180,7 @@ function ProgressBar({
 function CustomAreaTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="bg-white/95 backdrop-blur-md p-3 rounded-xl border border-gray-200 shadow-lg">
+    <div className="bg-white/95 backdrop-blur-md p-3 superellipse-xl border border-gray-200 shadow-lg">
       <p className="text-sm font-semibold text-gray-900 mb-1">{label}</p>
       {payload.map((entry: any, i: number) => (
         <p key={i} className="text-sm" style={{ color: entry.color }}>
@@ -196,7 +196,7 @@ function CustomPieTooltip({ active, payload }: any) {
   if (!active || !payload?.length) return null;
   const data = payload[0];
   return (
-    <div className="bg-white/95 backdrop-blur-md p-3 rounded-xl border border-gray-200 shadow-lg">
+    <div className="bg-white/95 backdrop-blur-md p-3 superellipse-xl border border-gray-200 shadow-lg">
       <p className="text-sm font-semibold text-gray-900">{data.name}</p>
       <p className="text-sm text-gray-600">{data.value?.toLocaleString()}€</p>
     </div>
@@ -504,7 +504,7 @@ export default function FinanceAnalyticsPage() {
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
                 backgroundColor: ownerPalette.primary.main,
                 boxShadow: `0 8px 24px ${ownerPalette.primary.shadow}`,
@@ -527,7 +527,7 @@ export default function FinanceAnalyticsPage() {
                 variant="outline"
                 size="sm"
                 disabled={isRefreshing}
-                className="h-9 text-sm rounded-xl border-2 font-medium shadow-sm"
+                className="h-9 text-sm superellipse-xl border-2 font-medium shadow-sm"
                 style={{
                   borderColor: ownerPalette.secondary.border,
                   color: ownerPalette.secondary.main,
@@ -542,7 +542,7 @@ export default function FinanceAnalyticsPage() {
                 onClick={() => setShowDocumentsModal(true)}
                 variant="outline"
                 size="sm"
-                className="h-9 text-sm rounded-xl border-2 font-medium shadow-sm"
+                className="h-9 text-sm superellipse-xl border-2 font-medium shadow-sm"
                 style={{
                   borderColor: ownerPalette.tertiary.border,
                   color: ownerPalette.tertiary.main,
@@ -557,7 +557,7 @@ export default function FinanceAnalyticsPage() {
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     size="sm"
-                    className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
+                    className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
                     style={{
                       background: ownerGradient,
                       boxShadow: `0 4px 14px ${ownerPalette.primary.shadow}`,
@@ -569,12 +569,12 @@ export default function FinanceAnalyticsPage() {
                   </Button>
                 </motion.div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="rounded-xl">
-                <DropdownMenuItem onClick={handleExportCSV} className="cursor-pointer rounded-lg">
+              <DropdownMenuContent align="end" className="superellipse-xl">
+                <DropdownMenuItem onClick={handleExportCSV} className="cursor-pointer superellipse-lg">
                   <FileSpreadsheet className="w-4 h-4 mr-2 text-green-600" />
                   Export CSV (Excel)
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={handleExportPDF} className="cursor-pointer rounded-lg">
+                <DropdownMenuItem onClick={handleExportPDF} className="cursor-pointer superellipse-lg">
                   <FileText className="w-4 h-4 mr-2 text-red-600" />
                   Export PDF
                 </DropdownMenuItem>
@@ -588,7 +588,7 @@ export default function FinanceAnalyticsPage() {
           {/* Revenue Card - Primary Color */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: ownerPalette.primary.bg,
               boxShadow: `0 8px 24px ${ownerPalette.primary.shadow}`,
@@ -603,7 +603,7 @@ export default function FinanceAnalyticsPage() {
                 Revenus totaux
               </span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ backgroundColor: ownerPalette.primary.main }}
               >
                 <TrendingUp className="w-4 h-4 text-white" />
@@ -623,7 +623,7 @@ export default function FinanceAnalyticsPage() {
           {/* Collected Card - Tertiary Color */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: ownerPalette.tertiary.bg,
               boxShadow: `0 8px 24px ${ownerPalette.tertiary.shadow}`,
@@ -638,7 +638,7 @@ export default function FinanceAnalyticsPage() {
                 Encaissé
               </span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ backgroundColor: ownerPalette.tertiary.main }}
               >
                 <CheckCircle2 className="w-4 h-4 text-white" />
@@ -658,7 +658,7 @@ export default function FinanceAnalyticsPage() {
           {/* Pending Card - Quaternary Color */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: ownerPalette.quaternary.bg,
               boxShadow: `0 8px 24px ${ownerPalette.quaternary.shadow}`,
@@ -673,7 +673,7 @@ export default function FinanceAnalyticsPage() {
                 En attente
               </span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ backgroundColor: ownerPalette.quaternary.main }}
               >
                 <Clock className="w-4 h-4 text-white" />
@@ -701,7 +701,7 @@ export default function FinanceAnalyticsPage() {
           {/* Overdue Card - Accent Color (or semantic danger) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: (overview?.paymentSummary.overdue || 0) > 0
                 ? semanticColors.danger.light
@@ -731,7 +731,7 @@ export default function FinanceAnalyticsPage() {
                 Impayés
               </span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{
                   background: (overview?.paymentSummary.overdue || 0) > 0
                     ? semanticColors.danger.gradient
@@ -763,11 +763,11 @@ export default function FinanceAnalyticsPage() {
           {/* Area Chart - Progression */}
           <motion.div
             variants={itemVariants}
-            className="lg:col-span-2 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6"
+            className="lg:col-span-2 bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6"
           >
             <div className="flex items-center gap-3 mb-6">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: ownerPalette.primary.main }}
               >
                 <BarChart3 className="w-5 h-5 text-white" />
@@ -839,11 +839,11 @@ export default function FinanceAnalyticsPage() {
           {/* Pie Chart - Par propriété */}
           <motion.div
             variants={itemVariants}
-            className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6"
+            className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6"
           >
             <div className="flex items-center gap-3 mb-6">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
                 style={{ backgroundColor: ownerPalette.secondary.main }}
               >
                 <PieChartIcon className="w-5 h-5 text-white" />
@@ -918,7 +918,7 @@ export default function FinanceAnalyticsPage() {
         <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           {/* Collection Rate Card */}
           <div
-            className="rounded-2xl p-5 border"
+            className="superellipse-2xl p-5 border"
             style={{
               background: 'linear-gradient(135deg, #FFFFFF 0%, #F8F0F7 100%)',
               borderColor: ownerPalette.primary.border,
@@ -933,7 +933,7 @@ export default function FinanceAnalyticsPage() {
                 <p className="text-xs text-gray-500 mt-1">{overview?.paymentSummary.paidCount || 0} paiements reçus</p>
               </div>
               <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                className="w-14 h-14 superellipse-2xl flex items-center justify-center"
                 style={{ backgroundColor: ownerPalette.primary.light }}
               >
                 <Percent className="w-7 h-7" style={{ color: ownerPalette.primary.main }} />
@@ -943,7 +943,7 @@ export default function FinanceAnalyticsPage() {
 
           {/* This Month Card */}
           <div
-            className="rounded-2xl p-5 border"
+            className="superellipse-2xl p-5 border"
             style={{
               background: 'linear-gradient(135deg, #FFFFFF 0%, #FFF5F8 100%)',
               borderColor: ownerPalette.tertiary.border,
@@ -960,7 +960,7 @@ export default function FinanceAnalyticsPage() {
                 </p>
               </div>
               <div
-                className="w-14 h-14 rounded-2xl flex items-center justify-center"
+                className="w-14 h-14 superellipse-2xl flex items-center justify-center"
                 style={{ backgroundColor: ownerPalette.tertiary.light }}
               >
                 <Calendar className="w-7 h-7" style={{ color: ownerPalette.tertiary.main }} />

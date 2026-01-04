@@ -45,7 +45,7 @@ export default function RoleSwitchModal({
 
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-8 animate-in zoom-in-95 duration-200">
+        <div className="bg-white superellipse-3xl shadow-2xl max-w-lg w-full p-8 animate-in zoom-in-95 duration-200">
           {/* Header */}
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center gap-3">
@@ -73,7 +73,7 @@ export default function RoleSwitchModal({
           {/* Content */}
           <div className="space-y-4 mb-6">
             {/* Warning Banner */}
-            <div className="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 flex items-start gap-3">
+            <div className="bg-yellow-50 border border-yellow-200 superellipse-2xl p-4 flex items-start gap-3">
               <AlertCircle className="w-5 h-5 text-yellow-600 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <h3 className="font-semibold text-yellow-900 text-sm mb-1">
@@ -90,7 +90,7 @@ export default function RoleSwitchModal({
               <h3 className="font-semibold text-gray-900">What will happen:</h3>
 
               <div className="space-y-2">
-                <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-purple-50 superellipse-xl">
                   <div className="w-6 h-6 rounded-full bg-[#4A148C] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                     1
                   </div>
@@ -102,7 +102,7 @@ export default function RoleSwitchModal({
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 bg-purple-50 rounded-xl">
+                <div className="flex items-start gap-3 p-3 bg-purple-50 superellipse-xl">
                   <div className="w-6 h-6 rounded-full bg-[#4A148C] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                     2
                   </div>
@@ -114,7 +114,7 @@ export default function RoleSwitchModal({
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3 bg-green-50 rounded-xl border border-green-200">
+                <div className="flex items-start gap-3 p-3 bg-green-50 superellipse-xl border border-green-200">
                   <div className="w-6 h-6 rounded-full bg-green-600 text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                     ✓
                   </div>
@@ -134,7 +134,7 @@ export default function RoleSwitchModal({
             <Button
               onClick={onConfirm}
               disabled={isLoading}
-              className="flex-1 bg-[#4A148C] hover:bg-[#6A1B9A] text-white py-6 rounded-2xl font-semibold"
+              className="flex-1 bg-[#4A148C] hover:bg-[#6A1B9A] text-white py-6 superellipse-2xl font-semibold"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">
@@ -149,7 +149,7 @@ export default function RoleSwitchModal({
               onClick={onClose}
               disabled={isLoading}
               variant="outline"
-              className="px-8 py-6 rounded-2xl font-semibold"
+              className="px-8 py-6 superellipse-2xl font-semibold"
             >
               Cancel
             </Button>

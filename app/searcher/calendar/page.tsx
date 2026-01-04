@@ -203,14 +203,14 @@ export default function SearcherCalendarPage() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
               <div className="flex items-center gap-3">
                 <Link href="/searcher">
-                  <Button variant="ghost" size="icon" className="rounded-xl">
+                  <Button variant="ghost" size="icon" className="superellipse-xl">
                     <ArrowLeft className="w-5 h-5" />
                   </Button>
                 </Link>
                 <div>
                   <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                     <div
-                      className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+                      className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
                       style={{ background: SEARCHER_GRADIENT }}
                     >
                       <CalendarDays className="w-6 h-6 text-white" />
@@ -225,7 +225,7 @@ export default function SearcherCalendarPage() {
 
               <Link href="/searcher/visits">
                 <Button
-                  className="rounded-xl text-white shadow-lg"
+                  className="superellipse-xl text-white shadow-lg"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <ListChecks className="w-4 h-4 mr-2" />
@@ -240,13 +240,13 @@ export default function SearcherCalendarPage() {
             {/* Next Visit */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
-              className="relative overflow-hidden rounded-2xl p-5 shadow-sm border border-gray-200"
+              className="relative overflow-hidden superellipse-2xl p-5 shadow-sm border border-gray-200"
               style={{ background: SEARCHER_GRADIENT_SOFT }}
             >
               <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15" style={{ background: SEARCHER_GRADIENT }} />
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-600">Prochaine visite</span>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: SEARCHER_GRADIENT }}>
+                <div className="w-8 h-8 superellipse-xl flex items-center justify-center" style={{ background: SEARCHER_GRADIENT }}>
                   <CalendarCheck className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -263,13 +263,13 @@ export default function SearcherCalendarPage() {
             {/* This Month */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
-              className="relative overflow-hidden rounded-2xl p-5 shadow-sm border border-gray-200"
+              className="relative overflow-hidden superellipse-2xl p-5 shadow-sm border border-gray-200"
               style={{ background: 'linear-gradient(135deg, #FFF5E6 0%, #FFF9F0 100%)' }}
             >
               <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15" style={{ background: 'linear-gradient(135deg, #3B82F6, #60A5FA)' }} />
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-600">Ce mois</span>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #3B82F6, #60A5FA)' }}>
+                <div className="w-8 h-8 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #3B82F6, #60A5FA)' }}>
                   <CalendarIcon className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -285,12 +285,12 @@ export default function SearcherCalendarPage() {
             {/* Upcoming */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
-              className="relative overflow-hidden rounded-2xl p-5 shadow-sm border border-gray-200 bg-emerald-50"
+              className="relative overflow-hidden superellipse-2xl p-5 shadow-sm border border-gray-200 bg-emerald-50"
             >
               <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15" style={{ background: 'linear-gradient(135deg, #10B981, #34D399)' }} />
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-600">À venir</span>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10B981, #34D399)' }}>
+                <div className="w-8 h-8 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #10B981, #34D399)' }}>
                   <Clock className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -301,13 +301,13 @@ export default function SearcherCalendarPage() {
             {/* Completed */}
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
-              className="relative overflow-hidden rounded-2xl p-5 shadow-sm border border-gray-200"
+              className="relative overflow-hidden superellipse-2xl p-5 shadow-sm border border-gray-200"
               style={{ background: 'linear-gradient(135deg, #F0F4FF 0%, #E8EEFF 100%)' }}
             >
               <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15" style={{ background: 'linear-gradient(135deg, #3B82F6, #60A5FA)' }} />
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-600">Terminées</span>
-                <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #3B82F6, #60A5FA)' }}>
+                <div className="w-8 h-8 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #3B82F6, #60A5FA)' }}>
                   <Star className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -321,14 +321,14 @@ export default function SearcherCalendarPage() {
             {/* Calendar */}
             <motion.div
               whileHover={{ y: -4 }}
-              className="lg:col-span-2 bg-white rounded-3xl shadow-lg p-6 border-2 border-amber-100"
+              className="lg:col-span-2 bg-white superellipse-3xl shadow-lg p-6 border-2 border-amber-100"
             >
               {/* Calendar Header */}
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <CalendarIcon className="w-5 h-5 text-white" />
@@ -341,7 +341,7 @@ export default function SearcherCalendarPage() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={previousMonth}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center border-2 border-amber-200 text-amber-600 hover:bg-amber-50"
+                    className="w-9 h-9 superellipse-xl flex items-center justify-center border-2 border-amber-200 text-amber-600 hover:bg-amber-50"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </motion.button>
@@ -349,7 +349,7 @@ export default function SearcherCalendarPage() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setCurrentDate(new Date())}
-                    className="px-4 h-9 rounded-xl font-semibold text-white text-sm"
+                    className="px-4 h-9 superellipse-xl font-semibold text-white text-sm"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     Aujourd'hui
@@ -358,7 +358,7 @@ export default function SearcherCalendarPage() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={nextMonth}
-                    className="w-9 h-9 rounded-xl flex items-center justify-center border-2 border-amber-200 text-amber-600 hover:bg-amber-50"
+                    className="w-9 h-9 superellipse-xl flex items-center justify-center border-2 border-amber-200 text-amber-600 hover:bg-amber-50"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </motion.button>
@@ -403,7 +403,7 @@ export default function SearcherCalendarPage() {
                       whileHover={day ? { scale: 1.02 } : undefined}
                       whileTap={day ? { scale: 0.98 } : undefined}
                       className={cn(
-                        'min-h-[90px] p-2 border-2 rounded-xl transition-all cursor-pointer',
+                        'min-h-[90px] p-2 border-2 superellipse-xl transition-all cursor-pointer',
                         day
                           ? 'bg-white hover:border-amber-300 border-gray-100'
                           : 'bg-gray-50/50 border-gray-50',
@@ -447,7 +447,7 @@ export default function SearcherCalendarPage() {
                                   key={visit.id}
                                   whileHover={{ scale: 1.02 }}
                                   className={cn(
-                                    'text-[10px] px-1.5 py-0.5 rounded-lg truncate font-medium shadow-sm',
+                                    'text-[10px] px-1.5 py-0.5 superellipse-lg truncate font-medium shadow-sm',
                                     colors.bg,
                                     colors.text
                                   )}
@@ -494,7 +494,7 @@ export default function SearcherCalendarPage() {
             {/* Selected Day Details */}
             <motion.div
               whileHover={{ y: -4 }}
-              className="bg-white rounded-3xl shadow-lg overflow-hidden border-2 border-amber-100"
+              className="bg-white superellipse-3xl shadow-lg overflow-hidden border-2 border-amber-100"
             >
               <div
                 className="p-4 border-b border-amber-100"
@@ -502,7 +502,7 @@ export default function SearcherCalendarPage() {
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Eye className="w-5 h-5 text-white" />
@@ -535,7 +535,7 @@ export default function SearcherCalendarPage() {
                       className="text-center py-8"
                     >
                       <div
-                        className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                        className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                         style={{ background: SEARCHER_GRADIENT_SOFT }}
                       >
                         <CalendarIcon className="w-8 h-8" style={{ color: SEARCHER_PRIMARY }} />
@@ -561,7 +561,7 @@ export default function SearcherCalendarPage() {
                           <motion.div
                             key={visit.id}
                             whileHover={{ scale: 1.02, x: 4 }}
-                            className="p-4 rounded-2xl border-2 border-amber-100 hover:border-amber-200 transition-all cursor-pointer"
+                            className="p-4 superellipse-2xl border-2 border-amber-100 hover:border-amber-200 transition-all cursor-pointer"
                             style={{ background: 'linear-gradient(135deg, #FFFBF5 0%, #FFFFFF 100%)' }}
                             onClick={() => router.push(`/properties/${visit.property_id}`)}
                           >
@@ -570,11 +570,11 @@ export default function SearcherCalendarPage() {
                                 <img
                                   src={visit.property.main_image_url}
                                   alt=""
-                                  className="w-14 h-14 rounded-xl object-cover"
+                                  className="w-14 h-14 superellipse-xl object-cover"
                                 />
                               ) : (
                                 <div
-                                  className="w-14 h-14 rounded-xl flex items-center justify-center"
+                                  className="w-14 h-14 superellipse-xl flex items-center justify-center"
                                   style={{ background: SEARCHER_GRADIENT_SOFT }}
                                 >
                                   <Home className="w-6 h-6" style={{ color: SEARCHER_PRIMARY }} />
@@ -642,13 +642,13 @@ export default function SearcherCalendarPage() {
           <motion.div
             variants={itemVariants}
             whileHover={{ y: -4 }}
-            className="bg-white rounded-3xl shadow-lg overflow-hidden border-l-4"
+            className="bg-white superellipse-3xl shadow-lg overflow-hidden border-l-4"
             style={{ borderLeftColor: SEARCHER_PRIMARY }}
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-100">
               <div className="flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Sparkles className="w-5 h-5 text-white" />
@@ -659,7 +659,7 @@ export default function SearcherCalendarPage() {
                 </div>
               </div>
               <Link href="/searcher/visits">
-                <Button variant="outline" className="rounded-xl text-sm" style={{ borderColor: SEARCHER_PRIMARY, color: SEARCHER_PRIMARY }}>
+                <Button variant="outline" className="superellipse-xl text-sm" style={{ borderColor: SEARCHER_PRIMARY, color: SEARCHER_PRIMARY }}>
                   Voir tout
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
@@ -673,7 +673,7 @@ export default function SearcherCalendarPage() {
                   <p className="text-gray-500">Aucune visite planifiée</p>
                   <Link href="/searcher/explore">
                     <Button
-                      className="mt-4 rounded-xl text-white"
+                      className="mt-4 superellipse-xl text-white"
                       style={{ background: SEARCHER_GRADIENT }}
                     >
                       Parcourir les propriétés
@@ -691,7 +691,7 @@ export default function SearcherCalendarPage() {
                       <motion.div
                         key={visit.id}
                         whileHover={{ scale: 1.02, y: -4 }}
-                        className="p-4 rounded-2xl border-2 border-amber-100 hover:border-amber-200 transition-all cursor-pointer"
+                        className="p-4 superellipse-2xl border-2 border-amber-100 hover:border-amber-200 transition-all cursor-pointer"
                         style={{ background: SEARCHER_GRADIENT_SOFT }}
                         onClick={() => router.push(`/properties/${visit.property_id}`)}
                       >

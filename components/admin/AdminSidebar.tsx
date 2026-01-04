@@ -70,7 +70,7 @@ export default function AdminSidebar({ userEmail, userRole }: AdminSidebarProps)
             <Shield className="w-5 h-5 text-white" />
           </div>
           <div>
-            <span className="text-lg font-bold text-white">Izzico</span>
+            <span className="text-lg font-bold text-white font-brand">Izzico</span>
             <span className="text-xs text-purple-400 block">Administration</span>
           </div>
         </div>

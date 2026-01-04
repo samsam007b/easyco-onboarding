@@ -163,7 +163,7 @@ export default function FinancesHubPage() {
         <motion.div variants={itemVariants} className="flex items-center justify-between mb-8">
           <div className="flex items-center gap-4">
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center relative"
+              className="w-14 h-14 superellipse-2xl flex items-center justify-center relative"
               style={{ background: ownerGradient }}
             >
               <Wallet className="w-7 h-7 text-white" />
@@ -193,7 +193,7 @@ export default function FinancesHubPage() {
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => router.push('/dashboard/owner/finance')}
-            className="cursor-pointer rounded-2xl p-5 relative overflow-hidden"
+            className="cursor-pointer superellipse-2xl p-5 relative overflow-hidden"
             style={{
               background: `linear-gradient(135deg, ${ownerPalette.primary.main} 0%, ${ownerPalette.secondary.main} 100%)`,
               boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
@@ -236,7 +236,7 @@ export default function FinancesHubPage() {
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => router.push('/dashboard/owner/finance')}
-            className="cursor-pointer rounded-2xl p-5 relative overflow-hidden"
+            className="cursor-pointer superellipse-2xl p-5 relative overflow-hidden"
             style={{
               background: ownerPalette.tertiary.light,
               border: `2px solid ${ownerPalette.tertiary.border}`,
@@ -249,7 +249,7 @@ export default function FinancesHubPage() {
                 {t?.kpi?.pending?.[language] || 'Pending'}
               </span>
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 superellipse-lg flex items-center justify-center"
                 style={{ background: ownerPalette.tertiary.main }}
               >
                 <Clock className="w-4 h-4 text-white" />
@@ -278,7 +278,7 @@ export default function FinancesHubPage() {
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => router.push('/dashboard/owner/finance')}
-            className="cursor-pointer rounded-2xl p-5 relative overflow-hidden"
+            className="cursor-pointer superellipse-2xl p-5 relative overflow-hidden"
             style={{
               background: (overview?.kpis.overdueAmount || 0) > 0
                 ? `linear-gradient(135deg, ${ownerPalette.accent.main} 0%, #d63a52 100%)`
@@ -299,7 +299,7 @@ export default function FinancesHubPage() {
               </span>
               <div
                 className={cn(
-                  'w-8 h-8 rounded-lg flex items-center justify-center',
+                  'w-8 h-8 superellipse-lg flex items-center justify-center',
                   (overview?.kpis.overdueAmount || 0) > 0 ? 'bg-white/20' : ''
                 )}
                 style={{
@@ -336,7 +336,7 @@ export default function FinancesHubPage() {
           <motion.div
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="cursor-pointer rounded-2xl p-5 relative overflow-hidden"
+            className="cursor-pointer superellipse-2xl p-5 relative overflow-hidden"
             style={{
               background: ownerPalette.quaternary.light,
               border: `2px solid ${ownerPalette.quaternary.border}`,
@@ -349,7 +349,7 @@ export default function FinancesHubPage() {
                 {t?.kpi?.collectionRate?.[language] || 'Collection rate'}
               </span>
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 superellipse-lg flex items-center justify-center"
                 style={{ background: ownerPalette.quaternary.main }}
               >
                 <Percent className="w-4 h-4 text-white" />
@@ -379,7 +379,7 @@ export default function FinancesHubPage() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
           {/* Alerts Section - 2 cols */}
           <motion.div variants={itemVariants} className="lg:col-span-2">
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+            <div className="bg-white superellipse-2xl border border-gray-200 shadow-sm overflow-hidden">
               <div
                 className="px-6 py-4 border-b border-gray-100 flex items-center justify-between"
                 style={{ background: ownerPalette.accent.light }}
@@ -402,7 +402,7 @@ export default function FinancesHubPage() {
                 {!overview?.alerts || overview.alerts.length === 0 ? (
                   <div className="text-center py-8">
                     <div
-                      className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4"
+                      className="w-16 h-16 mx-auto superellipse-2xl flex items-center justify-center mb-4"
                       style={{ background: semanticColors.success.gradient }}
                     >
                       <CheckCircle className="w-8 h-8 text-white" />
@@ -422,7 +422,7 @@ export default function FinancesHubPage() {
                           transition={{ delay: index * 0.05 }}
                           onClick={() => router.push(alert.href)}
                           className={cn(
-                            'flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all',
+                            'flex items-center gap-4 p-4 superellipse-xl cursor-pointer transition-all',
                             'hover:shadow-md hover:scale-[1.01]',
                             alert.severity === 'critical'
                               ? 'bg-red-50 border-2 border-red-200 hover:border-red-300'
@@ -432,7 +432,7 @@ export default function FinancesHubPage() {
                           )}
                         >
                           <div
-                            className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                            className="w-10 h-10 superellipse-lg flex items-center justify-center flex-shrink-0"
                             style={{
                               background:
                                 alert.severity === 'critical'
@@ -481,7 +481,7 @@ export default function FinancesHubPage() {
 
           {/* Trend Chart - 1 col */}
           <motion.div variants={itemVariants}>
-            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden h-full">
+            <div className="bg-white superellipse-2xl border border-gray-200 shadow-sm overflow-hidden h-full">
               <div
                 className="px-6 py-4 border-b border-gray-100 flex items-center justify-between"
                 style={{ background: ownerPalette.primary.light }}
@@ -535,7 +535,7 @@ export default function FinancesHubPage() {
 
                 {/* Current month highlight */}
                 <div
-                  className="mt-6 p-4 rounded-xl"
+                  className="mt-6 p-4 superellipse-xl"
                   style={{ background: ownerPalette.primary.light }}
                 >
                   <div className="flex items-center justify-between">
@@ -582,7 +582,7 @@ export default function FinancesHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/finance')}
-              className="cursor-pointer rounded-2xl p-6 relative overflow-hidden"
+              className="cursor-pointer superellipse-2xl p-6 relative overflow-hidden"
               style={{
                 background: `linear-gradient(135deg, ${ownerPalette.secondary.main} 0%, ${ownerPalette.tertiary.main} 100%)`,
                 boxShadow: `0 8px 32px ${ownerPalette.secondary.shadow}`,
@@ -591,7 +591,7 @@ export default function FinancesHubPage() {
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/10 -mr-12 -mt-12" />
               <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white/5 -ml-8 -mb-8" />
               <div className="relative z-10">
-                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center mb-4">
+                <div className="w-12 h-12 superellipse-xl bg-white/20 flex items-center justify-center mb-4">
                   <BarChart3 className="w-6 h-6 text-white" />
                 </div>
                 <h3 className="text-xl font-bold text-white mb-2">{t?.quickActions?.analytics?.title?.[language] || 'Payments & Analytics'}</h3>
@@ -599,7 +599,7 @@ export default function FinancesHubPage() {
                   {t?.quickActions?.analytics?.description?.[language] || 'Track collections and analyze your income in detail'}
                 </p>
                 <div className="flex items-center gap-4">
-                  <div className="bg-white/20 rounded-lg px-3 py-1.5">
+                  <div className="bg-white/20 superellipse-lg px-3 py-1.5">
                     <span className="text-white text-sm font-semibold">
                       {formatCurrency(overview?.paymentSummary.paid || 0)} {t?.quickActions?.collected?.[language] || 'collected'}
                     </span>
@@ -614,7 +614,7 @@ export default function FinancesHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/portfolio')}
-              className="cursor-pointer rounded-2xl p-6 relative overflow-hidden"
+              className="cursor-pointer superellipse-2xl p-6 relative overflow-hidden"
               style={{
                 background: ownerPalette.quaternary.light,
                 border: `2px solid ${ownerPalette.quaternary.border}`,
@@ -624,7 +624,7 @@ export default function FinancesHubPage() {
                 style={{ background: `${ownerPalette.quaternary.main}10` }} />
               <div className="relative z-10">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center mb-4"
                   style={{ background: ownerPalette.quaternary.main }}
                 >
                   <Home className="w-6 h-6 text-white" />
@@ -635,7 +635,7 @@ export default function FinancesHubPage() {
                 </p>
                 <div className="flex items-center gap-3">
                   <div
-                    className="rounded-lg px-3 py-1.5"
+                    className="superellipse-lg px-3 py-1.5"
                     style={{ background: `${ownerPalette.quaternary.main}15` }}
                   >
                     <span style={{ color: ownerPalette.quaternary.text }} className="text-sm font-semibold">
@@ -643,7 +643,7 @@ export default function FinancesHubPage() {
                     </span>
                   </div>
                   <div
-                    className="rounded-lg px-3 py-1.5"
+                    className="superellipse-lg px-3 py-1.5"
                     style={{ background: `${ownerPalette.quaternary.main}15` }}
                   >
                     <span style={{ color: ownerPalette.quaternary.text }} className="text-sm font-semibold">
@@ -659,7 +659,7 @@ export default function FinancesHubPage() {
         {/* Bottom Summary - Full gradient CTA */}
         <motion.div variants={itemVariants} className="mt-8 mb-4">
           <div
-            className="rounded-2xl p-6 relative overflow-hidden"
+            className="superellipse-2xl p-6 relative overflow-hidden"
             style={{
               background: ownerGradient,
               boxShadow: '0 8px 32px rgba(156, 86, 152, 0.25)',

@@ -183,7 +183,7 @@ export default function UpgradeNotification() {
           exit={{ opacity: 0, y: -100 }}
           className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-full max-w-md px-4"
         >
-          <div className={`rounded-2xl shadow-2xl border-2 p-6 relative ${content.bgClass}`}>
+          <div className={`superellipse-2xl shadow-2xl border-2 p-6 relative ${content.bgClass}`}>
             {type !== 'verifying' && (
               <button
                 onClick={handleClose}

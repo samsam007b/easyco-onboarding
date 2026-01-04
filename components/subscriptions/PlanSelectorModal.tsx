@@ -76,7 +76,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
+              className="bg-white superellipse-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto"
             >
               {/* Header */}
               <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
@@ -133,7 +133,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
                   {/* Left: Pricing Card */}
                   <div>
                     <div
-                      className={`border-2 rounded-2xl p-6 ${
+                      className={`border-2 superellipse-2xl p-6 ${
                         selectedInterval === 'annual'
                           ? 'border-green-500 bg-gradient-to-br from-green-50 to-emerald-50'
                           : 'border-gray-200 bg-white'
@@ -174,7 +174,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
                       </div>
 
                       {error && (
-                        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                        <div className="mb-4 p-3 bg-red-50 border border-red-200 superellipse-lg">
                           <p className="text-sm text-red-800">{error}</p>
                         </div>
                       )}
@@ -182,7 +182,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
                       <button
                         onClick={handleSubscribe}
                         disabled={isLoading}
-                        className={`w-full py-4 rounded-xl font-bold text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
+                        className={`w-full py-4 superellipse-xl font-bold text-white shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                           userType === 'owner'
                             ? 'bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700'
                             : 'bg-gradient-to-r from-orange-600 to-yellow-600 hover:from-orange-700 hover:to-yellow-700'
@@ -224,7 +224,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
                       ))}
                     </div>
 
-                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                    <div className="mt-6 p-4 bg-blue-50 border border-blue-200 superellipse-xl">
                       <p className="text-sm text-blue-900 font-medium">💡 Garantie satisfaction</p>
                       <p className="text-xs text-blue-700 mt-1">
                         Vous pouvez annuler votre abonnement à tout moment, sans frais ni engagement.

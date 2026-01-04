@@ -95,7 +95,7 @@ const StatsBar = memo(function StatsBar({
   return (
     <div className="flex items-center gap-6 text-sm">
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm">
+        <div className="w-8 h-8 superellipse-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm">
           <Eye className="w-4 h-4" style={{ color: MATCHING_PRIMARY }} />
         </div>
         <div>
@@ -104,7 +104,7 @@ const StatsBar = memo(function StatsBar({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm">
+        <div className="w-8 h-8 superellipse-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm">
           <Heart className="w-4 h-4" style={{ color: MATCHING_PRIMARY }} />
         </div>
         <div>
@@ -113,7 +113,7 @@ const StatsBar = memo(function StatsBar({
         </div>
       </div>
       <div className="flex items-center gap-2">
-        <div className="w-8 h-8 rounded-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm">
+        <div className="w-8 h-8 superellipse-xl bg-white/80 backdrop-blur-sm flex items-center justify-center shadow-sm">
           <UserCheck className="w-4 h-4" style={{ color: SEMANTIC_SUCCESS }} />
         </div>
         <div>
@@ -143,7 +143,7 @@ const MobileBottomNav = memo(function MobileBottomNav({ unreadMessages }: { unre
           <span className="text-xs text-gray-500">Explorer</span>
         </Link>
         <Link href="/searcher/matching" className="flex flex-col items-center gap-1 px-4 py-2">
-          <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: MATCHING_GRADIENT }}>
+          <div className="w-10 h-10 superellipse-2xl flex items-center justify-center shadow-lg" style={{ background: MATCHING_GRADIENT }}>
             <Heart className="w-5 h-5 text-white" />
           </div>
         </Link>
@@ -187,7 +187,7 @@ const ProfileCard = memo(function ProfileCard({
       transition={{ duration: 0.3, type: 'spring', stiffness: 300, damping: 25 }}
       className="absolute w-full max-w-md"
     >
-      <Card className="overflow-hidden rounded-3xl shadow-2xl border-0 bg-white/95 backdrop-blur-xl">
+      <Card className="overflow-hidden superellipse-3xl shadow-2xl border-0 bg-white/95 backdrop-blur-xl">
         {/* Profile Image */}
         <div className="relative h-72 sm:h-80" style={{ background: CARD_BG_GRADIENT }}>
           {profile.avatar_url ? (
@@ -210,7 +210,7 @@ const ProfileCard = memo(function ProfileCard({
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: 'spring' }}
-            className="absolute top-4 right-4 px-4 py-2 rounded-2xl text-white font-bold shadow-lg flex items-center gap-2 backdrop-blur-sm"
+            className="absolute top-4 right-4 px-4 py-2 superellipse-2xl text-white font-bold shadow-lg flex items-center gap-2 backdrop-blur-sm"
             style={{ background: `${MATCHING_PRIMARY}ee` }}
           >
             <Sparkles className="w-4 h-4" />
@@ -251,7 +251,7 @@ const ProfileCard = memo(function ProfileCard({
               {profile.interests.map((interest, i) => (
                 <Badge
                   key={i}
-                  className="rounded-xl border-0 text-xs font-medium"
+                  className="superellipse-xl border-0 text-xs font-medium"
                   style={{
                     backgroundColor: `${MATCHING_PRIMARY}15`,
                     color: MATCHING_PRIMARY
@@ -267,7 +267,7 @@ const ProfileCard = memo(function ProfileCard({
           <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
             {profile.lifestyle.sleepSchedule === 'early' ? (
               <div
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium"
+                className="flex items-center gap-1 px-2.5 py-1.5 superellipse-xl text-xs font-medium"
                 style={{ backgroundColor: '#FEF3C7', color: '#D97706' }}
                 title="Lève-tôt"
               >
@@ -276,7 +276,7 @@ const ProfileCard = memo(function ProfileCard({
               </div>
             ) : (
               <div
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium"
+                className="flex items-center gap-1 px-2.5 py-1.5 superellipse-xl text-xs font-medium"
                 style={{ backgroundColor: '#E0E7FF', color: '#4F46E5' }}
                 title="Couche-tard"
               >
@@ -286,7 +286,7 @@ const ProfileCard = memo(function ProfileCard({
             )}
             {profile.lifestyle.noise === 'quiet' && (
               <div
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium"
+                className="flex items-center gap-1 px-2.5 py-1.5 superellipse-xl text-xs font-medium"
                 style={{ backgroundColor: '#D1FAE5', color: '#059669' }}
                 title="Calme"
               >
@@ -296,7 +296,7 @@ const ProfileCard = memo(function ProfileCard({
             )}
             {profile.lifestyle.noise === 'lively' && (
               <div
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium"
+                className="flex items-center gap-1 px-2.5 py-1.5 superellipse-xl text-xs font-medium"
                 style={{ backgroundColor: '#F3E8FF', color: '#7C3AED' }}
                 title="Festif"
               >
@@ -306,7 +306,7 @@ const ProfileCard = memo(function ProfileCard({
             )}
             {profile.lifestyle.pets && (
               <div
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium"
+                className="flex items-center gap-1 px-2.5 py-1.5 superellipse-xl text-xs font-medium"
                 style={{ backgroundColor: '#FFEDD5', color: '#EA580C' }}
                 title="A un animal"
               >
@@ -315,7 +315,7 @@ const ProfileCard = memo(function ProfileCard({
             )}
             {profile.lifestyle.smoking && (
               <div
-                className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl text-xs font-medium"
+                className="flex items-center gap-1 px-2.5 py-1.5 superellipse-xl text-xs font-medium"
                 style={{ backgroundColor: '#F3F4F6', color: '#6B7280' }}
                 title="Fumeur"
               >
@@ -335,12 +335,12 @@ const EmptyState = memo(function EmptyState({ router }: { router: ReturnType<typ
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
-      className="text-center p-8 bg-white/80 backdrop-blur-xl rounded-3xl shadow-lg"
+      className="text-center p-8 bg-white/80 backdrop-blur-xl superellipse-3xl shadow-lg"
     >
       <motion.div
         animate={{ rotate: [0, 10, -10, 0] }}
         transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-        className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-xl"
+        className="w-24 h-24 superellipse-3xl flex items-center justify-center mx-auto mb-6 shadow-xl"
         style={{ background: MATCHING_GRADIENT }}
       >
         <Sparkles className="w-12 h-12 text-white" />
@@ -354,7 +354,7 @@ const EmptyState = memo(function EmptyState({ router }: { router: ReturnType<typ
       <div className="flex flex-col sm:flex-row gap-3 justify-center">
         <Button
           onClick={() => router.push('/searcher/matching')}
-          className="rounded-xl text-white shadow-lg"
+          className="superellipse-xl text-white shadow-lg"
           style={{ background: MATCHING_GRADIENT }}
         >
           <Building2 className="w-4 h-4 mr-2" />
@@ -363,7 +363,7 @@ const EmptyState = memo(function EmptyState({ router }: { router: ReturnType<typ
         <Button
           onClick={() => router.push('/searcher/explore')}
           variant="outline"
-          className="rounded-xl border-gray-200"
+          className="superellipse-xl border-gray-200"
         >
           <Search className="w-4 h-4 mr-2" />
           Explorer
@@ -513,7 +513,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Link href="/searcher/matching">
-                  <Button variant="ghost" size="icon" className="rounded-xl hover:bg-amber-50">
+                  <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-amber-50">
                     <ArrowLeft className="w-5 h-5" />
                   </Button>
                 </Link>
@@ -532,7 +532,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="rounded-xl border-gray-200 text-gray-600 hover:bg-gray-50"
+                    className="superellipse-xl border-gray-200 text-gray-600 hover:bg-gray-50"
                   >
                     <Home className="w-4 h-4 mr-1.5" />
                     <span className="hidden sm:inline">Propriétés</span>
@@ -540,7 +540,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
                 </Link>
                 <Button
                   size="sm"
-                  className="rounded-xl text-white shadow-lg border-0"
+                  className="superellipse-xl text-white shadow-lg border-0"
                   style={{ background: MATCHING_GRADIENT }}
                 >
                   <Users className="w-4 h-4 mr-1.5" />
@@ -612,11 +612,11 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
         {currentProfile && (
           <motion.div
             variants={itemVariants}
-            className="mt-8 bg-white/60 backdrop-blur-xl rounded-2xl p-4 border border-white/50"
+            className="mt-8 bg-white/60 backdrop-blur-xl superellipse-2xl p-4 border border-white/50"
           >
             <div className="flex items-start gap-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0"
                 style={{ backgroundColor: `${MATCHING_PRIMARY}15` }}
               >
                 <TrendingUp className="w-5 h-5" style={{ color: MATCHING_PRIMARY }} />
@@ -640,12 +640,12 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className="fixed bottom-28 md:bottom-8 left-4 right-4 max-w-md mx-auto bg-white rounded-2xl shadow-2xl p-4 flex items-center gap-4 border border-amber-100 z-50"
+            className="fixed bottom-28 md:bottom-8 left-4 right-4 max-w-md mx-auto bg-white superellipse-2xl shadow-2xl p-4 flex items-center gap-4 border border-amber-100 z-50"
           >
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ duration: 0.5, repeat: 2 }}
-              className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-14 h-14 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{ background: MATCHING_GRADIENT }}
             >
               <Heart className="w-7 h-7 text-white" />
@@ -656,7 +656,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
             </div>
             <Button
               size="sm"
-              className="rounded-xl text-white shadow-lg"
+              className="superellipse-xl text-white shadow-lg"
               style={{ background: MATCHING_GRADIENT }}
             >
               <MessageCircle className="w-4 h-4 mr-1.5" />

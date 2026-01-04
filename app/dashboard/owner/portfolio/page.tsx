@@ -165,7 +165,7 @@ export default function PortfolioHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/properties')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
               style={{
                 background: ownerPalette.primary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
@@ -180,7 +180,7 @@ export default function PortfolioHubPage() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    className="w-11 h-11 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
                     <Building2 className="w-6 h-6 text-white" />
@@ -209,7 +209,7 @@ export default function PortfolioHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/applications')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
               style={{
                 background: ownerPalette.tertiary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.tertiary.shadow}`,
@@ -224,7 +224,7 @@ export default function PortfolioHubPage() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    className="w-11 h-11 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
                     <Users className="w-6 h-6 text-white" />
@@ -252,7 +252,7 @@ export default function PortfolioHubPage() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white"
               style={{
                 border: `1px solid ${ownerPalette.quaternary.border}`,
                 boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
@@ -260,7 +260,7 @@ export default function PortfolioHubPage() {
             >
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  className="w-11 h-11 superellipse-xl flex items-center justify-center"
                   style={{ background: ownerPalette.quaternary.main }}
                 >
                   <Percent className="w-6 h-6 text-white" />
@@ -316,7 +316,7 @@ export default function PortfolioHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/finances')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white"
               style={{
                 border: `1px solid ${semanticColors.success.border}`,
                 boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
@@ -324,7 +324,7 @@ export default function PortfolioHubPage() {
             >
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  className="w-11 h-11 superellipse-xl flex items-center justify-center"
                   style={{ background: semanticColors.success.gradient }}
                 >
                   <TrendingUp className="w-6 h-6 text-white" />
@@ -361,7 +361,7 @@ export default function PortfolioHubPage() {
             transition={{ delay: 0.2 }}
             className="md:col-span-2"
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" style={{ color: '#c2566b' }} />
@@ -383,7 +383,7 @@ export default function PortfolioHubPage() {
               {actions.length === 0 ? (
                 <div className="text-center py-8">
                   <div
-                    className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4"
+                    className="w-16 h-16 mx-auto superellipse-2xl flex items-center justify-center mb-4"
                     style={{ background: semanticColors.success.gradient }}
                   >
                     <CheckCircle className="w-8 h-8 text-white" />
@@ -403,7 +403,7 @@ export default function PortfolioHubPage() {
                         transition={{ delay: index * 0.05 }}
                         onClick={() => router.push(action.href)}
                         className={cn(
-                          'flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all',
+                          'flex items-center gap-4 p-4 superellipse-xl cursor-pointer transition-all',
                           'hover:shadow-md',
                           action.severity === 'critical'
                             ? 'bg-red-50 border border-red-200 hover:border-red-300'
@@ -413,7 +413,7 @@ export default function PortfolioHubPage() {
                         )}
                       >
                         <div
-                          className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                          className="w-10 h-10 superellipse-lg flex items-center justify-center flex-shrink-0"
                           style={{
                             background:
                               action.severity === 'critical'
@@ -466,7 +466,7 @@ export default function PortfolioHubPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6 h-full">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6 h-full">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                   <Home className="w-5 h-5" style={{ color: '#9c5698' }} />
@@ -487,7 +487,7 @@ export default function PortfolioHubPage() {
               {recentProperties.length === 0 ? (
                 <div className="text-center py-8">
                   <div
-                    className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4 opacity-50"
+                    className="w-16 h-16 mx-auto superellipse-2xl flex items-center justify-center mb-4 opacity-50"
                     style={{ background: ownerGradient }}
                   >
                     <Building2 className="w-8 h-8 text-white" />
@@ -511,10 +511,10 @@ export default function PortfolioHubPage() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.05 }}
                       onClick={() => router.push(`/properties/${property.id}`)}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-all"
+                      className="flex items-center gap-3 p-3 superellipse-xl bg-gray-50 hover:bg-gray-100 cursor-pointer transition-all"
                     >
                       {/* Property Image or Placeholder */}
-                      <div className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-gray-200">
+                      <div className="w-14 h-14 superellipse-lg overflow-hidden flex-shrink-0 bg-gray-200">
                         {property.mainImage ? (
                           <img
                             src={property.mainImage}
@@ -648,7 +648,7 @@ export default function PortfolioHubPage() {
           className="mt-8 mb-4"
         >
           <div
-            className="rounded-2xl p-5 bg-white border"
+            className="superellipse-2xl p-5 bg-white border"
             style={{ borderColor: ownerPalette.primary.border }}
           >
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">

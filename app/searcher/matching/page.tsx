@@ -230,14 +230,14 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                    className="w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </motion.button>
                 </Link>
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: MATCHING_GRADIENT }}
                   >
                     <Heart className="w-5 h-5 text-white" />
@@ -255,7 +255,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="relative w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100 cursor-pointer"
+                    className="relative w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100 cursor-pointer"
                   >
                     <MessageCircle className="w-5 h-5 text-gray-600" />
                     {unreadMessages > 0 && (
@@ -282,7 +282,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 <motion.button
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setActiveTab('properties')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                  className={`flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all ${
                     activeTab === 'properties'
                       ? 'text-white shadow-md'
                       : 'text-gray-600 bg-white border border-gray-100 hover:bg-amber-50'
@@ -295,7 +295,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 <Link href="/searcher/matching/people">
                   <motion.button
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium text-gray-600 bg-white border border-gray-100 hover:bg-amber-50 transition-all"
+                    className="flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium text-gray-600 bg-white border border-gray-100 hover:bg-amber-50 transition-all"
                   >
                     <Users className="w-4 h-4" />
                     Colocataires
@@ -308,10 +308,10 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 {statsCards.map((stat, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100"
+                    className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white shadow-sm border border-gray-100"
                   >
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center"
+                      className="w-7 h-7 superellipse-lg flex items-center justify-center"
                       style={{ backgroundColor: stat.bgColor }}
                     >
                       <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
@@ -339,10 +339,10 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
           {statsCards.map((stat, index) => (
             <div
               key={index}
-              className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white shadow-sm border border-gray-100 flex-shrink-0"
+              className="flex items-center gap-2 px-3 py-2 superellipse-xl bg-white shadow-sm border border-gray-100 flex-shrink-0"
             >
               <div
-                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                className="w-8 h-8 superellipse-lg flex items-center justify-center"
                 style={{ backgroundColor: stat.bgColor }}
               >
                 <stat.icon className="w-4 h-4" style={{ color: stat.color }} />
@@ -360,7 +360,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
             style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circles */}
@@ -377,7 +377,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
                 style={{ background: MATCHING_GRADIENT }}
               >
                 <Heart className="w-10 h-10 text-white" />
@@ -393,7 +393,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
+                    className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
                     style={{ background: MATCHING_GRADIENT }}
                   >
                     <Star className="w-4 h-4" />
@@ -404,7 +404,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="px-6 py-3 rounded-xl bg-white border border-gray-200 font-medium shadow-sm flex items-center gap-2 hover:bg-gray-50"
+                    className="px-6 py-3 superellipse-xl bg-white border border-gray-200 font-medium shadow-sm flex items-center gap-2 hover:bg-gray-50"
                   >
                     <Search className="w-4 h-4" />
                     Explorer
@@ -427,7 +427,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-gray-100 shadow-sm text-sm text-gray-600 hover:bg-amber-50"
+                className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white border border-gray-100 shadow-sm text-sm text-gray-600 hover:bg-amber-50"
               >
                 <Filter className="w-4 h-4" />
                 Filtrer
@@ -447,7 +447,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                   variants={itemVariants}
                 >
                   <div
-                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all group cursor-pointer"
+                    className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all group cursor-pointer"
                     onClick={() => router.push(`/properties/${match.property.id}`)}
                   >
                     {/* Image */}
@@ -470,7 +470,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
 
                       {/* Match Score Badge */}
                       <div
-                        className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-sm font-bold flex items-center gap-1 shadow-md"
+                        className="absolute top-3 right-3 px-2.5 py-1 superellipse-lg text-sm font-bold flex items-center gap-1 shadow-md"
                         style={{
                           backgroundColor: getScoreBg(match.compatibility_score),
                           color: getScoreColor(match.compatibility_score)
@@ -483,7 +483,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                       {/* Rank Badge for top 3 */}
                       {index < 3 && (
                         <div
-                          className="absolute top-3 left-3 w-7 h-7 rounded-lg flex items-center justify-center shadow-md"
+                          className="absolute top-3 left-3 w-7 h-7 superellipse-lg flex items-center justify-center shadow-md"
                           style={{ background: MATCHING_GRADIENT }}
                         >
                           <span className="font-bold text-white text-xs">#{index + 1}</span>
@@ -530,7 +530,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                             e.stopPropagation();
                             router.push(`/properties/${match.property.id}/apply`);
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-sm font-medium shadow-sm"
+                          className="flex items-center gap-1.5 px-3 py-1.5 superellipse-lg text-white text-sm font-medium shadow-sm"
                           style={{ background: MATCHING_GRADIENT }}
                         >
                           <Send className="w-3.5 h-3.5" />

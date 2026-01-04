@@ -94,6 +94,27 @@ All colors are defined as CSS variables in `app/globals.css`:
 - `--resident-*` (orange scale)
 - `--gradient-*` (gradient definitions)
 
+### Typography System
+Fonts are configured in `app/fonts.ts` using `next/font`:
+
+| Font | Usage | Tailwind Class |
+|------|-------|----------------|
+| **Inter** | Body text, UI elements | `font-sans` (default) |
+| **Nunito** | Headings, section titles | `font-heading` |
+| **Fredoka** | Brand wordmark "Izzico" | `font-brand` |
+
+```tsx
+// Usage examples
+<p className="font-sans">Regular body text (Inter)</p>
+<h1 className="font-heading">Section Title (Nunito)</h1>
+<span className="font-brand">Izzico</span>
+
+// CSS variables also available
+font-family: var(--font-body);    // Inter
+font-family: var(--font-heading); // Nunito
+font-family: var(--font-brand);   // Fredoka
+```
+
 ## Database Patterns
 
 ### Supabase Client Usage

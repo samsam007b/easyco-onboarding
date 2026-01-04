@@ -414,7 +414,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         type="button"
                         onClick={() => handleInputChange('property_type', type.value)}
                         className={cn(
-                          "flex items-center gap-3 p-4 rounded-xl border-2 transition-all",
+                          "flex items-center gap-3 p-4 superellipse-xl border-2 transition-all",
                           formData.property_type === type.value
                             ? "border-purple-500 bg-purple-50"
                             : "border-gray-200 hover:border-purple-300"
@@ -569,7 +569,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                 />
 
                 {/* Summary card */}
-                <div className="mt-4 p-4 rounded-xl bg-gray-50 border border-gray-200">
+                <div className="mt-4 p-4 superellipse-xl bg-gray-50 border border-gray-200">
                   <h4 className="font-medium text-gray-700 mb-2">{translations.form.monthlySummary[lang]}</h4>
                   <div className="flex justify-between text-sm">
                     <span className="text-gray-500">{translations.form.rentAndCharges[lang]}</span>
@@ -601,7 +601,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         type="button"
                         onClick={() => toggleAmenity(amenity.value)}
                         className={cn(
-                          "flex flex-col items-center gap-1.5 p-3 rounded-xl border-2 transition-all text-center",
+                          "flex flex-col items-center gap-1.5 p-3 superellipse-xl border-2 transition-all text-center",
                           selectedAmenities.includes(amenity.value)
                             ? "border-purple-500 bg-purple-50"
                             : "border-gray-200 hover:border-purple-300"
@@ -633,7 +633,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     {translations.form.houseRules[lang]}
                   </label>
                   <div className="space-y-2">
-                    <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
+                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
                       <input
                         type="checkbox"
                         checked={formData.pets_allowed}
@@ -643,7 +643,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                       <PawPrint className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-700">{translations.form.petsAllowed[lang]}</span>
                     </label>
-                    <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
+                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
                       <input
                         type="checkbox"
                         checked={formData.smoking_allowed}
@@ -653,7 +653,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                       <Cigarette className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-700">{translations.form.smokingAllowed[lang]}</span>
                     </label>
-                    <label className="flex items-center gap-3 p-3 rounded-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
+                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
                       <input
                         type="checkbox"
                         checked={formData.couples_allowed}

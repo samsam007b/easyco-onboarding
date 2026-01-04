@@ -367,7 +367,7 @@ export default function PropertiesManagement() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
               style={{
                 background: ownerPalette.primary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
@@ -380,7 +380,7 @@ export default function PropertiesManagement() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    className="w-11 h-11 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
                     <Building2 className="w-6 h-6 text-white" />
@@ -406,7 +406,7 @@ export default function PropertiesManagement() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
               style={{
                 background: ownerPalette.tertiary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.tertiary.shadow}`,
@@ -419,7 +419,7 @@ export default function PropertiesManagement() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-11 h-11 rounded-xl flex items-center justify-center"
+                    className="w-11 h-11 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
                     <Home className="w-6 h-6 text-white" />
@@ -448,7 +448,7 @@ export default function PropertiesManagement() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white"
               style={{
                 border: `1px solid ${ownerPalette.quaternary.border}`,
                 boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
@@ -456,7 +456,7 @@ export default function PropertiesManagement() {
             >
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  className="w-11 h-11 superellipse-xl flex items-center justify-center"
                   style={{ background: ownerPalette.quaternary.main }}
                 >
                   <Eye className="w-6 h-6 text-white" />
@@ -487,7 +487,7 @@ export default function PropertiesManagement() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white"
               style={{
                 border: `1px solid ${semanticColors.success.border}`,
                 boxShadow: `0 4px 16px rgba(0,0,0,0.06)`,
@@ -495,7 +495,7 @@ export default function PropertiesManagement() {
             >
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center"
+                  className="w-11 h-11 superellipse-xl flex items-center justify-center"
                   style={{ background: semanticColors.success.gradient }}
                 >
                   <TrendingUp className="w-6 h-6 text-white" />
@@ -530,7 +530,7 @@ export default function PropertiesManagement() {
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="mt-4 rounded-2xl p-4 flex items-center justify-between"
+              className="mt-4 superellipse-2xl p-4 flex items-center justify-between"
               style={{
                 backgroundColor: ownerPalette.secondary.light,
                 borderWidth: 1,
@@ -539,7 +539,7 @@ export default function PropertiesManagement() {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center"
                   style={{ backgroundColor: ownerPalette.secondary.main }}
                 >
                   <CheckSquare className="w-5 h-5 text-white" />
@@ -624,7 +624,7 @@ export default function PropertiesManagement() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative overflow-hidden bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
+              className="relative overflow-hidden bg-white superellipse-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
             >
               {/* Decorative top accent */}
               <div
@@ -677,7 +677,7 @@ export default function PropertiesManagement() {
                   >
                     <Button
                       variant="outline"
-                      className="w-full rounded-xl hover:border-gray-400"
+                      className="w-full superellipse-xl hover:border-gray-400"
                       onClick={() =>
                         setDeleteModal({ open: false, propertyId: null, propertyTitle: '' })
                       }
@@ -691,7 +691,7 @@ export default function PropertiesManagement() {
                     className="flex-1"
                   >
                     <Button
-                      className="w-full rounded-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-md"
+                      className="w-full superellipse-xl bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white shadow-md"
                       onClick={confirmDelete}
                     >
                       {t?.deleteModal?.deleteButton?.[language] || 'Supprimer'}

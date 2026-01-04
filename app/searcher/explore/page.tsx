@@ -207,14 +207,14 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                    className="w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </motion.button>
                 </Link>
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Search className="w-5 h-5 text-white" />
@@ -233,7 +233,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="relative w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100 cursor-pointer"
+                    className="relative w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100 cursor-pointer"
                   >
                     <MessageCircle className="w-5 h-5 text-gray-600" />
                     {quickStats.unreadMessages > 0 && (
@@ -255,7 +255,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                     className="relative cursor-pointer"
                   >
                     <div
-                      className="w-10 h-10 rounded-xl overflow-hidden shadow-sm"
+                      className="w-10 h-10 superellipse-xl overflow-hidden shadow-sm"
                       style={{ border: `2px solid ${SEARCHER_PRIMARY}` }}
                     >
                       {userData.avatar_url ? (
@@ -302,10 +302,10 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                     <motion.div
                       key={index}
                       whileHover={{ scale: 1.02 }}
-                      className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100 cursor-pointer"
+                      className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white shadow-sm border border-gray-100 cursor-pointer"
                     >
                       <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center"
+                        className="w-7 h-7 superellipse-lg flex items-center justify-center"
                         style={{ backgroundColor: stat.bgColor }}
                       >
                         <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
@@ -331,7 +331,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium text-gray-600 hover:bg-amber-50 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 superellipse-xl text-sm font-medium text-gray-600 hover:bg-amber-50 transition-colors"
                   >
                     <Bell className="w-4 h-4" />
                     Alertes
@@ -341,7 +341,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium text-white"
+                    className="flex items-center gap-1.5 px-3 py-1.5 superellipse-xl text-sm font-medium text-white"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Heart className="w-4 h-4" />

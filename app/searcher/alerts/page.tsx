@@ -236,14 +236,14 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                    className="w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </motion.button>
                 </Link>
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: ALERTS_GRADIENT }}
                   >
                     <Bell className="w-5 h-5 text-white" />
@@ -260,7 +260,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/alerts/new')}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium shadow-md"
+                className="flex items-center gap-2 px-4 py-2 superellipse-xl text-white text-sm font-medium shadow-md"
                 style={{ background: ALERTS_GRADIENT }}
               >
                 <Plus className="w-4 h-4" />
@@ -281,10 +281,10 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
               {statsCards.map((stat, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100"
+                  className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white shadow-sm border border-gray-100"
                 >
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    className="w-7 h-7 superellipse-lg flex items-center justify-center"
                     style={{ backgroundColor: stat.bgColor }}
                   >
                     <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
@@ -306,7 +306,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
             style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circles */}
@@ -319,7 +319,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
                 style={{ background: ALERTS_GRADIENT }}
               >
                 <BellRing className="w-10 h-10 text-white" />
@@ -334,7 +334,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/alerts/new')}
-                className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
+                className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
                 style={{ background: ALERTS_GRADIENT }}
               >
                 <Sparkles className="w-4 h-4" />
@@ -358,14 +358,14 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                   exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                 >
                   <div
-                    className={`bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all ${!alert.is_active ? 'opacity-60' : ''}`}
+                    className={`bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md transition-all ${!alert.is_active ? 'opacity-60' : ''}`}
                   >
                     <div className="p-4">
                       <div className="flex items-start justify-between gap-4">
                         {/* Left: Alert Info */}
                         <div className="flex items-start gap-3 flex-1">
                           <div
-                            className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                            className="w-11 h-11 superellipse-xl flex items-center justify-center flex-shrink-0"
                             style={{ background: alert.is_active ? CARD_BG_GRADIENT : '#F3F4F6' }}
                           >
                             {alert.is_active ? (
@@ -433,7 +433,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                               onClick={() => router.push(`/searcher/alerts/${alert.id}/edit`)}
-                              className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
+                              className="w-8 h-8 superellipse-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
                             >
                               <Edit2 className="w-3.5 h-3.5 text-gray-500" />
                             </motion.button>
@@ -441,7 +441,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                               whileHover={{ scale: 1.1 }}
                               whileTap={{ scale: 0.9 }}
                               onClick={() => handleDeleteAlert(alert.id)}
-                              className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors"
+                              className="w-8 h-8 superellipse-lg bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors"
                             >
                               <Trash2 className="w-3.5 h-3.5 text-red-500" />
                             </motion.button>

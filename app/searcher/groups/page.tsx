@@ -211,14 +211,14 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                    className="w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </motion.button>
                 </Link>
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: GROUPS_GRADIENT }}
                   >
                     <UsersRound className="w-5 h-5 text-white" />
@@ -235,7 +235,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/groups/create')}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium shadow-md"
+                className="flex items-center gap-2 px-4 py-2 superellipse-xl text-white text-sm font-medium shadow-md"
                 style={{ background: GROUPS_GRADIENT }}
               >
                 <Plus className="w-4 h-4" />
@@ -256,10 +256,10 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
               {statsCards.map((stat, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100"
+                  className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white shadow-sm border border-gray-100"
                 >
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    className="w-7 h-7 superellipse-lg flex items-center justify-center"
                     style={{ backgroundColor: stat.bgColor }}
                   >
                     <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
@@ -281,7 +281,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
             style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circles */}
@@ -294,7 +294,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
                 style={{ background: GROUPS_GRADIENT }}
               >
                 <UserPlus className="w-10 h-10 text-white" />
@@ -309,7 +309,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/groups/create')}
-                className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
+                className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
                 style={{ background: GROUPS_GRADIENT }}
               >
                 <Sparkles className="w-4 h-4" />
@@ -335,7 +335,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                   <motion.div
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all cursor-pointer"
+                    className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all cursor-pointer"
                     onClick={() => router.push(`/searcher/groups/${group.id}`)}
                   >
                     <div className="p-4">
@@ -343,7 +343,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                         {/* Left: Group Info */}
                         <div className="flex items-start gap-3 flex-1">
                           <div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 shadow-md"
+                            className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0 shadow-md"
                             style={{ background: GROUPS_GRADIENT }}
                           >
                             <Users className="w-6 h-6 text-white" />
@@ -437,7 +437,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                                 e.stopPropagation();
                                 router.push(`/messages?group=${group.id}`);
                               }}
-                              className="w-9 h-9 rounded-xl bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
+                              className="w-9 h-9 superellipse-xl bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
                             >
                               <MessageCircle className="w-4 h-4" style={{ color: GROUPS_PRIMARY }} />
                             </motion.button>
@@ -449,7 +449,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                                   e.stopPropagation();
                                   router.push(`/searcher/groups/${group.id}/settings`);
                                 }}
-                                className="w-9 h-9 rounded-xl bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                className="w-9 h-9 superellipse-xl bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
                               >
                                 <Settings className="w-4 h-4 text-gray-500" />
                               </motion.button>

@@ -7,6 +7,17 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      // ============================================
+      // IZZICO TYPOGRAPHY SYSTEM
+      // ============================================
+      fontFamily: {
+        // Primary sans-serif (Inter) - body text, UI
+        sans: ['var(--font-inter)', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        // Headings (Nunito) - titles, section headers
+        heading: ['var(--font-nunito)', 'Nunito', 'system-ui', 'sans-serif'],
+        // Brand wordmark (Fredoka) - "Izzico" text only
+        brand: ['var(--font-fredoka)', 'Fredoka', 'system-ui', 'sans-serif'],
+      },
       colors: {
         // ============================================
         // SEARCHER COLOR SYSTEM - Yellow/Gold/Amber

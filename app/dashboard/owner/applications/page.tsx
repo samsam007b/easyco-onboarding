@@ -399,7 +399,7 @@ export default function OwnerApplicationsPage() {
             transition={{ delay: 0.15 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+            className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
             style={{ background: ownerPalette.primary.main }}
           >
             {/* Decorative circle */}
@@ -410,7 +410,7 @@ export default function OwnerApplicationsPage() {
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: 'rgba(255,255,255,0.2)' }}
                 >
                   <FileText className="w-6 h-6 text-white" />
@@ -440,7 +440,7 @@ export default function OwnerApplicationsPage() {
             transition={{ delay: 0.2 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+            className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
             style={{ background: ownerPalette.tertiary.main }}
           >
             {/* Decorative circle */}
@@ -451,7 +451,7 @@ export default function OwnerApplicationsPage() {
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: 'rgba(255,255,255,0.2)' }}
                 >
                   <Clock className="w-6 h-6 text-white" />
@@ -480,7 +480,7 @@ export default function OwnerApplicationsPage() {
             transition={{ delay: 0.25 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white border"
+            className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white border"
             style={{ borderColor: semanticColors.success.border }}
           >
             {/* Decorative circle */}
@@ -491,7 +491,7 @@ export default function OwnerApplicationsPage() {
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: semanticColors.success.bg }}
                 >
                   <UserCheck className="w-6 h-6" style={{ color: semanticColors.success.text }} />
@@ -525,7 +525,7 @@ export default function OwnerApplicationsPage() {
             transition={{ delay: 0.3 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white border"
+            className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white border"
             style={{ borderColor: semanticColors.danger.border }}
           >
             {/* Decorative circle */}
@@ -536,7 +536,7 @@ export default function OwnerApplicationsPage() {
             <div className="relative z-10">
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ background: semanticColors.danger.bg }}
                 >
                   <UserX className="w-6 h-6" style={{ color: semanticColors.danger.text }} />
@@ -569,7 +569,7 @@ export default function OwnerApplicationsPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mt-6 bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 p-4"
+          className="mt-6 bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 p-4"
         >
           <div className="flex flex-col lg:flex-row gap-4">
             {/* Search Input */}
@@ -580,7 +580,7 @@ export default function OwnerApplicationsPage() {
                 placeholder={t?.filters?.searchPlaceholder?.[language] || 'Search for an applicant...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 rounded-xl border-gray-200"
+                className="pl-10 superellipse-xl border-gray-200"
                 aria-label={t?.filters?.searchAriaLabel?.[language] || 'Search applicant by name, property or profession'}
               />
             </div>
@@ -591,7 +591,7 @@ export default function OwnerApplicationsPage() {
                 <Button
                   variant="outline"
                   className={cn(
-                    'rounded-xl justify-between min-w-[140px]',
+                    'superellipse-xl justify-between min-w-[140px]',
                     filterType !== 'all' && 'border-purple-300 bg-purple-50'
                   )}
                 >
@@ -626,7 +626,7 @@ export default function OwnerApplicationsPage() {
                 <Button
                   variant="outline"
                   className={cn(
-                    'rounded-xl justify-between min-w-[140px]',
+                    'superellipse-xl justify-between min-w-[140px]',
                     filterStatus !== 'all' && 'border-purple-300 bg-purple-50'
                   )}
                 >
@@ -660,7 +660,7 @@ export default function OwnerApplicationsPage() {
                   <Button
                     variant="outline"
                     className={cn(
-                      'rounded-xl justify-between min-w-[160px]',
+                      'superellipse-xl justify-between min-w-[160px]',
                       filterProperty !== 'all' && 'border-purple-300 bg-purple-50'
                     )}
                   >
@@ -704,7 +704,7 @@ export default function OwnerApplicationsPage() {
                   setFilterProperty('all');
                   setSearchQuery('');
                 }}
-                className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-xl"
+                className="text-purple-600 hover:text-purple-700 hover:bg-purple-50 superellipse-xl"
               >
                 {t?.filters?.reset?.[language] || 'Reset'}
               </Button>
@@ -752,7 +752,7 @@ export default function OwnerApplicationsPage() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative overflow-hidden bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
+              className="relative overflow-hidden bg-white superellipse-3xl shadow-2xl p-8 max-w-md w-full border border-gray-200"
             >
               {/* Decorative top accent */}
               <div
@@ -835,7 +835,7 @@ export default function OwnerApplicationsPage() {
                       value={rejectReason}
                       onChange={(e) => setRejectReason(e.target.value)}
                       placeholder={t?.modal?.rejectReasonPlaceholder?.[language] || 'Expliquez pourquoi vous rejetez cette candidature...'}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
+                      className="w-full px-4 py-3 superellipse-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent resize-none"
                       rows={4}
                       disabled={processingAction}
                     />
@@ -853,7 +853,7 @@ export default function OwnerApplicationsPage() {
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                     <Button
                       variant="outline"
-                      className="w-full rounded-xl"
+                      className="w-full superellipse-xl"
                       onClick={handleCloseModal}
                       disabled={processingAction}
                     >
@@ -863,7 +863,7 @@ export default function OwnerApplicationsPage() {
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                     <Button
                       className={cn(
-                        'w-full rounded-xl text-white shadow-md',
+                        'w-full superellipse-xl text-white shadow-md',
                         actionModal.action === 'approve'
                           ? 'bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600'
                           : 'bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600'

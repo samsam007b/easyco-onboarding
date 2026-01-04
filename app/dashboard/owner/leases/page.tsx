@@ -624,7 +624,7 @@ export default function LeasesPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
+                className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-3xl p-12 text-center border border-gray-200"
               >
                 <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10" style={{ background: ownerGradient }} />
                 <div className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full opacity-10" style={{ background: ownerGradient }} />
@@ -633,11 +633,11 @@ export default function LeasesPage() {
                   <motion.div
                     animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute inset-0 rounded-2xl blur-lg"
+                    className="absolute inset-0 superellipse-2xl blur-lg"
                     style={{ background: ownerGradient }}
                   />
                   <div
-                    className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                    className="relative w-20 h-20 superellipse-2xl flex items-center justify-center shadow-lg"
                     style={{ background: ownerGradient }}
                   >
                     <FileText className="w-10 h-10 text-white" />
@@ -685,7 +685,7 @@ export default function LeasesPage() {
                       animate={{ opacity: 1, y: 0 }}
                       whileHover={{ scale: 1.01, y: -2 }}
                       transition={{ delay: 0.05 + index * 0.02 }}
-                      className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
+                      className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
                       style={{
                         borderLeftWidth: '4px',
                         borderLeftColor: statusConfig.color,
@@ -714,11 +714,11 @@ export default function LeasesPage() {
                                 <img
                                   src={lease.tenant_photo}
                                   alt={lease.tenant_name}
-                                  className="w-14 h-14 rounded-xl object-cover shadow-sm"
+                                  className="w-14 h-14 superellipse-xl object-cover shadow-sm"
                                 />
                               ) : (
                                 <div
-                                  className="w-14 h-14 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-sm"
+                                  className="w-14 h-14 superellipse-xl flex items-center justify-center text-white font-bold text-lg shadow-sm"
                                   style={{ background: ownerGradient }}
                                 >
                                   {getInitials(lease.tenant_name)}
@@ -802,7 +802,7 @@ export default function LeasesPage() {
                           {lease.status === 'ending_soon' && (
                             <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1">
                               <Button
-                                className="w-full rounded-xl text-white border-0 shadow-md transition-all"
+                                className="w-full superellipse-xl text-white border-0 shadow-md transition-all"
                                 style={{
                                   background: ownerGradient,
                                   boxShadow: '0 4px 12px rgba(156, 86, 152, 0.3)'
@@ -823,7 +823,7 @@ export default function LeasesPage() {
                           <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} className="flex-1">
                             <Button
                               variant="outline"
-                              className="w-full rounded-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
+                              className="w-full superellipse-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleDownloadContract(lease);

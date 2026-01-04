@@ -703,7 +703,7 @@ export default function ProfilePage() {
 
         {/* Tabs Navigation */}
         <div className="flex justify-center mb-8">
-          <div className="inline-flex bg-white rounded-2xl p-1 shadow-lg border border-gray-200">
+          <div className="inline-flex bg-white superellipse-2xl p-1 shadow-lg border border-gray-200">
             {tabs.map((tab) => {
               const Icon = tab.icon
               const isActive = activeTab === tab.id
@@ -711,7 +711,7 @@ export default function ProfilePage() {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id)}
-                  className={`relative px-6 py-3 rounded-xl font-medium transition-all ${
+                  className={`relative px-6 py-3 superellipse-xl font-medium transition-all ${
                     isActive
                       ? `${colors.text} bg-gradient-to-r ${colors.bg}`
                       : 'text-gray-600 hover:text-gray-900'
@@ -724,7 +724,7 @@ export default function ProfilePage() {
                   {isActive && (
                     <motion.div
                       layoutId="activeTab"
-                      className={`absolute inset-0 bg-gradient-to-r ${colors.bg} rounded-xl -z-10`}
+                      className={`absolute inset-0 bg-gradient-to-r ${colors.bg} superellipse-xl -z-10`}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
                     />
                   )}
@@ -785,7 +785,7 @@ export default function ProfilePage() {
                           </Button>
                         </div>
                       ) : (
-                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-2xl">
+                        <div className="flex items-center justify-between p-4 bg-gray-50 superellipse-2xl"
                           <span className="text-gray-900">{userData.full_name || t('profile.notSet')}</span>
                           <Button
                             onClick={() => setIsEditingName(true)}

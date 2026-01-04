@@ -127,7 +127,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className={`relative rounded-lg border-2 ${colors.border} bg-gradient-to-r ${colors.bg} p-4 shadow-sm mb-4`}
+          className={`relative superellipse-lg border-2 ${colors.border} bg-gradient-to-r ${colors.bg} p-4 shadow-sm mb-4`}
         >
           <button
             onClick={() => setDismissed(true)}
@@ -170,7 +170,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        className={`relative rounded-2xl border-2 ${colors.border} bg-gradient-to-r ${colors.bg} p-6 shadow-lg mb-6`}
+        className={`relative superellipse-2xl border-2 ${colors.border} bg-gradient-to-r ${colors.bg} p-6 shadow-lg mb-6`}
       >
         <button
           onClick={() => setDismissed(true)}
@@ -236,7 +236,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className={`mt-4 p-3 rounded-lg ${
+                className={`mt-4 p-3 superellipse-lg ${
                   isCritical ? 'bg-red-100 border border-red-200' : 'bg-yellow-100 border border-yellow-200'
                 }`}
               >
@@ -253,7 +253,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
           {/* Right: Pricing & CTA */}
           <div className="flex flex-col justify-between">
             <div>
-              <div className="bg-white rounded-xl p-4 border border-gray-200 shadow-sm mb-4">
+              <div className="bg-white superellipse-xl p-4 border border-gray-200 shadow-sm mb-4">
                 <div className="flex items-baseline gap-1 mb-1">
                   <span className="text-3xl font-bold text-gray-900">{monthlyPrice}€</span>
                   <span className="text-gray-600">/mois</span>
@@ -275,7 +275,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
 
             <button
               onClick={() => (window.location.href = '/dashboard/subscription')}
-              className={`mt-4 w-full py-3 px-4 rounded-lg font-semibold text-white shadow-md hover:shadow-lg transition-all ${
+              className={`mt-4 w-full py-3 px-4 superellipse-lg font-semibold text-white shadow-md hover:shadow-lg transition-all ${
                 status.user_type === 'owner'
                   ? 'bg-purple-600 hover:bg-purple-700'
                   : 'bg-orange-600 hover:bg-orange-700'

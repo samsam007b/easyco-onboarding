@@ -97,10 +97,10 @@ export function ConversionModal({ isOpen, onClose, type, onSignup }: ConversionM
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px] rounded-3xl">
+      <DialogContent className="sm:max-w-[500px] superellipse-3xl">
         <DialogHeader className="space-y-4">
           <div className="flex justify-center">
-            <div className={`p-4 rounded-2xl ${config.iconBg}`}>
+            <div className={`p-4 superellipse-2xl ${config.iconBg}`}>
               <Icon className={`w-12 h-12 ${config.iconColor}`} />
             </div>
           </div>
@@ -132,7 +132,7 @@ export function ConversionModal({ isOpen, onClose, type, onSignup }: ConversionM
         <div className="space-y-3">
           <Button
             onClick={handleSignup}
-            className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-orange-600 hover:to-orange-500 text-white rounded-2xl h-12 text-base font-semibold shadow-lg shadow-orange-500/30"
+            className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-orange-600 hover:to-orange-500 text-white superellipse-2xl h-12 text-base font-semibold shadow-lg shadow-orange-500/30"
           >
             {config.ctaText}
             <ArrowRight className="ml-2 w-5 h-5" />
@@ -141,7 +141,7 @@ export function ConversionModal({ isOpen, onClose, type, onSignup }: ConversionM
           <Button
             onClick={handleSecondary}
             variant="ghost"
-            className="w-full rounded-2xl h-11 text-gray-600 hover:bg-gray-100"
+            className="w-full superellipse-2xl h-11 text-gray-600 hover:bg-gray-100"
           >
             {config.ctaSecondary}
           </Button>

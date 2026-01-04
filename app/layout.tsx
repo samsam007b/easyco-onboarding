@@ -1,6 +1,7 @@
 import "./globals.css"
 import type { Metadata } from "next"
 import { Toaster } from 'sonner'
+import { inter, nunito, fredoka } from './fonts'
 import { ClientProviders } from '@/components/ClientProviders'
 import dynamic from 'next/dynamic'
 import SkipLink from '@/components/accessibility/SkipLink'
@@ -147,7 +148,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrganizationStructuredData />
         <WebsiteStructuredData />
       </head>
-      <body className="min-h-screen">
+      <body className={`${inter.variable} ${nunito.variable} ${fredoka.variable} min-h-screen font-sans`}>
         <SkipLink />
         <Analytics />
         <WebVitalsReporter />

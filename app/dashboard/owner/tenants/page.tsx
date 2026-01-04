@@ -401,13 +401,13 @@ export default function TenantsPage() {
             transition={{ delay: 0.1 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden rounded-2xl p-5 text-white cursor-pointer"
+            className="relative overflow-hidden superellipse-2xl p-5 text-white cursor-pointer"
             style={{ backgroundColor: ownerPalette.primary.main }}
           >
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full" />
             <div className="relative">
               <div className="flex items-center justify-between mb-3">
-                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                <div className="w-12 h-12 superellipse-xl bg-white/20 flex items-center justify-center">
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-xs font-medium bg-white/20 px-2 py-1 rounded-full">
@@ -430,13 +430,13 @@ export default function TenantsPage() {
             transition={{ delay: 0.15 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden rounded-2xl p-5 text-white cursor-pointer"
+            className="relative overflow-hidden superellipse-2xl p-5 text-white cursor-pointer"
             style={{ backgroundColor: ownerPalette.tertiary.main }}
           >
             <div className="absolute -top-8 -right-8 w-32 h-32 bg-white/10 rounded-full" />
             <div className="relative">
               <div className="flex items-center justify-between mb-3">
-                <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center">
+                <div className="w-12 h-12 superellipse-xl bg-white/20 flex items-center justify-center">
                   <UserCheck className="w-6 h-6 text-white" />
                 </div>
                 <span className="text-xs font-medium bg-white/20 px-2 py-1 rounded-full">
@@ -459,7 +459,7 @@ export default function TenantsPage() {
             transition={{ delay: 0.2 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden bg-white rounded-2xl p-5 border border-gray-100 cursor-pointer"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5 border border-gray-100 cursor-pointer"
             style={{ boxShadow: '0 4px 14px rgba(156, 86, 152, 0.08)' }}
           >
             <div
@@ -469,7 +469,7 @@ export default function TenantsPage() {
             <div className="relative">
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ backgroundColor: semanticColors.info.bg }}
                 >
                   <UserPlus className="w-6 h-6" style={{ color: semanticColors.info.text }} />
@@ -497,7 +497,7 @@ export default function TenantsPage() {
             transition={{ delay: 0.25 }}
             whileHover={{ scale: 1.02, y: -4 }}
             whileTap={{ scale: 0.98 }}
-            className="relative overflow-hidden bg-white rounded-2xl p-5 border border-gray-100 cursor-pointer"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5 border border-gray-100 cursor-pointer"
             style={{ boxShadow: '0 4px 14px rgba(156, 86, 152, 0.08)' }}
           >
             <div
@@ -507,7 +507,7 @@ export default function TenantsPage() {
             <div className="relative">
               <div className="flex items-center justify-between mb-3">
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center"
                   style={{ backgroundColor: semanticColors.warning.bg }}
                 >
                   <Clock className="w-6 h-6" style={{ color: semanticColors.warning.text }} />
@@ -569,7 +569,7 @@ export default function TenantsPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-4 mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-4 mb-6"
         >
           <div className="flex flex-col sm:flex-row gap-4">
             {/* Search */}
@@ -580,7 +580,7 @@ export default function TenantsPage() {
                 placeholder={t?.search?.placeholder?.[language] || 'Search for a tenant...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all"
+                className="w-full pl-12 pr-4 py-3 superellipse-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all"
                 aria-label={t?.search?.ariaLabel?.[language] || 'Search for a tenant by name, occupation or property'}
               />
             </div>
@@ -590,7 +590,7 @@ export default function TenantsPage() {
               <select
                 value={filterProperty}
                 onChange={(e) => setFilterProperty(e.target.value)}
-                className="appearance-none pl-4 pr-10 py-3 rounded-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all cursor-pointer min-w-[200px]"
+                className="appearance-none pl-4 pr-10 py-3 superellipse-xl border border-gray-200 bg-white/80 focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-400 transition-all cursor-pointer min-w-[200px]"
                 aria-label={t?.filter?.ariaLabel?.[language] || 'Filter by property'}
               >
                 <option value="all">{t?.filter?.allProperties?.[language] || 'All properties'}</option>
@@ -613,7 +613,7 @@ export default function TenantsPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
+              className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-3xl p-12 text-center border border-gray-200"
             >
               <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full opacity-10"
                    style={{ background: 'linear-gradient(135deg, #9c5698 0%, #c2566b 100%)' }} />
@@ -624,11 +624,11 @@ export default function TenantsPage() {
                 <motion.div
                   animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
                   transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute inset-0 rounded-2xl blur-lg"
+                  className="absolute inset-0 superellipse-2xl blur-lg"
                   style={{ background: 'linear-gradient(135deg, #9c5698 0%, #c2566b 100%)' }}
                 />
                 <div
-                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                  className="relative w-20 h-20 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{ background: 'linear-gradient(135deg, #9c5698 0%, #c2566b 100%)' }}
                 >
                   <Users className="w-10 h-10 text-white" />

@@ -211,14 +211,14 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                    className="w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </motion.button>
                 </Link>
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Bookmark className="w-5 h-5 text-white" />
@@ -236,7 +236,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                   <motion.div
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="relative w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100 cursor-pointer"
+                    className="relative w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100 cursor-pointer"
                   >
                     <MessageCircle className="w-5 h-5 text-gray-600" />
                     {unreadMessages > 0 && (
@@ -267,10 +267,10 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 {statsCards.map((stat, index) => (
                   <div
                     key={index}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100"
+                    className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white shadow-sm border border-gray-100"
                   >
                     <div
-                      className="w-7 h-7 rounded-lg flex items-center justify-center"
+                      className="w-7 h-7 superellipse-lg flex items-center justify-center"
                       style={{ backgroundColor: stat.bgColor }}
                     >
                       <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
@@ -288,7 +288,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-sm font-medium text-white"
+                  className="flex items-center gap-1.5 px-3 py-1.5 superellipse-xl text-sm font-medium text-white"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Search className="w-4 h-4" />
@@ -306,7 +306,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
             style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circles */}
@@ -323,7 +323,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
                 style={{ background: SEARCHER_GRADIENT }}
               >
                 <Bookmark className="w-10 h-10 text-white" />
@@ -338,7 +338,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
+                  className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Sparkles className="w-4 h-4" />
@@ -363,7 +363,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                   exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
                 >
                   <div
-                    className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all group cursor-pointer"
+                    className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all group cursor-pointer"
                     onClick={() => router.push(`/properties/${favorite.property.id}`)}
                   >
                     {/* Image */}
@@ -393,7 +393,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                           handleRemoveFavorite(favorite.id);
                         }}
                         disabled={removing === favorite.id}
-                        className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-md hover:bg-red-50 transition-colors"
+                        className="absolute top-3 right-3 w-9 h-9 bg-white/90 backdrop-blur-sm superellipse-xl flex items-center justify-center shadow-md hover:bg-red-50 transition-colors"
                       >
                         {removing === favorite.id ? (
                           <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin" />
@@ -403,7 +403,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                       </motion.button>
 
                       {/* Property Type Badge */}
-                      <div className="absolute bottom-3 left-3 px-2 py-1 rounded-lg bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-700">
+                      <div className="absolute bottom-3 left-3 px-2 py-1 superellipse-lg bg-white/90 backdrop-blur-sm text-xs font-medium text-gray-700">
                         {favorite.property.property_type === 'shared' ? 'Colocation' : 'Appartement'}
                       </div>
                     </div>
@@ -452,7 +452,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                             e.stopPropagation();
                             router.push(`/properties/${favorite.property.id}/apply`);
                           }}
-                          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white text-sm font-medium shadow-sm"
+                          className="flex items-center gap-1.5 px-3 py-1.5 superellipse-lg text-white text-sm font-medium shadow-sm"
                           style={{ background: SEARCHER_GRADIENT }}
                         >
                           <Send className="w-3.5 h-3.5" />

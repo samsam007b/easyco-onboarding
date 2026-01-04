@@ -102,13 +102,13 @@ export default function SearcherMapPage() {
       >
         <div className="flex items-center gap-3">
           <Link href="/searcher">
-            <Button variant="ghost" size="icon" className="rounded-xl">
+            <Button variant="ghost" size="icon" className="superellipse-xl">
               <ArrowLeft className="w-5 h-5" />
             </Button>
           </Link>
           <div className="flex items-center gap-2">
             <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+              className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
               style={{ background: SEARCHER_GRADIENT }}
             >
               <MapIcon className="w-5 h-5 text-white" />
@@ -121,12 +121,12 @@ export default function SearcherMapPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="rounded-xl">
+          <Button variant="outline" size="sm" className="superellipse-xl">
             <Filter className="w-4 h-4 mr-2" />
             Filtrer
           </Button>
           <Link href="/searcher/explore">
-            <Button variant="outline" size="sm" className="rounded-xl">
+            <Button variant="outline" size="sm" className="superellipse-xl">
               <List className="w-4 h-4 mr-2" />
               Liste
             </Button>
@@ -139,7 +139,7 @@ export default function SearcherMapPage() {
         {/* Sidebar Toggle */}
         <button
           onClick={() => setShowSidebar(!showSidebar)}
-          className="absolute top-4 left-4 z-10 w-10 h-10 bg-white rounded-xl shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
+          className="absolute top-4 left-4 z-10 w-10 h-10 bg-white superellipse-xl shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors"
         >
           {showSidebar ? <ChevronLeft className="w-5 h-5" /> : <ChevronRight className="w-5 h-5" />}
         </button>
@@ -157,7 +157,7 @@ export default function SearcherMapPage() {
                 <motion.div
                   key={property.id}
                   whileHover={{ scale: 1.02 }}
-                  className={`p-3 rounded-xl border cursor-pointer transition-all ${
+                  className={`p-3 superellipse-xl border cursor-pointer transition-all ${
                     selectedProperty?.id === property.id
                       ? 'border-amber-400 bg-amber-50'
                       : 'border-gray-200 hover:border-amber-200'
@@ -165,7 +165,7 @@ export default function SearcherMapPage() {
                   onClick={() => setSelectedProperty(property)}
                 >
                   <div className="flex gap-3">
-                    <div className="w-16 h-16 rounded-lg bg-gray-100 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                    <div className="w-16 h-16 superellipse-lg bg-gray-100 flex-shrink-0 flex items-center justify-center overflow-hidden">
                       {property.main_image ? (
                         <img
                           src={property.main_image}

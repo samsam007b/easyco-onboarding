@@ -350,7 +350,7 @@ const SearcherHub = memo(function SearcherHub() {
         <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
           {/* Left: Property Card (or Search CTA for Searcher) */}
           <div
-            className="relative overflow-hidden rounded-3xl p-6"
+            className="relative overflow-hidden superellipse-3xl p-6"
             style={{ background: SEARCHER_GRADIENT }}
           >
             {/* Decorative circles */}
@@ -360,7 +360,7 @@ const SearcherHub = memo(function SearcherHub() {
             <div className="relative z-10">
               <motion.div
                 whileHover={{ rotate: 5 }}
-                className="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4"
+                className="w-12 h-12 superellipse-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center mb-4"
               >
                 <Search className="w-6 h-6 text-white" />
               </motion.div>
@@ -373,7 +373,7 @@ const SearcherHub = memo(function SearcherHub() {
               </p>
 
               <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-xl px-3 py-2">
+                <div className="flex items-center gap-2 bg-white/20 backdrop-blur-sm superellipse-xl px-3 py-2">
                   <MapPin className="w-4 h-4 text-white" />
                   <span className="text-white text-sm font-medium">Belgique</span>
                 </div>
@@ -400,7 +400,7 @@ const SearcherHub = memo(function SearcherHub() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-4 w-full bg-white text-amber-600 font-semibold px-4 py-3 rounded-xl shadow-lg flex items-center justify-center gap-2"
+                  className="mt-4 w-full bg-white text-amber-600 font-semibold px-4 py-3 superellipse-xl shadow-lg flex items-center justify-center gap-2"
                 >
                   <Compass className="w-5 h-5" />
                   <span>Explorer</span>
@@ -412,7 +412,7 @@ const SearcherHub = memo(function SearcherHub() {
           {/* Right: Welcome + Quick Actions */}
           <div className="lg:col-span-2 space-y-4">
             {/* Welcome Section */}
-            <div className="bg-white rounded-2xl p-5" style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}>
+            <div className="bg-white superellipse-2xl p-5" style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}>
               {/* Decorative blob */}
               <div
                 className="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-30 pointer-events-none"
@@ -441,7 +441,7 @@ const SearcherHub = memo(function SearcherHub() {
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
-                    className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium text-sm transition-all ${
+                    className={`flex items-center gap-2 px-4 py-2.5 superellipse-xl font-medium text-sm transition-all ${
                       action.primary
                         ? 'text-white shadow-lg'
                         : 'bg-white text-gray-700 border border-gray-200 hover:border-amber-200'
@@ -462,12 +462,12 @@ const SearcherHub = memo(function SearcherHub() {
             <Link href={nextStep.href}>
               <motion.div
                 whileHover={{ scale: 1.01, x: 4 }}
-                className="bg-white rounded-2xl p-4 flex items-center justify-between cursor-pointer"
+                className="bg-white superellipse-2xl p-4 flex items-center justify-between cursor-pointer"
                 style={{ boxShadow: `0 4px 16px ${ACCENT_SHADOW}` }}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <nextStep.icon className="w-5 h-5 text-white" />
@@ -497,7 +497,7 @@ const SearcherHub = memo(function SearcherHub() {
                   variants={itemVariants}
                   whileHover={{ scale: 1.02, y: -3 }}
                   whileTap={{ scale: 0.98 }}
-                  className="relative overflow-hidden rounded-2xl p-4 cursor-pointer bg-white"
+                  className="relative overflow-hidden superellipse-2xl p-4 cursor-pointer bg-white"
                   style={{ boxShadow: `0 8px 24px ${card.shadowColor}` }}
                 >
                   {/* Decorative circle */}
@@ -511,7 +511,7 @@ const SearcherHub = memo(function SearcherHub() {
                     <div className="flex items-start justify-between mb-3">
                       <motion.div
                         whileHover={{ rotate: 5 }}
-                        className="w-10 h-10 rounded-xl flex items-center justify-center"
+                        className="w-10 h-10 superellipse-xl flex items-center justify-center"
                         style={{ background: card.iconGradient }}
                       >
                         <Icon className="w-5 h-5" style={{ color: card.iconColor }} />
@@ -548,7 +548,7 @@ const SearcherHub = memo(function SearcherHub() {
           {/* Navigation Tiles - Compact */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-5 border-l-4 border-amber-400"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5 border-l-4 border-amber-400"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             <div
@@ -561,7 +561,7 @@ const SearcherHub = memo(function SearcherHub() {
                 <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 superellipse-lg flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Compass className="w-4 h-4 text-white" />
@@ -583,10 +583,10 @@ const SearcherHub = memo(function SearcherHub() {
                     <motion.div
                       whileHover={{ scale: 1.02, x: 3 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 hover:bg-amber-50/50 transition-all cursor-pointer"
+                      className="flex items-center gap-3 p-3 superellipse-xl bg-gray-50 hover:bg-amber-50/50 transition-all cursor-pointer"
                     >
                       <div
-                        className="w-9 h-9 rounded-lg flex items-center justify-center"
+                        className="w-9 h-9 superellipse-lg flex items-center justify-center"
                         style={{ backgroundColor: item.bgColor }}
                       >
                         <item.icon className="w-4 h-4" style={{ color: item.iconColor }} />
@@ -602,7 +602,7 @@ const SearcherHub = memo(function SearcherHub() {
           {/* Recommendations */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             <div
@@ -615,7 +615,7 @@ const SearcherHub = memo(function SearcherHub() {
                 <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 superellipse-lg flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Sparkles className="w-4 h-4 text-white" />
@@ -644,9 +644,9 @@ const SearcherHub = memo(function SearcherHub() {
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.06 }}
                         whileHover={{ x: 3, backgroundColor: 'rgba(245, 158, 11, 0.04)' }}
-                        className="flex items-center gap-3 p-3 rounded-xl bg-gray-50 transition-all cursor-pointer"
+                        className="flex items-center gap-3 p-3 superellipse-xl bg-gray-50 transition-all cursor-pointer"
                       >
-                        <div className="w-12 h-12 rounded-xl bg-gray-200 overflow-hidden flex-shrink-0">
+                        <div className="w-12 h-12 superellipse-xl bg-gray-200 overflow-hidden flex-shrink-0">
                           {property.main_image ? (
                             <Image
                               src={property.main_image}
@@ -685,7 +685,7 @@ const SearcherHub = memo(function SearcherHub() {
                 ) : (
                   <div className="text-center py-8">
                     <div
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3"
+                      className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-3"
                       style={{ background: CARD_BG_GRADIENT }}
                     >
                       <Search className="w-7 h-7" style={{ color: SEARCHER_PRIMARY }} />
@@ -702,19 +702,19 @@ const SearcherHub = memo(function SearcherHub() {
         {/* Bottom Actions */}
         <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3">
           <Link href="/searcher/alerts">
-            <Button variant="outline" className="rounded-xl border-amber-200 text-amber-700 hover:bg-amber-50">
+            <Button variant="outline" className="superellipse-xl border-amber-200 text-amber-700 hover:bg-amber-50">
               <Bell className="w-4 h-4 mr-2" />
               Créer une alerte
             </Button>
           </Link>
           <Link href="/searcher/groups/create">
-            <Button variant="outline" className="rounded-xl border-violet-200 text-violet-700 hover:bg-violet-50">
+            <Button variant="outline" className="superellipse-xl border-violet-200 text-violet-700 hover:bg-violet-50">
               <UserPlus className="w-4 h-4 mr-2" />
               Créer un groupe
             </Button>
           </Link>
           <Link href="/profile/searcher">
-            <Button variant="outline" className="rounded-xl border-gray-200 text-gray-700 hover:bg-gray-50">
+            <Button variant="outline" className="superellipse-xl border-gray-200 text-gray-700 hover:bg-gray-50">
               <Star className="w-4 h-4 mr-2" />
               Améliorer mon profil
             </Button>

@@ -340,7 +340,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+          className="bg-white superellipse-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
         >
           {/* Header */}
           <div className="sticky top-0 bg-white border-b p-6 flex items-center justify-between">
@@ -358,7 +358,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
 
           <div className="p-6 space-y-6">
             {/* Property Info */}
-            <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+            <div className="flex items-center gap-4 p-4 bg-gray-50 superellipse-xl">
               {property.main_image && (
                 <img
                   src={property.main_image}
@@ -382,7 +382,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
               <div className="grid grid-cols-2 gap-4">
                 <button
                   onClick={() => setVisitType('in_person')}
-                  className={`p-4 rounded-xl border-2 transition-all ${
+                  className={`p-4 superellipse-xl border-2 transition-all ${
                     visitType === 'in_person'
                       ? 'border-purple-600 bg-purple-50'
                       : 'border-gray-200 hover:border-gray-300'
@@ -394,7 +394,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                 </button>
                 <button
                   onClick={() => setVisitType('virtual')}
-                  className={`p-4 rounded-xl border-2 transition-all ${
+                  className={`p-4 superellipse-xl border-2 transition-all ${
                     visitType === 'virtual'
                       ? 'border-purple-600 bg-purple-50'
                       : 'border-gray-200 hover:border-gray-300'
@@ -421,7 +421,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                       setSelectedDate(day.date);
                       setSelectedSlot('');
                     }}
-                    className={`p-2 rounded-xl text-center transition-all ${
+                    className={`p-2 superellipse-xl text-center transition-all ${
                       selectedDate === day.date
                         ? 'bg-purple-600 text-white shadow-lg'
                         : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
@@ -446,7 +446,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                   {t.date.availableSlots[lang]}
                 </h3>
                 {availableSlots.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500 bg-gray-50 rounded-xl">
+                  <div className="text-center py-8 text-gray-500 bg-gray-50 superellipse-xl">
                     <AlertCircle className="h-12 w-12 mx-auto mb-2 text-gray-400" />
                     <p>{t.date.noSlots[lang]}</p>
                     <p className="text-sm mt-1">{t.date.tryAnother[lang]}</p>
@@ -458,7 +458,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                         key={slot.slot_start}
                         onClick={() => setSelectedSlot(slot.slot_start)}
                         disabled={!slot.is_available}
-                        className={`p-3 rounded-xl text-sm font-medium transition-all ${
+                        className={`p-3 superellipse-xl text-sm font-medium transition-all ${
                           selectedSlot === slot.slot_start
                             ? 'bg-purple-600 text-white shadow-lg'
                             : slot.is_available
@@ -495,7 +495,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                     value={userEmail}
                     onChange={(e) => setUserEmail(e.target.value)}
                     placeholder="votre.email@example.com"
-                    className="rounded-xl"
+                    className="superellipse-xl"
                   />
                 </div>
                 <div>
@@ -507,7 +507,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                     value={visitorPhone}
                     onChange={(e) => setVisitorPhone(e.target.value)}
                     placeholder="+32 123 456 789"
-                    className="rounded-xl"
+                    className="superellipse-xl"
                   />
                 </div>
                 <div>
@@ -520,7 +520,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                     placeholder={t.contact.messagePlaceholder[lang]}
                     rows={3}
                     maxLength={500}
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none transition"
+                    className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none transition"
                   />
                 </div>
               </motion.div>
@@ -532,7 +532,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-xl p-4 border border-purple-200"
+                className="bg-gradient-to-br from-purple-50 to-blue-50 superellipse-xl p-4 border border-purple-200"
               >
                 <div className="flex items-start gap-3">
                   <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
@@ -574,7 +574,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
             <Button
               onClick={onClose}
               variant="outline"
-              className="flex-1 rounded-xl"
+              className="flex-1 superellipse-xl"
               disabled={booking}
             >
               {t.buttons.cancel[lang]}
@@ -582,7 +582,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
             <Button
               onClick={handleBookVisit}
               disabled={booking || !selectedSlot || !visitorPhone.trim()}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-xl shadow-lg"
+              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white superellipse-xl shadow-lg"
             >
               {booking ? t.buttons.booking[lang] : t.buttons.confirm[lang]}
             </Button>

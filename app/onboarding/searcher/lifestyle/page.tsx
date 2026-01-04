@@ -80,7 +80,7 @@ export default function LifestyleStep() {
               <button
                 key={o}
                 onClick={() => toggle(o)}
-                className={`px-3 py-2 rounded-2xl border ${
+                className={`px-3 py-2 superellipse-2xl border ${
                   active ? 'bg-primary text-white' : 'bg-white'
                 }`}
               >

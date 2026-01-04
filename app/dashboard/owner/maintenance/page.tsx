@@ -559,7 +559,7 @@ export default function MaintenancePage() {
           actions={
             <div className="flex items-center gap-3">
               {/* View toggle */}
-              <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-lg" role="group" aria-label="Mode d'affichage">
+              <div className="flex items-center gap-1 p-1 bg-gray-100 superellipse-lg" role="group" aria-label="Mode d'affichage">
                 <Button
                   variant={viewMode === 'kanban' ? 'default' : 'ghost'}
                   size="sm"
@@ -727,11 +727,11 @@ export default function MaintenancePage() {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl p-12 text-center border border-gray-200"
+                  className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-3xl p-12 text-center border border-gray-200"
                 >
                   <div className="relative w-20 h-20 mx-auto mb-6">
                     <div
-                      className="relative w-20 h-20 rounded-2xl flex items-center justify-center shadow-lg"
+                      className="relative w-20 h-20 superellipse-2xl flex items-center justify-center shadow-lg"
                       style={{ background: ownerGradient }}
                     >
                       <Wrench className="w-10 h-10 text-white" />
@@ -765,7 +765,7 @@ export default function MaintenancePage() {
                         animate={{ opacity: 1, y: 0 }}
                         whileHover={{ scale: 1.01, y: -2 }}
                         transition={{ delay: 0.1 + index * 0.03 }}
-                        className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
+                        className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-2xl shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 p-6 cursor-pointer"
                         style={{
                           borderLeftWidth: '4px',
                           borderLeftColor: priorityConfig.borderColor
@@ -780,7 +780,7 @@ export default function MaintenancePage() {
                             <div className="flex items-start gap-3 mb-3">
                               {/* Category Icon */}
                               <div
-                                className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm text-xl"
+                                className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 shadow-sm text-xl"
                                 style={{ background: ownerGradientLight }}
                               >
                                 {categoryConfig.emoji}
@@ -845,7 +845,7 @@ export default function MaintenancePage() {
                           <div className="flex lg:flex-col gap-2 lg:w-48">
                             <Button
                               variant="outline"
-                              className="flex-1 rounded-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
+                              className="flex-1 superellipse-xl hover:bg-purple-50 hover:border-purple-400 transition-all"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 toast.info(`${request.title} - ${request.description || t?.list?.noDescription?.[language] || 'No description'}`);
@@ -856,7 +856,7 @@ export default function MaintenancePage() {
 
                             {request.status === 'open' && (
                               <Button
-                                className="flex-1 rounded-xl text-white border-0 shadow-md transition-all"
+                                className="flex-1 superellipse-xl text-white border-0 shadow-md transition-all"
                                 style={{
                                   background: 'linear-gradient(135deg, #3b82f6 0%, #0ea5e9 100%)',
                                   boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
@@ -880,7 +880,7 @@ export default function MaintenancePage() {
 
                             {request.status === 'in_progress' && (
                               <Button
-                                className="flex-1 rounded-xl text-white border-0 shadow-md transition-all"
+                                className="flex-1 superellipse-xl text-white border-0 shadow-md transition-all"
                                 style={{
                                   background: 'linear-gradient(135deg, #22c55e 0%, #10b981 100%)',
                                   boxShadow: '0 4px 12px rgba(34, 197, 94, 0.3)'

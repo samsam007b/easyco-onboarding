@@ -289,14 +289,14 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                    className="w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </motion.button>
                 </Link>
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: VISITS_GRADIENT }}
                   >
                     <Calendar className="w-5 h-5 text-white" />
@@ -313,7 +313,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/explore')}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium shadow-md"
+                className="flex items-center gap-2 px-4 py-2 superellipse-xl text-white text-sm font-medium shadow-md"
                 style={{ background: SEARCHER_GRADIENT }}
               >
                 <Plus className="w-4 h-4" />
@@ -334,10 +334,10 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
               {statsCards.map((stat, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100"
+                  className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white shadow-sm border border-gray-100"
                 >
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    className="w-7 h-7 superellipse-lg flex items-center justify-center"
                     style={{ backgroundColor: stat.bgColor }}
                   >
                     <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
@@ -367,7 +367,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setFilter(tab.id as typeof filter)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                  className={`px-3 py-1.5 superellipse-lg text-xs font-medium transition-all ${
                     filter === tab.id
                       ? 'text-white shadow-md'
                       : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
@@ -388,7 +388,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
             style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circles */}
@@ -401,7 +401,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
                 style={{ background: VISITS_GRADIENT }}
               >
                 <Calendar className="w-10 h-10 text-white" />
@@ -419,7 +419,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/searcher/explore')}
-                  className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
+                  className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Sparkles className="w-4 h-4" />
@@ -446,7 +446,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                     layout
                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all">
+                    <div className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all">
                       <div className="flex">
                         {/* Property Image */}
                         <div className="relative w-28 md:w-36 flex-shrink-0">
@@ -495,7 +495,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                               </div>
 
                               {/* Date & Time */}
-                              <div className="flex items-center gap-3 p-2 rounded-lg bg-gray-50 border border-gray-100 mb-2">
+                              <div className="flex items-center gap-3 p-2 superellipse-lg bg-gray-50 border border-gray-100 mb-2">
                                 <div className="flex items-center gap-1.5 text-gray-700">
                                   <Calendar className="w-4 h-4 text-amber-600" />
                                   <span className="text-xs font-medium capitalize">{formatShortDate(visit.visit_date)}</span>
@@ -520,7 +520,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                                 <motion.button
                                   whileHover={{ scale: 1.1 }}
                                   whileTap={{ scale: 0.9 }}
-                                  className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
+                                  className="w-8 h-8 superellipse-lg bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
                                 >
                                   <Phone className="w-3.5 h-3.5" style={{ color: VISITS_PRIMARY }} />
                                 </motion.button>
@@ -529,7 +529,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => router.push(`/properties/${visit.property_id}`)}
-                                className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                className="w-8 h-8 superellipse-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
                               >
                                 <Eye className="w-3.5 h-3.5 text-gray-500" />
                               </motion.button>

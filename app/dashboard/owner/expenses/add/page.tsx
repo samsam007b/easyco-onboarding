@@ -146,7 +146,7 @@ export default function AddOwnerExpensePage() {
 
       {/* Main Content */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Card className="rounded-2xl shadow-lg">
+        <Card className="superellipse-2xl shadow-lg">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <DollarSign className="h-6 w-6 text-purple-700" />
@@ -155,7 +155,7 @@ export default function AddOwnerExpensePage() {
           </CardHeader>
           <CardContent>
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl">
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 superellipse-xl">
                 <p className="text-sm text-red-600">{error}</p>
               </div>
             )}
@@ -168,7 +168,7 @@ export default function AddOwnerExpensePage() {
                   options={properties.map(p => ({ value: p.id, label: p.title }))}
                   placeholder={properties.length === 0 ? (t?.noProperties?.[language] || 'No properties found') : (t?.selectProperty?.[language] || 'Select property')}
                   required
-                  className="rounded-xl"
+                  className="superellipse-xl"
                   disabled={properties.length === 0}
                 />
               </div>
@@ -181,7 +181,7 @@ export default function AddOwnerExpensePage() {
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   required
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
 
@@ -195,7 +195,7 @@ export default function AddOwnerExpensePage() {
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
                   required
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
 
@@ -215,7 +215,7 @@ export default function AddOwnerExpensePage() {
                   ]}
                   placeholder={t?.selectCategory?.[language] || 'Select category'}
                   required
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
 
@@ -227,7 +227,7 @@ export default function AddOwnerExpensePage() {
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
                   required
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
 
@@ -238,7 +238,7 @@ export default function AddOwnerExpensePage() {
                   placeholder={t?.descriptionPlaceholder?.[language] || 'Add any additional details...'}
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="rounded-xl"
+                  className="superellipse-xl"
                   rows={4}
                 />
               </div>
@@ -248,14 +248,14 @@ export default function AddOwnerExpensePage() {
                   type="button"
                   variant="outline"
                   onClick={() => router.back()}
-                  className="flex-1 rounded-xl"
+                  className="flex-1 superellipse-xl"
                 >
                   {t?.cancel?.[language] || 'Cancel'}
                 </Button>
                 <Button
                   type="submit"
                   disabled={isSubmitting || properties.length === 0}
-                  className="flex-1 bg-purple-900 hover:bg-purple-950 rounded-xl disabled:opacity-50"
+                  className="flex-1 bg-purple-900 hover:bg-purple-950 superellipse-xl disabled:opacity-50"
                 >
                   {isSubmitting ? (t?.submitting?.[language] || 'Adding...') : (t?.submit?.[language] || 'Add Expense')}
                 </Button>

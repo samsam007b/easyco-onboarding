@@ -316,11 +316,11 @@ function OwnerMessagesContent() {
             <motion.div
               animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute inset-0 rounded-3xl blur-lg"
+              className="absolute inset-0 superellipse-3xl blur-lg"
               style={{ background: ownerGradient }}
             />
             <div
-              className="relative w-24 h-24 rounded-3xl flex items-center justify-center shadow-lg"
+              className="relative w-24 h-24 superellipse-3xl flex items-center justify-center shadow-lg"
               style={{ background: ownerGradient }}
             >
               <MessageCircle className="w-12 h-12 text-white" />

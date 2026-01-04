@@ -72,11 +72,11 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
       {/* Modal */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div
-          className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          className="bg-white superellipse-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between rounded-t-2xl">
+          <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between superellipse-t-2xl">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">{room.name}</h2>
               <p className="text-sm text-gray-500 mt-1">
@@ -95,7 +95,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
           <div className="p-6 space-y-6">
             {/* Basic Info Section */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 p-4 bg-orange-50 rounded-xl">
+              <div className="flex items-center gap-3 p-4 bg-orange-50 superellipse-xl">
                 <Maximize className="w-5 h-5 text-orange-600" />
                 <div>
                   <p className="text-xs text-gray-600">{roomDetails?.surface || 'Surface'}</p>
@@ -103,7 +103,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
                 </div>
               </div>
 
-              <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl">
+              <div className="flex items-center gap-3 p-4 bg-blue-50 superellipse-xl">
                 <Home className="w-5 h-5 text-blue-600" />
                 <div>
                   <p className="text-xs text-gray-600">{roomDetails?.floor || 'Étage'}</p>
@@ -114,7 +114,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
               </div>
 
               {room.has_balcony && (
-                <div className="flex items-center gap-3 p-4 bg-green-50 rounded-xl">
+                <div className="flex items-center gap-3 p-4 bg-green-50 superellipse-xl">
                   <Sparkles className="w-5 h-5 text-green-600" />
                   <div>
                     <p className="text-xs text-gray-600">{roomDetails?.extras || 'Extras'}</p>
@@ -124,7 +124,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
               )}
 
               {room.has_private_bathroom && (
-                <div className="flex items-center gap-3 p-4 bg-purple-50 rounded-xl">
+                <div className="flex items-center gap-3 p-4 bg-purple-50 superellipse-xl">
                   <Sparkles className="w-5 h-5 text-purple-600" />
                   <div>
                     <p className="text-xs text-gray-600">{roomDetails?.bathroom || 'Salle de bain'}</p>
@@ -322,7 +322,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
           </div>
 
           {/* Footer */}
-          <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 rounded-b-2xl">
+          <div className="sticky bottom-0 bg-gray-50 border-t border-gray-200 px-6 py-4 superellipse-b-2xl">
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">{roomDetails?.availableFrom || 'Disponible à partir du'}</p>

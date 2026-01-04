@@ -163,7 +163,7 @@ export default function GestionHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/tenants')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
               style={{
                 background: ownerPalette.primary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,
@@ -178,7 +178,7 @@ export default function GestionHubPage() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
                     <Users className="w-6 h-6 text-white" />
@@ -207,7 +207,7 @@ export default function GestionHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/leases')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer"
               style={{
                 background: ownerPalette.tertiary.main,
                 boxShadow: `0 8px 32px ${ownerPalette.tertiary.shadow}`,
@@ -222,7 +222,7 @@ export default function GestionHubPage() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255,255,255,0.2)' }}
                   >
                     <FileText className="w-6 h-6 text-white" />
@@ -254,7 +254,7 @@ export default function GestionHubPage() {
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/dashboard/owner/maintenance')}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white"
               style={{
                 border: `2px solid ${(overview?.maintenance.urgent || 0) > 0 ? semanticColors.danger.border : ownerPalette.quaternary.border}`,
                 boxShadow: `0 4px 16px ${ownerPalette.quaternary.shadow}`,
@@ -269,7 +269,7 @@ export default function GestionHubPage() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center"
                     style={{
                       background: (overview?.maintenance.urgent || 0) > 0
                         ? semanticColors.danger.gradient
@@ -306,7 +306,7 @@ export default function GestionHubPage() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer bg-white"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white"
               style={{
                 border: `2px solid ${healthStyle.border}`,
                 boxShadow: `0 4px 16px ${ownerPalette.accent.shadow}`,
@@ -321,7 +321,7 @@ export default function GestionHubPage() {
               <div className="relative z-10">
                 <div className="flex items-center justify-between mb-3">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center"
                     style={{ background: healthStyle.gradient }}
                   >
                     {overview?.healthScore && overview.healthScore >= 80 ? (
@@ -376,7 +376,7 @@ export default function GestionHubPage() {
             transition={{ delay: 0.2 }}
             className="lg:col-span-2"
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
                   <AlertTriangle className="w-5 h-5" style={{ color: '#c2566b' }} />
@@ -398,7 +398,7 @@ export default function GestionHubPage() {
               {urgentActions.length === 0 ? (
                 <div className="text-center py-8">
                   <div
-                    className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4"
+                    className="w-16 h-16 mx-auto superellipse-2xl flex items-center justify-center mb-4"
                     style={{ background: semanticColors.success.gradient }}
                   >
                     <CheckCircle className="w-8 h-8 text-white" />
@@ -416,7 +416,7 @@ export default function GestionHubPage() {
                       transition={{ delay: index * 0.05 }}
                       onClick={() => router.push(action.href)}
                       className={cn(
-                        'flex items-center gap-4 p-4 rounded-xl cursor-pointer transition-all',
+                        'flex items-center gap-4 p-4 superellipse-xl cursor-pointer transition-all',
                         'hover:shadow-md',
                         action.severity === 'critical'
                           ? 'bg-red-50 border border-red-200 hover:border-red-300'
@@ -426,7 +426,7 @@ export default function GestionHubPage() {
                       )}
                     >
                       <div
-                        className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                        className="w-10 h-10 superellipse-lg flex items-center justify-center flex-shrink-0"
                         style={{
                           background:
                             action.severity === 'critical'
@@ -482,7 +482,7 @@ export default function GestionHubPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
           >
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6 h-full">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6 h-full">
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2 mb-4">
                 <Clock className="w-5 h-5" style={{ color: '#9c5698' }} />
                 {t?.recentActivity?.title?.[language] || 'Recent activity'}
@@ -504,7 +504,7 @@ export default function GestionHubPage() {
                     >
                       <div
                         className={cn(
-                          'w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0',
+                          'w-8 h-8 superellipse-lg flex items-center justify-center flex-shrink-0',
                           activity.type === 'payment' && 'bg-emerald-100',
                           activity.type === 'maintenance' && 'bg-blue-100',
                           activity.type === 'lease' && 'bg-purple-100',
@@ -607,7 +607,7 @@ export default function GestionHubPage() {
           className="mt-8 mb-4"
         >
           <div
-            className="relative overflow-hidden rounded-2xl p-5"
+            className="relative overflow-hidden superellipse-2xl p-5"
             style={{
               background: ownerGradient,
               boxShadow: `0 8px 32px ${ownerPalette.primary.shadow}`,

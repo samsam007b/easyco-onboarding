@@ -242,14 +242,14 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
+                    className="w-10 h-10 superellipse-xl bg-white flex items-center justify-center shadow-sm border border-gray-100"
                   >
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </motion.button>
                 </Link>
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{ background: APPS_GRADIENT }}
                   >
                     <ClipboardList className="w-5 h-5 text-white" />
@@ -267,7 +267,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/searcher/explore')}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium shadow-md"
+                  className="flex items-center gap-2 px-4 py-2 superellipse-xl text-white text-sm font-medium shadow-md"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Sparkles className="w-4 h-4" />
@@ -289,10 +289,10 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
               {statsCards.map((stat, index) => (
                 <div
                   key={index}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white shadow-sm border border-gray-100 flex-shrink-0"
+                  className="flex items-center gap-2 px-3 py-1.5 superellipse-xl bg-white shadow-sm border border-gray-100 flex-shrink-0"
                 >
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center"
+                    className="w-7 h-7 superellipse-lg flex items-center justify-center"
                     style={{ backgroundColor: stat.bgColor }}
                   >
                     <stat.icon className="w-3.5 h-3.5" style={{ color: stat.color }} />
@@ -322,7 +322,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setFilterStatus(tab.id as typeof filterStatus)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all flex-shrink-0 ${
+                  className={`px-3 py-1.5 superellipse-lg text-xs font-medium transition-all flex-shrink-0 ${
                     filterStatus === tab.id
                       ? 'text-white shadow-md'
                       : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
@@ -343,7 +343,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative overflow-hidden rounded-3xl bg-white shadow-lg"
+            className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
             style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circles */}
@@ -356,7 +356,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 shadow-lg"
+                className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
                 style={{ background: APPS_GRADIENT }}
               >
                 <FileText className="w-10 h-10 text-white" />
@@ -372,7 +372,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/searcher/explore')}
-                  className="px-6 py-3 rounded-xl text-white font-medium shadow-md flex items-center gap-2"
+                  className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Sparkles className="w-4 h-4" />
@@ -400,12 +400,12 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                     layout
                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                   >
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all">
+                    <div className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all">
                       <div className="p-4">
                         <div className="flex items-start gap-3">
                           {/* Property Image */}
                           <div
-                            className="w-20 h-20 rounded-xl bg-gray-100 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity overflow-hidden"
+                            className="w-20 h-20 superellipse-xl bg-gray-100 flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity overflow-hidden"
                             onClick={() => application.property?.id && router.push(`/properties/${application.property.id}`)}
                           >
                             {application.property?.main_image ? (
@@ -463,7 +463,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                             )}
 
                             {application.message && (
-                              <div className="p-2 rounded-lg bg-gray-50 border border-gray-100 mb-2">
+                              <div className="p-2 superellipse-lg bg-gray-50 border border-gray-100 mb-2">
                                 <div className="flex items-center gap-1 text-[10px] text-gray-500 mb-0.5">
                                   <MessageSquare className="w-3 h-3" />
                                   Votre message:
@@ -474,7 +474,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
 
                             {/* Approval/Rejection Message */}
                             {application.status === 'approved' && (
-                              <div className="p-2 rounded-lg bg-emerald-50 border border-emerald-100">
+                              <div className="p-2 superellipse-lg bg-emerald-50 border border-emerald-100">
                                 <div className="flex items-center gap-1 text-xs text-emerald-700">
                                   <CheckCircle className="w-3.5 h-3.5" />
                                   <span className="font-medium">Félicitations ! Votre candidature a été acceptée.</span>
@@ -483,7 +483,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                             )}
 
                             {application.status === 'rejected' && (
-                              <div className="p-2 rounded-lg bg-red-50 border border-red-100">
+                              <div className="p-2 superellipse-lg bg-red-50 border border-red-100">
                                 <div className="flex items-center gap-1 text-xs text-red-700">
                                   <XCircle className="w-3.5 h-3.5" />
                                   <span className="font-medium">Votre candidature n'a pas été retenue.</span>
@@ -506,7 +506,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => router.push(`/properties/${application.property.id}`)}
-                                className="w-8 h-8 rounded-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
+                                className="w-8 h-8 superellipse-lg bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
                               >
                                 <Eye className="w-3.5 h-3.5 text-gray-500" />
                               </motion.button>
@@ -516,7 +516,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => handleWithdraw(application.id)}
-                                className="w-8 h-8 rounded-lg bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
+                                className="w-8 h-8 superellipse-lg bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
                               >
                                 <XCircle className="w-3.5 h-3.5 text-amber-600" />
                               </motion.button>
@@ -526,7 +526,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => handleDelete(application.id)}
-                                className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors"
+                                className="w-8 h-8 superellipse-lg bg-red-50 flex items-center justify-center hover:bg-red-100 transition-colors"
                               >
                                 <Trash2 className="w-3.5 h-3.5 text-red-500" />
                               </motion.button>
