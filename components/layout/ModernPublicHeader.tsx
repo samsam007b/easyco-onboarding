@@ -10,22 +10,10 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { useTheme } from '@/contexts/ThemeContext';
 import ThemeToggle from '@/components/ThemeToggle';
-import FranceFlag from '@/components/icons/flags/FranceFlag';
-import UKFlag from '@/components/icons/flags/UKFlag';
-import NetherlandsFlag from '@/components/icons/flags/NetherlandsFlag';
-import GermanyFlag from '@/components/icons/flags/GermanyFlag';
-
 interface ModernPublicHeaderProps {
   activePage?: 'explorer' | 'residents' | 'owners' | null;
   onNavigate?: (page: 'explorer' | 'residents' | 'owners' | null) => void;
 }
-
-const flagComponents = {
-  fr: FranceFlag,
-  en: UKFlag,
-  nl: NetherlandsFlag,
-  de: GermanyFlag,
-};
 
 export default function ModernPublicHeader({
   activePage = null,
@@ -38,10 +26,10 @@ export default function ModernPublicHeader({
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
 
   const languages = [
-    { code: 'fr', label: 'Français', flagComponent: FranceFlag },
-    { code: 'en', label: 'English', flagComponent: UKFlag },
-    { code: 'nl', label: 'Nederlands', flagComponent: NetherlandsFlag },
-    { code: 'de', label: 'Deutsch', flagComponent: GermanyFlag },
+    { code: 'fr', label: 'Français' },
+    { code: 'en', label: 'English' },
+    { code: 'nl', label: 'Nederlands' },
+    { code: 'de', label: 'Deutsch' },
   ] as const;
 
   const navItems = [
@@ -236,7 +224,7 @@ export default function ModernPublicHeader({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 superellipse-xl shadow-2xl overflow-hidden min-w-[180px] z-50"
+                    className="absolute top-full mt-2 right-0 superellipse-xl shadow-2xl overflow-hidden min-w-[200px] z-50"
                     style={{
                       background: resolvedTheme === 'dark'
                         ? 'rgba(26, 26, 31, 0.95)'
@@ -246,7 +234,6 @@ export default function ModernPublicHeader({
                     }}
                   >
                     {languages.map((lang, index) => {
-                      const FlagComponent = lang.flagComponent;
                       return (
                         <div key={lang.code}>
                           <button
@@ -255,13 +242,12 @@ export default function ModernPublicHeader({
                               setLangDropdownOpen(false);
                             }}
                             className={cn(
-                              "w-full flex items-center gap-3 px-5 py-3 text-sm transition-all group",
+                              "w-full flex items-center gap-3 px-6 py-4 text-base transition-all group",
                               language === lang.code
                                 ? resolvedTheme === 'dark' ? "bg-white/5" : "bg-gray-50"
                                 : resolvedTheme === 'dark' ? "hover:bg-white/5" : "hover:bg-gray-50"
                             )}
                           >
-                            <FlagComponent className="w-6 h-6 rounded-sm shadow-sm" />
                             <span className={cn(
                               "font-medium transition-all flex-1 text-left",
                               language === lang.code
