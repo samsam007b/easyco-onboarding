@@ -75,7 +75,7 @@ export default function SwipeCard({ property, onSwipe, onSuperLike }: SwipeCardP
       onDragEnd={handleDragEnd}
       whileTap={{ cursor: 'grabbing' }}
     >
-      <div className="relative w-full h-full bg-white rounded-3xl shadow-2xl overflow-hidden">
+      <div className="relative w-full h-full bg-white superellipse-3xl shadow-2xl overflow-hidden">
         {/* Image Section */}
         <div className="relative h-[70%] bg-gray-200">
           <Image

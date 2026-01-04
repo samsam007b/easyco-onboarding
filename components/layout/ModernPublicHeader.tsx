@@ -156,7 +156,7 @@ export default function ModernPublicHeader({
                   <button
                     onClick={() => handleNavClick(item.id)}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
+                      "relative z-10 flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-semibold transition-all",
                       isActive
                         ? item.color === 'yellow'
                           ? "text-yellow-700 bg-yellow-50"
@@ -215,7 +215,7 @@ export default function ModernPublicHeader({
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
                 className={cn(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm transition-all",
+                  "flex items-center gap-1.5 px-3 py-1.5 superellipse-lg text-sm transition-all",
                   resolvedTheme === 'dark'
                     ? "text-gray-200 hover:bg-white/10"
                     : "text-gray-700 hover:bg-gray-100"
@@ -236,7 +236,7 @@ export default function ModernPublicHeader({
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
-                    className="absolute top-full mt-2 right-0 rounded-xl shadow-2xl overflow-hidden min-w-[180px] z-50"
+                    className="absolute top-full mt-2 right-0 superellipse-xl shadow-2xl overflow-hidden min-w-[180px] z-50"
                     style={{
                       background: resolvedTheme === 'dark'
                         ? 'rgba(26, 26, 31, 0.95)'
@@ -297,7 +297,7 @@ export default function ModernPublicHeader({
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className={cn(
-              "md:hidden p-2 rounded-lg transition",
+              "md:hidden p-2 superellipse-lg transition",
               resolvedTheme === 'dark'
                 ? "text-gray-200 hover:bg-white/10"
                 : "text-gray-700 hover:bg-gray-100"
@@ -337,7 +337,7 @@ export default function ModernPublicHeader({
                         setMobileMenuOpen(false);
                       }}
                       className={cn(
-                        "flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left",
+                        "flex items-center gap-3 px-4 py-3 superellipse-lg transition-all text-left",
                         isActive
                           ? resolvedTheme === 'dark'
                             ? "bg-purple-900/30 text-purple-300 font-semibold"

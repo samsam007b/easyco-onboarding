@@ -110,7 +110,7 @@ export default function NotificationBell() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 10, scale: 0.95 }}
             transition={{ duration: 0.2 }}
-            className="absolute right-0 mt-2 w-96 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
+            className="absolute right-0 mt-2 w-96 bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-50"
           >
             {/* Header */}
             <div className="px-5 py-4 border-b border-gray-100">
@@ -170,7 +170,7 @@ export default function NotificationBell() {
                         <div className="flex items-start gap-3">
                           {/* Icon */}
                           <div className={cn(
-                            "w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0",
+                            "w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0",
                             `bg-gradient-to-br ${colorClass}`
                           )}>
                             <Icon className="w-5 h-5 text-white" />
@@ -212,7 +212,7 @@ export default function NotificationBell() {
                                   e.stopPropagation();
                                   markAsRead(notification.id);
                                 }}
-                                className="p-1 hover:bg-white rounded-lg transition-colors"
+                                className="p-1 hover:bg-white superellipse-lg transition-colors"
                                 title={ariaLabels?.markAsRead?.[language] || 'Mark as read'}
                               >
                                 <Check className="w-4 h-4" style={{ color: '#10b981' }} />
@@ -223,7 +223,7 @@ export default function NotificationBell() {
                                 e.stopPropagation();
                                 deleteNotification(notification.id);
                               }}
-                              className="p-1 hover:bg-white rounded-lg transition-colors"
+                              className="p-1 hover:bg-white superellipse-lg transition-colors"
                               title={ariaLabels?.delete?.[language] || 'Delete'}
                             >
                               <X className="w-4 h-4" style={{ color: '#ff651e' }} />
@@ -258,7 +258,7 @@ export default function NotificationBell() {
                     router.push('/notifications');
                   }}
                   variant="ghost"
-                  className="w-full rounded-xl text-sm font-medium hover:bg-[#fff5f3]"
+                  className="w-full superellipse-xl text-sm font-medium hover:bg-[#fff5f3]"
                   style={{ color: '#ff651e' }}
                 >
                   See all notifications

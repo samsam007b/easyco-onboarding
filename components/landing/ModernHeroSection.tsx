@@ -117,11 +117,11 @@ export default function ModernHeroSection() {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="flex justify-center mb-6"
             >
-              <div className="w-20 h-20 superellipse-2xl bg-white/30 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/40">
+              <div className="w-24 h-24 superellipse-2xl bg-white/30 backdrop-blur-xl flex items-center justify-center shadow-xl border border-white/40">
                 <img
                   src="/logos/izzico-icon-gradient.svg"
                   alt="Izzico"
-                  className="w-16 h-16"
+                  className="w-[88px] h-[88px]"
                 />
               </div>
             </motion.div>

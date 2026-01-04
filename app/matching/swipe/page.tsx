@@ -289,7 +289,7 @@ export default function SwipePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <Card className="p-8 text-center bg-white rounded-3xl shadow-2xl border-0">
+            <Card className="p-8 text-center bg-white superellipse-3xl shadow-2xl border-0">
               {/* Lock Icon */}
               <div className="w-24 h-24 bg-gradient-to-br from-orange-100 to-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Lock className="w-12 h-12 text-orange-500" />
@@ -331,7 +331,7 @@ export default function SwipePage() {
                     {incompleteCategories.map((cat, idx) => (
                       <div
                         key={idx}
-                        className="flex items-center justify-between bg-orange-50 rounded-lg px-4 py-2.5"
+                        className="flex items-center justify-between bg-orange-50 superellipse-lg px-4 py-2.5"
                       >
                         <span className="text-sm text-gray-700">{cat.label}</span>
                         <span className="text-xs font-medium text-orange-600">
@@ -346,7 +346,7 @@ export default function SwipePage() {
               {/* CTA Button */}
               <Button
                 onClick={() => router.push('/profile/edit')}
-                className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold py-6 rounded-xl text-lg"
+                className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold py-6 superellipse-xl text-lg"
               >
                 <UserCircle className="w-5 h-5 mr-2" />
                 {matching.gate?.completeProfile || 'Complete my profile'}
@@ -444,7 +444,7 @@ export default function SwipePage() {
           {/* Center - Current Card Stack */}
           <div className="absolute left-1/2 -translate-x-1/2 top-0 w-full max-w-md h-full">
             {!currentCard ? (
-              <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white rounded-3xl shadow-2xl">
+              <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white superellipse-3xl shadow-2xl">
                 <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-6">
                   <Users className="w-12 h-12 text-white" />
                 </div>
@@ -484,7 +484,7 @@ export default function SwipePage() {
                     return (
                       <motion.div
                         key={`preview-${cardIndex}`}
-                        className="absolute inset-0 bg-white rounded-3xl shadow-lg pointer-events-none overflow-hidden"
+                        className="absolute inset-0 bg-white superellipse-3xl shadow-lg pointer-events-none overflow-hidden"
                         initial={{ scale: 0.9, y: -100, opacity: 0, rotate: Math.random() * 10 - 5 }}
                         animate={{
                           scale: 1 - offset * 0.03,
@@ -579,7 +579,7 @@ export default function SwipePage() {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="max-w-md mx-auto mt-6 px-4"
           >
-            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 rounded-2xl p-5 shadow-lg border border-orange-100">
+            <div className="bg-gradient-to-r from-orange-50 to-yellow-50 superellipse-2xl p-5 shadow-lg border border-orange-100">
               <p className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-orange-500" />
                 {matching.swipe?.whyMatch || 'Why this match?'}
@@ -614,7 +614,7 @@ export default function SwipePage() {
                 <div className="space-y-2 mb-3">
                   <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">{matching.swipe?.strengths || 'Strengths'}</p>
                   {currentCard.compatibility_result.strengths.slice(0, 3).map((strength, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-sm text-green-700 bg-green-50 rounded-lg px-3 py-2">
+                    <div key={idx} className="flex items-start gap-2 text-sm text-green-700 bg-green-50 superellipse-lg px-3 py-2">
                       <CheckCircle2 className="w-4 h-4 mt-0.5 flex-shrink-0" />
                       <span>{strength}</span>
                     </div>
@@ -627,7 +627,7 @@ export default function SwipePage() {
                 <div className="space-y-2">
                   <p className="text-xs font-semibold text-gray-700 uppercase tracking-wide">{matching.swipe?.considerations || 'Considerations'}</p>
                   {currentCard.compatibility_result.considerations.slice(0, 2).map((consideration, idx) => (
-                    <div key={idx} className="flex items-start gap-2 text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2">
+                    <div key={idx} className="flex items-start gap-2 text-sm text-amber-700 bg-amber-50 superellipse-lg px-3 py-2">
                       <AlertTriangle className="w-4 h-4 mt-0.5 flex-shrink-0" />
                       <span>{consideration}</span>
                     </div>

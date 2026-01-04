@@ -114,7 +114,7 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
       {/* Profile Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-3 hover:bg-gray-50 rounded-xl px-3 py-2 transition-colors"
+        className="flex items-center gap-3 hover:bg-gray-50 superellipse-xl px-3 py-2 transition-colors"
       >
         {/* Avatar with Role Icon */}
         <div
@@ -137,7 +137,7 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-full sm:w-80 max-w-xs bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+        <div className="absolute top-full left-0 mt-2 w-full sm:w-80 max-w-xs bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
           {/* Profile Header */}
           <div
             className="p-6 text-white"
@@ -205,14 +205,14 @@ export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role
                 setIsOpen(false);
                 router.push('/profile');
               }}
-              className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 rounded-xl transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 text-left text-gray-700 hover:bg-gray-50 superellipse-xl transition-colors"
             >
               <Settings className="w-5 h-5" />
               <span className="font-medium">{common?.profileSettings || 'Profile Settings'}</span>
             </button>
             <button
               onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+              className="w-full flex items-center gap-3 px-4 py-3 text-left text-red-600 hover:bg-red-50 superellipse-xl transition-colors"
             >
               <LogOut className="w-5 h-5" />
               <span className="font-medium">{dashboard.searcher?.logout || 'Se déconnecter'}</span>

@@ -109,7 +109,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
       {/* Bell Icon with Badge */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        className="relative p-2 hover:bg-gray-100 superellipse-lg transition-colors"
       >
         <Bell className="w-6 h-6 text-gray-600" />
         {unreadCount > 0 && (
@@ -121,14 +121,14 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-96 max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
+        <div className="absolute top-full right-0 mt-2 w-96 max-w-[calc(100vw-2rem)] bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
           {/* Header */}
           <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-yellow-50">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-lg font-bold text-gray-900">{notificationsT?.title || 'Notifications'}</h3>
               <button
                 onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-white/50 rounded-lg transition-colors"
+                className="p-1 hover:bg-white/50 superellipse-lg transition-colors"
               >
                 <X className="w-5 h-5 text-gray-500" />
               </button>

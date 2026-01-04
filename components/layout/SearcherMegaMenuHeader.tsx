@@ -407,7 +407,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                   <button
                     onClick={() => setActiveDropdown(isOpen ? null : domain.id)}
                     className={cn(
-                      "flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                      "flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                       isActive || isOpen
                         ? "text-amber-900 bg-amber-50"
                         : "text-gray-600 hover:bg-amber-50/50"
@@ -449,13 +449,13 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: -10, scale: 0.95 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                          className="absolute left-0 mt-3 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                          className="absolute left-0 mt-3 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
                         >
                           {/* Domain header */}
                           <div className="px-4 py-3 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
                             <div className="flex items-center gap-2">
                               <div
-                                className="w-8 h-8 rounded-lg flex items-center justify-center"
+                                className="w-8 h-8 superellipse-lg flex items-center justify-center"
                                 style={{ background: SEARCHER_GRADIENT }}
                               >
                                 <Icon className="w-4 h-4 text-white" />
@@ -480,14 +480,14 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                                   href={item.href}
                                   onClick={closeDropdown}
                                   className={cn(
-                                    "flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all group",
+                                    "flex items-center gap-3 px-3 py-2.5 superellipse-xl transition-all group",
                                     isItemActive
                                       ? "bg-amber-50"
                                       : "hover:bg-gray-50"
                                   )}
                                 >
                                   <div
-                                    className="w-9 h-9 rounded-xl flex items-center justify-center transition-transform group-hover:scale-110"
+                                    className="w-9 h-9 superellipse-xl flex items-center justify-center transition-transform group-hover:scale-110"
                                     style={{ background: `${item.color}15` }}
                                   >
                                     <ItemIcon className="w-4.5 h-4.5" style={{ color: item.color }} />
@@ -526,7 +526,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             <Link
               href="/searcher/messages"
               className={cn(
-                "relative flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all",
+                "relative flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                 pathname?.startsWith('/searcher/messages')
                   ? "text-amber-900 bg-amber-50"
                   : "text-gray-600 hover:bg-amber-50/50"
@@ -576,7 +576,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
                     >
                       <div className="px-4 py-3 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
                         <p className="font-semibold text-gray-900">Actions rapides</p>
@@ -589,10 +589,10 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                               key={action.id}
                               href={action.href}
                               onClick={() => setShowQuickActions(false)}
-                              className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-all group"
+                              className="flex items-center gap-3 px-3 py-2.5 superellipse-xl hover:bg-gray-50 transition-all group"
                             >
                               <div
-                                className="w-9 h-9 rounded-xl flex items-center justify-center"
+                                className="w-9 h-9 superellipse-xl flex items-center justify-center"
                                 style={{ background: `${action.color}15` }}
                               >
                                 <ActionIcon className="w-4 h-4" style={{ color: action.color }} />
@@ -613,7 +613,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 rounded-xl hover:bg-amber-50 transition-all"
+                className="relative p-2 superellipse-xl hover:bg-amber-50 transition-all"
                 aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
               >
                 <Bell className="w-5 h-5 text-gray-700" />
@@ -633,7 +633,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
                     >
                       <div className="px-4 py-3 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
                         <h3 className="font-semibold text-gray-900">Notifications</h3>
@@ -645,7 +645,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                             className="flex items-center gap-3 px-4 py-3 hover:bg-amber-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
-                            <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center">
+                            <div className="w-10 h-10 superellipse-xl bg-blue-100 flex items-center justify-center">
                               <MessageCircle className="w-5 h-5 text-blue-600" />
                             </div>
                             <div className="flex-1">
@@ -662,7 +662,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                             className="flex items-center gap-3 px-4 py-3 hover:bg-amber-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
-                            <div className="w-10 h-10 rounded-xl bg-amber-100 flex items-center justify-center">
+                            <div className="w-10 h-10 superellipse-xl bg-amber-100 flex items-center justify-center">
                               <Send className="w-5 h-5 text-amber-600" />
                             </div>
                             <div className="flex-1">
@@ -693,7 +693,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-amber-50 transition-all"
+                className="flex items-center gap-2 p-1.5 superellipse-xl hover:bg-amber-50 transition-all"
               >
                 <div className="relative">
                   {/* Profile completion ring */}
@@ -749,13 +749,13 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-xl rounded-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
                     >
                       {/* Profile header */}
                       <div className="px-4 py-4 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
                         <div className="flex items-center gap-3">
                           <div className="relative">
-                            <div className="w-12 h-12 rounded-xl overflow-hidden bg-amber-100">
+                            <div className="w-12 h-12 superellipse-xl overflow-hidden bg-amber-100">
                               {profile.avatar_url ? (
                                 <Image
                                   src={profile.avatar_url}
@@ -811,7 +811,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                         <Link
                           href="/searcher/profile"
                           onClick={() => setShowProfileMenu(false)}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-all"
+                          className="flex items-center gap-3 px-3 py-2.5 superellipse-xl hover:bg-gray-50 transition-all"
                         >
                           <User className="w-4 h-4 text-gray-600" />
                           <span className="text-sm text-gray-900">Mon profil</span>
@@ -819,14 +819,14 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                         <Link
                           href="/searcher/settings"
                           onClick={() => setShowProfileMenu(false)}
-                          className="flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-gray-50 transition-all"
+                          className="flex items-center gap-3 px-3 py-2.5 superellipse-xl hover:bg-gray-50 transition-all"
                         >
                           <Settings className="w-4 h-4 text-gray-600" />
                           <span className="text-sm text-gray-900">Paramètres</span>
                         </Link>
                         <button
                           onClick={handleLogout}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-red-50 transition-all text-red-600"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 superellipse-xl hover:bg-red-50 transition-all text-red-600"
                         >
                           <LogOut className="w-4 h-4" />
                           <span className="text-sm">Déconnexion</span>
@@ -841,7 +841,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-amber-50 transition-all"
+              className="lg:hidden p-2 superellipse-xl hover:bg-amber-50 transition-all"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
@@ -869,14 +869,14 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                 const isExpanded = expandedMobileSection === domain.id;
 
                 return (
-                  <div key={domain.id} className="border border-amber-100/50 rounded-xl overflow-hidden">
+                  <div key={domain.id} className="border border-amber-100/50 superellipse-xl overflow-hidden">
                     <button
                       onClick={() => setExpandedMobileSection(isExpanded ? null : domain.id)}
                       className="w-full flex items-center justify-between px-4 py-3 hover:bg-amber-50/50 transition-all"
                     >
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center"
+                          className="w-8 h-8 superellipse-lg flex items-center justify-center"
                           style={{ background: `${SEARCHER_PRIMARY}15` }}
                         >
                           <Icon className="w-4 h-4" style={{ color: SEARCHER_PRIMARY }} />
@@ -906,7 +906,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                                 className="flex items-center gap-3 px-4 py-3 hover:bg-amber-50 transition-all"
                               >
                                 <div
-                                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                                  className="w-8 h-8 superellipse-lg flex items-center justify-center"
                                   style={{ background: `${item.color}15` }}
                                 >
                                   <ItemIcon className="w-4 h-4" style={{ color: item.color }} />
@@ -934,9 +934,9 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
               <Link
                 href="/searcher/messages"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 border border-amber-100/50 rounded-xl hover:bg-amber-50/50 transition-all"
+                className="flex items-center gap-3 px-4 py-3 border border-amber-100/50 superellipse-xl hover:bg-amber-50/50 transition-all"
               >
-                <div className="w-8 h-8 rounded-lg bg-blue-100 flex items-center justify-center">
+                <div className="w-8 h-8 superellipse-lg bg-blue-100 flex items-center justify-center">
                   <MessageCircle className="w-4 h-4 text-blue-600" />
                 </div>
                 <span className="font-medium text-gray-900">Messages</span>
@@ -958,7 +958,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                         key={action.id}
                         href={action.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2.5 rounded-xl hover:bg-amber-50/50 transition-all"
+                        className="flex items-center gap-2 px-3 py-2.5 superellipse-xl hover:bg-amber-50/50 transition-all"
                       >
                         <ActionIcon className="w-4 h-4" style={{ color: action.color }} />
                         <span className="text-sm text-gray-900">{action.label}</span>

@@ -82,7 +82,7 @@ export default function LanguageSwitcher({ variant = 'hub' }: LanguageSwitcherPr
       {/* Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-sm transition-all"
+        className="flex items-center gap-1.5 px-3 py-2 superellipse-xl text-sm transition-all"
         style={{ color: styles.primary }}
         onMouseEnter={(e) => e.currentTarget.style.background = styles.hoverBg}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
@@ -103,7 +103,7 @@ export default function LanguageSwitcher({ variant = 'hub' }: LanguageSwitcherPr
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-full right-0 mt-2 bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden min-w-[160px] z-50"
+            className="absolute top-full right-0 mt-2 bg-white superellipse-xl shadow-lg border border-gray-200 overflow-hidden min-w-[160px] z-50"
           >
             {Object.entries(languageLabels).map(([code, label], index) => {
               const langCode = code as Language;

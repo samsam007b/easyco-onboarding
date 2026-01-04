@@ -45,7 +45,7 @@ const StatsSection = dynamic(() => import('@/components/StatsSection'), {
 const Testimonials = dynamic(() => import('@/components/Testimonials'), {
   loading: () => (
     <div className="max-w-6xl mx-auto px-6 py-20">
-      <div className="h-80 bg-gray-100 rounded-3xl animate-pulse" />
+      <div className="h-80 bg-gray-100 superellipse-3xl animate-pulse" />
     </div>
   ),
 });

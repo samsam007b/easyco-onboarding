@@ -253,7 +253,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                     href={item.href}
                     prefetch={true}
                     className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all group",
+                      "relative z-10 flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all group",
                       isActive
                         ? "font-semibold"
                         : "text-gray-600 hover:bg-orange-50/50"
@@ -296,7 +296,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
               <Link
                 href="/hub/finances"
                 className={cn(
-                  "hidden xl:flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold transition-all",
+                  "hidden xl:flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-semibold transition-all",
                   yourBalance > 0
                     ? "bg-gradient-to-r from-emerald-50 to-emerald-100 text-emerald-700 hover:shadow-md"
                     : "bg-gradient-to-r from-red-50 to-red-100 text-red-700 hover:shadow-md"
@@ -315,7 +315,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
             <div className="hidden lg:block relative">
               <button
                 onClick={() => setShowQuickActions(!showQuickActions)}
-                className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition-all border"
+                className="flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all border"
                 style={{
                   background: showQuickActions ? 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' : 'linear-gradient(135deg, rgba(224, 87, 71, 0.06) 0%, rgba(255, 144, 20, 0.06) 100%)',
                   borderColor: 'rgba(224, 87, 71, 0.2)',
@@ -358,12 +358,12 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", duration: 0.3 }}
-                      className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
                     >
                       {/* Header with subtle gradient background */}
                       <div className="px-5 py-4 border-b border-gray-100" style={{ background: '#fff5f3' }}>
                         <h3 className="font-bold text-gray-900 flex items-center gap-2.5 text-base">
-                          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                          <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                             <Zap className="w-3.5 h-3.5 text-white" />
                           </div>
                           {header?.quickActions?.title || common?.quickActions || 'Actions Rapides'}
@@ -376,14 +376,14 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                             <Link
                               key={action.id}
                               href={action.href}
-                              className="flex items-center gap-4 px-3 py-3.5 rounded-xl transition group"
+                              className="flex items-center gap-4 px-3 py-3.5 superellipse-xl transition group"
                               style={{ background: 'transparent' }}
                               onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                               onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                               onClick={() => setShowQuickActions(false)}
                             >
                               <div
-                                className="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-md"
+                                className="w-11 h-11 superellipse-xl flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform shadow-md"
                                 style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
                               >
                                 <Icon className="w-5 h-5 text-white" />
@@ -413,7 +413,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
             <div ref={langDropdownRef} className="hidden md:block relative">
               <button
                 onClick={() => setLangDropdownOpen(!langDropdownOpen)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
+                className="flex items-center gap-1.5 px-3 py-1.5 superellipse-lg text-sm text-gray-700 hover:bg-gray-100 transition-all"
               >
                 <Globe className="w-4 h-4" />
                 <span className="font-medium">{language.toUpperCase()}</span>
@@ -435,7 +435,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute top-full mt-2 right-0 bg-white rounded-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px] z-20"
+                      className="absolute top-full mt-2 right-0 bg-white superellipse-xl shadow-2xl border border-gray-100 overflow-hidden min-w-[180px] z-20"
                     >
                       {languages.map((lang, index) => {
                         return (
@@ -510,7 +510,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
                       <div className="relative px-5 py-5 text-white" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
@@ -578,13 +578,13 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       <div className="py-3 px-3">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3.5 px-3 py-3 rounded-xl transition-all"
+                          className="group flex items-center gap-3.5 px-3 py-3 superellipse-xl transition-all"
                           style={{ background: 'transparent' }}
                           onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                          <div className="w-10 h-10 superellipse-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                             <User className="w-4.5 h-4.5 text-white" />
                           </div>
                           <div className="flex-1">
@@ -596,13 +596,13 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
 
                         <Link
                           href="/hub/finances"
-                          className="group flex items-center gap-3.5 px-3 py-3 rounded-xl transition-all"
+                          className="group flex items-center gap-3.5 px-3 py-3 superellipse-xl transition-all"
                           style={{ background: 'transparent' }}
                           onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                          <div className="w-10 h-10 superellipse-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                             <DollarSign className="w-4.5 h-4.5 text-white" />
                           </div>
                           <div className="flex-1">
@@ -614,13 +614,13 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3.5 px-3 py-3 rounded-xl transition-all"
+                          className="group flex items-center gap-3.5 px-3 py-3 superellipse-xl transition-all"
                           style={{ background: 'transparent' }}
                           onMouseEnter={(e) => e.currentTarget.style.background = '#fff5f3'}
                           onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                          <div className="w-10 h-10 superellipse-xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-md" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                             <Settings className="w-4.5 h-4.5 text-white" />
                           </div>
                           <div className="flex-1">
@@ -634,9 +634,9 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
 
                         <button
                           onClick={handleLogout}
-                          className="group w-full flex items-center gap-3.5 px-3 py-3 hover:bg-red-50 transition-all rounded-xl"
+                          className="group w-full flex items-center gap-3.5 px-3 py-3 hover:bg-red-50 transition-all superellipse-xl"
                         >
-                          <div className="w-10 h-10 rounded-xl bg-red-100 flex items-center justify-center group-hover:scale-105 transition-transform">
+                          <div className="w-10 h-10 superellipse-xl bg-red-100 flex items-center justify-center group-hover:scale-105 transition-transform">
                             <LogOut className="w-4.5 h-4.5 text-red-600" />
                           </div>
                           <div className="flex-1 text-left">
@@ -654,7 +654,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
             {/* Mobile Menu Toggle */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl hover:bg-gray-100 transition-all"
+              className="lg:hidden p-2 superellipse-xl hover:bg-gray-100 transition-all"
               aria-label={mobileMenuOpen ? (common?.closeMenu?.[language] || 'Close menu') : (common?.openMenu?.[language] || 'Open menu')}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-navigation"
@@ -688,7 +688,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       href={item.href}
                       onClick={() => setMobileMenuOpen(false)}
                       className={cn(
-                        "flex items-center justify-between px-4 py-3 rounded-xl transition-all group",
+                        "flex items-center justify-between px-4 py-3 superellipse-xl transition-all group",
                         isActive
                           ? "bg-orange-50 font-semibold"
                           : "text-gray-700 hover:bg-gray-100"
