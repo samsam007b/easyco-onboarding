@@ -151,7 +151,7 @@ export default function ModernHeroSection() {
                   <img
                     src="/logos/izzico-icon-squircle-blanc.svg"
                     alt="Izzico"
-                    className="w-[60px] h-[60px] drop-shadow-lg"
+                    className="w-[75px] h-[75px] drop-shadow-lg"
                     style={{
                       filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))'
                     }}
