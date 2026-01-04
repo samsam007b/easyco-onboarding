@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="2430" height="780" viewBox="180 620 2430 780">
   <defs>
-    <linearGradient id="izzico-gradient-v3" gradientUnits="userSpaceOnUse" x1="180" y1="620" x2="2610" y2="1400">
+    <linearGradient id="izzico-gradient-v3" gradientUnits="userSpaceOnUse" x1="180" y1="200" x2="2610" y2="1800">
       <stop offset="0%" stop-color="#9c5698"/>
       <stop offset="20%" stop-color="#9c5698"/>
       <stop offset="35%" stop-color="#d15659"/>
