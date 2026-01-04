@@ -40,10 +40,12 @@ function generateSuperellipsePath(
 interface SuperellipseProps extends React.HTMLAttributes<HTMLDivElement> {
   /** Superellipse exponent. n=5 = iOS/Fredoka style, n=4 = classic squircle */
   n?: number;
-  /** Element tag to render */
+  /** Element tag to render (supports motion.div for animations) */
   as?: React.ElementType;
   /** Children elements */
   children?: React.ReactNode;
+  /** Allow any additional props (for framer-motion, etc.) */
+  [key: string]: any;
 }
 
 /**

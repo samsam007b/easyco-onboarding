@@ -23,6 +23,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { Superellipse } from '@/components/ui/Superellipse';
 import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
 import UpgradeNotification from '@/components/subscriptions/UpgradeNotification';
 import {
@@ -420,14 +421,16 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
             const Icon = card.icon;
 
             return (
-              <motion.div
+              <Superellipse
                 key={card.title}
+                n={8}
+                as={motion.div}
                 onClick={card.action}
                 data-onboarding={card.onboardingId}
                 whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  "relative overflow-hidden p-4 cursor-pointer transition-all rounded-2xl",
+                  "relative overflow-hidden p-4 cursor-pointer transition-all",
                   "bg-white"
                 )}
                 style={{
@@ -478,7 +481,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                     <p className="text-xs text-gray-500">{card.subtitle}</p>
                   )}
                 </div>
-              </motion.div>
+              </Superellipse>
             );
           })}
         </motion.div>
@@ -486,10 +489,12 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
         {/* Two Column Layout - Compact */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Upcoming Tasks - Compact Style */}
-          <motion.div
+          <Superellipse
+            n={8}
+            as={motion.div}
             variants={itemVariants}
             data-onboarding="tasks-section"
-            className="relative overflow-hidden bg-white p-5 rounded-2xl"
+            className="relative overflow-hidden bg-white p-5"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle */}
@@ -588,12 +593,14 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 </Button>
               </motion.div>
             </div>
-          </motion.div>
+          </Superellipse>
 
           {/* Recent Activity - Compact Style */}
-          <motion.div
+          <Superellipse
+            n={8}
+            as={motion.div}
             variants={itemVariants}
-            className="relative overflow-hidden bg-white p-5 rounded-2xl"
+            className="relative overflow-hidden bg-white p-5"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle - V3 Orange */}
@@ -642,7 +649,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 })}
               </div>
             </div>
-          </motion.div>
+          </Superellipse>
         </div>
 
       </motion.div>

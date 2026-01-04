@@ -19,6 +19,7 @@ import {
   Settings,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Superellipse } from '@/components/ui/Superellipse';
 import { InvitePopup } from '@/components/referral';
 import { useLanguage } from '@/lib/i18n/use-language';
 
@@ -273,8 +274,9 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
           animate={{ opacity: 1, x: 0 }}
           className="w-full lg:w-72 flex-shrink-0"
         >
-          <div
-            className="relative overflow-hidden p-5 h-full min-h-[200px] rounded-3xl"
+          <Superellipse
+            n={8}
+            className="relative overflow-hidden p-5 h-full min-h-[200px]"
             style={{
               background: RESIDENT_GRADIENT,
               boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -338,7 +340,7 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 </button>
               </div>
             </div>
-          </div>
+          </Superellipse>
         </motion.div>
 
         {/* RIGHT: Welcome + Quick Actions */}
@@ -349,8 +351,9 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
           className="flex-1 flex flex-col gap-4"
         >
           {/* Welcome Section */}
-          <div
-            className="relative overflow-hidden p-6 bg-white rounded-2xl"
+          <Superellipse
+            n={8}
+            className="relative overflow-hidden p-6 bg-white"
             style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative gradient blob */}
@@ -374,11 +377,12 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 {resident?.welcomeSubtitle || 'Voici un aperçu de ta coloc'}
               </p>
             </div>
-          </div>
+          </Superellipse>
 
           {/* Quick Actions Row */}
-          <div
-            className="relative overflow-hidden p-4 bg-white rounded-2xl"
+          <Superellipse
+            n={8}
+            className="relative overflow-hidden p-4 bg-white"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
@@ -414,12 +418,13 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 <span>{hub?.actionSettings || 'Paramètres'}</span>
               </button>
             </div>
-          </div>
+          </Superellipse>
 
           {/* Next steps hint (if not complete) */}
           {!isComplete && completion.nextSteps.length > 0 && (
-            <div
-              className="flex items-center gap-3 px-4 py-3 rounded-xl"
+            <Superellipse
+              n={8}
+              className="flex items-center gap-3 px-4 py-3"
               style={{ background: RESIDENT_GRADIENT_SOFT }}
             >
               <motion.div
@@ -439,7 +444,7 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 </span>
                 <ChevronRight className="w-4 h-4 text-gray-400 ml-auto" />
               </motion.div>
-            </div>
+            </Superellipse>
           )}
         </motion.div>
       </div>
