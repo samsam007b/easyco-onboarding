@@ -140,7 +140,7 @@ export default function LanguagePage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-200/70 to-teal-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-emerald-200/70 to-teal-200/70 flex items-center justify-center shadow-sm">
               <Globe className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -156,7 +156,7 @@ export default function LanguagePage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              "mb-6 p-4 rounded-xl flex items-center gap-3",
+              "mb-6 p-4 superellipse-xl flex items-center gap-3",
               message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
             )}
           >
@@ -170,10 +170,10 @@ export default function LanguagePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-sky-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-blue-100 to-sky-100 flex items-center justify-center">
               <Globe className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -187,7 +187,7 @@ export default function LanguagePage() {
               <label
                 key={lang.code}
                 className={cn(
-                  "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
+                  "flex items-center gap-4 p-4 superellipse-xl border-2 cursor-pointer transition-all",
                   settings.language === lang.code
                     ? 'border-emerald-500 bg-emerald-50/50'
                     : 'border-gray-200 hover:border-gray-300'
@@ -216,10 +216,10 @@ export default function LanguagePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
               <MapPin className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -231,7 +231,7 @@ export default function LanguagePage() {
           <select
             value={settings.timezone}
             onChange={(e) => setSettings({ ...settings, timezone: e.target.value })}
-            className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+            className="w-full px-4 py-3 superellipse-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
           >
             {timezones.map((tz) => (
               <option key={tz.value} value={tz.value}>
@@ -246,10 +246,10 @@ export default function LanguagePage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
               <Calendar className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -263,7 +263,7 @@ export default function LanguagePage() {
               <label
                 key={format.value}
                 className={cn(
-                  "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
+                  "flex items-center gap-4 p-4 superellipse-xl border-2 cursor-pointer transition-all",
                   settings.dateFormat === format.value
                     ? 'border-emerald-500 bg-emerald-50/50'
                     : 'border-gray-200 hover:border-gray-300'
@@ -295,7 +295,7 @@ export default function LanguagePage() {
           <Button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="w-full rounded-xl bg-gradient-to-r from-emerald-200/70 to-teal-200/70 text-gray-900 hover:from-emerald-300/70 hover:to-teal-300/70"
+            className="w-full superellipse-xl bg-gradient-to-r from-emerald-200/70 to-teal-200/70 text-gray-900 hover:from-emerald-300/70 hover:to-teal-300/70"
           >
             {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save changes')}
           </Button>

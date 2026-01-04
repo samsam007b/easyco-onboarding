@@ -156,7 +156,7 @@ export function PropertyFilters({
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        'bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm',
+        'bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm',
         className
       )}
     >
@@ -171,7 +171,7 @@ export function PropertyFilters({
               placeholder={t?.searchProperty?.[language] || 'Rechercher un bien...'}
               value={filters.search}
               onChange={(e) => updateFilter('search', e.target.value)}
-              className="pl-10 rounded-xl border-gray-200"
+              className="pl-10 superellipse-xl border-gray-200"
             />
             {filters.search && (
               <button
@@ -189,7 +189,7 @@ export function PropertyFilters({
               <Button
                 variant="outline"
                 className={cn(
-                  'rounded-xl justify-between min-w-[160px]',
+                  'superellipse-xl justify-between min-w-[160px]',
                   filters.status !== 'all' && 'border-purple-300 bg-purple-50'
                 )}
               >
@@ -220,7 +220,7 @@ export function PropertyFilters({
               <Button
                 variant="outline"
                 className={cn(
-                  'rounded-xl justify-between min-w-[140px]',
+                  'superellipse-xl justify-between min-w-[140px]',
                   filters.health !== 'all' && 'border-purple-300 bg-purple-50'
                 )}
               >
@@ -258,7 +258,7 @@ export function PropertyFilters({
                 <Button
                   variant="outline"
                   className={cn(
-                    'rounded-xl justify-between min-w-[140px]',
+                    'superellipse-xl justify-between min-w-[140px]',
                     filters.city && 'border-purple-300 bg-purple-50'
                   )}
                 >
@@ -295,7 +295,7 @@ export function PropertyFilters({
             variant="outline"
             onClick={() => setShowAdvanced(!showAdvanced)}
             className={cn(
-              'rounded-xl',
+              'superellipse-xl',
               showAdvanced && 'border-purple-300 bg-purple-50'
             )}
           >
@@ -312,11 +312,11 @@ export function PropertyFilters({
           </Button>
 
           {/* View Mode Toggle */}
-          <div className="flex items-center gap-1 border border-gray-200 rounded-xl p-1">
+          <div className="flex items-center gap-1 border border-gray-200 superellipse-xl p-1">
             <button
               onClick={() => onViewModeChange('grid')}
               className={cn(
-                'p-2 rounded-lg transition-colors',
+                'p-2 superellipse-lg transition-colors',
                 viewMode === 'grid'
                   ? 'bg-purple-100 text-purple-600'
                   : 'text-gray-400 hover:text-gray-600'
@@ -327,7 +327,7 @@ export function PropertyFilters({
             <button
               onClick={() => onViewModeChange('list')}
               className={cn(
-                'p-2 rounded-lg transition-colors',
+                'p-2 superellipse-lg transition-colors',
                 viewMode === 'list'
                   ? 'bg-purple-100 text-purple-600'
                   : 'text-gray-400 hover:text-gray-600'
@@ -365,7 +365,7 @@ export function PropertyFilters({
                           onChange={(e) =>
                             updateFilter('minRent', e.target.value ? Number(e.target.value) : null)
                           }
-                          className="pl-9 rounded-lg"
+                          className="pl-9 superellipse-lg"
                         />
                       </div>
                       <span className="text-gray-400">-</span>
@@ -378,7 +378,7 @@ export function PropertyFilters({
                           onChange={(e) =>
                             updateFilter('maxRent', e.target.value ? Number(e.target.value) : null)
                           }
-                          className="pl-9 rounded-lg"
+                          className="pl-9 superellipse-lg"
                         />
                       </div>
                     </div>
@@ -392,7 +392,7 @@ export function PropertyFilters({
                     <div className="flex items-center gap-2">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="outline" className="flex-1 justify-between rounded-lg">
+                          <Button variant="outline" className="flex-1 justify-between superellipse-lg">
                             {currentSort ? getLabel(currentSort.labelKey) : ''}
                             <ChevronDown className="w-4 h-4 ml-2" />
                           </Button>
@@ -415,7 +415,7 @@ export function PropertyFilters({
                         onClick={() =>
                           updateFilter('sortOrder', filters.sortOrder === 'asc' ? 'desc' : 'asc')
                         }
-                        className="rounded-lg"
+                        className="superellipse-lg"
                       >
                         {filters.sortOrder === 'asc' ? (
                           <SortAsc className="w-4 h-4" />
@@ -447,7 +447,7 @@ export function PropertyFilters({
       </div>
 
       {/* Results Count Bar */}
-      <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 rounded-b-2xl flex items-center justify-between text-sm">
+      <div className="px-4 py-2 bg-gray-50 border-t border-gray-100 superellipse-b-2xl flex items-center justify-between text-sm">
         <span className="text-gray-600">
           {filteredCount === totalCount ? (
             <>{totalCount} {totalCount > 1 ? getLabel('propertiesPlural') : getLabel('property')}</>

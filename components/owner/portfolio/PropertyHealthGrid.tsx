@@ -174,14 +174,14 @@ export function PropertyHealthGrid({
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-4 mb-6"
+        className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-4 mb-6"
       >
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           {/* Health Overview */}
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-3">
               <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
                 style={{ background: ownerGradient }}
               >
                 <Building2 className="w-5 h-5 text-white" />
@@ -197,7 +197,7 @@ export function PropertyHealthGrid({
             {/* Health Indicators */}
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center">
+                <div className="w-8 h-8 superellipse-lg bg-emerald-100 flex items-center justify-center">
                   <CheckCircle className="w-4 h-4 text-emerald-600" />
                 </div>
                 <div>
@@ -207,7 +207,7 @@ export function PropertyHealthGrid({
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-amber-100 flex items-center justify-center">
+                <div className="w-8 h-8 superellipse-lg bg-amber-100 flex items-center justify-center">
                   <AlertTriangle className="w-4 h-4 text-amber-600" />
                 </div>
                 <div>
@@ -217,7 +217,7 @@ export function PropertyHealthGrid({
               </div>
 
               <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center">
+                <div className="w-8 h-8 superellipse-lg bg-red-100 flex items-center justify-center">
                   <Clock className="w-4 h-4 text-red-600" />
                 </div>
                 <div>
@@ -269,10 +269,10 @@ export function PropertyHealthGrid({
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-12 text-center"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-12 text-center"
         >
           <div
-            className="w-20 h-20 mx-auto rounded-2xl flex items-center justify-center mb-4 opacity-50"
+            className="w-20 h-20 mx-auto superellipse-2xl flex items-center justify-center mb-4 opacity-50"
             style={{ background: ownerGradient }}
           >
             <Home className="w-10 h-10 text-white" />

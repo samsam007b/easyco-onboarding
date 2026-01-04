@@ -203,10 +203,10 @@ export function PaymentTable({
 
   if (isLoading) {
     return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 p-8">
+      <div className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 p-8">
         <div className="flex items-center justify-center">
           <div className="animate-pulse flex flex-col items-center">
-            <div className="w-12 h-12 rounded-xl bg-gray-200 mb-4" />
+            <div className="w-12 h-12 superellipse-xl bg-gray-200 mb-4" />
             <div className="h-4 w-32 bg-gray-200 rounded" />
           </div>
         </div>
@@ -215,7 +215,7 @@ export function PaymentTable({
   }
 
   return (
-    <div className="bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+    <div className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm overflow-hidden">
       {/* Header with filters */}
       <div className="p-4 border-b border-gray-100">
         <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -336,7 +336,7 @@ export function PaymentTable({
                 <td colSpan={6} className="px-4 py-12 text-center">
                   <div className="flex flex-col items-center">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-3"
+                      className="w-12 h-12 superellipse-xl flex items-center justify-center mb-3"
                       style={{ background: ownerGradient }}
                     >
                       <Filter className="w-6 h-6 text-white" />

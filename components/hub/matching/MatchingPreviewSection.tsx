@@ -80,7 +80,7 @@ export default function MatchingPreviewSection({
             }}
           >
             <div
-              className="w-6 h-6 rounded-lg flex items-center justify-center"
+              className="w-6 h-6 superellipse-lg flex items-center justify-center"
               style={{ background: RESIDENT_GRADIENT }}
             >
               <Sparkles className="w-3.5 h-3.5 text-white" />
@@ -144,7 +144,7 @@ export default function MatchingPreviewSection({
                       <motion.div
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
-                        className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6"
+                        className="w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-6"
                         style={{ background: CARD_BG_GRADIENT }}
                       >
                         <UserPlus className="w-10 h-10" style={{ color: RESIDENT_PRIMARY }} />
@@ -175,11 +175,11 @@ export default function MatchingPreviewSection({
               {/* Candidates Stat */}
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
-                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white cursor-default"
+                className="flex items-center gap-3 px-5 py-3 superellipse-2xl bg-white cursor-default"
                 style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
               >
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center"
                   style={{ background: RESIDENT_GRADIENT }}
                 >
                   <Users className="w-5 h-5 text-white" />
@@ -193,11 +193,11 @@ export default function MatchingPreviewSection({
               {/* Matches Stat */}
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
-                className="flex items-center gap-3 px-5 py-3 rounded-2xl bg-white cursor-default"
+                className="flex items-center gap-3 px-5 py-3 superellipse-2xl bg-white cursor-default"
                 style={{ boxShadow: `0 8px 24px rgba(239, 68, 68, 0.15)` }}
               >
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center"
                   style={{ background: 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)' }}
                 >
                   <Heart className="w-5 h-5 text-white" />
@@ -255,7 +255,7 @@ export default function MatchingPreviewSection({
                 key={index}
                 variants={itemVariants}
                 whileHover={{ scale: 1.03, y: -6 }}
-                className="relative overflow-hidden rounded-2xl bg-white p-6 cursor-default"
+                className="relative overflow-hidden superellipse-2xl bg-white p-6 cursor-default"
                 style={{
                   boxShadow: `0 12px 32px rgba(0, 0, 0, 0.08)`,
                 }}
@@ -269,7 +269,7 @@ export default function MatchingPreviewSection({
                 <div className="relative z-10 flex items-start gap-4">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: feature.bgColor }}
                   >
                     <Icon className="w-6 h-6" style={{ color: feature.gradient.includes('#f59e0b') ? '#f59e0b' : feature.gradient.includes('#3b82f6') ? '#3b82f6' : '#10b981' }} />

@@ -241,7 +241,7 @@ export default function HubMembersPage() {
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 whileTap={{ scale: 0.95 }}
-                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+                className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{
                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                   boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -286,7 +286,7 @@ export default function HubMembersPage() {
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
               boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
@@ -298,7 +298,7 @@ export default function HubMembersPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#e05747]">{hub.members?.stats?.total || 'Total'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #e05747, #ff9014)' }}
               >
                 <Users className="w-4 h-4 text-white" />
@@ -314,7 +314,7 @@ export default function HubMembersPage() {
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
               boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
@@ -326,7 +326,7 @@ export default function HubMembersPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#f8572b]">{hub.members?.stats?.residents || 'Residents'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #f8572b, #ff7b19)' }}
               >
                 <Home className="w-4 h-4 text-white" />
@@ -353,7 +353,7 @@ export default function HubMembersPage() {
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
               boxShadow: '0 8px 24px rgba(245, 158, 11, 0.15)',
@@ -365,7 +365,7 @@ export default function HubMembersPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-amber-700">{hub.members?.stats?.owners || 'Owners'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
               >
                 <Crown className="w-4 h-4 text-white" />
@@ -398,7 +398,7 @@ export default function HubMembersPage() {
                 variants={itemVariants}
                 whileHover={{ scale: 1.02, y: -6 }}
                 whileTap={{ scale: 0.98 }}
-                className="relative overflow-hidden rounded-2xl cursor-pointer"
+                className="relative overflow-hidden superellipse-2xl cursor-pointer"
                 style={{
                   background: `linear-gradient(135deg, ${cardGradient.bg} 0%, ${cardGradient.bgEnd} 100%)`,
                   boxShadow: `0 12px 32px ${cardGradient.shadow}`,
@@ -420,12 +420,12 @@ export default function HubMembersPage() {
                         <img
                           src={member.avatar}
                           alt={member.name}
-                          className="w-14 h-14 rounded-xl object-cover shadow-lg"
+                          className="w-14 h-14 superellipse-xl object-cover shadow-lg"
                           style={{ boxShadow: `0 4px 12px ${cardGradient.shadow}` }}
                         />
                       ) : (
                         <div
-                          className="w-14 h-14 rounded-xl flex items-center justify-center text-xl font-bold text-white shadow-lg"
+                          className="w-14 h-14 superellipse-xl flex items-center justify-center text-xl font-bold text-white shadow-lg"
                           style={{
                             background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
                             boxShadow: `0 4px 12px ${cardGradient.shadow}`,
@@ -465,7 +465,7 @@ export default function HubMembersPage() {
                   <div className="space-y-2.5 mb-4">
                     <div className="flex items-center gap-2.5 text-sm">
                       <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center"
+                        className="w-7 h-7 superellipse-lg flex items-center justify-center"
                         style={{ background: `${cardGradient.accent}15` }}
                       >
                         <Mail className="w-3.5 h-3.5" style={{ color: cardGradient.accent }} />
@@ -476,7 +476,7 @@ export default function HubMembersPage() {
                     {member.phone && (
                       <div className="flex items-center gap-2.5 text-sm">
                         <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center"
+                          className="w-7 h-7 superellipse-lg flex items-center justify-center"
                           style={{ background: 'rgba(34, 197, 94, 0.1)' }}
                         >
                           <Phone className="w-3.5 h-3.5 text-emerald-500" />
@@ -488,7 +488,7 @@ export default function HubMembersPage() {
                     {member.occupation && (
                       <div className="flex items-center gap-2.5 text-sm">
                         <div
-                          className="w-7 h-7 rounded-lg flex items-center justify-center"
+                          className="w-7 h-7 superellipse-lg flex items-center justify-center"
                           style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                         >
                           <Briefcase className="w-3.5 h-3.5 text-[#ff651e]" />
@@ -499,7 +499,7 @@ export default function HubMembersPage() {
 
                     <div className="flex items-center gap-2.5 text-sm">
                       <div
-                        className="w-7 h-7 rounded-lg flex items-center justify-center"
+                        className="w-7 h-7 superellipse-lg flex items-center justify-center"
                         style={{ background: 'rgba(255, 123, 25, 0.1)' }}
                       >
                         <Calendar className="w-3.5 h-3.5 text-[#ff7b19]" />
@@ -545,7 +545,7 @@ export default function HubMembersPage() {
                           e.stopPropagation();
                           router.push('/messages');
                         }}
-                        className="w-full h-9 rounded-xl text-white font-semibold text-sm shadow-md"
+                        className="w-full h-9 superellipse-xl text-white font-semibold text-sm shadow-md"
                         style={{
                           background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
                           boxShadow: `0 4px 12px ${cardGradient.shadow}`,
@@ -560,7 +560,7 @@ export default function HubMembersPage() {
                         variant="ghost"
                         size="sm"
                         onClick={(e) => e.stopPropagation()}
-                        className="h-9 w-9 rounded-xl bg-white/80 hover:bg-white text-pink-500 hover:text-pink-600 shadow-sm"
+                        className="h-9 w-9 superellipse-xl bg-white/80 hover:bg-white text-pink-500 hover:text-pink-600 shadow-sm"
                       >
                         <Heart className="w-4 h-4" />
                       </Button>
@@ -577,12 +577,12 @@ export default function HubMembersPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-3xl shadow-lg p-12 text-center border-2 border-transparent"
+            className="bg-white superellipse-3xl shadow-lg p-12 text-center border-2 border-transparent"
             style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
           >
             <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
-              className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
+              className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
               style={{
                 background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                 boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',

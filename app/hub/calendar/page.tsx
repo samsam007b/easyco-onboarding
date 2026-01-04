@@ -316,7 +316,7 @@ export default function HubCalendarPage() {
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                 boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -336,7 +336,7 @@ export default function HubCalendarPage() {
             <Button
               onClick={handleCreateEvent}
               size="sm"
-              className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
+              className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                 boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
@@ -353,7 +353,7 @@ export default function HubCalendarPage() {
           {/* Today Card - Orange Gradient */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
               boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
@@ -365,7 +365,7 @@ export default function HubCalendarPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-orange-700">{t?.today?.[language] || 'Today'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
               >
                 <CalendarIcon className="w-4 h-4 text-white" />
@@ -378,7 +378,7 @@ export default function HubCalendarPage() {
           {/* This Month Card - Purple Gradient */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
               boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
@@ -390,7 +390,7 @@ export default function HubCalendarPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-purple-700">{t?.thisMonth?.[language] || 'This month'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
               >
                 <PartyPopper className="w-4 h-4 text-white" />
@@ -403,7 +403,7 @@ export default function HubCalendarPage() {
           {/* Upcoming Card - Green Gradient */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
               boxShadow: '0 8px 24px rgba(34, 197, 94, 0.15)',
@@ -415,7 +415,7 @@ export default function HubCalendarPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-green-700">{t?.upcoming?.[language] || 'Upcoming'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
               >
                 <Clock className="w-4 h-4 text-white" />
@@ -430,7 +430,7 @@ export default function HubCalendarPage() {
         <motion.div
           variants={itemVariants}
           whileHover={{ y: -4 }}
-          className="bg-white rounded-2xl shadow-lg p-6 border-2 border-orange-100"
+          className="bg-white superellipse-2xl shadow-lg p-6 border-2 border-orange-100"
           style={{ boxShadow: '0 12px 32px rgba(255, 101, 30, 0.08)' }}
         >
           <div className="flex items-center justify-between mb-6">
@@ -514,7 +514,7 @@ export default function HubCalendarPage() {
                   whileHover={day ? { scale: 1.02, y: -2 } : undefined}
                   whileTap={day ? { scale: 0.98 } : undefined}
                   className={cn(
-                    'min-h-[100px] p-2 border-2 rounded-xl transition-all cursor-pointer',
+                    'min-h-[100px] p-2 border-2 superellipse-xl transition-all cursor-pointer',
                     day
                       ? 'bg-white hover:border-orange-300 border-gray-100'
                       : 'bg-gray-50/50 border-gray-50',
@@ -557,7 +557,7 @@ export default function HubCalendarPage() {
                             key={event.id}
                             whileHover={{ scale: 1.02 }}
                             className={cn(
-                              'text-xs px-2 py-1 rounded-lg text-white truncate font-medium shadow-sm',
+                              'text-xs px-2 py-1 superellipse-lg text-white truncate font-medium shadow-sm',
                               event.color
                             )}
                           >
@@ -587,12 +587,12 @@ export default function HubCalendarPage() {
         <motion.div
           variants={itemVariants}
           whileHover={{ y: -4 }}
-          className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-purple-400"
+          className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-purple-400"
           style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
         >
           <div className="flex items-center gap-3 p-4 border-b border-gray-100">
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
+              className="w-9 h-9 superellipse-xl flex items-center justify-center shadow-md"
               style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
             >
               <PartyPopper className="w-5 h-5 text-white" />
@@ -617,7 +617,7 @@ export default function HubCalendarPage() {
               <motion.div variants={itemVariants} className="text-center py-12">
                 <motion.div
                   whileHover={{ scale: 1.05, rotate: 5 }}
-                  className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                  className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -644,7 +644,7 @@ export default function HubCalendarPage() {
                     variants={itemVariants}
                     whileHover={{ scale: 1.01, x: 4 }}
                     whileTap={{ scale: 0.99 }}
-                    className="flex items-start gap-4 p-4 rounded-2xl border-2 border-orange-100 hover:border-orange-200 transition-all group cursor-pointer"
+                    className="flex items-start gap-4 p-4 superellipse-2xl border-2 border-orange-100 hover:border-orange-200 transition-all group cursor-pointer"
                     style={{
                       background:
                         'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
@@ -654,7 +654,7 @@ export default function HubCalendarPage() {
                     <motion.div
                       whileHover={{ scale: 1.1, rotate: 5 }}
                       className={cn(
-                        'relative w-12 h-12 rounded-xl overflow-hidden flex items-center justify-center shadow-md',
+                        'relative w-12 h-12 superellipse-xl overflow-hidden flex items-center justify-center shadow-md',
                         event.color
                       )}
                       style={{ boxShadow: '0 4px 12px rgba(255, 101, 30, 0.35)' }}

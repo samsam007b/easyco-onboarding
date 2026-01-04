@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-type LogoVariant = 'trademark' | 'icon';
+type LogoVariant = 'trademark' | 'icon' | 'lockup';
 type LogoTheme = 'gradient' | 'white' | 'dark';
 type LogoSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 
@@ -32,6 +32,16 @@ const trademarkSizeClasses: Record<LogoSize, string> = {
   '2xl': 'h-20 w-auto',
 };
 
+// Tailles pour le lockup (icon + trademark, ratio ~2.5:1)
+const lockupSizeClasses: Record<LogoSize, string> = {
+  xs: 'h-6 w-auto',
+  sm: 'h-8 w-auto',
+  md: 'h-10 w-auto',
+  lg: 'h-12 w-auto',
+  xl: 'h-16 w-auto',
+  '2xl': 'h-24 w-auto',
+};
+
 // Sources SVG vectorisées (nouveau système)
 const logoSources = {
   icon: {
@@ -43,6 +53,11 @@ const logoSources = {
     gradient: '/logos/izzico-trademark-text-gradient.svg',
     white: '/logos/izzico-trademark-white.svg',
     dark: '/logos/izzico-trademark-dark.svg',
+  },
+  lockup: {
+    gradient: '/logos/izzico-lockup-gradient.svg',
+    white: '/logos/izzico-lockup-white.svg',
+    dark: '/logos/izzico-lockup-dark.svg',
   },
 };
 
@@ -69,6 +84,8 @@ export function IzzicoLogo({
 }: IzzicoLogoProps) {
   const sizeClass = variant === 'icon'
     ? iconSizeClasses[size]
+    : variant === 'lockup'
+    ? lockupSizeClasses[size]
     : trademarkSizeClasses[size];
   const src = logoSources[variant][theme];
 
@@ -105,6 +122,18 @@ export function IzzicoTrademark({
   className
 }: Omit<IzzicoLogoProps, 'variant'>) {
   return <IzzicoLogo variant="trademark" theme={theme} size={size} className={className} />;
+}
+
+/**
+ * Lockup IzzIco (icône + texte - Option D)
+ * Usage: Headers principaux, branding complet
+ */
+export function IzzicoLockup({
+  theme = 'gradient',
+  size = 'md',
+  className
+}: Omit<IzzicoLogoProps, 'variant'>) {
+  return <IzzicoLogo variant="lockup" theme={theme} size={size} className={className} />;
 }
 
 // ============================================

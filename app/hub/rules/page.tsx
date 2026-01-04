@@ -250,7 +250,7 @@ export default function RulesPage() {
 
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+              <div className="w-14 h-14 superellipse-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                 <Vote className="w-7 h-7 text-white" />
               </div>
               <div>
@@ -275,7 +275,7 @@ export default function RulesPage() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <motion.button
               onClick={() => setFilter('all')}
-              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              className="bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -288,7 +288,7 @@ export default function RulesPage() {
                       (stats?.total_rejected || 0)}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}>
+                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}>
                   <Vote className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function RulesPage() {
 
             <motion.button
               onClick={() => setFilter('voting')}
-              className="bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              className="bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -307,7 +307,7 @@ export default function RulesPage() {
                     {stats?.total_voting || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}>
+                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}>
                   <Clock className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -316,7 +316,7 @@ export default function RulesPage() {
             {/* Active - V3 Green Pastel */}
             <motion.button
               onClick={() => setFilter('active')}
-              className="relative overflow-hidden rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               style={{
                 background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
                 boxShadow: filter === 'active' ? '0 8px 24px rgba(124, 184, 155, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
@@ -335,7 +335,7 @@ export default function RulesPage() {
                   </p>
                 </div>
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)' }}
                 >
                   <CheckCircle className="w-6 h-6 text-white" />
@@ -346,7 +346,7 @@ export default function RulesPage() {
             {/* Rejected - V3 Red Pastel */}
             <motion.button
               onClick={() => setFilter('rejected')}
-              className="relative overflow-hidden rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               style={{
                 background: 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)',
                 boxShadow: filter === 'rejected' ? '0 8px 24px rgba(208, 128, 128, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
@@ -365,7 +365,7 @@ export default function RulesPage() {
                   </p>
                 </div>
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)' }}
                 >
                   <XCircle className="w-6 h-6 text-white" />
@@ -381,7 +381,7 @@ export default function RulesPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-3xl shadow-lg p-12 text-center"
+              className="bg-white superellipse-3xl shadow-lg p-12 text-center"
               style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
             >
               {/* V3 Fun Icon with Glow */}
@@ -391,7 +391,7 @@ export default function RulesPage() {
               >
                 {/* Glow effect */}
                 <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-30"
+                  className="absolute inset-0 superellipse-2xl opacity-30"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     filter: 'blur(20px)',
@@ -401,7 +401,7 @@ export default function RulesPage() {
                 />
                 {/* Main icon container */}
                 <div
-                  className="relative w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg"
+                  className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -410,7 +410,7 @@ export default function RulesPage() {
                   <Vote className="w-12 h-12 text-white" />
                   {/* Shine effect */}
                   <motion.div
-                    className="absolute inset-0 rounded-2xl bg-white/20"
+                    className="absolute inset-0 superellipse-2xl bg-white/20"
                     animate={{ opacity: [0, 0.3, 0] }}
                     transition={{ repeat: Infinity, duration: 2.5 }}
                   />
@@ -460,7 +460,7 @@ export default function RulesPage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all"
+                    className="bg-white superellipse-2xl shadow-lg p-6 hover:shadow-xl transition-all"
                   >
                     <div className="flex items-start gap-4">
                       {/* Category Icon */}
@@ -598,7 +598,7 @@ export default function RulesPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative border-2 border-orange-100"
+            className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative border-2 border-orange-100"
             style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
           >
             {/* Decorative gradient circles */}
@@ -622,7 +622,7 @@ export default function RulesPage() {
                   <motion.div
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
-                    className="w-12 h-12 rounded-xl flex items-center justify-center"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center"
                     style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
                   >
                     <Vote className="w-6 h-6 text-white" />
@@ -644,7 +644,7 @@ export default function RulesPage() {
                     setShowCreateModal(false);
                     resetCreateForm();
                   }}
-                  className="p-2.5 rounded-xl transition-colors"
+                  className="p-2.5 superellipse-xl transition-colors"
                   style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                 >
                   <X className="w-5 h-5" style={{ color: '#ff651e' }} />
@@ -657,7 +657,7 @@ export default function RulesPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      className="w-6 h-6 superellipse-lg flex items-center justify-center"
                       style={{ background: 'rgba(255, 101, 30, 0.15)' }}
                     >
                       <MessageSquare className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
@@ -668,7 +668,7 @@ export default function RulesPage() {
                     value={createForm.title}
                     onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
                     placeholder={t?.createModal?.titlePlaceholder?.[language] || 'E.g.: No noise after 10pm'}
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                 </div>
 
@@ -676,7 +676,7 @@ export default function RulesPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      className="w-6 h-6 superellipse-lg flex items-center justify-center"
                       style={{ background: 'rgba(59, 130, 246, 0.15)' }}
                     >
                       <Archive className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
@@ -687,7 +687,7 @@ export default function RulesPage() {
                     value={createForm.description}
                     onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
                     placeholder={t?.createModal?.descriptionPlaceholder?.[language] || 'Explain the rule in detail...'}
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all min-h-[100px]"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all min-h-[100px]"
                   />
                 </div>
 
@@ -695,7 +695,7 @@ export default function RulesPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      className="w-6 h-6 superellipse-lg flex items-center justify-center"
                       style={{ background: 'rgba(16, 185, 129, 0.15)' }}
                     >
                       <Users className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
@@ -708,7 +708,7 @@ export default function RulesPage() {
                         key={cat.value}
                         onClick={() => setCreateForm({ ...createForm, category: cat.value })}
                         className={cn(
-                          'p-3 rounded-xl border-2 text-center transition-all',
+                          'p-3 superellipse-xl border-2 text-center transition-all',
                           createForm.category === cat.value
                             ? 'bg-orange-50'
                             : 'border-gray-200 hover:border-gray-300'
@@ -726,7 +726,7 @@ export default function RulesPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center"
+                      className="w-6 h-6 superellipse-lg flex items-center justify-center"
                       style={{ background: 'rgba(168, 85, 247, 0.15)' }}
                     >
                       <Clock className="w-3.5 h-3.5" style={{ color: '#a855f7' }} />
@@ -741,7 +741,7 @@ export default function RulesPage() {
                     onChange={(e) =>
                       setCreateForm({ ...createForm, voting_duration_days: parseInt(e.target.value) })
                     }
-                    className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
                   />
                   <p className="text-xs text-gray-500 mt-2">
                     {t?.createModal?.votingEndsIn?.[language]?.replace('{days}', String(createForm.voting_duration_days || 7)) || `Voting will end in ${createForm.voting_duration_days || 7} days`}
@@ -757,7 +757,7 @@ export default function RulesPage() {
                         setShowCreateModal(false);
                         resetCreateForm();
                       }}
-                      className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
+                      className="w-full superellipse-2xl py-6 font-semibold border-2 transition-all"
                       style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#ff651e' }}
                       disabled={isCreating}
                     >
@@ -768,7 +768,7 @@ export default function RulesPage() {
                     <Button
                       onClick={handleCreateRule}
                       disabled={isCreating || !createForm.title || !createForm.description}
-                      className="w-full rounded-2xl py-6 font-bold text-white border-none"
+                      className="w-full superellipse-2xl py-6 font-bold text-white border-none"
                       style={{
                         background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                         boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
@@ -800,7 +800,7 @@ export default function RulesPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-2xl max-w-lg w-full p-6"
+            className="bg-white superellipse-3xl shadow-2xl max-w-lg w-full p-6"
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">{t?.voteModal?.title?.[language] || 'Vote'}</h2>
@@ -830,7 +830,7 @@ export default function RulesPage() {
                       key={voteType.value}
                       onClick={() => setSelectedVote(voteType.value)}
                       className={cn(
-                        'p-4 rounded-xl border-2 text-center transition-all',
+                        'p-4 superellipse-xl border-2 text-center transition-all',
                         selectedVote === voteType.value
                           ? voteType.borderColor + ' ' + voteType.bgColor
                           : 'border-gray-200 hover:border-gray-300'
@@ -852,7 +852,7 @@ export default function RulesPage() {
                   value={voteComment}
                   onChange={(e) => setVoteComment(e.target.value)}
                   placeholder={t?.voteModal?.commentPlaceholder?.[language] || 'Explain your vote...'}
-                  className="rounded-xl min-h-[80px]"
+                  className="superellipse-xl min-h-[80px]"
                 />
               </div>
             </div>

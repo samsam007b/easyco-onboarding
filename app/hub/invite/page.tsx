@@ -192,7 +192,7 @@ export default function InvitePage() {
           </Button>
 
           <div className="flex items-center gap-3 mb-2">
-            <div className="w-14 h-14 rounded-2xl flex items-center justify-center"
+            <div className="w-14 h-14 superellipse-2xl flex items-center justify-center"
                  style={{
                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                  }}>
@@ -224,14 +224,14 @@ export default function InvitePage() {
               {t?.rewards?.description?.[language] || 'When someone joins with your link, you both earn free months!'}
             </p>
             <div className="flex gap-3">
-              <div className="flex-1 p-2 bg-white rounded-lg text-center border border-[#7CB89B]/20">
+              <div className="flex-1 p-2 bg-white superellipse-lg text-center border border-[#7CB89B]/20">
                 <div className="flex items-center justify-center gap-1">
                   <Home className="w-3.5 h-3.5 text-[#ff651e]" />
                   <span className="text-xs text-gray-600">{t?.rewards?.resident?.[language] || 'Resident'}</span>
                 </div>
                 <p className="font-bold text-[#ff651e]">{t?.rewards?.residentMonths?.[language] || '+2 months'}</p>
               </div>
-              <div className="flex-1 p-2 bg-white rounded-lg text-center border border-[#7CB89B]/20">
+              <div className="flex-1 p-2 bg-white superellipse-lg text-center border border-[#7CB89B]/20">
                 <div className="flex items-center justify-center gap-1">
                   <Building2 className="w-3.5 h-3.5 text-purple-600" />
                   <span className="text-xs text-gray-600">{t?.rewards?.owner?.[language] || 'Owner'}</span>
@@ -270,7 +270,7 @@ export default function InvitePage() {
                     setInviteUrl(null);
                     setInviteToken(null);
                   }}
-                  className={`flex-1 p-3 rounded-xl border-2 transition-all ${
+                  className={`flex-1 p-3 superellipse-xl border-2 transition-all ${
                     selectedRole === 'resident'
                       ? 'border-orange-400 bg-orange-50'
                       : 'border-gray-200 hover:border-gray-300'
@@ -289,7 +289,7 @@ export default function InvitePage() {
                     setInviteUrl(null);
                     setInviteToken(null);
                   }}
-                  className={`flex-1 p-3 rounded-xl border-2 transition-all ${
+                  className={`flex-1 p-3 superellipse-xl border-2 transition-all ${
                     selectedRole === 'owner'
                       ? 'border-purple-400 bg-purple-50'
                       : 'border-gray-200 hover:border-gray-300'
@@ -310,7 +310,7 @@ export default function InvitePage() {
               <Button
                 onClick={generateInviteLink}
                 disabled={isGenerating}
-                className={`w-full rounded-xl py-6 text-white ${
+                className={`w-full superellipse-xl py-6 text-white ${
                   selectedRole === 'owner'
                     ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
                     : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]'
@@ -331,7 +331,7 @@ export default function InvitePage() {
             ) : (
               <>
                 {/* Link Display */}
-                <div className={`p-4 rounded-xl border-2 mb-4 ${
+                <div className={`p-4 superellipse-xl border-2 mb-4 ${
                   selectedRole === 'owner'
                     ? 'bg-gradient-to-r from-purple-50 to-indigo-50 border-purple-200'
                     : 'bg-gradient-to-r from-orange-50 to-yellow-50 border-orange-200'
@@ -348,7 +348,7 @@ export default function InvitePage() {
                 <div className="flex gap-3 mb-4">
                   <Button
                     onClick={handleCopyLink}
-                    className={`flex-1 rounded-xl ${
+                    className={`flex-1 superellipse-xl ${
                       selectedRole === 'owner'
                         ? 'bg-gradient-to-r from-purple-500 to-indigo-600'
                         : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]'
@@ -372,7 +372,7 @@ export default function InvitePage() {
                       setInviteToken(null);
                     }}
                     variant="outline"
-                    className="rounded-xl"
+                    className="superellipse-xl"
                   >
                     <RefreshCw className="w-5 h-5" />
                   </Button>
@@ -383,7 +383,7 @@ export default function InvitePage() {
                   <Button
                     onClick={handleShareWhatsApp}
                     variant="outline"
-                    className="flex-1 rounded-xl border-green-200 text-green-600 hover:bg-green-50"
+                    className="flex-1 superellipse-xl border-green-200 text-green-600 hover:bg-green-50"
                   >
                     <MessageCircle className="w-5 h-5 mr-2" />
                     WhatsApp
@@ -391,7 +391,7 @@ export default function InvitePage() {
                   <Button
                     onClick={handleShareEmail}
                     variant="outline"
-                    className="flex-1 rounded-xl border-[#ff651e]/30 text-[#ff651e] hover:bg-[#FFF5F0]"
+                    className="flex-1 superellipse-xl border-[#ff651e]/30 text-[#ff651e] hover:bg-[#FFF5F0]"
                   >
                     <Mail className="w-5 h-5 mr-2" />
                     Email
@@ -423,16 +423,16 @@ export default function InvitePage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 + index * 0.05 }}
-                  className="flex items-center gap-3 p-4 bg-gradient-to-r from-gray-50 to-orange-50/30 rounded-2xl"
+                  className="flex items-center gap-3 p-4 bg-gradient-to-r from-gray-50 to-orange-50/30 superellipse-2xl"
                 >
                   {member.user_profiles?.profile_photo_url ? (
                     <img
                       src={member.user_profiles.profile_photo_url}
                       alt=""
-                      className="w-12 h-12 rounded-xl object-cover"
+                      className="w-12 h-12 superellipse-xl object-cover"
                     />
                   ) : (
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                    <div className="w-12 h-12 superellipse-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
                       {member.user_profiles?.first_name?.charAt(0) || '?'}
                     </div>
                   )}

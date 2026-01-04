@@ -105,10 +105,10 @@ export function FinanceAlerts({
 
   if (alerts.length === 0) {
     return (
-      <div className={cn('bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6', className)}>
+      <div className={cn('bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6', className)}>
         <div className="flex items-center gap-3 mb-6">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
             style={{ background: semanticColors.success.gradient }}
           >
             <Bell className="w-5 h-5 text-white" />
@@ -121,7 +121,7 @@ export function FinanceAlerts({
 
         <div className="text-center py-8">
           <div
-            className="w-16 h-16 mx-auto rounded-2xl flex items-center justify-center mb-4"
+            className="w-16 h-16 mx-auto superellipse-2xl flex items-center justify-center mb-4"
             style={{ background: semanticColors.success.gradient }}
           >
             <CheckCircle className="w-8 h-8 text-white" />
@@ -134,12 +134,12 @@ export function FinanceAlerts({
   }
 
   return (
-    <div className={cn('bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6', className)}>
+    <div className={cn('bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6', className)}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
             style={{ background: ownerGradient }}
           >
             <Bell className="w-5 h-5 text-white" />
@@ -180,7 +180,7 @@ export function FinanceAlerts({
                 exit={{ opacity: 0, x: 20, height: 0 }}
                 transition={{ delay: index * 0.05 }}
                 className={cn(
-                  'relative flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all',
+                  'relative flex items-center gap-4 p-4 superellipse-xl border cursor-pointer transition-all',
                   'hover:shadow-md',
                   sevConfig.bg,
                   sevConfig.border
@@ -189,7 +189,7 @@ export function FinanceAlerts({
               >
                 {/* Icon */}
                 <div
-                  className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0"
+                  className="w-10 h-10 superellipse-lg flex items-center justify-center flex-shrink-0"
                   style={{ background: sevConfig.iconBg }}
                 >
                   <AlertIcon className="w-5 h-5 text-white" />
@@ -209,7 +209,7 @@ export function FinanceAlerts({
                 {alert.amount && (
                   <span
                     className={cn(
-                      'text-sm font-bold flex-shrink-0 px-2 py-1 rounded-lg',
+                      'text-sm font-bold flex-shrink-0 px-2 py-1 superellipse-lg',
                       alert.severity === 'critical'
                         ? 'bg-red-100 text-red-700'
                         : alert.severity === 'warning'

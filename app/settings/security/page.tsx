@@ -135,7 +135,7 @@ export default function SecurityPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-200/70 to-rose-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-red-200/70 to-rose-200/70 flex items-center justify-center shadow-sm">
               <Shield className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -151,7 +151,7 @@ export default function SecurityPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              "mb-6 p-4 rounded-xl flex items-center gap-3",
+              "mb-6 p-4 superellipse-xl flex items-center gap-3",
               message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
             )}
           >
@@ -169,10 +169,10 @@ export default function SecurityPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-red-100 to-rose-100 flex items-center justify-center">
               <Lock className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -192,7 +192,7 @@ export default function SecurityPage() {
                   type={showCurrentPassword ? 'text' : 'password'}
                   value={passwordForm.currentPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 superellipse-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   placeholder={t?.password?.currentPlaceholder?.[language] || 'Enter your current password'}
                 />
                 <button
@@ -215,7 +215,7 @@ export default function SecurityPage() {
                   type={showNewPassword ? 'text' : 'password'}
                   value={passwordForm.newPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 superellipse-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   placeholder={t?.password?.newPlaceholder?.[language] || 'Minimum 8 characters'}
                 />
                 <button
@@ -238,7 +238,7 @@ export default function SecurityPage() {
                   type={showConfirmPassword ? 'text' : 'password'}
                   value={passwordForm.confirmPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 superellipse-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   placeholder={t?.password?.confirmPlaceholder?.[language] || 'Repeat your new password'}
                 />
                 <button
@@ -253,7 +253,7 @@ export default function SecurityPage() {
 
             <Button
               type="submit"
-              className="w-full rounded-xl bg-gradient-to-r from-red-200/70 to-rose-200/70 text-gray-900 hover:from-red-300/70 hover:to-rose-300/70"
+              className="w-full superellipse-xl bg-gradient-to-r from-red-200/70 to-rose-200/70 text-gray-900 hover:from-red-300/70 hover:to-rose-300/70"
             >
               <Lock className="w-4 h-4 mr-2" />
               {t?.password?.button?.[language] || 'Change password'}
@@ -276,10 +276,10 @@ export default function SecurityPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-sky-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-blue-100 to-sky-100 flex items-center justify-center">
               <Key className="w-6 h-6 text-gray-700" />
             </div>
             <div>

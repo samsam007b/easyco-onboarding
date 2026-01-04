@@ -161,7 +161,7 @@ export default function DevicesPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-200/70 to-blue-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-cyan-200/70 to-blue-200/70 flex items-center justify-center shadow-sm">
               <Smartphone className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -177,7 +177,7 @@ export default function DevicesPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              "mb-6 p-4 rounded-xl flex items-center gap-3",
+              "mb-6 p-4 superellipse-xl flex items-center gap-3",
               message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
             )}
           >
@@ -201,7 +201,7 @@ export default function DevicesPage() {
             <Button
               onClick={handleLogoutAllDevices}
               variant="outline"
-              className="w-full rounded-xl border-red-200 text-red-600 hover:bg-red-50"
+              className="w-full superellipse-xl border-red-200 text-red-600 hover:bg-red-50"
             >
               <LogOut className="w-4 h-4 mr-2" />
               {t?.logoutAll?.[language] || 'Log out all other devices'}
@@ -217,7 +217,7 @@ export default function DevicesPage() {
           className="space-y-4"
         >
           {devices.length === 0 ? (
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 border border-gray-200 text-center">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl p-8 border border-gray-200 text-center">
               <Smartphone className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <p className="text-gray-600">{t?.noSessions?.[language] || 'No active sessions'}</p>
             </div>
@@ -232,7 +232,7 @@ export default function DevicesPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.2 + index * 0.05 }}
                   className={cn(
-                    "bg-white/80 backdrop-blur-sm rounded-2xl p-6 border shadow-sm",
+                    "bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border shadow-sm",
                     device.isCurrent ? 'border-cyan-300 bg-cyan-50/30' : 'border-gray-200'
                   )}
                 >
@@ -240,7 +240,7 @@ export default function DevicesPage() {
                     {/* Device Info */}
                     <div className="flex items-start gap-4 flex-1">
                       <div className={cn(
-                        "w-14 h-14 rounded-xl flex items-center justify-center",
+                        "w-14 h-14 superellipse-xl flex items-center justify-center",
                         device.isCurrent
                           ? 'bg-gradient-to-br from-cyan-200 to-blue-200'
                           : 'bg-gradient-to-br from-gray-100 to-gray-200'
@@ -254,7 +254,7 @@ export default function DevicesPage() {
                             {device.browser} {t?.on?.[language] || 'on'} {device.os}
                           </h3>
                           {device.isCurrent && (
-                            <span className="inline-flex items-center gap-1 px-2 py-1 rounded-lg bg-cyan-100 text-cyan-800 text-xs font-semibold">
+                            <span className="inline-flex items-center gap-1 px-2 py-1 superellipse-lg bg-cyan-100 text-cyan-800 text-xs font-semibold">
                               <CheckCircle2 className="w-3 h-3" />
                               {t?.thisDevice?.[language] || 'This device'}
                             </span>
@@ -286,7 +286,7 @@ export default function DevicesPage() {
                         onClick={() => handleLogoutDevice(device.id)}
                         variant="ghost"
                         size="sm"
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50 rounded-xl flex-shrink-0"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50 superellipse-xl flex-shrink-0"
                       >
                         <LogOut className="w-4 h-4 mr-2" />
                         {t?.logout?.[language] || 'Log out'}
@@ -304,7 +304,7 @@ export default function DevicesPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="mt-6 bg-blue-50 rounded-xl p-4 border border-blue-200"
+          className="mt-6 bg-blue-50 superellipse-xl p-4 border border-blue-200"
         >
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />

@@ -391,7 +391,7 @@ export function DocumentsModal({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative overflow-hidden bg-white rounded-3xl shadow-2xl w-full max-w-xl max-h-[85vh] flex flex-col"
+          className="relative overflow-hidden bg-white superellipse-3xl shadow-2xl w-full max-w-xl max-h-[85vh] flex flex-col"
         >
           {/* Decorative top accent */}
           <div className="absolute top-0 left-0 right-0 h-1" style={{ background: ownerGradient }} />
@@ -455,10 +455,10 @@ export function DocumentsModal({
                   <button
                     key={docType.id}
                     onClick={() => handleSelectType(docType.id)}
-                    className="w-full p-4 rounded-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/50 transition-all flex items-center gap-4 text-left group"
+                    className="w-full p-4 superellipse-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/50 transition-all flex items-center gap-4 text-left group"
                   >
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center transition-all group-hover:scale-110"
+                      className="w-12 h-12 superellipse-xl flex items-center justify-center transition-all group-hover:scale-110"
                       style={{ background: 'linear-gradient(135deg, rgba(156,86,152,0.1), rgba(194,86,107,0.1))' }}
                     >
                       <docType.icon className="w-6 h-6 text-purple-600" />
@@ -493,7 +493,7 @@ export function DocumentsModal({
                     <button
                       key={tenant.id}
                       onClick={() => handleSelectTenant(tenant)}
-                      className="w-full p-4 rounded-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/50 transition-all flex items-center gap-4 text-left group"
+                      className="w-full p-4 superellipse-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/50 transition-all flex items-center gap-4 text-left group"
                     >
                       <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-semibold">
                         {tenant.name.charAt(0).toUpperCase()}
@@ -527,7 +527,7 @@ export function DocumentsModal({
                 className="space-y-6"
               >
                 {/* Tenant Summary */}
-                <div className="p-4 rounded-xl bg-gray-50">
+                <div className="p-4 superellipse-xl bg-gray-50">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-semibold">
                       {selectedTenant.name.charAt(0).toUpperCase()}
@@ -551,7 +551,7 @@ export function DocumentsModal({
                         <select
                           value={selectedMonth}
                           onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                          className="px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         >
                           {getMonths().map((month, idx) => (
                             <option key={idx} value={idx + 1}>
@@ -562,7 +562,7 @@ export function DocumentsModal({
                         <select
                           value={selectedYear}
                           onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                          className="px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         >
                           {getYearOptions().map((year) => (
                             <option key={year} value={year}>
@@ -582,7 +582,7 @@ export function DocumentsModal({
                         type="date"
                         value={paymentDate}
                         onChange={(e) => setPaymentDate(e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       />
                     </div>
 
@@ -598,7 +598,7 @@ export function DocumentsModal({
                           onChange={(e) => setRentAmount(parseFloat(e.target.value) || 0)}
                           min={0}
                           step={0.01}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         />
                       </div>
                       <div>
@@ -611,7 +611,7 @@ export function DocumentsModal({
                           onChange={(e) => setChargesAmount(parseFloat(e.target.value) || 0)}
                           min={0}
                           step={0.01}
-                          className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -624,7 +624,7 @@ export function DocumentsModal({
                       <select
                         value={paymentMethod}
                         onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       >
                         <option value={t?.bankTransfer?.[language] || 'Bank transfer'}>{t?.bankTransfer?.[language] || 'Bank transfer'}</option>
                         <option value={t?.check?.[language] || 'Check'}>{t?.check?.[language] || 'Check'}</option>
@@ -634,7 +634,7 @@ export function DocumentsModal({
                     </div>
 
                     {/* Total */}
-                    <div className="p-4 rounded-xl bg-purple-50 border border-purple-100">
+                    <div className="p-4 superellipse-xl bg-purple-50 border border-purple-100">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">{t?.total?.[language] || 'Total'}</span>
                         <span className="text-xl font-bold text-purple-600">
@@ -662,7 +662,7 @@ export function DocumentsModal({
                             onChange={(e) => setRentAmount(parseFloat(e.target.value) || 0)}
                             min={0}
                             step={0.01}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                           />
                         </div>
                         <div>
@@ -675,7 +675,7 @@ export function DocumentsModal({
                             onChange={(e) => setChargesAmount(parseFloat(e.target.value) || 0)}
                             min={0}
                             step={0.01}
-                            className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                           />
                         </div>
                       </div>
@@ -690,7 +690,7 @@ export function DocumentsModal({
                         value={purpose}
                         onChange={(e) => setPurpose(e.target.value)}
                         placeholder={t?.purposePlaceholder?.[language] || 'Ex: CAF application'}
-                        className="w-full px-4 py-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                       />
                     </div>
                   </>
@@ -732,12 +732,12 @@ export function DocumentsModal({
                   {t?.documentDownloadedDesc?.[language] || 'Your document has been generated and downloaded successfully.'}
                 </p>
                 <div className="flex gap-3 justify-center">
-                  <Button variant="outline" onClick={resetForm} className="rounded-xl">
+                  <Button variant="outline" onClick={resetForm} className="superellipse-xl">
                     {t?.generateAnother?.[language] || 'Generate another'}
                   </Button>
                   <Button
                     onClick={onClose}
-                    className="rounded-xl text-white"
+                    className="superellipse-xl text-white"
                     style={{ background: ownerGradient }}
                   >
                     {t?.close?.[language] || 'Close'}
@@ -753,13 +753,13 @@ export function DocumentsModal({
               <Button
                 variant="outline"
                 onClick={() => setStep(tenants.length === 1 ? 'type' : 'tenant')}
-                className="flex-1 rounded-xl"
+                className="flex-1 superellipse-xl"
               >
                 {t?.back?.[language] || 'Back'}
               </Button>
               <Button
                 onClick={handleGenerate}
-                className="flex-1 rounded-xl text-white shadow-md"
+                className="flex-1 superellipse-xl text-white shadow-md"
                 style={{ background: ownerGradient }}
               >
                 <Download className="w-4 h-4 mr-2" />

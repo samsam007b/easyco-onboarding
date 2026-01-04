@@ -165,7 +165,7 @@ export function CreateLeaseModal({
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
-          className="relative overflow-hidden bg-white rounded-3xl shadow-2xl max-w-lg w-full border border-gray-200"
+          className="relative overflow-hidden bg-white superellipse-3xl shadow-2xl max-w-lg w-full border border-gray-200"
         >
           {/* Header with gradient */}
           <div
@@ -187,13 +187,13 @@ export function CreateLeaseModal({
               className="relative w-14 h-14 mb-4"
             >
               <motion.div
-                className="absolute inset-0 rounded-2xl opacity-30 blur-lg"
+                className="absolute inset-0 superellipse-2xl opacity-30 blur-lg"
                 style={{ background: ownerGradient }}
                 animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.4, 0.3] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               />
               <div
-                className="relative w-full h-full rounded-2xl flex items-center justify-center shadow-lg"
+                className="relative w-full h-full superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{ background: ownerGradient }}
               >
                 <FileSignature className="w-7 h-7 text-white" />
@@ -219,7 +219,7 @@ export function CreateLeaseModal({
           <div className="p-6 space-y-6">
             {/* Applicant & Property Info */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gray-50 rounded-xl p-3">
+              <div className="bg-gray-50 superellipse-xl p-3">
                 <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
                   <User className="w-3.5 h-3.5" />
                   <span>{t?.tenant?.[language] || 'Tenant'}</span>
@@ -228,7 +228,7 @@ export function CreateLeaseModal({
                   {applicationData.applicantName}
                 </p>
               </div>
-              <div className="bg-gray-50 rounded-xl p-3">
+              <div className="bg-gray-50 superellipse-xl p-3">
                 <div className="flex items-center gap-2 text-gray-500 text-xs mb-1">
                   <Home className="w-3.5 h-3.5" />
                   <span>{t?.property?.[language] || 'Property'}</span>
@@ -250,7 +250,7 @@ export function CreateLeaseModal({
                 type="date"
                 value={moveInDate}
                 onChange={(e) => setMoveInDate(e.target.value)}
-                className="rounded-xl"
+                className="superellipse-xl"
               />
             </div>
 
@@ -267,7 +267,7 @@ export function CreateLeaseModal({
                     type="button"
                     onClick={() => setLeaseDuration(duration.value)}
                     className={cn(
-                      'py-2 px-3 rounded-xl text-sm font-medium transition-all border',
+                      'py-2 px-3 superellipse-xl text-sm font-medium transition-all border',
                       leaseDuration === duration.value
                         ? 'text-white border-transparent shadow-md'
                         : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-purple-300'
@@ -301,7 +301,7 @@ export function CreateLeaseModal({
                     value={monthlyRent}
                     onChange={(e) => setMonthlyRent(e.target.value)}
                     placeholder="0"
-                    className="rounded-xl pr-8"
+                    className="superellipse-xl pr-8"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">€</span>
                 </div>
@@ -318,7 +318,7 @@ export function CreateLeaseModal({
                     value={depositAmount}
                     onChange={(e) => setDepositAmount(e.target.value)}
                     placeholder="0"
-                    className="rounded-xl pr-8"
+                    className="superellipse-xl pr-8"
                   />
                   <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">€</span>
                 </div>
@@ -327,7 +327,7 @@ export function CreateLeaseModal({
 
             {/* Summary Box */}
             <div
-              className="rounded-xl p-4"
+              className="superellipse-xl p-4"
               style={{ background: `linear-gradient(135deg, rgba(156,86,152,0.08), rgba(194,86,107,0.08))` }}
             >
               <h4 className="text-sm font-medium text-gray-700 mb-3">{t?.summary?.[language] || 'Summary'}</h4>
@@ -352,14 +352,14 @@ export function CreateLeaseModal({
               variant="outline"
               onClick={onClose}
               disabled={isCreating}
-              className="flex-1 rounded-xl"
+              className="flex-1 superellipse-xl"
             >
               {t?.cancel?.[language] || 'Cancel'}
             </Button>
             <Button
               onClick={handleSubmit}
               disabled={isCreating || !monthlyRent}
-              className="flex-1 rounded-xl text-white shadow-md"
+              className="flex-1 superellipse-xl text-white shadow-md"
               style={{ background: ownerGradient }}
             >
               {isCreating ? (

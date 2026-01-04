@@ -63,7 +63,7 @@ export function MonthlyComparison({ data, className }: MonthlyComparisonProps) {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className={cn(
-        'bg-white/80 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-sm p-6',
+        'bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6',
         className
       )}
     >
@@ -71,7 +71,7 @@ export function MonthlyComparison({ data, className }: MonthlyComparisonProps) {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
           <div
-            className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm"
+            className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
             style={{ background: ownerGradient }}
           >
             <Calendar className="w-5 h-5 text-white" />
@@ -101,7 +101,7 @@ export function MonthlyComparison({ data, className }: MonthlyComparisonProps) {
       {/* Comparison Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Current Month */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 rounded-xl p-4 border border-purple-100">
+        <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 superellipse-xl p-4 border border-purple-100">
           <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-20" style={{ background: ownerGradient }} />
 
           <div className="relative">
@@ -143,7 +143,7 @@ export function MonthlyComparison({ data, className }: MonthlyComparisonProps) {
         </div>
 
         {/* Previous Month */}
-        <div className="relative overflow-hidden bg-gray-50 rounded-xl p-4 border border-gray-200">
+        <div className="relative overflow-hidden bg-gray-50 superellipse-xl p-4 border border-gray-200">
           <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full bg-gray-200 opacity-30" />
 
           <div className="relative">

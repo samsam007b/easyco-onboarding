@@ -41,7 +41,7 @@ export function PropertyTimelineModal({
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
-            className="relative overflow-hidden bg-white rounded-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col"
+            className="relative overflow-hidden bg-white superellipse-3xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col"
           >
             {/* Decorative top accent */}
             <div
@@ -109,7 +109,7 @@ export function PropertyTimelineModal({
                 <Button
                   variant="outline"
                   onClick={onClose}
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 >
                   Fermer
                 </Button>

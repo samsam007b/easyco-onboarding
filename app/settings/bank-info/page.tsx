@@ -290,7 +290,7 @@ export default function BankInfoPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-200/70 to-purple-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-indigo-200/70 to-purple-200/70 flex items-center justify-center shadow-sm">
               <CreditCard className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -309,7 +309,7 @@ export default function BankInfoPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-6 p-4 bg-blue-50 rounded-xl border border-blue-200"
+          className="mb-6 p-4 bg-blue-50 superellipse-xl border border-blue-200"
         >
           <div className="flex items-start gap-3">
             <Info className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
@@ -327,7 +327,7 @@ export default function BankInfoPage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-amber-50 rounded-xl border border-amber-200"
+            className="mb-6 p-4 bg-amber-50 superellipse-xl border border-amber-200"
           >
             <div className="flex items-start gap-3">
               <Clock className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
@@ -347,7 +347,7 @@ export default function BankInfoPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              "mb-6 p-4 rounded-xl flex items-center gap-3",
+              "mb-6 p-4 superellipse-xl flex items-center gap-3",
               message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
             )}
           >
@@ -368,9 +368,9 @@ export default function BankInfoPage() {
           className="space-y-6"
         >
           {/* IBAN Section */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+          <div className="bg-white superellipse-2xl p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
+              <div className="w-10 h-10 superellipse-xl bg-gradient-to-br from-indigo-100 to-purple-100 flex items-center justify-center">
                 <Building2 className="w-5 h-5 text-indigo-600" />
               </div>
               <h2 className="text-lg font-bold text-gray-900">
@@ -437,9 +437,9 @@ export default function BankInfoPage() {
           </div>
 
           {/* Alternative Methods Section */}
-          <div className="bg-white rounded-2xl p-6 border border-gray-200 shadow-sm">
+          <div className="bg-white superellipse-2xl p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+              <div className="w-10 h-10 superellipse-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
                 <Smartphone className="w-5 h-5 text-green-600" />
               </div>
               <h2 className="text-lg font-bold text-gray-900">
@@ -449,9 +449,9 @@ export default function BankInfoPage() {
 
             <div className="space-y-4">
               {/* Payconiq Toggle */}
-              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#FF4785]/10 to-[#FF4785]/5 rounded-xl border border-[#FF4785]/20">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-[#FF4785]/10 to-[#FF4785]/5 superellipse-xl border border-[#FF4785]/20">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#FF4785] flex items-center justify-center">
+                  <div className="w-10 h-10 superellipse-lg bg-[#FF4785] flex items-center justify-center">
                     <span className="text-white font-bold text-sm">P</span>
                   </div>
                   <div>
@@ -490,7 +490,7 @@ export default function BankInfoPage() {
           </div>
 
           {/* Security Notice */}
-          <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-xl p-4 border border-green-200">
+          <div className="bg-gradient-to-br from-green-50 to-emerald-50 superellipse-xl p-4 border border-green-200">
             <div className="flex items-start gap-3">
               <Shield className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm">
@@ -508,7 +508,7 @@ export default function BankInfoPage() {
           <Button
             onClick={handleSave}
             disabled={isSaving}
-            className="w-full rounded-xl h-12 text-white"
+            className="w-full superellipse-xl h-12 text-white"
             style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)' }}
           >
             {isSaving ? (
@@ -577,7 +577,7 @@ export default function BankInfoPage() {
               </div>
             </div>
 
-            <div className="p-3 bg-blue-50 rounded-lg">
+            <div className="p-3 bg-blue-50 superellipse-lg">
               <div className="flex items-start gap-2 text-xs text-blue-700">
                 <Shield className="w-4 h-4 flex-shrink-0 mt-0.5" />
                 <p>

@@ -90,7 +90,7 @@ export default function InvitationsPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-sm"
+            <div className="w-16 h-16 superellipse-2xl flex items-center justify-center shadow-sm"
                  style={{
                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
                  }}>
@@ -116,7 +116,7 @@ export default function InvitationsPage() {
         >
           <button
             onClick={() => setFilter('all')}
-            className={`p-4 rounded-xl border-2 transition-all ${
+            className={`p-4 superellipse-xl border-2 transition-all ${
               filter === 'all'
                 ? 'border-gray-400 bg-gray-50'
                 : 'border-gray-200 hover:border-gray-300'
@@ -131,7 +131,7 @@ export default function InvitationsPage() {
 
           <button
             onClick={() => setFilter('pending')}
-            className={`p-4 rounded-xl border-2 transition-all ${
+            className={`p-4 superellipse-xl border-2 transition-all ${
               filter === 'pending'
                 ? 'border-yellow-400 bg-yellow-50'
                 : 'border-gray-200 hover:border-yellow-200'
@@ -146,7 +146,7 @@ export default function InvitationsPage() {
 
           <button
             onClick={() => setFilter('accepted')}
-            className={`p-4 rounded-xl border-2 transition-all ${
+            className={`p-4 superellipse-xl border-2 transition-all ${
               filter === 'accepted'
                 ? 'border-green-400 bg-green-50'
                 : 'border-gray-200 hover:border-green-200'
@@ -161,7 +161,7 @@ export default function InvitationsPage() {
 
           <button
             onClick={() => setFilter('refused')}
-            className={`p-4 rounded-xl border-2 transition-all ${
+            className={`p-4 superellipse-xl border-2 transition-all ${
               filter === 'refused'
                 ? 'border-red-400 bg-red-50'
                 : 'border-gray-200 hover:border-red-200'
@@ -181,7 +181,7 @@ export default function InvitationsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="mb-6 p-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-200 rounded-xl"
+            className="mb-6 p-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-200 superellipse-xl"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
@@ -213,7 +213,7 @@ export default function InvitationsPage() {
           transition={{ delay: 0.2 }}
         >
           {filteredInvitations.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl border border-gray-200">
+            <div className="text-center py-16 bg-white superellipse-2xl border border-gray-200">
               <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
                 <Inbox className="w-10 h-10 text-gray-400" />
               </div>

@@ -221,7 +221,7 @@ export default function ResidenceHeader() {
           boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
         }}
       >
-        <div className="h-20 bg-white/20 rounded-2xl" />
+        <div className="h-20 bg-white/20 superellipse-2xl" />
       </div>
     );
   }
@@ -259,7 +259,7 @@ export default function ResidenceHeader() {
             <div className="flex items-start gap-4">
               <motion.div
                 whileHover={{ rotate: 5 }}
-                className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0"
+                className="w-14 h-14 superellipse-2xl bg-white/20 backdrop-blur flex items-center justify-center flex-shrink-0"
               >
                 <Home className="w-7 h-7 text-white" />
               </motion.div>
@@ -294,7 +294,7 @@ export default function ResidenceHeader() {
                     <Button
                       onClick={action.onClick}
                       size="sm"
-                      className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur rounded-xl font-semibold"
+                      className="bg-white/20 hover:bg-white/30 text-white border-white/30 backdrop-blur superellipse-xl font-semibold"
                       variant="outline"
                     >
                       <Icon className="w-4 h-4 mr-1.5" />
@@ -367,7 +367,7 @@ export default function ResidenceHeader() {
                       whileHover={{ scale: 1.05, y: -2 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleStepClick(step)}
-                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2 text-white"
+                      className="bg-white/20 backdrop-blur px-4 py-2 superellipse-xl hover:bg-white/30 transition-colors cursor-pointer flex items-center gap-2 text-white"
                     >
                       <span className="font-semibold text-sm">{step}</span>
                       <ArrowRight className="w-3.5 h-3.5" />
@@ -375,7 +375,7 @@ export default function ResidenceHeader() {
                   ) : (
                     <span
                       key={index}
-                      className="bg-white/20 backdrop-blur px-4 py-2 rounded-xl font-semibold text-sm text-white"
+                      className="bg-white/20 backdrop-blur px-4 py-2 superellipse-xl font-semibold text-sm text-white"
                     >
                       {step}
                     </span>
@@ -392,11 +392,11 @@ export default function ResidenceHeader() {
               animate={{ opacity: 1, scale: 1 }}
               className="mt-5 pt-5 border-t border-white/20"
             >
-              <div className="flex items-center gap-3 bg-white/20 backdrop-blur rounded-2xl p-4">
+              <div className="flex items-center gap-3 bg-white/20 backdrop-blur superellipse-2xl p-4">
                 <motion.div
                   animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 2, repeat: Infinity }}
-                  className="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center"
+                  className="w-10 h-10 superellipse-xl bg-white/20 flex items-center justify-center"
                 >
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>

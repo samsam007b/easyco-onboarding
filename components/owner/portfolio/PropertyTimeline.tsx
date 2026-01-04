@@ -226,22 +226,22 @@ export function PropertyTimeline({
     <div className={cn('space-y-6', className)}>
       {/* Stats Summary */}
       <div className="grid grid-cols-4 gap-3">
-        <div className="bg-amber-50 rounded-xl p-3 text-center">
+        <div className="bg-amber-50 superellipse-xl p-3 text-center">
           <Users className="w-5 h-5 text-amber-600 mx-auto mb-1" />
           <p className="text-lg font-bold text-amber-700">{timelineData.stats.tenantChanges}</p>
           <p className="text-[10px] text-amber-600">Locataires</p>
         </div>
-        <div className="bg-blue-50 rounded-xl p-3 text-center">
+        <div className="bg-blue-50 superellipse-xl p-3 text-center">
           <Wrench className="w-5 h-5 text-blue-600 mx-auto mb-1" />
           <p className="text-lg font-bold text-blue-700">{timelineData.stats.maintenanceCount}</p>
           <p className="text-[10px] text-blue-600">Maintenance</p>
         </div>
-        <div className="bg-emerald-50 rounded-xl p-3 text-center">
+        <div className="bg-emerald-50 superellipse-xl p-3 text-center">
           <Euro className="w-5 h-5 text-emerald-600 mx-auto mb-1" />
           <p className="text-lg font-bold text-emerald-700">{timelineData.stats.paymentsReceived}</p>
           <p className="text-[10px] text-emerald-600">Paiements</p>
         </div>
-        <div className="bg-purple-50 rounded-xl p-3 text-center">
+        <div className="bg-purple-50 superellipse-xl p-3 text-center">
           <Calendar className="w-5 h-5 text-purple-600 mx-auto mb-1" />
           <p className="text-lg font-bold text-purple-700">{timelineData.stats.totalEvents}</p>
           <p className="text-[10px] text-purple-600">Total</p>
@@ -320,12 +320,12 @@ export function PropertyTimeline({
                       />
 
                       {/* Event Card */}
-                      <div className="bg-white rounded-xl border border-gray-200 p-3 hover:shadow-md transition-shadow">
+                      <div className="bg-white superellipse-xl border border-gray-200 p-3 hover:shadow-md transition-shadow">
                         <div className="flex items-start gap-3">
                           {/* Icon */}
                           <div
                             className={cn(
-                              'w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0',
+                              'w-9 h-9 superellipse-lg flex items-center justify-center flex-shrink-0',
                               config.bgColor
                             )}
                           >

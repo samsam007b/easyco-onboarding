@@ -56,7 +56,7 @@ export default function QuickActionsCard({
           <motion.div
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
-            className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4"
+            className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
             style={{ background: CARD_BG_GRADIENT }}
           >
             <Zap className="w-8 h-8" style={{ color: RESIDENT_PRIMARY }} />
@@ -73,7 +73,7 @@ export default function QuickActionsCard({
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Button
             onClick={() => router.push('/hub/matching')}
-            className="w-full rounded-2xl text-white font-bold py-6 text-base border-none"
+            className="w-full superellipse-2xl text-white font-bold py-6 text-base border-none"
             style={{
               background: RESIDENT_GRADIENT,
               boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,
@@ -91,7 +91,7 @@ export default function QuickActionsCard({
             <Button
               onClick={() => router.push('/hub/matching')}
               variant="outline"
-              className="w-full rounded-2xl border-2 py-5 font-semibold transition-all"
+              className="w-full superellipse-2xl border-2 py-5 font-semibold transition-all"
               style={{
                 borderColor: `${RESIDENT_PRIMARY}30`,
                 color: RESIDENT_PRIMARY,
@@ -122,7 +122,7 @@ export default function QuickActionsCard({
                 <Button
                   onClick={() => router.push('/hub/matching')}
                   variant="outline"
-                  className="w-full rounded-2xl border-2 py-5 font-semibold"
+                  className="w-full superellipse-2xl border-2 py-5 font-semibold"
                   style={{
                     borderColor: '#f97316',
                     background: 'rgba(249, 115, 22, 0.08)',
@@ -170,7 +170,7 @@ export default function QuickActionsCard({
               className="flex items-center gap-3"
             >
               <div
-                className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+                className="w-6 h-6 superellipse-lg flex items-center justify-center flex-shrink-0"
                 style={{ background: `${feature.color}15` }}
               >
                 <Check className="w-3.5 h-3.5" style={{ color: feature.color }} />
@@ -183,7 +183,7 @@ export default function QuickActionsCard({
         {/* Bottom Note */}
         <motion.div
           whileHover={{ scale: 1.02 }}
-          className="mt-6 p-4 rounded-2xl text-center"
+          className="mt-6 p-4 superellipse-2xl text-center"
           style={{ background: CARD_BG_GRADIENT }}
         >
           <p className="text-xs font-semibold" style={{ color: RESIDENT_PRIMARY }}>

@@ -120,7 +120,7 @@ export default function PrivacyPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-200/70 to-sky-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-blue-200/70 to-sky-200/70 flex items-center justify-center shadow-sm">
               <Eye className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -136,7 +136,7 @@ export default function PrivacyPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              "mb-6 p-4 rounded-xl flex items-center gap-3",
+              "mb-6 p-4 superellipse-xl flex items-center gap-3",
               message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
             )}
           >
@@ -150,10 +150,10 @@ export default function PrivacyPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
               <Users className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -164,7 +164,7 @@ export default function PrivacyPage() {
 
           <div className="space-y-3">
             <label className={cn(
-              "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
+              "flex items-center gap-4 p-4 superellipse-xl border-2 cursor-pointer transition-all",
               privacySettings.profileVisibility === 'everyone'
                 ? 'border-blue-500 bg-blue-50/50'
                 : 'border-gray-200 hover:border-gray-300'
@@ -187,7 +187,7 @@ export default function PrivacyPage() {
             </label>
 
             <label className={cn(
-              "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
+              "flex items-center gap-4 p-4 superellipse-xl border-2 cursor-pointer transition-all",
               privacySettings.profileVisibility === 'residents'
                 ? 'border-blue-500 bg-blue-50/50'
                 : 'border-gray-200 hover:border-gray-300'
@@ -210,7 +210,7 @@ export default function PrivacyPage() {
             </label>
 
             <label className={cn(
-              "flex items-center gap-4 p-4 rounded-xl border-2 cursor-pointer transition-all",
+              "flex items-center gap-4 p-4 superellipse-xl border-2 cursor-pointer transition-all",
               privacySettings.profileVisibility === 'private'
                 ? 'border-blue-500 bg-blue-50/50'
                 : 'border-gray-200 hover:border-gray-300'
@@ -239,10 +239,10 @@ export default function PrivacyPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
               <Shield className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -252,7 +252,7 @@ export default function PrivacyPage() {
           </div>
 
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.contact?.showEmail?.title?.[language] || 'Show my email'}</p>
                 <p className="text-sm text-gray-600">{t?.contact?.showEmail?.description?.[language] || 'Visible on your public profile'}</p>
@@ -265,7 +265,7 @@ export default function PrivacyPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.contact?.showPhone?.title?.[language] || 'Show my phone'}</p>
                 <p className="text-sm text-gray-600">{t?.contact?.showPhone?.description?.[language] || 'Visible on your public profile'}</p>
@@ -278,7 +278,7 @@ export default function PrivacyPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.contact?.allowMessages?.title?.[language] || 'Allow messages'}</p>
                 <p className="text-sm text-gray-600">{t?.contact?.allowMessages?.description?.[language] || 'Others can contact you'}</p>
@@ -291,7 +291,7 @@ export default function PrivacyPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.contact?.showOnline?.title?.[language] || 'Show online status'}</p>
                 <p className="text-sm text-gray-600">{t?.contact?.showOnline?.description?.[language] || 'Show when you are online'}</p>
@@ -315,7 +315,7 @@ export default function PrivacyPage() {
           <Button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="w-full rounded-xl bg-gradient-to-r from-blue-200/70 to-sky-200/70 text-gray-900 hover:from-blue-300/70 hover:to-sky-300/70"
+            className="w-full superellipse-xl bg-gradient-to-r from-blue-200/70 to-sky-200/70 text-gray-900 hover:from-blue-300/70 hover:to-sky-300/70"
           >
             {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save changes')}
           </Button>

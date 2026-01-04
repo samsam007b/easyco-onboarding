@@ -184,7 +184,7 @@ export default function MatchingComingSoonPage() {
                     className="flex items-center gap-3"
                   >
                     <div
-                      className="w-6 h-6 rounded-lg flex items-center justify-center flex-shrink-0"
+                      className="w-6 h-6 superellipse-lg flex items-center justify-center flex-shrink-0"
                       style={{ background: `${RESIDENT_PRIMARY}20` }}
                     >
                       <Check className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
@@ -219,7 +219,7 @@ export default function MatchingComingSoonPage() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.5 + index * 0.1 }}
                   whileHover={{ scale: 1.03, y: -4 }}
-                  className="relative overflow-hidden rounded-2xl bg-white p-6 cursor-default"
+                  className="relative overflow-hidden superellipse-2xl bg-white p-6 cursor-default"
                   style={{
                     boxShadow: '0 8px 32px rgba(0, 0, 0, 0.08)',
                   }}
@@ -232,7 +232,7 @@ export default function MatchingComingSoonPage() {
 
                   <div className="relative z-10">
                     <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                      className="w-12 h-12 superellipse-xl flex items-center justify-center mb-4"
                       style={{ background: feature.gradient }}
                     >
                       <Icon className="w-6 h-6 text-white" />
@@ -263,7 +263,7 @@ export default function MatchingComingSoonPage() {
             <motion.div
               animate={{ scale: [1, 1.1, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="w-16 h-16 rounded-2xl flex items-center justify-center"
+              className="w-16 h-16 superellipse-2xl flex items-center justify-center"
               style={{ background: CARD_BG_GRADIENT }}
             >
               <Bell className="w-8 h-8" style={{ color: RESIDENT_PRIMARY }} />
@@ -280,7 +280,7 @@ export default function MatchingComingSoonPage() {
 
             <Button
               onClick={() => router.push('/hub')}
-              className="rounded-2xl px-8 py-6 font-bold text-white border-none"
+              className="superellipse-2xl px-8 py-6 font-bold text-white border-none"
               style={{
                 background: RESIDENT_GRADIENT,
                 boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,

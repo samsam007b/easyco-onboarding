@@ -137,7 +137,7 @@ export default function EmailPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-200/70 to-rose-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-pink-200/70 to-rose-200/70 flex items-center justify-center shadow-sm">
               <Mail className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -153,7 +153,7 @@ export default function EmailPage() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             className={cn(
-              "mb-6 p-4 rounded-xl flex items-center gap-3",
+              "mb-6 p-4 superellipse-xl flex items-center gap-3",
               message.type === 'success' ? 'bg-green-50 text-green-800' : 'bg-red-50 text-red-800'
             )}
           >
@@ -167,10 +167,10 @@ export default function EmailPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-100 to-sky-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-blue-100 to-sky-100 flex items-center justify-center">
               <MessageSquare className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -180,7 +180,7 @@ export default function EmailPage() {
           </div>
 
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.newMessage?.title?.[language] || 'New message'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.newMessage?.description?.[language] || 'Receive an email for each new message'}</p>
@@ -193,7 +193,7 @@ export default function EmailPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.digest?.title?.[language] || 'Daily digest'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.digest?.description?.[language] || 'One email per day with your unread messages'}</p>
@@ -213,10 +213,10 @@ export default function EmailPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center">
               <Calendar className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -226,7 +226,7 @@ export default function EmailPage() {
           </div>
 
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.newEvent?.title?.[language] || 'New event'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.newEvent?.description?.[language] || 'Notification for new events'}</p>
@@ -239,7 +239,7 @@ export default function EmailPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.eventReminder?.title?.[language] || 'Event reminder'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.eventReminder?.description?.[language] || 'Reminder 24h before an event'}</p>
@@ -252,7 +252,7 @@ export default function EmailPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.taskAssigned?.title?.[language] || 'Task assigned'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.taskAssigned?.description?.[language] || 'When a task is assigned to you'}</p>
@@ -272,10 +272,10 @@ export default function EmailPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-green-100 to-emerald-100 flex items-center justify-center">
               <DollarSign className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -285,7 +285,7 @@ export default function EmailPage() {
           </div>
 
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.paymentReminder?.title?.[language] || 'Payment reminder'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.paymentReminder?.description?.[language] || 'Reminder before rent is due'}</p>
@@ -298,7 +298,7 @@ export default function EmailPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.paymentReceived?.title?.[language] || 'Payment received'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.paymentReceived?.description?.[language] || 'Confirmation when a payment is received'}</p>
@@ -311,7 +311,7 @@ export default function EmailPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.newExpense?.title?.[language] || 'New expense'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.newExpense?.description?.[language] || 'When a shared expense is created'}</p>
@@ -331,10 +331,10 @@ export default function EmailPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 border border-gray-200 shadow-sm mb-6"
+          className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
               <Bell className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -344,7 +344,7 @@ export default function EmailPage() {
           </div>
 
           <div className="space-y-4">
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.newMember?.title?.[language] || 'New member'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.newMember?.description?.[language] || 'When someone joins the residence'}</p>
@@ -357,7 +357,7 @@ export default function EmailPage() {
               />
             </label>
 
-            <label className="flex items-center justify-between p-4 rounded-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
+            <label className="flex items-center justify-between p-4 superellipse-xl border border-gray-200 cursor-pointer hover:bg-gray-50">
               <div>
                 <p className="font-semibold text-gray-900">{t?.options?.announcements?.title?.[language] || 'Important announcements'}</p>
                 <p className="text-sm text-gray-600">{t?.options?.announcements?.description?.[language] || 'Important residence notifications'}</p>
@@ -381,7 +381,7 @@ export default function EmailPage() {
           <Button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="w-full rounded-xl bg-gradient-to-r from-pink-200/70 to-rose-200/70 text-gray-900 hover:from-pink-300/70 hover:to-rose-300/70"
+            className="w-full superellipse-xl bg-gradient-to-r from-pink-200/70 to-rose-200/70 text-gray-900 hover:from-pink-300/70 hover:to-rose-300/70"
           >
             {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save changes')}
           </Button>

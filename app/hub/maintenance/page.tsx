@@ -252,7 +252,7 @@ export default function MaintenancePage() {
             <motion.button
               onClick={() => setFilter('all')}
               className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
+                'bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
                 filter === 'all' && 'ring-2 ring-resident-500'
               )}
               whileHover={{ scale: 1.02 }}
@@ -265,7 +265,7 @@ export default function MaintenancePage() {
                     {stats?.total_requests || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-resident-100 to-resident-200 flex items-center justify-center">
+                <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-resident-100 to-resident-200 flex items-center justify-center">
                   <Wrench className="w-6 h-6 text-resident-700" />
                 </div>
               </div>
@@ -274,7 +274,7 @@ export default function MaintenancePage() {
             {/* Open - V3 Amber Pastel */}
             <motion.button
               onClick={() => setFilter('open')}
-              className="relative overflow-hidden rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               style={{
                 background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
                 boxShadow: filter === 'open' ? '0 8px 24px rgba(217, 119, 6, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
@@ -293,7 +293,7 @@ export default function MaintenancePage() {
                   </p>
                 </div>
                 <div
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)' }}
                 >
                   <AlertCircle className="w-6 h-6 text-white" />
@@ -304,7 +304,7 @@ export default function MaintenancePage() {
             <motion.button
               onClick={() => setFilter('in_progress')}
               className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
+                'bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
                 filter === 'in_progress' && 'ring-2 ring-[#ff651e]'
               )}
               whileHover={{ scale: 1.02 }}
@@ -317,7 +317,7 @@ export default function MaintenancePage() {
                     {stats?.in_progress_count || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-[#FFF5F0] flex items-center justify-center">
+                <div className="w-12 h-12 superellipse-xl bg-[#FFF5F0] flex items-center justify-center">
                   <Clock className="w-6 h-6 text-[#ff651e]" />
                 </div>
               </div>
@@ -326,7 +326,7 @@ export default function MaintenancePage() {
             <motion.button
               onClick={() => setFilter('resolved')}
               className={cn(
-                'bg-white rounded-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
+                'bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
                 filter === 'resolved' && 'ring-2 ring-[#7CB89B]'
               )}
               whileHover={{ scale: 1.02 }}
@@ -339,7 +339,7 @@ export default function MaintenancePage() {
                     {stats?.resolved_count || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 rounded-xl bg-[#E8F5EE] flex items-center justify-center">
+                <div className="w-12 h-12 superellipse-xl bg-[#E8F5EE] flex items-center justify-center">
                   <CheckCircle className="w-6 h-6 text-[#7CB89B]" />
                 </div>
               </div>
@@ -363,7 +363,7 @@ export default function MaintenancePage() {
               >
                 {/* Glow effect */}
                 <motion.div
-                  className="absolute inset-0 rounded-2xl opacity-30"
+                  className="absolute inset-0 superellipse-2xl opacity-30"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     filter: 'blur(20px)',
@@ -373,7 +373,7 @@ export default function MaintenancePage() {
                 />
                 {/* Main icon container */}
                 <div
-                  className="relative w-24 h-24 rounded-2xl flex items-center justify-center shadow-lg"
+                  className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -382,7 +382,7 @@ export default function MaintenancePage() {
                   <Wrench className="w-12 h-12 text-white" />
                   {/* Shine effect */}
                   <motion.div
-                    className="absolute inset-0 rounded-2xl bg-white/20"
+                    className="absolute inset-0 superellipse-2xl bg-white/20"
                     animate={{ opacity: [0, 0.3, 0] }}
                     transition={{ repeat: Infinity, duration: 2.5 }}
                   />
@@ -434,7 +434,7 @@ export default function MaintenancePage() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ delay: index * 0.05 }}
-                    className="bg-white rounded-2xl shadow-lg p-6 hover:shadow-xl transition-all"
+                    className="bg-white superellipse-2xl shadow-lg p-6 hover:shadow-xl transition-all"
                   >
                     <div className="flex items-start gap-4">
                       {/* Category Icon */}
@@ -535,7 +535,7 @@ export default function MaintenancePage() {
                                 key={idx}
                                 src={url}
                                 alt={`Photo ${idx + 1}`}
-                                className="w-24 h-24 rounded-lg object-cover border-2 border-gray-200"
+                                className="w-24 h-24 superellipse-lg object-cover border-2 border-gray-200"
                               />
                             ))}
                           </div>
@@ -579,7 +579,7 @@ export default function MaintenancePage() {
                   value={createForm.title}
                   onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
                   placeholder={t?.modal?.titlePlaceholder?.[language] || "e.g., Water leak in the bathroom"}
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
 
@@ -592,7 +592,7 @@ export default function MaintenancePage() {
                     setCreateForm({ ...createForm, description: e.target.value })
                   }
                   placeholder={t?.modal?.descriptionPlaceholder?.[language] || 'Describe the issue in detail...'}
-                  className="rounded-xl min-h-[100px]"
+                  className="superellipse-xl min-h-[100px]"
                 />
               </div>
 
@@ -605,7 +605,7 @@ export default function MaintenancePage() {
                       key={cat.value}
                       onClick={() => setCreateForm({ ...createForm, category: cat.value })}
                       className={cn(
-                        'p-3 rounded-xl border-2 text-center transition-all',
+                        'p-3 superellipse-xl border-2 text-center transition-all',
                         createForm.category === cat.value
                           ? 'border-resident-500 bg-resident-50'
                           : 'border-gray-200 hover:border-gray-300'
@@ -627,7 +627,7 @@ export default function MaintenancePage() {
                       key={pri.value}
                       onClick={() => setCreateForm({ ...createForm, priority: pri.value })}
                       className={cn(
-                        'p-3 rounded-xl border-2 text-center transition-all',
+                        'p-3 superellipse-xl border-2 text-center transition-all',
                         createForm.priority === pri.value
                           ? pri.borderColor + ' ' + pri.color
                           : 'border-gray-200 hover:border-gray-300'
@@ -646,7 +646,7 @@ export default function MaintenancePage() {
                   value={createForm.location || ''}
                   onChange={(e) => setCreateForm({ ...createForm, location: e.target.value })}
                   placeholder={t?.modal?.locationPlaceholder?.[language] || 'e.g., Kitchen, Bathroom'}
-                  className="rounded-xl"
+                  className="superellipse-xl"
                 />
               </div>
 
@@ -663,7 +663,7 @@ export default function MaintenancePage() {
                       setCreateForm({ ...createForm, estimated_cost: e.target.value })
                     }
                     placeholder="0.00"
-                    className="rounded-xl pl-10"
+                    className="superellipse-xl pl-10"
                   />
                 </div>
               </div>
@@ -672,7 +672,7 @@ export default function MaintenancePage() {
               <div>
                 <Label>{t?.modal?.photos?.[language] || 'Photos'} (max 5)</Label>
                 <div className="mt-2">
-                  <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-xl hover:border-resident-500 cursor-pointer transition-colors">
+                  <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 superellipse-xl hover:border-resident-500 cursor-pointer transition-colors">
                     <Camera className="w-5 h-5 text-gray-400" />
                     <span className="text-sm text-gray-600">
                       {t?.modal?.addPhotos?.[language] || 'Click to add photos'}
@@ -694,7 +694,7 @@ export default function MaintenancePage() {
                           <img
                             src={URL.createObjectURL(file)}
                             alt={`Preview ${idx + 1}`}
-                            className="w-20 h-20 rounded-lg object-cover border-2 border-gray-200"
+                            className="w-20 h-20 superellipse-lg object-cover border-2 border-gray-200"
                           />
                           <button
                             onClick={() => removeFile(idx)}

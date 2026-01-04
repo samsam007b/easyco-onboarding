@@ -245,7 +245,7 @@ export default function ModernTasksPage() {
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                 boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -265,7 +265,7 @@ export default function ModernTasksPage() {
             <Button
               onClick={() => setShowCreateModal(true)}
               size="sm"
-              className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
+              className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                 boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
@@ -282,7 +282,7 @@ export default function ModernTasksPage() {
           {/* My Tasks Card - Orange Gradient */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
               boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
@@ -294,7 +294,7 @@ export default function ModernTasksPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-orange-700">{hub.tasks?.stats?.myTasks || 'My tasks'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
               >
                 <Users className="w-4 h-4 text-white" />
@@ -307,7 +307,7 @@ export default function ModernTasksPage() {
           {/* Pending Card - Gris neutre (pas de couleur sémantique) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%)',
               boxShadow: '0 8px 24px rgba(156, 163, 175, 0.15)',
@@ -319,7 +319,7 @@ export default function ModernTasksPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-600">{hub.tasks?.stats?.pendingLabel || 'Pending'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #9CA3AF, #D1D5DB)' }}
               >
                 <Clock className="w-4 h-4 text-white" />
@@ -332,7 +332,7 @@ export default function ModernTasksPage() {
           {/* Completed Card - Vert pastel (sémantique muted) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)',
               boxShadow: '0 8px 24px rgba(124, 184, 155, 0.15)',
@@ -344,7 +344,7 @@ export default function ModernTasksPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#5A9B7A]">{hub.tasks?.stats?.completed || 'Completed'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
               >
                 <CheckCircle2 className="w-4 h-4 text-white" />
@@ -357,7 +357,7 @@ export default function ModernTasksPage() {
           {/* Overdue Card - Rouge pastel (sémantique muted) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)',
               boxShadow: '0 8px 24px rgba(208, 128, 128, 0.15)',
@@ -369,7 +369,7 @@ export default function ModernTasksPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#B06060]">{hub.tasks?.stats?.overdue || 'Overdue'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
               >
                 <AlertCircle className="w-4 h-4 text-white" />
@@ -384,12 +384,12 @@ export default function ModernTasksPage() {
         <motion.div
           variants={itemVariants}
           whileHover={{ y: -4 }}
-          className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-orange-400"
+          className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-orange-400"
           style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
         >
           <div className="flex items-center gap-3 p-4 border-b border-gray-100">
             <div
-              className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
+              className="w-9 h-9 superellipse-xl flex items-center justify-center shadow-md"
               style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
             >
               <ClipboardList className="w-5 h-5 text-white" />
@@ -417,7 +417,7 @@ export default function ModernTasksPage() {
                 >
                   <motion.div
                     whileHover={{ scale: 1.05, rotate: 5 }}
-                    className="relative w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
+                    className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                     style={{
                       background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)',
                       boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -448,7 +448,7 @@ export default function ModernTasksPage() {
                       whileHover={{ scale: 1.01, x: 4 }}
                       whileTap={{ scale: 0.99 }}
                       className={cn(
-                        'group flex items-center justify-between p-4 rounded-2xl border-2 transition-all cursor-pointer',
+                        'group flex items-center justify-between p-4 superellipse-2xl border-2 transition-all cursor-pointer',
                         isMyTask
                           ? 'border-orange-200 hover:shadow-lg'
                           : 'bg-gray-50/50 border-gray-200 hover:border-gray-300'
@@ -461,7 +461,7 @@ export default function ModernTasksPage() {
                       <div className="flex items-center gap-4 flex-1">
                         <motion.div
                           whileHover={{ scale: 1.1, rotate: 5 }}
-                          className={cn('w-12 h-12 rounded-xl flex items-center justify-center shadow-sm', category?.color)}
+                          className={cn('w-12 h-12 superellipse-xl flex items-center justify-center shadow-sm', category?.color)}
                         >
                           {category?.icon && <category.icon className="w-6 h-6" />}
                         </motion.div>
@@ -563,7 +563,7 @@ export default function ModernTasksPage() {
 
       {/* Create Task Modal - V3 Fun Design */}
       <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden rounded-3xl border-2 border-orange-100" style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.25)' }}>
+        <DialogContent className="max-w-lg p-0 overflow-hidden superellipse-3xl border-2 border-orange-100" style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.25)' }}>
           {/* Decorative gradient circles */}
           <div
             className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
@@ -583,7 +583,7 @@ export default function ModernTasksPage() {
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
-                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                className="w-12 h-12 superellipse-xl flex items-center justify-center"
                 style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
               >
                 <ClipboardList className="w-6 h-6 text-white" />
@@ -606,7 +606,7 @@ export default function ModernTasksPage() {
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                 <div
-                  className="w-6 h-6 rounded-lg flex items-center justify-center"
+                  className="w-6 h-6 superellipse-lg flex items-center justify-center"
                   style={{ background: 'rgba(255, 101, 30, 0.15)' }}
                 >
                   <FileText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
@@ -617,7 +617,7 @@ export default function ModernTasksPage() {
                 value={createForm.title}
                 onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
                 placeholder={hub.tasks?.modal?.titlePlaceholder || 'E.g.: Clean the kitchen'}
-                className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
               />
             </div>
 
@@ -625,7 +625,7 @@ export default function ModernTasksPage() {
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                 <div
-                  className="w-6 h-6 rounded-lg flex items-center justify-center"
+                  className="w-6 h-6 superellipse-lg flex items-center justify-center"
                   style={{ background: 'rgba(255, 101, 30, 0.15)' }}
                 >
                   <PenLine className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
@@ -636,7 +636,7 @@ export default function ModernTasksPage() {
                 value={createForm.description}
                 onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
                 placeholder={hub.tasks?.modal?.descriptionPlaceholder || 'Details (optional)'}
-                className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
+                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
                 rows={3}
               />
             </div>
@@ -646,7 +646,7 @@ export default function ModernTasksPage() {
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                   <div
-                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    className="w-6 h-6 superellipse-lg flex items-center justify-center"
                     style={{ background: 'rgba(59, 130, 246, 0.15)' }}
                   >
                     <Package className="w-3.5 h-3.5" style={{ color: '#3b82f6' }} />
@@ -656,7 +656,7 @@ export default function ModernTasksPage() {
                 <select
                   value={createForm.category}
                   onChange={(e) => setCreateForm({ ...createForm, category: e.target.value as any })}
-                  className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
+                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
                 >
                   {CATEGORY_OPTIONS.map((cat) => (
                     <option key={cat.value} value={cat.value}>
@@ -669,7 +669,7 @@ export default function ModernTasksPage() {
               <div>
                 <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                   <div
-                    className="w-6 h-6 rounded-lg flex items-center justify-center"
+                    className="w-6 h-6 superellipse-lg flex items-center justify-center"
                     style={{ background: 'rgba(168, 85, 247, 0.15)' }}
                   >
                     <AlertCircle className="w-3.5 h-3.5" style={{ color: '#a855f7' }} />
@@ -679,7 +679,7 @@ export default function ModernTasksPage() {
                 <select
                   value={createForm.priority}
                   onChange={(e) => setCreateForm({ ...createForm, priority: e.target.value as any })}
-                  className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
+                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
                 >
                   {PRIORITY_OPTIONS.map((pri) => (
                     <option key={pri.value} value={pri.value}>
@@ -694,7 +694,7 @@ export default function ModernTasksPage() {
             <div>
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                 <div
-                  className="w-6 h-6 rounded-lg flex items-center justify-center"
+                  className="w-6 h-6 superellipse-lg flex items-center justify-center"
                   style={{ background: 'rgba(16, 185, 129, 0.15)' }}
                 >
                   <Calendar className="w-3.5 h-3.5" style={{ color: '#10b981' }} />
@@ -705,7 +705,7 @@ export default function ModernTasksPage() {
                 type="date"
                 value={createForm.due_date}
                 onChange={(e) => setCreateForm({ ...createForm, due_date: e.target.value })}
-                className="w-full px-4 py-3.5 rounded-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
               />
             </div>
 
@@ -715,7 +715,7 @@ export default function ModernTasksPage() {
                 <Button
                   variant="outline"
                   onClick={() => setShowCreateModal(false)}
-                  className="w-full rounded-2xl py-6 font-semibold border-2 transition-all"
+                  className="w-full superellipse-2xl py-6 font-semibold border-2 transition-all"
                   style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#ff651e' }}
                 >
                   {hub.tasks?.modal?.cancel || 'Cancel'}
@@ -725,7 +725,7 @@ export default function ModernTasksPage() {
                 <Button
                   onClick={handleCreateTask}
                   disabled={isSubmitting || !createForm.title}
-                  className="w-full rounded-2xl py-6 font-bold text-white border-none"
+                  className="w-full superellipse-2xl py-6 font-bold text-white border-none"
                   style={{
                     background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                     boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
@@ -741,7 +741,7 @@ export default function ModernTasksPage() {
 
       {/* Complete Task Modal - V2 Fun avec vert pastel */}
       <Dialog open={showCompleteModal} onOpenChange={setShowCompleteModal}>
-        <DialogContent className="max-w-lg rounded-3xl border-2 border-[#D4E8DD]">
+        <DialogContent className="max-w-lg superellipse-3xl border-2 border-[#D4E8DD]">
           <DialogHeader>
             <DialogTitle className="text-xl font-bold flex items-center gap-2">
               <CheckCircle2 className="w-5 h-5 text-[#7CB89B]" />
@@ -754,14 +754,14 @@ export default function ModernTasksPage() {
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="rounded-2xl p-4 border-2 border-[#D4E8DD]"
+                className="superellipse-2xl p-4 border-2 border-[#D4E8DD]"
                 style={{
                   background: 'linear-gradient(135deg, #F0F7F4 0%, #FFFFFF 100%)',
                 }}
               >
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                     style={{
                       background: 'linear-gradient(135deg, #7CB89B 0%, #6BA888 100%)',
                       boxShadow: '0 4px 12px rgba(124, 184, 155, 0.35)',
@@ -787,7 +787,7 @@ export default function ModernTasksPage() {
                   value={completeForm.completion_notes}
                   onChange={(e) => setCompleteForm({ ...completeForm, completion_notes: e.target.value })}
                   placeholder={hub.tasks?.completeModal?.notesPlaceholder || 'How did it go? (optional)'}
-                  className="rounded-xl mt-2 border-2 border-gray-200 focus:border-[#9ECDB5]"
+                  className="superellipse-xl mt-2 border-2 border-gray-200 focus:border-[#9ECDB5]"
                 />
               </div>
 

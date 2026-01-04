@@ -128,14 +128,14 @@ export default function InvoicesPage() {
     switch (status) {
       case 'paid':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-green-100 text-green-800 text-xs font-semibold">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 superellipse-lg bg-green-100 text-green-800 text-xs font-semibold">
             <Check className="w-3 h-3" />
             {t?.status?.paid?.[language] || 'Paid'}
           </span>
         );
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-yellow-100 text-yellow-800 text-xs font-semibold">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 superellipse-lg bg-yellow-100 text-yellow-800 text-xs font-semibold">
             <Calendar className="w-3 h-3" />
             {t?.status?.pending?.[language] || 'Pending'}
           </span>

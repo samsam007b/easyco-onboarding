@@ -286,7 +286,7 @@ export default function ModernFinancesPage() {
             <motion.div
               whileHover={{ scale: 1.1, rotate: 5 }}
               whileTap={{ scale: 0.95 }}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+              className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
                 background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                 boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
@@ -308,7 +308,7 @@ export default function ModernFinancesPage() {
                 onClick={() => openHistoryModal('calendar')}
                 variant="outline"
                 size="sm"
-                className="h-9 text-sm rounded-xl border-2 border-orange-200 text-[#ff7b19] hover:bg-orange-50 hover:border-orange-300 font-medium shadow-sm"
+                className="h-9 text-sm superellipse-xl border-2 border-orange-200 text-[#ff7b19] hover:bg-orange-50 hover:border-orange-300 font-medium shadow-sm"
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 {hub.finances?.calendar || 'Calendar'}
@@ -319,7 +319,7 @@ export default function ModernFinancesPage() {
                 onClick={handleExport}
                 variant="outline"
                 size="sm"
-                className="h-9 text-sm rounded-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium shadow-sm"
+                className="h-9 text-sm superellipse-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium shadow-sm"
               >
                 <Download className="w-4 h-4 mr-2" />
                 PDF
@@ -330,7 +330,7 @@ export default function ModernFinancesPage() {
                 onClick={() => setCreateMode('manual')}
                 variant="outline"
                 size="sm"
-                className="h-9 text-sm rounded-xl border-2 border-orange-200 text-[#ff651e] hover:bg-orange-50 hover:border-orange-300 font-semibold shadow-sm"
+                className="h-9 text-sm superellipse-xl border-2 border-orange-200 text-[#ff651e] hover:bg-orange-50 hover:border-orange-300 font-semibold shadow-sm"
               >
                 <PenLine className="w-4 h-4 mr-2" />
                 {hub.finances?.addManual || 'Add'}
@@ -340,7 +340,7 @@ export default function ModernFinancesPage() {
               <Button
                 onClick={() => setCreateMode('scanner')}
                 size="sm"
-                className="h-9 text-sm rounded-xl text-white font-semibold shadow-lg"
+                className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
                 style={{
                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
                   boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
@@ -359,7 +359,7 @@ export default function ModernFinancesPage() {
           {/* Total Card - Orange Gradient (palette officielle) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
               boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
@@ -371,7 +371,7 @@ export default function ModernFinancesPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#e05747]">{hub.finances?.stats?.total || 'Total'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
               >
                 <DollarSign className="w-4 h-4 text-white" />
@@ -387,7 +387,7 @@ export default function ModernFinancesPage() {
           {/* Your Share Card - Orange (cohérence Resident) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #FFEDE5 0%, #FFD9C7 100%)',
               boxShadow: '0 8px 24px rgba(255, 123, 25, 0.15)',
@@ -399,7 +399,7 @@ export default function ModernFinancesPage() {
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#f8572b]">{hub.finances?.stats?.yourShare || 'Your share'}</span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #ff7b19, #ff9014)' }}
               >
                 <Users className="w-4 h-4 text-white" />
@@ -425,7 +425,7 @@ export default function ModernFinancesPage() {
           {/* Balance Card - Vert/Rouge pastel (sémantique muted) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-4 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
               background: totalBalance >= 0
                 ? 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)'
@@ -448,7 +448,7 @@ export default function ModernFinancesPage() {
                 {hub.finances?.stats?.balance || 'Balance'}
               </span>
               <div
-                className="w-8 h-8 rounded-xl flex items-center justify-center shadow-md"
+                className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                 style={{
                   background: totalBalance >= 0
                     ? 'linear-gradient(135deg, #7CB89B, #9ECDB5)'
@@ -475,12 +475,12 @@ export default function ModernFinancesPage() {
         <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white rounded-2xl p-5 shadow-lg border-2 border-orange-100"
+            className="bg-white superellipse-2xl p-5 shadow-lg border-2 border-orange-100"
             style={{ boxShadow: '0 12px 32px rgba(255, 101, 30, 0.08)' }}
           >
             <div className="flex items-center gap-3 mb-4">
               <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center"
+                className="w-9 h-9 superellipse-xl flex items-center justify-center"
                 style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
               >
                 <BarChart3 className="w-5 h-5 text-white" />
@@ -492,12 +492,12 @@ export default function ModernFinancesPage() {
 
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white rounded-2xl p-5 shadow-lg border-2 border-orange-100"
+            className="bg-white superellipse-2xl p-5 shadow-lg border-2 border-orange-100"
             style={{ boxShadow: '0 12px 32px rgba(255, 123, 25, 0.08)' }}
           >
             <div className="flex items-center gap-3 mb-4">
               <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center"
+                className="w-9 h-9 superellipse-xl flex items-center justify-center"
                 style={{ background: 'linear-gradient(135deg, #ff7b19, #ff9014)' }}
               >
                 <PieChart className="w-5 h-5 text-white" />
@@ -512,7 +512,7 @@ export default function ModernFinancesPage() {
         <motion.div
           variants={itemVariants}
           whileHover={{ y: -2 }}
-          className="rounded-2xl shadow-lg overflow-hidden"
+          className="superellipse-2xl shadow-lg overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, #fef3c7 0%, #fef9c3 50%, #ecfccb 100%)',
             boxShadow: '0 12px 32px rgba(234, 179, 8, 0.12)',
@@ -533,7 +533,7 @@ export default function ModernFinancesPage() {
           {/* Recent Expenses */}
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-[#ff651e]"
+            className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-[#ff651e]"
             style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
           >
             <button
@@ -542,7 +542,7 @@ export default function ModernFinancesPage() {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-9 h-9 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
                 >
                   <Receipt className="w-5 h-5 text-white" />
@@ -576,12 +576,12 @@ export default function ModernFinancesPage() {
           {/* Balances - Vert pastel (sémantique muted) */}
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white rounded-2xl shadow-lg overflow-hidden border-l-4 border-[#7CB89B]"
+            className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-[#7CB89B]"
             style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
           >
             <div className="flex items-center gap-3 p-4 border-b border-gray-100">
               <div
-                className="w-9 h-9 rounded-xl flex items-center justify-center shadow-md"
+                className="w-9 h-9 superellipse-xl flex items-center justify-center shadow-md"
                 style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
               >
                 <CreditCard className="w-5 h-5 text-white" />
@@ -599,7 +599,7 @@ export default function ModernFinancesPage() {
                   <motion.div
                     animate={{ rotate: [0, 10, -10, 0] }}
                     transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center mb-3 shadow-lg"
+                    className="w-14 h-14 superellipse-2xl flex items-center justify-center mb-3 shadow-lg"
                     style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
                   >
                     <Check className="w-7 h-7 text-white" />
@@ -617,7 +617,7 @@ export default function ModernFinancesPage() {
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ scale: 1.02, x: 4 }}
                       className={cn(
-                        'flex items-center justify-between p-3 rounded-xl transition-all',
+                        'flex items-center justify-between p-3 superellipse-xl transition-all',
                         balance.amount >= 0
                           ? 'bg-gradient-to-r from-[#F0F7F4] to-[#E8F5EE] hover:shadow-md'
                           : 'bg-gradient-to-r from-[#FDF5F5] to-[#FAE8E8] hover:shadow-md'
@@ -625,7 +625,7 @@ export default function ModernFinancesPage() {
                     >
                       <div className="flex items-center gap-3">
                         <div
-                          className="w-10 h-10 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md"
+                          className="w-10 h-10 superellipse-xl flex items-center justify-center text-white text-sm font-bold shadow-md"
                           style={{
                             background: balance.amount >= 0
                               ? 'linear-gradient(135deg, #7CB89B, #6BA888)'
@@ -659,7 +659,7 @@ export default function ModernFinancesPage() {
                                 e.stopPropagation();
                                 handleSettleDebt(balance.userId, balance.userName, balance.amount);
                               }}
-                              className="h-7 px-2.5 text-xs font-semibold rounded-lg text-white shadow-md"
+                              className="h-7 px-2.5 text-xs font-semibold superellipse-lg text-white shadow-md"
                               style={{ background: 'linear-gradient(135deg, #7CB89B, #6BA888)' }}
                             >
                               <Banknote className="w-3.5 h-3.5 mr-1" />
@@ -692,7 +692,7 @@ export default function ModernFinancesPage() {
         transition={{
           boxShadow: { repeat: Infinity, duration: 2 },
         }}
-        className="lg:hidden fixed bottom-6 right-6 w-16 h-16 rounded-2xl flex items-center justify-center text-white z-40"
+        className="lg:hidden fixed bottom-6 right-6 w-16 h-16 superellipse-2xl flex items-center justify-center text-white z-40"
         style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
       >
         <Scan className="w-7 h-7" />
@@ -701,7 +701,7 @@ export default function ModernFinancesPage() {
       {/* Modals - V3 Fun Design */}
       <Dialog open={createMode !== null} onOpenChange={() => setCreateMode(null)}>
         <DialogContent
-          className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 rounded-3xl border-2 border-orange-100"
+          className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 superellipse-3xl border-2 border-orange-100"
           style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
         >
           {/* Decorative gradient circles */}
