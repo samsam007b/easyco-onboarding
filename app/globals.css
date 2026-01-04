@@ -303,19 +303,35 @@
 }
 
 /* ============================================
-   Base Styles
+   Base Styles - Using @layer for proper Tailwind integration
    ============================================ */
 
-body {
-  @apply bg-gray-50 text-gray-900;
-  /* Font variables defined here because next/font classes are on body */
-  --font-body: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-heading: var(--font-nunito), 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-brand: var(--font-fredoka), 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
+@layer base {
+  body {
+    /* Font variables defined here because next/font classes are on body */
+    --font-body: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-heading: var(--font-nunito), 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-brand: var(--font-fredoka), 'Fredoka', -apple-system, BlinkMacSystemFont, sans-serif;
 
-  font-family: var(--font-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    position: relative;
+    @apply bg-white text-gray-900;
+  }
+
+  /* Typography - Headings use Nunito */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+
+  h1 { @apply text-4xl font-bold; }
+  h2 { @apply text-3xl font-bold; }
+  h3 { @apply text-2xl font-semibold; }
+  h4 { @apply text-xl font-semibold; }
+  h5 { @apply text-lg font-medium; }
+  h6 { @apply text-base font-medium; }
 }
 
 /* ============================================
@@ -428,26 +444,15 @@ html::after {
   }
 }
 
-body {
-  @apply bg-white text-gray-900;
-  /* S'assure que le body a un fond pour ne pas montrer le fond HTML sauf lors du bounce */
-  min-height: 100vh;
-  position: relative;
-}
+/* Body background is set in @layer base above */
 
-/* ============================================
-   Typography Base - Headings use Nunito
-   ============================================ */
-h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
-  font-weight: 700;
-}
-
-/* Brand wordmark styling */
-.font-brand,
-.brand-wordmark {
-  font-family: var(--font-brand);
-  font-weight: 600;
+@layer components {
+  /* Brand wordmark styling - Fredoka font for "Izzico" text */
+  .font-brand,
+  .brand-wordmark {
+    font-family: var(--font-brand);
+    font-weight: 600;
+  }
 }
 
 /* ============================================

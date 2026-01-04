@@ -148,7 +148,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrganizationStructuredData />
         <WebsiteStructuredData />
       </head>
-      <body className={`${inter.variable} ${nunito.variable} ${fredoka.variable} min-h-screen font-sans`}>
+      <body className={`${inter.variable} ${nunito.variable} ${fredoka.variable} min-h-screen`}>
         <SkipLink />
         <Analytics />
         <WebVitalsReporter />
