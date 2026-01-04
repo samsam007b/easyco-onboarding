@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico Icon - Ajustement Interactif</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #0f0f1a;
+            color: #fff;
+            padding: 40px;
+            line-height: 1.6;
+        }
+
+        h1 { text-align: center; margin-bottom: 8px; font-size: 28px; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 40px; }
+
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1600px; margin: 0 auto; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1600px; margin: 0 auto; }
+
+        .panel {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 32px;
+        }
+
+        .panel-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #9c5698;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .panel-title::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            background: linear-gradient(135deg, #9c5698, #ffc800);
+            border-radius: 50%;
+        }
+
+        .icon-container {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-container svg { width: 280px; height: 280px; }
+        .icon-container.large svg { width: 400px; height: 400px; }
+
+        .controls {
+            background: #252542;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+        }
+
+        .control-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .control-label {
+            font-size: 13px;
+            color: #888;
+            min-width: 120px;
+        }
+
+        .slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #1a1a2e;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #9c5698, #ffc800);
+            cursor: pointer;
+        }
+
+        .value-display {
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 14px;
+            color: #4ade80;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #252542;
+        }
+
+        .metric-label { color: #888; font-size: 13px; }
+        .metric-value { font-family: 'SF Mono', Monaco, monospace; color: #4ade80; }
+        .metric-value.warning { color: #fbbf24; }
+        .metric-value.success { color: #22c55e; }
+        .metric-value.error { color: #ef4444; }
+
+        h2 {
+            font-size: 18px;
+            margin: 40px 0 20px;
+            color: #fff;
+            max-width: 1600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-original { background: #3b82f6; color: white; }
+        .badge-adjusted { background: #22c55e; color: white; }
+        .badge-symmetric { background: #ffc800; color: #1a1a2e; }
+
+        .export-section {
+            background: #252542;
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        .export-btn {
+            background: linear-gradient(135deg, #9c5698, #ffc800);
+            border: none;
+            color: white;
+            padding: 12px 32px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 8px;
+        }
+
+        .export-btn:hover { opacity: 0.9; }
+        .export-btn.secondary { background: #3b82f6; }
+
+        .comparison-overlay {
+            position: relative;
+        }
+
+        .toggle-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .toggle-btn {
+            padding: 8px 16px;
+            border: 1px solid #3b82f6;
+            background: transparent;
+            color: #3b82f6;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .toggle-btn.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .svg-code {
+            background: #0f0f1a;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 11px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .highlight { background: #ffc80033; padding: 2px 4px; border-radius: 2px; }
+
+        .preset-btn {
+            padding: 8px 16px;
+            border: 1px solid #444;
+            background: #252542;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            margin: 4px;
+        }
+
+        .preset-btn:hover { border-color: #9c5698; }
+        .preset-btn.active { border-color: #ffc800; background: #ffc80022; }
+    </style>
+</head>
+<body>
+    <h1>Izzico Icon - Ajustement de la Tige Loupe</h1>
+    <p class="subtitle">Trouvez l'équilibre parfait entre symétrie mathématique et harmonie visuelle</p>
+
+    <div class="grid">
+        <!-- Original Reference -->
+        <div class="panel">
+            <div class="panel-title"><span class="badge badge-original">Référence</span> Original Recraft</div>
+            <div class="icon-container large">
+                <svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad-orig" gradientUnits="userSpaceOnUse" x1="300" y1="400" x2="1700" y2="1700">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="30%" stop-color="#d15659"/>
+                            <stop offset="50%" stop-color="#e05747"/>
+                            <stop offset="70%" stop-color="#ff7c10"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="url(#grad-orig)"/>
+                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="url(#grad-orig)"/>
+                </svg>
+            </div>
+            <div style="margin-top: 16px;">
+                <div class="metric-row">
+                    <span class="metric-label">Tige Loupe</span>
+                    <span class="metric-value warning">91.9 units @ 36.1°</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Tige Clé</span>
+                    <span class="metric-value">67.0 units @ 41.3°</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Différence</span>
+                    <span class="metric-value error">+37% (asymétrique)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Adjustment -->
+        <div class="panel">
+            <div class="panel-title"><span class="badge badge-adjusted">Ajustable</span> Version en cours</div>
+            <div class="icon-container large" id="adjustedContainer">
+                <!-- SVG will be rendered by JavaScript -->
+            </div>
+            <div class="controls">
+                <div class="control-row">
+                    <span class="control-label">Longueur tige</span>
+                    <input type="range" class="slider" id="lengthSlider" min="50" max="100" value="67" step="0.5">
+                    <span class="value-display" id="lengthValue">67.0</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Angle</span>
+                    <input type="range" class="slider" id="angleSlider" min="30" max="50" value="41.3" step="0.1">
+                    <span class="value-display" id="angleValue">41.3°</span>
+                </div>
+                <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #333;">
+                    <span style="font-size: 12px; color: #666;">Presets :</span>
+                    <button class="preset-btn" onclick="setPreset(91.9, 36.1)">Original</button>
+                    <button class="preset-btn active" onclick="setPreset(67.0, 41.3)">Symétrie parfaite</button>
+                    <button class="preset-btn" onclick="setPreset(75, 38)">Compromis</button>
+                </div>
+            </div>
+            <div style="margin-top: 16px;">
+                <div class="metric-row">
+                    <span class="metric-label">Nouvelle tige Loupe</span>
+                    <span class="metric-value success" id="newLoupeMetric">67.0 units @ 41.3°</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Tige Clé (référence)</span>
+                    <span class="metric-value">67.0 units @ 41.3°</span>
+                </div>
+                <div class="metric-row">
+                    <span class="metric-label">Symétrie</span>
+                    <span class="metric-value" id="symmetryStatus">PARFAITE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>Comparaison Côte à Côte</h2>
+
+    <div class="grid-3">
+        <!-- Original -->
+        <div class="panel">
+            <div class="panel-title">Original (Recraft)</div>
+            <div class="icon-container">
+                <svg viewBox="0 0 2048 2048" fill="none">
+                    <defs>
+                        <linearGradient id="grad1" gradientUnits="userSpaceOnUse" x1="300" y1="400" x2="1700" y2="1700">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="30%" stop-color="#d15659"/>
+                            <stop offset="50%" stop-color="#e05747"/>
+                            <stop offset="70%" stop-color="#ff7c10"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l74.286 54.218c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="url(#grad1)"/>
+                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="url(#grad1)"/>
+                </svg>
+            </div>
+            <div style="text-align: center; margin-top: 12px; font-size: 12px; color: #888;">
+                l74.286 54.218<br>
+                <span style="color: #fbbf24;">91.9 units @ 36.1°</span>
+            </div>
+        </div>
+
+        <!-- Symmetric Perfect -->
+        <div class="panel" style="border: 2px solid #22c55e;">
+            <div class="panel-title" style="color: #22c55e;">Symétrie Parfaite</div>
+            <div class="icon-container">
+                <svg viewBox="0 0 2048 2048" fill="none">
+                    <defs>
+                        <linearGradient id="grad2" gradientUnits="userSpaceOnUse" x1="300" y1="400" x2="1700" y2="1700">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="30%" stop-color="#d15659"/>
+                            <stop offset="50%" stop-color="#e05747"/>
+                            <stop offset="70%" stop-color="#ff7c10"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l50.382 44.192c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="url(#grad2)"/>
+                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="url(#grad2)"/>
+                </svg>
+            </div>
+            <div style="text-align: center; margin-top: 12px; font-size: 12px; color: #888;">
+                l50.382 44.192<br>
+                <span style="color: #22c55e;">67.0 units @ 41.3° (= clé)</span>
+            </div>
+        </div>
+
+        <!-- Compromise -->
+        <div class="panel">
+            <div class="panel-title">Compromis Visuel</div>
+            <div class="icon-container">
+                <svg viewBox="0 0 2048 2048" fill="none">
+                    <defs>
+                        <linearGradient id="grad3" gradientUnits="userSpaceOnUse" x1="300" y1="400" x2="1700" y2="1700">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="30%" stop-color="#d15659"/>
+                            <stop offset="50%" stop-color="#e05747"/>
+                            <stop offset="70%" stop-color="#ff7c10"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <path d="M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l58 46c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254" fill="url(#grad3)"/>
+                    <path d="M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518" fill="url(#grad3)"/>
+                </svg>
+            </div>
+            <div style="text-align: center; margin-top: 12px; font-size: 12px; color: #888;">
+                l58 46<br>
+                <span style="color: #60a5fa;">74.0 units @ 38.4°</span>
+            </div>
+        </div>
+    </div>
+
+    <h2>Export</h2>
+
+    <div class="panel" style="max-width: 1600px; margin: 24px auto;">
+        <div class="panel-title">Exporter la version ajustée</div>
+        <div class="export-section">
+            <p style="margin-bottom: 16px; color: #888;">Exportez le SVG ajusté ou un PNG haute résolution pour re-vectorisation sur Recraft</p>
+            <button class="export-btn" onclick="exportSVG()">Télécharger SVG</button>
+            <button class="export-btn secondary" onclick="exportPNG(2048)">Exporter PNG (2048px)</button>
+            <button class="export-btn secondary" onclick="exportPNG(4096)">Exporter PNG (4096px)</button>
+        </div>
+        <div style="margin-top: 24px;">
+            <div class="panel-title">Code SVG actuel</div>
+            <div class="svg-code" id="svgCodeDisplay">
+                <!-- Will be filled by JS -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Current values
+        let currentLength = 67.0;
+        let currentAngle = 41.3;
+
+        // Reference key stem values
+        const keyLength = 67.0;
+        const keyAngle = 41.3;
+
+        // Base path parts (split around the loupe stem)
+        const pathStart = 'M999.072 416.57c76.224-7.066 167.56 19.312 231.248 60.754 88.93 57.87 146.516 142.762 168.29 246.482 14.556 69.334 8.736 136.522-14.444 203.36-4.356 12.56-12.658 33.864-19.648 44.546 39.644 26.212 86.268 62.858 125.924 91.572l';
+        const pathMiddle = 'c17.62 12.798 62.506 41.722 71.196 61.922 8.226 19.12-12.034 48.476-24.22 63.438-24.62 30.23-44.516 24.07-73.94 6.568-.18.312-1.25 2.202-1.54 2.572-13.132 16.552-26.418 47.76-47.802 54.164-12.616 4.494-37.032-17.054-37.386-28.464-.574-18.556 26.526-49.952 37.178-64.148-10.498-10.034-40.372-29.624-53.868-40.166-10.426 15.284-32.792 51.254-50.616 56.93-13.098 4.172-39.122-17.888-38.14-29.934 1.434-17.576 29.236-49.946 39.946-63.806a8333 8333 0 0 1-92.3-65.142c-21.134 25.196-68.442 56.832-97.636 71.3a371.4 371.4 0 0 1-125.38 38.068c-110.57 13.102-206.686-18.236-293.338-86.546a10343 10343 0 0 1-151.052 131.848l-50.382 44.192c-15.936 13.944-44.24 41.862-65.436 40.512-27.18-1.732-67.88-46.358-65.034-74.372.874-8.614 4.848-18.124 10.846-24.224 26.014-26.454 55.4-49.774 83.522-73.956l157.838-136.652a385.9 385.9 0 0 1-56.478-172.466 380.83 380.83 0 0 1 89.704-277.89c69.462-81.168 162.62-126.552 268.662-134.68m43.456 613.002c127.238-10.82 221.444-122.998 210.108-250.192-11.338-127.192-123.9-220.94-251.046-209.084-126.414 11.786-219.506 123.562-208.234 250.022 11.272 126.462 122.666 220.01 249.172 209.254';
+        const bustPath = 'M997.132 1329.418c167.164-14.518 334.602 95.17 443.044 213.032 33.24 36.128 6.142 67.612-23.514 92.882-47.56 40.526-76.626-8.266-109.024-37.588-71.49-67.41-158.69-126.074-258.87-136.01-106.036-9.974-208.618 45.208-285.592 113.678a1684 1684 0 0 0-39.376 36.48c-28.916 27.734-53.236 58.552-93.216 23.094-26.518-23.516-59.152-56.102-26.59-91.05 105.278-112.996 235.284-202.64 393.138-214.518';
+
+        function calculateStemValues(length, angleDeg) {
+            const angleRad = angleDeg * Math.PI / 180;
+            const dx = length * Math.cos(angleRad);
+            const dy = length * Math.sin(angleRad);
+            return { dx: dx.toFixed(3), dy: dy.toFixed(3) };
+        }
+
+        function generatePath(length, angle) {
+            const { dx, dy } = calculateStemValues(length, angle);
+            return pathStart + dx + ' ' + dy + pathMiddle;
+        }
+
+        function generateSVG(length, angle) {
+            const mainPath = generatePath(length, angle);
+            return `<svg viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+        <linearGradient id="grad-adj" gradientUnits="userSpaceOnUse" x1="300" y1="400" x2="1700" y2="1700">
+            <stop offset="0%" stop-color="#9c5698"/>
+            <stop offset="30%" stop-color="#d15659"/>
+            <stop offset="50%" stop-color="#e05747"/>
+            <stop offset="70%" stop-color="#ff7c10"/>
+            <stop offset="100%" stop-color="#ffc800"/>
+        </linearGradient>
+    </defs>
+    <path d="${mainPath}" fill="url(#grad-adj)"/>
+    <path d="${bustPath}" fill="url(#grad-adj)"/>
+</svg>`;
+        }
+
+        function updateDisplay() {
+            const container = document.getElementById('adjustedContainer');
+            container.innerHTML = generateSVG(currentLength, currentAngle);
+
+            // Update metrics
+            const { dx, dy } = calculateStemValues(currentLength, currentAngle);
+            document.getElementById('newLoupeMetric').textContent =
+                `${currentLength.toFixed(1)} units @ ${currentAngle.toFixed(1)}°`;
+
+            // Update symmetry status
+            const lengthDiff = Math.abs(currentLength - keyLength) / keyLength * 100;
+            const angleDiff = Math.abs(currentAngle - keyAngle);
+            const statusEl = document.getElementById('symmetryStatus');
+
+            if (lengthDiff < 1 && angleDiff < 0.5) {
+                statusEl.textContent = 'PARFAITE';
+                statusEl.className = 'metric-value success';
+            } else if (lengthDiff < 10) {
+                statusEl.textContent = `Proche (${lengthDiff.toFixed(1)}% diff)`;
+                statusEl.className = 'metric-value warning';
+            } else {
+                statusEl.textContent = `Asymétrique (+${lengthDiff.toFixed(0)}%)`;
+                statusEl.className = 'metric-value error';
+            }
+
+            // Update code display
+            document.getElementById('svgCodeDisplay').textContent = generateSVG(currentLength, currentAngle);
+        }
+
+        function setPreset(length, angle) {
+            currentLength = length;
+            currentAngle = angle;
+            document.getElementById('lengthSlider').value = length;
+            document.getElementById('angleSlider').value = angle;
+            document.getElementById('lengthValue').textContent = length.toFixed(1);
+            document.getElementById('angleValue').textContent = angle.toFixed(1) + '°';
+
+            // Update preset buttons
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            if (length === 67.0 && angle === 41.3) {
+                document.querySelectorAll('.preset-btn')[1].classList.add('active');
+            } else if (length === 91.9 && angle === 36.1) {
+                document.querySelectorAll('.preset-btn')[0].classList.add('active');
+            } else if (length === 75 && angle === 38) {
+                document.querySelectorAll('.preset-btn')[2].classList.add('active');
+            }
+
+            updateDisplay();
+        }
+
+        // Slider event listeners
+        document.getElementById('lengthSlider').addEventListener('input', function() {
+            currentLength = parseFloat(this.value);
+            document.getElementById('lengthValue').textContent = currentLength.toFixed(1);
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            updateDisplay();
+        });
+
+        document.getElementById('angleSlider').addEventListener('input', function() {
+            currentAngle = parseFloat(this.value);
+            document.getElementById('angleValue').textContent = currentAngle.toFixed(1) + '°';
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            updateDisplay();
+        });
+
+        // Export functions
+        function exportSVG() {
+            const svgContent = generateSVG(currentLength, currentAngle);
+            const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `izzico-icon-adjusted-${currentLength.toFixed(0)}-${currentAngle.toFixed(0)}.svg`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportPNG(size) {
+            const svgContent = generateSVG(currentLength, currentAngle);
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            const img = new Image();
+            const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, size, size);
+                const pngUrl = canvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.href = pngUrl;
+                a.download = `izzico-icon-adjusted-${currentLength.toFixed(0)}-${currentAngle.toFixed(0)}-${size}px.png`;
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+
+            img.src = url;
+        }
+
+        // Initial render
+        updateDisplay();
+    </script>
+</body>
+</html>

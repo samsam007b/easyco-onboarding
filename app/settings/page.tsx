@@ -451,7 +451,7 @@ export default function SettingsPage() {
               {/* Category Header - V3 Style */}
               <div className="flex items-center gap-3 mb-4">
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center shadow-md"
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
                   style={{
                     background: category.id === 'account'
                       ? `linear-gradient(135deg, ${colors.primary} 0%, ${colors.secondary} 100%)`
@@ -504,7 +504,7 @@ export default function SettingsPage() {
                       whileHover={{ scale: 1.02, y: -4 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={() => router.push(section.href)}
-                      className="group relative cursor-pointer bg-white rounded-2xl p-6 shadow-lg transition-all duration-300 text-left w-full overflow-hidden"
+                      className="group relative cursor-pointer bg-white superellipse-2xl p-6 shadow-lg transition-all duration-300 text-left w-full overflow-hidden"
                       style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)' }}
                     >
                       {/* Decorative circle */}
@@ -517,14 +517,14 @@ export default function SettingsPage() {
                         {/* Icon with Badge */}
                         <div className="flex items-start justify-between mb-3">
                           <div
-                            className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
+                            className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-md"
                             style={{ background: getIconGradient() }}
                           >
                             <Icon className="w-6 h-6 text-white" />
                           </div>
                           {section.badge && (
                             <span
-                              className="px-2.5 py-1 rounded-lg text-xs font-semibold"
+                              className="px-2.5 py-1 superellipse-lg text-xs font-semibold"
                               style={{
                                 background: section.badge === 'Premium'
                                   ? 'linear-gradient(135deg, #F3E8FF 0%, #FCE7F3 100%)'
@@ -565,7 +565,7 @@ export default function SettingsPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
           whileHover={{ scale: 1.01 }}
-          className="mt-8 rounded-3xl p-8 bg-white relative overflow-hidden shadow-lg"
+          className="mt-8 superellipse-3xl p-8 bg-white relative overflow-hidden shadow-lg"
           style={{ boxShadow: `0 8px 32px ${colors.shadowLight}` }}
         >
           {/* Decorative background */}
@@ -582,7 +582,7 @@ export default function SettingsPage() {
             <div className="flex items-center gap-4">
               <motion.div
                 whileHover={{ scale: 1.1, rotate: 5 }}
-                className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg"
+                className="w-14 h-14 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{
                   background: colors.gradientStyle,
                   boxShadow: `0 6px 20px ${colors.shadow}`,

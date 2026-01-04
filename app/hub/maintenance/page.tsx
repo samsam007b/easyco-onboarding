@@ -353,7 +353,7 @@ export default function MaintenancePage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white rounded-3xl shadow-lg p-12 text-center"
+              className="bg-white superellipse-3xl shadow-lg p-12 text-center"
               style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
             >
               {/* V3 Fun Icon with Glow */}
@@ -556,7 +556,7 @@ export default function MaintenancePage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
+            className="bg-white superellipse-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
           >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">{t?.modal?.title?.[language] || 'New request'}</h2>

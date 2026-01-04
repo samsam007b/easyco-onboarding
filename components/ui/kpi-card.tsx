@@ -40,7 +40,7 @@ export function KPICard({
   return (
     <div
       className={cn(
-        'bg-white rounded-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md',
+        'bg-white superellipse-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md',
         onClick && 'cursor-pointer hover:border-purple-300',
         className
       )}

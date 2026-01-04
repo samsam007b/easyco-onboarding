@@ -61,7 +61,7 @@ export function SearcherPageHeader({
       {/* Header Content */}
       <motion.div
         {...searcherAnimations.fadeInUp}
-        className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8"
+        className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-3xl shadow-sm border border-gray-200 p-6 sm:p-8"
       >
         {/* Decorative circles */}
         <div
@@ -79,13 +79,13 @@ export function SearcherPageHeader({
             <div className="relative">
               {/* Glow effect */}
               <div
-                className="absolute inset-0 rounded-2xl blur-xl animate-pulse"
+                className="absolute inset-0 superellipse-2xl blur-xl animate-pulse"
                 style={{ background: searcherGradientVibrant, opacity: 0.3 }}
               />
               {/* Icon container */}
               <motion.div
                 whileHover={{ rotate: 3 }}
-                className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-lg"
+                className="relative w-14 h-14 sm:w-16 sm:h-16 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{ background: searcherGradientVibrant }}
               >
                 <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />

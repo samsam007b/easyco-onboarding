@@ -84,7 +84,7 @@ export function SearcherAlertBanner({
       whileTap={isClickable ? { scale: 0.99 } : undefined}
       onClick={isClickable ? handleClick : undefined}
       className={cn(
-        'relative overflow-hidden rounded-2xl p-4 border',
+        'relative overflow-hidden superellipse-2xl p-4 border',
         isClickable && 'cursor-pointer',
         className
       )}
@@ -96,7 +96,7 @@ export function SearcherAlertBanner({
       <div className="flex items-center gap-4">
         {/* Icon */}
         <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0"
           style={{ background: styles.gradient }}
         >
           <Icon className="w-5 h-5 text-white" />

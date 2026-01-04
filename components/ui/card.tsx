@@ -53,7 +53,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
       <div
         ref={ref}
         className={cn(
-          'rounded-3xl transition-all duration-200',
+          'superellipse-3xl transition-all duration-200',
           variantStyles[variant],
           paddingStyles[padding],
           interactive && 'cursor-pointer hover:shadow-lg hover:border-owner-500/20',

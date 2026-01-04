@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Izzico - Brand Showcase</title>
+    <style>
+        :root {
+            --bg-dark: #0f0f1a;
+            --bg-card: #1a1a2e;
+            --border: #2d2d4a;
+            --text: #ffffff;
+            --text-muted: #8888aa;
+            --gradient-start: #9c5698;
+            --gradient-mid: #e05747;
+            --gradient-end: #ffc800;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 300;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 3rem;
+        }
+
+        .showcase {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4rem;
+            padding: 4rem;
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .icon-wrapper {
+            width: 200px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon-wrapper svg {
+            width: 180px;
+            height: 180px;
+        }
+
+        .trademark-wrapper {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trademark-wrapper svg {
+            height: 80px;
+            width: auto;
+        }
+
+        .divider {
+            width: 1px;
+            height: 160px;
+            background: linear-gradient(180deg, transparent, var(--border), transparent);
+        }
+
+        .bg-options {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .bg-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+        }
+
+        .bg-btn:hover {
+            border-color: var(--gradient-mid);
+        }
+
+        .bg-btn.active {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border-color: transparent;
+            color: white;
+        }
+
+        .lockup-section {
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .variations-title {
+            font-size: 1rem;
+            color: var(--text-muted);
+            margin: 2rem 0 1rem;
+        }
+
+        .lockup-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 3rem 4rem;
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .lockup-container .icon-small svg {
+            width: 80px;
+            height: 80px;
+        }
+
+        .lockup-container .trademark-small svg {
+            height: 50px;
+            width: auto;
+        }
+
+        /* Lockup proportion comparison */
+        .proportion-section {
+            margin-top: 3rem;
+            text-align: center;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .proportion-title {
+            font-size: 1.2rem;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+        }
+
+        .proportion-subtitle {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .proportion-comparison {
+            display: flex;
+            gap: 3rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .proportion-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 2px solid var(--border);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 320px;
+        }
+
+        .proportion-option:hover {
+            border-color: var(--gradient-mid);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(224, 87, 71, 0.2);
+        }
+
+        .proportion-option.selected {
+            border-color: var(--gradient-end);
+            box-shadow: 0 0 20px rgba(255, 200, 0, 0.3);
+        }
+
+        .option-label {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 0.25rem;
+        }
+
+        .option-specs {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .lockup-preview {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            min-height: 100px;
+        }
+
+        /* Option B: Icon 25% larger */
+        .option-b .lockup-preview .icon-preview svg {
+            width: 75px;
+            height: 75px;
+        }
+
+        .option-b .lockup-preview .trademark-preview svg {
+            height: 60px;
+            width: auto;
+        }
+
+        .option-b .lockup-preview {
+            gap: 18.75px; /* 1/4 of icon height (75px) */
+        }
+
+        /* Option C: Golden Ratio */
+        .option-c .lockup-preview .icon-preview svg {
+            width: 97px;
+            height: 97px;
+        }
+
+        .option-c .lockup-preview .trademark-preview svg {
+            height: 60px;
+            width: auto;
+        }
+
+        .option-c .lockup-preview {
+            gap: 37px; /* 1/φ² × icon height */
+        }
+
+        /* Option D: Aligned Overflow - Icon overlaps trademark bounds */
+        .option-d .lockup-preview {
+            position: relative;
+            gap: 3px;
+            align-items: center;
+        }
+
+        .option-d .lockup-preview .icon-preview {
+            position: relative;
+        }
+
+        .option-d .lockup-preview .icon-preview svg {
+            width: 130px;
+            height: 130px;
+        }
+
+        .option-d .lockup-preview .trademark-preview svg {
+            height: 60px;
+            width: auto;
+        }
+
+        .proportion-formula {
+            font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+            font-size: 0.7rem;
+            color: var(--gradient-mid);
+            background: rgba(224, 87, 71, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        /* Variant selector */
+        .variant-selector {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .variant-btn {
+            padding: 0.6rem 1.2rem;
+            border: 2px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .variant-btn:hover {
+            border-color: var(--gradient-mid);
+            transform: translateY(-2px);
+        }
+
+        .variant-btn.active {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 4px 15px rgba(224, 87, 71, 0.3);
+        }
+
+        .variant-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        /* Export Section */
+        .export-section {
+            margin-top: 3rem;
+            padding: 2rem;
+            background: var(--bg-card);
+            border-radius: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .export-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-mid), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .export-section .subtitle {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .export-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .export-category {
+            background: rgba(26, 26, 46, 0.5);
+            border-radius: 16px;
+            padding: 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .export-category h3 {
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .export-preview {
+            background: var(--bg);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
+        }
+
+        .export-preview svg {
+            max-width: 100%;
+            max-height: 60px;
+        }
+
+        .export-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .export-btn {
+            padding: 0.6rem 1rem;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .export-btn:hover {
+            border-color: var(--gradient-mid);
+            background: rgba(224, 87, 71, 0.1);
+        }
+
+        .export-btn .color-indicator {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .export-btn .color-indicator.gradient {
+            background: linear-gradient(135deg, #9c5698, #e05747, #ffc800);
+        }
+
+        .export-btn .color-indicator.black {
+            background: #1A1A2E;
+        }
+
+        .export-btn .color-indicator.white {
+            background: #FFFFFF;
+        }
+
+        .export-info {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background: rgba(156, 86, 152, 0.1);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .export-info code {
+            background: rgba(0,0,0,0.3);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>Izzico Brand Identity</h1>
+    <p class="subtitle">Logo Icon & Trademark avec dégradé signature</p>
+
+    <!-- Variant selector -->
+    <p class="variant-label">Variante de l'icône</p>
+    <div class="variant-selector">
+        <button class="variant-btn active" data-variant="cercle">Cercle</button>
+        <button class="variant-btn" data-variant="squircle">Squircle</button>
+        <button class="variant-btn" data-variant="squircle-epais">Squircle Épais</button>
+        <button class="variant-btn" data-variant="losange">Losange</button>
+    </div>
+
+    <!-- Main showcase -->
+    <div class="showcase" id="main-showcase">
+        <div class="logo-container">
+            <div class="logo-label">Icône</div>
+            <div class="icon-wrapper">
+                <!-- Icon SVG with gradient - FINAL VERSIONS - orientation correcte (clé à GAUCHE, loupe à DROITE) -->
+                <svg id="main-icon" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Gradient diagonal: purple (top-left key) → yellow (bottom-right loupe) -->
+                        <linearGradient id="icon-gradient-1" gradientUnits="userSpaceOnUse" x1="400" y1="420" x2="1600" y2="1680">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="20%" stop-color="#9c5698"/>
+                            <stop offset="35%" stop-color="#d15659"/>
+                            <stop offset="50%" stop-color="#e05747"/>
+                            <stop offset="65%" stop-color="#ff7c10"/>
+                            <stop offset="90%" stop-color="#ffc800"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- TOP ASSEMBLY: Circle/Squircle/Losange + Key Handle + Loupe Handle + Teeth -->
+                    <path id="main-icon-path1" fill="url(#icon-gradient-1)"/>
+                    <!-- BUST: Curve + Caps (same for all variants) -->
+                    <path id="main-icon-path2" d="M1014.97 1382.45C1017.89 1382.41 1020.81 1382.39 1023.73 1382.38C1185.12 1382.2 1341.07 1459.59 1461.33 1565.49C1500.83 1600.28 1479.91 1639.72 1448.28 1670.17C1418.31 1699.01 1389.64 1692 1360.07 1667.11C1267.23 1590.35 1157.96 1529.51 1034.65 1525.94C938.955 1524.3 855.652 1553.88 774.819 1604.11C756.708 1615.43 739.051 1627.47 721.892 1640.19C683.945 1668.14 647.874 1715.12 600.798 1671.14C557.774 1630.94 549.656 1591.89 600.28 1553.31C618.434 1539.48 636.896 1523.78 656.088 1510.91C764.881 1433.54 880.77 1386.83 1014.97 1382.45Z" fill="url(#icon-gradient-1)"/>
+                </svg>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="logo-container">
+            <div class="logo-label">Trademark</div>
+            <div class="trademark-wrapper">
+                <!-- Trademark SVG with gradient -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="180 620 2430 780">
+                    <defs>
+                        <linearGradient id="text-gradient-1" gradientUnits="userSpaceOnUse" x1="180" y1="0" x2="2610" y2="2000">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="25%" stop-color="#9c5698"/>
+                            <stop offset="40%" stop-color="#d15659"/>
+                            <stop offset="55%" stop-color="#e05747"/>
+                            <stop offset="70%" stop-color="#ff7c10"/>
+                            <stop offset="90%" stop-color="#ffc800"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- First "i" dot - solid -->
+                    <path fill="url(#text-gradient-1)" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                    <path fill="url(#text-gradient-1)" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                    <path fill="url(#text-gradient-1)" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                    <!-- Second "i" dot - solid (scaled 1.16x to match first "i" width) -->
+                    <path fill="url(#text-gradient-1)" d="M1362.65 650.3C1396.23 639.004 1474.88 634.108 1488.88 672.509C1491.92 681.001 1494.37 688.154 1494.74 697.07C1495.63 718.785 1497.16 756.767 1475.15 771.906C1455.53 785.405 1416.65 784.214 1393.26 782.645C1329.89 778.392 1335.29 718.857 1340.02 679.158C1341.10 670.214 1349.55 658.094 1358.46 653.355C1360.83 652.091 1360.82 652.183 1362.65 650.3Z"/>
+                    <path fill="url(#text-gradient-1)" d="M1483.82 1350.33C1468.21 1381.25 1412.74 1378.28 1381.07 1373.47C1370.60 1371.88 1347.24 1360.1 1345.67 1351.74C1337.90 1310.68 1341.26 1265.25 1341.72 1223.54L1342.12 1107.1C1342.24 1077.45 1342.12 1047.8 1341.72 1018.15C1341.10 982.56 1337.61 934.783 1345.65 899.228C1349.67 890.227 1362.83 881.13 1372.67 878.643C1406.51 870.095 1468.58 866.305 1483.91 901.686C1490.60 915.181 1489.67 949.569 1490.09 965.402C1493.04 1078.58 1489.96 1191.83 1491.88 1305.04C1492.06 1315.01 1488.52 1342.45 1483.82 1350.33Z"/>
+                    <path fill="url(#text-gradient-1)" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                    <!-- "O" letter with dynamic inner hole -->
+                    <path id="trademark1-o" fill="url(#text-gradient-1)" fill-rule="evenodd"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Background options -->
+    <div class="bg-options">
+        <button class="bg-btn active" id="bg-dark">Fond sombre</button>
+        <button class="bg-btn" id="bg-light">Fond clair</button>
+        <button class="bg-btn" id="bg-gradient">Fond dégradé</button>
+    </div>
+
+    <!-- Lockup section -->
+    <div class="lockup-section">
+        <p class="variations-title">Lockup combiné</p>
+        <div class="lockup-container" id="lockup-container">
+            <div class="icon-small">
+                <!-- FINAL VERSIONS - orientation correcte (clé à GAUCHE, loupe à DROITE) -->
+                <svg id="lockup-icon" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="icon-gradient-2" gradientUnits="userSpaceOnUse" x1="400" y1="420" x2="1600" y2="1680">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="20%" stop-color="#9c5698"/>
+                            <stop offset="35%" stop-color="#d15659"/>
+                            <stop offset="50%" stop-color="#e05747"/>
+                            <stop offset="65%" stop-color="#ff7c10"/>
+                            <stop offset="90%" stop-color="#ffc800"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <path id="lockup-icon-path1" fill="url(#icon-gradient-2)"/>
+                    <path id="lockup-icon-path2" d="M1014.97 1382.45C1017.89 1382.41 1020.81 1382.39 1023.73 1382.38C1185.12 1382.2 1341.07 1459.59 1461.33 1565.49C1500.83 1600.28 1479.91 1639.72 1448.28 1670.17C1418.31 1699.01 1389.64 1692 1360.07 1667.11C1267.23 1590.35 1157.96 1529.51 1034.65 1525.94C938.955 1524.3 855.652 1553.88 774.819 1604.11C756.708 1615.43 739.051 1627.47 721.892 1640.19C683.945 1668.14 647.874 1715.12 600.798 1671.14C557.774 1630.94 549.656 1591.89 600.28 1553.31C618.434 1539.48 636.896 1523.78 656.088 1510.91C764.881 1433.54 880.77 1386.83 1014.97 1382.45Z" fill="url(#icon-gradient-2)"/>
+                </svg>
+            </div>
+            <div class="trademark-small">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="180 620 2430 780">
+                    <defs>
+                        <linearGradient id="text-gradient-2" gradientUnits="userSpaceOnUse" x1="180" y1="0" x2="2610" y2="2000">
+                            <stop offset="0%" stop-color="#9c5698"/>
+                            <stop offset="25%" stop-color="#9c5698"/>
+                            <stop offset="40%" stop-color="#d15659"/>
+                            <stop offset="55%" stop-color="#e05747"/>
+                            <stop offset="70%" stop-color="#ff7c10"/>
+                            <stop offset="90%" stop-color="#ffc800"/>
+                            <stop offset="100%" stop-color="#ffc800"/>
+                        </linearGradient>
+                    </defs>
+                    <!-- First "i" dot - solid -->
+                    <path fill="url(#text-gradient-2)" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                    <path fill="url(#text-gradient-2)" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                    <path fill="url(#text-gradient-2)" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                    <!-- Second "i" dot - solid (scaled 1.16x to match first "i" width) -->
+                    <path fill="url(#text-gradient-2)" d="M1362.65 650.3C1396.23 639.004 1474.88 634.108 1488.88 672.509C1491.92 681.001 1494.37 688.154 1494.74 697.07C1495.63 718.785 1497.16 756.767 1475.15 771.906C1455.53 785.405 1416.65 784.214 1393.26 782.645C1329.89 778.392 1335.29 718.857 1340.02 679.158C1341.10 670.214 1349.55 658.094 1358.46 653.355C1360.83 652.091 1360.82 652.183 1362.65 650.3Z"/>
+                    <path fill="url(#text-gradient-2)" d="M1483.82 1350.33C1468.21 1381.25 1412.74 1378.28 1381.07 1373.47C1370.60 1371.88 1347.24 1360.1 1345.67 1351.74C1337.90 1310.68 1341.26 1265.25 1341.72 1223.54L1342.12 1107.1C1342.24 1077.45 1342.12 1047.8 1341.72 1018.15C1341.10 982.56 1337.61 934.783 1345.65 899.228C1349.67 890.227 1362.83 881.13 1372.67 878.643C1406.51 870.095 1468.58 866.305 1483.91 901.686C1490.60 915.181 1489.67 949.569 1490.09 965.402C1493.04 1078.58 1489.96 1191.83 1491.88 1305.04C1492.06 1315.01 1488.52 1342.45 1483.82 1350.33Z"/>
+                    <path fill="url(#text-gradient-2)" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                    <!-- "O" letter with dynamic inner hole -->
+                    <path id="trademark2-o" fill="url(#text-gradient-2)" fill-rule="evenodd"/>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proportion comparison section -->
+    <div class="proportion-section">
+        <p class="proportion-title">Choix des proportions du lockup</p>
+        <p class="proportion-subtitle">Cliquez sur une option pour la sélectionner</p>
+
+        <div class="proportion-comparison">
+            <!-- Option B: 25% emphasis -->
+            <div class="proportion-option option-b" data-option="B">
+                <div class="option-label">Option B — Emphasis 25%</div>
+                <div class="option-specs">
+                    Icône 25% plus haute que le trademark<br>
+                    Espacement = ¼ de la hauteur icône
+                </div>
+                <div class="lockup-preview">
+                    <div class="icon-preview">
+                        <svg id="option-b-icon" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="icon-gradient-b" gradientUnits="userSpaceOnUse" x1="400" y1="420" x2="1600" y2="1680">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="20%" stop-color="#9c5698"/>
+                                    <stop offset="35%" stop-color="#d15659"/>
+                                    <stop offset="50%" stop-color="#e05747"/>
+                                    <stop offset="65%" stop-color="#ff7c10"/>
+                                    <stop offset="90%" stop-color="#ffc800"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path id="option-b-icon-path" fill="url(#icon-gradient-b)"/>
+                            <path d="M1014.97 1382.45C1017.89 1382.41 1020.81 1382.39 1023.73 1382.38C1185.12 1382.2 1341.07 1459.59 1461.33 1565.49C1500.83 1600.28 1479.91 1639.72 1448.28 1670.17C1418.31 1699.01 1389.64 1692 1360.07 1667.11C1267.23 1590.35 1157.96 1529.51 1034.65 1525.94C938.955 1524.3 855.652 1553.88 774.819 1604.11C756.708 1615.43 739.051 1627.47 721.892 1640.19C683.945 1668.14 647.874 1715.12 600.798 1671.14C557.774 1630.94 549.656 1591.89 600.28 1553.31C618.434 1539.48 636.896 1523.78 656.088 1510.91C764.881 1433.54 880.77 1386.83 1014.97 1382.45Z" fill="url(#icon-gradient-b)"/>
+                        </svg>
+                    </div>
+                    <div class="trademark-preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="180 620 2430 780">
+                            <defs>
+                                <linearGradient id="text-gradient-b" gradientUnits="userSpaceOnUse" x1="180" y1="0" x2="2610" y2="2000">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="25%" stop-color="#9c5698"/>
+                                    <stop offset="40%" stop-color="#d15659"/>
+                                    <stop offset="55%" stop-color="#e05747"/>
+                                    <stop offset="70%" stop-color="#ff7c10"/>
+                                    <stop offset="90%" stop-color="#ffc800"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#text-gradient-b)" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                            <path fill="url(#text-gradient-b)" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                            <path fill="url(#text-gradient-b)" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                            <path fill="url(#text-gradient-b)" d="M1362.65 650.3C1396.23 639.004 1474.88 634.108 1488.88 672.509C1491.92 681.001 1494.37 688.154 1494.74 697.07C1495.63 718.785 1497.16 756.767 1475.15 771.906C1455.53 785.405 1416.65 784.214 1393.26 782.645C1329.89 778.392 1335.29 718.857 1340.02 679.158C1341.10 670.214 1349.55 658.094 1358.46 653.355C1360.83 652.091 1360.82 652.183 1362.65 650.3Z"/>
+                            <path fill="url(#text-gradient-b)" d="M1483.82 1350.33C1468.21 1381.25 1412.74 1378.28 1381.07 1373.47C1370.60 1371.88 1347.24 1360.1 1345.67 1351.74C1337.90 1310.68 1341.26 1265.25 1341.72 1223.54L1342.12 1107.1C1342.24 1077.45 1342.12 1047.8 1341.72 1018.15C1341.10 982.56 1337.61 934.783 1345.65 899.228C1349.67 890.227 1362.83 881.13 1372.67 878.643C1406.51 870.095 1468.58 866.305 1483.91 901.686C1490.60 915.181 1489.67 949.569 1490.09 965.402C1493.04 1078.58 1489.96 1191.83 1491.88 1305.04C1492.06 1315.01 1488.52 1342.45 1483.82 1350.33Z"/>
+                            <path fill="url(#text-gradient-b)" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                            <path id="option-b-o" fill="url(#text-gradient-b)" fill-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="proportion-formula">Icon = 1.25 × Trademark | Gap = Icon ÷ 4</div>
+            </div>
+
+            <!-- Option C: Golden Ratio -->
+            <div class="proportion-option option-c" data-option="C">
+                <div class="option-label">Option C — Golden Ratio (φ)</div>
+                <div class="option-specs">
+                    Icône = φ × hauteur trademark (≈ 1.618×)<br>
+                    Espacement = 1/φ² × hauteur icône
+                </div>
+                <div class="lockup-preview">
+                    <div class="icon-preview">
+                        <svg id="option-c-icon" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="icon-gradient-c" gradientUnits="userSpaceOnUse" x1="400" y1="420" x2="1600" y2="1680">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="20%" stop-color="#9c5698"/>
+                                    <stop offset="35%" stop-color="#d15659"/>
+                                    <stop offset="50%" stop-color="#e05747"/>
+                                    <stop offset="65%" stop-color="#ff7c10"/>
+                                    <stop offset="90%" stop-color="#ffc800"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path id="option-c-icon-path" fill="url(#icon-gradient-c)"/>
+                            <path d="M1014.97 1382.45C1017.89 1382.41 1020.81 1382.39 1023.73 1382.38C1185.12 1382.2 1341.07 1459.59 1461.33 1565.49C1500.83 1600.28 1479.91 1639.72 1448.28 1670.17C1418.31 1699.01 1389.64 1692 1360.07 1667.11C1267.23 1590.35 1157.96 1529.51 1034.65 1525.94C938.955 1524.3 855.652 1553.88 774.819 1604.11C756.708 1615.43 739.051 1627.47 721.892 1640.19C683.945 1668.14 647.874 1715.12 600.798 1671.14C557.774 1630.94 549.656 1591.89 600.28 1553.31C618.434 1539.48 636.896 1523.78 656.088 1510.91C764.881 1433.54 880.77 1386.83 1014.97 1382.45Z" fill="url(#icon-gradient-c)"/>
+                        </svg>
+                    </div>
+                    <div class="trademark-preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="180 620 2430 780">
+                            <defs>
+                                <linearGradient id="text-gradient-c" gradientUnits="userSpaceOnUse" x1="180" y1="0" x2="2610" y2="2000">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="25%" stop-color="#9c5698"/>
+                                    <stop offset="40%" stop-color="#d15659"/>
+                                    <stop offset="55%" stop-color="#e05747"/>
+                                    <stop offset="70%" stop-color="#ff7c10"/>
+                                    <stop offset="90%" stop-color="#ffc800"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#text-gradient-c)" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                            <path fill="url(#text-gradient-c)" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                            <path fill="url(#text-gradient-c)" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                            <path fill="url(#text-gradient-c)" d="M1362.65 650.3C1396.23 639.004 1474.88 634.108 1488.88 672.509C1491.92 681.001 1494.37 688.154 1494.74 697.07C1495.63 718.785 1497.16 756.767 1475.15 771.906C1455.53 785.405 1416.65 784.214 1393.26 782.645C1329.89 778.392 1335.29 718.857 1340.02 679.158C1341.10 670.214 1349.55 658.094 1358.46 653.355C1360.83 652.091 1360.82 652.183 1362.65 650.3Z"/>
+                            <path fill="url(#text-gradient-c)" d="M1483.82 1350.33C1468.21 1381.25 1412.74 1378.28 1381.07 1373.47C1370.60 1371.88 1347.24 1360.1 1345.67 1351.74C1337.90 1310.68 1341.26 1265.25 1341.72 1223.54L1342.12 1107.1C1342.24 1077.45 1342.12 1047.8 1341.72 1018.15C1341.10 982.56 1337.61 934.783 1345.65 899.228C1349.67 890.227 1362.83 881.13 1372.67 878.643C1406.51 870.095 1468.58 866.305 1483.91 901.686C1490.60 915.181 1489.67 949.569 1490.09 965.402C1493.04 1078.58 1489.96 1191.83 1491.88 1305.04C1492.06 1315.01 1488.52 1342.45 1483.82 1350.33Z"/>
+                            <path fill="url(#text-gradient-c)" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                            <path id="option-c-o" fill="url(#text-gradient-c)" fill-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="proportion-formula">Icon = φ × Trademark | Gap = Icon ÷ φ²</div>
+            </div>
+
+            <!-- Option D: Aligned Overflow -->
+            <div class="proportion-option option-d" data-option="D">
+                <div class="option-label">Option D — Aligned Overflow</div>
+                <div class="option-specs">
+                    Bas du cercle aligné avec haut du point "i"<br>
+                    Haut du buste aligné avec bas du fût "i"<br>
+                    <em style="color: var(--gradient-end);">→ L'icône déborde en haut et en bas</em>
+                </div>
+                <div class="lockup-preview">
+                    <div class="icon-preview">
+                        <svg id="option-d-icon" viewBox="0 0 2048 2048" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="icon-gradient-d" gradientUnits="userSpaceOnUse" x1="400" y1="420" x2="1600" y2="1680">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="20%" stop-color="#9c5698"/>
+                                    <stop offset="35%" stop-color="#d15659"/>
+                                    <stop offset="50%" stop-color="#e05747"/>
+                                    <stop offset="65%" stop-color="#ff7c10"/>
+                                    <stop offset="90%" stop-color="#ffc800"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path id="option-d-icon-path" fill="url(#icon-gradient-d)"/>
+                            <path d="M1014.97 1382.45C1017.89 1382.41 1020.81 1382.39 1023.73 1382.38C1185.12 1382.2 1341.07 1459.59 1461.33 1565.49C1500.83 1600.28 1479.91 1639.72 1448.28 1670.17C1418.31 1699.01 1389.64 1692 1360.07 1667.11C1267.23 1590.35 1157.96 1529.51 1034.65 1525.94C938.955 1524.3 855.652 1553.88 774.819 1604.11C756.708 1615.43 739.051 1627.47 721.892 1640.19C683.945 1668.14 647.874 1715.12 600.798 1671.14C557.774 1630.94 549.656 1591.89 600.28 1553.31C618.434 1539.48 636.896 1523.78 656.088 1510.91C764.881 1433.54 880.77 1386.83 1014.97 1382.45Z" fill="url(#icon-gradient-d)"/>
+                        </svg>
+                    </div>
+                    <div class="trademark-preview">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="180 620 2430 780">
+                            <defs>
+                                <linearGradient id="text-gradient-d" gradientUnits="userSpaceOnUse" x1="180" y1="0" x2="2610" y2="2000">
+                                    <stop offset="0%" stop-color="#9c5698"/>
+                                    <stop offset="25%" stop-color="#9c5698"/>
+                                    <stop offset="40%" stop-color="#d15659"/>
+                                    <stop offset="55%" stop-color="#e05747"/>
+                                    <stop offset="70%" stop-color="#ff7c10"/>
+                                    <stop offset="90%" stop-color="#ffc800"/>
+                                    <stop offset="100%" stop-color="#ffc800"/>
+                                </linearGradient>
+                            </defs>
+                            <path fill="url(#text-gradient-d)" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+                            <path fill="url(#text-gradient-d)" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+                            <path fill="url(#text-gradient-d)" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+                            <path fill="url(#text-gradient-d)" d="M1362.65 650.3C1396.23 639.004 1474.88 634.108 1488.88 672.509C1491.92 681.001 1494.37 688.154 1494.74 697.07C1495.63 718.785 1497.16 756.767 1475.15 771.906C1455.53 785.405 1416.65 784.214 1393.26 782.645C1329.89 778.392 1335.29 718.857 1340.02 679.158C1341.10 670.214 1349.55 658.094 1358.46 653.355C1360.83 652.091 1360.82 652.183 1362.65 650.3Z"/>
+                            <path fill="url(#text-gradient-d)" d="M1483.82 1350.33C1468.21 1381.25 1412.74 1378.28 1381.07 1373.47C1370.60 1371.88 1347.24 1360.1 1345.67 1351.74C1337.90 1310.68 1341.26 1265.25 1341.72 1223.54L1342.12 1107.1C1342.24 1077.45 1342.12 1047.8 1341.72 1018.15C1341.10 982.56 1337.61 934.783 1345.65 899.228C1349.67 890.227 1362.83 881.13 1372.67 878.643C1406.51 870.095 1468.58 866.305 1483.91 901.686C1490.60 915.181 1489.67 949.569 1490.09 965.402C1493.04 1078.58 1489.96 1191.83 1491.88 1305.04C1492.06 1315.01 1488.52 1342.45 1483.82 1350.33Z"/>
+                            <path fill="url(#text-gradient-d)" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+                            <path id="option-d-o" fill="url(#text-gradient-d)" fill-rule="evenodd"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="proportion-formula">Icon = 2.17 × Trademark | Ratio ~2:1</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Section -->
+    <div class="export-section">
+        <h2>Export PNG (Haute Qualité)</h2>
+        <p class="subtitle">Téléchargez les logos sur fond transparent pour vectorisation dans Recraft</p>
+
+        <div class="export-grid">
+            <!-- Icon Only -->
+            <div class="export-category">
+                <h3>Icône seule</h3>
+                <div class="export-preview" id="icon-preview-export">
+                    <!-- Preview will be populated by JS -->
+                </div>
+                <div class="export-buttons">
+                    <button class="export-btn" onclick="exportIcon('gradient')">
+                        <span>Dégradé</span>
+                        <span class="color-indicator gradient"></span>
+                    </button>
+                    <button class="export-btn" onclick="exportIcon('black')">
+                        <span>Noir (#1A1A2E)</span>
+                        <span class="color-indicator black"></span>
+                    </button>
+                    <button class="export-btn" onclick="exportIcon('white')">
+                        <span>Blanc (#FFFFFF)</span>
+                        <span class="color-indicator white"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Trademark Only -->
+            <div class="export-category">
+                <h3>Trademark seul</h3>
+                <div class="export-preview" id="trademark-preview-export">
+                    <!-- Preview will be populated by JS -->
+                </div>
+                <div class="export-buttons">
+                    <button class="export-btn" onclick="exportTrademark('gradient')">
+                        <span>Dégradé</span>
+                        <span class="color-indicator gradient"></span>
+                    </button>
+                    <button class="export-btn" onclick="exportTrademark('black')">
+                        <span>Noir (#1A1A2E)</span>
+                        <span class="color-indicator black"></span>
+                    </button>
+                    <button class="export-btn" onclick="exportTrademark('white')">
+                        <span>Blanc (#FFFFFF)</span>
+                        <span class="color-indicator white"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lockup Option D -->
+            <div class="export-category">
+                <h3>Lockup (Option D)</h3>
+                <div class="export-preview" id="lockup-preview-export">
+                    <!-- Preview will be populated by JS -->
+                </div>
+                <div class="export-buttons">
+                    <button class="export-btn" onclick="exportLockup('gradient')">
+                        <span>Dégradé</span>
+                        <span class="color-indicator gradient"></span>
+                    </button>
+                    <button class="export-btn" onclick="exportLockup('black')">
+                        <span>Noir (#1A1A2E)</span>
+                        <span class="color-indicator black"></span>
+                    </button>
+                    <button class="export-btn" onclick="exportLockup('white')">
+                        <span>Blanc (#FFFFFF)</span>
+                        <span class="color-indicator white"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="export-info">
+            <strong>Résolution:</strong> <code>2048×2048px</code> pour l'icône, <code>4096×1024px</code> pour le trademark, <code>4096×1280px</code> pour le lockup<br>
+            <strong>Format:</strong> PNG 32-bit avec transparence alpha<br>
+            <strong>Variante actuelle:</strong> <span id="current-variant-label">Squircle Épais</span>
+        </div>
+
+        <h2 style="margin-top: 40px;">Export SVG (Vectoriel)</h2>
+        <p class="subtitle">Téléchargez les versions vectorielles avec gradient préservé</p>
+
+        <div class="export-grid" style="grid-template-columns: repeat(3, 1fr);">
+            <button class="export-btn" onclick="exportIconSVG()" style="padding: 16px 24px;">
+                <span>Icône SVG</span>
+                <span class="color-indicator gradient"></span>
+            </button>
+            <button class="export-btn" onclick="exportTrademarkSVG()" style="padding: 16px 24px;">
+                <span>Trademark SVG</span>
+                <span class="color-indicator gradient"></span>
+            </button>
+            <button class="export-btn" onclick="exportLockupSVG()" style="padding: 16px 24px;">
+                <span>Lockup SVG</span>
+                <span class="color-indicator gradient"></span>
+            </button>
+        </div>
+
+        <div class="export-info" style="margin-top: 16px;">
+            <strong>Format:</strong> SVG vectoriel avec gradients intégrés<br>
+            <strong>Usage:</strong> Idéal pour impression, scaling infini, ou quand Recraft altère les couleurs
+        </div>
+    </div>
+
+    <script>
+        // ═══════════════════════════════════════════════════════════════════════════
+        // ICON VARIANT PATHS - Final vectorized versions from ~/Downloads/logo final izzico/
+        // ═══════════════════════════════════════════════════════════════════════════
+        var iconVariants = {
+            // Version rond (cercle) - circular inner hole
+            cercle: "M1002.64 420.432C1010.39 419.464 1031.72 419.81 1039.84 420.124C1110.9 422.944 1179.92 444.646 1239.81 482.998C1330.42 541.324 1393.7 633.707 1415.36 739.271C1438.27 849.509 1413.57 953.495 1352.49 1046.55C1370.25 1063.1 1389.73 1083.49 1407.07 1100.83L1507.6 1201.34L1564.47 1258.17C1604.84 1298.5 1642.91 1328.61 1590.86 1381.84C1537.34 1436.58 1509.71 1406.42 1467.21 1363.84L1417.39 1313.89L1251.26 1147.66C1219.48 1169.64 1184.69 1186.91 1147.96 1198.94C1042.02 1233.64 935.318 1221.88 836.704 1171.94C821.784 1164.15 810.53 1157.08 796.737 1147.66C770.286 1175.27 740.585 1203.95 713.394 1231.15C728.309 1245.96 743.575 1260.91 758.382 1275.96C775.604 1293.46 786.486 1307 767.674 1328.59C745.931 1353.54 729.649 1350.33 708.017 1327.47C693.472 1312.74 677.482 1296.85 662.638 1281.91L643.882 1300.66L678.595 1335.2C697.808 1354.35 721.856 1372.39 697.56 1398.79C674.288 1424.09 660.317 1419.04 637.773 1396.26C623.053 1381.39 607.823 1366.21 593.126 1351.42C549.144 1395.59 515.779 1442.89 457.763 1382.59C406.724 1329.54 439.922 1301.85 480.759 1260.97L533.549 1208.15C586.707 1154.98 641.516 1098.55 695.508 1046.55C654.879 985.546 630.238 920.141 625.436 846.497C618.223 740.64 653.441 636.266 723.313 556.418C796.096 473.492 893.019 427.434 1002.64 420.432ZM1032.5 1075.09C1173.8 1070.39 1284.54 952.071 1279.89 810.778C1275.24 669.485 1156.95 558.701 1015.66 563.306C874.302 567.913 763.456 686.265 768.109 827.622C772.761 968.979 891.149 1079.79 1032.5 1075.09Z",
+
+            // Version squirckle losange fredoka (squircle) - rounded square inner hole
+            squircle: "M1002.64 420.432C1010.39 419.464 1031.72 419.81 1039.84 420.124C1110.9 422.944 1179.92 444.646 1239.81 482.998C1330.42 541.324 1393.7 633.707 1415.36 739.271C1438.27 849.509 1413.57 953.495 1352.49 1046.55C1370.25 1063.1 1389.73 1083.49 1407.07 1100.83L1507.6 1201.34L1564.47 1258.17C1604.84 1298.5 1642.91 1328.61 1590.86 1381.84C1537.34 1436.58 1509.71 1406.42 1467.21 1363.84L1417.39 1313.89L1251.26 1147.66C1219.48 1169.64 1184.69 1186.91 1147.96 1198.94C1042.02 1233.64 935.318 1221.88 836.704 1171.94C821.784 1164.15 810.53 1157.08 796.737 1147.66C770.286 1175.27 740.585 1203.95 713.394 1231.15C728.309 1245.96 743.575 1260.91 758.382 1275.96C775.604 1293.46 786.486 1307 767.674 1328.59C745.931 1353.54 729.649 1350.33 708.017 1327.47C693.472 1312.74 677.482 1296.85 662.638 1281.91L643.882 1300.66L678.595 1335.2C697.808 1354.35 721.856 1372.39 697.56 1398.79C674.288 1424.09 660.317 1419.04 637.773 1396.26C623.053 1381.39 607.823 1366.21 593.126 1351.42C549.144 1395.59 515.779 1442.89 457.763 1382.59C406.724 1329.54 439.922 1301.85 480.759 1260.97L533.549 1208.15C586.707 1154.98 641.516 1098.55 695.508 1046.55C654.879 985.546 630.238 920.141 625.436 846.497C618.223 740.64 653.441 636.266 723.313 556.418C796.096 473.492 893.019 427.434 1002.64 420.432ZM1038.25 1075C1179.01 1070.83 1263.96 1025.98 1277.46 874.753C1295.25 675.326 1236.73 554.373 1015.72 563.312C1014.77 563.349 1013.81 563.397 1012.86 563.456C818.485 568.469 764.49 653.663 768.205 837.998C771.945 1023.62 863.819 1078.14 1038.25 1075Z",
+
+            // Version squircle épais - thicker border (inner hole scaled to 75%)
+            "squircle-epais": "M1002.64 420.432C1010.39 419.464 1031.72 419.81 1039.84 420.124C1110.9 422.944 1179.92 444.646 1239.81 482.998C1330.42 541.324 1393.7 633.707 1415.36 739.271C1438.27 849.509 1413.57 953.495 1352.49 1046.55C1370.25 1063.1 1389.73 1083.49 1407.07 1100.83L1507.6 1201.34L1564.47 1258.17C1604.84 1298.5 1642.91 1328.61 1590.86 1381.84C1537.34 1436.58 1509.71 1406.42 1467.21 1363.84L1417.39 1313.89L1251.26 1147.66C1219.48 1169.64 1184.69 1186.91 1147.96 1198.94C1042.02 1233.64 935.318 1221.88 836.704 1171.94C821.784 1164.15 810.53 1157.08 796.737 1147.66C770.286 1175.27 740.585 1203.95 713.394 1231.15C728.309 1245.96 743.575 1260.91 758.382 1275.96C775.604 1293.46 786.486 1307 767.674 1328.59C745.931 1353.54 729.649 1350.33 708.017 1327.47C693.472 1312.74 677.482 1296.85 662.638 1281.91L643.882 1300.66L678.595 1335.2C697.808 1354.35 721.856 1372.39 697.56 1398.79C674.288 1424.09 660.317 1419.04 637.773 1396.26C623.053 1381.39 607.823 1366.21 593.126 1351.42C549.144 1395.59 515.779 1442.89 457.763 1382.59C406.724 1329.54 439.922 1301.85 480.759 1260.97L533.549 1208.15C586.707 1154.98 641.516 1098.55 695.508 1046.55C654.879 985.546 630.238 920.141 625.436 846.497C618.223 740.64 653.441 636.266 723.313 556.418C796.096 473.492 893.019 427.434 1002.64 420.432ZM1034 1011C1140 1008 1204 974 1214 861C1227 711 1183 621 1018 627C1017 627 1016 627 1015 627C870 631 829 695 832 833C835 972 904 1013 1034 1011Z",
+
+            // Version squirckle fredoka (losange) - diamond inner hole
+            losange: "M1002.64 420.432C1010.39 419.464 1031.72 419.81 1039.84 420.124C1110.9 422.944 1179.92 444.646 1239.81 482.998C1330.42 541.324 1393.7 633.707 1415.36 739.271C1438.27 849.509 1413.57 953.495 1352.49 1046.55C1370.25 1063.1 1389.73 1083.49 1407.07 1100.83L1507.6 1201.34L1564.47 1258.17C1604.84 1298.5 1642.91 1328.61 1590.86 1381.84C1537.34 1436.58 1509.71 1406.42 1467.21 1363.84L1417.39 1313.89L1251.26 1147.66C1219.48 1169.64 1184.69 1186.91 1147.96 1198.94C1042.02 1233.64 935.318 1221.88 836.704 1171.94C821.784 1164.15 810.53 1157.08 796.737 1147.66C770.286 1175.27 740.585 1203.95 713.394 1231.15C728.309 1245.96 743.575 1260.91 758.382 1275.96C775.604 1293.46 786.486 1307 767.674 1328.59C745.931 1353.54 729.649 1350.33 708.017 1327.47C693.472 1312.74 677.482 1296.85 662.638 1281.91L643.882 1300.66L678.595 1335.2C697.808 1354.35 721.856 1372.39 697.56 1398.79C674.288 1424.09 660.317 1419.04 637.773 1396.26C623.053 1381.39 607.823 1366.21 593.126 1351.42C549.144 1395.59 515.779 1442.89 457.763 1382.59C406.724 1329.54 439.922 1301.85 480.759 1260.97L533.549 1208.15C586.707 1154.98 641.516 1098.55 695.508 1046.55C654.879 985.546 630.238 920.141 625.436 846.497C618.223 740.64 653.441 636.266 723.313 556.418C796.096 473.492 893.019 427.434 1002.64 420.432ZM1025.23 1098C1077.57 1096.22 1124.39 1071.21 1163.83 1037.78C1227 984.221 1305.7 902.715 1302.73 814.016C1300.19 737.835 1239.26 669.785 1186.48 620.287C1140.75 578.021 1088.01 541.612 1023.49 540.456C941.338 543.536 879.733 599.268 825.597 656.089C783.817 699.94 742.812 761.771 745.28 824.488C748.284 900.801 808.856 969.435 862.466 1018.97C907.126 1060.23 962.087 1097.82 1025.23 1098Z"
+        };
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // TRADEMARK "O" LETTER VARIANTS - With matching inner holes
+        // Outer "O" shape + inner hole that matches icon variant
+        // Center of inner hole: approximately (2335, 1123), radius ~127
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        // Outer "O" path (same for all variants)
+        var oOuterPath = "M2590.49 1169.34C2586.63 1184.96 2583.85 1203.38 2577.43 1218.48C2548.83 1285.22 2504.09 1332.59 2437.33 1362.35C2280.22 1432.38 2090.78 1317.8 2078.78 1146.46C2076.14 1108.65 2080.79 1066.14 2095.05 1030.31C2121.67 964.455 2173.12 911.708 2238.3 883.458C2297.45 858.224 2372.3 857.752 2431.88 882.076C2492.55 906.882 2541.86 953.317 2570.25 1012.39C2574.44 1021.15 2577.7 1029.24 2580.45 1038.54C2581.86 1043.33 2583.21 1049.51 2585.23 1053.91C2593.87 1081.44 2597.14 1140.78 2590.49 1169.34Z";
+
+        var oVariants = {
+            // Original circular inner hole (bezier curve)
+            cercle: oOuterPath + "M2345.5 1250.06C2415.49 1244.76 2467.99 1183.8 2462.86 1113.79C2457.73 1043.78 2396.9 991.132 2326.88 996.093C2256.62 1001.07 2203.75 1062.15 2208.9 1132.41C2214.05 1202.66 2275.26 1255.38 2345.5 1250.06Z",
+
+            // Fredoka Squircle inner hole - transformed from icon path (scale 0.514, center 1021,821 → 2336,1123)
+            squircle: oOuterPath + "M2345 1254 C2417 1251 2461 1228 2468 1151 C2477 1048 2447 986 2333 991 C2333 991 2333 991 2333 991 C2232 993 2204 1037 2206 1132 C2208 1227 2255 1255 2345 1254 Z",
+
+            // Squircle épais - icon has thicker border, but "O" uses normal squircle to match
+            "squircle-epais": oOuterPath + "M2345 1254 C2417 1251 2461 1228 2468 1151 C2477 1048 2447 986 2333 991 C2333 991 2333 991 2333 991 C2232 993 2204 1037 2206 1132 C2208 1227 2255 1255 2345 1254 Z",
+
+            // Fredoka Losange inner hole - transformed from icon path (scale 0.514, center 1021,821 → 2336,1123)
+            losange: oOuterPath + "M2338 1265 C2365 1265 2389 1252 2409 1234 C2442 1207 2482 1165 2481 1119 C2480 1080 2448 1045 2421 1020 C2398 998 2370 979 2337 979 C2295 980 2263 1009 2236 1038 C2214 1061 2193 1093 2194 1125 C2196 1164 2227 1199 2254 1225 C2277 1246 2306 1265 2338 1265 Z"
+        };
+
+        // Elements - Icon
+        var mainIconPath1 = document.getElementById('main-icon-path1');
+        var lockupIconPath1 = document.getElementById('lockup-icon-path1');
+
+        // Elements - Trademark "O" letter
+        var trademark1O = document.getElementById('trademark1-o');
+        var trademark2O = document.getElementById('trademark2-o');
+
+        var variantButtons = document.querySelectorAll('.variant-btn');
+
+        // Set variant for icon AND trademark "O" letter
+        function setVariant(variant) {
+            // Update icon paths
+            var iconPath = iconVariants[variant];
+            mainIconPath1.setAttribute('d', iconPath);
+            lockupIconPath1.setAttribute('d', iconPath);
+
+            // Update trademark "O" letter with matching inner hole
+            var oPath = oVariants[variant];
+            trademark1O.setAttribute('d', oPath);
+            trademark2O.setAttribute('d', oPath);
+        }
+
+        // Initialize with cercle
+        setVariant('cercle');
+
+        // Variant switcher
+        variantButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                variantButtons.forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                var variant = btn.getAttribute('data-variant');
+                setVariant(variant);
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // PROPORTION COMPARISON - Options B, C and D
+        // ═══════════════════════════════════════════════════════════════════════════
+        var optionBIconPath = document.getElementById('option-b-icon-path');
+        var optionCIconPath = document.getElementById('option-c-icon-path');
+        var optionDIconPath = document.getElementById('option-d-icon-path');
+        var optionBO = document.getElementById('option-b-o');
+        var optionCO = document.getElementById('option-c-o');
+        var optionDO = document.getElementById('option-d-o');
+        var proportionOptions = document.querySelectorAll('.proportion-option');
+
+        // Initialize proportion previews with cercle variant
+        function updateProportionPreviews(variant) {
+            var iconPath = iconVariants[variant];
+            var oPath = oVariants[variant];
+
+            optionBIconPath.setAttribute('d', iconPath);
+            optionCIconPath.setAttribute('d', iconPath);
+            optionDIconPath.setAttribute('d', iconPath);
+            optionBO.setAttribute('d', oPath);
+            optionCO.setAttribute('d', oPath);
+            optionDO.setAttribute('d', oPath);
+        }
+
+        // Initialize with cercle
+        updateProportionPreviews('cercle');
+
+        // Handle proportion option selection
+        proportionOptions.forEach(function(option) {
+            option.addEventListener('click', function() {
+                proportionOptions.forEach(function(o) { o.classList.remove('selected'); });
+                option.classList.add('selected');
+            });
+        });
+
+        // Update setVariant to also update proportion previews
+        var originalSetVariant = setVariant;
+        setVariant = function(variant) {
+            originalSetVariant(variant);
+            updateProportionPreviews(variant);
+        };
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // BACKGROUND SWITCHER
+        // ═══════════════════════════════════════════════════════════════════════════
+        var showcase = document.getElementById('main-showcase');
+        var lockup = document.getElementById('lockup-container');
+        var bgButtons = document.querySelectorAll('.bg-btn');
+
+        bgButtons.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                bgButtons.forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+
+                var bgType = btn.id.replace('bg-', '');
+
+                if (bgType === 'dark') {
+                    showcase.style.background = '#1a1a2e';
+                    lockup.style.background = '#1a1a2e';
+                } else if (bgType === 'light') {
+                    showcase.style.background = '#ffffff';
+                    lockup.style.background = '#ffffff';
+                } else if (bgType === 'gradient') {
+                    showcase.style.background = 'linear-gradient(135deg, #9c5698, #e05747, #ffc800)';
+                    lockup.style.background = 'linear-gradient(135deg, #9c5698, #e05747, #ffc800)';
+                }
+            });
+        });
+
+        // ═══════════════════════════════════════════════════════════════════════════
+        // EXPORT FUNCTIONALITY
+        // ═══════════════════════════════════════════════════════════════════════════
+
+        var currentExportVariant = 'squircle-epais';
+        var currentVariantLabel = document.getElementById('current-variant-label');
+
+        // Update export variant when main variant changes
+        var originalSetVariant2 = setVariant;
+        setVariant = function(variant) {
+            originalSetVariant2(variant);
+            currentExportVariant = variant;
+            var variantNames = {
+                'cercle': 'Cercle',
+                'squircle': 'Squircle',
+                'squircle-epais': 'Squircle Épais',
+                'losange': 'Losange'
+            };
+            currentVariantLabel.textContent = variantNames[variant] || variant;
+        };
+
+        // Bust path (same for all)
+        var bustPath = "M1014.97 1382.45C1017.89 1382.41 1020.81 1382.39 1023.73 1382.38C1185.12 1382.2 1341.07 1459.59 1461.33 1565.49C1500.83 1600.28 1479.91 1639.72 1448.28 1670.17C1418.31 1699.01 1389.64 1692 1360.07 1667.11C1267.23 1590.35 1157.96 1529.51 1034.65 1525.94C938.955 1524.3 855.652 1553.88 774.819 1604.11C756.708 1615.43 739.051 1627.47 721.892 1640.19C683.945 1668.14 647.874 1715.12 600.798 1671.14C557.774 1630.94 549.656 1591.89 600.28 1553.31C618.434 1539.48 636.896 1523.78 656.088 1510.91C764.881 1433.54 880.77 1386.83 1014.97 1382.45Z";
+
+        // Trademark paths
+        var trademarkPaths = {
+            i1: "M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z",
+            i1stem: "M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z",
+            zz: "M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z",
+            i2dot: "M1362.65 650.3C1396.23 639.004 1474.88 634.108 1488.88 672.509C1491.92 681.001 1494.37 688.154 1494.74 697.07C1495.63 718.785 1497.16 756.767 1475.15 771.906C1455.53 785.405 1416.65 784.214 1393.26 782.645C1329.89 778.392 1335.29 718.857 1340.02 679.158C1341.10 670.214 1349.55 658.094 1358.46 653.355C1360.83 652.091 1360.82 652.183 1362.65 650.3Z",
+            i2stem: "M1483.82 1350.33C1468.21 1381.25 1412.74 1378.28 1381.07 1373.47C1370.60 1371.88 1347.24 1360.1 1345.67 1351.74C1337.90 1310.68 1341.26 1265.25 1341.72 1223.54L1342.12 1107.1C1342.24 1077.45 1342.12 1047.8 1341.72 1018.15C1341.10 982.56 1337.61 934.783 1345.65 899.228C1349.67 890.227 1362.83 881.13 1372.67 878.643C1406.51 870.095 1468.58 866.305 1483.91 901.686C1490.60 915.181 1489.67 949.569 1490.09 965.402C1493.04 1078.58 1489.96 1191.83 1491.88 1305.04C1492.06 1315.01 1488.52 1342.45 1483.82 1350.33Z",
+            c: "M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"
+        };
+
+        // Create SVG string for export
+        function createIconSVG(colorType) {
+            var variant = currentExportVariant;
+            var iconPath = iconVariants[variant];
+            var fill = colorType === 'gradient' ? 'url(#export-gradient)' : (colorType === 'black' ? '#1A1A2E' : '#FFFFFF');
+            var gradientDef = colorType === 'gradient' ? '<defs><linearGradient id="export-gradient" gradientUnits="userSpaceOnUse" x1="400" y1="420" x2="1600" y2="1680"><stop offset="0%" stop-color="#9c5698"/><stop offset="20%" stop-color="#9c5698"/><stop offset="35%" stop-color="#d15659"/><stop offset="50%" stop-color="#e05747"/><stop offset="70%" stop-color="#ff7c10"/><stop offset="100%" stop-color="#ffc800"/></linearGradient></defs>' : '';
+
+            return '<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="2048" height="2048" viewBox="0 0 2048 2048">' + gradientDef + '<path fill="' + fill + '" d="' + iconPath + '"/><path fill="' + fill + '" d="' + bustPath + '"/></svg>';
+        }
+
+        function createTrademarkSVG(colorType) {
+            var variant = currentExportVariant;
+            var oPath = oVariants[variant];
+            var fill = colorType === 'gradient' ? 'url(#export-gradient)' : (colorType === 'black' ? '#1A1A2E' : '#FFFFFF');
+            var gradientDef = colorType === 'gradient' ? '<defs><linearGradient id="export-gradient" gradientUnits="userSpaceOnUse" x1="180" y1="620" x2="2610" y2="1400"><stop offset="0%" stop-color="#9c5698"/><stop offset="20%" stop-color="#9c5698"/><stop offset="35%" stop-color="#d15659"/><stop offset="50%" stop-color="#e05747"/><stop offset="70%" stop-color="#ff7c10"/><stop offset="100%" stop-color="#ffc800"/></linearGradient></defs>' : '';
+
+            return '<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="2430" height="780" viewBox="180 620 2430 780">' + gradientDef +
+                '<path fill="' + fill + '" d="' + trademarkPaths.i1 + '"/>' +
+                '<path fill="' + fill + '" d="' + trademarkPaths.i1stem + '"/>' +
+                '<path fill="' + fill + '" d="' + trademarkPaths.zz + '"/>' +
+                '<path fill="' + fill + '" d="' + trademarkPaths.i2dot + '"/>' +
+                '<path fill="' + fill + '" d="' + trademarkPaths.i2stem + '"/>' +
+                '<path fill="' + fill + '" d="' + trademarkPaths.c + '"/>' +
+                '<path fill="' + fill + '" fill-rule="evenodd" d="' + oPath + '"/></svg>';
+        }
+
+        function createLockupSVG(colorType) {
+            var variant = currentExportVariant;
+            var iconPath = iconVariants[variant];
+            var oPath = oVariants[variant];
+
+            // Option D proportions: icon 130px, trademark 60px, gap 3px
+            // Using nested SVGs so each keeps its own coordinate system and gradient
+            var iconSize = 1000;  // Icon is square
+            var tmHeight = (60/130) * iconSize;  // 461.5
+            var tmWidth = tmHeight * (2430/780);  // ~1437.5
+            var gap = (3/130) * iconSize;  // ~23
+            var totalWidth = iconSize + gap + tmWidth;  // ~2460.5
+            var totalHeight = iconSize;
+            var tmY = (iconSize - tmHeight) / 2;  // Center vertically
+
+            var iconFill, textFill;
+            var iconGradientDef = '';
+            var textGradientDef = '';
+
+            if (colorType === 'gradient') {
+                iconGradientDef = '<defs><linearGradient id="ig" gradientUnits="userSpaceOnUse" x1="400" y1="420" x2="1600" y2="1680">' +
+                    '<stop offset="0%" stop-color="#9c5698"/><stop offset="20%" stop-color="#9c5698"/>' +
+                    '<stop offset="35%" stop-color="#d15659"/><stop offset="50%" stop-color="#e05747"/>' +
+                    '<stop offset="65%" stop-color="#ff7c10"/><stop offset="90%" stop-color="#ffc800"/>' +
+                    '<stop offset="100%" stop-color="#ffc800"/></linearGradient></defs>';
+                textGradientDef = '<defs><linearGradient id="tg" gradientUnits="userSpaceOnUse" x1="180" y1="0" x2="2610" y2="2000">' +
+                    '<stop offset="0%" stop-color="#9c5698"/><stop offset="25%" stop-color="#9c5698"/>' +
+                    '<stop offset="40%" stop-color="#d15659"/><stop offset="55%" stop-color="#e05747"/>' +
+                    '<stop offset="70%" stop-color="#ff7c10"/><stop offset="90%" stop-color="#ffc800"/>' +
+                    '<stop offset="100%" stop-color="#ffc800"/></linearGradient></defs>';
+                iconFill = 'url(#ig)';
+                textFill = 'url(#tg)';
+            } else {
+                iconFill = colorType === 'black' ? '#1A1A2E' : '#FFFFFF';
+                textFill = iconFill;
+            }
+
+            // Nested SVG for icon (keeps its own viewBox 0 0 2048 2048)
+            var iconSVG = '<svg x="0" y="0" width="' + iconSize + '" height="' + iconSize + '" viewBox="0 0 2048 2048">' +
+                iconGradientDef +
+                '<path fill="' + iconFill + '" d="' + iconPath + '"/>' +
+                '<path fill="' + iconFill + '" d="' + bustPath + '"/>' +
+                '</svg>';
+
+            // Nested SVG for trademark (keeps its own viewBox 180 620 2430 780)
+            var textSVG = '<svg x="' + (iconSize + gap) + '" y="' + tmY + '" width="' + tmWidth + '" height="' + tmHeight + '" viewBox="180 620 2430 780">' +
+                textGradientDef +
+                '<path fill="' + textFill + '" d="' + trademarkPaths.i1 + '"/>' +
+                '<path fill="' + textFill + '" d="' + trademarkPaths.i1stem + '"/>' +
+                '<path fill="' + textFill + '" d="' + trademarkPaths.zz + '"/>' +
+                '<path fill="' + textFill + '" d="' + trademarkPaths.i2dot + '"/>' +
+                '<path fill="' + textFill + '" d="' + trademarkPaths.i2stem + '"/>' +
+                '<path fill="' + textFill + '" d="' + trademarkPaths.c + '"/>' +
+                '<path fill="' + textFill + '" fill-rule="evenodd" d="' + oPath + '"/>' +
+                '</svg>';
+
+            return '<?xml version="1.0" encoding="UTF-8"?><svg xmlns="http://www.w3.org/2000/svg" width="' + Math.round(totalWidth) + '" height="' + totalHeight + '" viewBox="0 0 ' + totalWidth + ' ' + totalHeight + '">' +
+                iconSVG + textSVG + '</svg>';
+        }
+
+        // Export function using canvas
+        function exportSVGtoPNG(svgString, filename, width, height) {
+            var canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            var ctx = canvas.getContext('2d');
+
+            var img = new Image();
+            var svgBlob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+            var url = URL.createObjectURL(svgBlob);
+
+            img.onload = function() {
+                ctx.drawImage(img, 0, 0, width, height);
+                URL.revokeObjectURL(url);
+
+                canvas.toBlob(function(blob) {
+                    var link = document.createElement('a');
+                    link.download = filename;
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }, 'image/png');
+            };
+
+            img.src = url;
+        }
+
+        function exportIcon(colorType) {
+            var svg = createIconSVG(colorType);
+            var colorName = colorType === 'gradient' ? 'gradient' : (colorType === 'black' ? 'noir' : 'blanc');
+            var filename = 'izzico-icon-' + currentExportVariant + '-' + colorName + '-2048px.png';
+            exportSVGtoPNG(svg, filename, 2048, 2048);
+        }
+
+        function exportTrademark(colorType) {
+            var svg = createTrademarkSVG(colorType);
+            var colorName = colorType === 'gradient' ? 'gradient' : (colorType === 'black' ? 'noir' : 'blanc');
+            var filename = 'izzico-trademark-' + currentExportVariant + '-' + colorName + '-4096px.png';
+            // Export at higher resolution: 4096 width
+            exportSVGtoPNG(svg, filename, 4096, Math.round(4096 * 780 / 2430));
+        }
+
+        function exportLockup(colorType) {
+            var svg = createLockupSVG(colorType);
+            var colorName = colorType === 'gradient' ? 'gradient' : (colorType === 'black' ? 'noir' : 'blanc');
+            var filename = 'izzico-lockup-optionD-' + currentExportVariant + '-' + colorName + '-4096px.png';
+            // Option D proportions: icon 130px, trademark 60px, gap 3px
+            // totalWidth = 1000 + 23 + 1437.5 = 2460.5, totalHeight = 1000
+            var aspectRatio = 1000 / 2460.5;
+            exportSVGtoPNG(svg, filename, 4096, Math.round(4096 * aspectRatio));
+        }
+
+        // SVG direct download function
+        function downloadSVG(svgString, filename) {
+            var blob = new Blob([svgString], {type: 'image/svg+xml;charset=utf-8'});
+            var url = URL.createObjectURL(blob);
+            var link = document.createElement('a');
+            link.download = filename;
+            link.href = url;
+            link.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function exportIconSVG() {
+            var svg = createIconSVG('gradient');
+            var filename = 'izzico-icon-' + currentExportVariant + '-gradient.svg';
+            downloadSVG(svg, filename);
+        }
+
+        function exportTrademarkSVG() {
+            var svg = createTrademarkSVG('gradient');
+            var filename = 'izzico-trademark-' + currentExportVariant + '-gradient.svg';
+            downloadSVG(svg, filename);
+        }
+
+        function exportLockupSVG() {
+            var svg = createLockupSVG('gradient');
+            var filename = 'izzico-lockup-optionD-' + currentExportVariant + '-gradient.svg';
+            downloadSVG(svg, filename);
+        }
+    </script>
+</body>
+</html>

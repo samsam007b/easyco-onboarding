@@ -86,7 +86,7 @@ export function OwnerKPICard({
       whileTap={isClickable ? { scale: 0.98 } : undefined}
       onClick={onClick}
       className={cn(
-        'relative overflow-hidden rounded-2xl p-5 border border-gray-200 shadow-sm',
+        'relative overflow-hidden superellipse-2xl p-5 border border-gray-200 shadow-sm',
         isClickable && 'cursor-pointer',
         className
       )}

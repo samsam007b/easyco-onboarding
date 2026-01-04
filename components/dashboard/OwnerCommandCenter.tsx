@@ -697,7 +697,7 @@ export default function OwnerCommandCenter() {
                       whileHover={{ scale: 1.02, y: -2 }}
                       onClick={() => router.push(action.actionPath)}
                       className={cn(
-                        "relative overflow-hidden rounded-2xl p-4 cursor-pointer border-2 transition-all",
+                        "relative overflow-hidden superellipse-2xl p-4 cursor-pointer border-2 transition-all",
                         styles.bg,
                         styles.border
                       )}
@@ -738,7 +738,7 @@ export default function OwnerCommandCenter() {
             transition={{ delay: 0.1 }}
             whileHover={{ scale: 1.03, y: -4 }}
             onClick={() => router.push('/dashboard/owner/finance')}
-            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
               boxShadow: '0 8px 24px rgba(16, 185, 129, 0.12)',
@@ -776,7 +776,7 @@ export default function OwnerCommandCenter() {
             transition={{ delay: 0.15 }}
             whileHover={{ scale: 1.03, y: -4 }}
             onClick={() => router.push('/dashboard/owner/properties')}
-            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer shadow-lg"
             style={{ background: ownerGradientLight, boxShadow: '0 8px 24px rgba(156, 86, 152, 0.12)' }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20" style={{ background: ownerGradient }} />
@@ -802,7 +802,7 @@ export default function OwnerCommandCenter() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
             whileHover={{ scale: 1.03, y: -4 }}
-            className="relative overflow-hidden rounded-2xl p-5 shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-5 shadow-lg"
             style={{
               background: 'linear-gradient(135deg, #FDF5F9 0%, #FAE8F0 100%)',
               boxShadow: '0 8px 24px rgba(175, 86, 130, 0.12)',
@@ -836,7 +836,7 @@ export default function OwnerCommandCenter() {
             transition={{ delay: 0.25 }}
             whileHover={{ scale: 1.03, y: -4 }}
             onClick={() => router.push('/dashboard/owner/maintenance')}
-            className="relative overflow-hidden rounded-2xl p-5 cursor-pointer shadow-lg"
+            className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer shadow-lg"
             style={{
               background: stats.urgentMaintenanceCount > 0
                 ? 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)'
@@ -884,7 +884,7 @@ export default function OwnerCommandCenter() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="lg:col-span-2 relative overflow-hidden bg-white rounded-3xl shadow-lg p-6"
+            className="lg:col-span-2 relative overflow-hidden bg-white superellipse-3xl shadow-lg p-6"
             style={{ boxShadow: '0 8px 32px rgba(156, 86, 152, 0.1)' }}
           >
             <div className="absolute -right-12 -top-12 w-48 h-48 rounded-full opacity-5" style={{ background: ownerGradient }} />
@@ -911,7 +911,7 @@ export default function OwnerCommandCenter() {
             </div>
 
             {propertyStatuses.length === 0 ? (
-              <div className="text-center py-12" style={{ background: ownerGradientLight }} >
+              <div className="text-center py-12 superellipse-2xl" style={{ background: ownerGradientLight }} >
                 <div className="w-16 h-16 mx-auto mb-4 rounded-2xl flex items-center justify-center" style={{ background: ownerGradient }}>
                   <Building2 className="w-8 h-8 text-white" />
                 </div>
@@ -937,7 +937,7 @@ export default function OwnerCommandCenter() {
                     whileHover={{ scale: 1.02, y: -2 }}
                     onClick={() => router.push(`/properties/${property.id}`)}
                     className={cn(
-                      "relative rounded-2xl p-4 cursor-pointer border-2 transition-all",
+                      "relative superellipse-2xl p-4 cursor-pointer border-2 transition-all",
                       property.hasOverdueRent || property.urgentMaintenanceCount > 0
                         ? "border-red-200 bg-red-50/50"
                         : property.leaseExpiringDays && property.leaseExpiringDays <= 30
@@ -965,7 +965,7 @@ export default function OwnerCommandCenter() {
                     </div>
 
                     {/* Property image */}
-                    <div className="w-full h-24 rounded-xl mb-3 overflow-hidden" style={{ background: ownerGradientLight }}>
+                    <div className="w-full h-24 superellipse-xl mb-3 overflow-hidden" style={{ background: ownerGradientLight }}>
                       {property.mainImage ? (
                         <img src={property.mainImage} alt={property.title} className="w-full h-full object-cover" />
                       ) : (
@@ -1025,7 +1025,7 @@ export default function OwnerCommandCenter() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="relative overflow-hidden bg-white rounded-3xl shadow-lg p-6"
+            className="relative overflow-hidden bg-white superellipse-3xl shadow-lg p-6"
             style={{ boxShadow: '0 8px 32px rgba(156, 86, 152, 0.1)' }}
           >
             <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-5" style={{ background: ownerGradient }} />
@@ -1058,7 +1058,7 @@ export default function OwnerCommandCenter() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.45 + index * 0.05 }}
                       className={cn(
-                        "p-3 rounded-xl border transition-all hover:shadow-md cursor-pointer",
+                        "p-3 superellipse-xl border transition-all hover:shadow-md cursor-pointer",
                         isUrgent ? "border-amber-200 bg-amber-50" : "border-gray-100 bg-gray-50"
                       )}
                       onClick={() => router.push(`/properties/${deadline.propertyId}`)}
@@ -1094,7 +1094,7 @@ export default function OwnerCommandCenter() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="relative overflow-hidden bg-white rounded-3xl shadow-lg p-6"
+            className="relative overflow-hidden bg-white superellipse-3xl shadow-lg p-6"
             style={{ boxShadow: '0 8px 32px rgba(156, 86, 152, 0.1)' }}
           >
             <div className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-10" style={{ background: ownerGradient }} />
@@ -1188,7 +1188,7 @@ export default function OwnerCommandCenter() {
               whileHover={{ scale: 1.03, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push(action.path)}
-              className="relative overflow-hidden rounded-2xl p-4 bg-white shadow-lg cursor-pointer border border-gray-100 hover:border-gray-200 transition-all"
+              className="relative overflow-hidden superellipse-2xl p-4 bg-white shadow-lg cursor-pointer border border-gray-100 hover:border-gray-200 transition-all"
               style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.06)' }}
             >
               <div className="flex items-center gap-3">

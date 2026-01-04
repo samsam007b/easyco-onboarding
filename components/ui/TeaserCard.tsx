@@ -190,7 +190,7 @@ export function TeaserModal({
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 relative"
+        className="bg-white superellipse-2xl shadow-2xl max-w-md w-full p-8 relative"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close button */}

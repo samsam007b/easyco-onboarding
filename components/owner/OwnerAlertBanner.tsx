@@ -98,7 +98,7 @@ export function OwnerAlertBanner({
         >
           <div
             className={cn(
-              'relative overflow-hidden rounded-2xl p-4 border-2',
+              'relative overflow-hidden superellipse-2xl p-4 border-2',
               config.bg,
               config.border
             )}

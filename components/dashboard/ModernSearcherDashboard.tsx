@@ -711,7 +711,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
             className="w-full lg:w-72 flex-shrink-0"
           >
             <div
-              className="relative overflow-hidden rounded-3xl p-5 h-full min-h-[220px]"
+              className="relative overflow-hidden superellipse-3xl p-5 h-full min-h-[220px]"
               style={{
                 background: SEARCHER_GRADIENT,
                 boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -726,7 +726,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                 <div>
                   <div className="flex items-center gap-3 mb-4">
                     <motion.div whileHover={{ scale: 1.05 }} className="relative">
-                      <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center overflow-hidden border-2 border-white/30">
+                      <div className="w-14 h-14 superellipse-2xl bg-white/20 backdrop-blur flex items-center justify-center overflow-hidden border-2 border-white/30">
                         {userData?.avatar_url ? (
                           <Image
                             src={userData.avatar_url}
@@ -760,14 +760,14 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                   {/* Search preferences summary */}
                   {preferences.cities.length > 0 ? (
                     <div className="space-y-2">
-                      <div className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 rounded-xl">
+                      <div className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 superellipse-xl">
                         <MapPin className="w-4 h-4 text-white flex-shrink-0" />
                         <span className="text-white font-medium text-sm truncate">
                           {preferences.cities.slice(0, 2).join(', ')}
                           {preferences.cities.length > 2 && ` +${preferences.cities.length - 2}`}
                         </span>
                       </div>
-                      <div className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 rounded-xl">
+                      <div className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 superellipse-xl">
                         <Euro className="w-4 h-4 text-white flex-shrink-0" />
                         <span className="text-white font-medium text-sm">
                           {preferences.minBudget}-{preferences.maxBudget}€/mois
@@ -775,7 +775,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                       </div>
                     </div>
                   ) : (
-                    <div className="bg-white/15 backdrop-blur px-3 py-2 rounded-xl">
+                    <div className="bg-white/15 backdrop-blur px-3 py-2 superellipse-xl">
                       <p className="text-white/80 text-sm">
                         {searcher?.configureSearch || 'Configure ta recherche'}
                       </p>
@@ -791,7 +791,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                     <motion.div
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
-                      className="flex items-center gap-2 bg-white/20 backdrop-blur px-3 py-2 rounded-xl"
+                      className="flex items-center gap-2 bg-white/20 backdrop-blur px-3 py-2 superellipse-xl"
                     >
                       <Sparkles className="w-4 h-4 text-white" />
                       <span className="text-white font-bold text-sm">
@@ -804,7 +804,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => router.push('/profile')}
-                    className="flex items-center gap-1.5 bg-white text-gray-900 px-4 py-2 rounded-xl font-bold text-sm shadow-lg"
+                    className="flex items-center gap-1.5 bg-white text-gray-900 px-4 py-2 superellipse-xl font-bold text-sm shadow-lg"
                   >
                     <Settings className="w-4 h-4" />
                     <span>{searcher?.editProfile || 'Modifier'}</span>
@@ -818,7 +818,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
           <motion.div variants={itemVariants} className="flex-1 flex flex-col gap-4">
             {/* Welcome Section */}
             <div
-              className="relative overflow-hidden rounded-3xl p-6 bg-white"
+              className="relative overflow-hidden superellipse-3xl p-6 bg-white"
               style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
             >
               {/* Decorative gradient blob */}
@@ -848,7 +848,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
             {/* Quick Actions Row */}
             <div
               data-onboarding="quick-actions"
-              className="relative overflow-hidden rounded-2xl p-4 bg-white"
+              className="relative overflow-hidden superellipse-2xl p-4 bg-white"
               style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
             >
               <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
@@ -861,7 +861,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                       whileTap={{ scale: 0.97 }}
                       onClick={action.onClick}
                       className={cn(
-                        'flex items-center gap-2 px-4 py-2.5 rounded-xl font-semibold text-sm',
+                        'flex items-center gap-2 px-4 py-2.5 superellipse-xl font-semibold text-sm',
                         'transition-all whitespace-nowrap flex-shrink-0',
                         action.primary
                           ? 'text-white shadow-lg'
@@ -884,7 +884,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 onClick={() => router.push('/dashboard/profile-completion')}
-                className="flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer hover:opacity-90 transition-opacity"
+                className="flex items-center gap-3 px-4 py-3 superellipse-2xl cursor-pointer hover:opacity-90 transition-opacity"
                 style={{ background: SEARCHER_GRADIENT_SOFT }}
               >
                 <motion.div
@@ -943,7 +943,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                 whileTap={{ scale: 0.98 }}
                 onClick={card.action}
                 data-onboarding={card.onboardingId}
-                className="relative overflow-hidden rounded-2xl p-4 cursor-pointer transition-all bg-white"
+                className="relative overflow-hidden superellipse-2xl p-4 cursor-pointer transition-all bg-white"
                 style={{
                   boxShadow: `0 8px 24px ${card.shadowColor}`,
                 }}
@@ -970,7 +970,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                   {/* Icon */}
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3"
                     style={{ background: card.iconGradient }}
                   >
                     <Icon className="w-5 h-5 text-white" />
@@ -1012,7 +1012,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
               <div className="flex items-center gap-3">
                 <motion.div
                   whileHover={{ rotate: 5 }}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  className="w-8 h-8 superellipse-lg flex items-center justify-center"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Sparkles className="w-4 h-4 text-white" />
@@ -1079,7 +1079,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
           {/* Saved Searches */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             <div
@@ -1092,7 +1092,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                 <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    className="w-8 h-8 superellipse-lg flex items-center justify-center"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Filter className="w-4 h-4 text-white" />
@@ -1120,11 +1120,11 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.06 }}
                       whileHover={{ x: 3, backgroundColor: `${SEARCHER_PRIMARY}08` }}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-xl transition-all cursor-pointer"
+                      className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl transition-all cursor-pointer"
                       onClick={() => router.push('/properties/browse')}
                     >
                       <div className="flex items-center gap-2.5">
-                        <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[#FEF3C7]">
+                        <div className="w-8 h-8 superellipse-lg flex items-center justify-center bg-[#FEF3C7]">
                           <MapPin className="w-4 h-4" style={{ color: SEARCHER_PRIMARY }} />
                         </div>
                         <div>
@@ -1143,7 +1143,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                       onClick={() => router.push('/dashboard/searcher/saved-searches')}
                       variant="outline"
                       size="sm"
-                      className="w-full mt-3 rounded-xl border-2 py-4 font-semibold"
+                      className="w-full mt-3 superellipse-xl border-2 py-4 font-semibold"
                       style={{
                         borderColor: `${SEARCHER_PRIMARY}30`,
                         color: SEARCHER_PRIMARY,
@@ -1157,7 +1157,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
               ) : (
                 <div className="text-center py-6">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center mx-auto mb-3"
                     style={{ background: SEARCHER_GRADIENT_SOFT }}
                   >
                     <Search className="w-6 h-6" style={{ color: SEARCHER_PRIMARY }} />
@@ -1171,7 +1171,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                   <Button
                     onClick={() => setShowSmartFilters(true)}
                     size="sm"
-                    className="rounded-xl text-white"
+                    className="superellipse-xl text-white"
                     style={{ background: SEARCHER_GRADIENT }}
                   >
                     <Plus className="w-4 h-4 mr-2" />
@@ -1185,7 +1185,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
           {/* Recent Activity */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white rounded-2xl p-5"
+            className="relative overflow-hidden bg-white superellipse-2xl p-5"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             <div
@@ -1197,7 +1197,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
               <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <motion.div
                   whileHover={{ rotate: 5 }}
-                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  className="w-8 h-8 superellipse-lg flex items-center justify-center"
                   style={{ background: SEARCHER_GRADIENT }}
                 >
                   <Bell className="w-4 h-4 text-white" />
@@ -1216,11 +1216,11 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: index * 0.06 }}
                         whileHover={{ x: 3 }}
-                        className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
+                        className="flex items-center gap-2.5 p-2.5 superellipse-xl hover:bg-gray-50 transition-all cursor-pointer"
                         onClick={() => activity.link && router.push(activity.link)}
                       >
                         <div
-                          className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                          className="w-8 h-8 superellipse-lg flex items-center justify-center flex-shrink-0"
                           style={{ background: activity.iconBgColor }}
                         >
                           <Icon className="w-4 h-4" style={{ color: activity.iconColor }} />
@@ -1237,7 +1237,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
               ) : (
                 <div className="text-center py-6">
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mx-auto mb-3"
+                    className="w-12 h-12 superellipse-xl flex items-center justify-center mx-auto mb-3"
                     style={{ background: SEARCHER_GRADIENT_SOFT }}
                   >
                     <Bell className="w-6 h-6" style={{ color: SEARCHER_PRIMARY }} />
@@ -1268,7 +1268,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"
+              className="bg-white superellipse-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6"
             >
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-3">

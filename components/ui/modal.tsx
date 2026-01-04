@@ -135,7 +135,7 @@ export function Modal({
     >
       <div
         className={cn(
-          'relative w-full bg-white rounded-3xl shadow-2xl animate-in zoom-in-95 duration-200',
+          'relative w-full bg-white superellipse-3xl shadow-2xl animate-in zoom-in-95 duration-200',
           sizeStyles[size]
         )}
       >

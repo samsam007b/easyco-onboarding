@@ -188,10 +188,10 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
   if (isLoading) {
     return (
       <div className="px-4 pt-1 pb-2">
-        <div className="relative overflow-hidden rounded-3xl p-4" style={{ background: SEARCHER_GRADIENT_SOFT }}>
+        <div className="relative overflow-hidden superellipse-3xl p-4" style={{ background: SEARCHER_GRADIENT_SOFT }}>
           <div className="animate-pulse space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-amber-200/50" />
+              <div className="w-12 h-12 superellipse-2xl bg-amber-200/50" />
               <div className="space-y-2">
                 <div className="h-4 w-32 bg-amber-200/50 rounded" />
                 <div className="h-3 w-24 bg-amber-200/30 rounded" />
@@ -199,7 +199,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             </div>
             <div className="grid grid-cols-4 gap-2">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-20 rounded-2xl bg-white/60" />
+                <div key={i} className="h-20 superellipse-2xl bg-white/60" />
               ))}
             </div>
           </div>
@@ -215,7 +215,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
         initial="hidden"
         animate="visible"
         variants={containerVariants}
-        className="relative overflow-hidden rounded-3xl bg-white border border-amber-100/50"
+        className="relative overflow-hidden superellipse-3xl bg-white border border-amber-100/50"
         style={{
           boxShadow: `0 8px 32px ${ACCENT_SHADOW}, 0 2px 8px rgba(0,0,0,0.04)`,
         }}
@@ -243,12 +243,12 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
               >
                 {/* Gradient ring around avatar */}
                 <div
-                  className="absolute -inset-0.5 rounded-2xl opacity-60 group-hover:opacity-100 transition-opacity"
+                  className="absolute -inset-0.5 superellipse-2xl opacity-60 group-hover:opacity-100 transition-opacity"
                   style={{ background: SEARCHER_GRADIENT }}
                 />
 
                 {/* Avatar container */}
-                <div className="relative w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shadow-md transition-all bg-white">
+                <div className="relative w-12 h-12 superellipse-xl flex items-center justify-center overflow-hidden shadow-md transition-all bg-white">
                   {userData.avatar_url ? (
                     <Image
                       src={userData.avatar_url}
@@ -298,7 +298,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
               onClick={() => router.push('/properties/browse')}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-white text-xs font-semibold transition-all"
+              className="flex items-center gap-1 px-3 py-1.5 superellipse-xl text-white text-xs font-semibold transition-all"
               style={{
                 background: SEARCHER_GRADIENT,
                 boxShadow: `0 4px 12px ${ACCENT_SHADOW}`,
@@ -314,7 +314,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
             <motion.button
               variants={itemVariants}
               onClick={() => router.push('/dashboard/profile-completion')}
-              className="w-full mb-4 p-3 rounded-2xl border transition-all hover:shadow-md group"
+              className="w-full mb-4 p-3 superellipse-2xl border transition-all hover:shadow-md group"
               style={{
                 background: SEARCHER_GRADIENT_SOFT,
                 borderColor: `${SEARCHER_PRIMARY}30`,
@@ -323,7 +323,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <div
-                    className="w-9 h-9 rounded-xl flex items-center justify-center"
+                    className="w-9 h-9 superellipse-xl flex items-center justify-center"
                     style={{ background: `${SEARCHER_PRIMARY}20` }}
                   >
                     <Target className="w-4.5 h-4.5" style={{ color: SEARCHER_DARK }} />
@@ -398,7 +398,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                   onClick={() => router.push(stat.route)}
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
-                  className="relative rounded-2xl p-2.5 text-center overflow-hidden bg-white transition-all"
+                  className="relative superellipse-2xl p-2.5 text-center overflow-hidden bg-white transition-all"
                   style={{
                     boxShadow: `0 4px 16px ${ACCENT_SHADOW}`,
                     border: '1px solid rgba(0,0,0,0.04)',
@@ -424,7 +424,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                   <div className="relative z-10">
                     {/* Icon with colored background */}
                     <div
-                      className="w-8 h-8 mx-auto mb-1.5 rounded-xl flex items-center justify-center"
+                      className="w-8 h-8 mx-auto mb-1.5 superellipse-xl flex items-center justify-center"
                       style={{ background: stat.bgColor }}
                     >
                       <Icon className="w-4 h-4" style={{ color: stat.color }} />
@@ -450,7 +450,7 @@ export default function SearcherDashboardCompact({ userId, userData }: SearcherD
                   onClick={() => router.push(action.route)}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="flex-1 flex items-center justify-center gap-1.5 py-2 rounded-xl text-xs font-medium transition-all"
+                  className="flex-1 flex items-center justify-center gap-1.5 py-2 superellipse-xl text-xs font-medium transition-all"
                   style={{
                     background: `${SEARCHER_PRIMARY}10`,
                     color: SEARCHER_DARK,

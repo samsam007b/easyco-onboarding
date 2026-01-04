@@ -258,7 +258,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
         {/* Welcome Section */}
         <motion.div
           {...searcherAnimations.fadeInUp}
-          className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-lg border border-gray-200 p-6 sm:p-8"
+          className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-3xl shadow-lg border border-gray-200 p-6 sm:p-8"
         >
           {/* Decorative circles */}
           <div
@@ -275,12 +275,12 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
               {/* Animated Icon */}
               <div className="relative">
                 <div
-                  className="absolute inset-0 rounded-2xl blur-xl animate-pulse"
+                  className="absolute inset-0 superellipse-2xl blur-xl animate-pulse"
                   style={{ background: searcherGradientVibrant, opacity: 0.3 }}
                 />
                 <motion.div
                   whileHover={{ rotate: 3 }}
-                  className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center shadow-lg"
+                  className="relative w-14 h-14 sm:w-16 sm:h-16 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{ background: searcherGradientVibrant }}
                 >
                   <Target className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
@@ -310,7 +310,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
                 <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                   <Button
                     size="lg"
-                    className="rounded-2xl text-white shadow-lg"
+                    className="superellipse-2xl text-white shadow-lg"
                     style={{
                       background: searcherGradientVibrant,
                       boxShadow: '0 4px 14px rgba(255, 160, 64, 0.3)'
@@ -445,7 +445,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
                     {...searcherAnimations.fadeInUp}
                     transition={{ delay: index * 0.05 }}
                     whileHover={{ scale: 1.02, y: -4 }}
-                    className="relative overflow-hidden bg-white rounded-2xl shadow-sm border border-gray-200 cursor-pointer group"
+                    className="relative overflow-hidden bg-white superellipse-2xl shadow-sm border border-gray-200 cursor-pointer group"
                     onClick={() => window.location.href = `/properties/${match.id}`}
                   >
                     {/* Match Score Badge */}
@@ -517,7 +517,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
             transition={{ delay: 0.4 }}
           >
             {/* Saved Searches */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 p-5">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl shadow-sm border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-gray-900 flex items-center gap-2">
                   <Bell className="w-4 h-4 text-orange-500" />
@@ -537,7 +537,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
                     <Link
                       key={search.id}
                       href={`/dashboard/searcher?search=${search.id}`}
-                      className="flex items-center justify-between p-3 rounded-xl bg-gray-50 hover:bg-orange-50 transition-all group"
+                      className="flex items-center justify-between p-3 superellipse-xl bg-gray-50 hover:bg-orange-50 transition-all group"
                     >
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-900 truncate text-sm">{search.name}</p>
@@ -572,7 +572,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
             </div>
 
             {/* Quick Navigation */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-sm border border-gray-200 p-5">
+            <div className="bg-white/80 backdrop-blur-sm superellipse-2xl shadow-sm border border-gray-200 p-5">
               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Zap className="w-4 h-4 text-orange-500" />
                 Accès rapide
@@ -581,10 +581,10 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
               <div className="space-y-2">
                 <Link
                   href="/dashboard/searcher/groups"
-                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-orange-50 transition-all group"
+                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-orange-50 transition-all group"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255, 160, 64, 0.1)' }}
                   >
                     <Users className="w-5 h-5 text-orange-600" />
@@ -598,10 +598,10 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
 
                 <Link
                   href="/dashboard/searcher/calendar"
-                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-orange-50 transition-all group"
+                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-orange-50 transition-all group"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255, 184, 92, 0.1)' }}
                   >
                     <Calendar className="w-5 h-5 text-orange-500" />
@@ -615,10 +615,10 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
 
                 <Link
                   href="/profile"
-                  className="flex items-center gap-3 p-3 rounded-xl hover:bg-orange-50 transition-all group"
+                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-orange-50 transition-all group"
                 >
                   <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255, 208, 128, 0.1)' }}
                   >
                     <CheckCircle className="w-5 h-5 text-orange-400" />
@@ -642,7 +642,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
 
             {/* Tip of the Day */}
             <motion.div
-              className="relative overflow-hidden rounded-2xl p-5"
+              className="relative overflow-hidden superellipse-2xl p-5"
               style={{ background: searcherGradientVibrant }}
               whileHover={{ scale: 1.02 }}
             >

@@ -34,7 +34,7 @@ export default function QuickActionsCard({
   return (
     <motion.div
       whileHover={{ scale: 1.01 }}
-      className="relative rounded-3xl overflow-hidden bg-white p-8 space-y-6"
+      className="relative superellipse-3xl overflow-hidden bg-white p-8 space-y-6"
       style={{
         boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
       }}

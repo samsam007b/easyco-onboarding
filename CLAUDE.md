@@ -192,6 +192,49 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 SENTRY_DSN=
 ```
 
+## Brand Identity (PRIORITY)
+
+### Final Logo Assets - SOURCE OF TRUTH
+**Location**: `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/`
+
+**CRITICAL**: These are the FINAL locked logos. NEVER modify or use older versions.
+
+#### Primary Logo Variant: Squircle Épais
+| Type | Gradient | Noir | Blanc |
+|------|----------|------|-------|
+| **Icon** (2048px) | `gradient signature/izzico-icon-squircle-epais-gradient.svg` | `noir/izzico-icon-squircle-epais-noir-2048px.svg` | `blanc/izzico-icon-squircle-epais-blanc-2048px.svg` |
+| **Trademark** (4096px) | `gradient signature/izzico-trademark-squircle-epais-gradient.svg` | `noir/izzico-trademark-squircle-epais-noir-4096px.svg` | `blanc/izzico-trademark-squircle-epais-blanc-4096px.svg` |
+| **Lockup Option D** (4096px) | `gradient signature/izzico-lockup-optionD-squircle-epais-gradient.svg` | `noir/izzico-lockup-optionD-squircle-epais-noir-4096px.svg` | `blanc/izzico-lockup-optionD-squircle-epais-blanc-4096px.svg` |
+
+#### Lockup Proportions (Option D)
+- Icon height: 130px | Trademark height: 60px | Gap: 3px
+- Ratio icon/trademark: ~2.17:1
+
+### Icon Orientation
+- **Key with teeth**: LEFT side
+- **Magnifying glass handle**: RIGHT side
+- Never flip or mirror the icon
+
+### Signature Gradient
+```css
+/* Violet → Red → Orange → Gold diagonal flow */
+linear-gradient(135deg,
+  #9c5698 0%,    /* Mauve/Violet */
+  #d15659 30%,   /* Red */
+  #e05747 50%,   /* Orange-Red */
+  #ff7c10 70%,   /* Orange */
+  #ffc800 100%   /* Gold/Yellow */
+)
+```
+
+### Color Variations
+- **Noir**: `#1A1A2E` (for light backgrounds)
+- **Blanc**: `#FFFFFF` (for dark backgrounds)
+- **Gradient**: Use signature gradient for branded contexts
+
+### Old Versions (Archive Only)
+Located in `brand-identity/logo final izzico/ancienne versions/` - DO NOT USE for production.
+
 ## Tips for Claude
 
 1. **Always check the user's role** when working on UI - colors and features differ
@@ -199,3 +242,4 @@ SENTRY_DSN=
 3. **RLS policies matter** - test database changes carefully
 4. **French is primary** - UI text should be in French unless i18n
 5. **V3-fun design** - use gradients, rounded corners, animations
+6. **Brand logos**: ALWAYS use files from `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/` - these are the ONLY official versions

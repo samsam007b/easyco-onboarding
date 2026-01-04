@@ -302,7 +302,7 @@ export default function ModernOwnerDashboard() {
               whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
               onClick={card.action}
-              className="relative overflow-hidden rounded-2xl p-5 cursor-pointer shadow-lg"
+              className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer shadow-lg"
               style={{
                 background: card.bgGradient,
                 boxShadow: `0 8px 24px rgba(156, 86, 152, 0.12)`,
@@ -365,7 +365,7 @@ export default function ModernOwnerDashboard() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             whileHover={{ scale: 1.01 }}
-            className="relative overflow-hidden bg-white rounded-3xl shadow-lg p-6"
+            className="relative overflow-hidden bg-white superellipse-3xl shadow-lg p-6"
             style={{ boxShadow: '0 8px 32px rgba(156, 86, 152, 0.1)' }}
           >
             {/* Decorative circle */}
@@ -536,7 +536,7 @@ export default function ModernOwnerDashboard() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="relative overflow-hidden rounded-3xl p-12 text-center"
+            className="relative overflow-hidden superellipse-3xl p-12 text-center"
             style={{
               background: ownerGradientLight,
               boxShadow: '0 12px 32px rgba(156, 86, 152, 0.08)',
@@ -614,7 +614,7 @@ export default function ModernOwnerDashboard() {
                 whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push(`/properties/${property.id}`)}
-                className="group relative bg-white rounded-2xl p-4 shadow-lg cursor-pointer overflow-hidden"
+                className="group relative bg-white superellipse-2xl p-4 shadow-lg cursor-pointer overflow-hidden"
                 style={{ boxShadow: '0 4px 16px rgba(0, 0, 0, 0.08)' }}
               >
                 {/* Decorative circle */}
@@ -633,7 +633,7 @@ export default function ModernOwnerDashboard() {
 
                 {/* Image or Placeholder */}
                 <div
-                  className="relative h-40 rounded-xl mb-3 overflow-hidden"
+                  className="relative h-40 superellipse-xl mb-3 overflow-hidden"
                   style={{ background: ownerGradientLight }}
                 >
                   {property.main_image ? (

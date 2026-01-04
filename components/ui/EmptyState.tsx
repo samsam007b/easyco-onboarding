@@ -207,7 +207,7 @@ export default function EmptyState({
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 onClick={primaryAction.onClick}
-                className="bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B] hover:opacity-90 text-white font-semibold px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all"
+                className="bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B] hover:opacity-90 text-white font-semibold px-6 py-3 superellipse-xl shadow-lg hover:shadow-xl transition-all"
               >
                 {primaryAction.icon && <primaryAction.icon className="w-5 h-5 mr-2" />}
                 {primaryAction.label}
@@ -219,7 +219,7 @@ export default function EmptyState({
               <Button
                 onClick={secondaryAction.onClick}
                 variant="outline"
-                className="border-2 border-gray-300 hover:border-orange-300 hover:bg-orange-50 transition-all px-6 py-3 rounded-xl"
+                className="border-2 border-gray-300 hover:border-orange-300 hover:bg-orange-50 transition-all px-6 py-3 superellipse-xl"
               >
                 {secondaryAction.label}
               </Button>

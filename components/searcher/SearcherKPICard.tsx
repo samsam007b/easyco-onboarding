@@ -91,7 +91,7 @@ export function SearcherKPICard({
       whileTap={isClickable ? { scale: 0.98 } : undefined}
       onClick={onClick}
       className={cn(
-        'relative overflow-hidden rounded-2xl p-5 border border-gray-200 shadow-sm',
+        'relative overflow-hidden superellipse-2xl p-5 border border-gray-200 shadow-sm',
         isClickable && 'cursor-pointer',
         className
       )}
@@ -155,7 +155,7 @@ export function SearcherKPICard({
 
         {/* Icon */}
         <div
-          className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+          className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0"
           style={{ background: styles.gradient }}
         >
           <Icon className="w-6 h-6 text-white" />

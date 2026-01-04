@@ -56,7 +56,7 @@ export function OwnerNavigationCard({
       whileTap={{ scale: 0.98 }}
       onClick={() => router.push(href)}
       className={cn(
-        'relative overflow-hidden rounded-2xl p-6 border border-gray-200 shadow-sm cursor-pointer bg-white/80 backdrop-blur-sm',
+        'relative overflow-hidden superellipse-2xl p-6 border border-gray-200 shadow-sm cursor-pointer bg-white/80 backdrop-blur-sm',
         'hover:shadow-lg hover:border-purple-200 transition-all duration-300',
         className
       )}

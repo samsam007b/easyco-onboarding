@@ -61,7 +61,7 @@ export function OwnerPageHeader({
       {/* Header Content */}
       <motion.div
         {...ownerAnimations.fadeInUp}
-        className="relative overflow-hidden bg-white/80 backdrop-blur-sm rounded-3xl shadow-sm border border-gray-200 p-6 sm:p-8"
+        className="relative overflow-hidden bg-white/80 backdrop-blur-sm superellipse-3xl shadow-sm border border-gray-200 p-6 sm:p-8"
       >
         {/* Decorative circles */}
         <div

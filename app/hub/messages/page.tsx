@@ -299,7 +299,7 @@ function HubMessagesContent() {
     if (selectedConversation.isVirtual) {
       return (
         <div className="flex flex-col items-center justify-center h-full p-8 text-center">
-          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mx-auto mb-6 shadow-lg">
+          <div className="w-24 h-24 superellipse-3xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mx-auto mb-6 shadow-lg">
             {selectedConversation.type === 'residence_group' ? (
               <span className="text-4xl">🏠</span>
             ) : (

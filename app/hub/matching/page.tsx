@@ -109,7 +109,7 @@ export default function MatchingComingSoonPage() {
               rotate: [0, 5, -5, 0]
             }}
             transition={{ duration: 3, repeat: Infinity }}
-            className="w-24 h-24 rounded-3xl flex items-center justify-center mx-auto mb-8"
+            className="w-24 h-24 superellipse-3xl flex items-center justify-center mx-auto mb-8"
             style={{
               background: RESIDENT_GRADIENT,
               boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -138,7 +138,7 @@ export default function MatchingComingSoonPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="relative max-w-lg mx-auto rounded-3xl p-8 overflow-hidden"
+            className="relative max-w-lg mx-auto superellipse-3xl p-8 overflow-hidden"
             style={{
               background: CARD_BG_GRADIENT,
               boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -255,7 +255,7 @@ export default function MatchingComingSoonPage() {
         >
           <motion.div
             whileHover={{ scale: 1.02 }}
-            className="inline-flex flex-col items-center gap-4 p-8 rounded-3xl bg-white"
+            className="inline-flex flex-col items-center gap-4 p-8 superellipse-3xl bg-white"
             style={{
               boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
             }}

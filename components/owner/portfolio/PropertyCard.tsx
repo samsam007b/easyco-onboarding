@@ -164,7 +164,7 @@ export function PropertyCard({
         whileHover={{ x: 4 }}
         onClick={onClick}
         className={cn(
-          'flex items-center gap-4 p-4 bg-white rounded-xl border border-gray-200',
+          'flex items-center gap-4 p-4 bg-white superellipse-xl border border-gray-200',
           'hover:shadow-md hover:border-gray-300 transition-all cursor-pointer',
           selected && 'ring-2 ring-purple-400 border-purple-300',
           className
@@ -193,7 +193,7 @@ export function PropertyCard({
         />
 
         {/* Image */}
-        <div className="w-16 h-12 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+        <div className="w-16 h-12 superellipse-lg overflow-hidden flex-shrink-0 bg-gray-100">
           {property.mainImage ? (
             <img
               src={property.mainImage}
@@ -304,7 +304,7 @@ export function PropertyCard({
         whileHover={{ y: -4, scale: 1.02 }}
         onClick={onClick}
         className={cn(
-          'bg-white rounded-xl border border-gray-200 overflow-hidden',
+          'bg-white superellipse-xl border border-gray-200 overflow-hidden',
           'hover:shadow-lg hover:border-gray-300 transition-all cursor-pointer',
           selected && 'ring-2 ring-purple-400',
           className
@@ -384,7 +384,7 @@ export function PropertyCard({
       whileHover={{ y: -4 }}
       onClick={onClick}
       className={cn(
-        'bg-white rounded-2xl border border-gray-200 overflow-hidden',
+        'bg-white superellipse-2xl border border-gray-200 overflow-hidden',
         'hover:shadow-xl hover:border-gray-300 transition-all cursor-pointer',
         selected && 'ring-2 ring-purple-400',
         className
@@ -445,7 +445,7 @@ export function PropertyCard({
 
         {/* Vacant Days Warning */}
         {property.daysVacant && property.daysVacant > 0 && !property.isRented && (
-          <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/60 backdrop-blur-sm rounded-lg text-xs text-white flex items-center gap-1">
+          <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/60 backdrop-blur-sm superellipse-lg text-xs text-white flex items-center gap-1">
             <Clock className="w-3 h-3" />
             {property.daysVacant}{t?.daysVacant?.[language] || 'd vacant'}
           </div>

@@ -215,7 +215,7 @@ export default function ResidenceHeader() {
   if (isLoading || !propertyInfo) {
     return (
       <div
-        className="relative overflow-hidden p-6 rounded-3xl mb-6 mx-2 sm:mx-6 lg:mx-8 animate-pulse"
+        className="relative overflow-hidden p-6 superellipse-3xl mb-6 mx-2 sm:mx-6 lg:mx-8 animate-pulse"
         style={{
           background: RESIDENT_GRADIENT,
           boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -241,7 +241,7 @@ export default function ResidenceHeader() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="relative overflow-hidden p-6 rounded-3xl mx-2 sm:mx-6 lg:mx-8 mb-6"
+        className="relative overflow-hidden p-6 superellipse-3xl mx-2 sm:mx-6 lg:mx-8 mb-6"
         style={{
           background: RESIDENT_GRADIENT,
           boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,

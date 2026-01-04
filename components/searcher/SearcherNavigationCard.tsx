@@ -58,7 +58,7 @@ export function SearcherNavigationCard({
       whileTap={{ scale: 0.98 }}
       onClick={() => router.push(href)}
       className={cn(
-        'relative overflow-hidden rounded-2xl p-6 border border-gray-200 shadow-sm cursor-pointer bg-white/80 backdrop-blur-sm',
+        'relative overflow-hidden superellipse-2xl p-6 border border-gray-200 shadow-sm cursor-pointer bg-white/80 backdrop-blur-sm',
         'hover:shadow-lg hover:border-orange-200 transition-all duration-300',
         className
       )}
@@ -84,7 +84,7 @@ export function SearcherNavigationCard({
       <div className="relative">
         {/* Icon */}
         <div
-          className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4 shadow-md"
+          className="w-14 h-14 superellipse-2xl flex items-center justify-center mb-4 shadow-md"
           style={{ background: searcherGradientVibrant }}
         >
           <Icon className="w-7 h-7 text-white" />

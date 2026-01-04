@@ -113,7 +113,7 @@ export default function MatchingPreviewSection({
             {/* Card Preview Container */}
             <motion.div
               whileHover={{ scale: 1.01 }}
-              className="relative rounded-3xl p-6 overflow-hidden"
+              className="relative superellipse-3xl p-6 overflow-hidden"
               style={{
                 background: CARD_BG_GRADIENT,
                 boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -138,7 +138,7 @@ export default function MatchingPreviewSection({
                   <div className="relative h-[380px] flex items-center justify-center">
                     <motion.div
                       whileHover={{ scale: 1.02, y: -4 }}
-                      className="w-[300px] rounded-3xl shadow-2xl overflow-hidden bg-white p-8 text-center"
+                      className="w-[300px] superellipse-3xl shadow-2xl overflow-hidden bg-white p-8 text-center"
                       style={{ boxShadow: `0 16px 48px ${ACCENT_SHADOW}` }}
                     >
                       <motion.div
