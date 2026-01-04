@@ -129,11 +129,12 @@ const navigationDomains = {
       },
       {
         id: 'people',
-        href: '/searcher/matching/people',
+        href: '/searcher/team-matching',
         label: 'Colocataires',
         icon: Users,
         description: 'Swipe & Match',
-        color: '#EC4899'
+        color: '#EC4899',
+        isComingSoon: true
       },
       {
         id: 'groups',
