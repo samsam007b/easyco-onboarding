@@ -21,7 +21,6 @@ import {
 import { Button } from '@/components/ui/button';
 import { InvitePopup } from '@/components/referral';
 import { useLanguage } from '@/lib/i18n/use-language';
-import Superellipse from '@/components/ui/Superellipse';
 
 // V3 Option C - Official Resident Palette
 const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
@@ -274,9 +273,8 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
           animate={{ opacity: 1, x: 0 }}
           className="w-full lg:w-72 flex-shrink-0"
         >
-          <Superellipse
-            n={5}
-            className="relative overflow-hidden p-5 h-full min-h-[200px]"
+          <div
+            className="relative overflow-hidden p-5 h-full min-h-[200px] rounded-3xl"
             style={{
               background: RESIDENT_GRADIENT,
               boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
@@ -289,15 +287,12 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
             <div className="relative z-10 flex flex-col h-full justify-between">
               {/* Property icon and title */}
               <div>
-                <Superellipse
-                  n={5}
-                  as="div"
-                  className="w-12 h-12 bg-white/20 backdrop-blur flex items-center justify-center mb-4"
+                <motion.div
+                  whileHover={{ rotate: 5, scale: 1.05 }}
+                  className="w-12 h-12 bg-white/20 backdrop-blur rounded-xl flex items-center justify-center mb-4"
                 >
-                  <motion.div whileHover={{ rotate: 5, scale: 1.05 }}>
-                    <Home className="w-6 h-6 text-white" />
-                  </motion.div>
-                </Superellipse>
+                  <Home className="w-6 h-6 text-white" />
+                </motion.div>
 
                 <h3 className="text-xl font-black text-white mb-2 leading-tight">
                   {propertyInfo.title}
@@ -309,12 +304,12 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 </div>
 
                 {/* Member pills */}
-                <Superellipse n={5} className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 w-fit">
+                <div className="flex items-center gap-2 bg-white/15 backdrop-blur px-3 py-2 w-fit rounded-full">
                   <Users className="w-4 h-4 text-white" />
                   <span className="text-white font-semibold text-sm">
                     {propertyInfo.memberCount} {propertyInfo.memberCount > 1 ? 'colocs' : 'coloc'}
                   </span>
-                </Superellipse>
+                </div>
               </div>
 
               {/* Bottom: Progress or Invite button */}
@@ -322,7 +317,7 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 {!isComplete ? (
                   <CircularProgress percentage={completion.percentage} />
                 ) : (
-                  <Superellipse n={5} className="flex items-center gap-2 bg-white/20 backdrop-blur px-3 py-2">
+                  <div className="flex items-center gap-2 bg-white/20 backdrop-blur px-3 py-2 rounded-full">
                     <motion.div
                       animate={{ scale: [1, 1.1, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
@@ -331,21 +326,19 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                       <Sparkles className="w-4 h-4 text-white" />
                       <span className="text-white font-bold text-sm">Complet!</span>
                     </motion.div>
-                  </Superellipse>
+                  </div>
                 )}
 
-                <Superellipse
-                  n={5}
-                  as="button"
+                <button
                   onClick={() => setShowInviteModal(true)}
-                  className="flex items-center gap-1.5 bg-white text-gray-900 px-4 py-2 font-bold text-sm shadow-lg hover:scale-105 active:scale-95 transition-transform"
+                  className="flex items-center gap-1.5 bg-white text-gray-900 px-4 py-2 font-bold text-sm shadow-lg rounded-xl hover:scale-105 active:scale-95 transition-transform"
                 >
                   <UserPlus className="w-4 h-4" />
                   <span>Inviter</span>
-                </Superellipse>
+                </button>
               </div>
             </div>
-          </Superellipse>
+          </div>
         </motion.div>
 
         {/* RIGHT: Welcome + Quick Actions */}
@@ -356,9 +349,8 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
           className="flex-1 flex flex-col gap-4"
         >
           {/* Welcome Section */}
-          <Superellipse
-            n={5}
-            className="relative overflow-hidden p-6 bg-white"
+          <div
+            className="relative overflow-hidden p-6 bg-white rounded-2xl"
             style={{ boxShadow: `0 12px 32px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative gradient blob */}
@@ -369,10 +361,10 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
 
             <div className="relative z-10">
               {/* Date pill */}
-              <Superellipse n={5} className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1.5 mb-3">
+              <div className="inline-flex items-center gap-2 bg-gray-100 px-3 py-1.5 mb-3 rounded-full">
                 <Calendar className="w-3.5 h-3.5 text-gray-500" />
                 <span className="text-sm text-gray-600 font-medium capitalize">{currentDate}</span>
-              </Superellipse>
+              </div>
 
               {/* Welcome message */}
               <h2 className="text-2xl lg:text-3xl font-black text-gray-900 mb-1">
@@ -382,25 +374,22 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 {resident?.welcomeSubtitle || 'Voici un aperçu de ta coloc'}
               </p>
             </div>
-          </Superellipse>
+          </div>
 
           {/* Quick Actions Row */}
-          <Superellipse
-            n={5}
-            className="relative overflow-hidden p-4 bg-white"
+          <div
+            className="relative overflow-hidden p-4 bg-white rounded-2xl"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
               {quickActions.map((action, index) => {
                 const Icon = action.icon;
                 return (
-                  <Superellipse
+                  <button
                     key={index}
-                    n={5}
-                    as="button"
                     onClick={action.onClick}
                     className={`
-                      flex items-center gap-2 px-4 py-2.5 font-semibold text-sm
+                      flex items-center gap-2 px-4 py-2.5 font-semibold text-sm rounded-xl
                       transition-all whitespace-nowrap flex-shrink-0
                       hover:scale-103 hover:-translate-y-0.5 active:scale-97
                       ${action.primary
@@ -412,28 +401,25 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                   >
                     <Icon className="w-4 h-4" />
                     <span>{action.label}</span>
-                  </Superellipse>
+                  </button>
                 );
               })}
 
               {/* Settings shortcut */}
-              <Superellipse
-                n={5}
-                as="button"
+              <button
                 onClick={() => router.push('/settings/residence-profile')}
-                className="flex items-center gap-2 px-4 py-2.5 font-semibold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all whitespace-nowrap flex-shrink-0 hover:scale-103 hover:-translate-y-0.5 active:scale-97"
+                className="flex items-center gap-2 px-4 py-2.5 font-semibold text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-xl transition-all whitespace-nowrap flex-shrink-0 hover:scale-103 hover:-translate-y-0.5 active:scale-97"
               >
                 <Settings className="w-4 h-4" />
                 <span>{hub?.actionSettings || 'Paramètres'}</span>
-              </Superellipse>
+              </button>
             </div>
-          </Superellipse>
+          </div>
 
           {/* Next steps hint (if not complete) */}
           {!isComplete && completion.nextSteps.length > 0 && (
-            <Superellipse
-              n={5}
-              className="flex items-center gap-3 px-4 py-3"
+            <div
+              className="flex items-center gap-3 px-4 py-3 rounded-xl"
               style={{ background: RESIDENT_GRADIENT_SOFT }}
             >
               <motion.div
@@ -453,7 +439,7 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 </span>
                 <ChevronRight className="w-4 h-4 text-gray-400 ml-auto" />
               </motion.div>
-            </Superellipse>
+            </div>
           )}
         </motion.div>
       </div>
