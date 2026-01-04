@@ -122,7 +122,7 @@ export default function ModernHeroSection() {
                 <div
                   className="absolute inset-0 superellipse-2xl shadow-2xl"
                   style={{
-                    background: 'linear-gradient(135deg, #9c5698 0%, #d15659 30%, #e05747 50%, #ff7c10 70%, #ffc800 100%)',
+                    background: 'linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)',
                     boxShadow: '0 8px 32px rgba(156, 86, 152, 0.4), 0 4px 16px rgba(255, 124, 16, 0.3)'
                   }}
                 />

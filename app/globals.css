@@ -11,51 +11,65 @@
      Role-Specific Colors (Updated to match PRD)
      ============================================ */
 
-  /* SEARCHER - Yellow/Gold (#FFB10B - couleur dominante) */
-  --searcher-primary: #FFB10B;
-  --searcher-hover: #FFA040;
-  --searcher-light: #FFF9E6;
-  --searcher-dark: #F9A825;
+  /* SEARCHER - Gold/Amber (v3 Scale)
+     Échelle v3 avec progression L* monotone: #ffa000 (primary) = 500
+     Source: brand-identity/izzico-color-system.html */
+  --searcher-primary: #ffa000;    /* 500 - Primary (Brand Guidelines) */
+  --searcher-hover: #D98400;      /* 600 - Hover (darker) */
+  --searcher-accent: #FBBF24;     /* 400 - Accent (lighter) */
+  --searcher-subtle: #FCD34D;     /* 300 - Subtle */
+  --searcher-light: #FDE68A;      /* 200 - Light */
+  --searcher-dark: #A16300;       /* 700 - Text-safe WCAG AA */
 
-  /* OWNER - Mauve/Purple (#9c5698 - couleur dominante) */
-  --owner-primary: #9c5698;
-  --owner-hover: #7B5FB8;
-  --owner-light: #F3F1FF;
-  --owner-dark: #4A148C;
+  /* OWNER - Mauve/Purple (v3 Scale)
+     Échelle v3 avec progression L* monotone: #9c5698 (primary) = 500
+     Source: brand-identity/izzico-color-system.html */
+  --owner-primary: #9c5698;       /* 500 - Primary (Brand Guidelines) */
+  --owner-hover: #7E4580;         /* 600 - Hover (darker) */
+  --owner-accent: #B070A8;        /* 400 - Accent (lighter) */
+  --owner-subtle: #C990C2;        /* 300 - Subtle */
+  --owner-light: #E0C0DC;         /* 200 - Light */
+  --owner-dark: #633668;          /* 700 - Text-safe WCAG AA */
 
-  /* RESIDENT - Orange (#ff651e - couleur dominante) */
-  /* Palette officielle : #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014 */
-  --resident-primary: #ff651e;
-  --resident-hover: #f8572b;
-  --resident-light: #FFF5F0;
-  --resident-dark: #e05747;
+  /* RESIDENT - Coral/Orange (v3 Scale)
+     Échelle v3 avec progression L* monotone: #e05747 (primary) = 500
+     Source: brand-identity/izzico-color-system.html */
+  --resident-primary: #e05747;    /* 500 - Primary (Brand Guidelines) */
+  --resident-hover: #C04538;      /* 600 - Hover (darker) */
+  --resident-accent: #E96A50;     /* 400 - Accent (lighter) */
+  --resident-subtle: #F28B6A;     /* 300 - Subtle */
+  --resident-light: #F9B8A0;      /* 200 - Light */
+  --resident-dark: #9A362C;       /* 700 - Text-safe WCAG AA */
 
-  /* Legacy Brand Colors (backward compatibility) */
-  --easy-purple-900: #9c5698;   /* Primary Owner - UPDATED */
-  --easy-purple-700: #7B5FB8;   /* Hover states */
-  --easy-purple-500: #8E7AD6;   /* Lighter purple */
-  --easy-purple-300: #BAB2E3;   /* Very light purple */
-  --easy-purple-100: #F3F1FF;   /* Backgrounds */
-  --easy-purple-50: #F9F8FF;    /* Lightest purple */
+  /* Legacy Brand Colors (backward compatibility - aligned with Brand Guidelines)
+     Ces variables sont maintenues pour la rétrocompatibilité mais devraient
+     être progressivement remplacées par les variables --owner-*, --searcher-*, --resident-* */
+  --easy-purple-900: #9c5698;   /* = owner-primary (Stop 1) */
+  --easy-purple-700: #a5568d;   /* = owner-hover (Stop 2) */
+  --easy-purple-500: #af5682;   /* = owner-accent (Stop 3) */
+  --easy-purple-300: #b85676;   /* = owner-subtle (Stop 4) */
+  --easy-purple-100: #F3E8F0;   /* Light background */
+  --easy-purple-50: #FAF5F9;    /* Lightest background */
 
-  --easy-yellow-600: #FFA040;   /* Hover states */
-  --easy-yellow-500: #FFB10B;   /* Primary Searcher - UPDATED */
-  --easy-yellow-400: #FFEB3B;   /* Lighter yellow */
-  --easy-yellow-100: #FFF9E6;   /* Backgrounds */
-  --easy-yellow-50: #FFFEF0;    /* Lightest yellow */
+  --easy-yellow-600: #ffaa00;   /* = searcher-hover (Stop 2) */
+  --easy-yellow-500: #ffa000;   /* = searcher-primary (Stop 1 - Brand Guidelines) */
+  --easy-yellow-400: #ffb400;   /* = searcher-accent (Stop 3) */
+  --easy-yellow-300: #ffbe00;   /* = searcher-subtle (Stop 4) */
+  --easy-yellow-100: #FFF9E6;   /* Light background */
+  --easy-yellow-50: #FFFEF0;    /* Lightest background */
 
-  --easy-orange-700: #e05747;   /* Dark - from palette */
-  --easy-orange-600: #f8572b;   /* Hover - from palette */
-  --easy-orange-500: #ff651e;   /* Primary Resident - DOMINANTE */
-  --easy-orange-400: #ff7b19;   /* Lighter - from palette */
-  --easy-orange-300: #ff9014;   /* Lightest accent - from palette */
-  --easy-orange-100: #FFF0EB;   /* Backgrounds */
-  --easy-orange-50: #FFF5F0;    /* Lightest */
+  --easy-orange-700: #e05747;   /* = resident-primary (Stop 1 - Brand Guidelines) */
+  --easy-orange-600: #f25a35;   /* = resident-hover (Stop 2) */
+  --easy-orange-500: #ff6524;   /* = resident-accent (Stop 3) */
+  --easy-orange-400: #ff7018;   /* = resident-subtle (Stop 4) */
+  --easy-orange-300: #ff7c10;   /* = resident-light (Stop 5) */
+  --easy-orange-100: #FFF0EB;   /* Light background */
+  --easy-orange-50: #FFF5F0;    /* Lightest background */
 
-  /* Legacy support */
-  --easy-purple: var(--easy-purple-900);
-  --easy-yellow: var(--easy-yellow-500);
-  --easy-orange: var(--easy-orange-500);
+  /* Legacy support - pointer vers les nouvelles variables */
+  --easy-purple: var(--owner-primary);
+  --easy-yellow: var(--searcher-primary);
+  --easy-orange: var(--resident-primary);
 
   /* ============================================
      🔒 IzzIco Signature Gradient (Brand Identity) - VERROUILLÉ
@@ -63,53 +77,74 @@
      Uses the 3 role colors: Owner → Resident → Searcher
      NE PAS MODIFIER sans approbation explicite
      ============================================ */
-  --gradient-brand-start: var(--owner-primary);      /* Mauve #9c5698 */
-  --gradient-brand-middle: var(--resident-primary);  /* Orange #FF5722 */
-  --gradient-brand-end: var(--searcher-primary);     /* Yellow/Gold #FFB10B */
+  --gradient-brand-start: var(--owner-primary);      /* Mauve #9c5698 (Brand Guidelines) */
+  --gradient-brand-middle: var(--resident-primary);  /* Orange #e05747 (Brand Guidelines) */
+  --gradient-brand-end: var(--searcher-primary);     /* Yellow/Gold #ffa000 (Brand Guidelines) */
 
-  /* Pre-built gradient utilities */
-  --gradient-brand: linear-gradient(135deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
-  --gradient-brand-horizontal: linear-gradient(90deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
-  --gradient-brand-vertical: linear-gradient(180deg, var(--gradient-brand-start) 0%, var(--gradient-brand-middle) 50%, var(--gradient-brand-end) 100%);
+  /* Pre-built gradient utilities - v3 avec bridge stop pour transition fluide
+     Bridge #c85570 à 20% évite la "zone boue" entre mauve et rouge */
+  --gradient-bridge: #c85570;  /* Rose-rouge à 345° - maintient saturation */
+  --gradient-brand: linear-gradient(135deg,
+    var(--gradient-brand-start) 0%,
+    var(--gradient-bridge) 20%,
+    #d15659 35%,
+    var(--gradient-brand-middle) 50%,
+    #ff7c10 75%,
+    var(--gradient-brand-end) 100%
+  );
+  --gradient-brand-horizontal: linear-gradient(90deg,
+    var(--gradient-brand-start) 0%,
+    var(--gradient-bridge) 20%,
+    var(--gradient-brand-middle) 50%,
+    var(--gradient-brand-end) 100%
+  );
+  --gradient-brand-vertical: linear-gradient(180deg,
+    var(--gradient-brand-start) 0%,
+    var(--gradient-bridge) 20%,
+    var(--gradient-brand-middle) 50%,
+    var(--gradient-brand-end) 100%
+  );
 
   /* ============================================
      Role-Specific Monochrome Gradients
      Each role has its own gradient with light → dark variations
      ============================================ */
 
-  /* Searcher - Yellow/Orange Gradient (Extrait du logo original - zone droite) */
-  --gradient-searcher-logo: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%);
-  --gradient-searcher: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%); /* Logo authentique */
-  --gradient-searcher-soft: linear-gradient(135deg, #FFF9E6 0%, #FFD080 100%);
-  --gradient-searcher-light: linear-gradient(135deg, #FFD080 0%, #FFE5A0 100%);
-  --gradient-searcher-medium: linear-gradient(135deg, #FFB85C 0%, #FFA040 100%);
-  --gradient-searcher-dark: linear-gradient(135deg, #FFA040 0%, #FF8C20 100%);
-  --gradient-searcher-subtle: linear-gradient(135deg, #FFF9E6 0%, #FFFBEA 100%);
-  --gradient-searcher-cta: linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%); /* Logo authentique pour CTA */
-  --gradient-searcher-vibrant: linear-gradient(135deg, #FFA040 0%, #FFD080 100%); /* Très visible */
+  /* Searcher - Gold/Amber Gradient (v3 Scale)
+     Utilise l'échelle v3 avec progression L* monotone */
+  --gradient-searcher-logo: linear-gradient(135deg, #ffa000 0%, #FBBF24 50%, #FDE68A 100%);
+  --gradient-searcher: linear-gradient(135deg, #ffa000 0%, #FBBF24 50%, #FDE68A 100%);
+  --gradient-searcher-soft: linear-gradient(135deg, #FFFBEB 0%, #FDE68A 100%);
+  --gradient-searcher-light: linear-gradient(135deg, #FDE68A 0%, #FEF3C7 100%);
+  --gradient-searcher-medium: linear-gradient(135deg, #FBBF24 0%, #FCD34D 100%);
+  --gradient-searcher-dark: linear-gradient(135deg, #ffa000 0%, #A16300 100%);
+  --gradient-searcher-subtle: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+  --gradient-searcher-cta: linear-gradient(135deg, #ffa000 0%, #FBBF24 50%, #FDE68A 100%);
+  --gradient-searcher-vibrant: linear-gradient(135deg, #D98400 0%, #ffa000 100%);
 
-  /* Resident - Orange Gradient (Palette officielle Design System) */
-  /* Palette: #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014 */
-  --gradient-resident-logo: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%);
-  --gradient-resident: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%); /* Gradient principal */
-  --gradient-resident-soft: linear-gradient(135deg, #FFF5F0 0%, #ff9014 100%);
-  --gradient-resident-light: linear-gradient(135deg, #ff9014 0%, #ffb060 100%);
-  --gradient-resident-medium: linear-gradient(135deg, #ff651e 0%, #f8572b 100%);
-  --gradient-resident-dark: linear-gradient(135deg, #e05747 0%, #c24030 100%);
-  --gradient-resident-subtle: linear-gradient(135deg, #FFF5F0 0%, #FFE8DC 100%);
-  --gradient-resident-cta: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%); /* Pour CTA */
-  --gradient-resident-vibrant: linear-gradient(135deg, #f8572b 0%, #ff7b19 100%); /* Très visible */
+  /* Resident - Coral/Orange Gradient (v3 Scale)
+     Utilise l'échelle v3 avec progression L* monotone */
+  --gradient-resident-logo: linear-gradient(135deg, #e05747 0%, #E96A50 50%, #F9B8A0 100%);
+  --gradient-resident: linear-gradient(135deg, #e05747 0%, #E96A50 50%, #F9B8A0 100%);
+  --gradient-resident-soft: linear-gradient(135deg, #FEF2EE 0%, #F9B8A0 100%);
+  --gradient-resident-light: linear-gradient(135deg, #F9B8A0 0%, #FDE0D6 100%);
+  --gradient-resident-medium: linear-gradient(135deg, #E96A50 0%, #F28B6A 100%);
+  --gradient-resident-dark: linear-gradient(135deg, #e05747 0%, #9A362C 100%);
+  --gradient-resident-subtle: linear-gradient(135deg, #FEF2EE 0%, #FDE0D6 100%);
+  --gradient-resident-cta: linear-gradient(135deg, #e05747 0%, #E96A50 50%, #F9B8A0 100%);
+  --gradient-resident-vibrant: linear-gradient(135deg, #C04538 0%, #e05747 100%);
 
-  /* Owner - Purple/Mauve/Rose Gradient (Extrait du logo original - zone gauche) */
-  --gradient-owner-logo: linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%);
-  --gradient-owner: linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%); /* Logo authentique */
-  --gradient-owner-soft: linear-gradient(135deg, #F3F1FF 0%, #C98B9E 100%);
-  --gradient-owner-light: linear-gradient(135deg, #C98B9E 0%, #D9A5B4 100%);
-  --gradient-owner-medium: linear-gradient(135deg, #A67BB8 0%, #7B5FB8 100%);
-  --gradient-owner-dark: linear-gradient(135deg, #7B5FB8 0%, #6B4FA8 100%);
-  --gradient-owner-subtle: linear-gradient(135deg, #F3F1FF 0%, #F9F8FF 100%);
-  --gradient-owner-cta: linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%); /* Logo authentique pour CTA */
-  --gradient-owner-vibrant: linear-gradient(135deg, #7B5FB8 0%, #C98B9E 100%); /* Très visible */
+  /* Owner - Mauve/Purple Gradient (v3 Scale)
+     Utilise l'échelle v3 avec progression L* monotone */
+  --gradient-owner-logo: linear-gradient(135deg, #9c5698 0%, #B070A8 50%, #E0C0DC 100%);
+  --gradient-owner: linear-gradient(135deg, #9c5698 0%, #B070A8 50%, #E0C0DC 100%);
+  --gradient-owner-soft: linear-gradient(135deg, #F8F0F7 0%, #E0C0DC 100%);
+  --gradient-owner-light: linear-gradient(135deg, #E0C0DC 0%, #F0E0EE 100%);
+  --gradient-owner-medium: linear-gradient(135deg, #B070A8 0%, #C990C2 100%);
+  --gradient-owner-dark: linear-gradient(135deg, #9c5698 0%, #633668 100%);
+  --gradient-owner-subtle: linear-gradient(135deg, #F8F0F7 0%, #F0E0EE 100%);
+  --gradient-owner-cta: linear-gradient(135deg, #9c5698 0%, #B070A8 50%, #E0C0DC 100%);
+  --gradient-owner-vibrant: linear-gradient(135deg, #7E4580 0%, #9c5698 100%);
 
   /* ============================================
      Grain Textures (NEW - Crayon/Organic Style)
@@ -129,60 +164,65 @@
      Palettes harmonieuses monochromes pour éviter l'arc-en-ciel
      ============================================ */
 
-  /* 🟡 SEARCHER DESIGN SYSTEM - Jaune/Doré/Ambré */
-  --searcher-50: #FFFEF0;      /* Backgrounds très subtils */
-  --searcher-100: #FFF9E6;     /* Backgrounds légers */
-  --searcher-200: #FFF59D;     /* Hover backgrounds */
-  --searcher-300: #FFEB3B;     /* Borders, dividers */
-  --searcher-400: #FFD249;     /* Icons secondaires */
-  --searcher-500: #FFB10B;     /* PRINCIPALE - Boutons, highlights */
-  --searcher-600: #FFA040;     /* Hover states actifs */
-  --searcher-700: #F57F17;     /* Textes importants */
-  --searcher-800: #E65100;     /* Headers, emphase */
-  --searcher-900: #BF360C;     /* Textes ultra-importants */
+  /* 🟡 SEARCHER DESIGN SYSTEM - Gold/Amber
+     Échelle v3 avec progression L* monotone décroissante (97 → 28)
+     Source: brand-identity/izzico-color-system.html */
+  --searcher-50: #FFFBEB;      /* L*=97 - Backgrounds très subtils */
+  --searcher-100: #FEF3C7;     /* L*=94 - Backgrounds légers */
+  --searcher-200: #FDE68A;     /* L*=90 - Hover backgrounds */
+  --searcher-300: #FCD34D;     /* L*=83 - Accents légers */
+  --searcher-400: #FBBF24;     /* L*=77 - Accents */
+  --searcher-500: #ffa000;     /* L*=73 - PRIMARY (Brand Guidelines) */
+  --searcher-600: #D98400;     /* L*=60 - Hover on primary */
+  --searcher-700: #A16300;     /* L*=48 - Text-safe WCAG AA */
+  --searcher-800: #764800;     /* L*=35 - Dark text */
+  --searcher-900: #4D3000;     /* L*=28 - Darkest */
 
-  /* Couleurs complémentaires Searcher (pour variety) */
-  --searcher-accent: #FFB300;  /* Accent doré */
+  /* Couleurs complémentaires Searcher */
+  --searcher-text: var(--searcher-700);  /* #A16300 - Text-safe */
   --searcher-muted: #FFF8DC;   /* Backgrounds désactivés */
-  --searcher-border: #FFE082;  /* Borders subtiles */
-  --searcher-shadow: rgba(255, 193, 7, 0.2); /* Ombres */
+  --searcher-border: #FDE68A;  /* Borders subtiles */
+  --searcher-shadow: rgba(255, 160, 0, 0.2); /* Ombres basées sur primary */
 
-  /* 🟠 RESIDENT DESIGN SYSTEM - Orange (Palette officielle) */
-  /* Base: #e05747 → #f8572b → #ff651e → #ff7b19 → #ff9014 */
-  --resident-50: #FFF5F0;      /* Backgrounds très subtils */
-  --resident-100: #FFEDE5;     /* Backgrounds légers */
-  --resident-200: #FFD9C7;     /* Hover backgrounds */
-  --resident-300: #ff9014;     /* Borders, accents clairs - PALETTE */
-  --resident-400: #ff7b19;     /* Icons secondaires - PALETTE */
-  --resident-500: #ff651e;     /* PRINCIPALE - Boutons, highlights - PALETTE */
-  --resident-600: #f8572b;     /* Hover states actifs - PALETTE */
-  --resident-700: #e05747;     /* Textes importants - PALETTE */
-  --resident-800: #c24030;     /* Headers, emphase */
-  --resident-900: #a03525;     /* Textes ultra-importants */
+  /* 🟠 RESIDENT DESIGN SYSTEM - Coral/Orange
+     Échelle v3 avec progression L* monotone décroissante (96 → 22)
+     Source: brand-identity/izzico-color-system.html */
+  --resident-50: #FEF2EE;      /* L*=96 - Backgrounds très subtils */
+  --resident-100: #FDE0D6;     /* L*=90 - Backgrounds légers */
+  --resident-200: #F9B8A0;     /* L*=78 - Hover backgrounds */
+  --resident-300: #F28B6A;     /* L*=65 - Accents légers */
+  --resident-400: #E96A50;     /* L*=55 - Accents */
+  --resident-500: #e05747;     /* L*=50 - PRIMARY (Brand Guidelines) */
+  --resident-600: #C04538;     /* L*=42 - Hover on primary */
+  --resident-700: #9A362C;     /* L*=35 - Text-safe WCAG AA */
+  --resident-800: #742920;     /* L*=27 - Dark text */
+  --resident-900: #4E1C16;     /* L*=22 - Darkest */
 
-  /* Couleurs complémentaires Resident (toujours dans les oranges) */
-  --resident-accent: #ff7b19;  /* Accent orange - from palette */
+  /* Couleurs complémentaires Resident */
+  --resident-text: var(--resident-700);  /* #9A362C - Text-safe */
   --resident-muted: #FFE8DC;   /* Backgrounds désactivés */
-  --resident-border: #ffc4a8;  /* Borders subtiles */
-  --resident-shadow: rgba(255, 101, 30, 0.2); /* Ombres - based on primary */
+  --resident-border: #F9B8A0;  /* Borders subtiles */
+  --resident-shadow: rgba(224, 87, 71, 0.2); /* Ombres basées sur primary */
 
-  /* 🟣 OWNER DESIGN SYSTEM - Mauve/Violet/Indigo */
-  --owner-50: #F9F8FF;         /* Backgrounds très subtils */
-  --owner-100: #F3F1FF;        /* Backgrounds légers */
-  --owner-200: #E0D9FF;        /* Hover backgrounds */
-  --owner-300: #BAB2E3;        /* Borders, dividers */
-  --owner-400: #8E7AD6;        /* Icons secondaires */
-  --owner-500: #9c5698;        /* PRINCIPALE - Boutons, highlights */
-  --owner-600: #7B5FB8;        /* Hover states actifs */
-  --owner-700: #4A148C;        /* Textes importants */
-  --owner-800: #38006B;        /* Headers, emphase */
-  --owner-900: #1A0033;        /* Textes ultra-importants */
+  /* 🟣 OWNER DESIGN SYSTEM - Mauve/Purple
+     Échelle v3 avec progression L* monotone décroissante (95 → 25)
+     Source: brand-identity/izzico-color-system.html */
+  --owner-50: #F8F0F7;         /* L*=95 - Backgrounds très subtils */
+  --owner-100: #F0E0EE;        /* L*=90 - Backgrounds légers */
+  --owner-200: #E0C0DC;        /* L*=80 - Hover backgrounds */
+  --owner-300: #C990C2;        /* L*=65 - Accents légers */
+  --owner-400: #B070A8;        /* L*=55 - Accents */
+  --owner-500: #9c5698;        /* L*=45 - PRIMARY (Brand Guidelines) */
+  --owner-600: #7E4580;        /* L*=38 - Hover on primary */
+  --owner-700: #633668;        /* L*=30 - Text-safe WCAG AA */
+  --owner-800: #482850;        /* L*=23 - Dark text */
+  --owner-900: #2E1A38;        /* L*=25 - Darkest */
 
-  /* Couleurs complémentaires Owner (pour variety) */
-  --owner-accent: #7C4DFF;     /* Accent violet vif */
-  --owner-muted: #D1C4E9;      /* Backgrounds désactivés */
-  --owner-border: #B39DDB;     /* Borders subtiles */
-  --owner-shadow: rgba(110, 86, 207, 0.2); /* Ombres */
+  /* Couleurs complémentaires Owner */
+  --owner-text: var(--owner-700);  /* #633668 - Text-safe */
+  --owner-muted: #E0C0DC;      /* Backgrounds désactivés */
+  --owner-border: #E0C0DC;     /* Borders subtiles */
+  --owner-shadow: rgba(156, 86, 152, 0.2); /* Ombres basées sur primary */
 
   /* Neutral Colors */
   --gray-900: #1A1A1A;          /* Text primary */
@@ -196,12 +236,13 @@
   --gray-100: #F2F2F2;          /* Subtle backgrounds */
   --gray-50: #F9F9F9;           /* Page backgrounds */
 
-  /* Semantic Colors - Standard (pour usage général) */
+  /* Semantic Colors - Standard (pour usage général)
+     Note: Warning utilise #D97706 (ambré foncé) pour se distinguer de Searcher (#ffa000) */
   --success-500: #10B981;       /* Green - success states */
   --success-100: #D1FAE5;       /* Success backgrounds */
   --error-500: #EF4444;         /* Red - error states */
   --error-100: #FEE2E2;         /* Error backgrounds */
-  --warning-500: #F59E0B;       /* Orange - warnings */
+  --warning-500: #D97706;       /* Amber dark - distinct from Searcher yellow */
   --warning-100: #FEF3C7;       /* Warning backgrounds */
   --info-500: #3B82F6;          /* Blue - info */
   --info-100: #DBEAFE;          /* Info backgrounds */
@@ -226,6 +267,55 @@
   --semantic-pending-muted: #9CA3AF;      /* Gris neutre */
   --semantic-pending-bg: #F9FAFB;         /* Fond très léger */
   --semantic-pending-border: #E5E7EB;     /* Bordure subtile */
+
+  /* ============================================
+     UI ACCENT COLORS - v3
+     Couleurs fonctionnelles pour UX/UI
+     Source: brand-identity/izzico-color-system.html
+     ============================================ */
+
+  /* Sky (Blue) - Sécurité, confiance, stabilité
+     Usage: Banque, mots de passe, éléments de confiance */
+  --sky: #5B8BD9;
+  --sky-light: #E0ECFA;
+  --sky-dark: #3A5A8A;
+
+  /* Sage (Green) - Succès, validation, vérification
+     Usage: Confirmations, validations, états réussis */
+  --sage: #7CB89B;
+  --sage-light: #E8F5EE;
+  --sage-dark: #4A7A5F;
+
+  /* Amber (Orange chaud) - Alertes, attention, notifications
+     Usage: Warnings, notifications importantes */
+  --amber: #D9A870;
+  --amber-light: #FDF3E3;
+  --amber-dark: #8A6A40;
+
+  /* Lavender (Violet) - Premium, exclusivité, luxe
+     Usage: Features premium, éléments exclusifs */
+  --lavender: #9B7BD9;
+  --lavender-light: #F0E8FA;
+  --lavender-dark: #5A4A8A;
+
+  /* Dusty Rose (Rose) - Social, communauté, relationnel
+     Usage: Invitations, social, partage - ΔE=12.8 vs Terracotta */
+  --dusty-rose: #D08090;
+  --dusty-rose-light: #FAE8EC;
+  --dusty-rose-dark: #8A505A;
+  --blush: var(--dusty-rose);  /* Alias */
+
+  /* Teal (Cyan) - Technique, connectivité, appareils
+     Usage: Settings, appareils, connexions */
+  --teal: #70B0C0;
+  --teal-light: #E5F3F6;
+  --teal-dark: #407080;
+
+  /* Terracotta (Orange terre) - Personnel, profil, identité
+     Usage: Profil utilisateur, paramètres perso - ΔE=12.8 vs Dusty Rose */
+  --terracotta: #C87060;
+  --terracotta-light: #F9EBE8;
+  --terracotta-dark: #7A4030;
 
   /* Spacing Scale (8px base) */
   --spacing-0: 0;
@@ -361,16 +451,15 @@ html::before {
   justify-content: center;
   font-size: 5rem;
   font-weight: 800;
-  /* Dégradé animé avec les couleurs de la marque */
+  /* Dégradé v3 animé avec bridge stop - les 3 primaires des rôles */
   background: linear-gradient(
     135deg,
-    #7B5FB8 0%,     /* Owner - Mauve */
-    #A67BB8 15%,
-    #C98B9E 30%,
-    #ff651e 45%,    /* Resident - Orange (Option C) */
-    #ff9014 60%,
-    #FFD080 85%,    /* Searcher - Jaune doré */
-    #FFB10B 100%    /* Searcher primary */
+    #9c5698 0%,     /* Owner Primary */
+    #c85570 20%,    /* Bridge - évite zone boue */
+    #d15659 35%,    /* Transition */
+    #e05747 50%,    /* Resident Primary */
+    #ff7c10 75%,    /* Transition */
+    #ffa000 100%    /* Searcher Primary */
   );
   background-size: 200% 200%;
   background-clip: text;
@@ -754,7 +843,7 @@ html {
    Role-Based Theming
    ============================================ */
 
-/* SEARCHER Theme (Yellow/Gold #FFB10B) */
+/* SEARCHER Theme (Yellow/Gold #ffa000 - Brand Guidelines) */
 body.theme-searcher {
   --role-primary: var(--searcher-primary);
   --role-hover: var(--searcher-hover);
@@ -780,7 +869,7 @@ body.theme-owner ::selection {
   color: var(--owner-dark);
 }
 
-/* RESIDENT Theme (Orange #FF5722) */
+/* RESIDENT Theme (Orange #e05747 - Brand Guidelines) */
 body.theme-resident {
   --role-primary: var(--resident-primary);
   --role-hover: var(--resident-hover);
@@ -992,7 +1081,7 @@ body.theme-resident ::selection {
 }
 
 .text-hover-gradient:hover {
-  background: linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%);
+  background: linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1017,7 +1106,7 @@ body.theme-resident ::selection {
 }
 
 .text-hover-resident:hover {
-  background: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%);
+  background: linear-gradient(135deg, #e05747 0%, #ff6524 50%, #ff7c10 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1044,7 +1133,7 @@ body.theme-resident ::selection {
 }
 
 .text-active-resident {
-  background: linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%);
+  background: linear-gradient(135deg, #e05747 0%, #ff6524 50%, #ff7c10 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1268,7 +1357,7 @@ body.theme-resident ::selection {
 
 /* Text gradients for demo */
 .text-gradient-brand-demo {
-  background: linear-gradient(135deg, #7B5FB8 0%, #ff651e 50%, #FFD080 100%);
+  background: linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1374,9 +1463,9 @@ body.theme-resident ::selection {
   box-shadow: 0 20px 25px -5px rgba(123, 95, 184, 0.4);
 }
 
-/* CTA Buttons - Brand (Tricolor) */
+/* CTA Buttons - Brand (Tricolor - Brand Guidelines) */
 .cta-brand-demo {
-  background: linear-gradient(135deg, #7B5FB8 0%, #ff651e 50%, #FFD080 100%);
+  background: linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%);
   position: relative;
   overflow: hidden;
   box-shadow: 0 10px 15px -3px rgba(123, 95, 184, 0.3);
@@ -1716,43 +1805,48 @@ a[role="button"] + a[role="button"] {
 }
 
 /* ============================================
-   DARK MODE THEME
-   Glassmorphism Dark Style with Logo Gradients
+   DARK MODE THEME - "Warm Charcoal"
+   Gris chaud avec sous-teinte mauve pour harmoniser les 3 rôles
+   Choix validé le 4 janvier 2025
    ============================================ */
 
 /* Dark mode CSS variables */
 .dark {
-  /* Backgrounds */
-  --dark-bg-primary: #0F0F12;
-  --dark-bg-secondary: #1A1A1F;
-  --dark-bg-elevated: #242429;
-  --dark-bg-card: rgba(26, 26, 31, 0.8);
+  /* Backgrounds - Warm Charcoal avec sous-teinte mauve-chaud
+     Cette palette crée une harmonie avec les 3 couleurs de rôle
+     sans en favoriser aucune */
+  --dark-bg-primary: #121015;       /* Le plus sombre - fond principal */
+  --dark-bg-secondary: #1A171E;     /* Cards, sidebars, sections */
+  --dark-bg-elevated: #242027;      /* Éléments surélevés, inputs */
+  --dark-bg-card: rgba(26, 23, 30, 0.9);  /* Cards avec glassmorphism */
+  --dark-bg-hover: #2A262F;         /* Hover states */
 
-  /* Borders */
-  --dark-border: #2A2A30;
-  --dark-border-subtle: rgba(255, 255, 255, 0.05);
-  --dark-border-accent: rgba(255, 255, 255, 0.1);
+  /* Borders - légèrement plus visibles sur fond chaud */
+  --dark-border: #2E2A33;
+  --dark-border-subtle: rgba(255, 255, 255, 0.06);
+  --dark-border-accent: rgba(255, 255, 255, 0.12);
 
-  /* Text */
+  /* Text - tons légèrement chauds pour cohérence */
   --dark-text-primary: #F5F5F7;
-  --dark-text-secondary: #A1A1AA;
-  --dark-text-muted: #71717A;
+  --dark-text-secondary: #A8A4AC;
+  --dark-text-muted: #8A868E;    /* v3: Ratio 5.2:1 (était #78747C = 4.5:1) */
 
-  /* Enhanced gradients for dark mode (more luminous) */
-  --dark-gradient-owner: linear-gradient(135deg, #8B6FCF 0%, #D9A0B3 100%);
-  --dark-gradient-resident: linear-gradient(135deg, #E88B7F 0%, #FFA05B 100%);
-  --dark-gradient-searcher: linear-gradient(135deg, #FFB050 0%, #FFD890 100%);
+  /* Enhanced gradients for dark mode (more luminous)
+     Versions plus lumineuses des dégradés de rôle pour le dark mode */
+  --dark-gradient-owner: linear-gradient(135deg, #B87FB4 0%, #D9A0B3 100%);
+  --dark-gradient-resident: linear-gradient(135deg, #F08070 0%, #FF9060 100%);
+  --dark-gradient-searcher: linear-gradient(135deg, #FFB850 0%, #FFD080 100%);
 
-  /* Glows */
-  --dark-glow-owner: rgba(139, 111, 207, 0.3);
-  --dark-glow-resident: rgba(232, 139, 127, 0.3);
-  --dark-glow-searcher: rgba(255, 176, 80, 0.3);
+  /* Glows - halos colorés pour les éléments interactifs */
+  --dark-glow-owner: rgba(156, 86, 152, 0.35);
+  --dark-glow-resident: rgba(224, 87, 71, 0.35);
+  --dark-glow-searcher: rgba(255, 160, 0, 0.35);
 
-  /* Shadows */
-  --dark-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4);
-  --dark-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
-  --dark-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
-  --dark-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.5);
+  /* Shadows - ombres plus profondes avec teinte chaude */
+  --dark-shadow-sm: 0 1px 3px rgba(18, 16, 21, 0.5);
+  --dark-shadow-md: 0 4px 6px rgba(18, 16, 21, 0.5);
+  --dark-shadow-lg: 0 10px 15px rgba(18, 16, 21, 0.6);
+  --dark-shadow-xl: 0 20px 25px rgba(18, 16, 21, 0.6);
 }
 
 /* Apply dark mode to HTML and body */
@@ -1766,17 +1860,17 @@ html.dark body {
   color: var(--dark-text-primary);
 }
 
-/* Dark mode overscroll */
+/* Dark mode overscroll - utilise les couleurs lumineuses Warm Charcoal */
 html.dark::before {
   background: var(--dark-bg-primary);
   color: transparent;
   background-image: linear-gradient(
     135deg,
-    #8B6FCF 0%,
-    #D9A0B3 30%,
-    #E88B7F 50%,
-    #FFA05B 70%,
-    #FFD890 100%
+    #B87FB4 0%,     /* Owner lumineux */
+    #D9A0B3 25%,
+    #F08070 50%,    /* Resident lumineux */
+    #FF9060 70%,
+    #FFD080 100%    /* Searcher lumineux */
   );
   background-size: 200% 200%;
   -webkit-background-clip: text;

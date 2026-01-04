@@ -1763,7 +1763,7 @@ function IconsSection() {
           {/* Fond gradient */}
           <div className="space-y-3">
             <h4 className="font-semibold text-white">Sur gradient signature</h4>
-            <div className="superellipse-xl p-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698, #d15659, #e05747, #ff7c10, #ffc800)' }}>
+            <div className="superellipse-xl p-8 flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)' }}>
               <img
                 src="/logos/izzico-trademark-white.svg"
                 alt="Logo IzzIco - Sur gradient signature"
@@ -1784,7 +1784,7 @@ function IconsSection() {
               <li>✅ Format SVG vectoriel optimisé</li>
               <li>✅ 3 thèmes: dark, white, gradient</li>
               <li>✅ 2 variants: icon (2048×2048) & trademark (5800×1880)</li>
-              <li>✅ Gradient signature: #9c5698 → #ffc800</li>
+              <li>✅ Gradient signature v3: #9c5698 → #e05747 → #ffa000</li>
               <li>✅ Fond transparent natif</li>
               <li>✅ Vectorisé via Recraft AI</li>
             </ul>
@@ -1972,7 +1972,7 @@ function IconsSection() {
             <span className="text-sm text-slate-400">Sur fond sombre</span>
           </div>
           <div className="flex flex-col items-center gap-3">
-            <div className="superellipse-xl p-6 w-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698, #d15659, #e05747, #ff7c10, #ffc800)' }}>
+            <div className="superellipse-xl p-6 w-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)' }}>
               <img src="/logos/izzico-icon-white.svg" alt="Icône IzzIco - Sur gradient" className="h-24 w-24 drop-shadow-lg" />
             </div>
             <span className="text-sm text-slate-400">Sur gradient signature</span>

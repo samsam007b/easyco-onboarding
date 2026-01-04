@@ -215,6 +215,23 @@ SENTRY_DSN=
 
 ## Brand Identity (PRIORITY)
 
+### Color System - ABSOLUTE SOURCE OF TRUTH
+**Location**: `brand-identity/izzico-color-system.html`
+
+**CRITICAL**: This document is the **absolute priority** for all color decisions. It defines:
+- Role colors (Owner, Resident, Searcher) with 50-900 scales
+- Signature gradient with the 3 primary colors
+- UI accent colors (Sky, Sage, Amber, Lavender, Dusty Rose, Teal, Terracotta)
+- Dark mode palette
+- UX color conventions (which colors for which contexts)
+- WCAG accessibility requirements
+
+**Rules established**:
+1. **L* progression**: 50 (light) → 900 (dark), monotonically decreasing
+2. **ΔE > 7** between distinct colors (human perception threshold)
+3. **WCAG AA minimum** (4.5:1 contrast ratio)
+4. **Gradient = brand identity**: 3 role primaries at key positions (0%, 50%, 100%)
+
 ### Final Logo Assets - SOURCE OF TRUTH
 **Location**: `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/`
 
@@ -238,13 +255,14 @@ SENTRY_DSN=
 
 ### Signature Gradient
 ```css
-/* Violet → Red → Orange → Gold diagonal flow */
+/* Gradient v3 - Les 3 primaires des roles */
 linear-gradient(135deg,
-  #9c5698 0%,    /* Mauve/Violet */
-  #d15659 30%,   /* Red */
-  #e05747 50%,   /* Orange-Red */
-  #ff7c10 70%,   /* Orange */
-  #ffc800 100%   /* Gold/Yellow */
+  #9c5698 0%,    /* Owner Primary */
+  #c85570 20%,   /* Bridge (evite zone boue) */
+  #d15659 35%,   /* Transition */
+  #e05747 50%,   /* Resident Primary */
+  #ff7c10 75%,   /* Transition */
+  #ffa000 100%   /* Searcher Primary */
 )
 ```
 
@@ -294,10 +312,11 @@ Located in `brand-identity/logo final izzico/ancienne versions/` - DO NOT USE fo
 
 ## Tips for Claude
 
-1. **Always check the user's role** when working on UI - colors and features differ
-2. **Migrations are numbered** - use next available number
-3. **RLS policies matter** - test database changes carefully
-4. **French is primary** - UI text should be in French unless i18n
-5. **V3-fun design** - use gradients, rounded corners, animations
-6. **Brand logos**: ALWAYS use files from `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/` - these are the ONLY official versions
-7. **Font classes on html**: Always put `next/font` variable classes on `<html>`, not `<body>` (see Known Bugs above)
+1. **Color System is LAW**: `brand-identity/izzico-color-system.html` is the absolute source of truth for all colors - consult it before any color decision
+2. **Always check the user's role** when working on UI - colors and features differ
+3. **Migrations are numbered** - use next available number
+4. **RLS policies matter** - test database changes carefully
+5. **French is primary** - UI text should be in French unless i18n
+6. **V3-fun design** - use gradients, rounded corners, animations
+7. **Brand logos**: ALWAYS use files from `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/` - these are the ONLY official versions
+8. **Font classes on html**: Always put `next/font` variable classes on `<html>`, not `<body>` (see Known Bugs above)

@@ -28,6 +28,10 @@
           {
             "type": "command",
             "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/english-code-guard.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/ux-color-conventions-guard.sh"
           }
         ]
       },
@@ -37,6 +41,10 @@
           {
             "type": "command",
             "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/english-code-guard.sh"
+          },
+          {
+            "type": "command",
+            "command": "/Users/samuelbaudon/easyco-onboarding/.claude/hooks/ux-color-conventions-guard.sh"
           }
         ]
       }
