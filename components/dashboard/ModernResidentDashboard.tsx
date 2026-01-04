@@ -23,7 +23,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
-import { Superellipse } from '@/components/ui/Superellipse';
 import SubscriptionBanner from '@/components/subscriptions/SubscriptionBanner';
 import UpgradeNotification from '@/components/subscriptions/UpgradeNotification';
 import {
@@ -421,16 +420,14 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
             const Icon = card.icon;
 
             return (
-              <Superellipse
+              <motion.div
                 key={card.title}
-                n={8}
-                as={motion.div}
                 onClick={card.action}
                 data-onboarding={card.onboardingId}
                 whileHover={{ scale: 1.02, y: -4 }}
                 whileTap={{ scale: 0.98 }}
                 className={cn(
-                  "relative overflow-hidden p-4 cursor-pointer transition-all",
+                  "relative overflow-hidden p-4 cursor-pointer transition-all superellipse-2xl",
                   "bg-white"
                 )}
                 style={{
@@ -447,7 +444,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   {/* Icon */}
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-10 h-10 rounded-xl flex items-center justify-center mb-3"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3"
                     style={{ background: card.iconGradient }}
                   >
                     <Icon className="w-5 h-5 text-white" />
@@ -481,7 +478,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                     <p className="text-xs text-gray-500">{card.subtitle}</p>
                   )}
                 </div>
-              </Superellipse>
+              </motion.div>
             );
           })}
         </motion.div>
@@ -489,12 +486,10 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
         {/* Two Column Layout - Compact */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           {/* Upcoming Tasks - Compact Style */}
-          <Superellipse
-            n={8}
-            as={motion.div}
+          <motion.div
             variants={itemVariants}
             data-onboarding="tasks-section"
-            className="relative overflow-hidden bg-white p-5"
+            className="relative overflow-hidden bg-white p-5 superellipse-2xl"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle */}
@@ -508,7 +503,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 <h3 className="text-base font-bold text-gray-900 flex items-center gap-2">
                   <motion.div
                     whileHover={{ rotate: 5 }}
-                    className="w-8 h-8 rounded-xl flex items-center justify-center"
+                    className="w-8 h-8 superellipse-xl flex items-center justify-center"
                     style={{ background: RESIDENT_GRADIENT }}
                   >
                     <Clock className="w-4 h-4 text-white" />
@@ -535,11 +530,11 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.06 }}
                     whileHover={{ x: 3, backgroundColor: 'rgba(255, 101, 30, 0.04)' }}
-                    className="flex items-center justify-between p-3 bg-gray-50 rounded-xl transition-all cursor-pointer"
+                    className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl transition-all cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
                       <div className={cn(
-                        "w-8 h-8 rounded-lg flex items-center justify-center",
+                        "w-8 h-8 superellipse-lg flex items-center justify-center",
                         task.priority === 'high' && "bg-[#FDF5F5]",
                         task.priority === 'medium' && "bg-[#FFF5F0]",
                         task.priority === 'low' && "bg-gray-100"
@@ -582,7 +577,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                   onClick={() => router.push('/hub/tasks')}
                   variant="outline"
                   size="sm"
-                  className="w-full mt-3 rounded-xl border-2 py-4 font-semibold"
+                  className="w-full mt-3 superellipse-xl border-2 py-4 font-semibold"
                   style={{
                     borderColor: `${RESIDENT_PRIMARY}30`,
                     color: RESIDENT_PRIMARY,
@@ -593,14 +588,12 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 </Button>
               </motion.div>
             </div>
-          </Superellipse>
+          </motion.div>
 
           {/* Recent Activity - Compact Style */}
-          <Superellipse
-            n={8}
-            as={motion.div}
+          <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white p-5"
+            className="relative overflow-hidden bg-white p-5 superellipse-2xl"
             style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
           >
             {/* Decorative circle - V3 Orange */}
@@ -613,7 +606,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
               <h3 className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <motion.div
                   whileHover={{ rotate: 5 }}
-                  className="w-8 h-8 rounded-xl flex items-center justify-center"
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center"
                   style={{ background: RESIDENT_GRADIENT }}
                 >
                   <Sparkles className="w-4 h-4 text-white" />
@@ -631,10 +624,10 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.06 }}
                       whileHover={{ x: 3 }}
-                      className="flex items-center gap-2.5 p-2.5 rounded-xl hover:bg-gray-50 transition-all cursor-pointer"
+                      className="flex items-center gap-2.5 p-2.5 superellipse-xl hover:bg-gray-50 transition-all cursor-pointer"
                     >
                       <div
-                        className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
+                        className="w-8 h-8 superellipse-lg flex items-center justify-center flex-shrink-0"
                         style={{ background: activity.iconBgColor }}
                       >
                         <Icon className="w-4 h-4" style={{ color: activity.iconColor }} />
@@ -649,7 +642,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                 })}
               </div>
             </div>
-          </Superellipse>
+          </motion.div>
         </div>
 
       </motion.div>
