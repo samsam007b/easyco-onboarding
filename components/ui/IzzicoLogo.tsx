@@ -50,7 +50,7 @@ const logoSources = {
     dark: '/logos/izzico-icon-dark.svg',
   },
   trademark: {
-    gradient: '/logos/izzico-trademark-text-gradient.svg?v=3',
+    gradient: '/logos/izzico-trademark-text-gradient.svg?v=4',
     white: '/logos/izzico-trademark-white.svg',
     dark: '/logos/izzico-trademark-dark.svg',
   },
