@@ -274,6 +274,33 @@ linear-gradient(135deg,
 ### Old Versions (Archive Only)
 Located in `brand-identity/logo final izzico/ancienne versions/` - DO NOT USE for production.
 
+### Voice Guidelines - SOURCE OF TRUTH
+**Location**: `brand-identity/izzico-voice-guidelines.md`
+
+**CRITICAL**: This document defines all copywriting rules for Izzico. Consult it before writing ANY user-facing text.
+
+#### Key Rules
+1. **Terminology**: Use "co-living" (NOT "coloc" or "colocation")
+2. **Tutoiement**: Tu for all users (Vous only for legal pages)
+3. **Salutations**: "Hello [Prénom] !" (Searchers/Résidents), "Bonjour [Prénom]" (Propriétaires)
+4. **Signature**: "L'équipe Izzico"
+5. **Emojis**: BANNED — use custom Izzico icons instead
+6. **Signature words**: "Living Persona" (onboarding), "Living Match" (compatibility match)
+
+#### The 4 Dimensions by Segment
+
+| Dimension | Searchers | Résidents | Propriétaires |
+|-----------|-----------|-----------|---------------|
+| Formalité | 4 (Casual) | 4 (Casual) | 3 (Neutre) |
+| Humour | 4 (Léger) | 5 (Désamorce) | 3 (Sobre) |
+| Irrévérence | 4 | 4-5 | 2 (Respectueux) |
+| Énergie | 4-5 | 4-5 | 3-4 |
+
+#### Banned Words
+- Corporate speak: leverage, synergy, revolutionary, seamless, innovative, solutions...
+- Cold real estate: "bien immobilier", "locataire", "bail"...
+- Formal excess: "Nous vous informons", "Veuillez noter"...
+
 ## Known Bugs & Solutions
 
 ### 🐛 Fonts Not Displaying (Next.js + Tailwind)
@@ -313,10 +340,14 @@ Located in `brand-identity/logo final izzico/ancienne versions/` - DO NOT USE fo
 ## Tips for Claude
 
 1. **Color System is LAW**: `brand-identity/izzico-color-system.html` is the absolute source of truth for all colors - consult it before any color decision
-2. **Always check the user's role** when working on UI - colors and features differ
-3. **Migrations are numbered** - use next available number
-4. **RLS policies matter** - test database changes carefully
-5. **French is primary** - UI text should be in French unless i18n
-6. **V3-fun design** - use gradients, rounded corners, animations
-7. **Brand logos**: ALWAYS use files from `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/` - these are the ONLY official versions
-8. **Font classes on html**: Always put `next/font` variable classes on `<html>`, not `<body>` (see Known Bugs above)
+2. **Voice Guidelines are LAW**: `brand-identity/izzico-voice-guidelines.md` is the absolute source of truth for all copy - consult it before writing ANY user-facing text
+3. **Always check the user's role** when working on UI - colors, features, AND tone differ
+4. **Migrations are numbered** - use next available number
+5. **RLS policies matter** - test database changes carefully
+6. **French is primary** - UI text should be in French unless i18n
+7. **V3-fun design** - use gradients, rounded corners, animations
+8. **Brand logos**: ALWAYS use files from `brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/` - these are the ONLY official versions
+9. **Font classes on html**: Always put `next/font` variable classes on `<html>`, not `<body>` (see Known Bugs above)
+10. **No emojis**: Use custom Izzico icons instead of standard emojis
+11. **Use "co-living"**: Never use "coloc" or "colocation" in branding/UI
+12. **Signature words**: Use "Living Persona" (not "profil") and "Living Match" (not "match")

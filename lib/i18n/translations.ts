@@ -17,28 +17,28 @@ export const translations = {
   landing: {
     hero: {
       title: {
-        fr: 'Trouve une coloc fiable et compatible.',
-        en: 'Find a reliable and compatible flatshare.',
-        nl: 'Vind een betrouwbare en compatibele flatshare.',
-        de: 'Finde eine zuverlässige und kompatible WG.',
+        fr: 'Trouve ton co-living idéal.',
+        en: 'Find your ideal co-living.',
+        nl: 'Vind je ideale co-living.',
+        de: 'Finde dein ideales Co-Living.',
       },
       subtitle: {
-        fr: 'Évite les arnaques. Gagne du temps grâce aux groupes.',
-        en: 'Avoid scams. Save time with groups.',
-        nl: 'Vermijd oplichting. Bespaar tijd met groepen.',
-        de: 'Vermeide Betrug. Spare Zeit mit Gruppen.',
+        fr: 'Trouve avec qui vivre, pas juste où vivre',
+        en: 'Find who to live with, not just where',
+        nl: 'Vind met wie je wilt wonen, niet alleen waar',
+        de: 'Finde mit wem du leben willst, nicht nur wo',
       },
       ctaSearcher: {
-        fr: 'Je cherche une coloc',
-        en: 'I\'m looking for a flatshare',
-        nl: 'Ik zoek een flatshare',
-        de: 'Ich suche eine WG',
+        fr: 'Je cherche mon co-living',
+        en: 'I\'m looking for my co-living',
+        nl: 'Ik zoek mijn co-living',
+        de: 'Ich suche mein Co-Living',
       },
       ctaOwner: {
-        fr: 'Je liste mon bien',
-        en: 'List my property',
-        nl: 'Mijn eigendom vermelden',
-        de: 'Meine Immobilie listen',
+        fr: 'Je loue ma résidence',
+        en: 'List my residence',
+        nl: 'Mijn residentie verhuren',
+        de: 'Meine Residenz vermieten',
       },
       login: {
         fr: 'Se connecter',
@@ -82,10 +82,10 @@ export const translations = {
       features: {
         browse: {
           title: {
-            fr: 'Parcourir les annonces',
-            en: 'Browse listings',
-            nl: 'Bladeren door advertenties',
-            de: 'Anzeigen durchsuchen',
+            fr: 'Parcourir les résidences',
+            en: 'Browse residences',
+            nl: 'Bladeren door residenties',
+            de: 'Residenzen durchsuchen',
           },
           description: {
             fr: 'Explorez notre sélection de propriétés disponibles',
@@ -116,10 +116,10 @@ export const translations = {
             de: 'Intelligentes Matching',
           },
           description: {
-            fr: 'Trouvez des colocataires compatibles',
-            en: 'Find compatible roommates',
-            nl: 'Vind compatibele huisgenoten',
-            de: 'Finde kompatible Mitbewohner',
+            fr: 'Trouve des résidents compatibles',
+            en: 'Find compatible residents',
+            nl: 'Vind compatibele bewoners',
+            de: 'Finde kompatible Bewohner',
           },
         },
         bookVisits: {
@@ -144,7 +144,7 @@ export const translations = {
             de: 'Favoriten speichern',
           },
           description: {
-            fr: 'Créez votre liste de propriétés préférées',
+            fr: 'Crée ta liste de propriétés préférées',
             en: 'Create your list of favorite properties',
             nl: 'Maak je lijst met favoriete eigenschappen',
             de: 'Erstelle deine Liste der Lieblingsimmobilien',
@@ -202,7 +202,7 @@ export const translations = {
             de: 'Intelligentes Matching',
           },
           description: {
-            fr: 'Trouvez des colocataires compatibles avec votre style de vie',
+            fr: 'Trouvez des résidents compatibles avec ton style de vie',
             en: 'Find roommates compatible with your lifestyle',
             nl: 'Vind huisgenoten die compatibel zijn met jouw levensstijl',
             de: 'Finde Mitbewohner, die zu deinem Lebensstil passen',
@@ -230,7 +230,7 @@ export const translations = {
             de: 'Direktnachrichten',
           },
           description: {
-            fr: 'Contactez directement les propriétaires et colocataires',
+            fr: 'Contactez directement les propriétaires et résidents',
             en: 'Contact owners and roommates directly',
             nl: 'Neem direct contact op met eigenaren en huisgenoten',
             de: 'Kontaktiere Eigentümer und Mitbewohner direkt',
@@ -251,7 +251,7 @@ export const translations = {
           de: 'Eingeschränkte Funktion',
         },
         description: {
-          fr: 'Cette fonctionnalité nécessite un compte Izzico. Créez votre compte gratuitement pour accéder à toutes nos fonctionnalités.',
+          fr: 'Cette fonctionnalité nécessite un compte Izzico. Crée ta compte gratuitement pour accéder à toutes nos fonctionnalités.',
           en: 'This feature requires an Izzico account. Create your account for free to access all our features.',
           nl: 'Deze functie vereist een Izzico-account. Maak gratis een account aan om toegang te krijgen tot al onze functies.',
           de: 'Diese Funktion erfordert ein Izzico-Konto. Erstelle dein Konto kostenlos, um auf alle unsere Funktionen zuzugreifen.',
@@ -318,7 +318,7 @@ export const translations = {
         de: 'Obligatorische ID-Verifizierung',
       },
       listingsVerified: {
-        fr: 'Annonces vérifiées manuellement',
+        fr: 'Résidences vérifiées manuellement',
         en: 'Manually verified listings',
         nl: 'Handmatig geverifieerde advertenties',
         de: 'Manuell verifizierte Anzeigen',
@@ -339,7 +339,7 @@ export const translations = {
 
     socialProof: {
       claim: {
-        fr: 'Rejoins des milliers de colocataires satisfaits',
+        fr: 'Rejoins des milliers de résidents satisfaits',
         en: 'Join thousands of happy flatmates',
         nl: 'Sluit je aan bij duizenden tevreden huisgenoten',
         de: 'Schließe dich Tausenden zufriedenen Mitbewohnern an',
@@ -361,13 +361,13 @@ export const translations = {
       },
       step1: {
         title: {
-          fr: 'Crée ton profil',
+          fr: 'Crée ton Living Persona',
           en: 'Create your profile',
           nl: 'Maak je profiel',
           de: 'Erstelle dein Profil',
         },
         description: {
-          fr: 'Réponds à 15 questions sur ton lifestyle et tes préférences pour que notre algorithme puisse te proposer les meilleurs matchs.',
+          fr: 'Réponds à 15 questions sur ton lifestyle et tes préférences pour que notre algorithme puisse te proposer les meilleurs Living Matchs.',
           en: 'Answer 15 questions about your lifestyle and preferences so our algorithm can suggest the best matches for you.',
           nl: 'Beantwoord 15 vragen over je levensstijl en voorkeuren zodat ons algoritme de beste matches voor je kan voorstellen.',
           de: 'Beantworte 15 Fragen zu deinem Lebensstil und deinen Präferenzen, damit unser Algorithmus die besten Matches für dich vorschlagen kann.',
@@ -375,13 +375,13 @@ export const translations = {
       },
       step2: {
         title: {
-          fr: 'Découvre tes matchs',
+          fr: 'Découvre tes Living Matchs',
           en: 'Discover your matches',
           nl: 'Ontdek je matches',
           de: 'Entdecke deine Matches',
         },
         description: {
-          fr: 'Notre algorithme te propose des colocataires compatibles avec ton mode de vie, tes horaires et tes valeurs. Plus besoin de deviner.',
+          fr: 'Notre algorithme te propose des résidents compatibles avec ton mode de vie, tes horaires et tes valeurs. Plus besoin de deviner.',
           en: 'Our algorithm suggests flatmates compatible with your lifestyle, schedule, and values. No more guessing.',
           nl: 'Ons algoritme stelt huisgenoten voor die compatibel zijn met je levensstijl, schema en waarden. Niet meer gissen.',
           de: 'Unser Algorithmus schlägt Mitbewohner vor, die mit deinem Lebensstil, Zeitplan und Werten kompatibel sind. Kein Raten mehr.',
@@ -423,7 +423,7 @@ export const translations = {
         de: 'Schließe dich Tausenden zufriedener Nutzer an',
       },
       properties: {
-        fr: 'Annonces à Bruxelles',
+        fr: 'Résidences à Bruxelles',
         en: 'Listings in Brussels',
         nl: 'Advertenties in Brussel',
         de: 'Anzeigen in Brüssel',
@@ -481,7 +481,7 @@ export const translations = {
           de: 'Student an der ULB',
         },
         text: {
-          fr: 'J\'ai trouvé mes colocataires en moins de 2 semaines grâce à Izzico. Le matching est vraiment précis, on s\'entend super bien ! Plus besoin de passer des heures sur des sites douteux.',
+          fr: 'J\'ai trouvé mes résidents en moins de 2 semaines grâce à Izzico. Le matching est vraiment précis, on s\'entend super bien ! Plus besoin de passer des heures sur des sites douteux.',
           en: 'I found my flatmates in less than 2 weeks thanks to Izzico. The matching is really accurate, we get along great! No more spending hours on dodgy sites.',
           nl: 'Ik vond mijn huisgenoten in minder dan 2 weken dankzij Izzico. De matching is echt nauwkeurig, we kunnen het geweldig vinden! Niet meer uren spenderen op dubieuze sites.',
           de: 'Ich habe meine Mitbewohner in weniger als 2 Wochen dank Izzico gefunden. Das Matching ist wirklich genau, wir verstehen uns super! Keine Stunden mehr auf dubiosen Seiten verbringen.',
@@ -521,7 +521,7 @@ export const translations = {
           de: 'Entwickler',
         },
         text: {
-          fr: 'Fini les arnaques et les mauvaises surprises. Avec Izzico, tous les profils sont vérifiés et les annonces sont authentiques. J\'ai trouvé une coloc en 3 semaines, c\'est incroyable.',
+          fr: 'Fini les arnaques et les mauvaises surprises. Avec Izzico, tous les profils sont vérifiés et les résidences sont authentiques. J\'ai trouvé un co-living en 3 semaines, c\'est incroyable.',
           en: 'No more scams and bad surprises. With Izzico, all profiles are verified and listings are authentic. I found a flatshare in 3 weeks, it\'s amazing.',
           nl: 'Geen oplichting en slechte verrassingen meer. Met Izzico zijn alle profielen geverifieerd en advertenties authentiek. Ik vond een flatshare in 3 weken, het is geweldig.',
           de: 'Keine Betrügereien und schlechten Überraschungen mehr. Mit Izzico sind alle Profile verifiziert und Anzeigen authentisch. Ich fand eine WG in 3 Wochen, es ist unglaublich.',
@@ -549,7 +549,7 @@ export const translations = {
         de: 'Häufig gestellte Fragen',
       },
       subtitle: {
-        fr: 'Tout ce que vous devez savoir',
+        fr: 'Tout ce que tu dois savoir',
         en: 'Everything you need to know',
         nl: 'Alles wat je moet weten',
         de: 'Alles, was Sie wissen müssen',
@@ -576,7 +576,7 @@ export const translations = {
           de: 'Ist es kostenlos?',
         },
         a: {
-          fr: 'L\'inscription et la création de profil sont entièrement gratuites. Vous pouvez parcourir les annonces, créer votre profil et recevoir des matchs sans aucun frais. Nous proposons également des fonctionnalités premium pour accélérer votre recherche.',
+          fr: 'L\'inscription et la création de ton Living Persona sont entièrement gratuites. Tu peux parcourir les résidences, créer ton Living Persona et recevoir des Living Matchs sans aucun frais. Nous proposons également des fonctionnalités premium pour accélérer ta recherche.',
           en: 'Registration and profile creation are completely free. You can browse listings, create your profile, and receive matches at no cost. We also offer premium features to speed up your search.',
           nl: 'Registratie en profielcreatie zijn volledig gratis. Je kunt advertenties bekijken, je profiel aanmaken en matches ontvangen zonder kosten. We bieden ook premium functies om je zoektocht te versnellen.',
           de: 'Registrierung und Profilerstellung sind völlig kostenlos. Sie können Anzeigen durchsuchen, Ihr Profil erstellen und Matches ohne Kosten erhalten. Wir bieten auch Premium-Funktionen, um Ihre Suche zu beschleunigen.',
@@ -590,7 +590,7 @@ export const translations = {
           de: 'Wie funktioniert das Matching?',
         },
         a: {
-          fr: 'Notre algorithme analyse vos réponses à 15 questions sur votre lifestyle, vos horaires, vos habitudes et vos valeurs. Il compare ensuite ces données avec celles des autres utilisateurs pour vous proposer les personnes les plus compatibles avec vous.',
+          fr: 'Notre algorithme analyse tes réponses à 15 questions sur ton lifestyle, tes horaires, tes habitudes et tes valeurs. Il compare ensuite ces données avec celles des autres utilisateurs pour te proposer les personnes les plus compatibles avec toi.',
           en: 'Our algorithm analyzes your answers to 15 questions about your lifestyle, schedule, habits, and values. It then compares this data with other users to suggest the most compatible people for you.',
           nl: 'Ons algoritme analyseert je antwoorden op 15 vragen over je levensstijl, schema, gewoonten en waarden. Het vergelijkt deze gegevens vervolgens met andere gebruikers om de meest compatibele mensen voor je voor te stellen.',
           de: 'Unser Algorithmus analysiert Ihre Antworten auf 15 Fragen zu Ihrem Lebensstil, Zeitplan, Gewohnheiten und Werten. Er vergleicht dann diese Daten mit anderen Nutzern, um Ihnen die kompatibelsten Personen vorzuschlagen.',
@@ -598,13 +598,13 @@ export const translations = {
       },
       question4: {
         q: {
-          fr: 'Puis-je faire confiance aux annonces ?',
+          fr: 'Puis-je faire confiance aux résidences ?',
           en: 'Can I trust the listings?',
           nl: 'Kan ik de advertenties vertrouwen?',
           de: 'Kann ich den Anzeigen vertrauen?',
         },
         a: {
-          fr: 'Oui, toutes les annonces sont vérifiées par notre équipe. Nous vérifions l\'identité des propriétaires et la validité de leurs documents. De plus, nous avons un système de signalement en 1 clic si vous détectez quelque chose de suspect.',
+          fr: 'Oui, toutes les résidences sont vérifiées par notre équipe. Nous vérifions l\'identité des propriétaires et la validité de leurs documents. De plus, nous avons un système de signalement en 1 clic si tu détectes quelque chose de suspect.',
           en: 'Yes, all listings are verified by our team. We verify the identity of owners and the validity of their documents. Additionally, we have a 1-click reporting system if you detect something suspicious.',
           nl: 'Ja, alle advertenties worden geverifieerd door ons team. We verifiëren de identiteit van eigenaren en de geldigheid van hun documenten. Bovendien hebben we een rapportagesysteem met 1 klik als je iets verdachts detecteert.',
           de: 'Ja, alle Anzeigen werden von unserem Team verifiziert. Wir überprüfen die Identität der Eigentümer und die Gültigkeit ihrer Dokumente. Außerdem haben wir ein 1-Klick-Meldesystem, wenn Sie etwas Verdächtiges entdecken.',
@@ -618,7 +618,7 @@ export const translations = {
           de: 'Wie trete ich einer Gruppe bei?',
         },
         a: {
-          fr: 'Une fois votre profil créé, notre algorithme vous proposera des groupes de 2-4 personnes compatibles avec vous. Vous pouvez parcourir ces groupes, voir leurs profils et demander à les rejoindre. C\'est aussi simple que ça !',
+          fr: 'Une fois ton Living Persona créé, notre algorithme te proposera des groupes de 2-4 personnes compatibles avec toi. Tu peux parcourir ces groupes, voir leurs Living Personas et demander à les rejoindre. C\'est aussi simple que ça !',
           en: 'Once your profile is created, our algorithm will suggest groups of 2-4 people compatible with you. You can browse these groups, view their profiles, and request to join them. It\'s that simple!',
           nl: 'Zodra je profiel is aangemaakt, stelt ons algoritme groepen van 2-4 mensen voor die compatibel zijn met jou. Je kunt deze groepen bekijken, hun profielen bekijken en verzoeken om lid te worden. Zo simpel is het!',
           de: 'Sobald Ihr Profil erstellt ist, schlägt unser Algorithmus Gruppen von 2-4 Personen vor, die mit Ihnen kompatibel sind. Sie können diese Gruppen durchsuchen, ihre Profile anzeigen und eine Beitrittsanfrage stellen. So einfach ist das!',
@@ -632,20 +632,20 @@ export const translations = {
           de: 'Was soll ich tun, wenn es ein Problem gibt?',
         },
         a: {
-          fr: 'Notre équipe support est disponible 24/7 pour vous aider. Vous pouvez nous contacter via le chat en direct, par email ou par téléphone. Nous nous engageons à résoudre tous les problèmes dans les 24 heures.',
+          fr: 'Notre équipe support est disponible 24/7 pour t'aider. Tu peux nous contacter via le chat en direct, par email ou par téléphone. Nous nous engageons à résoudre tous les problèmes dans les 24 heures.',
           en: 'Our support team is available 24/7 to help you. You can contact us via live chat, email, or phone. We are committed to resolving all issues within 24 hours.',
           nl: 'Ons supportteam is 24/7 beschikbaar om je te helpen. Je kunt contact met ons opnemen via livechat, e-mail of telefoon. We zijn toegewijd om alle problemen binnen 24 uur op te lossen.',
           de: 'Unser Support-Team ist 24/7 verfügbar, um Ihnen zu helfen. Sie können uns über Live-Chat, E-Mail oder Telefon kontaktieren. Wir verpflichten uns, alle Probleme innerhalb von 24 Stunden zu lösen.',
         },
       },
       contactTitle: {
-        fr: 'Vous avez d\'autres questions ?',
+        fr: 'Tu as d\'autres questions ?',
         en: 'Have more questions?',
         nl: 'Heb je meer vragen?',
         de: 'Haben Sie weitere Fragen?',
       },
       contactSubtitle: {
-        fr: 'Notre équipe est là pour vous aider',
+        fr: 'Notre équipe est là pour t'aider',
         en: 'Our team is here to help you',
         nl: 'Ons team is er om je te helpen',
         de: 'Unser Team ist hier, um Ihnen zu helfen',
@@ -676,7 +676,7 @@ export const translations = {
       de: 'Wir respektieren Ihre Privatsphäre',
     },
     description: {
-      fr: 'Ce test nous permet de mieux comprendre vos préférences de colocation et de vous proposer les meilleurs matchs. Vos réponses sont traitées de manière anonyme et sécurisée.',
+      fr: 'Ce test nous permet de mieux comprendre tes préférences de co-living et de te proposer les meilleurs Living Matchs. Tes réponses sont traitées de manière anonyme et sécurisée.',
       en: 'This test helps us better understand your flatsharing preferences and offer you the best matches. Your responses are processed anonymously and securely.',
       nl: 'Deze test helpt ons je flatshare-voorkeuren beter te begrijpen en je de beste matches aan te bieden. Je antwoorden worden anoniem en veilig verwerkt.',
       de: 'Dieser Test hilft uns, Ihre WG-Präferenzen besser zu verstehen und Ihnen die besten Matches anzubieten. Ihre Antworten werden anonym und sicher verarbeitet.',
@@ -701,14 +701,14 @@ export const translations = {
         de: 'Verbesserung unserer Matching-Algorithmen',
       },
       optional: {
-        fr: 'Vous pouvez refuser sans impact sur votre utilisation',
+        fr: 'Tu peux refuser sans impact sur ton utilisation',
         en: 'You can decline without impacting your usage',
         nl: 'Je kunt weigeren zonder impact op je gebruik',
         de: 'Sie können ablehnen ohne Auswirkung auf Ihre Nutzung',
       },
     },
     privacy: {
-      fr: 'En continuant, vous acceptez notre',
+      fr: 'En continuant, tu acceptes notre',
       en: 'By continuing, you accept our',
       nl: 'Door door te gaan, accepteer je onze',
       de: 'Indem Sie fortfahren, akzeptieren Sie unsere',
@@ -868,7 +868,7 @@ export const translations = {
         de: 'Wir verwenden Cookies',
       },
       description: {
-        fr: 'Nous utilisons des cookies pour améliorer votre expérience, analyser le trafic et personnaliser le contenu. En cliquant sur "Accepter", vous consentez à notre utilisation des cookies.',
+        fr: 'Nous utilisons des cookies pour améliorer ton expérience, analyser le trafic et personnaliser le contenu. En cliquant sur "Accepter", tu consens à notre utilisation des cookies.',
         en: 'We use cookies to improve your experience, analyze traffic, and personalize content. By clicking "Accept", you consent to our use of cookies.',
         nl: 'We gebruiken cookies om uw ervaring te verbeteren, verkeer te analyseren en inhoud te personaliseren. Door op "Accepteren" te klikken, stemt u in met ons gebruik van cookies.',
         de: 'Wir verwenden Cookies, um Ihre Erfahrung zu verbessern, den Verkehr zu analysieren und Inhalte zu personalisieren. Indem Sie auf "Akzeptieren" klicken, stimmen Sie unserer Verwendung von Cookies zu.',
@@ -918,7 +918,7 @@ export const translations = {
         de: 'Ich suche eine Unterkunft',
       },
       description: {
-        fr: 'Trouver une coloc fiable et compatible',
+        fr: 'Trouver un co-living fiable et compatible',
         en: 'Find a reliable and compatible flatshare',
         nl: 'Vind een betrouwbare en compatibele flatshare',
         de: 'Finde eine zuverlässige und kompatible WG',
@@ -926,13 +926,13 @@ export const translations = {
     },
     owner: {
       title: {
-        fr: 'Je loue mon bien',
+        fr: 'Je loue ma résidence',
         en: 'I\'m renting out my property',
         nl: 'Ik verhuur mijn woning',
         de: 'Ich vermiete meine Immobilie',
       },
       description: {
-        fr: 'Gérer mes biens et trouver des locataires',
+        fr: 'Gérer mes résidences et trouver des résidents',
         en: 'Manage my properties and find tenants',
         nl: 'Beheer mijn eigendommen en vind huurders',
         de: 'Verwalten Sie meine Immobilien und finden Sie Mieter',
@@ -946,7 +946,7 @@ export const translations = {
         de: 'Ich bin bereits Bewohner',
       },
       description: {
-        fr: 'Accéder à mon espace de colocation',
+        fr: 'Accéder à mon espace de co-living',
         en: 'Access my flatshare space',
         nl: 'Toegang tot mijn flatshare ruimte',
         de: 'Zugriff auf meinen WG-Bereich',
@@ -959,7 +959,7 @@ export const translations = {
       de: 'Weiter',
     },
     helpText: {
-      fr: 'Vous pourrez toujours changer de rôle plus tard dans les paramètres',
+      fr: 'Tu pourras toujours changer de rôle plus tard dans les paramètres',
       en: 'You can always change roles later in settings',
       nl: 'U kunt later altijd van rol wisselen in de instellingen',
       de: 'Sie können die Rolle später jederzeit in den Einstellungen ändern',
@@ -1031,7 +1031,7 @@ export const translations = {
       de: 'Laden...',
     },
     loadingInfo: {
-      fr: 'Chargement de vos informations...',
+      fr: 'Chargement de tes informations...',
       en: 'Loading your information...',
       nl: 'Je informatie laden...',
       de: 'Ihre Informationen werden geladen...',
@@ -1219,7 +1219,7 @@ export const translations = {
       de: 'Einstellungen und Datenschutz',
     },
     completeProfile: {
-      fr: 'Compléter mon profil',
+      fr: 'Compléter mon Living Persona',
       en: 'Complete my profile',
       nl: 'Mijn profiel voltooien',
       de: 'Mein Profil vervollständigen',
@@ -1309,19 +1309,19 @@ export const translations = {
       de: 'Meine gespeicherten Suchen',
     },
     newMatches: {
-      fr: 'nouveau match',
+      fr: 'nouveau Living Match',
       en: 'new match',
       nl: 'nieuwe match',
       de: 'neuer Match',
     },
     newMatchesPlural: {
-      fr: 'nouveaux matchs',
+      fr: 'nouveaux Living Matchs',
       en: 'new matches',
       nl: 'nieuwe matches',
       de: 'neue Matches',
     },
     compatibleProperties: {
-      fr: 'Propriétés compatibles avec vous',
+      fr: 'Propriétés compatibles avec toi',
       en: 'Properties compatible with you',
       nl: 'Woningen die bij jou passen',
       de: 'Passende Immobilien für Sie',
@@ -1383,7 +1383,7 @@ export const translations = {
         de: 'Seite nicht gefunden',
       },
       description: {
-        fr: 'Désolé, nous n\'avons pas trouvé la page que vous cherchez. Elle a peut-être été déplacée ou supprimée.',
+        fr: 'Désolé, nous n\'avons pas trouvé la page que tu cherches. Elle a peut-être été déplacée ou supprimée.',
         en: 'Sorry, we couldn\'t find the page you\'re looking for. It might have been moved or deleted.',
         nl: 'Sorry, we konden de pagina die je zoekt niet vinden. Deze is mogelijk verplaatst of verwijderd.',
         de: 'Entschuldigung, wir konnten die gesuchte Seite nicht finden. Sie wurde möglicherweise verschoben oder gelöscht.',
@@ -1395,7 +1395,7 @@ export const translations = {
         de: 'Zur Startseite',
       },
       browseProperties: {
-        fr: 'Parcourir les annonces',
+        fr: 'Parcourir les résidences',
         en: 'Browse Properties',
         nl: 'Woningen bekijken',
         de: 'Immobilien durchsuchen',
@@ -1415,7 +1415,7 @@ export const translations = {
         de: 'Hoppla! Etwas ist schiefgelaufen',
       },
       description: {
-        fr: 'Nous sommes désolés, quelque chose d\'inattendu s\'est produit. Ne vous inquiétez pas, vos données sont en sécurité.',
+        fr: 'Nous sommes désolés, quelque chose d\'inattendu s\'est produit. Ne t'inquiète pas, tes données sont en sécurité.',
         en: 'We\'re sorry, but something unexpected happened. Don\'t worry, your data is safe.',
         nl: 'Sorry, er is iets onverwachts gebeurd. Maak je geen zorgen, je gegevens zijn veilig.',
         de: 'Es tut uns leid, aber etwas Unerwartetes ist passiert. Keine Sorge, Ihre Daten sind sicher.',
@@ -1452,7 +1452,7 @@ export const translations = {
       de: 'Einstellungen',
     },
     subtitle: {
-      fr: 'Gérer votre compte et vos préférences',
+      fr: 'Gérer ton compte et tes préférences',
       en: 'Manage your account and preferences',
       nl: 'Beheer uw account en voorkeuren',
       de: 'Verwalten Sie Ihr Konto und Ihre Einstellungen',
@@ -1512,7 +1512,7 @@ export const translations = {
           de: 'Profil',
         },
         description: {
-          fr: 'Gérer vos informations personnelles',
+          fr: 'Gérer tes informations personnelles',
           en: 'Manage your personal information',
           nl: 'Beheer uw persoonlijke gegevens',
           de: 'Verwalten Sie Ihre persönlichen Daten',
@@ -1554,7 +1554,7 @@ export const translations = {
           de: 'Datenschutz',
         },
         description: {
-          fr: 'Contrôler la visibilité de votre profil',
+          fr: 'Contrôler la visibilité de ton profil',
           en: 'Control your profile visibility',
           nl: 'Beheer de zichtbaarheid van uw profiel',
           de: 'Kontrolle über die Sichtbarkeit Ihres Profils',
@@ -1568,7 +1568,7 @@ export const translations = {
           de: 'Private Codes',
         },
         description: {
-          fr: "Codes d'invitation de votre résidence",
+          fr: "Codes d'invitation de ton résidence",
           en: 'Invitation codes for your residence',
           nl: 'Uitnodigingscodes voor uw woning',
           de: 'Einladungscodes für Ihre Residenz',
@@ -1582,7 +1582,7 @@ export const translations = {
           de: 'Residenzprofil',
         },
         description: {
-          fr: 'Gérer les informations de votre résidence',
+          fr: 'Gérer les informations de ton résidence',
           en: 'Manage your residence information',
           nl: 'Beheer uw woninggegevens',
           de: 'Verwalten Sie Ihre Residenzinformationen',
@@ -1596,7 +1596,7 @@ export const translations = {
           de: 'Empfehlungen',
         },
         description: {
-          fr: 'Invitez vos amis et gagnez des mois gratuits',
+          fr: 'Invitez tes amis et gagnez des mois gratuits',
           en: 'Invite friends and earn free months',
           nl: 'Nodig vrienden uit en verdien gratis maanden',
           de: 'Laden Sie Freunde ein und verdienen Sie kostenlose Monate',
@@ -1610,7 +1610,7 @@ export const translations = {
           de: 'Einladungen',
         },
         description: {
-          fr: 'Gérez vos invitations à rejoindre des colocations',
+          fr: 'Gère tes invitations à rejoindre des co-livings',
           en: 'Manage your invitations to join shared housing',
           nl: 'Beheer uw uitnodigingen om deel te nemen aan gedeelde huisvesting',
           de: 'Verwalten Sie Ihre Einladungen zu WGs',
@@ -1624,7 +1624,7 @@ export const translations = {
           de: 'Benachrichtigungen',
         },
         description: {
-          fr: 'Configurer vos préférences',
+          fr: 'Configurer tes préférences',
           en: 'Configure your preferences',
           nl: 'Configureer uw voorkeuren',
           de: 'Konfigurieren Sie Ihre Einstellungen',
@@ -1680,7 +1680,7 @@ export const translations = {
           de: 'Zahlungsmethoden',
         },
         description: {
-          fr: 'Gérer vos cartes et méthodes de paiement',
+          fr: 'Gérer tes cartes et méthodes de paiement',
           en: 'Manage your cards and payment methods',
           nl: 'Beheer uw kaarten en betaalmethoden',
           de: 'Verwalten Sie Ihre Karten und Zahlungsmethoden',
@@ -1708,7 +1708,7 @@ export const translations = {
           de: 'Geräte',
         },
         description: {
-          fr: 'Gérer vos sessions actives',
+          fr: 'Gérer tes sessions actives',
           en: 'Manage your active sessions',
           nl: 'Beheer uw actieve sessies',
           de: 'Verwalten Sie Ihre aktiven Sitzungen',
@@ -1723,7 +1723,7 @@ export const translations = {
         de: 'Brauchen Sie Hilfe?',
       },
       description: {
-        fr: "Consultez notre centre d'aide ou contactez le support",
+        fr: "Consulte notre centre d'aide ou contactez le support",
         en: 'Check our help center or contact support',
         nl: 'Bekijk ons helpcentrum of neem contact op met support',
         de: 'Besuchen Sie unser Hilfezentrum oder kontaktieren Sie den Support',
@@ -1751,7 +1751,7 @@ export const translations = {
         de: 'Bankinformationen',
       },
       subtitle: {
-        fr: 'Gérez vos informations de paiement',
+        fr: 'Gère tes informations de paiement',
         en: 'Manage your payment information',
         nl: 'Beheer uw betalingsgegevens',
         de: 'Verwalten Sie Ihre Zahlungsinformationen',
@@ -1848,7 +1848,7 @@ export const translations = {
           de: 'Sichere Daten',
         },
         description: {
-          fr: 'Vos informations bancaires sont chiffrées et ne sont visibles que par vos colocataires pour effectuer des paiements.',
+          fr: 'Vos informations bancaires sont chiffrées et ne sont visibles que par tes résidents pour effectuer des paiements.',
           en: 'Your bank information is encrypted and only visible to your roommates for making payments.',
           nl: 'Uw bankgegevens zijn versleuteld en alleen zichtbaar voor uw huisgenoten om betalingen te doen.',
           de: 'Ihre Bankdaten sind verschlüsselt und nur für Ihre Mitbewohner sichtbar, um Zahlungen zu tätigen.',
@@ -1876,7 +1876,7 @@ export const translations = {
           de: 'Bestätigung erforderlich',
         },
         description: {
-          fr: 'Pour modifier vos informations bancaires, veuillez confirmer votre identité.',
+          fr: 'Pour modifier tes informations bancaires, veuillez confirmer votre identité.',
           en: 'To modify your bank information, please confirm your identity.',
           nl: 'Om uw bankgegevens te wijzigen, bevestig uw identiteit.',
           de: 'Um Ihre Bankdaten zu ändern, bestätigen Sie bitte Ihre Identität.',
@@ -1888,7 +1888,7 @@ export const translations = {
           de: 'Passwort',
         },
         passwordPlaceholder: {
-          fr: 'Entrez votre mot de passe',
+          fr: 'Entrez ton mot de passe',
           en: 'Enter your password',
           nl: 'Voer uw wachtwoord in',
           de: 'Geben Sie Ihr Passwort ein',
@@ -2063,7 +2063,7 @@ export const translations = {
         de: 'Keine Benachrichtigungen',
       },
       allRead: {
-        fr: 'Toutes vos notifications ont été lues',
+        fr: 'Toutes tes notifications ont été lues',
         en: 'All your notifications have been read',
         nl: 'Al je meldingen zijn gelezen',
         de: 'Alle Ihre Benachrichtigungen wurden gelesen',
@@ -2075,7 +2075,7 @@ export const translations = {
         de: 'Sie haben noch keine Benachrichtigungen gelesen',
       },
       willReceiveHere: {
-        fr: 'Vous recevrez vos notifications ici',
+        fr: 'Tu recevras tes notifications ici',
         en: 'You will receive your notifications here',
         nl: 'Je ontvangt hier je meldingen',
         de: 'Sie erhalten hier Ihre Benachrichtigungen',
@@ -2195,7 +2195,7 @@ export const translations = {
         },
         contactRoommates: {
           label: {
-            fr: 'Contacter les colocataires',
+            fr: 'Contacter les résidents',
             en: 'Contact roommates',
             nl: 'Contact huisgenoten',
             de: 'Mitbewohner kontaktieren',
@@ -2217,7 +2217,7 @@ export const translations = {
             de: 'Immobilie hinzufügen',
           },
           description: {
-            fr: 'Créer un nouveau bien',
+            fr: 'Créer un nouvelle résidence',
             en: 'Create a new property',
             nl: 'Een nieuw eigendom aanmaken',
             de: 'Eine neue Immobilie erstellen',
@@ -2320,13 +2320,13 @@ export const translations = {
         de: 'Grundinformationen',
       },
       subtitle: {
-        fr: 'Ces détails nous aident à personnaliser votre expérience.',
+        fr: 'Ces détails nous aident à personnaliser ton expérience.',
         en: 'These details help us personalize your experience.',
         nl: 'Deze gegevens helpen ons je ervaring te personaliseren.',
         de: 'Diese Details helfen uns, Ihre Erfahrung zu personalisieren.',
       },
       subtitleDependent: {
-        fr: 'Parlez-nous de la personne pour laquelle vous cherchez.',
+        fr: 'Parlez-nous de la personne pour laquelle tu cherches.',
         en: "Tell us about the person you're searching for.",
         nl: 'Vertel ons over de persoon waarvoor je zoekt.',
         de: 'Erzählen Sie uns von der Person, für die Sie suchen.',
@@ -2338,7 +2338,7 @@ export const translations = {
         de: 'Erstellen eines abhängigen Profils',
       },
       dependentBadgeSubtitle: {
-        fr: 'Ce profil sera séparé de votre profil personnel',
+        fr: 'Ce profil sera séparé de ton profil personnel',
         en: 'This profile will be separate from your personal profile',
         nl: 'Dit profiel is gescheiden van je persoonlijk profiel',
         de: 'Dieses Profil wird von Ihrem persönlichen Profil getrennt sein',
@@ -2356,7 +2356,7 @@ export const translations = {
         de: 'z.B. Profil für Emma, Für meinen Sohn',
       },
       profileNameHelp: {
-        fr: 'Cela vous aide à identifier ce profil dans votre tableau de bord',
+        fr: 'Cela t'aide à identifier ce profil dans ton tableau de bord',
         en: 'This helps you identify this profile in your dashboard',
         nl: 'Dit helpt je dit profiel te identificeren in je dashboard',
         de: 'Dies hilft Ihnen, dieses Profil in Ihrem Dashboard zu identifizieren',
@@ -2508,19 +2508,19 @@ export const translations = {
         de: 'Willkommen bei Izzico für Hausbesitzer',
       },
       welcomeSubtitle: {
-        fr: 'Listez votre bien, rencontrez les bons locataires et gérez tout depuis un seul endroit.',
+        fr: 'Listez ta résidence, rencontre les bons résidents et gérez tout depuis un seul endroit.',
         en: 'List your property, meet the right tenants, and manage everything from one place.',
         nl: 'Vermeld je eigendom, ontmoet de juiste huurders en beheer alles vanaf één plek.',
         de: 'Listen Sie Ihre Immobilie auf, treffen Sie die richtigen Mieter und verwalten Sie alles an einem Ort.',
       },
       profileSetup: {
-        fr: 'Configurons votre profil d\'hôte',
+        fr: 'Configurons ton profil d\'hôte',
         en: "Let's set up your host profile",
         nl: 'Laten we je gastprofiel instellen',
         de: 'Richten wir Ihr Gastgeberprofil ein',
       },
       profileSetupHelp: {
-        fr: 'Votre profil vérifié nous aide à établir la confiance avec les locataires potentiels.',
+        fr: 'Ton profil vérifié nous aide à établir la confiance avec les résidents potentiels.',
         en: 'Your verified profile helps us build trust with potential tenants.',
         nl: 'Je geverifieerd profiel helpt ons vertrouwen op te bouwen bij potentiële huurders.',
         de: 'Ihr verifiziertes Profil hilft uns, Vertrauen bei potenziellen Mietern aufzubauen.',
@@ -2538,7 +2538,7 @@ export const translations = {
         de: '+49 30 12345678',
       },
       phoneNumberHelp: {
-        fr: 'Requis pour la communication avec les locataires',
+        fr: 'Requis pour la communication avec les résidents',
         en: 'Required for tenant communication',
         nl: 'Vereist voor communicatie met huurders',
         de: 'Erforderlich für die Kommunikation mit Mietern',
@@ -2553,13 +2553,13 @@ export const translations = {
       // Owner About Page
       about: {
         title: {
-          fr: 'Parlez-nous de vous',
+          fr: 'Parle-nous de toi',
           en: 'Tell us about yourself',
           nl: 'Vertel ons over jezelf',
           de: 'Erzählen Sie uns von sich',
         },
         subtitle: {
-          fr: 'Cela nous aide à personnaliser votre expérience d\'hébergement.',
+          fr: 'Cela nous aide à personnaliser ton expérience d\'hébergement.',
           en: 'This helps us customize your hosting experience.',
           nl: 'Dit helpt ons je hostingervaring te personaliseren.',
           de: 'Dies hilft uns, Ihre Hosting-Erfahrung anzupassen.',
@@ -2577,7 +2577,7 @@ export const translations = {
           de: 'Einzelner Eigentümer',
         },
         individualOwnerDesc: {
-          fr: 'Je possède et gère mon propre bien',
+          fr: 'Je possède et gère mon propre résidence',
           en: 'I own and manage my own property',
           nl: 'Ik bezit en beheer mijn eigen eigendom',
           de: 'Ich besitze und verwalte meine eigene Immobilie',
@@ -2589,7 +2589,7 @@ export const translations = {
           de: 'Immobilienagentur',
         },
         propertyAgencyDesc: {
-          fr: 'Je gère plusieurs biens de manière professionnelle',
+          fr: 'Je gère plusieurs résidences de manière professionnelle',
           en: 'I manage multiple properties professionally',
           nl: 'Ik beheer meerdere eigendommen professioneel',
           de: 'Ich verwalte mehrere Immobilien professionell',
@@ -2613,7 +2613,7 @@ export const translations = {
           de: 'Firmenname',
         },
         companyNamePlaceholder: {
-          fr: 'Entrez le nom de votre entreprise ou agence',
+          fr: 'Entrez le nom de ton entreprise ou agence',
           en: 'Enter your company or agency name',
           nl: 'Voer je bedrijfs- of kantoor naam in',
           de: 'Geben Sie Ihren Firmen- oder Agenturnamen ein',
@@ -2661,10 +2661,10 @@ export const translations = {
           de: '3+ Jahre',
         },
         tipComplete: {
-          fr: '💡 Astuce : Les profils complets reçoivent 3 fois plus de demandes de locataires en moyenne.',
-          en: '💡 Tip: Complete profiles receive 3x more tenant inquiries on average.',
-          nl: '💡 Tip: Volledige profielen ontvangen gemiddeld 3x meer huurdersvragen.',
-          de: '💡 Tipp: Vollständige Profile erhalten durchschnittlich 3x mehr Mieteranfragen.',
+          fr: 'Astuce : Les profils complets reçoivent 3 fois plus de demandes de résidents en moyenne.',
+          en: 'Tip: Complete profiles receive 3x more tenant inquiries on average.',
+          nl: 'Tip: Volledige profielen ontvangen gemiddeld 3x meer huurdersvragen.',
+          de: 'Tipp: Vollständige Profile erhalten durchschnittlich 3x mehr Mieteranfragen.',
         },
         errorRequired: {
           fr: 'Veuillez remplir tous les champs obligatoires',
@@ -2673,13 +2673,13 @@ export const translations = {
           de: 'Bitte füllen Sie alle Pflichtfelder aus',
         },
         errorCompanyName: {
-          fr: 'Veuillez entrer le nom de votre entreprise',
+          fr: 'Veuillez entrer le nom de ton entreprise',
           en: 'Please enter your company name',
           nl: 'Voer je bedrijfsnaam in',
           de: 'Bitte geben Sie Ihren Firmennamen ein',
         },
         loading: {
-          fr: 'Chargement de vos informations...',
+          fr: 'Chargement de tes informations...',
           en: 'Loading your information...',
           nl: 'Je informatie laden...',
           de: 'Lade Ihre Informationen...',
@@ -2695,7 +2695,7 @@ export const translations = {
           de: 'Zahlung & Banking',
         },
         subtitle: {
-          fr: 'Fournissez vos coordonnées bancaires pour recevoir les paiements de loyer',
+          fr: 'Fournissez tes coordonnées bancaires pour recevoir les paiements de loyer',
           en: 'Provide your banking details to receive rent payments',
           nl: 'Geef je bankgegevens op om huurbetalingen te ontvangen',
           de: 'Geben Sie Ihre Bankdaten an, um Mietzahlungen zu erhalten',
@@ -2743,7 +2743,7 @@ export const translations = {
           de: 'Ihre Informationen sind sicher',
         },
         securityNoticeDesc: {
-          fr: 'Vos coordonnées bancaires sont cryptées et stockées en toute sécurité. Elles ne seront utilisées que pour traiter les paiements de loyer des locataires vérifiés.',
+          fr: 'Vos coordonnées bancaires sont cryptées et stockées en toute sécurité. Elles ne seront utilisées que pour traiter les paiements de loyer des résidents vérifiés.',
           en: 'Your banking details are encrypted and stored securely. They will only be used for processing rent payments from verified tenants.',
           nl: 'Je bankgegevens zijn versleuteld en veilig opgeslagen. Ze worden alleen gebruikt voor het verwerken van huurbetalingen van geverifieerde huurders.',
           de: 'Ihre Bankdaten sind verschlüsselt und sicher gespeichert. Sie werden nur für die Verarbeitung von Mietzahlungen von verifizierten Mietern verwendet.',
@@ -2777,13 +2777,13 @@ export const translations = {
           de: 'Ihre Immobilie',
         },
         subtitle: {
-          fr: 'Parlez-nous de vos projets de location',
+          fr: 'Parle-nous de tes projets de location',
           en: 'Let us know about your listing plans',
           nl: 'Laat ons weten over je verhuurplannen',
           de: 'Informieren Sie uns über Ihre Vermietungspläne',
         },
         hasPropertyLabel: {
-          fr: 'Avez-vous déjà un bien à louer?',
+          fr: 'As-tu déjà une résidence à louer?',
           en: 'Do you already have a property to list?',
           nl: 'Heb je al een eigendom om te verhuren?',
           de: 'Haben Sie bereits eine Immobilie zu vermieten?',
@@ -2801,7 +2801,7 @@ export const translations = {
           de: 'Noch nicht',
         },
         propertyLocation: {
-          fr: 'Où se trouve votre propriété?',
+          fr: 'Où se trouve ta propriété?',
           en: 'Where is your property located?',
           nl: 'Waar bevindt je eigendom zich?',
           de: 'Wo befindet sich Ihre Immobilie?',
@@ -2861,7 +2861,7 @@ export const translations = {
           de: 'Andere',
         },
         infoGreat: {
-          fr: 'Super! Vous pourrez ajouter les détails complets de la propriété après avoir terminé votre profil.',
+          fr: 'Super! Tu pourras ajouter les détails complets de la propriété après avoir terminé ton profil.',
           en: 'Great! You\'ll be able to add full property details after completing your profile.',
           nl: 'Geweldig! Je kunt volledige eigendomsdetails toevoegen na het voltooien van je profiel.',
           de: 'Großartig! Sie können nach Abschluss Ihres Profils vollständige Immobiliendetails hinzufügen.',
@@ -2873,7 +2873,7 @@ export const translations = {
           de: 'Kein Problem!',
         },
         noProblemDesc: {
-          fr: 'Complétez votre profil d\'hôte maintenant, et vous pourrez ajouter des annonces de propriétés quand vous serez prêt.',
+          fr: 'Complète ton profil d\'hôte maintenant, et tu pourras ajouter des résidences de propriétés quand tu seras prêt.',
           en: 'Complete your host profile now, and you can add property listings whenever you\'re ready.',
           nl: 'Voltooi nu je hostprofiel en je kunt eigendomsadvertenties toevoegen wanneer je klaar bent.',
           de: 'Vervollständigen Sie jetzt Ihr Gastgeberprofil und Sie können Immobilienanzeigen hinzufügen, wann immer Sie bereit sind.',
@@ -2889,7 +2889,7 @@ export const translations = {
       // Owner Review Page
       review: {
         title: {
-          fr: 'Vérifiez votre profil',
+          fr: 'Vérifiez ton profil',
           en: 'Review your profile',
           nl: 'Controleer je profiel',
           de: 'Überprüfen Sie Ihr Profil',
@@ -3003,7 +3003,7 @@ export const translations = {
           de: 'Nächste Schritte',
         },
         nextStepsDesc: {
-          fr: 'Après soumission, vous pourrez ajouter votre première annonce de propriété !',
+          fr: 'Après soumission, tu pourras ajouter ta première résidence de propriété !',
           en: 'After submitting, you\'ll be able to add your first property listing!',
           nl: 'Na het indienen kun je je eerste eigendomsadvertentie toevoegen!',
           de: 'Nach dem Absenden können Sie Ihre erste Immobilienanzeige hinzufügen!',
@@ -3043,7 +3043,7 @@ export const translations = {
           de: 'Profil erfolgreich erstellt!',
         },
         welcome: {
-          fr: 'Bienvenue sur Izzico ! Votre profil d\'hôte est maintenant actif. Prêt à ajouter votre première annonce de propriété ?',
+          fr: 'Bienvenue sur Izzico ! Ton profil d\'hôte est maintenant actif. Prêt à ajouter ta première résidence de propriété ?',
           en: 'Welcome to Izzico! Your host profile is now active. Ready to add your first property listing?',
           nl: 'Welkom bij Izzico! Je hostprofiel is nu actief. Klaar om je eerste eigendomsadvertentie toe te voegen?',
           de: 'Willkommen bei Izzico! Ihr Gastgeberprofil ist jetzt aktiv. Bereit, Ihre erste Immobilienanzeige hinzuzufügen?',
@@ -3055,7 +3055,7 @@ export const translations = {
           de: '3x',
         },
         stat3xDesc: {
-          fr: 'Plus de demandes avec des annonces complètes',
+          fr: 'Plus de demandes avec des résidences complètes',
           en: 'More inquiries with complete listings',
           nl: 'Meer vragen met complete advertenties',
           de: 'Mehr Anfragen mit vollständigen Anzeigen',
@@ -3079,10 +3079,10 @@ export const translations = {
           de: 'Zum Dashboard gehen',
         },
         enhanceProfile: {
-          fr: '✨ Améliorez votre profil',
-          en: '✨ Enhance Your Profile',
-          nl: '✨ Verbeter je profiel',
-          de: '✨ Verbessern Sie Ihr Profil',
+          fr: 'Améliorez ton profil',
+          en: 'Enhance Your Profile',
+          nl: 'Verbeter je profiel',
+          de: 'Verbessern Sie Ihr Profil',
         },
         backToHome: {
           fr: 'Retour à l\'accueil',
@@ -3173,7 +3173,7 @@ export const translations = {
           de: 'E-Mail-Verifizierung',
         },
         emailVerificationDesc: {
-          fr: 'Nous vous enverrons un lien de vérification à votre email',
+          fr: 'Nous t'enverrons un lien de vérification à ton email',
           en: 'We\'ll send a verification link to your email',
           nl: 'We sturen een verificatielink naar je e-mail',
           de: 'Wir senden einen Verifizierungslink an Ihre E-Mail',
@@ -3191,7 +3191,7 @@ export const translations = {
           de: 'Telefonverifizierung',
         },
         phoneVerificationDesc: {
-          fr: 'Entrez votre numéro de téléphone',
+          fr: 'Entrez ton numéro de téléphone',
           en: 'Enter your phone number',
           nl: 'Voer je telefoonnummer in',
           de: 'Geben Sie Ihre Telefonnummer ein',
@@ -3215,13 +3215,13 @@ export const translations = {
           de: 'Warum als Vermieter verifizieren?',
         },
         whyVerify1: {
-          fr: '⭐ Créez la confiance avec les locataires potentiels',
+          fr: '⭐ Créez la confiance avec les résidents potentiels',
           en: '⭐ Build trust with potential tenants',
           nl: '⭐ Bouw vertrouwen met potentiële huurders',
           de: '⭐ Vertrauen bei potenziellen Mietern aufbauen',
         },
         whyVerify2: {
-          fr: '⭐ Obtenez un placement prioritaire des annonces',
+          fr: '⭐ Obtenez un placement prioritaire des résidences',
           en: '⭐ Get priority listing placement',
           nl: '⭐ Krijg prioriteit bij advertentievermelding',
           de: '⭐ Erhalten Sie vorrangige Anzeigenplatzierung',
@@ -3264,7 +3264,7 @@ export const translations = {
           de: 'Immobilien-Grundlagen',
         },
         subtitle: {
-          fr: 'Commencez par décrire les bases de votre propriété.',
+          fr: 'Commencez par décrire les bases de ta propriété.',
           en: 'Start by describing your property basics.',
           nl: 'Begin met het beschrijven van de basisinformatie van je eigendom.',
           de: 'Beginnen Sie mit der Beschreibung Ihrer Immobilien-Grundlagen.',
@@ -3382,7 +3382,7 @@ export const translations = {
           de: 'Immobilienbeschreibung',
         },
         subtitle: {
-          fr: 'De bonnes descriptions aident votre annonce à se démarquer.',
+          fr: 'De bonnes descriptions aident ta résidence à se démarquer.',
           en: 'Great descriptions help your listing stand out.',
           nl: 'Geweldige beschrijvingen helpen je advertentie op te vallen.',
           de: 'Gute Beschreibungen helfen Ihrer Anzeige, sich abzuheben.',
@@ -3406,7 +3406,7 @@ export const translations = {
           de: 'Immobilienbeschreibung',
         },
         descriptionPlaceholder: {
-          fr: 'Décrivez les meilleures caractéristiques de votre propriété, les commodités à proximité et ce qui la rend spéciale...',
+          fr: 'Décrivez les meilleures caractéristiques de ta propriété, les commodités à proximité et ce qui la rend spéciale...',
           en: 'Describe your property\'s best features, nearby amenities, and what makes it special...',
           nl: 'Beschrijf de beste kenmerken van je eigendom, nabijgelegen voorzieningen en wat het speciaal maakt...',
           de: 'Beschreiben Sie die besten Eigenschaften Ihrer Immobilie, nahe gelegene Annehmlichkeiten und was sie besonders macht...',
@@ -3418,10 +3418,10 @@ export const translations = {
           de: 'Zeichen übrig',
         },
         photosComingSoon: {
-          fr: '📸 Photos bientôt disponibles : Vous pourrez ajouter des photos dans la prochaine version !',
-          en: '📸 Photos coming soon: You\'ll be able to add photos in the next version!',
-          nl: '📸 Foto\'s komen eraan: Je kunt foto\'s toevoegen in de volgende versie!',
-          de: '📸 Fotos kommen bald: Sie können in der nächsten Version Fotos hinzufügen!',
+          fr: 'Photos bientôt disponibles : Tu pourras ajouter des photos dans la prochaine version !',
+          en: 'Photos coming soon: You\'ll be able to add photos in the next version!',
+          nl: 'Foto\'s komen eraan: Je kunt foto\'s toevoegen in de volgende versie!',
+          de: 'Fotos kommen bald: Sie können in der nächsten Version Fotos hinzufügen!',
         },
         skipForNow: {
           fr: 'Ignorer pour le moment',
@@ -3440,7 +3440,7 @@ export const translations = {
           de: 'Preisgestaltung & Verfügbarkeit',
         },
         subtitle: {
-          fr: 'Fixez des prix compétitifs pour attirer des locataires de qualité.',
+          fr: 'Fixez des prix compétitifs pour attirer des résidents de qualité.',
           en: 'Set competitive pricing to attract quality tenants.',
           nl: 'Stel concurrerende prijzen in om kwaliteitshuurders aan te trekken.',
           de: 'Setzen Sie wettbewerbsfähige Preise, um Qualitätsmieter anzuziehen.',
@@ -3458,10 +3458,10 @@ export const translations = {
           de: '1300',
         },
         earningsEstimate: {
-          fr: '💰 Vous gagnerez environ',
-          en: '💰 You\'ll earn approximately',
-          nl: '💰 Je verdient ongeveer',
-          de: '💰 Sie werden ungefähr verdienen',
+          fr: 'Vous gagnerez environ',
+          en: 'You\'ll earn approximately',
+          nl: 'Je verdient ongeveer',
+          de: 'Sie werden ungefähr verdienen',
         },
         perMonth: {
           fr: '/mois',
@@ -3516,7 +3516,7 @@ export const translations = {
       // Property Review Page
       review: {
         title: {
-          fr: 'Vérifiez votre annonce',
+          fr: 'Vérifiez ta résidence',
           en: 'Review your listing',
           nl: 'Controleer je advertentie',
           de: 'Überprüfen Sie Ihre Anzeige',
@@ -3606,7 +3606,7 @@ export const translations = {
           de: 'Bereit zum Veröffentlichen!',
         },
         readyToPublishDesc: {
-          fr: 'Votre annonce sera en ligne immédiatement et visible aux locataires de qualité.',
+          fr: 'Ta résidence sera en ligne immédiatement et visible aux résidents de qualité.',
           en: 'Your listing will be live immediately and visible to quality tenants.',
           nl: 'Je advertentie is direct live en zichtbaar voor kwaliteitshuurders.',
           de: 'Ihre Anzeige wird sofort live sein und für Qualitätsmieter sichtbar sein.',
@@ -3618,10 +3618,10 @@ export const translations = {
           de: 'Wird veröffentlicht...',
         },
         publishListing: {
-          fr: 'Publier l\'annonce',
-          en: 'Publish Listing',
-          nl: 'Advertentie publiceren',
-          de: 'Anzeige veröffentlichen',
+          fr: 'Mettre en ligne',
+          en: 'Publish Residence',
+          nl: 'Residentie publiceren',
+          de: 'Residenz veröffentlichen',
         },
         errorNoOwner: {
           fr: 'Erreur : Aucun profil de propriétaire trouvé. Veuillez d\'abord compléter l\'intégration du propriétaire.',
@@ -3634,13 +3634,13 @@ export const translations = {
       // Property Success Page
       success: {
         title: {
-          fr: 'Annonce publiée !',
+          fr: 'Résidence mise en ligne !',
           en: 'Listing Published!',
           nl: 'Advertentie gepubliceerd!',
           de: 'Anzeige veröffentlicht!',
         },
         subtitle: {
-          fr: 'Votre propriété est maintenant en ligne sur Izzico. Des locataires de qualité peuvent maintenant voir et s\'informer sur votre annonce.',
+          fr: 'Votre propriété est maintenant en ligne sur Izzico. Des résidents de qualité peuvent maintenant voir et s\'informer sur ta résidence.',
           en: 'Your property is now live on Izzico. Quality tenants can now view and inquire about your listing.',
           nl: 'Je eigendom is nu live op Izzico. Kwaliteitshuurders kunnen nu je advertentie bekijken en erover informeren.',
           de: 'Ihre Immobilie ist jetzt auf Izzico live. Qualitätsmieter können jetzt Ihre Anzeige ansehen und anfragen.',
@@ -3682,10 +3682,10 @@ export const translations = {
           de: 'Zurück zur Startseite',
         },
         proTipsTitle: {
-          fr: '💡 Conseils pro',
-          en: '💡 Pro Tips',
-          nl: '💡 Pro Tips',
-          de: '💡 Profi-Tipps',
+          fr: 'Conseils pro',
+          en: 'Pro Tips',
+          nl: 'Pro Tips',
+          de: 'Profi-Tipps',
         },
         proTip1: {
           fr: '• Ajoutez des photos pour obtenir 5 fois plus de demandes',
@@ -3706,7 +3706,7 @@ export const translations = {
           de: '• Aktualisieren Sie die Verfügbarkeit, um sichtbar zu bleiben',
         },
         needHelp: {
-          fr: 'Besoin d\'aide pour gérer votre annonce ?',
+          fr: 'Besoin d\'aide pour gérer ta résidence ?',
           en: 'Need help managing your listing?',
           nl: 'Hulp nodig bij het beheren van je advertentie?',
           de: 'Brauchen Sie Hilfe bei der Verwaltung Ihrer Anzeige?',
@@ -3769,13 +3769,13 @@ export const translations = {
         de: 'Bitte geben Sie Ihren Vor- und Nachnamen ein',
       },
       enterPhone: {
-        fr: 'Veuillez entrer votre numéro de téléphone',
+        fr: 'Veuillez entrer ton numéro de téléphone',
         en: 'Please enter your phone number',
         nl: 'Voer alstublieft je telefoonnummer in',
         de: 'Bitte geben Sie Ihre Telefonnummer ein',
       },
       selectProfileType: {
-        fr: 'Veuillez sélectionner pour qui vous cherchez',
+        fr: 'Veuillez sélectionner pour qui tu cherches',
         en: 'Please select who you are searching for',
         nl: 'Selecteer alstublieft voor wie je zoekt',
         de: 'Bitte wählen Sie aus, für wen Sie suchen',
@@ -3791,7 +3791,7 @@ export const translations = {
         de: 'Für wen suchen Sie? 🔍',
       },
       subtitle: {
-        fr: 'Cela nous aide à personnaliser votre expérience de recherche',
+        fr: 'Cela nous aide à personnaliser ton expérience de recherche',
         en: 'This helps us personalize your search experience',
         nl: 'Dit helpt ons je zoekervaring te personaliseren',
         de: 'Dies hilft uns, Ihre Sucherfahrung zu personalisieren',
@@ -3809,7 +3809,7 @@ export const translations = {
         de: 'Für mich selbst',
       },
       forMyselfDesc: {
-        fr: 'Je cherche un espace de colocation pour moi-même',
+        fr: 'Je cherche un espace de co-living pour moi-même',
         en: "I'm looking for a coliving space for myself",
         nl: 'Ik zoek een co-living ruimte voor mezelf',
         de: 'Ich suche einen Co-Living-Raum für mich selbst',
@@ -3827,10 +3827,10 @@ export const translations = {
         de: 'Ich helfe einem Kind, Familienmitglied oder Freund, eine Unterkunft zu finden',
       },
       multipleProfilesNote: {
-        fr: '💡 Vous pouvez créer plusieurs profils - un pour vous et des profils séparés pour chaque personne que vous aidez',
-        en: "💡 You can create multiple profiles - one for yourself and separate ones for each person you're helping",
-        nl: '💡 Je kunt meerdere profielen aanmaken - één voor jezelf en aparte profielen voor elke persoon die je helpt',
-        de: '💡 Sie können mehrere Profile erstellen - eines für sich selbst und separate für jede Person, der Sie helfen',
+        fr: 'Tu peux créer plusieurs profils - un pour toi et des profils séparés pour chaque personne que tu aides',
+        en: "You can create multiple profiles - one for yourself and separate ones for each person you're helping",
+        nl: 'Je kunt meerdere profielen aanmaken - één voor jezelf en aparte profielen voor elke persoon die je helpt',
+        de: 'Sie können mehrere Profile erstellen - eines für sich selbst und separate für jede Person, der Sie helfen',
       },
       whyAsk: {
         fr: 'Pourquoi demandons-nous ?',
@@ -3855,7 +3855,7 @@ export const translations = {
         de: 'Tägliche Gewohnheiten',
       },
       subtitle: {
-        fr: 'Votre routine nous aide à trouver des colocataires compatibles.',
+        fr: 'Votre routine nous aide à trouver des résidents compatibles.',
         en: 'Your routine helps us find compatible housemates.',
         nl: 'Je routine helpt ons compatibele huisgenoten te vinden.',
         de: 'Ihre Routine hilft uns, kompatible Mitbewohner zu finden.',
@@ -4109,7 +4109,7 @@ export const translations = {
         de: 'Soziale Atmosphäre',
       },
       subtitle: {
-        fr: 'Comment vous connectez-vous avec les autres ?',
+        fr: 'Comment tu connectes-vous avec les autres ?',
         en: 'How do you connect with others?',
         nl: 'Hoe maak je contact met anderen?',
         de: 'Wie verbinden Sie sich mit anderen?',
@@ -4323,7 +4323,7 @@ export const translations = {
         de: 'Keine Präferenz',
       },
       roommateAgeRange: {
-        fr: 'Tranche d\'âge des colocataires',
+        fr: 'Tranche d\'âge des résidents',
         en: 'Roommate age range',
         nl: 'Leeftijdsbereik huisgenoten',
         de: 'Altersbereich Mitbewohner',
@@ -4341,7 +4341,7 @@ export const translations = {
         de: 'Höchstalter',
       },
       lookingForRoommates: {
-        fr: 'Recherche de colocataires âgés de',
+        fr: 'Recherche de résidents âgés de',
         en: 'Looking for roommates aged',
         nl: 'Op zoek naar huisgenoten van',
         de: 'Suche Mitbewohner im Alter von',
@@ -4365,7 +4365,7 @@ export const translations = {
         de: 'Liebe Gemeinschaft',
       },
       sharedSpaceHelp: {
-        fr: 'À quel point les espaces de vie partagés sont-ils importants pour vous ?',
+        fr: 'À quel point les espaces de vie partagés sont-ils importants pour toi ?',
         en: 'How important are shared living spaces to you?',
         nl: 'Hoe belangrijk zijn gedeelde woonruimtes voor jou?',
         de: 'Wie wichtig sind Ihnen gemeinsame Wohnräume?',
@@ -4381,7 +4381,7 @@ export const translations = {
         de: 'Erweiterte Einstellungen',
       },
       subtitle: {
-        fr: 'Ajustez vos préférences à tout moment.',
+        fr: 'Ajustez tes préférences à tout moment.',
         en: 'Adjust your preferences anytime.',
         nl: 'Pas je voorkeuren op elk moment aan.',
         de: 'Passen Sie Ihre Präferenzen jederzeit an.',
@@ -4475,7 +4475,7 @@ export const translations = {
         de: 'Ich akzeptiere die Allgemeinen Geschäftsbedingungen',
       },
       reviewTerms: {
-        fr: 'Consultez nos',
+        fr: 'Consulte nos',
         en: 'Review our',
         nl: 'Bekijk onze',
         de: 'Überprüfen Sie unsere',
@@ -4517,7 +4517,7 @@ export const translations = {
         de: 'Ich stimme der Datenverarbeitung zu',
       },
       consentDataHelp: {
-        fr: 'Requis pour créer votre profil et trouver des matchs. Vos données seront traitées de manière sécurisée conformément au RGPD.',
+        fr: 'Requis pour créer ton profil et trouver des Living Matchs. Tes données seront traitées de manière sécurisée conformément au RGPD.',
         en: 'Required to create your profile and find matches. Your data will be processed securely according to GDPR.',
         nl: 'Vereist om je profiel aan te maken en matches te vinden. Je gegevens worden veilig verwerkt volgens de AVG.',
         de: 'Erforderlich, um Ihr Profil zu erstellen und Matches zu finden. Ihre Daten werden sicher gemäß DSGVO verarbeitet.',
@@ -4529,7 +4529,7 @@ export const translations = {
         de: 'Ich stimme dem algorithmischen Matching zu',
       },
       agreeMatchingHelp: {
-        fr: 'Notre algorithme intelligent suggérera les meilleurs matchs de colocataires basés sur la compatibilité. Fortement recommandé !',
+        fr: 'Notre algorithme intelligent suggérera les meilleurs Living Matchs de résidents basés sur la compatibilité. Fortement recommandé !',
         en: 'Our smart algorithm will suggest the best roommate matches based on compatibility. Highly recommended!',
         nl: 'Ons slimme algoritme zal de beste huisgenootmatches voorstellen op basis van compatibiliteit. Sterk aanbevolen!',
         de: 'Unser intelligenter Algorithmus schlägt die besten Mitbewohner-Matches basierend auf Kompatibilität vor. Sehr empfohlen!',
@@ -4541,7 +4541,7 @@ export const translations = {
         de: 'Ihre Privatsphäre zählt:',
       },
       privacyNotice: {
-        fr: 'Nous ne partageons jamais vos informations personnelles avec des tiers sans consentement. Vous pouvez demander la suppression des données à tout moment.',
+        fr: 'Nous ne partageons jamais tes informations personnelles avec des tiers sans consentement. Tu peux demander la suppression des données à tout moment.',
         en: 'We never share your personal information with third parties without consent. You can request data deletion at any time.',
         nl: 'We delen je persoonlijke informatie nooit met derden zonder toestemming. Je kunt op elk moment verwijdering van gegevens aanvragen.',
         de: 'Wir teilen Ihre persönlichen Informationen niemals ohne Zustimmung mit Dritten. Sie können jederzeit die Löschung Ihrer Daten beantragen.',
@@ -4563,7 +4563,7 @@ export const translations = {
         de: 'Profilverifizierung',
       },
       subtitle: {
-        fr: 'Les profils vérifiés sont prioritaires dans les matchs.',
+        fr: 'Les profils vérifiés sont prioritaires dans les Living Matchs.',
         en: 'Verified profiles are prioritized in matches.',
         nl: 'Geverifieerde profielen krijgen prioriteit in matches.',
         de: 'Verifizierte Profile werden bei Matches priorisiert.',
@@ -4599,7 +4599,7 @@ export const translations = {
         de: 'E-Mail-Verifizierung',
       },
       emailVerificationHelp: {
-        fr: 'Nous enverrons un lien de vérification à votre email',
+        fr: 'Nous enverrons un lien de vérification à ton email',
         en: 'We\'ll send a verification link to your email',
         nl: 'We sturen een verificatielink naar je e-mail',
         de: 'Wir senden Ihnen einen Verifizierungslink an Ihre E-Mail',
@@ -4617,7 +4617,7 @@ export const translations = {
         de: 'Telefonverifizierung',
       },
       phoneVerificationHelp: {
-        fr: 'Entrez votre numéro de téléphone',
+        fr: 'Entrez ton numéro de téléphone',
         en: 'Enter your phone number',
         nl: 'Voer je telefoonnummer in',
         de: 'Geben Sie Ihre Telefonnummer ein',
@@ -4641,7 +4641,7 @@ export const translations = {
         de: 'Erhalten Sie 3x mehr Profilaufrufe',
       },
       benefit2: {
-        fr: 'Créez de la confiance avec vos futurs colocataires',
+        fr: 'Créez de la confiance avec tes futurs résidents',
         en: 'Build trust with potential flatmates',
         nl: 'Bouw vertrouwen op met potentiële huisgenoten',
         de: 'Bauen Sie Vertrauen zu potenziellen Mitbewohnern auf',
@@ -4745,7 +4745,7 @@ export const translations = {
         de: 'Erneut senden in',
       },
       invalidCode: {
-        fr: 'Code incorrect. Veuillez vérifier et réessayer.',
+        fr: 'Code incorrect. Vérifie et réessayer.',
         en: 'Invalid code. Please check and try again.',
         nl: 'Ongeldige code. Controleer en probeer opnieuw.',
         de: 'Ungültiger Code. Bitte überprüfen und erneut versuchen.',
@@ -4861,7 +4861,7 @@ export const translations = {
         de: 'Weiterleitung zu ITSME...',
       },
       itsmeRedirectNote: {
-        fr: 'Vous serez redirigé vers l\'application ITSME pour confirmer votre identité.',
+        fr: 'Tu seras redirigé vers l\'application ITSME pour confirmer votre identité.',
         en: 'You will be redirected to the ITSME app to confirm your identity.',
         nl: 'Je wordt doorverwezen naar de ITSME app om je identiteit te bevestigen.',
         de: 'Sie werden zur ITSME App weitergeleitet, um Ihre Identität zu bestätigen.',
@@ -4905,7 +4905,7 @@ export const translations = {
 
       // ITSME error messages
       itsmeAccessDenied: {
-        fr: 'Vous avez annulé la vérification ITSME.',
+        fr: 'Tu as annulé la vérification ITSME.',
         en: 'You cancelled the ITSME verification.',
         nl: 'Je hebt de ITSME verificatie geannuleerd.',
         de: 'Sie haben die ITSME-Verifizierung abgebrochen.',
@@ -4981,13 +4981,13 @@ export const translations = {
 
       // Why verify benefits
       whyVerifyBenefit1: {
-        fr: 'Profil de confiance pour les propriétaires et colocataires',
+        fr: 'Profil de confiance pour les propriétaires et résidents',
         en: 'Trusted profile for owners and flatmates',
         nl: 'Vertrouwd profiel voor eigenaren en huisgenoten',
         de: 'Vertrauenswürdiges Profil für Eigentümer und Mitbewohner',
       },
       whyVerifyBenefit2: {
-        fr: 'Badge "Vérifié" visible sur votre profil',
+        fr: 'Badge "Vérifié" visible sur ton profil',
         en: '"Verified" badge visible on your profile',
         nl: '"Geverifieerd" badge zichtbaar op je profiel',
         de: '"Verifiziert"-Badge auf Ihrem Profil sichtbar',
@@ -5009,7 +5009,7 @@ export const translations = {
     // Review Page
     review: {
       title: {
-        fr: 'Vérifiez votre profil',
+        fr: 'Vérifiez ton profil',
         en: 'Review Your Profile',
         nl: 'Controleer je profiel',
         de: 'Überprüfen Sie Ihr Profil',
@@ -5193,7 +5193,7 @@ export const translations = {
         de: 'Suchender Onboarding',
       },
       description: {
-        fr: 'Suivez les étapes pour définir vos préférences.',
+        fr: 'Suivez les étapes pour définir tes préférences.',
         en: 'Follow the steps to set your preferences.',
         nl: 'Volg de stappen om je voorkeuren in te stellen.',
         de: 'Folgen Sie den Schritten, um Ihre Präferenzen festzulegen.',
@@ -5227,19 +5227,19 @@ export const translations = {
         de: 'Was passiert als Nächstes?',
       },
       profileSaved: {
-        fr: 'Votre profil a été enregistré avec succès',
+        fr: 'Ton profil a été enregistré avec succès',
         en: 'Your profile has been saved successfully',
         nl: 'Je profiel is succesvol opgeslagen',
         de: 'Ihr Profil wurde erfolgreich gespeichert',
       },
       findMatches: {
-        fr: 'Nous utiliserons vos réponses pour trouver des matchs compatibles',
+        fr: 'Nous utiliserons tes réponses pour trouver des Living Matchs compatibles',
         en: "We'll use your answers to find compatible matches",
         nl: 'We gebruiken je antwoorden om compatibele matches te vinden',
         de: 'Wir verwenden Ihre Antworten, um kompatible Matches zu finden',
       },
       updateAnytime: {
-        fr: 'Vous pouvez mettre à jour vos préférences à tout moment',
+        fr: 'Tu peux mettre à jour tes préférences à tout moment',
         en: 'You can update your preferences anytime',
         nl: 'Je kunt je voorkeuren op elk moment bijwerken',
         de: 'Sie können Ihre Präferenzen jederzeit aktualisieren',
@@ -5251,10 +5251,10 @@ export const translations = {
         de: 'Mit dem Durchsuchen beginnen',
       },
       enhanceProfile: {
-        fr: '✨ Améliorer votre profil',
-        en: '✨ Enhance Your Profile',
-        nl: '✨ Verbeter je profiel',
-        de: '✨ Profil verbessern',
+        fr: 'Améliorer ton profil',
+        en: 'Enhance Your Profile',
+        nl: 'Verbeter je profiel',
+        de: 'Profil verbessern',
       },
       backToHome: {
         fr: 'Retour à l\'accueil',
@@ -5273,13 +5273,13 @@ export const translations = {
     // Resume Onboarding Modal
     resumeOnboarding: {
       title: {
-        fr: 'Reprendre votre profil ?',
+        fr: 'Reprendre ton profil ?',
         en: 'Resume your profile?',
         nl: 'Je profiel hervatten?',
         de: 'Ihr Profil fortsetzen?',
       },
       subtitle: {
-        fr: 'Vous avez commencé à créer votre profil. Voulez-vous continuer là où vous vous êtes arrêté ?',
+        fr: 'Tu as commencé à créer ton profil. Veux-tu continuer là où tu t\'es arrêté ?',
         en: 'You started creating your profile. Want to continue where you left off?',
         nl: 'Je bent begonnen met het maken van je profiel. Wil je verder gaan waar je gebleven was?',
         de: 'Sie haben begonnen, Ihr Profil zu erstellen. Möchten Sie dort weitermachen, wo Sie aufgehört haben?',
@@ -5331,7 +5331,7 @@ export const translations = {
         de: 'Zur Startseite',
       },
       goHomeDescriptionSearcher: {
-        fr: 'Commencer à explorer les propriétés et les colocataires',
+        fr: 'Commencer à explorer les propriétés et les résidents',
         en: 'Start exploring properties and roommates',
         nl: 'Begin met het verkennen van woningen en huisgenoten',
         de: 'Beginne mit der Erkundung von Immobilien und Mitbewohnern',
@@ -5400,7 +5400,7 @@ export const translations = {
         de: 'Willkommen zurück',
       },
       subtitle: {
-        fr: 'Connectez-vous à votre compte Izzico',
+        fr: 'Connectez-vous à ton compte Izzico',
         en: 'Sign in to your Izzico account',
         nl: 'Log in op je Izzico-account',
         de: 'Melden Sie sich bei Ihrem Izzico-Konto an',
@@ -5424,7 +5424,7 @@ export const translations = {
         de: 'Passwort',
       },
       passwordPlaceholder: {
-        fr: 'Entrez votre mot de passe',
+        fr: 'Entrez ton mot de passe',
         en: 'Enter your password',
         nl: 'Voer je wachtwoord in',
         de: 'Geben Sie Ihr Passwort ein',
@@ -5503,7 +5503,7 @@ export const translations = {
           de: 'Ungültige E-Mail oder Passwort',
         },
         emailNotConfirmed: {
-          fr: 'Veuillez vérifier votre e-mail avant de vous connecter',
+          fr: 'Vérifie ton e-mail avant de te connecter',
           en: 'Please verify your email before logging in',
           nl: 'Verifieer je e-mail voordat je inlogt',
           de: 'Bitte verifizieren Sie Ihre E-Mail, bevor Sie sich anmelden',
@@ -5521,7 +5521,7 @@ export const translations = {
           de: 'Anmeldung mit Google fehlgeschlagen',
         },
         enterPassword: {
-          fr: 'Veuillez entrer votre mot de passe',
+          fr: 'Veuillez entrer ton mot de passe',
           en: 'Please enter your password',
           nl: 'Voer je wachtwoord in',
           de: 'Bitte geben Sie Ihr Passwort ein',
@@ -5594,7 +5594,7 @@ export const translations = {
         de: 'Passwort bestätigen',
       },
       confirmPasswordPlaceholder: {
-        fr: 'Confirmez votre mot de passe',
+        fr: 'Confirmez ton mot de passe',
         en: 'Confirm your password',
         nl: 'Bevestig je wachtwoord',
         de: 'Bestätigen Sie Ihr Passwort',
@@ -5618,7 +5618,7 @@ export const translations = {
         de: 'Suchender',
       },
       owner: {
-        fr: 'Lister un bien',
+        fr: 'Lister une résidence',
         en: 'List property',
         nl: 'Lijst eigendom',
         de: 'Immobilie listen',
@@ -5758,13 +5758,13 @@ export const translations = {
         de: 'Konto erstellen...',
       },
       haveAccount: {
-        fr: 'Vous avez déjà un compte ?',
+        fr: 'Tu as déjà un compte ?',
         en: 'Already have an account?',
         nl: 'Heb je al een account?',
         de: 'Haben Sie bereits ein Konto?',
       },
       hasAccount: {
-        fr: 'Vous avez déjà un compte ?',
+        fr: 'Tu as déjà un compte ?',
         en: 'Already have an account?',
         nl: 'Heb je al een account?',
         de: 'Haben Sie bereits ein Konto?',
@@ -5819,13 +5819,13 @@ export const translations = {
           de: 'Diese E-Mail ist bereits registriert',
         },
         emailExists: {
-          fr: 'Cet e-mail est déjà utilisé. Essayez de vous connecter.',
+          fr: 'Cet e-mail est déjà utilisé. Essayez de te connecter.',
           en: 'This email is already in use. Try logging in.',
           nl: 'Dit e-mailadres is al in gebruik. Probeer in te loggen.',
           de: 'Diese E-Mail wird bereits verwendet. Versuchen Sie sich anzumelden.',
         },
         tryLogin: {
-          fr: 'Veuillez essayer de vous connecter à la place',
+          fr: 'Essaie de te connecter à la place',
           en: 'Please try logging in instead',
           nl: 'Probeer in plaats daarvan in te loggen',
           de: 'Bitte versuchen Sie stattdessen sich anzumelden',
@@ -5845,7 +5845,7 @@ export const translations = {
           de: 'Konto erfolgreich erstellt!',
         },
         checkEmail: {
-          fr: 'Veuillez vérifier votre e-mail pour valider votre compte',
+          fr: 'Vérifie ton e-mail pour valider ton compte',
           en: 'Please check your email to verify your account',
           nl: 'Controleer je e-mail om je account te verifiëren',
           de: 'Bitte überprüfen Sie Ihre E-Mail, um Ihr Konto zu verifizieren',
@@ -5885,13 +5885,13 @@ export const translations = {
           de: 'Eingeladen von {name} - 1 Monat gratis!',
         },
         referredBy: {
-          fr: 'Parrainé par {name} ! Vous recevrez 1 mois gratuit après avoir complété votre profil.',
+          fr: 'Parrainé par {name} ! Tu recevras 1 mois gratuit après avoir complété ton profil.',
           en: 'Referred by {name}! You\'ll receive 1 free month after completing your profile.',
           nl: 'Verwezen door {name}! Je ontvangt 1 gratis maand na het voltooien van je profiel.',
           de: 'Empfohlen von {name}! Sie erhalten 1 Gratismonat nach Abschluss Ihres Profils.',
         },
         successMessage: {
-          fr: 'Parrainé par {name} ! Vous recevrez 1 mois gratuit après avoir complété votre profil.',
+          fr: 'Parrainé par {name} ! Tu recevras 1 mois gratuit après avoir complété ton profil.',
           en: 'Referred by {name}! You\'ll receive 1 free month after completing your profile.',
           nl: 'Verwezen door {name}! Je ontvangt 1 gratis maand na het voltooien van je profiel.',
           de: 'Empfohlen von {name}! Sie erhalten 1 Gratismonat nach Abschluss Ihres Profils.',
@@ -5914,7 +5914,7 @@ export const translations = {
         de: 'Passwort vergessen?',
       },
       subtitle: {
-        fr: 'Pas de souci ! Entrez votre e-mail et nous vous enverrons les instructions',
+        fr: 'Pas de souci ! Entrez ton e-mail et nous t'enverrons les instructions',
         en: 'No worries! Enter your email and we\'ll send you reset instructions',
         nl: 'Geen zorgen! Voer je e-mail in en we sturen je reset-instructies',
         de: 'Keine Sorge! Geben Sie Ihre E-Mail ein und wir senden Ihnen Anweisungen zum Zurücksetzen',
@@ -5950,7 +5950,7 @@ export const translations = {
         de: 'Zurück zur Anmeldung',
       },
       rememberPassword: {
-        fr: 'Vous vous souvenez de votre mot de passe ?',
+        fr: 'Tu te souviens de ton mot de passe ?',
         en: 'Remember your password?',
         nl: 'Weet je je wachtwoord nog?',
         de: 'Erinnern Sie sich an Ihr Passwort?',
@@ -5963,7 +5963,7 @@ export const translations = {
       },
       success: {
         title: {
-          fr: 'Vérifiez votre e-mail',
+          fr: 'Vérifiez ton e-mail',
           en: 'Check Your Email',
           nl: 'Controleer je e-mail',
           de: 'Überprüfen Sie Ihre E-Mail',
@@ -6031,7 +6031,7 @@ export const translations = {
           de: 'Link zum Zurücksetzen des Passworts gesendet!',
         },
         checkEmailDescription: {
-          fr: 'Vérifiez votre e-mail pour plus d\'instructions',
+          fr: 'Vérifiez ton e-mail pour plus d\'instructions',
           en: 'Check your email for further instructions',
           nl: 'Controleer je e-mail voor verdere instructies',
           de: 'Überprüfen Sie Ihre E-Mail für weitere Anweisungen',
@@ -6203,7 +6203,7 @@ export const translations = {
           de: 'Passwort aktualisiert!',
         },
         description: {
-          fr: 'Votre mot de passe a été mis à jour avec succès. Vous pouvez maintenant vous connecter avec votre nouveau mot de passe.',
+          fr: 'Ton mot de passe a été mis à jour avec succès. Tu peux maintenant te connecter avec ton nouveau mot de passe.',
           en: 'Your password has been successfully updated. You can now log in with your new password.',
           nl: 'Je wachtwoord is succesvol bijgewerkt. Je kunt nu inloggen met je nieuwe wachtwoord.',
           de: 'Ihr Passwort wurde erfolgreich aktualisiert. Sie können sich jetzt mit Ihrem neuen Passwort anmelden.',
@@ -6267,7 +6267,7 @@ export const translations = {
           de: 'Passwort erfolgreich aktualisiert!',
         },
         successDescription: {
-          fr: 'Vous pouvez maintenant vous connecter avec votre nouveau mot de passe',
+          fr: 'Tu peux maintenant te connecter avec ton nouveau mot de passe',
           en: 'You can now log in with your new password',
           nl: 'Je kunt nu inloggen met je nieuwe wachtwoord',
           de: 'Sie können sich jetzt mit Ihrem neuen Passwort anmelden',
@@ -6278,7 +6278,7 @@ export const translations = {
     // Complete Signup Page
     completeSignup: {
       processing: {
-        fr: 'Finalisation de votre inscription...',
+        fr: 'Finalisation de ton inscription...',
         en: 'Completing your signup...',
         nl: 'Je registratie voltooien...',
         de: 'Ihre Anmeldung abschließen...',
@@ -6314,7 +6314,7 @@ export const translations = {
         de: 'E-Mail verifiziert!',
       },
       description: {
-        fr: 'Votre adresse e-mail a été vérifiée avec succès. Vous avez maintenant accès complet à votre compte Izzico.',
+        fr: 'Votre adresse e-mail a été vérifiée avec succès. Tu as maintenant accès complet à ton compte Izzico.',
         en: 'Your email address has been successfully verified. You now have full access to your Izzico account.',
         nl: 'Je e-mailadres is succesvol geverifieerd. Je hebt nu volledige toegang tot je Izzico-account.',
         de: 'Ihre E-Mail-Adresse wurde erfolgreich verifiziert. Sie haben jetzt vollen Zugriff auf Ihr Izzico-Konto.',
@@ -6338,7 +6338,7 @@ export const translations = {
         de: 'Sekunde',
       },
       clickHere: {
-        fr: 'Cliquez ici si vous n\'êtes pas redirigé',
+        fr: 'Clique ici si tu n\'êtes pas redirigé',
         en: 'Click here if not redirected',
         nl: 'Klik hier als je niet wordt doorverwezen',
         de: 'Klicken Sie hier, wenn Sie nicht weitergeleitet werden',
@@ -6360,7 +6360,7 @@ export const translations = {
         de: 'E-Mail verifiziert!',
       },
       description: {
-        fr: 'Votre adresse e-mail a été vérifiée avec succès. Vous avez maintenant accès complet à votre compte Izzico.',
+        fr: 'Votre adresse e-mail a été vérifiée avec succès. Tu as maintenant accès complet à ton compte Izzico.',
         en: 'Your email address has been successfully verified. You now have full access to your Izzico account.',
         nl: 'Je e-mailadres is succesvol geverifieerd. Je hebt nu volledige toegang tot je Izzico-account.',
         de: 'Ihre E-Mail-Adresse wurde erfolgreich verifiziert. Sie haben jetzt vollen Zugriff auf Ihr Izzico-Konto.',
@@ -6384,7 +6384,7 @@ export const translations = {
         de: 'Sekunde',
       },
       clickHere: {
-        fr: 'Cliquez ici si vous n\'êtes pas redirigé',
+        fr: 'Clique ici si tu n\'êtes pas redirigé',
         en: 'Click here if not redirected',
         nl: 'Klik hier als je niet wordt doorverwezen',
         de: 'Klicken Sie hier, wenn Sie nicht weitergeleitet werden',
@@ -6400,7 +6400,7 @@ export const translations = {
         de: 'Willkommen bei Izzico!',
       },
       subtitle: {
-        fr: 'Parlez-nous de vous pour commencer',
+        fr: 'Parle-nous de toi pour commencer',
         en: 'Tell us about yourself to get started',
         nl: 'Vertel ons over jezelf om te beginnen',
         de: 'Erzählen Sie uns von sich, um zu beginnen',
@@ -6418,7 +6418,7 @@ export const translations = {
         de: 'Suchender',
       },
       searcherDescription: {
-        fr: 'Je cherche un espace de coliving ou des colocataires',
+        fr: 'Je cherche un espace de coliving ou des résidents',
         en: 'Looking for a coliving space or roommates',
         nl: 'Op zoek naar een coliving ruimte of huisgenoten',
         de: 'Auf der Suche nach einem Coliving-Raum oder Mitbewohnern',
@@ -6430,7 +6430,7 @@ export const translations = {
         de: 'Eigentümer',
       },
       ownerDescription: {
-        fr: 'J\'ai un bien à lister ou gérer',
+        fr: 'J\'ai une résidence à lister ou gérer',
         en: 'I have a property to list or manage',
         nl: 'Ik heb een eigendom om te vermelden of te beheren',
         de: 'Ich habe eine Immobilie zum Auflisten oder Verwalten',
@@ -6454,14 +6454,14 @@ export const translations = {
         de: 'Fortfahren',
       },
       settingUp: {
-        fr: 'Configuration de votre compte...',
+        fr: 'Configuration de ton compte...',
         en: 'Setting up your account...',
         nl: 'Je account instellen...',
         de: 'Ihr Konto wird eingerichtet...',
       },
       errors: {
         loginRequired: {
-          fr: 'Veuillez vous connecter pour continuer',
+          fr: 'Connecte-toi pour continuer',
           en: 'Please log in to continue',
           nl: 'Log in om door te gaan',
           de: 'Bitte melden Sie sich an, um fortzufahren',
@@ -6508,7 +6508,7 @@ export const translations = {
         de: 'Über ',
       },
       subtitle: {
-        fr: 'Nous révolutionnons la recherche de colocation à Bruxelles avec une plateforme moderne, sécurisée et intelligente qui connecte les bonnes personnes au bon moment.',
+        fr: 'Nous révolutionnons la recherche de co-living à Bruxelles avec une plateforme moderne, sécurisée et intelligente qui connecte les bonnes personnes au bon moment.',
         en: 'We are revolutionizing roommate search in Brussels with a modern, secure, and intelligent platform that connects the right people at the right time.',
         nl: 'Wij revolutioneren het zoeken naar huisgenoten in Brussel met een modern, veilig en intelligent platform dat de juiste mensen op het juiste moment verbindt.',
         de: 'Wir revolutionieren die Mitbewohnersuche in Brüssel mit einer modernen, sicheren und intelligenten Plattform, die die richtigen Menschen zur richtigen Zeit verbindet.',
@@ -6520,7 +6520,7 @@ export const translations = {
         de: 'Kostenlos beitreten',
       },
       browseListings: {
-        fr: 'Explorer les annonces',
+        fr: 'Explorer les résidences',
         en: 'Browse listings',
         nl: 'Bekijk advertenties',
         de: 'Anzeigen durchsuchen',
@@ -6534,31 +6534,31 @@ export const translations = {
         de: 'Unsere Mission',
       },
       title: {
-        fr: 'Simplifier la vie en colocation',
+        fr: 'Simplifier la vie en co-living',
         en: 'Simplifying shared living',
         nl: 'Het samenwonen vereenvoudigen',
         de: 'Gemeinsames Wohnen vereinfachen',
       },
       description1: {
-        fr: 'Chercher une colocation peut être stressant, chronophage et frustrant. Nous avons créé Izzico pour transformer cette expérience en quelque chose de simple, rapide et même agréable.',
+        fr: 'Chercher une co-living peut être stressant, chronophage et frustrant. Nous avons créé Izzico pour transformer cette expérience en quelque chose de simple, rapide et même agréable.',
         en: 'Searching for a shared home can be stressful, time-consuming, and frustrating. We created Izzico to transform this experience into something simple, fast, and even enjoyable.',
         nl: 'Het zoeken naar een gedeelde woning kan stressvol, tijdrovend en frustrerend zijn. We hebben Izzico gemaakt om deze ervaring om te zetten in iets eenvoudigs, snels en zelfs aangenaams.',
         de: 'Die Suche nach einer WG kann stressig, zeitaufwendig und frustrierend sein. Wir haben Izzico geschaffen, um diese Erfahrung in etwas Einfaches, Schnelles und sogar Angenehmes zu verwandeln.',
       },
       description2: {
-        fr: 'Notre algorithme de matching intelligent analyse tes préférences, ton style de vie et ta personnalité pour te connecter avec des colocataires vraiment compatibles.',
+        fr: 'Notre algorithme de matching intelligent analyse tes préférences, ton style de vie et ta personnalité pour te connecter avec des résidents vraiment compatibles.',
         en: 'Our intelligent matching algorithm analyzes your preferences, lifestyle, and personality to connect you with truly compatible roommates.',
         nl: 'Ons intelligente matching-algoritme analyseert je voorkeuren, levensstijl en persoonlijkheid om je te verbinden met echt compatibele huisgenoten.',
         de: 'Unser intelligenter Matching-Algorithmus analysiert deine Präferenzen, deinen Lebensstil und deine Persönlichkeit, um dich mit wirklich kompatiblen Mitbewohnern zu verbinden.',
       },
       successTitle: {
-        fr: 'Des milliers de matchs réussis',
+        fr: 'Des milliers de Living Matchs réussis',
         en: 'Thousands of successful matches',
         nl: 'Duizenden succesvolle matches',
         de: 'Tausende erfolgreiche Matches',
       },
       successDescription: {
-        fr: 'Chaque jour, nous aidons des personnes à trouver leur coloc idéale',
+        fr: 'Chaque jour, nous aidons des personnes à trouver leur co-living idéale',
         en: 'Every day, we help people find their ideal roommate',
         nl: 'Elke dag helpen we mensen hun ideale huisgenoot te vinden',
         de: 'Jeden Tag helfen wir Menschen, ihren idealen Mitbewohner zu finden',
@@ -6585,8 +6585,8 @@ export const translations = {
           de: 'Sicherheit & Vertrauen',
         },
         description: {
-          fr: 'Vérification d\'identité et annonces contrôlées pour une expérience sûre et fiable.',
-          en: 'Identity verification and controlled listings for a safe and reliable experience.',
+          fr: 'Vérification d\'identité et résidences contrôlées pour une expérience sûre et fiable.',
+          en: 'Identity verification and controlled residences for a safe and reliable experience.',
           nl: 'Identiteitsverificatie en gecontroleerde advertenties voor een veilige en betrouwbare ervaring.',
           de: 'Identitätsprüfung und kontrollierte Anzeigen für ein sicheres und zuverlässiges Erlebnis.',
         },
@@ -6599,7 +6599,7 @@ export const translations = {
           de: 'Gemeinschaft',
         },
         description: {
-          fr: 'Créer des connexions authentiques entre colocataires compatibles.',
+          fr: 'Créer des connexions authentiques entre résidents compatibles.',
           en: 'Creating authentic connections between compatible roommates.',
           nl: 'Het creëren van authentieke connecties tussen compatibele huisgenoten.',
           de: 'Authentische Verbindungen zwischen kompatiblen Mitbewohnern schaffen.',
@@ -6627,7 +6627,7 @@ export const translations = {
           de: 'Innovation',
         },
         description: {
-          fr: 'Algorithme de matching intelligent pour trouver ta coloc idéale.',
+          fr: 'Algorithme de matching intelligent pour trouver ton co-living idéale.',
           en: 'Intelligent matching algorithm to find your ideal roommate.',
           nl: 'Intelligent matching-algoritme om je ideale huisgenoot te vinden.',
           de: 'Intelligenter Matching-Algorithmus, um deinen idealen Mitbewohner zu finden.',
@@ -6654,7 +6654,7 @@ export const translations = {
         de: 'Aktive Nutzer',
       },
       colivingsCreated: {
-        fr: 'Colocations créées',
+        fr: 'Co-livings créées',
         en: 'Colivings created',
         nl: 'Samenwoningen gecreëerd',
         de: 'Erstellte WGs',
@@ -6764,7 +6764,7 @@ export const translations = {
         de: 'Wie Izzico entstand',
       },
       paragraph1: {
-        fr: 'Tout a commencé en 2023 quand Marie et Thomas, deux amis de longue date, ont partagé leurs frustrations respectives concernant la recherche de colocation à Bruxelles. Entre les annonces douteuses, les incompatibilités de personnalité et les processus archaïques, ils ont réalisé qu\'il fallait une solution moderne.',
+        fr: 'Tout a commencé en 2023 quand Marie et Thomas, deux amis de longue date, ont partagé leurs frustrations respectives concernant la recherche de co-living à Bruxelles. Entre les résidences douteuses, les incompatibilités de personnalité et les processus archaïques, ils ont réalisé qu\'il fallait une solution moderne.',
         en: 'It all started in 2023 when Marie and Thomas, long-time friends, shared their frustrations about searching for roommates in Brussels. Between dubious listings, personality incompatibilities, and archaic processes, they realized a modern solution was needed.',
         nl: 'Het begon allemaal in 2023 toen Marie en Thomas, al lang bevriend, hun frustraties deelden over het zoeken naar huisgenoten in Brussel. Tussen dubieuze advertenties, persoonlijkheidsincompatibiliteiten en archaïsche processen, realiseerden ze zich dat er een moderne oplossing nodig was.',
         de: 'Alles begann 2023, als Marie und Thomas, langjährige Freunde, ihre Frustrationen über die Mitbewohnersuche in Brüssel teilten. Zwischen dubiosen Anzeigen, Persönlichkeitsinkompatibilitäten und veralteten Prozessen erkannten sie, dass eine moderne Lösung benötigt wurde.',
@@ -6776,7 +6776,7 @@ export const translations = {
         de: 'Mit ihrer kombinierten Erfahrung in Tech und Design beschlossen sie, die Plattform zu schaffen, von der sie geträumt hatten: eine Lösung, die künstliche Intelligenz nutzt, um die richtigen Menschen zusammenzubringen, Identitäten für mehr Sicherheit überprüft und den Prozess so einfach wie möglich macht.',
       },
       paragraph3: {
-        fr: 'Aujourd\'hui, Izzico aide des milliers de personnes à trouver leur colocation idéale chaque mois. Notre équipe grandit, notre technologie s\'améliore, mais notre mission reste la même : simplifier la vie en colocation pour tous.',
+        fr: 'Aujourd\'hui, Izzico aide des milliers de personnes à trouver leur co-living idéale chaque mois. Notre équipe grandit, notre technologie s\'améliore, mais notre mission reste la même : simplifier la vie en co-living pour tous.',
         en: 'Today, Izzico helps thousands of people find their ideal coliving every month. Our team grows, our technology improves, but our mission remains the same: simplifying shared living for everyone.',
         nl: 'Vandaag helpt Izzico elke maand duizenden mensen hun ideale samenwoning te vinden. Ons team groeit, onze technologie verbetert, maar onze missie blijft hetzelfde: het samenwonen voor iedereen vereenvoudigen.',
         de: 'Heute hilft Izzico jeden Monat Tausenden von Menschen, ihr ideales WG-Leben zu finden. Unser Team wächst, unsere Technologie verbessert sich, aber unsere Mission bleibt dieselbe: das gemeinsame Wohnen für alle zu vereinfachen.',
@@ -6790,7 +6790,7 @@ export const translations = {
         de: 'Bereit, dem Abenteuer beizutreten?',
       },
       subtitle: {
-        fr: 'Inscris-toi gratuitement et trouve ta colocation idéale dès aujourd\'hui',
+        fr: 'Inscris-toi gratuitement et trouve ta co-living idéale dès aujourd\'hui',
         en: 'Sign up for free and find your ideal roommate today',
         nl: 'Meld je gratis aan en vind vandaag nog je ideale huisgenoot',
         de: 'Melde dich kostenlos an und finde noch heute deinen idealen Mitbewohner',
@@ -6802,7 +6802,7 @@ export const translations = {
         de: 'Mein kostenloses Konto erstellen',
       },
       browseListings: {
-        fr: 'Explorer les annonces',
+        fr: 'Explorer les résidences',
         en: 'Browse listings',
         nl: 'Bekijk advertenties',
         de: 'Anzeigen durchsuchen',
@@ -6828,13 +6828,13 @@ export const translations = {
         de: 'Schneller vermieten, mehr verdienen, weniger Stress',
       },
       subtitle: {
-        fr: 'La plateforme moderne pour gérer tes colocations. Matching intelligent, gestion simplifiée, revenus optimisés.',
+        fr: 'La plateforme moderne pour gérer tes co-livings. Matching intelligent, gestion simplifiée, revenus optimisés.',
         en: 'The modern platform to manage your shared housing. Smart matching, simplified management, optimized income.',
         nl: 'Het moderne platform om je gedeelde woningen te beheren. Slimme matching, vereenvoudigd beheer, geoptimaliseerde inkomsten.',
         de: 'Die moderne Plattform zur Verwaltung deiner WGs. Intelligentes Matching, vereinfachte Verwaltung, optimierte Einnahmen.',
       },
       listProperty: {
-        fr: 'Lister mon bien gratuitement',
+        fr: 'Lister ma résidence gratuitement',
         en: 'List my property for free',
         nl: 'Mijn woning gratis adverteren',
         de: 'Meine Immobilie kostenlos inserieren',
@@ -6892,7 +6892,7 @@ export const translations = {
         de: 'Warum Izzico wählen?',
       },
       subtitle: {
-        fr: 'Tout ce dont tu as besoin pour gérer tes colocations comme un pro',
+        fr: 'Tout ce dont tu as besoin pour gérer tes co-livings comme un pro',
         en: 'Everything you need to manage your shared housing like a pro',
         nl: 'Alles wat je nodig hebt om je gedeelde woningen als een pro te beheren',
         de: 'Alles was du brauchst, um deine WGs wie ein Profi zu verwalten',
@@ -6913,7 +6913,7 @@ export const translations = {
       },
       verifiedTenants: {
         title: {
-          fr: 'Locataires vérifiés',
+          fr: 'Résidents vérifiés',
           en: 'Verified tenants',
           nl: 'Geverifieerde huurders',
           de: 'Verifizierte Mieter',
@@ -6947,7 +6947,7 @@ export const translations = {
           de: 'Intelligentes Matching',
         },
         description: {
-          fr: 'Notre IA trouve les meilleurs candidats selon tes critères et le profil de ta coloc.',
+          fr: 'Notre IA trouve les meilleurs candidats selon tes critères et le profil de ton co-living.',
           en: 'Our AI finds the best candidates based on your criteria and your coliving profile.',
           nl: 'Onze AI vindt de beste kandidaten op basis van je criteria en je samenwoningsprofiel.',
           de: 'Unsere KI findet die besten Kandidaten basierend auf deinen Kriterien und deinem WG-Profil.',
@@ -6991,7 +6991,7 @@ export const translations = {
       },
       optimizedListings: {
         title: {
-          fr: 'Annonces optimisées',
+          fr: 'Résidences optimisées',
           en: 'Optimized listings',
           nl: 'Geoptimaliseerde advertenties',
           de: 'Optimierte Anzeigen',
@@ -7061,13 +7061,13 @@ export const translations = {
       },
       jean: {
         role: {
-          fr: 'Propriétaire de 3 colocations',
+          fr: 'Propriétaire de 3 co-livings',
           en: 'Owner of 3 colivings',
           nl: 'Eigenaar van 3 samenwoningen',
           de: 'Eigentümer von 3 WGs',
         },
         quote: {
-          fr: 'Izzico a transformé ma façon de gérer mes biens. Je gagne 10h par semaine et mes revenus ont augmenté de 15%!',
+          fr: 'Izzico a transformé ma façon de gérer mes résidences. Je gagne 10h par semaine et mes revenus ont augmenté de 15%!',
           en: 'Izzico has transformed the way I manage my properties. I save 10 hours per week and my income increased by 15%!',
           nl: 'Izzico heeft de manier waarop ik mijn woningen beheer veranderd. Ik bespaar 10 uur per week en mijn inkomen is met 15% gestegen!',
           de: 'Izzico hat die Art verändert, wie ich meine Immobilien verwalte. Ich spare 10 Stunden pro Woche und mein Einkommen ist um 15% gestiegen!',
@@ -7081,7 +7081,7 @@ export const translations = {
           de: 'Immobilieninvestorin',
         },
         quote: {
-          fr: 'Le matching intelligent est incroyable. Fini les mauvaises surprises, tous mes locataires sont compatibles!',
+          fr: 'Le matching intelligent est incroyable. Fini les mauvaises surprises, tous mes résidents sont compatibles!',
           en: 'The smart matching is incredible. No more bad surprises, all my tenants are compatible!',
           nl: 'De slimme matching is ongelooflijk. Geen vervelende verrassingen meer, al mijn huurders zijn compatibel!',
           de: 'Das intelligente Matching ist unglaublich. Keine bösen Überraschungen mehr, alle meine Mieter sind kompatibel!',
@@ -7124,7 +7124,7 @@ export const translations = {
         },
         features: {
           unlimitedListings: {
-            fr: 'Annonces illimitées',
+            fr: 'Résidences illimitées',
             en: 'Unlimited listings',
             nl: 'Onbeperkte advertenties',
             de: 'Unbegrenzte Anzeigen',
@@ -7418,7 +7418,7 @@ export const translations = {
     },
     features: {
       includedInSubscription: {
-        fr: 'Inclus dans votre abonnement',
+        fr: 'Inclus dans ton abonnement',
         en: 'Included in your subscription',
         nl: 'Inbegrepen in je abonnement',
         de: 'In Ihrem Abonnement enthalten',
@@ -7431,7 +7431,7 @@ export const translations = {
           de: 'Multi-Immobilien-Verwaltung',
         },
         advancedMatching: {
-          fr: 'Matching avancé colocataires',
+          fr: 'Matching avancé résidents',
           en: 'Advanced roommate matching',
           nl: 'Geavanceerde huisgenoot matching',
           de: 'Erweitertes Mitbewohner-Matching',
@@ -7469,7 +7469,7 @@ export const translations = {
           de: 'Verifiziertes & sichtbares Profil',
         },
         colivingMatching: {
-          fr: 'Matching de colocations',
+          fr: 'Matching de co-livings',
           en: 'Coliving matching',
           nl: 'Samenwoning matching',
           de: 'WG-Matching',
@@ -7529,7 +7529,7 @@ export const translations = {
           de: 'Flexible Stornierung',
         },
         description: {
-          fr: 'Annulez quand vous voulez',
+          fr: 'Annulez quand tu veux',
           en: 'Cancel anytime you want',
           nl: 'Annuleer wanneer je wilt',
           de: 'Jederzeit kündbar',
@@ -7564,7 +7564,7 @@ export const translations = {
         de: 'Abonnement abschließen',
       },
       subtitle: {
-        fr: 'Entrez vos informations de paiement ci-dessous',
+        fr: 'Entrez tes informations de paiement ci-dessous',
         en: 'Enter your payment information below',
         nl: 'Voer hieronder je betalingsgegevens in',
         de: 'Geben Sie unten Ihre Zahlungsinformationen ein',
@@ -7644,7 +7644,7 @@ export const translations = {
             de: 'Intelligentes Matching',
           },
           description: {
-            fr: 'Trouvez votre colocation idéale grâce à notre algorithme de compatibilité',
+            fr: 'Trouvez votre co-living idéale grâce à notre algorithme de compatibilité',
             en: 'Find your ideal coliving through our compatibility algorithm',
             nl: 'Vind je ideale samenwoning via ons compatibiliteitsalgoritme',
             de: 'Finden Sie Ihre ideale WG durch unseren Kompatibilitätsalgorithmus',
@@ -7658,7 +7658,7 @@ export const translations = {
             de: 'Echtzeit-Benachrichtigungen',
           },
           description: {
-            fr: 'Soyez notifié instantanément dès qu\'une propriété correspond à vos critères',
+            fr: 'Soyez notifié instantanément dès qu\'une propriété correspond à tes critères',
             en: 'Get notified instantly when a property matches your criteria',
             nl: 'Word direct op de hoogte gesteld wanneer een woning aan je criteria voldoet',
             de: 'Werden Sie sofort benachrichtigt, wenn eine Immobilie Ihren Kriterien entspricht',
@@ -7692,13 +7692,13 @@ export const translations = {
         },
         success: {
           title: {
-            fr: '✅ Merci ! Vous êtes sur la liste !',
+            fr: '✅ Merci ! Tu es sur la liste !',
             en: '✅ Thanks! You\'re on the list!',
             nl: '✅ Bedankt! Je staat op de lijst!',
             de: '✅ Danke! Sie sind auf der Liste!',
           },
           message: {
-            fr: 'Nous vous contacterons dès l\'ouverture de la marketplace.',
+            fr: 'Nous te contacterons dès l\'ouverture de la marketplace.',
             en: 'We\'ll contact you as soon as the marketplace opens.',
             nl: 'We nemen contact met je op zodra de marktplaats opent.',
             de: 'Wir kontaktieren Sie, sobald der Marktplatz öffnet.',
@@ -7719,7 +7719,7 @@ export const translations = {
           de: 'Eine Immobilie Verwalten (Eigentümer)',
         },
         resident: {
-          fr: 'Gérer ma Colocation (Resident)',
+          fr: 'Gérer ma Co-living (Resident)',
           en: 'Manage my Coliving (Resident)',
           nl: 'Mijn Samenwoning Beheren (Bewoner)',
           de: 'Meine WG Verwalten (Bewohner)',
@@ -7742,7 +7742,7 @@ export const translations = {
     },
     loadingView: {
       loadingMessages: {
-        fr: 'Chargement de vos messages',
+        fr: 'Chargement de tes messages',
         en: 'Loading your messages',
         nl: 'Je berichten laden',
         de: 'Ihre Nachrichten werden geladen',
@@ -7870,7 +7870,7 @@ export const translations = {
         de: 'Ablehnen',
       },
       acceptSuccess: {
-        fr: 'Invitation acceptée ! Bienvenue dans la colocation.',
+        fr: 'Invitation acceptée ! Bienvenue dans la co-living.',
         en: 'Invitation accepted! Welcome to the coliving.',
         nl: 'Uitnodiging geaccepteerd! Welkom in de samenwoning.',
         de: 'Einladung angenommen! Willkommen in der WG.',
@@ -7938,7 +7938,7 @@ export const translations = {
         de: 'Keine gespeicherten Suchen',
       },
       saveHint: {
-        fr: 'Sauvegardez vos recherches pour y accéder rapidement plus tard',
+        fr: 'Sauvegardez tes recherches pour y accéder rapidement plus tard',
         en: 'Save your searches for quick access later',
         nl: 'Sla je zoekopdrachten op voor snelle toegang later',
         de: 'Speichern Sie Ihre Suchen für schnellen Zugriff später',
@@ -8124,7 +8124,7 @@ export const translations = {
         de: 'Titel (optional)',
       },
       titlePlaceholder: {
-        fr: 'Résumez votre expérience',
+        fr: 'Résumez ton expérience',
         en: 'Summarize your experience',
         nl: 'Vat je ervaring samen',
         de: 'Fassen Sie Ihre Erfahrung zusammen',
@@ -8136,7 +8136,7 @@ export const translations = {
         de: 'Ihre Bewertung (optional)',
       },
       reviewPlaceholder: {
-        fr: 'Partagez votre expérience avec les futurs locataires...',
+        fr: 'Partagez ton expérience avec les futurs résidents...',
         en: 'Share your experience with future tenants...',
         nl: 'Deel je ervaring met toekomstige huurders...',
         de: 'Teilen Sie Ihre Erfahrung mit zukünftigen Mietern...',
@@ -8184,7 +8184,7 @@ export const translations = {
         de: 'Sie müssen in dieser Immobilie gewohnt haben, um eine Bewertung zu hinterlassen',
       },
       alreadyReviewed: {
-        fr: 'Vous avez déjà laissé un avis pour cette propriété',
+        fr: 'Tu as déjà laissé un avis pour cette propriété',
         en: 'You have already left a review for this property',
         nl: 'Je hebt al een beoordeling voor deze woning achtergelaten',
         de: 'Sie haben bereits eine Bewertung für diese Immobilie hinterlassen',
@@ -8251,13 +8251,13 @@ export const translations = {
         de: 'Datenschutzerklärung',
       },
       subtitle: {
-        fr: 'Comment nous collectons, utilisons et protégeons vos données personnelles',
+        fr: 'Comment nous collectons, utilisons et protégeons tes données personnelles',
         en: 'How we collect, use and protect your personal data',
         nl: 'Hoe we uw persoonlijke gegevens verzamelen, gebruiken en beschermen',
         de: 'Wie wir Ihre personenbezogenen Daten erfassen, verwenden und schützen',
       },
       intro: {
-        fr: 'Izzico SPRL/BVBA s\'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos informations personnelles conformément au Règlement Général sur la Protection des Données (RGPD).',
+        fr: 'Izzico SPRL/BVBA s\'engage à protéger votre vie privée. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons tes informations personnelles conformément au Règlement Général sur la Protection des Données (RGPD).',
         en: 'Izzico SPRL/BVBA is committed to protecting your privacy. This privacy policy explains how we collect, use, share and protect your personal information in accordance with the General Data Protection Regulation (GDPR).',
         nl: 'Izzico SPRL/BVBA verbindt zich ertoe uw privacy te beschermen. Dit privacybeleid legt uit hoe we uw persoonlijke informatie verzamelen, gebruiken, delen en beschermen in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG).',
         de: 'Izzico SPRL/BVBA verpflichtet sich, Ihre Privatsphäre zu schützen. Diese Datenschutzerklärung erklärt, wie wir Ihre persönlichen Informationen gemäß der Datenschutz-Grundverordnung (DSGVO) erfassen, verwenden, weitergeben und schützen.',
@@ -8295,7 +8295,7 @@ export const translations = {
           de: 'Kontodaten: Anmeldedaten, Profilpräferenzen',
         },
         preferences: {
-          fr: 'Préférences de colocation : style de vie, habitudes, compatibilité',
+          fr: 'Préférences de co-living : style de vie, habitudes, compatibilité',
           en: 'Flatsharing preferences: lifestyle, habits, compatibility',
           nl: 'Flatshare-voorkeuren: levensstijl, gewoonten, compatibiliteit',
           de: 'WG-Präferenzen: Lebensstil, Gewohnheiten, Kompatibilität',
@@ -8316,7 +8316,7 @@ export const translations = {
           de: '2. Rechtsgrundlage für die Verarbeitung',
         },
         content: {
-          fr: 'Nous traitons vos données sur les bases légales suivantes :',
+          fr: 'Nous traitons tes données sur les bases légales suivantes :',
           en: 'We process your data on the following legal bases:',
           nl: 'We verwerken uw gegevens op de volgende rechtsgronden:',
           de: 'Wir verarbeiten Ihre Daten auf folgenden Rechtsgrundlagen:',
@@ -8355,13 +8355,13 @@ export const translations = {
           de: '3. Datennutzung',
         },
         content: {
-          fr: 'Nous utilisons vos données pour :',
+          fr: 'Nous utilisons tes données pour :',
           en: 'We use your data to:',
           nl: 'We gebruiken uw gegevens om:',
           de: 'Wir verwenden Ihre Daten um:',
         },
         matching: {
-          fr: 'Fournir des services de matching entre colocataires et propriétés',
+          fr: 'Fournir des services de matching entre résidents et propriétés',
           en: 'Provide matching services between flatmates and properties',
           nl: 'Matching-diensten te bieden tussen huisgenoten en eigendommen',
           de: 'Matching-Dienste zwischen Mitbewohnern und Immobilien bereitzustellen',
@@ -8373,7 +8373,7 @@ export const translations = {
           de: 'Ihre Identität zu überprüfen und Betrug zu verhindern',
         },
         communication: {
-          fr: 'Communiquer avec vous concernant votre compte et nos services',
+          fr: 'Communiquer avec toi concernant ton compte et nos services',
           en: 'Communicate with you regarding your account and our services',
           nl: 'Met u te communiceren over uw account en onze diensten',
           de: 'Mit Ihnen über Ihr Konto und unsere Dienste zu kommunizieren',
@@ -8400,7 +8400,7 @@ export const translations = {
           de: '4. Datenspeicherung',
         },
         content: {
-          fr: 'Vos données sont conservées aussi longtemps que nécessaire pour fournir nos services. Les comptes inactifs depuis plus de 3 ans sont archivés. Vous pouvez demander la suppression de vos données à tout moment.',
+          fr: 'Vos données sont conservées aussi longtemps que nécessaire pour fournir nos services. Les comptes inactifs depuis plus de 3 ans sont archivés. Tu peux demander la suppression de tes données à tout moment.',
           en: 'Your data is retained as long as necessary to provide our services. Accounts inactive for more than 3 years are archived. You can request deletion of your data at any time.',
           nl: 'Uw gegevens worden bewaard zolang als nodig is om onze diensten te verlenen. Accounts die langer dan 3 jaar inactief zijn, worden gearchiveerd. U kunt op elk moment verwijdering van uw gegevens aanvragen.',
           de: 'Ihre Daten werden so lange gespeichert, wie es zur Bereitstellung unserer Dienste erforderlich ist. Konten, die länger als 3 Jahre inaktiv sind, werden archiviert. Sie können jederzeit die Löschung Ihrer Daten beantragen.',
@@ -8409,7 +8409,7 @@ export const translations = {
 
       userRights: {
         title: {
-          fr: '5. Vos Droits',
+          fr: '5. Tes Droits',
           en: '5. Your Rights',
           nl: '5. Uw Rechten',
           de: '5. Ihre Rechte',
@@ -8421,25 +8421,25 @@ export const translations = {
           de: 'Gemäß DSGVO haben Sie folgende Rechte:',
         },
         access: {
-          fr: 'Droit d\'accès : obtenir une copie de vos données personnelles',
+          fr: 'Droit d\'accès : obtenir une copie de tes données personnelles',
           en: 'Right of access: obtain a copy of your personal data',
           nl: 'Recht op toegang: een kopie van uw persoonlijke gegevens verkrijgen',
           de: 'Auskunftsrecht: eine Kopie Ihrer personenbezogenen Daten erhalten',
         },
         rectification: {
-          fr: 'Droit de rectification : corriger vos données inexactes',
+          fr: 'Droit de rectification : corriger tes données inexactes',
           en: 'Right to rectification: correct your inaccurate data',
           nl: 'Recht op rectificatie: uw onjuiste gegevens corrigeren',
           de: 'Berichtigungsrecht: Ihre unrichtigen Daten korrigieren',
         },
         erasure: {
-          fr: 'Droit à l\'effacement : demander la suppression de vos données',
+          fr: 'Droit à l\'effacement : demander la suppression de tes données',
           en: 'Right to erasure: request deletion of your data',
           nl: 'Recht op verwijdering: verwijdering van uw gegevens aanvragen',
           de: 'Recht auf Löschung: Löschung Ihrer Daten beantragen',
         },
         portability: {
-          fr: 'Droit à la portabilité : recevoir vos données dans un format structuré',
+          fr: 'Droit à la portabilité : recevoir tes données dans un format structuré',
           en: 'Right to portability: receive your data in a structured format',
           nl: 'Recht op overdraagbaarheid: uw gegevens in een gestructureerd formaat ontvangen',
           de: 'Recht auf Datenübertragbarkeit: Ihre Daten in einem strukturierten Format erhalten',
@@ -8466,7 +8466,7 @@ export const translations = {
           de: '6. Cookies und ähnliche Technologien',
         },
         content: {
-          fr: 'Nous utilisons des cookies pour améliorer votre expérience. Consultez notre Politique Cookies pour plus de détails.',
+          fr: 'Nous utilisons des cookies pour améliorer ton expérience. Consulte notre Politique Cookies pour plus de détails.',
           en: 'We use cookies to improve your experience. See our Cookie Policy for more details.',
           nl: 'We gebruiken cookies om uw ervaring te verbeteren. Zie ons Cookiebeleid voor meer details.',
           de: 'Wir verwenden Cookies, um Ihre Erfahrung zu verbessern. Siehe unsere Cookie-Richtlinie für weitere Details.',
@@ -8481,7 +8481,7 @@ export const translations = {
           de: '7. Datensicherheit',
         },
         content: {
-          fr: 'Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, perte ou destruction. Cela inclut le chiffrement, les pare-feu, les contrôles d\'accès et des audits de sécurité réguliers.',
+          fr: 'Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger tes données contre tout accès non autorisé, perte ou destruction. Cela inclut le chiffrement, les pare-feu, les contrôles d\'accès et des audits de sécurité réguliers.',
           en: 'We implement appropriate technical and organizational measures to protect your data against unauthorized access, loss or destruction. This includes encryption, firewalls, access controls and regular security audits.',
           nl: 'We implementeren passende technische en organisatorische maatregelen om uw gegevens te beschermen tegen ongeautoriseerde toegang, verlies of vernietiging. Dit omvat encryptie, firewalls, toegangscontroles en regelmatige beveiligingsaudits.',
           de: 'Wir setzen angemessene technische und organisatorische Maßnahmen um, um Ihre Daten vor unbefugtem Zugriff, Verlust oder Zerstörung zu schützen. Dies umfasst Verschlüsselung, Firewalls, Zugriffskontrollen und regelmäßige Sicherheitsaudits.',
@@ -8496,7 +8496,7 @@ export const translations = {
           de: '8. Datenweitergabe',
         },
         content: {
-          fr: 'Nous ne partageons vos données qu\'avec :',
+          fr: 'Nous ne partageons tes données qu\'avec :',
           en: 'We only share your data with:',
           nl: 'We delen uw gegevens alleen met:',
           de: 'Wir geben Ihre Daten nur weiter an:',
@@ -8529,7 +8529,7 @@ export const translations = {
           de: '9. Datenschutzbeauftragter',
         },
         content: {
-          fr: 'Pour toute question concernant vos données personnelles ou pour exercer vos droits, contactez notre DPO à :',
+          fr: 'Pour toute question concernant tes données personnelles ou pour exercer tes droits, contactez notre DPO à :',
           en: 'For any questions regarding your personal data or to exercise your rights, contact our DPO at:',
           nl: 'Voor vragen over uw persoonlijke gegevens of om uw rechten uit te oefenen, neem contact op met onze FG op:',
           de: 'Für Fragen zu Ihren personenbezogenen Daten oder zur Ausübung Ihrer Rechte kontaktieren Sie unseren DSB unter:',
@@ -8567,7 +8567,7 @@ export const translations = {
         de: 'Bedingungen für die Nutzung der Izzico-Plattform',
       },
       intro: {
-        fr: 'En utilisant Izzico, vous acceptez les présentes conditions générales d\'utilisation. Veuillez les lire attentivement avant d\'utiliser nos services.',
+        fr: 'En utilisant Izzico, tu acceptes les présentes conditions générales d\'utilisation. Veuillez les lire attentivement avant d\'utiliser nos services.',
         en: 'By using Izzico, you accept these terms of service. Please read them carefully before using our services.',
         nl: 'Door Izzico te gebruiken, accepteert u deze algemene gebruiksvoorwaarden. Lees ze zorgvuldig door voordat u onze diensten gebruikt.',
         de: 'Durch die Nutzung von Izzico akzeptieren Sie diese Allgemeinen Geschäftsbedingungen. Bitte lesen Sie sie sorgfältig durch, bevor Sie unsere Dienste nutzen.',
@@ -8581,7 +8581,7 @@ export const translations = {
           de: '1. Dienstbeschreibung',
         },
         content: {
-          fr: 'Izzico est une plateforme de mise en relation pour la colocation en Belgique. Nous offrons :',
+          fr: 'Izzico est une plateforme de mise en relation pour la co-living en Belgique. Nous offrons :',
           en: 'Izzico is a matching platform for flatsharing in Belgium. We offer:',
           nl: 'Izzico is een matchingplatform voor flatsharing in België. We bieden:',
           de: 'Izzico ist eine Matching-Plattform für WG-Suche in Belgien. Wir bieten:',
@@ -8593,8 +8593,8 @@ export const translations = {
           de: 'Intelligentes Matching zwischen Suchenden und Immobilien',
         },
         verification: {
-          fr: 'Vérification d\'identité et d\'annonces',
-          en: 'Identity and listing verification',
+          fr: 'Vérification d\'identité et de résidences',
+          en: 'Identity and residence verification',
           nl: 'Identiteits- en advertentieverificatie',
           de: 'Identitäts- und Anzeigenverifizierung',
         },
@@ -8620,7 +8620,7 @@ export const translations = {
           de: '2. Berechtigung',
         },
         content: {
-          fr: 'Pour utiliser Izzico, vous devez :',
+          fr: 'Pour utiliser Izzico, tu dois :',
           en: 'To use Izzico, you must:',
           nl: 'Om Izzico te gebruiken, moet u:',
           de: 'Um Izzico zu nutzen, müssen Sie:',
@@ -8677,13 +8677,13 @@ export const translations = {
           de: 'Andere Nutzer zu respektieren',
         },
         noScam: {
-          fr: 'Ne pas publier d\'annonces frauduleuses',
-          en: 'Not post fraudulent listings',
+          fr: 'Ne pas publier de résidences frauduleuses',
+          en: 'Not post fraudulent residences',
           nl: 'Geen frauduleuze advertenties te plaatsen',
           de: 'Keine betrügerischen Anzeigen zu veröffentlichen',
         },
         security: {
-          fr: 'Maintenir la sécurité de votre compte',
+          fr: 'Maintenir la sécurité de ton compte',
           en: 'Maintain the security of your account',
           nl: 'De beveiliging van uw account te handhaven',
           de: 'Die Sicherheit Ihres Kontos zu wahren',
@@ -8725,7 +8725,7 @@ export const translations = {
           de: 'Izzico fungiert als Vermittler. Wir sind nicht verantwortlich für:',
         },
         listings: {
-          fr: 'La véracité des annonces publiées par les utilisateurs',
+          fr: 'La véracité des résidences publiées par les utilisateurs',
           en: 'The truthfulness of listings posted by users',
           nl: 'De waarheidsgetrouwheid van advertenties geplaatst door gebruikers',
           de: 'Die Wahrhaftigkeit von Anzeigen, die von Nutzern veröffentlicht werden',
@@ -8764,7 +8764,7 @@ export const translations = {
           de: '6. Kündigung',
         },
         content: {
-          fr: 'Vous pouvez supprimer votre compte à tout moment. Nous nous réservons le droit de suspendre ou fermer votre compte en cas de :',
+          fr: 'Tu peux supprimer ton compte à tout moment. Nous nous réservons le droit de suspendre ou fermer ton compte en cas de :',
           en: 'You can delete your account at any time. We reserve the right to suspend or close your account in case of:',
           nl: 'U kunt uw account op elk moment verwijderen. We behouden ons het recht voor om uw account op te schorten of te sluiten in geval van:',
           de: 'Sie können Ihr Konto jederzeit löschen. Wir behalten uns das Recht vor, Ihr Konto zu sperren oder zu schließen im Falle von:',
@@ -9011,7 +9011,7 @@ export const translations = {
           de: '6. Tätigkeit',
         },
         content: {
-          fr: 'Izzico est une plateforme digitale de mise en relation pour la colocation et le coliving en Belgique. Nous facilitons la recherche de colocataires compatibles et de logements adaptés grâce à des algorithmes de matching intelligents.',
+          fr: 'Izzico est une plateforme digitale de mise en relation pour la co-living et le coliving en Belgique. Nous facilitons la recherche de résidents compatibles et de logements adaptés grâce à des algorithmes de matching intelligents.',
           en: 'Izzico is a digital matching platform for flatsharing and coliving in Belgium. We facilitate the search for compatible flatmates and suitable housing through smart matching algorithms.',
           nl: 'Izzico is een digitaal matchingplatform voor flatsharing en coliving in België. We faciliteren het zoeken naar compatibele huisgenoten en geschikte huisvesting via slimme matching-algoritmen.',
           de: 'Izzico ist eine digitale Matching-Plattform für WG-Suche und Coliving in Belgien. Wir erleichtern die Suche nach kompatiblen Mitbewohnern und geeigneten Unterkünften durch intelligente Matching-Algorithmen.',
@@ -9041,7 +9041,7 @@ export const translations = {
           de: '8. Streitbeilegung',
         },
         content: {
-          fr: 'Conformément à la législation européenne, vous pouvez recourir à la plateforme de résolution des litiges en ligne : https://ec.europa.eu/consumers/odr/',
+          fr: 'Conformément à la législation européenne, tu peux recourir à la plateforme de résolution des litiges en ligne : https://ec.europa.eu/consumers/odr/',
           en: 'In accordance with European legislation, you can use the online dispute resolution platform: https://ec.europa.eu/consumers/odr/',
           nl: 'In overeenstemming met de Europese wetgeving kunt u gebruik maken van het online geschillenbeslechtingsplatform: https://ec.europa.eu/consumers/odr/',
           de: 'Gemäß europäischer Gesetzgebung können Sie die Online-Streitbeilegungsplattform nutzen: https://ec.europa.eu/consumers/odr/',
@@ -9064,7 +9064,7 @@ export const translations = {
         de: 'Wie wir Cookies und ähnliche Technologien verwenden',
       },
       intro: {
-        fr: 'Izzico utilise des cookies et technologies similaires pour améliorer votre expérience sur notre plateforme. Cette politique explique ce que sont les cookies, comment nous les utilisons et comment vous pouvez les gérer.',
+        fr: 'Izzico utilise des cookies et technologies similaires pour améliorer ton expérience sur notre plateforme. Cette politique explique ce que sont les cookies, comment nous les utilisons et comment tu peux les gérer.',
         en: 'Izzico uses cookies and similar technologies to improve your experience on our platform. This policy explains what cookies are, how we use them and how you can manage them.',
         nl: 'Izzico gebruikt cookies en vergelijkbare technologieën om uw ervaring op ons platform te verbeteren. Dit beleid legt uit wat cookies zijn, hoe we ze gebruiken en hoe u ze kunt beheren.',
         de: 'Izzico verwendet Cookies und ähnliche Technologien, um Ihre Erfahrung auf unserer Plattform zu verbessern. Diese Richtlinie erklärt, was Cookies sind, wie wir sie verwenden und wie Sie sie verwalten können.',
@@ -9120,7 +9120,7 @@ export const translations = {
             de: 'Funktionale Cookies',
           },
           content: {
-            fr: 'Améliorent l\'expérience utilisateur en mémorisant vos préférences et choix.',
+            fr: 'Améliorent l\'expérience utilisateur en mémorisant tes préférences et choix.',
             en: 'Improve user experience by remembering your preferences and choices.',
             nl: 'Verbeteren de gebruikerservaring door uw voorkeuren en keuzes te onthouden.',
             de: 'Verbessern das Benutzererlebnis, indem sie Ihre Präferenzen und Wahlmöglichkeiten speichern.',
@@ -9248,31 +9248,31 @@ export const translations = {
 
       management: {
         title: {
-          fr: '5. Gestion de vos Cookies',
+          fr: '5. Gestion de tes Cookies',
           en: '5. Managing Your Cookies',
           nl: '5. Uw Cookies Beheren',
           de: '5. Verwaltung Ihrer Cookies',
         },
         content: {
-          fr: 'Vous pouvez gérer vos préférences de cookies de plusieurs façons :',
+          fr: 'Tu peux gérer tes préférences de cookies de plusieurs façons :',
           en: 'You can manage your cookie preferences in several ways:',
           nl: 'U kunt uw cookievoorkeuren op verschillende manieren beheren:',
           de: 'Sie können Ihre Cookie-Einstellungen auf verschiedene Weise verwalten:',
         },
         banner: {
-          fr: 'Via notre bannière de consentement lors de votre première visite',
+          fr: 'Via notre bannière de consentement lors de ta première visite',
           en: 'Via our consent banner on your first visit',
           nl: 'Via onze toestemmingsbanner bij uw eerste bezoek',
           de: 'Über unser Einwilligungsbanner bei Ihrem ersten Besuch',
         },
         settings: {
-          fr: 'Dans vos paramètres de compte (section Confidentialité)',
+          fr: 'Dans tes paramètres de compte (section Confidentialité)',
           en: 'In your account settings (Privacy section)',
           nl: 'In uw accountinstellingen (Privacy-sectie)',
           de: 'In Ihren Kontoeinstellungen (Datenschutz-Bereich)',
         },
         browser: {
-          fr: 'Dans les paramètres de votre navigateur',
+          fr: 'Dans les paramètres de ton navigateur',
           en: 'In your browser settings',
           nl: 'In uw browserinstellingen',
           de: 'In Ihren Browsereinstellungen',
@@ -9326,7 +9326,7 @@ export const translations = {
           de: '7. Auswirkungen der Ablehnung von Cookies',
         },
         content: {
-          fr: 'Le refus de certains cookies peut impacter votre expérience :',
+          fr: 'Le refus de certains cookies peut impacter ton expérience :',
           en: 'Refusing certain cookies may impact your experience:',
           nl: 'Het weigeren van bepaalde cookies kan uw ervaring beïnvloeden:',
           de: 'Die Ablehnung bestimmter Cookies kann Ihre Erfahrung beeinträchtigen:',
@@ -9344,7 +9344,7 @@ export const translations = {
           de: 'Funktionale Cookies: Sie müssen Ihre Präferenzen bei jedem Besuch neu konfigurieren',
         },
         analytics: {
-          fr: 'Cookies analytiques : nous ne pourrons pas améliorer le service basé sur votre utilisation',
+          fr: 'Cookies analytiques : nous ne pourrons pas améliorer le service basé sur ton utilisation',
           en: 'Analytics cookies: we cannot improve the service based on your usage',
           nl: 'Analytische cookies: we kunnen de service niet verbeteren op basis van uw gebruik',
           de: 'Analytische Cookies: wir können den Service nicht basierend auf Ihrer Nutzung verbessern',
@@ -9365,7 +9365,7 @@ export const translations = {
           de: '8. Aktualisierungen dieser Richtlinie',
         },
         content: {
-          fr: 'Nous pouvons mettre à jour cette politique cookies pour refléter les changements dans nos pratiques ou pour des raisons légales. Nous vous informerons de tout changement significatif.',
+          fr: 'Nous pouvons mettre à jour cette politique cookies pour refléter les changements dans nos pratiques ou pour des raisons légales. Nous t'informerons de tout changement significatif.',
           en: 'We may update this cookie policy to reflect changes in our practices or for legal reasons. We will inform you of any significant changes.',
           nl: 'We kunnen dit cookiebeleid bijwerken om veranderingen in onze praktijken weer te geven of om juridische redenen. We zullen u informeren over belangrijke wijzigingen.',
           de: 'Wir können diese Cookie-Richtlinie aktualisieren, um Änderungen in unseren Praktiken oder aus rechtlichen Gründen widerzuspiegeln. Wir werden Sie über wesentliche Änderungen informieren.',
@@ -9470,13 +9470,13 @@ export const translations = {
         de: 'Willkommen zurück,',
       },
       welcomeMessage: {
-        fr: 'Prêt à trouver votre espace de colocation parfait ?',
+        fr: 'Prêt à trouver ton espace de co-living parfait ?',
         en: 'Ready to find your perfect coliving space?',
         nl: 'Klaar om je perfecte coliving ruimte te vinden?',
         de: 'Bereit, Ihren perfekten Coliving-Raum zu finden?',
       },
       loadingDashboard: {
-        fr: 'Chargement de votre tableau de bord...',
+        fr: 'Chargement de ton tableau de bord...',
         en: 'Loading your dashboard...',
         nl: 'Je dashboard laden...',
         de: 'Laden Ihres Dashboards...',
@@ -9512,7 +9512,7 @@ export const translations = {
         de: 'Profil-Vollständigkeit',
       },
       completionMessage: {
-        fr: 'Complétez votre profil pour augmenter vos chances de trouver le match parfait !',
+        fr: 'Complète ton Living Persona pour augmenter tes chances de trouver le Living Match parfait !',
         en: 'Complete your profile to increase your chances of finding the perfect match!',
         nl: 'Vul je profiel aan om je kansen te vergroten op het vinden van de perfecte match!',
         de: 'Vervollständigen Sie Ihr Profil, um Ihre Chancen auf den perfekten Match zu erhöhen!',
@@ -9638,7 +9638,7 @@ export const translations = {
         de: 'Suche',
       },
       colivingSize: {
-        fr: 'Taille de colocation :',
+        fr: 'Taille de co-living :',
         en: 'Coliving size:',
         nl: 'Coliving grootte:',
         de: 'Coliving-Größe:',
@@ -9650,7 +9650,7 @@ export const translations = {
         de: 'Geschlechtspräferenz:',
       },
       roommatesAged: {
-        fr: 'Colocataires âgés de',
+        fr: 'Résidents âgés de',
         en: 'Roommates aged',
         nl: 'Huisgenoten van',
         de: 'Mitbewohner im Alter von',
@@ -9716,7 +9716,7 @@ export const translations = {
         de: 'Immobilien Durchsuchen',
       },
       findPerfectMatch: {
-        fr: 'Trouvez votre match parfait',
+        fr: 'Trouve ton Living Match parfait',
         en: 'Find your perfect match',
         nl: 'Vind je perfecte match',
         de: 'Finden Sie Ihr perfektes Match',
@@ -9758,7 +9758,7 @@ export const translations = {
         de: 'Noch keine Matches',
       },
       startBrowsing: {
-        fr: 'Commencez à parcourir les propriétés pour trouver votre espace de colocation parfait',
+        fr: 'Commencez à parcourir les propriétés pour trouver ton espace de co-living parfait',
         en: 'Start browsing properties to find your perfect coliving space',
         nl: 'Begin met het doorbladeren van eigenschappen om je perfecte coliving ruimte te vinden',
         de: 'Beginnen Sie mit dem Durchsuchen von Immobilien, um Ihren perfekten Coliving-Raum zu finden',
@@ -9873,7 +9873,7 @@ export const translations = {
         de: 'Vervollständige dein Profil für bessere Matches',
       },
       completeMyProfile: {
-        fr: 'Compléter mon profil',
+        fr: 'Compléter mon Living Persona',
         en: 'Complete my profile',
         nl: 'Mijn profiel voltooien',
         de: 'Mein Profil vervollständigen',
@@ -9897,7 +9897,7 @@ export const translations = {
         de: 'Noch keine Top-Matches',
       },
       completeProfileForMatches: {
-        fr: 'Complète ton profil pour découvrir les colocations qui te correspondent le mieux !',
+        fr: 'Complète ton profil pour découvrir les co-livings qui te correspondent le mieux !',
         en: 'Complete your profile to discover flatshares that match you best!',
         nl: 'Voltooi je profiel om flatshares te ontdekken die het beste bij je passen!',
         de: 'Vervollständige dein Profil, um WGs zu entdecken, die am besten zu dir passen!',
@@ -9927,7 +9927,7 @@ export const translations = {
         de: 'Keine gespeicherten Suchen',
       },
       setUpAlert: {
-        fr: 'Configurez une alerte pour être notifié des nouvelles propriétés correspondant à vos critères.',
+        fr: 'Configurez une alerte pour être notifié des nouvelles propriétés correspondant à tes critères.',
         en: 'Set up an alert to be notified of new properties matching your criteria.',
         nl: 'Stel een melding in om op de hoogte te worden gehouden van nieuwe eigenschappen die aan je criteria voldoen.',
         de: 'Richte eine Benachrichtigung ein, um über neue Immobilien informiert zu werden, die deinen Kriterien entsprechen.',
@@ -10011,7 +10011,7 @@ export const translations = {
         de: 'Vergleichen',
       },
       maxCompareWarning: {
-        fr: 'Vous pouvez comparer jusqu\'à 4 propriétés maximum',
+        fr: 'Tu peux comparer jusqu\'à 4 propriétés maximum',
         en: 'You can compare up to 4 properties maximum',
         nl: 'Je kunt maximaal 4 eigenschappen vergelijken',
         de: 'Sie können maximal 4 Immobilien vergleichen',
@@ -10049,10 +10049,10 @@ export const translations = {
       onboarding: {
         welcome: {
           title: {
-            fr: 'Bienvenue sur Easyco ! 🏠',
-            en: 'Welcome to Easyco! 🏠',
-            nl: 'Welkom bij Easyco! 🏠',
-            de: 'Willkommen bei Easyco! 🏠',
+            fr: 'Hello ! Bienvenue sur Izzico',
+            en: 'Hello! Welcome to Izzico',
+            nl: 'Hallo! Welkom bij Izzico',
+            de: 'Hallo! Willkommen bei Izzico',
           },
           description: {
             fr: 'Voici ton tableau de bord. Tu y trouveras un résumé de ton activité : messages, favoris, matchs et candidatures.',
@@ -10069,7 +10069,7 @@ export const translations = {
             de: 'Vervollständige dein Profil',
           },
           description: {
-            fr: 'Un profil complet améliore tes chances de matcher avec les bonnes colocations. Plus tu renseignes d\'infos, meilleurs seront tes matchs !',
+            fr: 'Un profil complet améliore tes chances de matcher avec les bonnes co-livings. Plus tu renseignes d\'infos, meilleurs seront tes matchs !',
             en: 'A complete profile improves your chances of matching with the right flatshares. The more info you provide, the better your matches!',
             nl: 'Een compleet profiel vergroot je kansen om te matchen met de juiste flatshares. Hoe meer info je geeft, hoe beter je matches!',
             de: 'Ein vollständiges Profil verbessert deine Chancen, mit den richtigen WGs zu matchen. Je mehr Infos du angibst, desto besser deine Matches!',
@@ -10083,7 +10083,7 @@ export const translations = {
             de: 'Erkunde Immobilien',
           },
           description: {
-            fr: 'Parcours les colocations disponibles et trouve celle qui te correspond. Tu peux filtrer par ville, budget et date d\'emménagement.',
+            fr: 'Parcours les co-livings disponibles et trouve celle qui te correspond. Tu peux filtrer par ville, budget et date d\'emménagement.',
             en: 'Browse available flatshares and find the one that suits you. You can filter by city, budget, and move-in date.',
             nl: 'Blader door beschikbare flatshares en vind degene die bij je past. Je kunt filteren op stad, budget en verhuisdatum.',
             de: 'Durchstöbere verfügbare WGs und finde die, die zu dir passt. Du kannst nach Stadt, Budget und Einzugsdatum filtern.',
@@ -10097,7 +10097,7 @@ export const translations = {
             de: 'Speichere deine Suchen',
           },
           description: {
-            fr: 'Crée des alertes pour être notifié dès qu\'une nouvelle colocation correspond à tes critères. Plus besoin de chercher tous les jours !',
+            fr: 'Crée des alertes pour être notifié dès qu\'une nouvelle co-living correspond à tes critères. Plus besoin de chercher tous les jours !',
             en: 'Create alerts to be notified when a new flatshare matches your criteria. No need to search every day!',
             nl: 'Maak meldingen aan om op de hoogte te worden gehouden wanneer een nieuwe flatshare aan je criteria voldoet. Niet meer elke dag zoeken!',
             de: 'Erstelle Benachrichtigungen, um informiert zu werden, wenn eine neue WG deinen Kriterien entspricht. Nicht mehr jeden Tag suchen!',
@@ -10121,7 +10121,7 @@ export const translations = {
         de: 'Willkommen zurück,',
       },
       welcomeMessage: {
-        fr: 'Gérez vos propriétés et les candidatures de locataires ici.',
+        fr: 'Gère tes propriétés et les candidatures de résidents ici.',
         en: 'Manage your properties and tenant applications from here.',
         nl: 'Beheer je eigenschappen en huurders aanvragen vanaf hier.',
         de: 'Verwalten Sie Ihre Immobilien und Mietergesuche von hier aus.',
@@ -10133,7 +10133,7 @@ export const translations = {
         de: 'Immobilieneigentümer-Profil',
       },
       completionMessage: {
-        fr: 'Complétez votre profil pour instaurer la confiance avec les locataires potentiels !',
+        fr: 'Complète ton profil pour instaurer la confiance avec les résidents potentiels !',
         en: 'Complete your profile to build trust with potential tenants!',
         nl: 'Vul je profiel aan om vertrouwen op te bouwen met potentiële huurders!',
         de: 'Vervollständigen Sie Ihr Profil, um Vertrauen bei potenziellen Mietern aufzubauen!',
@@ -10253,7 +10253,7 @@ export const translations = {
         de: 'Noch keine Immobilien',
       },
       addFirstProperty: {
-        fr: 'Ajoutez votre première propriété pour commencer à recevoir des candidatures de locataires',
+        fr: 'Ajoute ta première propriété pour commencer à recevoir des candidatures de résidents',
         en: 'Add your first property to start receiving tenant applications',
         nl: 'Voeg je eerste eigendom toe om huurders aanvragen te ontvangen',
         de: 'Fügen Sie Ihre erste Immobilie hinzu, um Mietergesuche zu erhalten',
@@ -10301,7 +10301,7 @@ export const translations = {
         de: 'Immobilien Verwalten',
       },
       viewEditListings: {
-        fr: 'Voir et modifier vos annonces',
+        fr: 'Voir et modifier tes résidences',
         en: 'View and edit your listings',
         nl: 'Bekijk en bewerk je advertenties',
         de: 'Ihre Anzeigen ansehen und bearbeiten',
@@ -10313,13 +10313,13 @@ export const translations = {
         de: 'Bewerbungen',
       },
       reviewTenantRequests: {
-        fr: 'Examiner les demandes de locataires',
+        fr: 'Examiner les demandes de résidents',
         en: 'Review tenant requests',
         nl: 'Beoordeel huurders verzoeken',
         de: 'Mietergesuche prüfen',
       },
       updateYourPreferences: {
-        fr: 'Mettez à jour vos préférences',
+        fr: 'Mettez à jour tes préférences',
         en: 'Update your preferences',
         nl: 'Werk je voorkeuren bij',
         de: 'Aktualisieren Sie Ihre Präferenzen',
@@ -10331,7 +10331,7 @@ export const translations = {
         de: 'Immobilien',
       },
       activeListings: {
-        fr: 'Annonces Actives',
+        fr: 'Résidences Actives',
         en: 'Active Listings',
         nl: 'Actieve Advertenties',
         de: 'Aktive Anzeigen',
@@ -10373,7 +10373,7 @@ export const translations = {
             de: 'Immobilien werden geladen...',
           },
           subtitle: {
-            fr: 'Préparation de vos annonces',
+            fr: 'Préparation de tes résidences',
             en: 'Preparing your listings',
             nl: 'Je advertenties voorbereiden',
             de: 'Ihre Anzeigen werden vorbereitet',
@@ -10387,7 +10387,7 @@ export const translations = {
             de: 'Meine Immobilien',
           },
           subtitle: {
-            fr: 'Gérer et suivre toutes vos annonces immobilières',
+            fr: 'Gérer et suivre toutes tes résidences immobilières',
             en: 'Manage and track all your property listings',
             nl: 'Beheer en volg al je vastgoedadvertenties',
             de: 'Verwalten und verfolgen Sie alle Ihre Immobilienanzeigen',
@@ -10497,13 +10497,13 @@ export const translations = {
             de: 'Keine archivierten Immobilien',
           },
           addFirst: {
-            fr: 'Ajoutez votre première propriété pour commencer à gérer votre portefeuille',
+            fr: 'Ajoute ta première propriété pour commencer à gérer ton portefeuille',
             en: 'Add your first property to start managing your portfolio',
             nl: 'Voeg je eerste eigendom toe om je portfolio te beheren',
             de: 'Fügen Sie Ihre erste Immobilie hinzu, um Ihr Portfolio zu verwalten',
           },
           changeFilters: {
-            fr: 'Modifier vos filtres pour voir plus de propriétés',
+            fr: 'Modifier tes filtres pour voir plus de propriétés',
             en: 'Change your filters to see more properties',
             nl: 'Wijzig je filters om meer eigendommen te zien',
             de: 'Ändern Sie Ihre Filter, um mehr Immobilien zu sehen',
@@ -10657,7 +10657,7 @@ export const translations = {
             de: 'Bewerbungen werden geladen...',
           },
           subtitle: {
-            fr: 'Préparation de vos données',
+            fr: 'Préparation de tes données',
             en: 'Preparing your data',
             nl: 'Je gegevens voorbereiden',
             de: 'Ihre Daten werden vorbereitet',
@@ -10671,7 +10671,7 @@ export const translations = {
             de: 'Bewerbungen',
           },
           subtitle: {
-            fr: 'Gérer les candidatures individuelles et de groupe pour vos propriétés',
+            fr: 'Gérer les candidatures individuelles et de groupe pour tes propriétés',
             en: 'Manage individual and group applications for your properties',
             nl: 'Beheer individuele en groepsaanvragen voor je eigendommen',
             de: 'Verwalten Sie Einzel- und Gruppenbewerbungen für Ihre Immobilien',
@@ -10823,7 +10823,7 @@ export const translations = {
             de: 'Keine Bewerbungen gefunden',
           },
           subtitle: {
-            fr: 'Essayez de modifier vos filtres ou attendez de nouvelles candidatures',
+            fr: 'Essayez de modifier tes filtres ou attendez de nouvelles candidatures',
             en: 'Try changing your filters or wait for new applications',
             nl: 'Probeer je filters te wijzigen of wacht op nieuwe aanvragen',
             de: 'Versuchen Sie, Ihre Filter zu ändern oder warten Sie auf neue Bewerbungen',
@@ -10937,13 +10937,13 @@ export const translations = {
             de: 'Ablehnungsgrund (optional)',
           },
           rejectReasonPlaceholder: {
-            fr: 'Expliquez pourquoi vous rejetez cette candidature...',
+            fr: 'Explique pourquoi tu rejettes cette candidature...',
             en: 'Explain why you are rejecting this application...',
             nl: 'Leg uit waarom je deze aanvraag afwijst...',
             de: 'Erklären Sie, warum Sie diese Bewerbung ablehnen...',
           },
           notifyApplicant: {
-            fr: 'Le candidat sera notifié de votre décision.',
+            fr: 'Le candidat sera notifié de ton décision.',
             en: 'The applicant will be notified of your decision.',
             nl: 'De aanvrager wordt op de hoogte gebracht van je beslissing.',
             de: 'Der Bewerber wird über Ihre Entscheidung informiert.',
@@ -10995,7 +10995,7 @@ export const translations = {
             de: 'Finanzen werden geladen...',
           },
           subtitle: {
-            fr: 'Préparation de vos données',
+            fr: 'Préparation de tes données',
             en: 'Preparing your data',
             nl: 'Je gegevens voorbereiden',
             de: 'Ihre Daten werden vorbereitet',
@@ -11009,7 +11009,7 @@ export const translations = {
             de: 'Finanzbericht',
           },
           subtitle: {
-            fr: "Vue d'ensemble complète de vos finances",
+            fr: "Vue d'ensemble complète de tes finances",
             en: 'Complete overview of your finances',
             nl: 'Volledig overzicht van je financiën',
             de: 'Vollständiger Überblick über Ihre Finanzen',
@@ -11121,7 +11121,7 @@ export const translations = {
             de: 'Wartung wird geladen...',
           },
           subtitle: {
-            fr: 'Préparation de vos données',
+            fr: 'Préparation de tes données',
             en: 'Preparing your data',
             nl: 'Je gegevens voorbereiden',
             de: 'Ihre Daten werden vorbereitet',
@@ -11135,7 +11135,7 @@ export const translations = {
             de: 'Wartung',
           },
           subtitle: {
-            fr: 'Gérer les tickets de maintenance de vos propriétés',
+            fr: 'Gérer les tickets de maintenance de tes propriétés',
             en: 'Manage maintenance tickets for your properties',
             nl: 'Beheer onderhoudstickets voor je eigendommen',
             de: 'Verwalten Sie Wartungstickets für Ihre Immobilien',
@@ -11247,7 +11247,7 @@ export const translations = {
             de: 'Keine Tickets gefunden',
           },
           createFirst: {
-            fr: 'Créez votre premier ticket de maintenance',
+            fr: 'Crée ta premier ticket de maintenance',
             en: 'Create your first maintenance ticket',
             nl: 'Maak je eerste onderhoudsticket aan',
             de: 'Erstellen Sie Ihr erstes Wartungsticket',
@@ -11426,7 +11426,7 @@ export const translations = {
         },
         errors: {
           loadProperties: {
-            fr: 'Impossible de charger vos propriétés. Veuillez réessayer.',
+            fr: 'Impossible de charger tes propriétés. Veuillez réessayer.',
             en: 'Unable to load your properties. Please try again.',
             nl: 'Kan je eigendommen niet laden. Probeer het opnieuw.',
             de: 'Ihre Immobilien konnten nicht geladen werden. Bitte versuchen Sie es erneut.',
@@ -11438,7 +11438,7 @@ export const translations = {
             de: 'Sie müssen eine veröffentlichte Immobilie haben, um Ausgaben hinzuzufügen.',
           },
           loadError: {
-            fr: 'Une erreur est survenue lors du chargement de vos propriétés.',
+            fr: 'Une erreur est survenue lors du chargement de tes propriétés.',
             en: 'An error occurred while loading your properties.',
             nl: 'Er is een fout opgetreden bij het laden van je eigendommen.',
             de: 'Beim Laden Ihrer Immobilien ist ein Fehler aufgetreten.',
@@ -11476,7 +11476,7 @@ export const translations = {
             de: 'Nachrichten werden geladen...',
           },
           subtitle: {
-            fr: 'Préparation de vos conversations',
+            fr: 'Préparation de tes conversations',
             en: 'Preparing your conversations',
             nl: 'Je gesprekken voorbereiden',
             de: 'Ihre Unterhaltungen werden vorbereitet',
@@ -11544,7 +11544,7 @@ export const translations = {
         de: 'Willkommen zurück,',
       },
       welcomeMessage: {
-        fr: 'Connectez-vous avec votre communauté de colocation',
+        fr: 'Ta communauté de co-living t\'attend',
         en: 'Connect with your coliving community',
         nl: 'Verbind met je coliving gemeenschap',
         de: 'Verbinden Sie sich mit Ihrer Coliving-Gemeinschaft',
@@ -11556,7 +11556,7 @@ export const translations = {
         de: 'Willkommen zurück',
       },
       welcomeSubtitle: {
-        fr: 'Voici un aperçu de ta coloc',
+        fr: 'Voici un aperçu de ton co-living',
         en: 'Here\'s an overview of your coliving',
         nl: 'Hier is een overzicht van je coliving',
         de: 'Hier ist ein Überblick über dein Coliving',
@@ -11568,7 +11568,7 @@ export const translations = {
         de: 'Gemeinschaftsmitglied',
       },
       completionMessage: {
-        fr: 'Complétez votre profil pour mieux vous connecter avec votre communauté !',
+        fr: 'Complète ton Living Persona pour mieux te connecter avec ta communauté !',
         en: 'Complete your profile to connect better with your community!',
         nl: 'Vul je profiel aan om beter te verbinden met je gemeenschap!',
         de: 'Vervollständigen Sie Ihr Profil, um sich besser mit Ihrer Gemeinschaft zu verbinden!',
@@ -11598,7 +11598,7 @@ export const translations = {
         de: 'Gemeinschaft',
       },
       meetYourRoommates: {
-        fr: 'Rencontrez vos colocataires',
+        fr: 'Rencontrez tes résidents',
         en: 'Meet your roommates',
         nl: 'Ontmoet je huisgenoten',
         de: 'Treffen Sie Ihre Mitbewohner',
@@ -11665,7 +11665,7 @@ export const translations = {
         de: 'Du schuldest',
       },
       roommates: {
-        fr: 'Colocataires',
+        fr: 'Résidents',
         en: 'Roommates',
         nl: 'Huisgenoten',
         de: 'Mitbewohner',
@@ -11719,7 +11719,7 @@ export const translations = {
         de: 'Letzte Aktivität',
       },
       communityHappiness: {
-        fr: 'Bonheur de la Coloc',
+        fr: 'Bonheur du Co-living',
         en: 'Community Happiness',
         nl: 'Huisgenoten Geluk',
         de: 'Gemeinschaftsglück',
@@ -11739,13 +11739,13 @@ export const translations = {
       onboarding: {
         welcome: {
           title: {
-            fr: 'Bienvenue dans ton Hub ! 🏠',
-            en: 'Welcome to your Hub! 🏠',
-            nl: 'Welkom in je Hub! 🏠',
-            de: 'Willkommen in deinem Hub! 🏠',
+            fr: 'Bienvenue dans ton Hub !',
+            en: 'Welcome to your Hub!',
+            nl: 'Welkom in je Hub!',
+            de: 'Willkommen in deinem Hub!',
           },
           description: {
-            fr: 'Ici tu retrouves un aperçu de ta coloc : loyer, dépenses partagées et solde avec tes colocs.',
+            fr: 'Ici tu retrouves un aperçu de ton co-living : loyer, dépenses partagées et solde avec tes résidents.',
             en: 'Here you\'ll find an overview of your flatshare: rent, shared expenses, and balance with your roommates.',
             nl: 'Hier vind je een overzicht van je flatshare: huur, gedeelde kosten en saldo met je huisgenoten.',
             de: 'Hier findest du eine Übersicht deiner WG: Miete, geteilte Ausgaben und Saldo mit deinen Mitbewohnern.',
@@ -11759,7 +11759,7 @@ export const translations = {
             de: 'Verwalte deine Finanzen',
           },
           description: {
-            fr: 'Clique ici pour voir le détail des dépenses partagées et équilibrer les comptes avec tes colocs.',
+            fr: 'Clique ici pour voir le détail des dépenses partagées et équilibrer les comptes avec tes résidents.',
             en: 'Click here to see shared expense details and balance accounts with your roommates.',
             nl: 'Klik hier om gedeelde kostendetails te zien en rekeningen met je huisgenoten te vereffenen.',
             de: 'Klicke hier, um geteilte Ausgabendetails zu sehen und die Konten mit deinen Mitbewohnern auszugleichen.',
@@ -11767,13 +11767,13 @@ export const translations = {
         },
         members: {
           title: {
-            fr: 'Tes colocataires',
+            fr: 'Tes résidents',
             en: 'Your roommates',
             nl: 'Je huisgenoten',
             de: 'Deine Mitbewohner',
           },
           description: {
-            fr: 'Retrouve tous les membres de ta coloc, invite de nouveaux colocs ou anticipe les départs.',
+            fr: 'Retrouve tous les membres de ton co-living, invite de nouveaux résidents ou anticipe les départs.',
             en: 'Find all members of your flatshare, invite new roommates, or plan departures.',
             nl: 'Vind alle leden van je flatshare, nodig nieuwe huisgenoten uit of plan vertrek.',
             de: 'Finde alle Mitglieder deiner WG, lade neue Mitbewohner ein oder plane Auszüge.',
@@ -11787,7 +11787,7 @@ export const translations = {
             de: 'Organisiere das Zusammenleben',
           },
           description: {
-            fr: 'Planifie les tâches ménagères, les réunions et les échéances importantes de la coloc.',
+            fr: 'Planifie les tâches ménagères, les réunions et les échéances importantes de le co-living.',
             en: 'Plan household tasks, meetings, and important deadlines for the flatshare.',
             nl: 'Plan huishoudelijke taken, vergaderingen en belangrijke deadlines voor de flatshare.',
             de: 'Plane Haushaltsaufgaben, Meetings und wichtige Fristen für die WG.',
@@ -11838,20 +11838,20 @@ export const translations = {
         },
         // Member count
         roommate: {
-          fr: 'colocataire',
+          fr: 'résident',
           en: 'roommate',
           nl: 'huisgenoot',
           de: 'Mitbewohner',
         },
         roommates: {
-          fr: 'colocataires',
+          fr: 'résidents',
           en: 'roommates',
           nl: 'huisgenoten',
           de: 'Mitbewohner',
         },
         // Completion steps
         stepInviteRoommates: {
-          fr: 'Inviter des colocataires',
+          fr: 'Inviter des résidents',
           en: 'Invite roommates',
           nl: 'Nodig huisgenoten uit',
           de: 'Lade Mitbewohner ein',
@@ -11869,7 +11869,7 @@ export const translations = {
           de: 'Füge {count} weitere Ausgaben hinzu',
         },
         stepCreateFirstExpense: {
-          fr: 'Créer votre première dépense',
+          fr: 'Créer ta première dépense',
           en: 'Create your first expense',
           nl: 'Maak je eerste uitgave aan',
           de: 'Erstelle deine erste Ausgabe',
@@ -11882,7 +11882,7 @@ export const translations = {
         },
         // Progress section
         completeResidence: {
-          fr: 'Complétez votre résidence',
+          fr: 'Complète votre résidence',
           en: 'Complete your residence',
           nl: 'Voltooi je residentie',
           de: 'Vervollständige deine Residenz',
@@ -12003,7 +12003,7 @@ export const translations = {
           de: 'Alle anzeigen',
         },
         balancesBetweenRoommates: {
-          fr: 'Soldes entre colocs',
+          fr: 'Soldes entre résidents',
           en: 'Balances between roommates',
           nl: 'Saldi tussen huisgenoten',
           de: 'Salden zwischen Mitbewohnern',
@@ -12177,15 +12177,15 @@ export const translations = {
         },
         emptyState: {
           title: {
-            fr: 'Aucun colocataire pour le moment',
+            fr: 'Aucun résident pour le moment',
             en: 'No roommates yet',
             nl: 'Nog geen huisgenoten',
             de: 'Noch keine Mitbewohner',
           },
           description: {
-            fr: 'Invitez des personnes à rejoindre votre colocation !',
-            en: 'Invite people to join your colocation!',
-            nl: 'Nodig mensen uit om bij je colocation te komen!',
+            fr: 'Invitez des personnes à rejoindre votre co-living !',
+            en: 'Invite people to join your co-living!',
+            nl: 'Nodig mensen uit om bij je co-living te komen!',
             de: 'Laden Sie Leute ein, Ihrer WG beizutreten!',
           },
           inviteButton: {
@@ -12550,7 +12550,7 @@ export const translations = {
           de: 'Keine Events geplant',
         },
         createFirst: {
-          fr: 'Créez votre premier événement !',
+          fr: 'Crée ta premier événement !',
           en: 'Create your first event!',
           nl: 'Maak je eerste evenement!',
           de: 'Erstelle dein erstes Event!',
@@ -12624,7 +12624,7 @@ export const translations = {
           de: 'Zurück',
         },
         title: {
-          fr: 'Inviter des colocataires',
+          fr: 'Inviter des résidents',
           en: 'Invite roommates',
           nl: 'Nodig huisgenoten uit',
           de: 'Mitbewohner einladen',
@@ -12637,7 +12637,7 @@ export const translations = {
             de: 'Automatische Belohnungen',
           },
           description: {
-            fr: "Quand quelqu'un rejoint avec votre lien, vous gagnez tous les deux des mois gratuits !",
+            fr: "Quand quelqu'un rejoint avec ton lien, tu gagnes tous les deux des mois gratuits !",
             en: 'When someone joins with your link, you both earn free months!',
             nl: 'Wanneer iemand zich aanmeldt met jouw link, verdienen jullie allebei gratis maanden!',
             de: 'Wenn jemand mit deinem Link beitritt, erhaltet ihr beide kostenlose Monate!',
@@ -12663,7 +12663,7 @@ export const translations = {
             de: 'Einladungslink erstellen',
           },
           description: {
-            fr: "Générez un lien unique et trackable pour inviter quelqu'un à rejoindre votre colocation.",
+            fr: "Générez un lien unique et trackable pour inviter quelqu'un à rejoindre votre co-living.",
             en: 'Generate a unique and trackable link to invite someone to join your flatshare.',
             nl: 'Genereer een unieke en traceerbare link om iemand uit te nodigen voor je flatshare.',
             de: 'Erstelle einen einzigartigen und nachverfolgbaren Link, um jemanden zu deiner WG einzuladen.',
@@ -12758,13 +12758,13 @@ export const translations = {
           },
         },
         defaultProperty: {
-          fr: 'Votre colocation',
+          fr: 'Votre co-living',
           en: 'Your flatshare',
           nl: 'Jouw flatshare',
           de: 'Deine WG',
         },
         defaultInviter: {
-          fr: 'Un colocataire',
+          fr: 'Un résident',
           en: 'A roommate',
           nl: 'Een huisgenoot',
           de: 'Ein Mitbewohner',
@@ -12892,13 +12892,13 @@ export const translations = {
             de: 'Abstimmung abschließen',
           },
           youVoted: {
-            fr: 'Vous avez voté',
+            fr: 'Tu as voté',
             en: 'You voted',
             nl: 'Je hebt gestemd',
             de: 'Du hast gestimmt',
           },
           confirmFinalize: {
-            fr: 'Voulez-vous finaliser ce vote ?',
+            fr: 'Veux-tu finaliser ce vote ?',
             en: 'Do you want to finalize this vote?',
             nl: 'Wil je deze stemming afronden?',
             de: 'Möchtest du diese Abstimmung abschließen?',
@@ -13070,7 +13070,7 @@ export const translations = {
           de: 'Dokumententresor',
         },
         subtitle: {
-          fr: 'Stockez et partagez vos documents importants',
+          fr: 'Stockez et partagez tes documents importants',
           en: 'Store and share your important documents',
           nl: 'Bewaar en deel je belangrijke documenten',
           de: 'Speichere und teile deine wichtigen Dokumente',
@@ -13303,7 +13303,7 @@ export const translations = {
             de: 'Fehler beim Hochladen',
           },
           deleteConfirm: {
-            fr: 'Voulez-vous vraiment supprimer ce document ?',
+            fr: 'Veux-tu vraiment supprimer ce document ?',
             en: 'Do you really want to delete this document?',
             nl: 'Wil je dit document echt verwijderen?',
             de: 'Möchtest du dieses Dokument wirklich löschen?',
@@ -13388,7 +13388,7 @@ export const translations = {
             de: 'Keine Anfragen',
           },
           createFirst: {
-            fr: 'Créez votre première demande de maintenance',
+            fr: 'Crée ta première demande de maintenance',
             en: 'Create your first maintenance request',
             nl: 'Maak je eerste onderhoudsverzoek',
             de: 'Erstelle deine erste Wartungsanfrage',
@@ -13557,7 +13557,7 @@ export const translations = {
             de: 'Nachrichten laden...',
           },
           subtitle: {
-            fr: 'Préparation de vos conversations',
+            fr: 'Préparation de tes conversations',
             en: 'Preparing your conversations',
             nl: 'Je gesprekken voorbereiden',
             de: 'Deine Konversationen werden vorbereitet',
@@ -13661,7 +13661,7 @@ export const translations = {
           de: 'Profile werden geladen...',
         },
         loadingMatches: {
-          fr: 'Chargement de vos matchs...',
+          fr: 'Chargement de tes matchs...',
           en: 'Loading your matches...',
           nl: 'Je matches laden...',
           de: 'Deine Matches werden geladen...',
@@ -13676,7 +13676,7 @@ export const translations = {
           de: 'Finde deine zukünftigen',
         },
         roommates: {
-          fr: 'colocataires',
+          fr: 'résidents',
           en: 'roommates',
           nl: 'huisgenoten',
           de: 'Mitbewohner',
@@ -13691,19 +13691,19 @@ export const translations = {
       // Profile completion gate
       gate: {
         title: {
-          fr: 'Complétez votre profil pour matcher',
+          fr: 'Complète ton profil pour matcher',
           en: 'Complete your profile to match',
           nl: 'Vul je profiel in om te matchen',
           de: 'Vervollständige dein Profil zum Matchen',
         },
         description: {
-          fr: 'Pour trouver les meilleurs colocataires, nous avons besoin de mieux vous connaître.',
+          fr: 'Pour trouver les meilleurs résidents, nous avons besoin de mieux te connaître.',
           en: 'To find the best roommates, we need to know you better.',
           nl: 'Om de beste huisgenoten te vinden, moeten we je beter leren kennen.',
           de: 'Um die besten Mitbewohner zu finden, müssen wir dich besser kennenlernen.',
         },
         requirement: {
-          fr: 'Complétez votre profil à au moins',
+          fr: 'Complète ton profil à au moins',
           en: 'Complete your profile to at least',
           nl: 'Vul je profiel in tot minstens',
           de: 'Vervollständige dein Profil auf mindestens',
@@ -13733,7 +13733,7 @@ export const translations = {
           de: 'Auszufüllende Abschnitte',
         },
         completeProfile: {
-          fr: 'Compléter mon profil',
+          fr: 'Compléter mon Living Persona',
           en: 'Complete my profile',
           nl: 'Mijn profiel voltooien',
           de: 'Mein Profil vervollständigen',
@@ -13745,7 +13745,7 @@ export const translations = {
           de: 'Zurück zum Dashboard',
         },
         info: {
-          fr: 'Un profil complet permet des matchs plus précis et augmente vos chances de trouver le colocataire idéal.',
+          fr: 'Un profil complet permet des matchs plus précis et augmente tes chances de trouver le résident idéal.',
           en: 'A complete profile allows for more accurate matches and increases your chances of finding the ideal roommate.',
           nl: 'Een volledig profiel zorgt voor nauwkeurigere matches en vergroot je kans om de ideale huisgenoot te vinden.',
           de: 'Ein vollständiges Profil ermöglicht genauere Matches und erhöht deine Chancen, den idealen Mitbewohner zu finden.',
@@ -13760,13 +13760,13 @@ export const translations = {
           de: 'Finde deinen Match',
         },
         searcherContext: {
-          fr: 'Trouver des colocataires pour chercher ensemble',
+          fr: 'Trouver des résidents pour chercher ensemble',
           en: 'Find roommates to search together',
           nl: 'Vind huisgenoten om samen te zoeken',
           de: 'Finde Mitbewohner zum gemeinsamen Suchen',
         },
         residentContext: {
-          fr: 'Trouver de nouveaux colocataires',
+          fr: 'Trouver de nouveaux résidents',
           en: 'Find new roommates',
           nl: 'Vind nieuwe huisgenoten',
           de: 'Finde neue Mitbewohner',
@@ -13778,7 +13778,7 @@ export const translations = {
           de: 'Suchende',
         },
         roommates: {
-          fr: 'Colocataires',
+          fr: 'Résidents',
           en: 'Roommates',
           nl: 'Huisgenoten',
           de: 'Mitbewohner',
@@ -13791,13 +13791,13 @@ export const translations = {
         },
         allSeen: {
           title: {
-            fr: 'Vous avez tout vu !',
+            fr: 'Tu as tout vu !',
             en: "You've seen everyone!",
             nl: 'Je hebt iedereen gezien!',
             de: 'Du hast alle gesehen!',
           },
           description: {
-            fr: 'Revenez plus tard pour de nouveaux profils ou ajustez vos préférences.',
+            fr: 'Revenez plus tard pour de nouveaux profils ou ajustez tes préférences.',
             en: 'Come back later for new profiles or adjust your preferences.',
             nl: 'Kom later terug voor nieuwe profielen of pas je voorkeuren aan.',
             de: 'Komm später für neue Profile zurück oder passe deine Präferenzen an.',
@@ -13885,7 +13885,7 @@ export const translations = {
             de: 'Profil geliked! 💚',
           },
           matchDescription: {
-            fr: 'Si cette personne vous like aussi, c\'est un match !',
+            fr: 'Si cette personne te like aussi, c\'est un match !',
             en: "If they like you back, it's a match!",
             nl: 'Als ze je ook liken, is het een match!',
             de: 'Wenn sie dich auch liken, ist es ein Match!',
@@ -13961,7 +13961,7 @@ export const translations = {
           de: 'Wird generiert...',
         },
         generateNew: {
-          fr: 'Générer de nouveaux matchs',
+          fr: 'Générer de nouveaux Living Matchs',
           en: 'Generate new matches',
           nl: 'Nieuwe matches genereren',
           de: 'Neue Matches generieren',
@@ -14050,7 +14050,7 @@ export const translations = {
             de: 'Wähle mindestens einen Statusfilter',
           },
           suggestion: {
-            fr: 'Essayez de baisser le score minimum ou de générer de nouveaux matchs',
+            fr: 'Essaie de baisser le score minimum ou de générer de nouveaux Living Matchs',
             en: 'Try lowering the minimum score or generating new matches',
             nl: 'Probeer de minimumscore te verlagen of nieuwe matches te genereren',
             de: 'Versuche die Mindestpunktzahl zu senken oder neue Matches zu generieren',
@@ -14076,7 +14076,7 @@ export const translations = {
             de: 'Wie funktioniert es?',
           },
           description: {
-            fr: 'Les matchs sont calculés selon votre budget (30%), localisation (25%), style de vie (20%), disponibilité (15%) et préférences (10%). Plus le score est élevé, plus la propriété correspond à vos critères.',
+            fr: 'Les matchs sont calculés selon votre budget (30%), localisation (25%), style de vie (20%), disponibilité (15%) et préférences (10%). Plus le score est élevé, plus la propriété correspond à tes critères.',
             en: 'Matches are calculated based on your budget (30%), location (25%), lifestyle (20%), availability (15%) and preferences (10%). The higher the score, the better the property matches your criteria.',
             nl: 'Matches worden berekend op basis van je budget (30%), locatie (25%), levensstijl (20%), beschikbaarheid (15%) en voorkeuren (10%). Hoe hoger de score, hoe beter de woning bij je criteria past.',
             de: 'Matches werden basierend auf deinem Budget (30%), Standort (25%), Lebensstil (20%), Verfügbarkeit (15%) und Präferenzen (10%) berechnet. Je höher die Punktzahl, desto besser passt die Immobilie zu deinen Kriterien.',
@@ -14096,13 +14096,13 @@ export const translations = {
             de: 'Matches konnten nicht geladen werden',
           },
           generatingNew: {
-            fr: 'Génération de nouveaux matchs...',
+            fr: 'Génération de nouveaux Living Matchs...',
             en: 'Generating new matches...',
             nl: 'Nieuwe matches genereren...',
             de: 'Neue Matches werden generiert...',
           },
           newMatchesGenerated: {
-            fr: 'nouveaux matchs générés !',
+            fr: 'nouveaux Living Matchs générés !',
             en: 'new matches generated!',
             nl: 'nieuwe matches gegenereerd!',
             de: 'neue Matches generiert!',
@@ -14268,7 +14268,7 @@ export const translations = {
         de: 'Suche eine Konversation...',
       },
       inviteBoth: {
-        fr: 'Invitez votre propriétaire et vos colocataires',
+        fr: 'Invitez votre propriétaire et tes résidents',
         en: 'Invite your landlord and roommates',
         nl: 'Nodig je verhuurder en huisgenoten uit',
         de: 'Laden Sie Ihren Vermieter und Mitbewohner ein',
@@ -14280,7 +14280,7 @@ export const translations = {
         de: 'Laden Sie Ihren Vermieter ein',
       },
       inviteRoommates: {
-        fr: 'Invitez vos colocataires',
+        fr: 'Invitez tes résidents',
         en: 'Invite your roommates',
         nl: 'Nodig je huisgenoten uit',
         de: 'Laden Sie Ihre Mitbewohner ein',
@@ -14292,7 +14292,7 @@ export const translations = {
         de: 'Vermieter',
       },
       roommatesButton: {
-        fr: 'Colocataires',
+        fr: 'Résidents',
         en: 'Roommates',
         nl: 'Huisgenoten',
         de: 'Mitbewohner',
@@ -14406,7 +14406,7 @@ export const translations = {
         de: 'Scannen Sie Ihren Beleg',
       },
       scanDescription: {
-        fr: "L'IA analyse automatiquement vos reçus",
+        fr: "L'IA analyse automatiquement tes reçus",
         en: 'AI automatically analyzes your receipts',
         nl: 'AI analyseert automatisch je bonnen',
         de: 'KI analysiert automatisch Ihre Belege',
@@ -14577,7 +14577,7 @@ export const translations = {
         de: 'Wählen Sie eine Kategorie',
       },
       organizeExpenses: {
-        fr: 'Organisez vos dépenses par type',
+        fr: 'Organisez tes dépenses par type',
         en: 'Organize your expenses by type',
         nl: 'Organiseer je uitgaven per type',
         de: 'Organisieren Sie Ihre Ausgaben nach Typ',
@@ -14620,7 +14620,7 @@ export const translations = {
         de: 'OCR analysiert',
       },
       splitWithRoommates: {
-        fr: 'Répartir entre colocs',
+        fr: 'Répartir entre résidents',
         en: 'Split with roommates',
         nl: 'Verdelen met huisgenoten',
         de: 'Mit Mitbewohnern teilen',
@@ -14682,7 +14682,7 @@ export const translations = {
         de: 'Scan fehlgeschlagen',
       },
       scanErrorManualEntry: {
-        fr: 'Erreur lors du scan. Vous pouvez saisir manuellement.',
+        fr: 'Erreur lors du scan. Tu peux saisir manuellement.',
         en: 'Scan error. You can enter manually.',
         nl: 'Scanfout. Je kunt handmatig invoeren.',
         de: 'Scan-Fehler. Sie können manuell eingeben.',
@@ -14942,7 +14942,7 @@ export const translations = {
         de: 'Du',
       },
       roommate: {
-        fr: 'Colocataire',
+        fr: 'Résident',
         en: 'Roommate',
         nl: 'Huisgenoot',
         de: 'Mitbewohner',
@@ -15214,7 +15214,7 @@ export const translations = {
         de: 'Profile Verwalten',
       },
       subtitle: {
-        fr: 'Gérez votre profil et les profils dépendants (famille, amis, etc.)',
+        fr: 'Gère ta profil et les profils dépendants (famille, amis, etc.)',
         en: 'Manage your profile and dependent profiles (family, friends, etc.)',
         nl: 'Beheer je profiel en afhankelijke profielen (familie, vrienden, etc.)',
         de: 'Verwalten Sie Ihr Profil und abhängige Profile (Familie, Freunde, etc.)',
@@ -15226,7 +15226,7 @@ export const translations = {
         de: 'Mein Profil',
       },
       myProfileDescription: {
-        fr: 'Votre profil personnel de chercheur',
+        fr: 'Ton profil personnel de chercheur',
         en: 'Your personal searcher profile',
         nl: 'Je persoonlijke zoeker profiel',
         de: 'Ihr persönliches Sucherprofil',
@@ -15244,7 +15244,7 @@ export const translations = {
         de: 'Abhängige Profile',
       },
       dependentProfilesDescription: {
-        fr: 'Profils que vous gérez pour la famille ou les amis',
+        fr: 'Profils que tu gères pour la famille ou les amis',
         en: 'Profiles you\'re managing for family or friends',
         nl: 'Profielen die je beheert voor familie of vrienden',
         de: 'Profile, die Sie für Familie oder Freunde verwalten',
@@ -15262,7 +15262,7 @@ export const translations = {
         de: 'Noch keine abhängigen Profile',
       },
       createDependentProfile: {
-        fr: 'Créez un profil pour un enfant, un membre de la famille ou un ami pour qui vous cherchez un logement',
+        fr: 'Créez un profil pour un enfant, un membre de la famille ou un ami pour qui tu cherches un logement',
         en: 'Create a profile for a child, family member, or friend you\'re helping search for housing',
         nl: 'Maak een profiel aan voor een kind, familielid of vriend waarvoor je helpt zoeken naar huisvesting',
         de: 'Erstellen Sie ein Profil für ein Kind, Familienmitglied oder Freund, dem Sie bei der Wohnungssuche helfen',
@@ -15380,7 +15380,7 @@ export const translations = {
         de: 'Zurück zum Dashboard',
       },
       loadingProfile: {
-        fr: 'Chargement de votre profil...',
+        fr: 'Chargement de ton profil...',
         en: 'Loading your profile...',
         nl: 'Je profiel laden...',
         de: 'Ihr Profil wird geladen...',
@@ -15410,7 +15410,7 @@ export const translations = {
         de: 'Verbessern Sie Ihr Profil',
       },
       addMoreDetails: {
-        fr: 'Ajoutez plus de détails pour augmenter vos chances de trouver le match parfait',
+        fr: 'Ajoute plus de détails pour augmenter tes chances de trouver le Living Match parfait',
         en: 'Add more details to increase your chances of finding the perfect match',
         nl: 'Voeg meer details toe om je kansen te vergroten op het vinden van de perfecte match',
         de: 'Fügen Sie mehr Details hinzu, um Ihre Chancen auf den perfekten Match zu erhöhen',
@@ -15494,7 +15494,7 @@ export const translations = {
         de: 'Kernprofil Bearbeiten',
       },
       redirecting: {
-        fr: 'Redirection vers votre profil...',
+        fr: 'Redirection vers ton profil...',
         en: 'Redirecting to your profile...',
         nl: 'Doorsturen naar je profiel...',
         de: 'Weiterleitung zu Ihrem Profil...',
@@ -15510,7 +15510,7 @@ export const translations = {
         de: 'Mein Eigentümerprofil',
       },
       completeProfile: {
-        fr: 'Complétez votre profil pour attirer des locataires de qualité et instaurer la confiance',
+        fr: 'Complète ton profil pour attirer des résidents de qualité et instaurer la confiance',
         en: 'Complete your profile to attract quality tenants and build trust',
         nl: 'Vul je profiel aan om kwaliteitshuurders aan te trekken en vertrouwen op te bouwen',
         de: 'Vervollständigen Sie Ihr Profil, um qualitativ hochwertige Mieter anzuziehen und Vertrauen aufzubauen',
@@ -15615,7 +15615,7 @@ export const translations = {
           de: 'Immobilien',
         },
         activeListings: {
-          fr: 'Annonces Actives',
+          fr: 'Résidences Actives',
           en: 'Active Listings',
           nl: 'Actieve Advertenties',
           de: 'Aktive Angebote',
@@ -15634,7 +15634,7 @@ export const translations = {
         de: 'Verbessern Sie Ihr Profil',
       },
       enhanceDescription: {
-        fr: 'Complétez ces sections pour créer un profil complet et attirer des locataires de qualité',
+        fr: 'Complète ces sections pour créer un profil complet et attirer des résidents de qualité',
         en: 'Complete these sections to create a comprehensive profile and attract quality tenants',
         nl: 'Vul deze secties in om een uitgebreid profiel te maken en kwaliteitshuurders aan te trekken',
         de: 'Vervollständigen Sie diese Abschnitte, um ein umfassendes Profil zu erstellen und qualitativ hochwertige Mieter anzuziehen',
@@ -15698,7 +15698,7 @@ export const translations = {
       de: 'Laden...',
     },
     preparingPortfolio: {
-      fr: 'Préparation de votre portfolio',
+      fr: 'Préparation de ton portfolio',
       en: 'Preparing your portfolio',
       nl: 'Uw portfolio voorbereiden',
       de: 'Ihr Portfolio wird vorbereitet',
@@ -15818,13 +15818,13 @@ export const translations = {
       de: 'Alle anzeigen',
     },
     noPropertiesYet: {
-      fr: 'Aucun bien pour le moment',
+      fr: 'Aucune résidence pour le moment',
       en: 'No properties yet',
       nl: 'Nog geen woningen',
       de: 'Noch keine Immobilien',
     },
     addProperty: {
-      fr: 'Ajouter un bien',
+      fr: 'Ajouter une résidence',
       en: 'Add a property',
       nl: 'Woning toevoegen',
       de: 'Immobilie hinzufügen',
@@ -15904,7 +15904,7 @@ export const translations = {
       de: 'Immobilien',
     },
     managePortfolio: {
-      fr: 'Gérez votre parc immobilier',
+      fr: 'Gère ta parc immobilier',
       en: 'Manage your real estate portfolio',
       nl: 'Beheer uw vastgoedportfolio',
       de: 'Verwalten Sie Ihr Immobilienportfolio',
@@ -15916,7 +15916,7 @@ export const translations = {
       de: 'Entwürfe',
     },
     evaluateCandidates: {
-      fr: 'Évaluez les candidats pour vos biens',
+      fr: 'Évaluez les candidats pour tes biens',
       en: 'Evaluate candidates for your properties',
       nl: 'Beoordeel kandidaten voor uw woningen',
       de: 'Bewerten Sie Kandidaten für Ihre Immobilien',
@@ -15940,7 +15940,7 @@ export const translations = {
       de: 'Leistung',
     },
     analyzePortfolio: {
-      fr: 'Analysez la rentabilité de votre portfolio',
+      fr: 'Analysez la rentabilité de ton portfolio',
       en: 'Analyze your portfolio profitability',
       nl: 'Analyseer de winstgevendheid van uw portfolio',
       de: 'Analysieren Sie die Rentabilität Ihres Portfolios',
@@ -15966,7 +15966,7 @@ export const translations = {
       de: 'Vermietete Immobilien',
     },
     acceptedTenants: {
-      fr: 'Locataires acceptés',
+      fr: 'Résidents acceptés',
       en: 'Accepted tenants',
       nl: 'Geaccepteerde huurders',
       de: 'Akzeptierte Mieter',
@@ -16054,25 +16054,25 @@ export const translations = {
 
     // Health Grid
     propertiesInPortfolio: {
-      fr: 'dans votre portfolio',
+      fr: 'dans ton portfolio',
       en: 'in your portfolio',
       nl: 'in uw portfolio',
       de: 'in Ihrem Portfolio',
     },
     noPropertiesFound: {
-      fr: 'Aucun bien trouvé',
+      fr: 'Aucune résidence trouvé',
       en: 'No properties found',
       nl: 'Geen woningen gevonden',
       de: 'Keine Immobilien gefunden',
     },
     noPropertiesFilterHint: {
-      fr: 'Essayez de modifier vos filtres pour voir plus de résultats.',
+      fr: 'Essayez de modifier tes filtres pour voir plus de résultats.',
       en: 'Try adjusting your filters to see more results.',
       nl: 'Probeer uw filters aan te passen om meer resultaten te zien.',
       de: 'Passen Sie Ihre Filter an, um mehr Ergebnisse zu sehen.',
     },
     noPropertiesYetHint: {
-      fr: 'Vous n\'avez pas encore de biens dans votre portfolio.',
+      fr: 'Vous n\'avez pas encore de biens dans ton portfolio.',
       en: 'You don\'t have any properties in your portfolio yet.',
       nl: 'U heeft nog geen woningen in uw portfolio.',
       de: 'Sie haben noch keine Immobilien in Ihrem Portfolio.',
@@ -16087,7 +16087,7 @@ export const translations = {
     // PropertyFilters Component
     filters: {
       searchProperty: {
-        fr: 'Rechercher un bien...',
+        fr: 'Rechercher une résidence...',
         en: 'Search for a property...',
         nl: 'Zoek een woning...',
         de: 'Immobilie suchen...',
@@ -16276,7 +16276,7 @@ export const translations = {
         de: 'Lernen wir uns kennen! 👋',
       },
       subtitle: {
-        fr: 'Parlez-nous un peu de vous pour commencer dans votre communauté de colocation',
+        fr: 'Parle-nous un peu de toi pour commencer dans ton communauté de co-living',
         en: 'Tell us a bit about yourself to get started in your coliving community',
         nl: 'Vertel ons een beetje over jezelf om te beginnen in je coliving gemeenschap',
         de: 'Erzählen Sie uns ein bisschen über sich, um in Ihrer Coliving-Gemeinschaft zu starten',
@@ -16348,7 +16348,7 @@ export const translations = {
         de: '+32 123 456 789',
       },
       languagesSpoken: {
-        fr: 'Langues que vous Parlez',
+        fr: 'Langues que tu parles',
         en: 'Languages You Speak',
         nl: 'Talen die je Spreekt',
         de: 'Sprachen, die Sie Sprechen',
@@ -16376,13 +16376,13 @@ export const translations = {
     // Lifestyle Page
     lifestyle: {
       title: {
-        fr: 'Votre Style de Vie 🌟',
-        en: 'Your Lifestyle 🌟',
-        nl: 'Je Levensstijl 🌟',
-        de: 'Ihr Lebensstil 🌟',
+        fr: 'Votre Style de Vie',
+        en: 'Your Lifestyle',
+        nl: 'Je Levensstijl',
+        de: 'Ihr Lebensstil',
       },
       subtitle: {
-        fr: 'Aidez-nous à comprendre votre routine quotidienne et vos habitudes',
+        fr: 'Aidez-nous à comprendre ta routine quotidienne et tes habitudes',
         en: 'Help us understand your daily routine and habits',
         nl: 'Help ons je dagelijkse routine en gewoonten te begrijpen',
         de: 'Helfen Sie uns, Ihre tägliche Routine und Gewohnheiten zu verstehen',
@@ -16554,7 +16554,7 @@ export const translations = {
         de: 'Ihre Persönlichkeit 💫',
       },
       subtitle: {
-        fr: 'Aidez-nous à vous associer à des colocataires compatibles',
+        fr: 'Aide-nous à t'associer à des résidents compatibles',
         en: 'Help us match you with compatible roommates',
         nl: 'Help ons je te matchen met compatibele huisgenoten',
         de: 'Helfen Sie uns, Sie mit kompatiblen Mitbewohnern zu verbinden',
@@ -16726,13 +16726,13 @@ export const translations = {
     // Living Situation Page
     livingSituation: {
       title: {
-        fr: 'Presque Terminé ! 🎉',
-        en: 'Almost Done! 🎉',
-        nl: 'Bijna Klaar! 🎉',
-        de: 'Fast Fertig! 🎉',
+        fr: 'Presque Terminé !',
+        en: 'Almost Done!',
+        nl: 'Bijna Klaar!',
+        de: 'Fast Fertig!',
       },
       subtitle: {
-        fr: 'Parlez-nous de votre situation de logement actuelle',
+        fr: 'Parlez-nous de ton situation de logement actuelle',
         en: 'Tell us about your current living situation',
         nl: 'Vertel ons over je huidige woonsituatie',
         de: 'Erzählen Sie uns von Ihrer aktuellen Wohnsituation',
@@ -16762,19 +16762,19 @@ export const translations = {
         de: 'z.B. Brüssel, Paris, Berlin...',
       },
       moveInDate: {
-        fr: 'Quand avez-vous emménagé ?',
+        fr: 'Quand as-tu emménagé ?',
         en: 'When did you move in?',
         nl: 'Wanneer ben je verhuisd?',
         de: 'Wann sind Sie eingezogen?',
       },
       tellUsAboutYourself: {
-        fr: 'Parlez-nous de vous',
+        fr: 'Parle-nous de toi',
         en: 'Tell us about yourself',
         nl: 'Vertel ons over jezelf',
         de: 'Erzählen Sie uns über sich',
       },
       bioPlaceholder: {
-        fr: 'Écrivez une courte introduction sur vous, vos intérêts, ce que vous recherchez dans une communauté de colocation... (min 20 caractères)',
+        fr: 'Écris une courte introduction sur toi, tes intérêts, ce que tu recherches dans une communauté de co-living... (min 20 caractères)',
         en: 'Write a short introduction about yourself, your interests, what you\'re looking for in a coliving community... (min 20 characters)',
         nl: 'Schrijf een korte introductie over jezelf, je interesses, wat je zoekt in een coliving gemeenschap... (min 20 tekens)',
         de: 'Schreiben Sie eine kurze Einführung über sich, Ihre Interessen, was Sie in einer Coliving-Gemeinschaft suchen... (min 20 Zeichen)',
@@ -16798,19 +16798,19 @@ export const translations = {
         de: 'Tipps für eine tolle Bio:',
       },
       tip1: {
-        fr: 'Partagez vos loisirs et intérêts',
+        fr: 'Partagez tes loisirs et intérêts',
         en: 'Share your hobbies and interests',
         nl: 'Deel je hobby\'s en interesses',
         de: 'Teilen Sie Ihre Hobbys und Interessen',
       },
       tip2: {
-        fr: 'Mentionnez ce que vous étudiez ou sur quoi vous travaillez',
+        fr: 'Mentionne ce que tu étudies ou sur quoi tu travailles',
         en: 'Mention what you\'re studying or working on',
         nl: 'Vermeld waar je studeert of aan werkt',
         de: 'Erwähnen Sie, was Sie studieren oder woran Sie arbeiten',
       },
       tip3: {
-        fr: 'Décrivez quel type d\'ambiance communautaire vous préférez',
+        fr: 'Décrivez quel type d\'ambiance communautaire tu préfères',
         en: 'Describe what kind of community vibe you prefer',
         nl: 'Beschrijf wat voor soort gemeenschapssfeer je prefereert',
         de: 'Beschreiben Sie, welche Art von Gemeinschaftsatmosphäre Sie bevorzugen',
@@ -16828,7 +16828,7 @@ export const translations = {
         de: 'Profil Vervollständigen',
       },
       completingProfile: {
-        fr: 'Finalisation de votre profil...',
+        fr: 'Finalisation de ton profil...',
         en: 'Completing your profile...',
         nl: 'Je profiel voltooien...',
         de: 'Ihr Profil wird vervollständigt...',
@@ -16884,7 +16884,7 @@ export const translations = {
         de: 'Wohnsituation & Bio',
       },
       description: {
-        fr: 'Parlez-nous de votre situation de logement actuelle et partagez un peu sur vous',
+        fr: 'Parlez-nous de ton situation de logement actuelle et partagez un peu sur vous',
         en: 'Tell us about your current living situation and share a bit about yourself',
         nl: 'Vertel ons over je huidige woonsituatie en deel iets over jezelf',
         de: 'Erzählen Sie uns von Ihrer aktuellen Wohnsituation und teilen Sie etwas über sich',
@@ -16912,7 +16912,7 @@ export const translations = {
         de: 'Überprüfen Sie Ihr Profil',
       },
       subtitle: {
-        fr: 'Veuillez vérifier vos informations avant de soumettre',
+        fr: 'Vérifie tes informations avant de soumettre',
         en: 'Please review your information before submitting',
         nl: 'Controleer je informatie voordat je indient',
         de: 'Bitte überprüfen Sie Ihre Informationen vor dem Absenden',
@@ -16928,13 +16928,13 @@ export const translations = {
     // Success Page
     success: {
       title: {
-        fr: 'Profil Complété ! 🎉',
-        en: 'Profile Complete! 🎉',
-        nl: 'Profiel Voltooid! 🎉',
-        de: 'Profil Abgeschlossen! 🎉',
+        fr: 'Profil Complété !',
+        en: 'Profile Complete!',
+        nl: 'Profiel Voltooid!',
+        de: 'Profil Abgeschlossen!',
       },
       subtitle: {
-        fr: 'Votre profil de résident a été créé avec succès. Vous pouvez maintenant gérer votre expérience de colocation.',
+        fr: 'Ton profil de résident a été créé avec succès. Tu peux maintenant gérer ton expérience de co-living.',
         en: 'Your resident profile has been successfully created. You can now manage your coliving experience.',
         nl: 'Je bewonersprofiel is succesvol aangemaakt. Je kunt nu je coliving ervaring beheren.',
         de: 'Ihr Bewohnerprofil wurde erfolgreich erstellt. Sie können jetzt Ihre Coliving-Erfahrung verwalten.',
@@ -16946,19 +16946,19 @@ export const translations = {
         de: 'Was Kommt Als Nächstes?',
       },
       step1: {
-        fr: 'Accédez à votre tableau de bord pour voir les mises à jour et annonces de la communauté',
+        fr: 'Accédez à ton tableau de bord pour voir les mises à jour et actualités de la communauté',
         en: 'Access your dashboard to view community updates and announcements',
         nl: 'Krijg toegang tot je dashboard om gemeenschap updates en aankondigingen te bekijken',
         de: 'Greifen Sie auf Ihr Dashboard zu, um Community-Updates und Ankündigungen anzuzeigen',
       },
       step2: {
-        fr: 'Connectez-vous avec vos colocataires et construisez votre communauté',
+        fr: 'Connectez-vous avec tes résidents et construisez votre communauté',
         en: 'Connect with your housemates and build your community',
         nl: 'Maak contact met je huisgenoten en bouw je gemeenschap op',
         de: 'Vernetzen Sie sich mit Ihren Mitbewohnern und bauen Sie Ihre Gemeinschaft auf',
       },
       step3: {
-        fr: 'Gérez votre profil et vos préférences à tout moment',
+        fr: 'Gère ta profil et tes préférences à tout moment',
         en: 'Manage your profile and preferences at any time',
         nl: 'Beheer je profiel en voorkeuren op elk moment',
         de: 'Verwalten Sie Ihr Profil und Ihre Einstellungen jederzeit',
@@ -16976,7 +16976,7 @@ export const translations = {
         de: 'Profil Verbessern',
       },
       tip: {
-        fr: 'Conseil : Gardez votre profil à jour pour profiter au maximum de votre expérience de colocation !',
+        fr: 'Conseil : Gardez ton profil à jour pour profiter au maximum de ton expérience de co-living !',
         en: 'Tip: Keep your profile up to date to make the most of your coliving experience!',
         nl: 'Tip: Houd je profiel up-to-date om het meeste uit je coliving ervaring te halen!',
         de: 'Tipp: Halten Sie Ihr Profil auf dem neuesten Stand, um das Beste aus Ihrer Coliving-Erfahrung zu machen!',
@@ -17079,13 +17079,13 @@ export const translations = {
         de: 'Zimmer verfügbar',
       },
       roommate: {
-        fr: 'colocataire',
+        fr: 'résident',
         en: 'roommate',
         nl: 'huisgenoot',
         de: 'Mitbewohner',
       },
       roommates: {
-        fr: 'colocataires',
+        fr: 'résidents',
         en: 'roommates',
         nl: 'huisgenoten',
         de: 'Mitbewohner',
@@ -17143,13 +17143,13 @@ export const translations = {
     },
     residents: {
       title: {
-        fr: 'Vos futurs colocataires',
+        fr: 'Vos futurs résidents',
         en: 'Your future roommates',
         nl: 'Je toekomstige huisgenoten',
         de: 'Ihre zukünftigen Mitbewohner',
       },
       subtitle: {
-        fr: 'Découvrez les personnes avec qui vous pourriez partager cette colocation',
+        fr: 'Découvrez les personnes avec qui tu pourrais partager cette co-living',
         en: 'Discover the people you could share this flatshare with',
         nl: 'Ontdek de mensen met wie je deze flatshare zou kunnen delen',
         de: 'Entdecken Sie die Menschen, mit denen Sie diese WG teilen könnten',
@@ -17241,13 +17241,13 @@ export const translations = {
         de: 'Immobilie hinzufügen',
       },
       description: {
-        fr: 'Renseignez les informations de votre bien',
+        fr: 'Renseignez les informations de ta résidence',
         en: 'Enter your property information',
         nl: 'Voer uw eigendomsgegevens in',
         de: 'Geben Sie Ihre Immobilieninformationen ein',
       },
       subtitle: {
-        fr: 'Renseignez les informations de votre bien',
+        fr: 'Renseignez les informations de ta résidence',
         en: 'Enter your property information',
         nl: 'Voer uw eigendomsgegevens in',
         de: 'Geben Sie Ihre Immobilieninformationen ein',
@@ -17272,7 +17272,7 @@ export const translations = {
       },
       errors: {
         titleRequired: {
-          fr: 'Veuillez entrer un titre pour votre propriété',
+          fr: 'Veuillez entrer un titre pour ta propriété',
           en: 'Please enter a title for your property',
           nl: 'Voer een titel in voor uw eigendom',
           de: 'Bitte geben Sie einen Titel für Ihre Immobilie ein',
@@ -17310,7 +17310,7 @@ export const translations = {
           de: 'Standort',
         },
         propertyDetails: {
-          fr: 'Détails du bien',
+          fr: 'Détails de la résidence',
           en: 'Property Details',
           nl: 'Eigendom details',
           de: 'Immobiliendetails',
@@ -17342,8 +17342,8 @@ export const translations = {
       },
       fields: {
         propertyTitle: {
-          fr: 'Titre de l\'annonce',
-          en: 'Property Title',
+          fr: 'Titre de la résidence',
+          en: 'Residence Title',
           nl: 'Titel van het eigendom',
           de: 'Immobilientitel',
         },
@@ -17360,7 +17360,7 @@ export const translations = {
           de: 'Beschreibung',
         },
         descriptionPlaceholder: {
-          fr: 'Décrivez votre propriété, ses caractéristiques et le quartier...',
+          fr: 'Décrivez ta propriété, ses caractéristiques et le quartier...',
           en: 'Describe your property, its features, and the neighborhood...',
           nl: 'Beschrijf uw eigendom, de kenmerken en de buurt...',
           de: 'Beschreiben Sie Ihre Immobilie, ihre Merkmale und die Nachbarschaft...',
@@ -17547,7 +17547,7 @@ export const translations = {
         de: 'Immobilie bearbeiten',
       },
       description: {
-        fr: 'Mettez à jour les informations de votre propriété',
+        fr: 'Mettez à jour les informations de ta propriété',
         en: 'Update your property information',
         nl: 'Werk de informatie van uw eigendom bij',
         de: 'Aktualisieren Sie Ihre Immobilieninformationen',
@@ -17668,13 +17668,13 @@ export const translations = {
       },
       tips: {
         chooseTime: {
-          fr: 'Choisissez un créneau horaire qui vous convient',
+          fr: 'Choisissez un créneau horaire qui te convient',
           en: 'Choose a time slot that works for you',
           nl: 'Kies een tijdslot dat bij u past',
           de: 'Wählen Sie einen passenden Zeitpunkt',
         },
         provideContact: {
-          fr: 'Fournissez vos coordonnées pour que le propriétaire puisse vous contacter',
+          fr: 'Fournis tes coordonnées pour que le propriétaire puisse te contacter',
           en: 'Provide your contact details so the owner can reach you',
           nl: 'Geef uw contactgegevens zodat de eigenaar u kan bereiken',
           de: 'Geben Sie Ihre Kontaktdaten an, damit der Eigentümer Sie erreichen kann',
@@ -17686,7 +17686,7 @@ export const translations = {
           de: 'Der Eigentümer bestätigt Ihren Besuch per E-Mail',
         },
         emailConfirmation: {
-          fr: 'Vous recevrez un email de confirmation avec les détails',
+          fr: 'Tu recevras un email de confirmation avec les détails',
           en: 'You will receive a confirmation email with the details',
           nl: 'U ontvangt een bevestigingsmail met de details',
           de: 'Sie erhalten eine Bestätigungs-E-Mail mit den Details',
@@ -17770,7 +17770,7 @@ export const translations = {
       },
       summary: {
         title: {
-          fr: 'Récapitulatif de votre visite',
+          fr: 'Récapitulatif de ton visite',
           en: 'Visit summary',
           nl: 'Bezoeksamenvatting',
           de: 'Besichtigungsübersicht',
@@ -17838,7 +17838,7 @@ export const translations = {
           de: 'Bitte wählen Sie ein Datum und einen Zeitfenster',
         },
         phoneRequired: {
-          fr: 'Veuillez entrer votre numéro de téléphone',
+          fr: 'Veuillez entrer ton numéro de téléphone',
           en: 'Please enter your phone number',
           nl: 'Voer uw telefoonnummer in',
           de: 'Bitte geben Sie Ihre Telefonnummer ein',
@@ -17867,7 +17867,7 @@ export const translations = {
         de: 'Für diese Immobilie bewerben',
       },
       subtitle: {
-        fr: 'Complétez votre candidature',
+        fr: 'Complète votre candidature',
         en: 'Complete your application',
         nl: 'Voltooi uw aanvraag',
         de: 'Vervollständigen Sie Ihre Bewerbung',
@@ -17903,7 +17903,7 @@ export const translations = {
         de: 'Ihre Nachricht (optional)',
       },
       messagePlaceholder: {
-        fr: 'Présentez-vous et expliquez pourquoi ce logement vous intéresse...',
+        fr: 'Présente-toi et explique pourquoi ce logement t'intéresse...',
         en: 'Introduce yourself and explain why you\'re interested in this property...',
         nl: 'Stel uzelf voor en leg uit waarom u geïnteresseerd bent in dit eigendom...',
         de: 'Stellen Sie sich vor und erklären Sie, warum Sie an dieser Immobilie interessiert sind...',
@@ -17933,7 +17933,7 @@ export const translations = {
         de: 'Fehler beim Einreichen der Bewerbung',
       },
       submitDisclaimer: {
-        fr: 'En soumettant cette candidature, vous acceptez que vos informations soient partagées avec le propriétaire.',
+        fr: 'En soumettant cette candidature, tu acceptes que tes informations soient partagées avec le propriétaire.',
         en: 'By submitting this application, you agree that your information will be shared with the owner.',
         nl: 'Door deze aanvraag in te dienen, gaat u ermee akkoord dat uw gegevens worden gedeeld met de eigenaar.',
         de: 'Mit dem Absenden dieser Bewerbung stimmen Sie zu, dass Ihre Daten mit dem Eigentümer geteilt werden.',
@@ -17958,7 +17958,7 @@ export const translations = {
           de: 'Fehler beim Hochladen von',
         },
         alreadyApplied: {
-          fr: 'Vous avez déjà postulé pour ce logement',
+          fr: 'Tu as déjà postulé pour ce logement',
           en: 'You have already applied for this property',
           nl: 'U heeft al gesolliciteerd voor dit eigendom',
           de: 'Sie haben sich bereits für diese Immobilie beworben',
@@ -18098,7 +18098,7 @@ export const translations = {
           de: 'Z.B.: Google, Universität Berlin...',
         },
         message: {
-          fr: 'Décrivez-vous brièvement : vos activités, vos centres d\'intérêt, pourquoi ce logement vous plaît...',
+          fr: 'Décris-toi brièvement : tes activités, tes centres d\'intérêt, pourquoi ce logement te plaît...',
           en: 'Briefly describe yourself: your activities, interests, why you like this property...',
           nl: 'Beschrijf uzelf kort: uw activiteiten, interesses, waarom u dit eigendom leuk vindt...',
           de: 'Beschreiben Sie sich kurz: Ihre Aktivitäten, Interessen, warum Ihnen diese Immobilie gefällt...',
@@ -18125,7 +18125,7 @@ export const translations = {
         },
       },
       documentsHelp: {
-        fr: 'Ces documents sont optionnels mais augmentent vos chances d\'être sélectionné. Formats acceptés : PDF, JPG, PNG.',
+        fr: 'Ces documents sont optionnels mais augmentent tes chances d\'être sélectionné. Formats acceptés : PDF, JPG, PNG.',
         en: 'These documents are optional but increase your chances of being selected. Accepted formats: PDF, JPG, PNG.',
         nl: 'Deze documenten zijn optioneel maar verhogen uw kansen om geselecteerd te worden. Geaccepteerde formaten: PDF, JPG, PNG.',
         de: 'Diese Dokumente sind optional, erhöhen aber Ihre Chancen, ausgewählt zu werden. Akzeptierte Formate: PDF, JPG, PNG.',
@@ -18384,7 +18384,7 @@ export const translations = {
       de: 'Zahlungen',
     },
     subtitle: {
-      fr: 'Gérez vos paiements et échéanciers',
+      fr: 'Gère tes paiements et échéanciers',
       en: 'Manage your payments and schedules',
       nl: 'Beheer uw betalingen en schema\'s',
       de: 'Verwalten Sie Ihre Zahlungen und Zeitpläne',
@@ -18700,7 +18700,7 @@ export const translations = {
       de: 'Gemeinschaft',
     },
     subtitle: {
-      fr: 'Connectez-vous avec vos colocataires et voisins',
+      fr: 'Connectez-vous avec tes résidents et voisins',
       en: 'Connect with your roommates and neighbors',
       nl: 'Verbind met je huisgenoten en buren',
       de: 'Verbinde dich mit deinen Mitbewohnern und Nachbarn',
@@ -18715,19 +18715,19 @@ export const translations = {
     // Roommates section
     roommates: {
       title: {
-        fr: 'Vos colocataires',
+        fr: 'Vos résidents',
         en: 'Your Roommates',
         nl: 'Je huisgenoten',
         de: 'Deine Mitbewohner',
       },
       empty: {
-        fr: 'Pas encore de colocataires',
+        fr: 'Pas encore de résidents',
         en: 'No roommates yet',
         nl: 'Nog geen huisgenoten',
         de: 'Noch keine Mitbewohner',
       },
       emptyHint: {
-        fr: 'Une fois installé, vous verrez vos colocataires ici',
+        fr: 'Une fois installé, tu verras tes résidents ici',
         en: 'Once you move in, you\'ll see your roommates here',
         nl: 'Zodra je bent verhuisd, zie je hier je huisgenoten',
         de: 'Sobald du eingezogen bist, siehst du hier deine Mitbewohner',
@@ -18939,7 +18939,7 @@ export const translations = {
         de: 'Bitte geben Sie einen Einladungscode ein',
       },
       alreadyInGroup: {
-        fr: 'Vous êtes déjà dans un groupe',
+        fr: 'Tu es déjà dans un groupe',
         en: 'You are already in a group',
         nl: 'Je bent al lid van een groep',
         de: 'Sie sind bereits in einer Gruppe',
@@ -18983,7 +18983,7 @@ export const translations = {
         de: 'Anfrage gesendet! Warten auf Genehmigung.',
       },
       joinSuccess: {
-        fr: 'Vous avez rejoint le groupe avec succès !',
+        fr: 'Tu as rejoint le groupe avec succès !',
         en: 'Successfully joined the group!',
         nl: 'Succesvol lid geworden van de groep!',
         de: 'Erfolgreich der Gruppe beigetreten!',
@@ -19005,7 +19005,7 @@ export const translations = {
       de: 'Gruppeneinstellungen',
     },
     subtitle: {
-      fr: 'Gérez les paramètres et les membres de votre groupe',
+      fr: 'Gère les paramètres et les membres de ton groupe',
       en: 'Manage your group settings and members',
       nl: 'Beheer je groepsinstellingen en leden',
       de: 'Verwalten Sie Ihre Gruppeneinstellungen und Mitglieder',
@@ -19096,7 +19096,7 @@ export const translations = {
         de: 'Einladungscode',
       },
       shareHint: {
-        fr: 'Partagez ce code avec les personnes que vous souhaitez inviter',
+        fr: 'Partagez ce code avec les personnes que tu souhaites inviter',
         en: 'Share this code with people you want to invite',
         nl: 'Deel deze code met mensen die je wilt uitnodigen',
         de: 'Teilen Sie diesen Code mit Personen, die Sie einladen möchten',
@@ -19161,7 +19161,7 @@ export const translations = {
           de: 'Gruppe verlassen',
         },
         success: {
-          fr: 'Vous avez quitté le groupe',
+          fr: 'Tu as quitté le groupe',
           en: 'You left the group',
           nl: 'Je hebt de groep verlaten',
           de: 'Sie haben die Gruppe verlassen',
@@ -19360,7 +19360,7 @@ export const translations = {
         de: 'Öffentliche Ansicht:',
       },
       description: {
-        fr: 'C\'est ce que les autres utilisateurs voient sur votre profil. Complétez votre profil pour augmenter vos chances de trouver le coloc idéal !',
+        fr: 'C\'est ce que les autres utilisateurs voient sur ton profil. Complète ton Living Persona pour augmenter tes chances de trouver le co-living idéal !',
         en: 'This is what other users see on your profile. Complete your profile to increase your chances of finding the ideal roommate!',
         nl: 'Dit is wat andere gebruikers op je profiel zien. Vul je profiel in om je kansen te vergroten om de ideale huisgenoot te vinden!',
         de: 'Das ist, was andere Nutzer auf Ihrem Profil sehen. Vervollständigen Sie Ihr Profil, um Ihre Chancen zu erhöhen, den idealen Mitbewohner zu finden!',
@@ -19371,13 +19371,13 @@ export const translations = {
   // Profile Completion Page
   profileCompletion: {
     title: {
-      fr: 'Complétion de votre profil',
+      fr: 'Complétion de ton profil',
       en: 'Complete Your Profile',
       nl: 'Profiel voltooien',
       de: 'Profil vervollständigen',
     },
     description: {
-      fr: 'Complétez votre profil pour améliorer vos chances de trouver la colocation idéale',
+      fr: 'Complète ton profil pour améliorer tes chances de trouver la co-living idéale',
       en: 'Complete your profile to improve your chances of finding the ideal roommate',
       nl: 'Vul je profiel in om je kansen te vergroten om de ideale huisgenoot te vinden',
       de: 'Vervollständigen Sie Ihr Profil, um Ihre Chancen zu verbessern, den idealen Mitbewohner zu finden',
@@ -19413,7 +19413,7 @@ export const translations = {
       de: 'und {{count}} weitere Felder',
     },
     completeProfile: {
-      fr: 'Compléter mon profil',
+      fr: 'Compléter mon Living Persona',
       en: 'Complete My Profile',
       nl: 'Mijn profiel voltooien',
       de: 'Mein Profil vervollständigen',
@@ -19571,7 +19571,7 @@ export const translations = {
       de: 'Daten aktualisieren',
     },
     completeForVisibility: {
-      fr: 'Complétez votre profil pour améliorer votre visibilité auprès des propriétaires',
+      fr: 'Complète ton profil pour améliorer votre visibilité auprès des propriétaires',
       en: 'Complete your profile to improve your visibility to property owners',
       nl: 'Vul je profiel in om je zichtbaarheid bij huiseigenaren te verbeteren',
       de: 'Vervollständigen Sie Ihr Profil, um Ihre Sichtbarkeit bei Eigentümern zu verbessern',
@@ -19628,7 +19628,7 @@ export const translations = {
         de: 'Mein Profil verbessern',
       },
       subtitle: {
-        fr: 'Augmentez vos chances de matching',
+        fr: 'Augmentez tes chances de matching',
         en: 'Increase your matching chances',
         nl: 'Verhoog je matchingkansen',
         de: 'Erhöhen Sie Ihre Matching-Chancen',
@@ -19641,7 +19641,7 @@ export const translations = {
           de: 'Über mich',
         },
         description: {
-          fr: 'Parlez-nous de vous',
+          fr: 'Parle-nous de toi',
           en: 'Tell us about yourself',
           nl: 'Vertel ons over jezelf',
           de: 'Erzählen Sie uns von sich',
@@ -19669,7 +19669,7 @@ export const translations = {
           de: 'Werte',
         },
         description: {
-          fr: 'Ce qui compte pour vous',
+          fr: 'Ce qui compte pour toi',
           en: 'What matters to you',
           nl: 'Wat belangrijk voor je is',
           de: 'Was Ihnen wichtig ist',
@@ -19766,7 +19766,7 @@ export const translations = {
         de: 'Aktuelle Rolle',
       },
       onboardingComplete: {
-        fr: 'Onboarding terminé',
+        fr: 'Living Persona créé ! Prêt à découvrir tes Living Matchs',
         en: 'Onboarding complete',
         nl: 'Onboarding voltooid',
         de: 'Onboarding abgeschlossen',
@@ -19828,7 +19828,7 @@ export const translations = {
         de: 'Onboarding zurücksetzen',
       },
       description: {
-        fr: 'Cela réinitialisera votre progression d\'onboarding. Vos informations de profil seront préservées. Êtes-vous sûr de vouloir continuer ?',
+        fr: 'Cela réinitialisera votre progression d\'onboarding. Tes informations de profil seront préservées. Êtes-vous sûr de vouloir continuer ?',
         en: 'This will reset your onboarding progress. Your profile information will be preserved. Are you sure you want to continue?',
         nl: 'Hiermee wordt je onboardingvoortgang gereset. Je profielinformatie blijft behouden. Weet je zeker dat je wilt doorgaan?',
         de: 'Dadurch wird Ihr Onboarding-Fortschritt zurückgesetzt. Ihre Profilinformationen werden beibehalten. Sind Sie sicher, dass Sie fortfahren möchten?',
@@ -19916,7 +19916,7 @@ export const translations = {
         de: 'Onboarding-Zurücksetzung fehlgeschlagen',
       },
       enterCurrentPassword: {
-        fr: 'Veuillez entrer votre mot de passe actuel',
+        fr: 'Veuillez entrer ton mot de passe actuel',
         en: 'Please enter your current password',
         nl: 'Voer je huidige wachtwoord in',
         de: 'Bitte geben Sie Ihr aktuelles Passwort ein',
@@ -20002,7 +20002,7 @@ export const translations = {
         de: 'Zurück zum Profil',
       },
       loading: {
-        fr: 'Chargement de vos informations...',
+        fr: 'Chargement de tes informations...',
         en: 'Loading your information...',
         nl: 'Je informatie laden...',
         de: 'Ihre Informationen werden geladen...',
@@ -20040,13 +20040,13 @@ export const translations = {
     },
     about: {
       title: {
-        fr: 'Parlez-nous de vous',
+        fr: 'Parle-nous de toi',
         en: 'Tell Us About Yourself',
         nl: 'Vertel ons over jezelf',
         de: 'Erzählen Sie uns von sich',
       },
       description: {
-        fr: 'Partagez un peu de qui vous êtes (tous les champs sont optionnels)',
+        fr: 'Partagez un peu de qui tu es (tous les champs sont optionnels)',
         en: 'Share a bit about who you are (all fields are optional)',
         nl: 'Deel een beetje over wie je bent (alle velden zijn optioneel)',
         de: 'Teilen Sie ein wenig darüber, wer Sie sind (alle Felder sind optional)',
@@ -20059,7 +20059,7 @@ export const translations = {
           de: 'Kurze Biografie',
         },
         helper: {
-          fr: 'Une brève introduction qui apparaît en haut de votre profil',
+          fr: 'Une brève introduction qui apparaît en haut de ton profil',
           en: 'A brief introduction that appears at the top of your profile',
           nl: 'Een korte introductie die bovenaan je profiel verschijnt',
           de: 'Eine kurze Einführung, die oben in Ihrem Profil erscheint',
@@ -20079,7 +20079,7 @@ export const translations = {
           de: 'Mehr über mich',
         },
         helper: {
-          fr: 'Partagez plus de détails sur votre style de vie, vos intérêts ou ce qui vous rend unique',
+          fr: 'Partagez plus de détails sur ton style de vie, tes intérêts ou ce qui te rend unique',
           en: 'Share more details about your lifestyle, interests, or what makes you unique',
           nl: 'Deel meer details over je levensstijl, interesses of wat je uniek maakt',
           de: 'Teilen Sie mehr Details über Ihren Lebensstil, Ihre Interessen oder was Sie einzigartig macht',
@@ -20099,7 +20099,7 @@ export const translations = {
           de: 'Was ich suche',
         },
         helper: {
-          fr: 'Décrivez votre situation de vie idéale et le type de personnes avec qui vous aimeriez vivre',
+          fr: 'Décris ta situation de vie idéale et le type de personnes avec qui tu aimerais vivre',
           en: 'Describe your ideal living situation and the kind of people you\'d like to live with',
           nl: 'Beschrijf je ideale woonsituatie en het soort mensen met wie je wilt samenwonen',
           de: 'Beschreiben Sie Ihre ideale Wohnsituation und die Art von Menschen, mit denen Sie leben möchten',
@@ -20120,13 +20120,13 @@ export const translations = {
         de: 'Ihre Hobbys und Interessen',
       },
       description: {
-        fr: 'Aidez-nous à trouver des colocataires qui partagent vos passions',
+        fr: 'Aidez-nous à trouver des résidents qui partagent tes passions',
         en: 'Help us find roommates who share your passions',
         nl: 'Help ons huisgenoten te vinden die je passies delen',
         de: 'Helfen Sie uns, Mitbewohner zu finden, die Ihre Leidenschaften teilen',
       },
       loading: {
-        fr: 'Chargement de vos loisirs...',
+        fr: 'Chargement de tes loisirs...',
         en: 'Loading your hobbies...',
         nl: 'Je hobby\'s laden...',
         de: 'Ihre Hobbys werden geladen...',
@@ -20138,7 +20138,7 @@ export const translations = {
         de: 'Wählen Sie aus gängigen Hobbys:',
       },
       addOwn: {
-        fr: 'Ajoutez vos propres loisirs :',
+        fr: 'Ajoute tes propres loisirs :',
         en: 'Add your own hobbies:',
         nl: 'Voeg je eigen hobby\'s toe:',
         de: 'Fügen Sie Ihre eigenen Hobbys hinzu:',
@@ -20199,7 +20199,7 @@ export const translations = {
         de: 'Erweiterte Persönlichkeit',
       },
       description: {
-        fr: 'Partagez plus sur vous pour trouver des colocataires compatibles',
+        fr: 'Partagez plus sur toi pour trouver des résidents compatibles',
         en: 'Share more about yourself to help find compatible roommates',
         nl: 'Deel meer over jezelf om compatibele huisgenoten te vinden',
         de: 'Teilen Sie mehr über sich, um kompatible Mitbewohner zu finden',
@@ -20281,7 +20281,7 @@ export const translations = {
         de: 'Erweiterte Einstellungen',
       },
       description: {
-        fr: 'Affinez vos préférences de vie pour de meilleurs résultats',
+        fr: 'Affinez tes préférences de vie pour de meilleurs résultats',
         en: 'Fine-tune your living preferences for better matches',
         nl: 'Verfijn je woonvoorkeuren voor betere matches',
         de: 'Verfeinern Sie Ihre Wohnpräferenzen für bessere Übereinstimmungen',
@@ -20408,13 +20408,13 @@ export const translations = {
         de: 'Ihre Werte und Präferenzen',
       },
       description: {
-        fr: 'Aidez-nous à comprendre ce qui compte le plus pour vous',
+        fr: 'Aidez-nous à comprendre ce qui compte le plus pour toi',
         en: 'Help us understand what matters most to you',
         nl: 'Help ons te begrijpen wat voor jou het belangrijkst is',
         de: 'Helfen Sie uns zu verstehen, was Ihnen am wichtigsten ist',
       },
       loading: {
-        fr: 'Chargement de vos valeurs...',
+        fr: 'Chargement de tes valeurs...',
         en: 'Loading your values...',
         nl: 'Laden van je waarden...',
         de: 'Laden Ihrer Werte...',
@@ -20426,7 +20426,7 @@ export const translations = {
       },
       coreValues: {
         title: { fr: 'Valeurs fondamentales', en: 'Core Values', nl: 'Kernwaarden', de: 'Grundwerte' },
-        description: { fr: 'Sélectionnez ce qui compte le plus pour vous (max 5) :', en: 'Select what matters most to you (choose up to 5):', nl: 'Selecteer wat voor jou het belangrijkst is (kies er maximaal 5):', de: 'Wählen Sie, was Ihnen am wichtigsten ist (maximal 5):' },
+        description: { fr: 'Sélectionnez ce qui compte le plus pour toi (max 5) :', en: 'Select what matters most to you (choose up to 5):', nl: 'Selecteer wat voor jou het belangrijkst is (kies er maximaal 5):', de: 'Wählen Sie, was Ihnen am wichtigsten ist (maximal 5):' },
         selected: { fr: 'sélectionné(s)', en: 'selected', nl: 'geselecteerd', de: 'ausgewählt' },
         options: {
           honesty: { fr: 'Honnêteté', en: 'Honesty', nl: 'Eerlijkheid', de: 'Ehrlichkeit' },
@@ -20442,8 +20442,8 @@ export const translations = {
         },
       },
       qualities: {
-        title: { fr: 'Qualités importantes chez un colocataire', en: 'Important Qualities in a Roommate', nl: 'Belangrijke eigenschappen van een huisgenoot', de: 'Wichtige Eigenschaften eines Mitbewohners' },
-        description: { fr: 'Quelles qualités appréciez-vous chez un colocataire ?', en: 'What qualities do you value in a roommate?', nl: 'Welke eigenschappen waardeer je bij een huisgenoot?', de: 'Welche Eigenschaften schätzen Sie bei einem Mitbewohner?' },
+        title: { fr: 'Qualités importantes chez un résident', en: 'Important Qualities in a Roommate', nl: 'Belangrijke eigenschappen van een huisgenoot', de: 'Wichtige Eigenschaften eines Mitbewohners' },
+        description: { fr: 'Quelles qualités appréciez-vous chez un résident ?', en: 'What qualities do you value in a roommate?', nl: 'Welke eigenschappen waardeer je bij een huisgenoot?', de: 'Welche Eigenschaften schätzen Sie bei einem Mitbewohner?' },
         selected: { fr: 'sélectionné(s)', en: 'selected', nl: 'geselecteerd', de: 'ausgewählt' },
         options: {
           cleanliness: { fr: 'Propreté', en: 'Cleanliness', nl: 'Netheid', de: 'Sauberkeit' },
@@ -20460,7 +20460,7 @@ export const translations = {
       },
       dealBreakers: {
         title: { fr: 'Points de rupture', en: 'Deal Breakers', nl: 'Dealbreakers', de: 'Ausschlusskriterien' },
-        description: { fr: 'Sélectionnez les comportements ou situations que vous ne pouvez absolument pas tolérer :', en: 'Select behaviors or situations you absolutely cannot tolerate:', nl: 'Selecteer gedrag of situaties die je absoluut niet kunt tolereren:', de: 'Wählen Sie Verhaltensweisen oder Situationen, die Sie absolut nicht tolerieren können:' },
+        description: { fr: 'Sélectionnez les comportements ou situations que tu ne peux absolument pas tolérer :', en: 'Select behaviors or situations you absolutely cannot tolerate:', nl: 'Selecteer gedrag of situaties die je absoluut niet kunt tolereren:', de: 'Wählen Sie Verhaltensweisen oder Situationen, die Sie absolut nicht tolerieren können:' },
         selected: { fr: 'sélectionné(s)', en: 'selected', nl: 'geselecteerd', de: 'ausgewählt' },
         options: {
           smokingIndoors: { fr: 'Fumer à l\'intérieur', en: 'Smoking indoors', nl: 'Binnen roken', de: 'Drinnen rauchen' },
@@ -20489,7 +20489,7 @@ export const translations = {
         de: 'Wie interessiert sind Sie an Gemeinschaftsveranstaltungen, Partys und gesellschaftlichen Zusammenkünften?',
       },
       loading: {
-        fr: 'Chargement de vos préférences...',
+        fr: 'Chargement de tes préférences...',
         en: 'Loading your preferences...',
         nl: 'Laden van je voorkeuren...',
         de: 'Laden Ihrer Präferenzen...',
@@ -20511,17 +20511,17 @@ export const translations = {
       },
       sharedMeals: {
         title: { fr: 'J\'aimerais des repas partagés', en: "I'd enjoy shared meals", nl: 'Ik zou gedeelde maaltijden leuk vinden', de: 'Ich würde gemeinsame Mahlzeiten genießen' },
-        description: { fr: 'Cuisiner et manger ensemble avec les colocataires', en: 'Cook and eat together with flatmates', nl: 'Samen koken en eten met huisgenoten', de: 'Zusammen mit Mitbewohnern kochen und essen' },
+        description: { fr: 'Cuisiner et manger ensemble avec les résidents', en: 'Cook and eat together with flatmates', nl: 'Samen koken en eten met huisgenoten', de: 'Zusammen mit Mitbewohnern kochen und essen' },
       },
       openToMeetups: {
-        title: { fr: 'Ouvert aux rencontres entre colocataires', en: 'Open to flatmate meetups', nl: 'Open voor huisgenoot-ontmoetingen', de: 'Offen für Mitbewohner-Treffen' },
+        title: { fr: 'Ouvert aux rencontres entre résidents', en: 'Open to flatmate meetups', nl: 'Open voor huisgenoot-ontmoetingen', de: 'Offen für Mitbewohner-Treffen' },
         description: { fr: 'Passer du temps ensemble, regarder des films, soirées jeux', en: 'Hang out, watch movies, game nights', nl: 'Samen tijd doorbrengen, films kijken, spelavonden', de: 'Zusammen abhängen, Filme schauen, Spieleabende' },
       },
       perks: {
         title: { fr: 'Avantages de la communauté', en: 'Community Perks', nl: 'Community-voordelen', de: 'Community-Vorteile' },
-        perk1: { fr: 'Trouver des colocataires avec une énergie sociale similaire', en: 'Find flatmates with similar social energy', nl: 'Vind huisgenoten met vergelijkbare sociale energie', de: 'Finde Mitbewohner mit ähnlicher sozialer Energie' },
+        perk1: { fr: 'Trouver des résidents avec une énergie sociale similaire', en: 'Find flatmates with similar social energy', nl: 'Vind huisgenoten met vergelijkbare sociale energie', de: 'Finde Mitbewohner mit ähnlicher sozialer Energie' },
         perk2: { fr: 'Être associé à des styles de vie compatibles', en: 'Get matched with compatible living styles', nl: 'Gematcht worden met compatibele leefstijlen', de: 'Mit kompatiblen Lebensstilen gematcht werden' },
-        perk3: { fr: 'Découvrir des espaces de coliving qui vous correspondent', en: 'Discover coliving spaces that fit your vibe', nl: 'Ontdek coliving-ruimtes die bij je passen', de: 'Entdecken Sie Coliving-Räume, die zu Ihnen passen' },
+        perk3: { fr: 'Découvrir des espaces de coliving qui te correspondent', en: 'Discover coliving spaces that fit your vibe', nl: 'Ontdek coliving-ruimtes die bij je passen', de: 'Entdecken Sie Coliving-Räume, die zu Ihnen passen' },
       },
     },
     verification: {
@@ -20532,7 +20532,7 @@ export const translations = {
         de: 'Profilverifizierung',
       },
       description: {
-        fr: 'Vérifiez votre profil pour augmenter la confiance',
+        fr: 'Vérifiez ton profil pour augmenter la confiance',
         en: 'Verify your profile to build trust',
         nl: 'Verifieer je profiel om vertrouwen op te bouwen',
         de: 'Verifizieren Sie Ihr Profil, um Vertrauen aufzubauen',
@@ -20552,17 +20552,17 @@ export const translations = {
       },
       phoneVerification: {
         title: { fr: 'Vérification du téléphone', en: 'Phone Verification', nl: 'Telefoonverificatie', de: 'Telefonverifizierung' },
-        description: { fr: 'Confirmez votre numéro de téléphone', en: 'Confirm your phone number', nl: 'Bevestig je telefoonnummer', de: 'Bestätigen Sie Ihre Telefonnummer' },
+        description: { fr: 'Confirmez ton numéro de téléphone', en: 'Confirm your phone number', nl: 'Bevestig je telefoonnummer', de: 'Bestätigen Sie Ihre Telefonnummer' },
         verify: { fr: 'Vérifier', en: 'Verify', nl: 'Verifiëren', de: 'Verifizieren' },
       },
       emailVerification: {
         title: { fr: 'Vérification de l\'email', en: 'Email Verification', nl: 'E-mailverificatie', de: 'E-Mail-Verifizierung' },
-        description: { fr: 'Confirmez votre adresse email', en: 'Confirm your email address', nl: 'Bevestig je e-mailadres', de: 'Bestätigen Sie Ihre E-Mail-Adresse' },
+        description: { fr: 'Confirmez ton adresse email', en: 'Confirm your email address', nl: 'Bevestig je e-mailadres', de: 'Bestätigen Sie Ihre E-Mail-Adresse' },
         verified: { fr: 'Vérifié', en: 'Verified', nl: 'Geverifieerd', de: 'Verifiziert' },
       },
       socialVerification: {
         title: { fr: 'Vérification des réseaux sociaux', en: 'Social Verification', nl: 'Sociale verificatie', de: 'Soziale Verifizierung' },
-        description: { fr: 'Liez vos comptes de réseaux sociaux', en: 'Link your social media accounts', nl: 'Koppel je sociale media accounts', de: 'Verknüpfen Sie Ihre Social-Media-Konten' },
+        description: { fr: 'Liez tes comptes de réseaux sociaux', en: 'Link your social media accounts', nl: 'Koppel je sociale media accounts', de: 'Verknüpfen Sie Ihre Social-Media-Konten' },
         connect: { fr: 'Connecter', en: 'Connect', nl: 'Verbinden', de: 'Verbinden' },
       },
       badges: {
@@ -20583,7 +20583,7 @@ export const translations = {
       email: {
         title: { fr: 'Vérification Email', en: 'Email Verification', nl: 'E-mailverificatie', de: 'E-Mail-Verifizierung' },
         verified: { fr: 'Votre email a été vérifié', en: 'Your email has been verified', nl: 'Je e-mail is geverifieerd', de: 'Ihre E-Mail wurde verifiziert' },
-        pleaseVerify: { fr: 'Veuillez vérifier votre adresse email', en: 'Please verify your email address', nl: 'Verifieer je e-mailadres', de: 'Bitte verifizieren Sie Ihre E-Mail-Adresse' },
+        pleaseVerify: { fr: 'Vérifie ton adresse email', en: 'Please verify your email address', nl: 'Verifieer je e-mailadres', de: 'Bitte verifizieren Sie Ihre E-Mail-Adresse' },
         resend: { fr: 'Renvoyer l\'email de vérification', en: 'Resend Verification Email', nl: 'Verificatie-e-mail opnieuw verzenden', de: 'Bestätigungs-E-Mail erneut senden' },
         sent: { fr: 'Email de vérification envoyé ! Vérifiez votre boîte de réception.', en: 'Verification email sent! Please check your inbox.', nl: 'Verificatie-e-mail verzonden! Controleer je inbox.', de: 'Bestätigungs-E-Mail gesendet! Bitte überprüfen Sie Ihren Posteingang.' },
         sendFailed: { fr: 'Échec de l\'envoi de l\'email de vérification', en: 'Failed to send verification email', nl: 'Verzenden van verificatie-e-mail mislukt', de: 'Senden der Bestätigungs-E-Mail fehlgeschlagen' },
@@ -20624,19 +20624,19 @@ export const translations = {
     },
     review: {
       title: {
-        fr: 'Réviser votre profil amélioré',
+        fr: 'Réviser ton profil amélioré',
         en: 'Review Your Enhanced Profile',
         nl: 'Bekijk je verbeterde profiel',
         de: 'Überprüfen Sie Ihr erweitertes Profil',
       },
       description: {
-        fr: 'Vérifiez vos informations avant de sauvegarder',
+        fr: 'Vérifiez tes informations avant de sauvegarder',
         en: 'Check your information before saving',
         nl: 'Controleer je informatie voordat je opslaat',
         de: 'Überprüfen Sie Ihre Informationen vor dem Speichern',
       },
       loading: {
-        fr: 'Chargement de votre profil...',
+        fr: 'Chargement de ton profil...',
         en: 'Loading your profile...',
         nl: 'Laden van je profiel...',
         de: 'Laden Ihres Profils...',
@@ -20647,14 +20647,14 @@ export const translations = {
         stepName: { fr: 'Révision & Sauvegarde', en: 'Review & Save', nl: 'Bekijken & Opslaan', de: 'Überprüfen & Speichern' },
       },
       noData: {
-        fr: 'Vous n\'avez pas encore ajouté d\'informations de profil améliorées. Vous pouvez revenir en arrière et en ajouter, ou passer cette étape pour l\'instant.',
+        fr: 'Vous n\'avez pas encore ajouté d\'informations de profil améliorées. Tu peux revenir en arrière et en ajouter, ou passer cette étape pour l\'instant.',
         en: 'You haven\'t added any enhanced profile information yet. You can go back and add some, or skip this step for now.',
         nl: 'Je hebt nog geen verbeterde profielinformatie toegevoegd. Je kunt teruggaan en wat toevoegen, of deze stap voorlopig overslaan.',
         de: 'Sie haben noch keine erweiterten Profilinformationen hinzugefügt. Sie können zurückgehen und welche hinzufügen, oder diesen Schritt vorerst überspringen.',
       },
       toast: {
-        loginRequired: { fr: 'Veuillez vous connecter pour continuer', en: 'Please log in to continue', nl: 'Log in om door te gaan', de: 'Bitte melden Sie sich an, um fortzufahren' },
-        success: { fr: 'Profil amélioré avec succès !', en: 'Profile enhanced successfully!', nl: 'Profiel succesvol verbeterd!', de: 'Profil erfolgreich erweitert!' },
+        loginRequired: { fr: 'Connecte-toi pour continuer', en: 'Please log in to continue', nl: 'Log in om door te gaan', de: 'Bitte melden Sie sich an, um fortzufahren' },
+        success: { fr: 'Living Persona amélioré ! Tu augmentes tes chances de Living Match', en: 'Profile enhanced successfully!', nl: 'Profiel succesvol verbeterd!', de: 'Profil erfolgreich erweitert!' },
         saveFailed: { fr: 'Échec de la sauvegarde du profil', en: 'Failed to save profile', nl: 'Profiel opslaan mislukt', de: 'Profil speichern fehlgeschlagen' },
         error: { fr: 'Erreur', en: 'Error', nl: 'Fout', de: 'Fehler' },
       },
@@ -20697,7 +20697,7 @@ export const translations = {
         de: 'Finanzielle Informationen',
       },
       description: {
-        fr: 'Partagez vos préférences et capacités financières',
+        fr: 'Partagez tes préférences et capacités financières',
         en: 'Share your financial preferences and capabilities',
         nl: 'Deel je financiële voorkeuren en mogelijkheden',
         de: 'Teilen Sie Ihre finanziellen Präferenzen und Möglichkeiten',
@@ -20752,8 +20752,8 @@ export const translations = {
         unemployed: { fr: 'Sans emploi', en: 'Unemployed', nl: 'Werkloos', de: 'Arbeitslos' },
       },
       privacy: {
-        title: { fr: 'Votre vie privée compte', en: 'Your privacy matters', nl: 'Je privacy is belangrijk', de: 'Ihre Privatsphäre ist wichtig' },
-        description: { fr: 'Ces informations ne sont partagées qu\'avec des propriétaires vérifiés lorsque vous manifestez votre intérêt pour leurs biens. Vous pouvez les mettre à jour ou les supprimer à tout moment depuis vos paramètres de profil.', en: 'This information is only shared with verified landlords when you express interest in their properties. You can update or remove it anytime from your profile settings.', nl: 'Deze informatie wordt alleen gedeeld met geverifieerde verhuurders wanneer je interesse toont in hun woningen. Je kunt dit op elk moment bijwerken of verwijderen via je profielinstellingen.', de: 'Diese Informationen werden nur an verifizierte Vermieter weitergegeben, wenn Sie Interesse an deren Immobilien bekunden. Sie können sie jederzeit in Ihren Profileinstellungen aktualisieren oder entfernen.' },
+        title: { fr: 'Ta vie privée compte', en: 'Your privacy matters', nl: 'Je privacy is belangrijk', de: 'Ihre Privatsphäre ist wichtig' },
+        description: { fr: 'Ces informations ne sont partagées qu\'avec des propriétaires vérifiés lorsque tu manifestes ton intérêt pour leurs résidences. Tu peux les mettre à jour ou les supprimer à tout moment depuis tes paramètres de profil.', en: 'This information is only shared with verified landlords when you express interest in their properties. You can update or remove it anytime from your profile settings.', nl: 'Deze informatie wordt alleen gedeeld met geverifieerde verhuurders wanneer je interesse toont in hun woningen. Je kunt dit op elk moment bijwerken of verwijderen via je profielinstellingen.', de: 'Diese Informationen werden nur an verifizierte Vermieter weitergegeben, wenn Sie Interesse an deren Immobilien bekunden. Sie können sie jederzeit in Ihren Profileinstellungen aktualisieren oder entfernen.' },
       },
     },
   },
@@ -20764,7 +20764,7 @@ export const translations = {
   enhanceOwner: {
     common: {
       backToProfile: { fr: 'Retour au profil', en: 'Back to Profile', nl: 'Terug naar profiel', de: 'Zurück zum Profil' },
-      loading: { fr: 'Chargement de vos informations...', en: 'Loading your information...', nl: 'Je informatie laden...', de: 'Laden Ihrer Informationen...' },
+      loading: { fr: 'Chargement de tes informations...', en: 'Loading your information...', nl: 'Je informatie laden...', de: 'Laden Ihrer Informationen...' },
       saveChanges: { fr: 'Enregistrer les modifications', en: 'Save Changes', nl: 'Wijzigingen opslaan', de: 'Änderungen speichern' },
     },
     errors: {
@@ -20772,8 +20772,8 @@ export const translations = {
     },
     // Experience Page
     experience: {
-      title: { fr: 'Votre Parcours de Propriétaire', en: 'Your Hosting Journey', nl: 'Je Verhuurderservaring', de: 'Ihre Vermieter-Reise' },
-      description: { fr: 'Partagez votre expérience et ce qui vous motive en tant que propriétaire', en: 'Share your experience and what drives you as a property owner', nl: 'Deel je ervaring en wat je drijft als verhuurder', de: 'Teilen Sie Ihre Erfahrung und was Sie als Vermieter antreibt' },
+      title: { fr: 'Ton Parcours de Propriétaire', en: 'Your Hosting Journey', nl: 'Je Verhuurderservaring', de: 'Ihre Vermieter-Reise' },
+      description: { fr: 'Partage ton expérience et ce qui te motive en tant que propriétaire', en: 'Share your experience and what drives you as a property owner', nl: 'Deel je ervaring en wat je drijft als verhuurder', de: 'Teilen Sie Ihre Erfahrung und was Sie als Vermieter antreibt' },
       saved: { fr: 'Expérience enregistrée !', en: 'Experience saved!', nl: 'Ervaring opgeslagen!', de: 'Erfahrung gespeichert!' },
       yearsLabel: { fr: 'Années d\'expérience en location', en: 'Years of rental experience', nl: 'Jaren verhuurervaring', de: 'Jahre Vermieterfahrung' },
       years: {
@@ -20805,15 +20805,15 @@ export const translations = {
         investment: { fr: 'Investissement', en: 'Investment', nl: 'Investering', de: 'Investition' },
         other: { fr: 'Autre', en: 'Other', nl: 'Anders', de: 'Sonstiges' },
       },
-      bioLabel: { fr: 'Parlez-nous de vous', en: 'Tell us about yourself', nl: 'Vertel ons over jezelf', de: 'Erzählen Sie uns von sich' },
-      bioPlaceholder: { fr: 'Partagez votre philosophie d\'hébergement et ce qui vous rend unique en tant que propriétaire...', en: 'Share your hosting philosophy and what makes you unique as a property owner...', nl: 'Deel je verhuurfilosofie en wat jou uniek maakt als verhuurder...', de: 'Teilen Sie Ihre Hosting-Philosophie und was Sie als Vermieter einzigartig macht...' },
+      bioLabel: { fr: 'Parle-nous de toi', en: 'Tell us about yourself', nl: 'Vertel ons over jezelf', de: 'Erzählen Sie uns von sich' },
+      bioPlaceholder: { fr: 'Partage ta philosophie d\'hébergement et ce qui te rend unique en tant que propriétaire...', en: 'Share your hosting philosophy and what makes you unique as a property owner...', nl: 'Deel je verhuurfilosofie en wat jou uniek maakt als verhuurder...', de: 'Teilen Sie Ihre Hosting-Philosophie und was Sie als Vermieter einzigartig macht...' },
     },
     // Bio Page
     bio: {
       title: { fr: 'Bio & Histoire du Propriétaire', en: 'Owner Bio & Story', nl: 'Verhuurder Bio & Verhaal', de: 'Vermieter Bio & Geschichte' },
-      description: { fr: 'Partagez votre philosophie d\'hébergement et ce qui fait de vous un excellent bailleur', en: 'Share your hosting philosophy and what makes you a great landlord', nl: 'Deel je verhuurfilosofie en wat jou een geweldige verhuurder maakt', de: 'Teilen Sie Ihre Hosting-Philosophie und was Sie zu einem großartigen Vermieter macht' },
+      description: { fr: 'Partagez ta philosophie d\'hébergement et ce qui fait de toi un excellent bailleur', en: 'Share your hosting philosophy and what makes you a great landlord', nl: 'Deel je verhuurfilosofie en wat jou een geweldige verhuurder maakt', de: 'Teilen Sie Ihre Hosting-Philosophie und was Sie zu einem großartigen Vermieter macht' },
       saved: { fr: 'Bio enregistrée !', en: 'Bio saved!', nl: 'Bio opgeslagen!', de: 'Bio gespeichert!' },
-      motivationLabel: { fr: 'Qu\'est-ce qui vous a motivé à devenir propriétaire ?', en: 'What motivated you to become a property owner?', nl: 'Wat motiveerde je om verhuurder te worden?', de: 'Was hat Sie motiviert, Vermieter zu werden?' },
+      motivationLabel: { fr: 'Qu\'est-ce qui t\'a motivé à devenir propriétaire ?', en: 'What motivated you to become a property owner?', nl: 'Wat motiveerde je om verhuurder te worden?', de: 'Was hat Sie motiviert, Vermieter zu werden?' },
       motivations: {
         investment: { fr: 'Investissement & revenus passifs', en: 'Investment & passive income', nl: 'Investering & passief inkomen', de: 'Investition & passives Einkommen' },
         community: { fr: 'Créer une communauté', en: 'Building community', nl: 'Gemeenschap bouwen', de: 'Gemeinschaft aufbauen' },
@@ -20822,27 +20822,27 @@ export const translations = {
         other: { fr: 'Autre', en: 'Other', nl: 'Anders', de: 'Sonstiges' },
       },
       storyLabel: { fr: 'Racontez votre histoire', en: 'Tell your story', nl: 'Vertel je verhaal', de: 'Erzählen Sie Ihre Geschichte' },
-      storyPlaceholder: { fr: 'Partagez votre philosophie d\'hébergement, ce qui rend votre bien spécial, et ce que vous recherchez chez des locataires idéaux...', en: 'Share your hosting philosophy, what makes your property special, and what you\'re looking for in ideal tenants...', nl: 'Deel je verhuurfilosofie, wat je eigendom speciaal maakt, en wat je zoekt in ideale huurders...', de: 'Teilen Sie Ihre Hosting-Philosophie, was Ihre Immobilie besonders macht, und was Sie bei idealen Mietern suchen...' },
+      storyPlaceholder: { fr: 'Partagez ta philosophie d\'hébergement, ce qui rend ta résidence spécial, et ce que tu recherches chez des résidents idéaux...', en: 'Share your hosting philosophy, what makes your property special, and what you\'re looking for in ideal tenants...', nl: 'Deel je verhuurfilosofie, wat je eigendom speciaal maakt, en wat je zoekt in ideale huurders...', de: 'Teilen Sie Ihre Hosting-Philosophie, was Ihre Immobilie besonders macht, und was Sie bei idealen Mietern suchen...' },
       tipsTitle: { fr: 'Conseils pour une bonne bio :', en: 'Tips for a great bio:', nl: 'Tips voor een goede bio:', de: 'Tipps für eine gute Bio:' },
       tips: {
         managementStyle: { fr: 'Décrivez votre style de gestion', en: 'Describe your property management style', nl: 'Beschrijf je beheerstijl', de: 'Beschreiben Sie Ihren Verwaltungsstil' },
-        unique: { fr: 'Mentionnez ce qui rend votre bien unique', en: 'Mention what makes your property unique', nl: 'Noem wat je eigendom uniek maakt', de: 'Erwähnen Sie, was Ihre Immobilie einzigartig macht' },
-        values: { fr: 'Partagez ce que vous valorisez chez les locataires', en: 'Share what you value in tenants', nl: 'Deel wat je waardeert bij huurders', de: 'Teilen Sie mit, was Sie bei Mietern schätzen' },
+        unique: { fr: 'Mentionnez ce qui rend ta résidence unique', en: 'Mention what makes your property unique', nl: 'Noem wat je eigendom uniek maakt', de: 'Erwähnen Sie, was Ihre Immobilie einzigartig macht' },
+        values: { fr: 'Partagez ce que tu valorises chez les résidents', en: 'Share what you value in tenants', nl: 'Deel wat je waardeert bij huurders', de: 'Teilen Sie mit, was Sie bei Mietern schätzen' },
         authentic: { fr: 'Soyez authentique et personnel', en: 'Be authentic and personable', nl: 'Wees authentiek en persoonlijk', de: 'Seien Sie authentisch und persönlich' },
       },
     },
     // Verification Page
     verification: {
       title: { fr: 'Vérification du Profil', en: 'Profile Verification', nl: 'Profielverificatie', de: 'Profilverifizierung' },
-      description: { fr: 'Vérifiez votre identité pour renforcer la confiance avec les locataires potentiels', en: 'Verify your identity to build trust with potential tenants', nl: 'Verifieer je identiteit om vertrouwen op te bouwen bij potentiële huurders', de: 'Verifizieren Sie Ihre Identität, um Vertrauen bei potenziellen Mietern aufzubauen' },
+      description: { fr: 'Vérifiez votre identité pour renforcer la confiance avec les résidents potentiels', en: 'Verify your identity to build trust with potential tenants', nl: 'Verifieer je identiteit om vertrouwen op te bouwen bij potentiële huurders', de: 'Verifizieren Sie Ihre Identität, um Vertrauen bei potenziellen Mietern aufzubauen' },
       saved: { fr: 'Documents de vérification enregistrés !', en: 'Verification documents saved!', nl: 'Verificatiedocumenten opgeslagen!', de: 'Verifizierungsdokumente gespeichert!' },
       status: {
         complete: { fr: 'Vérification complète', en: 'Verification Complete', nl: 'Verificatie voltooid', de: 'Verifizierung abgeschlossen' },
-        verified: { fr: 'Votre profil a été vérifié', en: 'Your profile has been verified', nl: 'Je profiel is geverifieerd', de: 'Ihr Profil wurde verifiziert' },
+        verified: { fr: 'Ton profil a été vérifié', en: 'Your profile has been verified', nl: 'Je profiel is geverifieerd', de: 'Ihr Profil wurde verifiziert' },
       },
       idDocument: {
         title: { fr: 'Pièce d\'identité officielle', en: 'Government-issued ID', nl: 'Officieel identiteitsbewijs', de: 'Amtlicher Ausweis' },
-        description: { fr: 'Téléchargez une photo de votre passeport, permis de conduire ou carte d\'identité nationale', en: 'Upload a photo of your passport, driver\'s license, or national ID card', nl: 'Upload een foto van je paspoort, rijbewijs of identiteitskaart', de: 'Laden Sie ein Foto Ihres Reisepasses, Führerscheins oder Personalausweises hoch' },
+        description: { fr: 'Téléchargez une photo de ton passeport, permis de conduire ou carte d\'identité nationale', en: 'Upload a photo of your passport, driver\'s license, or national ID card', nl: 'Upload een foto van je paspoort, rijbewijs of identiteitskaart', de: 'Laden Sie ein Foto Ihres Reisepasses, Führerscheins oder Personalausweises hoch' },
         uploadPrompt: { fr: 'Cliquez pour télécharger ou glisser-déposer', en: 'Click to upload or drag and drop', nl: 'Klik om te uploaden of slepen', de: 'Klicken zum Hochladen oder Drag & Drop' },
         fileTypes: { fr: 'PNG, JPG ou PDF (max 10 Mo)', en: 'PNG, JPG or PDF (max 10MB)', nl: 'PNG, JPG of PDF (max 10MB)', de: 'PNG, JPG oder PDF (max 10MB)' },
         uploaded: { fr: 'Document téléchargé', en: 'Document uploaded', nl: 'Document geüpload', de: 'Dokument hochgeladen' },
@@ -20854,9 +20854,9 @@ export const translations = {
       },
       whyMatters: { fr: 'Pourquoi la vérification est importante', en: 'Why verification matters', nl: 'Waarom verificatie belangrijk is', de: 'Warum Verifizierung wichtig ist' },
       benefits: {
-        trust: { fr: 'Renforce la confiance avec les locataires potentiels', en: 'Builds trust with potential tenants', nl: 'Bouwt vertrouwen op bij potentiële huurders', de: 'Baut Vertrauen bei potenziellen Mietern auf' },
-        visibility: { fr: 'Augmente la visibilité de vos annonces', en: 'Increases visibility of your listings', nl: 'Verhoogt de zichtbaarheid van je advertenties', de: 'Erhöht die Sichtbarkeit Ihrer Anzeigen' },
-        protection: { fr: 'Vous protège vous et vos locataires', en: 'Protects you and your renters', nl: 'Beschermt jou en je huurders', de: 'Schützt Sie und Ihre Mieter' },
+        trust: { fr: 'Renforce la confiance avec les résidents potentiels', en: 'Builds trust with potential tenants', nl: 'Bouwt vertrouwen op bij potentiële huurders', de: 'Baut Vertrauen bei potenziellen Mietern auf' },
+        visibility: { fr: 'Augmente la visibilité de tes résidences', en: 'Increases visibility of your listings', nl: 'Verhoogt de zichtbaarheid van je advertenties', de: 'Erhöht die Sichtbarkeit Ihrer Anzeigen' },
+        protection: { fr: 'Te protège toi et tes résidents', en: 'Protects you and your renters', nl: 'Beschermt jou en je huurders', de: 'Schützt Sie und Ihre Mieter' },
         secure: { fr: 'Tous les documents sont cryptés en sécurité', en: 'All documents are securely encrypted', nl: 'Alle documenten zijn veilig versleuteld', de: 'Alle Dokumente sind sicher verschlüsselt' },
       },
       skipForNow: { fr: 'Passer pour le moment', en: 'Skip for Now', nl: 'Nu overslaan', de: 'Vorerst überspringen' },
@@ -20864,8 +20864,8 @@ export const translations = {
     },
     // Services Page
     services: {
-      title: { fr: 'Ce que vous proposez', en: 'What You Offer', nl: 'Wat je aanbiedt', de: 'Was Sie anbieten' },
-      description: { fr: 'Mettez en avant les équipements et services pour attirer des locataires', en: 'Highlight amenities and services to attract tenants', nl: 'Markeer voorzieningen en diensten om huurders aan te trekken', de: 'Heben Sie Annehmlichkeiten und Dienste hervor, um Mieter anzuziehen' },
+      title: { fr: 'Ce que tu proposes', en: 'What You Offer', nl: 'Wat je aanbiedt', de: 'Was Sie anbieten' },
+      description: { fr: 'Mettez en avant les équipements et services pour attirer des résidents', en: 'Highlight amenities and services to attract tenants', nl: 'Markeer voorzieningen en diensten om huurders aan te trekken', de: 'Heben Sie Annehmlichkeiten und Dienste hervor, um Mieter anzuziehen' },
       saved: { fr: 'Services enregistrés !', en: 'Services saved!', nl: 'Diensten opgeslagen!', de: 'Dienste gespeichert!' },
       amenitiesTitle: { fr: 'Équipements disponibles', en: 'Available Amenities', nl: 'Beschikbare voorzieningen', de: 'Verfügbare Annehmlichkeiten' },
       amenities: {
@@ -20884,12 +20884,12 @@ export const translations = {
         insurance: { fr: 'Assurance habitation', en: 'Property Insurance', nl: 'Woningverzekering', de: 'Gebäudeversicherung' },
       },
       proTip: { fr: 'Conseil pro :', en: 'Pro Tip:', nl: 'Pro Tip:', de: 'Profi-Tipp:' },
-      proTipContent: { fr: 'Les annonces avec des équipements listés reçoivent 2x plus de demandes que celles sans.', en: 'Listings with amenities listed get 2x more inquiries than those without.', nl: 'Advertenties met voorzieningen krijgen 2x meer vragen dan zonder.', de: 'Anzeigen mit aufgelisteten Annehmlichkeiten erhalten 2x mehr Anfragen als ohne.' },
+      proTipContent: { fr: 'Les résidences avec des équipements listés reçoivent 2x plus de demandes que celles sans.', en: 'Listings with amenities listed get 2x more inquiries than those without.', nl: 'Advertenties met voorzieningen krijgen 2x meer vragen dan zonder.', de: 'Anzeigen mit aufgelisteten Annehmlichkeiten erhalten 2x mehr Anfragen als ohne.' },
     },
     // Policies Page
     policies: {
       title: { fr: 'Vos règles de location', en: 'Your Rental Policies', nl: 'Je huurbeleid', de: 'Ihre Mietrichtlinien' },
-      description: { fr: 'Définissez des attentes claires pour les locataires potentiels', en: 'Set clear expectations for potential tenants', nl: 'Stel duidelijke verwachtingen voor potentiële huurders', de: 'Setzen Sie klare Erwartungen für potenzielle Mieter' },
+      description: { fr: 'Définissez des attentes claires pour les résidents potentiels', en: 'Set clear expectations for potential tenants', nl: 'Stel duidelijke verwachtingen voor potentiële huurders', de: 'Setzen Sie klare Erwartungen für potenzielle Mieter' },
       saved: { fr: 'Règles enregistrées !', en: 'Policies saved!', nl: 'Beleid opgeslagen!', de: 'Richtlinien gespeichert!' },
       pets: {
         label: { fr: 'Autorisez-vous les animaux ?', en: 'Do you allow pets?', nl: 'Sta je huisdieren toe?', de: 'Erlauben Sie Haustiere?' },
@@ -20925,14 +20925,14 @@ export const translations = {
         months3: { fr: '3 mois', en: '3 months', nl: '3 maanden', de: '3 Monate' },
       },
       tip: { fr: 'Conseil :', en: 'Tip:', nl: 'Tip:', de: 'Tipp:' },
-      tipContent: { fr: 'Des règles claires attirent les bons locataires et évitent les malentendus.', en: 'Clear policies help attract the right tenants and avoid misunderstandings later.', nl: 'Duidelijk beleid helpt de juiste huurders aan te trekken en misverstanden te voorkomen.', de: 'Klare Richtlinien helfen, die richtigen Mieter anzuziehen und Missverständnisse zu vermeiden.' },
+      tipContent: { fr: 'Des règles claires attirent les bons résidents et évitent les malentendus.', en: 'Clear policies help attract the right tenants and avoid misunderstandings later.', nl: 'Duidelijk beleid helpt de juiste huurders aan te trekken en misverstanden te voorkomen.', de: 'Klare Richtlinien helfen, die richtigen Mieter anzuziehen und Missverständnisse zu vermeiden.' },
     },
     // Review Page
     review: {
-      title: { fr: 'Vérifier votre profil amélioré', en: 'Review Your Enhanced Profile', nl: 'Bekijk je verbeterde profiel', de: 'Überprüfen Sie Ihr erweitertes Profil' },
+      title: { fr: 'Vérifier ton profil amélioré', en: 'Review Your Enhanced Profile', nl: 'Bekijk je verbeterde profiel', de: 'Überprüfen Sie Ihr erweitertes Profil' },
       description: { fr: 'Assurez-vous que tout est correct avant d\'enregistrer', en: 'Make sure everything looks good before saving', nl: 'Zorg ervoor dat alles er goed uitziet voor het opslaan', de: 'Stellen Sie sicher, dass alles gut aussieht, bevor Sie speichern' },
       experienceSection: { fr: 'Expérience & Motivation', en: 'Experience & Motivation', nl: 'Ervaring & Motivatie', de: 'Erfahrung & Motivation' },
-      policiesSection: { fr: 'Règles pour les locataires', en: 'Tenant Policies', nl: 'Huurdersbeleid', de: 'Mieterrichtlinien' },
+      policiesSection: { fr: 'Règles pour les résidents', en: 'Tenant Policies', nl: 'Huurdersbeleid', de: 'Mieterrichtlinien' },
       servicesSection: { fr: 'Services & Équipements', en: 'Services & Amenities', nl: 'Diensten & Voorzieningen', de: 'Dienste & Annehmlichkeiten' },
       edit: { fr: 'Modifier', en: 'Edit', nl: 'Bewerken', de: 'Bearbeiten' },
       labels: {
@@ -20954,10 +20954,10 @@ export const translations = {
         noData: { fr: 'Aucune donnée saisie', en: 'No data entered', nl: 'Geen gegevens ingevoerd', de: 'Keine Daten eingegeben' },
       },
       errors: {
-        loginRequired: { fr: 'Veuillez vous connecter pour continuer', en: 'Please log in to continue', nl: 'Log in om door te gaan', de: 'Bitte melden Sie sich an, um fortzufahren' },
+        loginRequired: { fr: 'Connecte-toi pour continuer', en: 'Please log in to continue', nl: 'Log in om door te gaan', de: 'Bitte melden Sie sich an, um fortzufahren' },
         saveFailed: { fr: 'Échec de l\'enregistrement du profil amélioré', en: 'Failed to save enhanced profile', nl: 'Opslaan van verbeterd profiel mislukt', de: 'Erweitertes Profil konnte nicht gespeichert werden' },
       },
-      success: { fr: 'Profil amélioré enregistré avec succès !', en: 'Enhanced profile saved successfully!', nl: 'Verbeterd profiel succesvol opgeslagen!', de: 'Erweitertes Profil erfolgreich gespeichert!' },
+      success: { fr: 'Living Persona enregistré ! Plus de chances de trouver ton Living Match parfait', en: 'Enhanced profile saved successfully!', nl: 'Verbeterd profiel succesvol opgeslagen!', de: 'Erweitertes Profil erfolgreich gespeichert!' },
       saving: { fr: 'Enregistrement...', en: 'Saving...', nl: 'Opslaan...', de: 'Speichern...' },
       saveProfile: { fr: 'Enregistrer le profil amélioré', en: 'Save Enhanced Profile', nl: 'Verbeterd profiel opslaan', de: 'Erweitertes Profil speichern' },
       skipForNow: { fr: 'Passer pour le moment', en: 'Skip for now', nl: 'Nu overslaan', de: 'Vorerst überspringen' },
@@ -20970,7 +20970,7 @@ export const translations = {
   enhanceResident: {
     common: {
       backToDashboard: { fr: 'Retour au tableau de bord', en: 'Back to Dashboard', nl: 'Terug naar dashboard', de: 'Zurück zum Dashboard' },
-      loading: { fr: 'Chargement de vos informations...', en: 'Loading your information...', nl: 'Je informatie laden...', de: 'Laden Ihrer Informationen...' },
+      loading: { fr: 'Chargement de tes informations...', en: 'Loading your information...', nl: 'Je informatie laden...', de: 'Laden Ihrer Informationen...' },
       saveChanges: { fr: 'Enregistrer les modifications', en: 'Save Changes', nl: 'Wijzigingen opslaan', de: 'Änderungen speichern' },
       saving: { fr: 'Enregistrement...', en: 'Saving...', nl: 'Opslaan...', de: 'Speichern...' },
       cancel: { fr: 'Annuler', en: 'Cancel', nl: 'Annuleren', de: 'Abbrechen' },
@@ -20983,8 +20983,8 @@ export const translations = {
     // Personality Page
     personality: {
       title: { fr: 'Personnalité & Intérêts', en: 'Personality & Interests', nl: 'Persoonlijkheid & Interesses', de: 'Persönlichkeit & Interessen' },
-      description: { fr: 'Partagez plus sur vous-même pour vous connecter avec des voisins partageant les mêmes idées', en: 'Share more about yourself to connect with like-minded neighbors', nl: 'Deel meer over jezelf om in contact te komen met gelijkgestemde buren', de: 'Teilen Sie mehr über sich, um Gleichgesinnte zu finden' },
-      loadingText: { fr: 'Chargement de vos détails de personnalité...', en: 'Loading your personality details...', nl: 'Je persoonlijkheidsdetails laden...', de: 'Laden Ihrer Persönlichkeitsdetails...' },
+      description: { fr: 'Partagez plus sur vous-même pour toi connecter avec des voisins partageant les mêmes idées', en: 'Share more about yourself to connect with like-minded neighbors', nl: 'Deel meer over jezelf om in contact te komen met gelijkgestemde buren', de: 'Teilen Sie mehr über sich, um Gleichgesinnte zu finden' },
+      loadingText: { fr: 'Chargement de tes détails de personnalité...', en: 'Loading your personality details...', nl: 'Je persoonlijkheidsdetails laden...', de: 'Laden Ihrer Persönlichkeitsdetails...' },
       saved: { fr: 'Détails de personnalité enregistrés !', en: 'Personality details saved!', nl: 'Persoonlijkheidsdetails opgeslagen!', de: 'Persönlichkeitsdetails gespeichert!' },
       hobbiesTitle: { fr: 'Vos hobbies', en: 'Your Hobbies', nl: 'Je hobby\'s', de: 'Ihre Hobbys' },
       hobbiesPlaceholder: { fr: 'Ajouter un hobby...', en: 'Add a hobby...', nl: 'Voeg een hobby toe...', de: 'Hobby hinzufügen...' },
@@ -21017,13 +21017,13 @@ export const translations = {
         teamPlayer: { fr: 'Esprit d\'équipe', en: 'Team Player', nl: 'Teamspeler', de: 'Teamplayer' },
       },
       tip: { fr: 'Conseil', en: 'Tip', nl: 'Tip', de: 'Tipp' },
-      tipContent: { fr: 'Partager votre personnalité vous aide à vous connecter avec des voisins partageant des intérêts et modes de vie similaires !', en: 'Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!', nl: 'Je persoonlijkheid delen helpt je in contact te komen met buren met vergelijkbare interesses en levensstijlen!', de: 'Das Teilen Ihrer Persönlichkeit hilft Ihnen, mit Nachbarn in Kontakt zu treten, die ähnliche Interessen und Lebensstile haben!' },
+      tipContent: { fr: 'Partager votre personnalité t'aide à te connecter avec des voisins partageant des intérêts et modes de vie similaires !', en: 'Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!', nl: 'Je persoonlijkheid delen helpt je in contact te komen met buren met vergelijkbare interesses en levensstijlen!', de: 'Das Teilen Ihrer Persönlichkeit hilft Ihnen, mit Nachbarn in Kontakt zu treten, die ähnliche Interessen und Lebensstile haben!' },
     },
     // Lifestyle Page
     lifestyle: {
       title: { fr: 'Préférences de mode de vie', en: 'Lifestyle Preferences', nl: 'Levensstijlvoorkeuren', de: 'Lebensstil-Präferenzen' },
-      description: { fr: 'Aidez-nous à comprendre votre mode de vie quotidien et vos habitudes de vie', en: 'Help us understand your daily lifestyle and living habits', nl: 'Help ons je dagelijkse levensstijl en woongewoonten te begrijpen', de: 'Helfen Sie uns, Ihren täglichen Lebensstil und Ihre Gewohnheiten zu verstehen' },
-      loadingText: { fr: 'Chargement de vos préférences de mode de vie...', en: 'Loading your lifestyle preferences...', nl: 'Je levensstijlvoorkeuren laden...', de: 'Laden Ihrer Lebensstil-Präferenzen...' },
+      description: { fr: 'Aidez-nous à comprendre votre mode de vie quotidien et tes habitudes de vie', en: 'Help us understand your daily lifestyle and living habits', nl: 'Help ons je dagelijkse levensstijl en woongewoonten te begrijpen', de: 'Helfen Sie uns, Ihren täglichen Lebensstil und Ihre Gewohnheiten zu verstehen' },
+      loadingText: { fr: 'Chargement de tes préférences de mode de vie...', en: 'Loading your lifestyle preferences...', nl: 'Je levensstijlvoorkeuren laden...', de: 'Laden Ihrer Lebensstil-Präferenzen...' },
       saved: { fr: 'Préférences de mode de vie enregistrées !', en: 'Lifestyle preferences saved!', nl: 'Levensstijlvoorkeuren opgeslagen!', de: 'Lebensstil-Präferenzen gespeichert!' },
       sleep: {
         title: { fr: 'Horaire de sommeil *', en: 'Sleep Schedule *', nl: 'Slaapschema *', de: 'Schlafplan *' },
@@ -21037,7 +21037,7 @@ export const translations = {
       },
       cleanliness: {
         title: { fr: 'Niveau de propreté *', en: 'Cleanliness Level *', nl: 'Netheid niveau *', de: 'Sauberkeitsniveau *' },
-        subtitle: { fr: 'Comment maintenez-vous votre espace ?', en: 'How clean do you keep your space?', nl: 'Hoe netjes houd je je ruimte?', de: 'Wie sauber halten Sie Ihren Raum?' },
+        subtitle: { fr: 'Comment maintenez-vous ton espace ?', en: 'How clean do you keep your space?', nl: 'Hoe netjes houd je je ruimte?', de: 'Wie sauber halten Sie Ihren Raum?' },
         veryClean: { fr: 'Très propre', en: 'Very Clean', nl: 'Zeer netjes', de: 'Sehr sauber' },
         veryCleanDesc: { fr: 'Tout impeccable', en: 'Everything spotless', nl: 'Alles onberispelijk', de: 'Alles makellos' },
         moderate: { fr: 'Modéré', en: 'Moderate', nl: 'Gemiddeld', de: 'Moderat' },
@@ -21064,7 +21064,7 @@ export const translations = {
       },
       guests: {
         title: { fr: 'Recevoir des invités', en: 'Having Guests Over', nl: 'Gasten ontvangen', de: 'Gäste empfangen' },
-        subtitle: { fr: 'À quelle fréquence avez-vous des visiteurs ?', en: 'How often do you have visitors?', nl: 'Hoe vaak heb je bezoekers?', de: 'Wie oft haben Sie Besucher?' },
+        subtitle: { fr: 'À quelle fréquence as-tu des visiteurs ?', en: 'How often do you have visitors?', nl: 'Hoe vaak heb je bezoekers?', de: 'Wie oft haben Sie Besucher?' },
         never: { fr: 'Jamais', en: 'Never', nl: 'Nooit', de: 'Nie' },
         rarely: { fr: 'Rarement', en: 'Rarely', nl: 'Zelden', de: 'Selten' },
         sometimes: { fr: 'Parfois', en: 'Sometimes', nl: 'Soms', de: 'Manchmal' },
@@ -21074,23 +21074,23 @@ export const translations = {
     // Verification Page
     verification: {
       title: { fr: 'Vérification du profil', en: 'Profile Verification', nl: 'Profielverificatie', de: 'Profilverifizierung' },
-      description: { fr: 'Faites-vous vérifier pour établir la confiance avec votre communauté', en: 'Get verified to build trust with your community', nl: 'Laat je verifiëren om vertrouwen op te bouwen met je gemeenschap', de: 'Lassen Sie sich verifizieren, um Vertrauen in Ihrer Community aufzubauen' },
+      description: { fr: 'Faites-vous vérifier pour établir la confiance avec ton communauté', en: 'Get verified to build trust with your community', nl: 'Laat je verifiëren om vertrouwen op te bouwen met je gemeenschap', de: 'Lassen Sie sich verifizieren, um Vertrauen in Ihrer Community aufzubauen' },
       loadingText: { fr: 'Chargement du statut de vérification...', en: 'Loading verification status...', nl: 'Verificatiestatus laden...', de: 'Verifizierungsstatus wird geladen...' },
       verified: {
-        title: { fr: 'Vous êtes vérifié !', en: "You're Verified!", nl: 'Je bent geverifieerd!', de: 'Sie sind verifiziert!' },
-        description: { fr: 'Votre profil a été vérifié. Cela aide à établir la confiance dans la communauté.', en: 'Your profile has been verified. This helps build trust in the community.', nl: 'Je profiel is geverifieerd. Dit helpt vertrouwen op te bouwen in de gemeenschap.', de: 'Ihr Profil wurde verifiziert. Dies hilft, Vertrauen in der Community aufzubauen.' },
+        title: { fr: 'Tu es vérifié !', en: "You're Verified!", nl: 'Je bent geverifieerd!', de: 'Sie sind verifiziert!' },
+        description: { fr: 'Ton profil a été vérifié. Cela aide à établir la confiance dans la communauté.', en: 'Your profile has been verified. This helps build trust in the community.', nl: 'Je profiel is geverifieerd. Dit helpt vertrouwen op te bouwen in de gemeenschap.', de: 'Ihr Profil wurde verifiziert. Dies hilft, Vertrauen in der Community aufzubauen.' },
       },
       pending: {
         title: { fr: 'Vérification en cours', en: 'Verification Pending', nl: 'Verificatie in behandeling', de: 'Verifizierung ausstehend' },
-        description: { fr: 'Votre demande de vérification est en cours d\'examen. Nous vous informerons une fois terminé.', en: "Your verification request is being reviewed. We'll notify you once it's complete.", nl: 'Je verificatieverzoek wordt beoordeeld. We informeren je zodra het klaar is.', de: 'Ihre Verifizierungsanfrage wird geprüft. Wir benachrichtigen Sie, sobald sie abgeschlossen ist.' },
+        description: { fr: 'Ta demande de vérification est en cours d\'examen. Nous t'informerons une fois terminé.', en: "Your verification request is being reviewed. We'll notify you once it's complete.", nl: 'Je verificatieverzoek wordt beoordeeld. We informeren je zodra het klaar is.', de: 'Ihre Verifizierungsanfrage wird geprüft. Wir benachrichtigen Sie, sobald sie abgeschlossen ist.' },
       },
       requestSubmitted: { fr: 'Demande de vérification envoyée ! Nous l\'examinerons bientôt.', en: "Verification request submitted! We'll review it soon.", nl: 'Verificatieverzoek ingediend! We bekijken het binnenkort.', de: 'Verifizierungsanfrage eingereicht! Wir werden sie bald prüfen.' },
       whyVerify: { fr: 'Pourquoi se faire vérifier ?', en: 'Why Get Verified?', nl: 'Waarom je laten verifiëren?', de: 'Warum verifizieren lassen?' },
       benefits: {
         buildTrust: { fr: 'Établir la confiance', en: 'Build Trust', nl: 'Vertrouwen opbouwen', de: 'Vertrauen aufbauen' },
-        buildTrustDesc: { fr: 'Montrez à vos voisins que vous êtes un vrai membre vérifié de la communauté', en: "Show your neighbors you're a real, verified community member", nl: 'Laat je buren zien dat je een echte, geverifieerde gemeenschapslid bent', de: 'Zeigen Sie Ihren Nachbarn, dass Sie ein echtes, verifiziertes Mitglied der Gemeinschaft sind' },
+        buildTrustDesc: { fr: 'Montrez à tes voisins que tu es un vrai membre vérifié de la communauté', en: "Show your neighbors you're a real, verified community member", nl: 'Laat je buren zien dat je een echte, geverifieerde gemeenschapslid bent', de: 'Zeigen Sie Ihren Nachbarn, dass Sie ein echtes, verifiziertes Mitglied der Gemeinschaft sind' },
         standOut: { fr: 'Se démarquer', en: 'Stand Out', nl: 'Opvallen', de: 'Sich abheben' },
-        standOutDesc: { fr: 'Obtenez un badge vérifié sur votre profil', en: 'Get a verified badge on your profile', nl: 'Krijg een geverifieerd badge op je profiel', de: 'Erhalten Sie ein Verifizierungs-Badge auf Ihrem Profil' },
+        standOutDesc: { fr: 'Obtenez un badge vérifié sur ton profil', en: 'Get a verified badge on your profile', nl: 'Krijg een geverifieerd badge op je profiel', de: 'Erhalten Sie ein Verifizierungs-Badge auf Ihrem Profil' },
         easyProcess: { fr: 'Processus simple', en: 'Easy Process', nl: 'Eenvoudig proces', de: 'Einfacher Prozess' },
         easyProcessDesc: { fr: 'Processus de vérification simple qui ne prend que quelques minutes', en: 'Simple verification process that takes just a few minutes', nl: 'Eenvoudig verificatieproces dat slechts enkele minuten duurt', de: 'Einfacher Verifizierungsprozess, der nur wenige Minuten dauert' },
       },
@@ -21122,17 +21122,17 @@ export const translations = {
       },
       sharedMeals: {
         title: { fr: 'J\'aimerais des repas partagés', en: "I'd enjoy shared meals", nl: 'Ik zou gedeelde maaltijden leuk vinden', de: 'Ich würde gemeinsame Mahlzeiten genießen' },
-        description: { fr: 'Cuisiner et manger ensemble avec les colocataires', en: 'Cook and eat together with flatmates', nl: 'Samen koken en eten met huisgenoten', de: 'Gemeinsam mit Mitbewohnern kochen und essen' },
+        description: { fr: 'Cuisiner et manger ensemble avec les résidents', en: 'Cook and eat together with flatmates', nl: 'Samen koken en eten met huisgenoten', de: 'Gemeinsam mit Mitbewohnern kochen und essen' },
       },
       meetups: {
-        title: { fr: 'Ouvert aux rencontres entre colocataires', en: 'Open to flatmate meetups', nl: 'Open voor huisgenotenbijeenkomsten', de: 'Offen für Mitbewohner-Treffen' },
+        title: { fr: 'Ouvert aux rencontres entre résidents', en: 'Open to flatmate meetups', nl: 'Open voor huisgenotenbijeenkomsten', de: 'Offen für Mitbewohner-Treffen' },
         description: { fr: 'Traîner, regarder des films, soirées jeux', en: 'Hang out, watch movies, game nights', nl: 'Rondhangen, films kijken, spelletjesavonden', de: 'Abhängen, Filme schauen, Spieleabende' },
       },
       perks: {
         title: { fr: 'Avantages communautaires', en: 'Community Perks', nl: 'Gemeenschapsvoordelen', de: 'Gemeinschaftsvorteile' },
-        connect: { fr: 'Connectez-vous avec des voisins partageant vos intérêts', en: 'Connect with neighbors who share your interests', nl: 'Kom in contact met buren die je interesses delen', de: 'Verbinden Sie sich mit Nachbarn, die Ihre Interessen teilen' },
+        connect: { fr: 'Connectez-vous avec des voisins partageant tes intérêts', en: 'Connect with neighbors who share your interests', nl: 'Kom in contact met buren die je interesses delen', de: 'Verbinden Sie sich mit Nachbarn, die Ihre Interessen teilen' },
         invited: { fr: 'Soyez invité aux événements de l\'immeuble correspondant à votre style', en: 'Get invited to building events that match your style', nl: 'Word uitgenodigd voor gebouwevenementen die bij je stijl passen', de: 'Werden Sie zu Gebäudeveranstaltungen eingeladen, die zu Ihrem Stil passen' },
-        friendships: { fr: 'Construisez des amitiés durables dans votre communauté', en: 'Build lasting friendships in your community', nl: 'Bouw blijvende vriendschappen op in je gemeenschap', de: 'Bauen Sie dauerhafte Freundschaften in Ihrer Gemeinschaft auf' },
+        friendships: { fr: 'Construisez des amitiés durables dans ton communauté', en: 'Build lasting friendships in your community', nl: 'Bouw blijvende vriendschappen op in je gemeenschap', de: 'Bauen Sie dauerhafte Freundschaften in Ihrer Gemeinschaft auf' },
       },
     },
   },
@@ -21143,10 +21143,10 @@ export const translations = {
   enhanceSearcher: {
     common: {
       backToMenu: { fr: 'Retour au menu', en: 'Back to Menu', nl: 'Terug naar menu', de: 'Zurück zum Menü' },
-      loading: { fr: 'Chargement de vos informations...', en: 'Loading your information...', nl: 'Je informatie laden...', de: 'Laden Ihrer Informationen...' },
-      loadingPreferences: { fr: 'Chargement de vos préférences...', en: 'Loading your preferences...', nl: 'Je voorkeuren laden...', de: 'Laden Ihrer Präferenzen...' },
-      loadingValues: { fr: 'Chargement de vos valeurs...', en: 'Loading your values...', nl: 'Je waarden laden...', de: 'Laden Ihrer Werte...' },
-      loadingHobbies: { fr: 'Chargement de vos hobbies...', en: 'Loading your hobbies...', nl: 'Je hobby\'s laden...', de: 'Laden Ihrer Hobbys...' },
+      loading: { fr: 'Chargement de tes informations...', en: 'Loading your information...', nl: 'Je informatie laden...', de: 'Laden Ihrer Informationen...' },
+      loadingPreferences: { fr: 'Chargement de tes préférences...', en: 'Loading your preferences...', nl: 'Je voorkeuren laden...', de: 'Laden Ihrer Präferenzen...' },
+      loadingValues: { fr: 'Chargement de tes valeurs...', en: 'Loading your values...', nl: 'Je waarden laden...', de: 'Laden Ihrer Werte...' },
+      loadingHobbies: { fr: 'Chargement de tes hobbies...', en: 'Loading your hobbies...', nl: 'Je hobby\'s laden...', de: 'Laden Ihrer Hobbys...' },
       saveAndContinue: { fr: 'Enregistrer et continuer', en: 'Save & Continue', nl: 'Opslaan & doorgaan', de: 'Speichern & Fortfahren' },
       skipForNow: { fr: 'Passer pour l\'instant', en: 'Skip for now', nl: 'Nu overslaan', de: 'Vorerst überspringen' },
       saved: { fr: 'Enregistré !', en: 'Saved!', nl: 'Opgeslagen!', de: 'Gespeichert!' },
@@ -21158,21 +21158,21 @@ export const translations = {
     },
     // About Page
     about: {
-      title: { fr: 'Parlez-nous de vous', en: 'Tell Us About Yourself', nl: 'Vertel ons over jezelf', de: 'Erzählen Sie uns von sich' },
-      description: { fr: 'Partagez un peu de qui vous êtes (tous les champs sont optionnels)', en: 'Share a bit about who you are (all fields are optional)', nl: 'Deel wat over jezelf (alle velden zijn optioneel)', de: 'Teilen Sie etwas über sich mit (alle Felder sind optional)' },
+      title: { fr: 'Parle-nous de toi', en: 'Tell Us About Yourself', nl: 'Vertel ons over jezelf', de: 'Erzählen Sie uns von sich' },
+      description: { fr: 'Partagez un peu de qui tu es (tous les champs sont optionnels)', en: 'Share a bit about who you are (all fields are optional)', nl: 'Deel wat over jezelf (alle velden zijn optioneel)', de: 'Teilen Sie etwas über sich mit (alle Felder sind optional)' },
       bio: {
         label: { fr: 'Courte bio', en: 'Short Bio', nl: 'Korte bio', de: 'Kurze Bio' },
-        helper: { fr: 'Une brève introduction qui apparaît en haut de votre profil', en: 'A brief introduction that appears at the top of your profile', nl: 'Een korte introductie die bovenaan je profiel verschijnt', de: 'Eine kurze Einführung, die oben in Ihrem Profil erscheint' },
+        helper: { fr: 'Une brève introduction qui apparaît en haut de ton profil', en: 'A brief introduction that appears at the top of your profile', nl: 'Een korte introductie die bovenaan je profiel verschijnt', de: 'Eine kurze Einführung, die oben in Ihrem Profil erscheint' },
         placeholder: { fr: 'ex. Étudiant en tech passionné par le développement durable et les activités en plein air...', en: 'e.g., Tech student passionate about sustainability and outdoor activities...', nl: 'bijv. Techstudent met passie voor duurzaamheid en buitenactiviteiten...', de: 'z.B. Tech-Student mit Leidenschaft für Nachhaltigkeit und Outdoor-Aktivitäten...' },
       },
       aboutMe: {
         label: { fr: 'Plus sur moi', en: 'More About Me', nl: 'Meer over mij', de: 'Mehr über mich' },
-        helper: { fr: 'Partagez plus de détails sur votre mode de vie, vos intérêts ou ce qui vous rend unique', en: 'Share more details about your lifestyle, interests, or what makes you unique', nl: 'Deel meer over je levensstijl, interesses of wat je uniek maakt', de: 'Teilen Sie mehr über Ihren Lebensstil, Ihre Interessen oder was Sie einzigartig macht' },
+        helper: { fr: 'Partagez plus de détails sur ton mode de vie, tes intérêts ou ce qui te rend unique', en: 'Share more details about your lifestyle, interests, or what makes you unique', nl: 'Deel meer over je levensstijl, interesses of wat je uniek maakt', de: 'Teilen Sie mehr über Ihren Lebensstil, Ihre Interessen oder was Sie einzigartig macht' },
         placeholder: { fr: 'ex. Je suis étudiant en communication qui adore la techno et danser. Je travaille parfois de chez moi, j\'aime cuisiner sainement et garder un espace rangé...', en: "e.g., I'm a communication student who loves techno and dancing. I work from home sometimes, enjoy cooking healthy meals, and like to keep a tidy space...", nl: 'bijv. Ik ben een communicatiestudent die houdt van techno en dansen. Ik werk soms thuis, kook graag gezond en houd van een opgeruimde ruimte...', de: 'z.B. Ich bin Kommunikationsstudent, der Techno und Tanzen liebt. Ich arbeite manchmal von zu Hause, koche gerne gesund und mag einen aufgeräumten Raum...' },
       },
       lookingFor: {
         label: { fr: 'Ce que je recherche', en: "What I'm Looking For", nl: 'Waar ik naar zoek', de: 'Was ich suche' },
-        helper: { fr: 'Décrivez votre situation de vie idéale et le type de personnes avec qui vous aimeriez vivre', en: "Describe your ideal living situation and the kind of people you'd like to live with", nl: 'Beschrijf je ideale woonsituatie en het type mensen waarmee je zou willen wonen', de: 'Beschreiben Sie Ihre ideale Wohnsituation und die Art von Menschen, mit denen Sie leben möchten' },
+        helper: { fr: 'Décris ta situation de vie idéale et le type de personnes avec qui tu aimerais vivre', en: "Describe your ideal living situation and the kind of people you'd like to live with", nl: 'Beschrijf je ideale woonsituatie en het type mensen waarmee je zou willen wonen', de: 'Beschreiben Sie Ihre ideale Wohnsituation und die Art von Menschen, mit denen Sie leben möchten' },
         placeholder: { fr: 'ex. Je cherche une chambre conviviale dans un coliving mixte avec des personnes qui respectent les espaces partagés et aiment les activités sociales occasionnelles...', en: 'e.g., Looking for a convivial room in a mixed coliving with people who respect shared spaces and enjoy occasional social activities...', nl: 'bijv. Op zoek naar een gezellige kamer in een gemengde coliving met mensen die gedeelde ruimtes respecteren en af en toe sociale activiteiten leuk vinden...', de: 'z.B. Suche ein geselliges Zimmer in einer gemischten Coliving-WG mit Menschen, die gemeinsame Räume respektieren und gelegentliche soziale Aktivitäten genießen...' },
       },
     },
@@ -21191,15 +21191,15 @@ export const translations = {
       },
       sharedMeals: {
         title: { fr: 'J\'aimerais des repas partagés', en: "I'd enjoy shared meals", nl: 'Ik zou gedeelde maaltijden leuk vinden', de: 'Ich würde gemeinsame Mahlzeiten genießen' },
-        description: { fr: 'Cuisiner et manger ensemble avec les colocataires', en: 'Cook and eat together with flatmates', nl: 'Samen koken en eten met huisgenoten', de: 'Gemeinsam mit Mitbewohnern kochen und essen' },
+        description: { fr: 'Cuisiner et manger ensemble avec les résidents', en: 'Cook and eat together with flatmates', nl: 'Samen koken en eten met huisgenoten', de: 'Gemeinsam mit Mitbewohnern kochen und essen' },
       },
       meetups: {
-        title: { fr: 'Ouvert aux rencontres entre colocataires', en: 'Open to flatmate meetups', nl: 'Open voor huisgenotenbijeenkomsten', de: 'Offen für Mitbewohner-Treffen' },
+        title: { fr: 'Ouvert aux rencontres entre résidents', en: 'Open to flatmate meetups', nl: 'Open voor huisgenotenbijeenkomsten', de: 'Offen für Mitbewohner-Treffen' },
         description: { fr: 'Traîner, regarder des films, soirées jeux', en: 'Hang out, watch movies, game nights', nl: 'Rondhangen, films kijken, spelletjesavonden', de: 'Abhängen, Filme schauen, Spieleabende' },
       },
       perks: {
         title: { fr: 'Avantages communautaires', en: 'Community Perks', nl: 'Gemeenschapsvoordelen', de: 'Gemeinschaftsvorteile' },
-        findFlatmates: { fr: 'Trouvez des colocataires avec une énergie sociale similaire', en: 'Find flatmates with similar social energy', nl: 'Vind huisgenoten met vergelijkbare sociale energie', de: 'Finden Sie Mitbewohner mit ähnlicher sozialer Energie' },
+        findFlatmates: { fr: 'Trouvez des résidents avec une énergie sociale similaire', en: 'Find flatmates with similar social energy', nl: 'Vind huisgenoten met vergelijkbare sociale energie', de: 'Finden Sie Mitbewohner mit ähnlicher sozialer Energie' },
         matchedStyles: { fr: 'Soyez associé à des styles de vie compatibles', en: 'Get matched with compatible living styles', nl: 'Word gematcht met compatibele levensstijlen', de: 'Werden Sie mit kompatiblen Lebensstilen zusammengebracht' },
         discoverSpaces: { fr: 'Découvrez des espaces de coliving qui correspondent à votre ambiance', en: 'Discover coliving spaces that fit your vibe', nl: 'Ontdek coliving-ruimtes die bij je vibe passen', de: 'Entdecken Sie Coliving-Räume, die zu Ihrer Stimmung passen' },
       },
@@ -21207,7 +21207,7 @@ export const translations = {
     // Ideal Living Page
     idealLiving: {
       title: { fr: 'Situation de vie idéale', en: 'Ideal Living Situation', nl: 'Ideale woonsituatie', de: 'Ideale Wohnsituation' },
-      description: { fr: 'Parlez-nous de votre environnement de coliving idéal', en: 'Tell us about your ideal coliving environment', nl: 'Vertel ons over je ideale coliving-omgeving', de: 'Erzählen Sie uns von Ihrer idealen Coliving-Umgebung' },
+      description: { fr: 'Parlez-nous de ton environnement de coliving idéal', en: 'Tell us about your ideal coliving environment', nl: 'Vertel ons over je ideale coliving-omgeving', de: 'Erzählen Sie uns von Ihrer idealen Coliving-Umgebung' },
       communitySize: {
         title: { fr: 'Taille de communauté préférée', en: 'Preferred Community Size', nl: 'Gewenste gemeenschapsgrootte', de: 'Bevorzugte Gemeinschaftsgröße' },
         subtitle: { fr: 'Avec combien de personnes aimeriez-vous vivre ?', en: 'How many people would you like to live with?', nl: 'Met hoeveel mensen zou je willen wonen?', de: 'Mit wie vielen Menschen möchten Sie zusammenleben?' },
@@ -21230,7 +21230,7 @@ export const translations = {
       },
       ageRange: {
         title: { fr: 'Tranche d\'âge préférée', en: 'Preferred Age Range', nl: 'Gewenste leeftijdsgroep', de: 'Bevorzugte Altersgruppe' },
-        subtitle: { fr: 'Quelle tranche d\'âge vous convient ?', en: 'What age range are you comfortable with?', nl: 'Welke leeftijdsgroep past bij je?', de: 'Welche Altersgruppe ist Ihnen angenehm?' },
+        subtitle: { fr: 'Quelle tranche d\'âge te convient ?', en: 'What age range are you comfortable with?', nl: 'Welke leeftijdsgroep past bij je?', de: 'Welche Altersgruppe ist Ihnen angenehm?' },
         minAge: { fr: 'Âge minimum', en: 'Minimum Age', nl: 'Minimum leeftijd', de: 'Mindestalter' },
         maxAge: { fr: 'Âge maximum', en: 'Maximum Age', nl: 'Maximum leeftijd', de: 'Höchstalter' },
       },
@@ -21244,15 +21244,15 @@ export const translations = {
         title: { fr: 'Préférence heures calmes', en: 'Quiet Hours Preference', nl: 'Voorkeur voor stille uren', de: 'Präferenz für Ruhezeiten' },
         subtitle: { fr: 'Préférez-vous des heures calmes établies ?', en: 'Do you prefer established quiet hours?', nl: 'Heb je liever vastgestelde stille uren?', de: 'Bevorzugen Sie festgelegte Ruhezeiten?' },
       },
-      tip: { fr: 'Ces préférences nous aident à vous associer à des propriétés et communautés qui correspondent à votre situation de vie idéale.', en: 'These preferences help us match you with properties and communities that fit your ideal living situation.', nl: 'Deze voorkeuren helpen ons je te matchen met woningen en gemeenschappen die bij je ideale woonsituatie passen.', de: 'Diese Präferenzen helfen uns, Sie mit Immobilien und Gemeinschaften zusammenzubringen, die zu Ihrer idealen Wohnsituation passen.' },
+      tip: { fr: 'Ces préférences nous aident à t'associer à des propriétés et communautés qui correspondent à votre situation de vie idéale.', en: 'These preferences help us match you with properties and communities that fit your ideal living situation.', nl: 'Deze voorkeuren helpen ons je te matchen met woningen en gemeenschappen die bij je ideale woonsituatie passen.', de: 'Diese Präferenzen helfen uns, Sie mit Immobilien und Gemeinschaften zusammenzubringen, die zu Ihrer idealen Wohnsituation passen.' },
     },
     // Lifestyle Details Page
     lifestyleDetails: {
       title: { fr: 'Détails du mode de vie', en: 'Lifestyle Details', nl: 'Levensstijldetails', de: 'Lebensstil-Details' },
-      description: { fr: 'Partagez plus sur vos habitudes quotidiennes et préférences', en: 'Share more about your daily habits and preferences', nl: 'Deel meer over je dagelijkse gewoonten en voorkeuren', de: 'Teilen Sie mehr über Ihre täglichen Gewohnheiten und Präferenzen' },
+      description: { fr: 'Partagez plus sur tes habitudes quotidiennes et préférences', en: 'Share more about your daily habits and preferences', nl: 'Deel meer over je dagelijkse gewoonten en voorkeuren', de: 'Teilen Sie mehr über Ihre täglichen Gewohnheiten und Präferenzen' },
       music: {
         title: { fr: 'Habitudes musicales à la maison', en: 'Music Habits at Home', nl: 'Muziekgewoonten thuis', de: 'Musikgewohnheiten zu Hause' },
-        subtitle: { fr: 'Comment appréciez-vous la musique chez vous ?', en: 'How do you enjoy music at home?', nl: 'Hoe geniet je van muziek thuis?', de: 'Wie genießen Sie Musik zu Hause?' },
+        subtitle: { fr: 'Comment apprécies-tu la musique chez toi ?', en: 'How do you enjoy music at home?', nl: 'Hoe geniet je van muziek thuis?', de: 'Wie genießen Sie Musik zu Hause?' },
         none: { fr: 'Silence', en: 'Silence', nl: 'Stilte', de: 'Stille' },
         noneDesc: { fr: 'Je préfère les environnements calmes', en: 'I prefer quiet environments', nl: 'Ik geef de voorkeur aan stille omgevingen', de: 'Ich bevorzuge ruhige Umgebungen' },
         headphonesOnly: { fr: 'Écouteurs uniquement', en: 'Headphones Only', nl: 'Alleen koptelefoon', de: 'Nur Kopfhörer' },
@@ -21294,7 +21294,7 @@ export const translations = {
       },
       communication: {
         title: { fr: 'Style de communication', en: 'Communication Style', nl: 'Communicatiestijl', de: 'Kommunikationsstil' },
-        subtitle: { fr: 'Comment préférez-vous communiquer avec vos colocataires ?', en: 'How do you prefer to communicate with flatmates?', nl: 'Hoe communiceer je het liefst met huisgenoten?', de: 'Wie kommunizieren Sie am liebsten mit Mitbewohnern?' },
+        subtitle: { fr: 'Comment préférez-vous communiquer avec tes résidents ?', en: 'How do you prefer to communicate with flatmates?', nl: 'Hoe communiceer je het liefst met huisgenoten?', de: 'Wie kommunizieren Sie am liebsten mit Mitbewohnern?' },
         direct: { fr: 'Direct & Franc', en: 'Direct & Straightforward', nl: 'Direct & Eerlijk', de: 'Direkt & Geradlinig' },
         directDesc: { fr: 'Je dis ce que je pense', en: 'I say what I mean', nl: 'Ik zeg wat ik bedoel', de: 'Ich sage, was ich meine' },
         diplomatic: { fr: 'Diplomate & Tactique', en: 'Diplomatic & Tactful', nl: 'Diplomatiek & Tactvol', de: 'Diplomatisch & Taktvoll' },
@@ -21304,15 +21304,15 @@ export const translations = {
         formal: { fr: 'Formel & Professionnel', en: 'Formal & Professional', nl: 'Formeel & Professioneel', de: 'Formell & Professionell' },
         formalDesc: { fr: 'Communication structurée', en: 'Structured communication', nl: 'Gestructureerde communicatie', de: 'Strukturierte Kommunikation' },
       },
-      tip: { fr: 'Ces détails nous aident à trouver des colocataires avec des modes de vie et préférences de communication compatibles.', en: 'These details help us find flatmates with compatible lifestyles and communication preferences.', nl: 'Deze details helpen ons huisgenoten te vinden met compatibele levensstijlen en communicatievoorkeuren.', de: 'Diese Details helfen uns, Mitbewohner mit kompatiblen Lebensstilen und Kommunikationspräferenzen zu finden.' },
+      tip: { fr: 'Ces détails nous aident à trouver des résidents avec des modes de vie et préférences de communication compatibles.', en: 'These details help us find flatmates with compatible lifestyles and communication preferences.', nl: 'Deze details helpen ons huisgenoten te vinden met compatibele levensstijlen en communicatievoorkeuren.', de: 'Diese Details helfen uns, Mitbewohner mit kompatiblen Lebensstilen und Kommunikationspräferenzen zu finden.' },
     },
     // Values Page
     values: {
       title: { fr: 'Vos valeurs & Préférences', en: 'Your Values & Preferences', nl: 'Je waarden & Voorkeuren', de: 'Ihre Werte & Präferenzen' },
-      description: { fr: 'Aidez-nous à comprendre ce qui compte le plus pour vous', en: 'Help us understand what matters most to you', nl: 'Help ons te begrijpen wat voor jou het belangrijkst is', de: 'Helfen Sie uns zu verstehen, was Ihnen am wichtigsten ist' },
+      description: { fr: 'Aidez-nous à comprendre ce qui compte le plus pour toi', en: 'Help us understand what matters most to you', nl: 'Help ons te begrijpen wat voor jou het belangrijkst is', de: 'Helfen Sie uns zu verstehen, was Ihnen am wichtigsten ist' },
       coreValues: {
         title: { fr: 'Valeurs fondamentales', en: 'Core Values', nl: 'Kernwaarden', de: 'Grundwerte' },
-        subtitle: { fr: 'Sélectionnez ce qui compte le plus pour vous (jusqu\'à 5)', en: 'Select what matters most to you (choose up to 5)', nl: 'Selecteer wat voor jou het belangrijkst is (max 5)', de: 'Wählen Sie, was Ihnen am wichtigsten ist (bis zu 5)' },
+        subtitle: { fr: 'Sélectionnez ce qui compte le plus pour toi (jusqu\'à 5)', en: 'Select what matters most to you (choose up to 5)', nl: 'Selecteer wat voor jou het belangrijkst is (max 5)', de: 'Wählen Sie, was Ihnen am wichtigsten ist (bis zu 5)' },
         honesty: { fr: 'Honnêteté', en: 'Honesty', nl: 'Eerlijkheid', de: 'Ehrlichkeit' },
         respect: { fr: 'Respect', en: 'Respect', nl: 'Respect', de: 'Respekt' },
         communication: { fr: 'Communication', en: 'Communication', nl: 'Communicatie', de: 'Kommunikation' },
@@ -21325,8 +21325,8 @@ export const translations = {
         creativity: { fr: 'Créativité', en: 'Creativity', nl: 'Creativiteit', de: 'Kreativität' },
       },
       qualities: {
-        title: { fr: 'Qualités importantes chez un colocataire', en: 'Important Qualities in a Roommate', nl: 'Belangrijke eigenschappen van een huisgenoot', de: 'Wichtige Eigenschaften bei einem Mitbewohner' },
-        subtitle: { fr: 'Quelles qualités appréciez-vous chez un colocataire ?', en: 'What qualities do you value in a roommate?', nl: 'Welke eigenschappen waardeer je bij een huisgenoot?', de: 'Welche Eigenschaften schätzen Sie bei einem Mitbewohner?' },
+        title: { fr: 'Qualités importantes chez un résident', en: 'Important Qualities in a Roommate', nl: 'Belangrijke eigenschappen van een huisgenoot', de: 'Wichtige Eigenschaften bei einem Mitbewohner' },
+        subtitle: { fr: 'Quelles qualités appréciez-vous chez un résident ?', en: 'What qualities do you value in a roommate?', nl: 'Welke eigenschappen waardeer je bij een huisgenoot?', de: 'Welche Eigenschaften schätzen Sie bei einem Mitbewohner?' },
         cleanliness: { fr: 'Propreté', en: 'Cleanliness', nl: 'Netheid', de: 'Sauberkeit' },
         punctuality: { fr: 'Ponctualité', en: 'Punctuality', nl: 'Punctualiteit', de: 'Pünktlichkeit' },
         friendliness: { fr: 'Amabilité', en: 'Friendliness', nl: 'Vriendelijkheid', de: 'Freundlichkeit' },
@@ -21340,7 +21340,7 @@ export const translations = {
       },
       dealBreakers: {
         title: { fr: 'Points de rupture', en: 'Deal Breakers', nl: 'Dealbreakers', de: 'Ausschlusskriterien' },
-        subtitle: { fr: 'Sélectionnez les comportements ou situations que vous ne pouvez absolument pas tolérer', en: 'Select behaviors or situations you absolutely cannot tolerate', nl: 'Selecteer gedragingen of situaties die je absoluut niet kunt tolereren', de: 'Wählen Sie Verhaltensweisen oder Situationen, die Sie absolut nicht tolerieren können' },
+        subtitle: { fr: 'Sélectionnez les comportements ou situations que tu ne peux absolument pas tolérer', en: 'Select behaviors or situations you absolutely cannot tolerate', nl: 'Selecteer gedragingen of situaties die je absoluut niet kunt tolereren', de: 'Wählen Sie Verhaltensweisen oder Situationen, die Sie absolut nicht tolerieren können' },
         smokingIndoors: { fr: 'Fumer à l\'intérieur', en: 'Smoking indoors', nl: 'Binnen roken', de: 'Rauchen in Innenräumen' },
         loudNoise: { fr: 'Bruit fort tard le soir', en: 'Loud noise late night', nl: 'Luid geluid \'s avonds laat', de: 'Laute Geräusche spät in der Nacht' },
         messiness: { fr: 'Désordre', en: 'Messiness', nl: 'Rommel', de: 'Unordnung' },
@@ -21371,12 +21371,12 @@ export const translations = {
         dailyDesc: { fr: 'Tous les jours ou presque', en: 'Every day or almost', nl: 'Elke dag of bijna', de: 'Jeden Tag oder fast' },
       },
       flatmateMeetups: {
-        title: { fr: 'Ouvert aux rencontres entre colocataires', en: 'Open to Flatmate Meetups', nl: 'Open voor huisgenotenbijeenkomsten', de: 'Offen für Mitbewohner-Treffen' },
+        title: { fr: 'Ouvert aux rencontres entre résidents', en: 'Open to Flatmate Meetups', nl: 'Open voor huisgenotenbijeenkomsten', de: 'Offen für Mitbewohner-Treffen' },
         description: { fr: 'Traîner, regarder des films, soirées jeux, etc.', en: 'Hang out, watch movies, game nights, etc.', nl: 'Rondhangen, films kijken, spelletjesavonden, etc.', de: 'Abhängen, Filme schauen, Spieleabende, usw.' },
       },
       groupActivities: {
         title: { fr: 'Intérêt pour les activités de groupe', en: 'Group Activities Interest', nl: 'Interesse in groepsactiviteiten', de: 'Interesse an Gruppenaktivitäten' },
-        subtitle: { fr: 'À quel point êtes-vous intéressé par les activités de groupe avec vos colocataires ?', en: 'How interested are you in group activities with flatmates?', nl: 'Hoe geïnteresseerd ben je in groepsactiviteiten met huisgenoten?', de: 'Wie interessiert sind Sie an Gruppenaktivitäten mit Mitbewohnern?' },
+        subtitle: { fr: 'À quel point êtes-vous intéressé par les activités de groupe avec tes résidents ?', en: 'How interested are you in group activities with flatmates?', nl: 'Hoe geïnteresseerd ben je in groepsactiviteiten met huisgenoten?', de: 'Wie interessiert sind Sie an Gruppenaktivitäten mit Mitbewohnern?' },
         notInterested: { fr: 'Pas intéressé', en: 'Not Interested', nl: 'Niet geïnteresseerd', de: 'Nicht interessiert' },
         notInterestedDesc: { fr: 'Je préfère les activités en solo', en: 'I prefer solo activities', nl: 'Ik geef de voorkeur aan solo-activiteiten', de: 'Ich bevorzuge Solo-Aktivitäten' },
         occasionally: { fr: 'Occasionnellement', en: 'Occasionally', nl: 'Af en toe', de: 'Gelegentlich' },
@@ -21417,14 +21417,14 @@ export const translations = {
         unemployed: { fr: 'Sans emploi', en: 'Unemployed', nl: 'Werkloos', de: 'Arbeitslos' },
       },
       privacy: {
-        title: { fr: 'Votre vie privée compte', en: 'Your privacy matters', nl: 'Je privacy is belangrijk', de: 'Ihre Privatsphäre ist wichtig' },
-        description: { fr: 'Ces informations ne sont partagées qu\'avec les propriétaires vérifiés lorsque vous exprimez un intérêt pour leurs biens. Vous pouvez les mettre à jour ou les supprimer à tout moment depuis les paramètres de votre profil.', en: "This information is only shared with verified landlords when you express interest in their properties. You can update or remove it anytime from your profile settings.", nl: 'Deze informatie wordt alleen gedeeld met geverifieerde verhuurders wanneer je interesse toont in hun woningen. Je kunt het op elk moment bijwerken of verwijderen via je profielinstellingen.', de: 'Diese Informationen werden nur an verifizierte Vermieter weitergegeben, wenn Sie Interesse an deren Immobilien bekunden. Sie können sie jederzeit in Ihren Profileinstellungen aktualisieren oder entfernen.' },
+        title: { fr: 'Ta vie privée compte', en: 'Your privacy matters', nl: 'Je privacy is belangrijk', de: 'Ihre Privatsphäre ist wichtig' },
+        description: { fr: 'Ces informations ne sont partagées qu\'avec les propriétaires vérifiés lorsque tu exprimes un intérêt pour leurs résidences. Tu peux les mettre à jour ou les supprimer à tout moment depuis les paramètres de ton profil.', en: "This information is only shared with verified landlords when you express interest in their properties. You can update or remove it anytime from your profile settings.", nl: 'Deze informatie wordt alleen gedeeld met geverifieerde verhuurders wanneer je interesse toont in hun woningen. Je kunt het op elk moment bijwerken of verwijderen via je profielinstellingen.', de: 'Diese Informationen werden nur an verifizierte Vermieter weitergegeben, wenn Sie Interesse an deren Immobilien bekunden. Sie können sie jederzeit in Ihren Profileinstellungen aktualisieren oder entfernen.' },
       },
     },
     // Personality Page
     personality: {
       title: { fr: 'Personnalité étendue', en: 'Extended Personality', nl: 'Uitgebreide persoonlijkheid', de: 'Erweiterte Persönlichkeit' },
-      description: { fr: 'Partagez plus sur vous-même pour trouver des colocataires compatibles', en: 'Share more about yourself to help find compatible roommates', nl: 'Deel meer over jezelf om compatibele huisgenoten te vinden', de: 'Teilen Sie mehr über sich, um kompatible Mitbewohner zu finden' },
+      description: { fr: 'Partagez plus sur vous-même pour trouver des résidents compatibles', en: 'Share more about yourself to help find compatible roommates', nl: 'Deel meer over jezelf om compatibele huisgenoten te vinden', de: 'Teilen Sie mehr über sich, um kompatible Mitbewohner zu finden' },
       saved: { fr: 'Détails de personnalité enregistrés !', en: 'Personality details saved!', nl: 'Persoonlijkheidsdetails opgeslagen!', de: 'Persönlichkeitsdetails gespeichert!' },
       hobbies: {
         label: { fr: 'Vos hobbies', en: 'Your Hobbies', nl: 'Je hobby\'s', de: 'Ihre Hobbys' },
@@ -21462,9 +21462,9 @@ export const translations = {
     // Hobbies Page
     hobbies: {
       title: { fr: 'Vos hobbies & Intérêts', en: 'Your Hobbies & Interests', nl: 'Je hobby\'s & Interesses', de: 'Ihre Hobbys & Interessen' },
-      description: { fr: 'Aidez-nous à trouver des colocataires qui partagent vos passions', en: 'Help us find roommates who share your passions', nl: 'Help ons huisgenoten te vinden die je passies delen', de: 'Helfen Sie uns, Mitbewohner zu finden, die Ihre Leidenschaften teilen' },
+      description: { fr: 'Aidez-nous à trouver des résidents qui partagent tes passions', en: 'Help us find roommates who share your passions', nl: 'Help ons huisgenoten te vinden die je passies delen', de: 'Helfen Sie uns, Mitbewohner zu finden, die Ihre Leidenschaften teilen' },
       commonHobbies: { fr: 'Sélectionnez parmi les hobbies courants :', en: 'Select from common hobbies:', nl: 'Selecteer uit veelvoorkomende hobby\'s:', de: 'Wählen Sie aus häufigen Hobbys:' },
-      addOwn: { fr: 'Ajoutez vos propres hobbies :', en: 'Add your own hobbies:', nl: 'Voeg je eigen hobby\'s toe:', de: 'Fügen Sie Ihre eigenen Hobbys hinzu:' },
+      addOwn: { fr: 'Ajoute tes propres hobbies :', en: 'Add your own hobbies:', nl: 'Voeg je eigen hobby\'s toe:', de: 'Fügen Sie Ihre eigenen Hobbys hinzu:' },
       placeholder: { fr: 'Ajouter un hobby...', en: 'Add a hobby...', nl: 'Voeg een hobby toe...', de: 'Hobby hinzufügen...' },
       customHobbies: { fr: 'Vos hobbies personnalisés :', en: 'Your custom hobbies:', nl: 'Je aangepaste hobby\'s:', de: 'Ihre benutzerdefinierten Hobbys:' },
       selectedCount: { fr: 'hobby sélectionné', en: 'hobby selected', nl: 'hobby geselecteerd', de: 'Hobby ausgewählt' },
@@ -21516,7 +21516,7 @@ export const translations = {
       de: 'Mieter auswählen',
     },
     completeInfo: {
-      fr: 'Complétez les informations',
+      fr: 'Complète les informations',
       en: 'Complete the information',
       nl: 'Vul de informatie in',
       de: 'Informationen vervollständigen',
@@ -21580,13 +21580,13 @@ export const translations = {
       de: 'Kein aktiver Mieter',
     },
     loadingTenants: {
-      fr: 'Chargement des locataires...',
+      fr: 'Chargement des résidents...',
       en: 'Loading tenants...',
       nl: 'Huurders laden...',
       de: 'Mieter werden geladen...',
     },
     errorLoadingTenants: {
-      fr: 'Impossible de charger les locataires',
+      fr: 'Impossible de charger les résidents',
       en: 'Unable to load tenants',
       nl: 'Kan huurders niet laden',
       de: 'Mieter können nicht geladen werden',
@@ -22416,7 +22416,7 @@ export const translations = {
         de: 'z.B. 2500',
       },
       message: {
-        fr: 'Présentez-vous et expliquez pourquoi ce bien vous intéresse...',
+        fr: 'Présente-toi et explique pourquoi ce bien t'intéresse...',
         en: 'Introduce yourself and explain why you\'re interested in this property...',
         nl: 'Stel uzelf voor en leg uit waarom u geïnteresseerd bent in deze woning...',
         de: 'Stellen Sie sich vor und erklären Sie, warum Sie an dieser Immobilie interessiert sind...',
@@ -22473,7 +22473,7 @@ export const translations = {
       de: 'Hinweis:',
     },
     disclaimer: {
-      fr: 'En soumettant cette candidature, vous confirmez que les informations fournies sont exactes. Le propriétaire examinera votre candidature et vous contactera si elle est acceptée.',
+      fr: 'En soumettant cette candidature, tu confirmes que les informations fournies sont exactes. Le propriétaire examinera ta candidature et te contactera si elle est acceptée.',
       en: 'By submitting this application, you agree that the information provided is accurate. The property owner will review your application and contact you if approved.',
       nl: 'Door deze aanvraag in te dienen, bevestigt u dat de verstrekte informatie correct is. De eigenaar zal uw aanvraag beoordelen en contact met u opnemen indien goedgekeurd.',
       de: 'Mit dem Absenden dieser Bewerbung bestätigen Sie, dass die angegebenen Informationen korrekt sind. Der Eigentümer wird Ihre Bewerbung prüfen und Sie bei Genehmigung kontaktieren.',
