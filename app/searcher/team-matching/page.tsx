@@ -132,7 +132,7 @@ export default function TeamMatchingComingSoon() {
     <div className="min-h-screen relative overflow-hidden pb-24 md:pb-8">
       {/* Glassmorphism Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-searcher-50/80 via-white to-orange-50/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-50/80 via-white to-searcher-50/60" />
 
         {/* Animated gradient blobs */}
         <motion.div

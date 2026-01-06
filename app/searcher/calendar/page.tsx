@@ -405,8 +405,8 @@ export default function SearcherCalendarPage() {
                         day
                           ? 'bg-white hover:border-searcher-300 border-gray-100'
                           : 'bg-gray-50/50 border-gray-50',
-                        isTodayDay && 'ring-2 ring-amber-400 border-searcher-200',
-                        isSelected && 'ring-2 ring-amber-500 border-searcher-300 bg-searcher-50'
+                        isTodayDay && 'ring-2 ring-searcher-400 border-searcher-200',
+                        isSelected && 'ring-2 ring-searcher-500 border-searcher-300 bg-searcher-50'
                       )}
                       style={
                         isTodayDay

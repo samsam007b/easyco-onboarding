@@ -100,7 +100,7 @@ export default function GroupSettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-white to-amber-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-searcher-50 via-white to-searcher-50">
         <LoadingHouse size={80} />
       </div>
     );

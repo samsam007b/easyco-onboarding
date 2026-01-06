@@ -173,7 +173,7 @@ export default function SearcherCreateGroupPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-searcher-50 via-white to-yellow-50/30">
+      <div className="min-h-screen bg-gradient-to-br from-searcher-50 via-white to-searcher-50/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           {/* Header */}
@@ -257,7 +257,7 @@ export default function SearcherCreateGroupPage() {
                       placeholder={t?.basicInfo?.descriptionPlaceholder?.[language] || 'Parlez-nous de votre groupe, vos intérêts, votre style de vie...'}
                       rows={4}
                       maxLength={500}
-                      className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-searcher-400 focus:ring-2 focus:ring-amber-100 outline-none transition text-base"
+                      className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-searcher-400 focus:ring-2 focus:ring-searcher-100 outline-none transition text-base"
                     />
                     <p className="text-xs text-gray-500 mt-1">
                       {description.length}/500 {t?.basicInfo?.characters?.[language] || 'caractères'}

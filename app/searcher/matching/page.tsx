@@ -184,10 +184,10 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         {/* Glassmorphism background - Searcher Dark Orange */}
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-orange-400/5 to-yellow-300/3" />
+          <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
           <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -202,10 +202,10 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
       {/* Glassmorphism background - Searcher Dark Orange for Matching */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-orange-400/5 to-yellow-300/3" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
         <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 

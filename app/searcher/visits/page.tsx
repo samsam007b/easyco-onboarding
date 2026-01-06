@@ -241,10 +241,10 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-yellow-200/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute inset-0 bg-gradient-to-br from-searcher-400/8 via-searcher-300/5 to-searcher-200/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
           <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -259,10 +259,10 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
       {/* Glassmorphism background - Searcher Light for Visits */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-yellow-200/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-400/8 via-searcher-300/5 to-searcher-200/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
         <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
