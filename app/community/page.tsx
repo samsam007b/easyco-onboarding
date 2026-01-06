@@ -77,7 +77,7 @@ export default function CommunityPage() {
       {profile && (
         <DashboardHeader
           profile={profile}
-          avatarColor="#FF5722"
+          avatarColor="#e05747"
           role="resident"
         />
       )}

@@ -248,12 +248,12 @@ export default function PublicViewPage() {
         }
       case 'resident':
         return {
-          gradient: 'from-[#e05747] to-[#ff9014]',
-          gradientStyle: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+          gradient: 'from-[#e05747] to-[#e05747]',
+          gradientStyle: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
           bg: 'bg-[#FFF4EC]',
           bgStyle: '#FFF4EC',
-          text: 'text-[#ff651e]',
-          textColor: '#ff651e',
+          text: 'text-[#e05747]',
+          textColor: '#e05747',
           border: 'border-[#ffb89a]',
           lightBg: 'linear-gradient(135deg, #FFF4EC 0%, #FEE7DC 100%)',
         }

@@ -107,7 +107,7 @@ export default function PrivateCodesPage() {
           </p>
           <Button
             onClick={() => router.push('/onboarding/resident/property-setup')}
-            className="superellipse-xl bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]"
+            className="superellipse-xl bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747]"
           >
             {t?.noResidence?.button?.[language] || 'Set up my residence'}
           </Button>

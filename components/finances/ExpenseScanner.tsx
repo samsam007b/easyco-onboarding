@@ -412,7 +412,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   style={
                     isActive
                       ? {
-                          background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                          background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                           boxShadow: isCurrent
                             ? '0 8px 20px rgba(255, 101, 30, 0.4)'
                             : '0 4px 12px rgba(255, 101, 30, 0.25)',
@@ -437,7 +437,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                       animate={{ width: isActive ? '100%' : '0%' }}
                       transition={{ duration: 0.5, ease: 'easeOut' }}
                       className="absolute inset-y-0 left-0 rounded-full"
-                      style={{ background: 'linear-gradient(90deg, #e05747 0%, #ff651e 100%)' }}
+                      style={{ background: 'linear-gradient(90deg, #e05747 0%, #e05747 100%)' }}
                     />
                   </div>
                 )}
@@ -478,7 +478,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 whileHover={{ scale: 1.1, rotate: 5 }}
                 className="inline-flex items-center justify-center w-20 h-20 superellipse-3xl mb-4"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                   boxShadow: '0 12px 30px rgba(255, 101, 30, 0.35)',
                 }}
               >
@@ -486,11 +486,11 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 {scanner?.scanTitle?.[language] || 'Scan your receipt'}
-                <Camera className="w-5 h-5 inline-block ml-1" style={{ color: '#ff651e' }} />
+                <Camera className="w-5 h-5 inline-block ml-1" style={{ color: '#e05747' }} />
               </h2>
               <p className="text-gray-600 flex items-center justify-center gap-1">
                 {scanner?.scanDescription?.[language] || 'AI automatically analyzes your receipts'}
-                <Sparkles className="w-4 h-4" style={{ color: '#ff651e' }} />
+                <Sparkles className="w-4 h-4" style={{ color: '#e05747' }} />
               </p>
             </motion.div>
 
@@ -522,7 +522,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 onClick={() => fileInputRef.current?.click()}
                 className="group relative overflow-hidden superellipse-3xl p-8 text-white transition-all"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                   boxShadow: '0 12px 30px rgba(255, 101, 30, 0.35)',
                 }}
               >
@@ -594,7 +594,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 variant="outline"
                 onClick={onCancel}
                 className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
-                style={{ color: '#ff651e' }}
+                style={{ color: '#e05747' }}
               >
                 <X className="w-4 h-4 mr-2" />
                 {scanner?.cancel?.[language] || 'Cancel'}
@@ -638,7 +638,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 }}
                 transition={{ repeat: Infinity, duration: 2 }}
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                   boxShadow: '0 12px 40px rgba(255, 101, 30, 0.5)',
                 }}
               >
@@ -656,12 +656,12 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               transition={{ repeat: Infinity, duration: 2 }}
               className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2"
             >
-              <Sparkles className="w-6 h-6" style={{ color: '#ff651e' }} />
+              <Sparkles className="w-6 h-6" style={{ color: '#e05747' }} />
               {scanner?.aiAnalysisInProgress?.[language] || 'AI analysis in progress...'}
             </motion.h2>
             <p className="text-gray-600 mb-6 flex items-center justify-center gap-1">
               {scanner?.aiReadingReceipt?.[language] || 'Our AI reads your receipt like a pro'}
-              <Sparkles className="w-4 h-4" style={{ color: '#ff651e' }} />
+              <Sparkles className="w-4 h-4" style={{ color: '#e05747' }} />
             </p>
 
             {/* Progress bar animation */}
@@ -672,7 +672,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   initial={{ width: '0%' }}
                   animate={{ width: ['0%', '70%', '90%', '100%'] }}
                   transition={{ duration: 4, times: [0, 0.5, 0.8, 1], ease: 'easeOut' }}
-                  style={{ background: 'linear-gradient(90deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+                  style={{ background: 'linear-gradient(90deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
                 />
               </div>
             </div>
@@ -682,7 +682,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
               >
-                <Loader2 className="w-5 h-5" style={{ color: '#ff651e' }} />
+                <Loader2 className="w-5 h-5" style={{ color: '#e05747' }} />
               </motion.div>
               <span className="text-sm text-gray-500">
                 {scanner?.extractingData?.[language] || 'Extracting receipt data'}
@@ -731,7 +731,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 {scanner?.verifyInfo?.[language] || 'Verify the information'}
-                <PenLine className="w-5 h-5" style={{ color: '#ff651e' }} />
+                <PenLine className="w-5 h-5" style={{ color: '#e05747' }} />
               </h2>
               <div className="text-gray-600">
                 {ocrData && ocrData.confidence > 0.5 ? (
@@ -801,7 +801,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <div className="absolute top-3 left-3 z-10">
                   <Badge
                     className="text-xs font-bold text-white border-none flex items-center gap-1"
-                    style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
+                    style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
                   >
                     <Camera className="w-3 h-3" />
                     {scanner?.scannedReceipt?.[language] || 'Scanned receipt'}
@@ -828,7 +828,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     className="w-6 h-6 superellipse-lg flex items-center justify-center"
                     style={{ background: 'rgba(255, 101, 30, 0.15)' }}
                   >
-                    <Tag className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    <Tag className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                   </div>
                   {scanner?.title?.[language] || 'Title *'}
                 </Label>
@@ -1030,7 +1030,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     setCurrentStep('upload');
                   }}
                   className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
-                  style={{ color: '#ff651e' }}
+                  style={{ color: '#e05747' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   {scanner?.back?.[language] || 'Back'}
@@ -1041,7 +1041,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   onClick={handleReviewNext}
                   className="w-full superellipse-2xl text-white border-none py-6 font-semibold transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 8px 20px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -1070,11 +1070,11 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
             >
               <h2 className="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
                 {scanner?.chooseCategory?.[language] || 'Choose a category'}
-                <Tag className="w-5 h-5" style={{ color: '#ff651e' }} />
+                <Tag className="w-5 h-5" style={{ color: '#e05747' }} />
               </h2>
               <p className="text-gray-600 flex items-center justify-center gap-1">
                 {scanner?.organizeExpenses?.[language] || 'Organize your expenses by type'}
-                <Sparkles className="w-4 h-4" style={{ color: '#ff651e' }} />
+                <Sparkles className="w-4 h-4" style={{ color: '#e05747' }} />
               </p>
             </motion.div>
 
@@ -1152,7 +1152,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   variant="outline"
                   onClick={() => setCurrentStep('review')}
                   className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
-                  style={{ color: '#ff651e' }}
+                  style={{ color: '#e05747' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   {scanner?.back?.[language] || 'Back'}
@@ -1163,7 +1163,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   onClick={() => setCurrentStep('confirm')}
                   className="w-full superellipse-2xl text-white border-none py-6 font-semibold transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 8px 20px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -1195,14 +1195,14 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 transition={{ repeat: Infinity, duration: 3 }}
                 className="mb-3"
               >
-                <PartyPopper className="w-12 h-12 mx-auto" style={{ color: '#ff651e' }} />
+                <PartyPopper className="w-12 h-12 mx-auto" style={{ color: '#e05747' }} />
               </motion.div>
               <h2 className="text-2xl font-bold text-gray-900 mb-2">
                 {scanner?.summary?.[language] || 'Summary'}
               </h2>
               <p className="text-gray-600 flex items-center justify-center gap-1">
                 {scanner?.readyToShare?.[language] || 'All set! Review and share'}
-                <Users className="w-4 h-4" style={{ color: '#ff651e' }} />
+                <Users className="w-4 h-4" style={{ color: '#e05747' }} />
               </p>
             </motion.div>
 
@@ -1223,7 +1223,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 animate={{ scale: 1 }}
                 className="text-center py-4 superellipse-2xl"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                   boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                 }}
               >
@@ -1325,7 +1325,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   variant="outline"
                   onClick={() => setCurrentStep('category')}
                   className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
-                  style={{ color: '#ff651e' }}
+                  style={{ color: '#e05747' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   {scanner?.back?.[language] || 'Back'}

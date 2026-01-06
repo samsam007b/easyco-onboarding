@@ -152,7 +152,7 @@ function CustomTooltip({ active, payload, label }: any) {
     <div className="bg-white px-3 py-2 rounded-lg shadow-lg border border-gray-100 text-sm">
       <p className="font-medium text-gray-900">{label}</p>
       <p className="text-gray-600">
-        <span className="font-semibold text-[#ff651e]">€{payload[0].value.toFixed(2)}</span>
+        <span className="font-semibold text-[#e05747]">€{payload[0].value.toFixed(2)}</span>
       </p>
     </div>
   );
@@ -226,8 +226,8 @@ export function ExpenseProgressChart({
           <AreaChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
             <defs>
               <linearGradient id="expenseGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#ff651e" stopOpacity={0.3} />
-                <stop offset="100%" stopColor="#ff651e" stopOpacity={0.05} />
+                <stop offset="0%" stopColor="#e05747" stopOpacity={0.3} />
+                <stop offset="100%" stopColor="#e05747" stopOpacity={0.05} />
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" vertical={false} />
@@ -247,7 +247,7 @@ export function ExpenseProgressChart({
             <Area
               type="monotone"
               dataKey="amount"
-              stroke="#ff651e"
+              stroke="#e05747"
               strokeWidth={2}
               fill="url(#expenseGradient)"
             />
@@ -387,14 +387,14 @@ export function MiniSparkline({
         <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
           <defs>
             <linearGradient id="sparkGradient" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#ff651e" stopOpacity={0.4} />
-              <stop offset="100%" stopColor="#ff651e" stopOpacity={0.1} />
+              <stop offset="0%" stopColor="#e05747" stopOpacity={0.4} />
+              <stop offset="100%" stopColor="#e05747" stopOpacity={0.1} />
             </linearGradient>
           </defs>
           <Area
             type="monotone"
             dataKey="amount"
-            stroke="#ff651e"
+            stroke="#e05747"
             strokeWidth={1.5}
             fill="url(#sparkGradient)"
           />

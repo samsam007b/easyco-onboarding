@@ -241,7 +241,7 @@ export default function RulesPage() {
             variant="outline"
             onClick={() => router.push('/hub')}
             className="mb-4 rounded-full border-gray-200 hover:border-transparent"
-            style={{ color: '#ff651e' }}
+            style={{ color: '#e05747' }}
             onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
@@ -250,7 +250,7 @@ export default function RulesPage() {
 
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 superellipse-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+              <div className="w-14 h-14 superellipse-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}>
                 <Vote className="w-7 h-7 text-white" />
               </div>
               <div>
@@ -264,7 +264,7 @@ export default function RulesPage() {
             <Button
               onClick={() => setShowCreateModal(true)}
               className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               {t?.proposeRule?.[language] || 'Propose a rule'}
@@ -288,7 +288,7 @@ export default function RulesPage() {
                       (stats?.total_rejected || 0)}
                   </p>
                 </div>
-                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}>
+                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}>
                   <Vote className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -307,7 +307,7 @@ export default function RulesPage() {
                     {stats?.total_voting || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}>
+                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}>
                   <Clock className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -393,7 +393,7 @@ export default function RulesPage() {
                 <motion.div
                   className="absolute inset-0 superellipse-2xl opacity-30"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     filter: 'blur(20px)',
                   }}
                   animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -403,7 +403,7 @@ export default function RulesPage() {
                 <div
                   className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -437,7 +437,7 @@ export default function RulesPage() {
                   onClick={() => setShowCreateModal(true)}
                   className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
                   }}
                 >
@@ -553,7 +553,7 @@ export default function RulesPage() {
                                   'rounded-full text-xs',
                                   !rule.has_voted && 'text-white border-none'
                                 )}
-                                style={!rule.has_voted ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
+                                style={!rule.has_voted ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
                                 onClick={() => openVoteModal(rule)}
                               >
                                 <Vote className="w-3 h-3 mr-1" />
@@ -604,11 +604,11 @@ export default function RulesPage() {
             {/* Decorative gradient circles */}
             <div
               className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', transform: 'translate(30%, -30%)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)', transform: 'translate(30%, -30%)' }}
             />
             <div
               className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-8 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)', transform: 'translate(-30%, 30%)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)', transform: 'translate(-30%, 30%)' }}
             />
 
             {/* Scrollable content */}
@@ -623,7 +623,7 @@ export default function RulesPage() {
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                     className="w-12 h-12 superellipse-xl flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
+                    style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
                   >
                     <Vote className="w-6 h-6 text-white" />
                   </motion.div>
@@ -632,7 +632,7 @@ export default function RulesPage() {
                       {t?.createModal?.title?.[language] || 'Propose a rule'}
                     </h2>
                     <p className="text-sm text-gray-500 flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      <Sparkles className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                       {t?.createModal?.subtitle?.[language] || 'Create a rule for your coliving'}
                     </p>
                   </div>
@@ -647,7 +647,7 @@ export default function RulesPage() {
                   className="p-2.5 superellipse-xl transition-colors"
                   style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                 >
-                  <X className="w-5 h-5" style={{ color: '#ff651e' }} />
+                  <X className="w-5 h-5" style={{ color: '#e05747' }} />
                 </motion.button>
               </div>
 
@@ -660,7 +660,7 @@ export default function RulesPage() {
                       className="w-6 h-6 superellipse-lg flex items-center justify-center"
                       style={{ background: 'rgba(255, 101, 30, 0.15)' }}
                     >
-                      <MessageSquare className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      <MessageSquare className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                     </div>
                     {t?.createModal?.ruleTitle?.[language] || 'Title'} *
                   </Label>
@@ -713,7 +713,7 @@ export default function RulesPage() {
                             ? 'bg-orange-50'
                             : 'border-gray-200 hover:border-gray-300'
                         )}
-                        style={createForm.category === cat.value ? { borderColor: '#ff651e' } : undefined}
+                        style={createForm.category === cat.value ? { borderColor: '#e05747' } : undefined}
                       >
                         <div className="text-2xl mb-1">{cat.emoji}</div>
                         <div className="text-xs font-medium text-gray-700">{cat.label}</div>
@@ -758,7 +758,7 @@ export default function RulesPage() {
                         resetCreateForm();
                       }}
                       className="w-full superellipse-2xl py-6 font-semibold border-2 transition-all"
-                      style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#ff651e' }}
+                      style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#e05747' }}
                       disabled={isCreating}
                     >
                       {t?.createModal?.cancel?.[language] || 'Cancel'}
@@ -770,7 +770,7 @@ export default function RulesPage() {
                       disabled={isCreating || !createForm.title || !createForm.description}
                       className="w-full superellipse-2xl py-6 font-bold text-white border-none"
                       style={{
-                        background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                        background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                         boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
                       }}
                     >
@@ -866,7 +866,7 @@ export default function RulesPage() {
                   resetVoteModal();
                 }}
                 className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#ff651e' }}
+                style={{ color: '#e05747' }}
                 onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
                 onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                 disabled={isVoting}
@@ -877,7 +877,7 @@ export default function RulesPage() {
                 onClick={handleVote}
                 disabled={isVoting || !selectedVote}
                 className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
               >
                 {isVoting ? (
                   <>

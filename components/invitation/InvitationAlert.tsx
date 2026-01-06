@@ -32,7 +32,7 @@ export function InvitationAlert({
 
   const gradientStyle = invitedRole === 'owner'
     ? 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%)'
-    : 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+    : 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
 
   return (
     <motion.div

@@ -39,14 +39,14 @@ const getNotificationIcon = (type: NotificationType) => {
 const getNotificationColor = (type: NotificationType) => {
   // Use V3 Option C gradient colors for all notification types
   switch (type) {
-    case 'message': return 'from-[#e05747] to-[#ff651e]';
-    case 'payment': return 'from-[#ff651e] to-[#ff9014]';
-    case 'member': return 'from-[#e05747] via-[#ff651e] to-[#ff9014]';
-    case 'property': return 'from-[#e05747] to-[#ff651e]';
-    case 'application': return 'from-[#ff651e] to-[#ff9014]';
-    case 'task': return 'from-[#e05747] to-[#ff9014]';
-    case 'system': return 'from-[#e05747] to-[#ff651e]';
-    default: return 'from-[#e05747] to-[#ff9014]';
+    case 'message': return 'from-[#e05747] to-[#e05747]';
+    case 'payment': return 'from-[#e05747] to-[#e05747]';
+    case 'member': return 'from-[#e05747] via-[#e05747] to-[#e05747]';
+    case 'property': return 'from-[#e05747] to-[#e05747]';
+    case 'application': return 'from-[#e05747] to-[#e05747]';
+    case 'task': return 'from-[#e05747] to-[#e05747]';
+    case 'system': return 'from-[#e05747] to-[#e05747]';
+    default: return 'from-[#e05747] to-[#e05747]';
   }
 };
 
@@ -89,13 +89,13 @@ export default function NotificationBell() {
         onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
         onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
       >
-        <Bell className="w-5 h-5" style={{ color: '#ff651e' }} />
+        <Bell className="w-5 h-5" style={{ color: '#e05747' }} />
         {stats.unreadCount > 0 && (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             className="absolute -top-1 -right-1 w-5 h-5 text-white text-xs font-bold rounded-full flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
           >
             {stats.unreadCount > 9 ? '9+' : stats.unreadCount}
           </motion.span>
@@ -122,7 +122,7 @@ export default function NotificationBell() {
                     variant="ghost"
                     size="sm"
                     className="text-xs rounded-full hover:bg-[#fff5f3]"
-                    style={{ color: '#ff651e' }}
+                    style={{ color: '#e05747' }}
                   >
                     <CheckCheck className="w-3 h-3 mr-1" />
                     Mark all read
@@ -130,7 +130,7 @@ export default function NotificationBell() {
                 )}
               </div>
               <div className="flex items-center gap-2 text-xs">
-                <span style={{ color: '#ff651e' }} className="font-medium">{stats.unreadCount} unread</span>
+                <span style={{ color: '#e05747' }} className="font-medium">{stats.unreadCount} unread</span>
                 <span className="text-gray-400">•</span>
                 <span className="text-gray-500">{stats.todayCount} today</span>
               </div>
@@ -183,7 +183,7 @@ export default function NotificationBell() {
                                 {notification.title}
                               </p>
                               {!notification.isRead && (
-                                <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: '#ff651e' }} />
+                                <div className="w-2 h-2 rounded-full flex-shrink-0 mt-1" style={{ background: '#e05747' }} />
                               )}
                             </div>
                             <p className="text-xs text-gray-600 line-clamp-2 mb-2">
@@ -197,7 +197,7 @@ export default function NotificationBell() {
                                 })}
                               </span>
                               {notification.actionLabel && (
-                                <span className="text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#ff651e' }}>
+                                <span className="text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: '#e05747' }}>
                                   {notification.actionLabel} →
                                 </span>
                               )}
@@ -226,7 +226,7 @@ export default function NotificationBell() {
                               className="p-1 hover:bg-white superellipse-lg transition-colors"
                               title={ariaLabels?.delete?.[language] || 'Delete'}
                             >
-                              <X className="w-4 h-4" style={{ color: '#ff651e' }} />
+                              <X className="w-4 h-4" style={{ color: '#e05747' }} />
                             </button>
                           </div>
                         </div>
@@ -237,7 +237,7 @@ export default function NotificationBell() {
               ) : (
                 <div className="py-12 px-8 text-center">
                   <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'linear-gradient(135deg, rgba(224, 87, 71, 0.12) 0%, rgba(255, 144, 20, 0.12) 100%)' }}>
-                    <Bell className="w-9 h-9" style={{ color: '#ff651e' }} />
+                    <Bell className="w-9 h-9" style={{ color: '#e05747' }} />
                   </div>
                   <p className="text-base font-semibold text-gray-900 mb-1">
                     No notifications
@@ -259,7 +259,7 @@ export default function NotificationBell() {
                   }}
                   variant="ghost"
                   className="w-full superellipse-xl text-sm font-medium hover:bg-[#fff5f3]"
-                  style={{ color: '#ff651e' }}
+                  style={{ color: '#e05747' }}
                 >
                   See all notifications
                   <ArrowRight className="w-4 h-4 ml-2" />

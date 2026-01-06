@@ -510,7 +510,7 @@ export default function ProfilePage() {
     }
     if (role === 'resident') return {
       gradient: 'from-orange-600 to-red-600',
-      gradientStyle: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+      gradientStyle: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
       light: 'from-orange-50 via-white to-red-50/30',
       lightBg: 'from-orange-50/50 to-red-50/50',
       ring: 'from-orange-400 to-red-500',
@@ -519,9 +519,9 @@ export default function ProfilePage() {
       bgHex: '#fff7ed',
       border: 'border-orange-200',
       hover: 'hover:border-orange-300',
-      primary: '#ff651e',
+      primary: '#e05747',
       accent: '#e05747',
-      svgStops: ['#e05747', '#ff651e', '#ff9014']
+      svgStops: ['#e05747', '#e05747', '#e05747']
     }
     return {
       gradient: 'from-[#FFA040] to-[#FFD080]',

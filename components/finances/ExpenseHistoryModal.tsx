@@ -162,11 +162,11 @@ export default function ExpenseHistoryModal({
         {/* Decorative gradient circles */}
         <div
           className="absolute -right-20 -top-20 w-56 h-56 rounded-full opacity-15 pointer-events-none"
-          style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
         />
         <div
           className="absolute -left-16 -bottom-16 w-40 h-40 rounded-full opacity-10 pointer-events-none"
-          style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
         />
 
         <div className="flex flex-col h-[90vh] relative z-10">
@@ -187,7 +187,7 @@ export default function ExpenseHistoryModal({
                   transition={{ duration: 2, repeat: Infinity }}
                   className="relative w-14 h-14 superellipse-2xl overflow-hidden flex items-center justify-center"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 12px 32px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -196,12 +196,12 @@ export default function ExpenseHistoryModal({
                 <div>
                   <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
                     {history?.title || 'Historique des dépenses'}
-                    <Sparkles className="w-5 h-5" style={{ color: '#ff651e' }} />
+                    <Sparkles className="w-5 h-5" style={{ color: '#e05747' }} />
                   </h2>
                   <p className="text-sm text-gray-500 flex items-center gap-2">
                     <Badge
                       className="text-xs border-none text-white font-bold"
-                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
                     >
                       {filteredExpenses.length}
                     </Badge>
@@ -236,7 +236,7 @@ export default function ExpenseHistoryModal({
                     style={
                       viewMode === 'list'
                         ? {
-                            background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                            background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
                             boxShadow: '0 4px 12px rgba(255, 101, 30, 0.4)',
                           }
                         : {}
@@ -291,7 +291,7 @@ export default function ExpenseHistoryModal({
                   onClick={onClose}
                   className="w-10 h-10 superellipse-xl flex items-center justify-center text-white transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
                     boxShadow: '0 4px 12px rgba(255, 101, 30, 0.3)',
                   }}
                 >
@@ -307,7 +307,7 @@ export default function ExpenseHistoryModal({
                   className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: 'rgba(255, 101, 30, 0.15)' }}
                 >
-                  <Search className="w-4 h-4" style={{ color: '#ff651e' }} />
+                  <Search className="w-4 h-4" style={{ color: '#e05747' }} />
                 </div>
                 <Input
                   placeholder={history?.searchPlaceholder || 'Rechercher une dépense...'}
@@ -333,7 +333,7 @@ export default function ExpenseHistoryModal({
                   {selectedCategory !== 'all' && (
                     <Badge
                       className="ml-2 text-xs text-white border-none animate-pulse"
-                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
                     >
                       1
                     </Badge>
@@ -382,7 +382,7 @@ export default function ExpenseHistoryModal({
                         style={
                           selectedCategory === 'all'
                             ? {
-                                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                                background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
                                 boxShadow: '0 4px 12px rgba(255, 101, 30, 0.35)',
                               }
                             : {}
@@ -409,7 +409,7 @@ export default function ExpenseHistoryModal({
                             style={
                               selectedCategory === cat
                                 ? {
-                                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+                                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
                                     boxShadow: '0 4px 12px rgba(255, 101, 30, 0.35)',
                                   }
                                 : {}

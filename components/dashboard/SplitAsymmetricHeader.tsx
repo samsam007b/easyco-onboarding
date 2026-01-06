@@ -23,9 +23,9 @@ import { InvitePopup } from '@/components/referral';
 import { useLanguage } from '@/lib/i18n/use-language';
 
 // V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
-const RESIDENT_GRADIENT_SOFT = 'linear-gradient(135deg, #e0574720 0%, #ff651e15 50%, #ff901410 100%)';
-const RESIDENT_PRIMARY = '#ff651e';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_GRADIENT_SOFT = 'linear-gradient(135deg, #e0574720 0%, #e0574715 50%, #e0574710 100%)';
+const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
 const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.15)';
 

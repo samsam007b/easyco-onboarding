@@ -21,8 +21,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 // V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
-const RESIDENT_PRIMARY = '#ff651e';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
 const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.2)';
 
@@ -40,7 +40,7 @@ export default function MatchingComingSoonPage() {
       icon: Users,
       title: 'Swipe & Match',
       description: 'Parcours les profils des chercheurs et like ceux qui te plaisent. Si c\'est réciproque, c\'est un match !',
-      gradient: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)',
+      gradient: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
     },
     {
       icon: MessageCircle,
@@ -151,7 +151,7 @@ export default function MatchingComingSoonPage() {
             />
             <div
               className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
             />
 
             <div className="relative z-10">

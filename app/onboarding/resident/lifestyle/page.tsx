@@ -141,14 +141,14 @@ export default function ResidentLifestylePage() {
             <span className="text-sm text-gray-500">{resident.lifestyle.title}</span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div className="bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] h-2 rounded-full transition-all" style={{ width: '50%' }} />
+            <div className="bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] h-2 rounded-full transition-all" style={{ width: '50%' }} />
           </div>
         </div>
 
         {/* Card */}
         <div className="bg-white superellipse-3xl shadow-lg p-8">
           <div className="mb-6">
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-2">
+            <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent mb-2">
               {resident.lifestyle.heading}
             </h1>
             <p className="text-gray-600">
@@ -297,7 +297,7 @@ export default function ResidentLifestylePage() {
                 />
                 <div className="flex justify-between items-center">
                   <span className="text-sm text-gray-500">{resident.lifestyle.cleanlinessOptions.relaxed}</span>
-                  <span className="text-2xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent">{cleanlinessPreference}</span>
+                  <span className="text-2xl font-bold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent">{cleanlinessPreference}</span>
                   <span className="text-sm text-gray-500">{resident.lifestyle.cleanlinessOptions.veryTidy}</span>
                 </div>
               </div>
@@ -311,7 +311,7 @@ export default function ResidentLifestylePage() {
               disabled={!canContinue}
               className={`w-full py-4 superellipse-lg font-semibold text-lg transition-all ${
                 canContinue
-                  ? 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90 text-white'
+                  ? 'bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] hover:opacity-90 text-white'
                   : 'bg-gray-200 text-gray-400 cursor-not-allowed'
               }`}
             >

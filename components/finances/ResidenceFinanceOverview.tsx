@@ -54,7 +54,7 @@ function StatCard({ label, value, subValue, icon, trend, sparkline, accent }: St
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <p className="text-xs font-medium text-gray-500 mb-1">{label}</p>
-          <p className={cn('text-lg font-bold truncate', accent ? 'text-[#ff651e]' : 'text-gray-900')}>
+          <p className={cn('text-lg font-bold truncate', accent ? 'text-[#e05747]' : 'text-gray-900')}>
             {value}
           </p>
           {subValue && (

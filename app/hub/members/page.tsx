@@ -231,7 +231,7 @@ export default function HubMembersPage() {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#ff9014]/10 font-semibold"
+            className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#e05747]/10 font-semibold"
           >
             ← {hub.members?.backToHub || 'Back to hub'}
           </Button>
@@ -243,7 +243,7 @@ export default function HubMembersPage() {
                 whileTap={{ scale: 0.95 }}
                 className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                   boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                 }}
               >
@@ -264,7 +264,7 @@ export default function HubMembersPage() {
                 onClick={() => setShowInvitePopup(true)}
                 className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                   boxShadow: '0 4px 16px rgba(255, 101, 30, 0.4)',
                 }}
               >
@@ -293,19 +293,19 @@ export default function HubMembersPage() {
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #e05747, #ff9014)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
             />
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-[#e05747]">{hub.members?.stats?.total || 'Total'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #e05747, #ff9014)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{members.length}</p>
-            <p className="text-xs text-[#ff651e] font-medium mt-1">
+            <p className="text-xs text-[#e05747] font-medium mt-1">
               {members.length !== 1 ? (hub.members?.stats?.activeMembersPlural || 'active members') : (hub.members?.stats?.activeMemberSingular || 'active member')}
             </p>
           </motion.div>
@@ -343,7 +343,7 @@ export default function HubMembersPage() {
                   style={{ background: 'linear-gradient(90deg, #f8572b, #ff7b19)' }}
                 />
               </div>
-              <span className="text-xs text-[#ff651e] font-bold">
+              <span className="text-xs text-[#e05747] font-bold">
                 {members.length > 0 ? Math.round((residentsCount / members.length) * 100) : 0}%
               </span>
             </div>
@@ -390,7 +390,7 @@ export default function HubMembersPage() {
             // V3 Option C: Orange for residents, amber for owners (semantic role distinction)
             const cardGradient = isOwner
               ? { bg: '#fffbeb', bgEnd: '#fef3c7', accent: '#f59e0b', accentEnd: '#fbbf24', shadow: 'rgba(245, 158, 11, 0.2)' }
-              : { bg: '#FFF5F0', bgEnd: '#FFEDE5', accent: '#ff651e', accentEnd: '#ff9014', shadow: 'rgba(255, 101, 30, 0.2)' };
+              : { bg: '#FFF5F0', bgEnd: '#FFEDE5', accent: '#e05747', accentEnd: '#e05747', shadow: 'rgba(255, 101, 30, 0.2)' };
 
             return (
               <motion.div
@@ -491,7 +491,7 @@ export default function HubMembersPage() {
                           className="w-7 h-7 superellipse-lg flex items-center justify-center"
                           style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                         >
-                          <Briefcase className="w-3.5 h-3.5 text-[#ff651e]" />
+                          <Briefcase className="w-3.5 h-3.5 text-[#e05747]" />
                         </div>
                         <span className="text-gray-700 font-medium text-sm">{member.occupation}</span>
                       </div>
@@ -584,7 +584,7 @@ export default function HubMembersPage() {
               whileHover={{ scale: 1.05, rotate: 5 }}
               className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                 boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
               }}
             >
@@ -608,7 +608,7 @@ export default function HubMembersPage() {
                 onClick={() => setShowInvitePopup(true)}
                 className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                   boxShadow: '0 4px 16px rgba(255, 101, 30, 0.4)',
                 }}
               >

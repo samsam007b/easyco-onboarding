@@ -79,12 +79,12 @@ const DAYS_FALLBACK = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 // V3 Option C - Official Resident Palette Event Colors
 const EVENT_COLORS = [
-  'bg-gradient-to-br from-[#e05747] to-[#ff651e]',
+  'bg-gradient-to-br from-[#e05747] to-[#e05747]',
   'bg-gradient-to-br from-[#f8572b] to-[#ff7b19]',
-  'bg-gradient-to-br from-[#e05747] via-[#ff651e] to-[#ff9014]',
-  'bg-gradient-to-br from-[#ff651e] to-[#ff9014]',
-  'bg-gradient-to-br from-[#f8572b] to-[#ff9014]',
-  'bg-gradient-to-br from-[#e05747] to-[#ff9014]'
+  'bg-gradient-to-br from-[#e05747] via-[#e05747] to-[#e05747]',
+  'bg-gradient-to-br from-[#e05747] to-[#e05747]',
+  'bg-gradient-to-br from-[#f8572b] to-[#e05747]',
+  'bg-gradient-to-br from-[#e05747] to-[#e05747]'
 ];
 
 export default function HubCalendarPage() {
@@ -318,7 +318,7 @@ export default function HubCalendarPage() {
               whileTap={{ scale: 0.95 }}
               className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                 boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
               }}
             >
@@ -338,7 +338,7 @@ export default function HubCalendarPage() {
               size="sm"
               className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                 boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
               }}
             >
@@ -360,13 +360,13 @@ export default function HubCalendarPage() {
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
             />
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-orange-700">{t?.today?.[language] || 'Today'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
               >
                 <CalendarIcon className="w-4 h-4 text-white" />
               </div>
@@ -385,13 +385,13 @@ export default function HubCalendarPage() {
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
             />
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-purple-700">{t?.thisMonth?.[language] || 'This month'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
               >
                 <PartyPopper className="w-4 h-4 text-white" />
               </div>
@@ -438,7 +438,7 @@ export default function HubCalendarPage() {
               {MONTHS[currentDate.getMonth()]} {currentDate.getFullYear()}
               <Badge
                 className="text-xs border-none text-white font-bold ml-2"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
               >
                 {events.length} {events.length !== 1 ? (t?.events?.[language] || 'events') : (t?.event?.[language] || 'event')}
               </Badge>
@@ -461,7 +461,7 @@ export default function HubCalendarPage() {
                   size="sm"
                   className="rounded-full text-white font-semibold hover:shadow-lg transition-all border-none"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 4px 12px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -593,14 +593,14 @@ export default function HubCalendarPage() {
           <div className="flex items-center gap-3 p-4 border-b border-gray-100">
             <div
               className="w-9 h-9 superellipse-xl flex items-center justify-center shadow-md"
-              style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
             >
               <PartyPopper className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-base font-bold text-gray-900">{t?.upcomingEvents?.[language] || 'Upcoming events'}</h3>
             <Badge
               className="text-xs px-2 py-0.5 font-bold border-none"
-              style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)', color: 'white' }}
+              style={{ background: 'linear-gradient(135deg, #e05747, #e05747)', color: 'white' }}
             >
               {events.length}
             </Badge>
@@ -619,7 +619,7 @@ export default function HubCalendarPage() {
                   whileHover={{ scale: 1.05, rotate: 5 }}
                   className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -687,7 +687,7 @@ export default function HubCalendarPage() {
                           </Badge>
                         )}
                         <span className="flex items-center gap-1 text-gray-500">
-                          <Users className="w-3 h-3" style={{ color: '#ff651e' }} />
+                          <Users className="w-3 h-3" style={{ color: '#e05747' }} />
                           {event.attendeeNames && event.attendeeNames.length > 0
                             ? event.attendeeNames.join(', ')
                             : (t?.noParticipant?.[language] || 'No participants')}

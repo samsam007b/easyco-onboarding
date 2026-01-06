@@ -45,7 +45,7 @@ const BADGE_STYLES = {
     useItsmeIcon: true,
   },
   premium: {
-    bg: 'bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B]',
+    bg: 'bg-gradient-to-br from-[#9c5698] via-[#e05747] to-[#FFB10B]',
     border: 'border-[#9c5698]',
     icon: 'text-white',
     ring: 'ring-[#FFB10B]/50',

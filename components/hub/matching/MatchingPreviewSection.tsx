@@ -10,8 +10,8 @@ import QuickActionsCard from './QuickActionsCard';
 import { shouldShowDemoData } from '@/lib/utils/admin-demo';
 
 // V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
-const RESIDENT_PRIMARY = '#ff651e';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
 const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.2)';
 
@@ -57,7 +57,7 @@ export default function MatchingPreviewSection({
         />
         <div
           className="absolute bottom-20 right-10 w-80 h-80 rounded-full opacity-15 blur-3xl"
-          style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+          style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
         />
       </div>
 
@@ -126,7 +126,7 @@ export default function MatchingPreviewSection({
               />
               <div
                 className="absolute -left-10 -bottom-10 w-32 h-32 rounded-full opacity-20"
-                style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
               />
 
               {/* Card Stack or Empty State */}

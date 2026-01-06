@@ -32,11 +32,12 @@ import {
 } from '@/components/onboarding';
 import { useLanguage } from '@/lib/i18n/use-language';
 
-// V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
-const RESIDENT_PRIMARY = '#ff651e';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
-const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.15)';
+// V3 Color System - Official Resident Palette
+// Source: brand-identity/izzico-color-system.html
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_PRIMARY = '#e05747';
+const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FEF2EE 0%, #FDE8E4 100%)';
+const ACCENT_SHADOW = 'rgba(224, 87, 71, 0.15)';
 // Semantic Pastel Colors (Option C)
 const SEMANTIC_SUCCESS = '#7CB89B';
 const SEMANTIC_SUCCESS_BG = 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)';
@@ -380,12 +381,12 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       {/* Glassmorphism background with resident orange gradient - V3 Official Palette */}
       <div className="fixed inset-0 -z-10">
         {/* Base gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#e05747]/10 via-[#ff651e]/8 to-[#ff9014]/5" />
+        <div className="absolute inset-0 bg-gradient-to-br from-[#e05747]/10 via-[#e05747]/8 to-[#e05747]/5" />
 
         {/* Animated gradient blobs */}
         <div className="absolute top-0 -left-4 w-96 h-96 bg-[#e05747]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-[#ff651e]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-[#ff9014]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-[#e05747]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-[#e05747]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
 
         {/* Glass effect overlay */}
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/50" />

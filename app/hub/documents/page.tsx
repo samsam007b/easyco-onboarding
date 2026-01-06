@@ -269,7 +269,7 @@ export default function DocumentsPage() {
             variant="outline"
             onClick={() => router.push('/hub')}
             className="mb-4 rounded-full border-gray-200 hover:border-transparent"
-            style={{ color: '#ff651e' }}
+            style={{ color: '#e05747' }}
             onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
@@ -278,7 +278,7 @@ export default function DocumentsPage() {
 
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 superellipse-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+              <div className="w-14 h-14 superellipse-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}>
                 <FolderOpen className="w-7 h-7 text-white" />
               </div>
               <div>
@@ -292,7 +292,7 @@ export default function DocumentsPage() {
             <Button
               onClick={() => setShowUploadModal(true)}
               className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               {t?.uploadDocument?.[language] || 'Upload document'}
@@ -311,13 +311,13 @@ export default function DocumentsPage() {
               }}
             >
               <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-                style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
               />
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-orange-700">{t?.stats?.totalDocuments?.[language] || 'Total Documents'}</span>
                 <div
                   className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #e05747, #ff651e, #ff9014)' }}
+                  style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
                 >
                   <FileText className="w-5 h-5 text-white" />
                 </div>
@@ -336,13 +336,13 @@ export default function DocumentsPage() {
               }}
             >
               <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
-                style={{ background: 'linear-gradient(135deg, #ff651e, #ff9014)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
               />
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-orange-600">{t?.stats?.storageUsed?.[language] || 'Storage used'}</span>
                 <div
                   className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #ff651e 0%, #ff9014 100%)' }}
+                  style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
                 >
                   <FolderOpen className="w-5 h-5 text-white" />
                 </div>
@@ -420,7 +420,7 @@ export default function DocumentsPage() {
                 variant={filterCategory === 'all' ? 'default' : 'outline'}
                 onClick={() => setFilterCategory('all')}
                 className="rounded-full flex-shrink-0 text-white border-none"
-                style={filterCategory === 'all' ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
+                style={filterCategory === 'all' ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
               >
                 {t?.filters?.all?.[language] || 'All'}
               </Button>
@@ -433,7 +433,7 @@ export default function DocumentsPage() {
                     variant={filterCategory === cat.value ? 'default' : 'outline'}
                     onClick={() => setFilterCategory(cat.value)}
                     className="rounded-full flex-shrink-0 text-white border-none"
-                    style={filterCategory === cat.value ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
+                    style={filterCategory === cat.value ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
                   >
                     <Icon className="w-4 h-4 mr-1" />
                     {cat.label}
@@ -462,7 +462,7 @@ export default function DocumentsPage() {
                 <motion.div
                   className="absolute inset-0 superellipse-2xl opacity-30"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     filter: 'blur(20px)',
                   }}
                   animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -472,7 +472,7 @@ export default function DocumentsPage() {
                 <div
                   className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -502,7 +502,7 @@ export default function DocumentsPage() {
                   onClick={() => setShowUploadModal(true)}
                   className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
                   }}
                 >
@@ -602,9 +602,9 @@ export default function DocumentsPage() {
           >
             {/* Decorative gradient circles */}
             <div className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)', transform: 'translate(30%, -30%)' }} />
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)', transform: 'translate(30%, -30%)' }} />
             <div className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-10 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)', transform: 'translate(-30%, 30%)' }} />
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)', transform: 'translate(-30%, 30%)' }} />
 
             {/* Scrollable content wrapper */}
             <div className="max-h-[90vh] overflow-y-auto">
@@ -616,7 +616,7 @@ export default function DocumentsPage() {
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
                       className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-lg"
-                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
                     >
                       <Upload className="w-6 h-6 text-white" />
                     </motion.div>
@@ -625,7 +625,7 @@ export default function DocumentsPage() {
                         {t?.uploadModal?.title?.[language] || 'Upload a document'}
                       </h2>
                       <p className="text-sm text-gray-500 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" style={{ color: '#ff651e' }} />
+                        <Sparkles className="w-3 h-3" style={{ color: '#e05747' }} />
                         {t?.uploadModal?.subtitle?.[language] || 'Add a new file'}
                       </p>
                     </div>
@@ -648,7 +648,7 @@ export default function DocumentsPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <FileText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      <FileText className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                     </div>
                     {t?.uploadModal?.file?.[language] || 'File'} *
                   </Label>
@@ -682,7 +682,7 @@ export default function DocumentsPage() {
                     ) : (
                       <label className="cursor-pointer">
                         <div className="w-16 h-16 mx-auto mb-3 superellipse-2xl flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.1)' }}>
-                          <Upload className="w-8 h-8" style={{ color: '#ff651e' }} />
+                          <Upload className="w-8 h-8" style={{ color: '#e05747' }} />
                         </div>
                         <p className="text-gray-600 mb-1 font-medium">
                           {t?.uploadModal?.dragDropText?.[language] || 'Drag a file here or click to select'}
@@ -703,7 +703,7 @@ export default function DocumentsPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <ScrollText className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      <ScrollText className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                     </div>
                     {t?.uploadModal?.docTitle?.[language] || 'Title'} *
                   </Label>
@@ -719,7 +719,7 @@ export default function DocumentsPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <FileSignature className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      <FileSignature className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                     </div>
                     {t?.uploadModal?.description?.[language] || 'Description (optional)'}
                   </Label>
@@ -735,7 +735,7 @@ export default function DocumentsPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <FolderOpen className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      <FolderOpen className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                     </div>
                     {t?.uploadModal?.category?.[language] || 'Category'} *
                   </Label>
@@ -754,7 +754,7 @@ export default function DocumentsPage() {
                           )}
                         >
                           <div className="mb-1 flex items-center justify-center">
-                            <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#ff651e]" : "text-gray-500")} />
+                            <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#e05747]" : "text-gray-500")} />
                           </div>
                           <div className="text-xs font-medium text-gray-700">{cat.label}</div>
                         </button>
@@ -767,7 +767,7 @@ export default function DocumentsPage() {
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <Calendar className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                      <Calendar className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                     </div>
                     {t?.uploadModal?.expirationDate?.[language] || 'Expiration date (optional)'}
                   </Label>
@@ -782,7 +782,7 @@ export default function DocumentsPage() {
                 {/* Private Toggle */}
                 <div className="flex items-center gap-3 p-4 superellipse-2xl bg-gray-50 border-2 border-gray-100">
                   <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                    <Shield className="w-3.5 h-3.5" style={{ color: '#ff651e' }} />
+                    <Shield className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
                   </div>
                   <div className="flex-1">
                     <Label htmlFor="is_private" className="cursor-pointer font-semibold text-gray-700">
@@ -799,7 +799,7 @@ export default function DocumentsPage() {
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
-                      style={uploadForm.is_private ? { background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' } : undefined}
+                      style={uploadForm.is_private ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
                     ></div>
                   </label>
                 </div>
@@ -826,7 +826,7 @@ export default function DocumentsPage() {
                       onClick={handleUpload}
                       disabled={isUploading || !selectedFile || !uploadForm.title}
                       className="w-full superellipse-2xl py-6 font-bold text-white border-none shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
                     >
                       {isUploading ? (
                         <>

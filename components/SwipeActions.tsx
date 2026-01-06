@@ -53,7 +53,7 @@ export default function SwipeActions({
         whileHover={{ scale: 1.1, rotate: [0, -10, 10, -10, 0] }}
         whileTap={{ scale: 0.95 }}
         onClick={onSuperLike}
-        className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9c5698] via-[#FF5722] to-[#FFB10B] hover:opacity-90 flex items-center justify-center shadow-xl transition"
+        className="w-14 h-14 rounded-full bg-gradient-to-br from-[#9c5698] via-[#e05747] to-[#FFB10B] hover:opacity-90 flex items-center justify-center shadow-xl transition"
         aria-label={ariaLabels?.superLike?.[language] || 'Super Like'}
       >
         <Star className="w-7 h-7 text-white fill-white" />

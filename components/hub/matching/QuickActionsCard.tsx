@@ -7,8 +7,8 @@ import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 
 // V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
-const RESIDENT_PRIMARY = '#ff651e';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
 const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.2)';
 
@@ -46,7 +46,7 @@ export default function QuickActionsCard({
       />
       <div
         className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-15"
-        style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
       />
 
       {/* Content */}
@@ -161,7 +161,7 @@ export default function QuickActionsCard({
           {[
             { label: 'Matching basé sur compatibilité', color: '#e05747' },
             { label: 'Chat intégré après match', color: '#f8572b' },
-            { label: 'Invitation à visiter la coloc', color: '#ff651e' },
+            { label: 'Invitation à visiter la coloc', color: '#e05747' },
             { label: 'Profils vérifiés', color: '#ff7b19' },
           ].map((feature, index) => (
             <motion.div

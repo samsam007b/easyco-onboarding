@@ -30,9 +30,9 @@ const GRADIENTS = {
     glowSoft: 'rgba(157, 126, 229, 0.25)',
   },
   resident: {
-    primary: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+    primary: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
     bg: 'from-orange-600 via-orange-500 to-orange-400',
-    accent: '#ff651e',
+    accent: '#e05747',
     accentLight: '#ff7b19',
     glow: 'rgba(255, 101, 30, 0.6)',
     glowSoft: 'rgba(255, 101, 30, 0.25)',

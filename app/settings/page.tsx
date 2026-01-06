@@ -102,7 +102,7 @@ export default function SettingsPage() {
 
   // V3 Owner gradient constant
   const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
-  const residentGradient = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
+  const residentGradient = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
   const searcherGradient = 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)';
 
   // Role-specific colors - V3 palette
@@ -132,10 +132,10 @@ export default function SettingsPage() {
       cardHover: 'hover:border-[#FFDAC9]',
       gradientStyle: residentGradient,
       primary: '#e05747',
-      secondary: '#ff651e',
-      tertiary: '#ff9014',
-      quaternary: '#ff9014',
-      accentColor: '#ff651e',
+      secondary: '#e05747',
+      tertiary: '#e05747',
+      quaternary: '#e05747',
+      accentColor: '#e05747',
       lightBg: '#FFF3EF',
       shadow: 'rgba(255, 101, 30, 0.3)',
       shadowLight: 'rgba(255, 101, 30, 0.12)',

@@ -240,7 +240,7 @@ export default function MaintenancePage() {
 
             <Button
               onClick={() => setShowCreateModal(true)}
-              className="rounded-full bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] hover:opacity-90"
+              className="rounded-full bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] hover:opacity-90"
             >
               <Plus className="w-4 h-4 mr-2" />
               {t?.newTicket?.[language] || 'New ticket'}
@@ -305,7 +305,7 @@ export default function MaintenancePage() {
               onClick={() => setFilter('in_progress')}
               className={cn(
                 'bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'in_progress' && 'ring-2 ring-[#ff651e]'
+                filter === 'in_progress' && 'ring-2 ring-[#e05747]'
               )}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
@@ -318,7 +318,7 @@ export default function MaintenancePage() {
                   </p>
                 </div>
                 <div className="w-12 h-12 superellipse-xl bg-[#FFF5F0] flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-[#ff651e]" />
+                  <Clock className="w-6 h-6 text-[#e05747]" />
                 </div>
               </div>
             </motion.button>
@@ -365,7 +365,7 @@ export default function MaintenancePage() {
                 <motion.div
                   className="absolute inset-0 superellipse-2xl opacity-30"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     filter: 'blur(20px)',
                   }}
                   animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -375,7 +375,7 @@ export default function MaintenancePage() {
                 <div
                   className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
                   }}
                 >
@@ -411,7 +411,7 @@ export default function MaintenancePage() {
                   onClick={() => setShowCreateModal(true)}
                   className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
                     boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
                   }}
                 >

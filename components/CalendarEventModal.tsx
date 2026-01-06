@@ -7,8 +7,8 @@ import { X, Calendar, Clock, MapPin, Users, FileText, Sparkles, Check } from 'lu
 import { Button } from '@/components/ui/button';
 
 // V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
-const RESIDENT_PRIMARY = '#ff651e';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
 const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.25)';
 
@@ -267,7 +267,7 @@ export default function CalendarEventModal({
               />
               <div
                 className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-8 pointer-events-none"
-                style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)', transform: 'translate(-30%, 30%)' }}
+                style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)', transform: 'translate(-30%, 30%)' }}
               />
 
               {/* Scrollable content wrapper */}

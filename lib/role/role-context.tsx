@@ -63,10 +63,10 @@ const roleConfigs: Record<UserRole, RoleConfig> = {
   },
   resident: {
     color: 'var(--easy-orange)',
-    colorHex: '#FF5722',
+    colorHex: '#e05747',
     gradient: {
-      from: '#FF5722',
-      to: '#FF8C5C',
+      from: '#e05747',
+      to: '#e05747',
     },
     icon: '🔑',
     label: {

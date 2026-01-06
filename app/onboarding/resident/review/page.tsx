@@ -140,12 +140,12 @@ export default function ResidentReviewPage() {
           <LanguageSwitcher />
         </div>
 
-        <button onClick={() => router.back()} className="mb-6 bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent">
+        <button onClick={() => router.back()} className="mb-6 bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent">
           <ArrowLeft className="w-6 h-6" />
         </button>
 
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-2">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent mb-2">
             {resident.review?.title || 'Review Your Profile'}
           </h1>
           <p className="text-gray-600">
@@ -157,7 +157,7 @@ export default function ResidentReviewPage() {
           {/* Basic Info */}
           {data.coreBasicInfo && Object.keys(data.coreBasicInfo).length > 0 && (
             <div className="bg-white p-6 superellipse-2xl shadow">
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent mb-3">
                 {resident.basicInfo?.stepLabel || 'Basic Information'}
               </h2>
               <dl className="space-y-2 text-sm">
@@ -192,7 +192,7 @@ export default function ResidentReviewPage() {
           {/* Daily Life */}
           {data.coreDailyLife && Object.keys(data.coreDailyLife).length > 0 && (
             <div className="bg-white p-6 superellipse-2xl shadow">
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent mb-3">
                 {resident.review?.dailyLife || 'Daily Life'}
               </h2>
               <dl className="space-y-2 text-sm">
@@ -233,7 +233,7 @@ export default function ResidentReviewPage() {
           {/* Social & Personality */}
           {data.coreSocialPersonality && Object.keys(data.coreSocialPersonality).length > 0 && (
             <div className="bg-white p-6 superellipse-2xl shadow">
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent mb-3">
                 {resident.review?.socialLife || 'Social Life'}
               </h2>
               <dl className="space-y-2 text-sm">
@@ -256,7 +256,7 @@ export default function ResidentReviewPage() {
           {/* Values & Preferences */}
           {data.coreValuesPreferences && Object.keys(data.coreValuesPreferences).length > 0 && (
             <div className="bg-white p-6 superellipse-2xl shadow">
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent mb-3">
                 {resident.review?.values || 'Values'}
               </h2>
               <dl className="space-y-2 text-sm">
@@ -281,7 +281,7 @@ export default function ResidentReviewPage() {
           {/* Living Situation */}
           {data.livingSituation && Object.keys(data.livingSituation).length > 0 && (
             <div className="bg-white p-6 superellipse-2xl shadow">
-              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014] bg-clip-text text-transparent mb-3">
+              <h2 className="text-lg font-semibold bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] bg-clip-text text-transparent mb-3">
                 {resident.livingSituation?.stepLabel || 'Living Situation'}
               </h2>
               <dl className="space-y-2 text-sm">

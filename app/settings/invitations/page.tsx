@@ -92,7 +92,7 @@ export default function InvitationsPage() {
           <div className="flex items-center gap-4 mb-2">
             <div className="w-16 h-16 superellipse-2xl flex items-center justify-center shadow-sm"
                  style={{
-                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
+                   background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)'
                  }}>
               <Mail className="w-8 h-8 text-white" />
             </div>

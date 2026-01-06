@@ -117,7 +117,7 @@ export default function InvitePage() {
           <Button
             onClick={() => router.push('/auth')}
             className="w-full superellipse-xl text-white font-medium"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
           >
             Créer un compte
           </Button>
@@ -142,7 +142,7 @@ export default function InvitePage() {
           {/* Header with gradient */}
           <div
             className="p-6 text-white"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+            style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
           >
             <div className="flex items-center gap-4 mb-4">
               {inviter?.avatar_url ? (
@@ -214,7 +214,7 @@ export default function InvitePage() {
             <Button
               onClick={handleContinue}
               className="w-full superellipse-xl text-white font-medium h-12 text-lg"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}
+              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
             >
               Continuer
               <ArrowRight className="w-5 h-5 ml-2" />

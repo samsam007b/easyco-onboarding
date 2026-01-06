@@ -126,17 +126,17 @@ const brandColors = {
     shadow: 'shadow-[#9c5698]/20',
   },
   resident: {
-    primary: '#ff651e',
+    primary: '#e05747',
     secondary: '#e05747',
     light: '#fff5f2',
-    gradient: 'from-[#e05747] to-[#ff9014]',
+    gradient: 'from-[#e05747] to-[#e05747]',
     gradientLight: 'from-[#fff5f2] to-[#ffede5]',
-    gradientVibrant: 'from-[#e05747] via-[#ff651e] to-[#ff9014]',
+    gradientVibrant: 'from-[#e05747] via-[#e05747] to-[#e05747]',
     bg: 'bg-[#fff5f2]',
-    text: 'text-[#ff651e]',
-    border: 'border-[#ff651e]',
-    ring: 'ring-[#ff651e]/20',
-    shadow: 'shadow-[#ff651e]/20',
+    text: 'text-[#e05747]',
+    border: 'border-[#e05747]',
+    ring: 'ring-[#e05747]/20',
+    shadow: 'shadow-[#e05747]/20',
   },
 };
 
@@ -257,7 +257,7 @@ export default function CheckoutPage() {
           </p>
           <button
             onClick={() => router.push('/dashboard/subscription')}
-            className="px-6 py-3 bg-gradient-to-r from-[#ff651e] to-[#9c5698] text-white superellipse-xl font-semibold hover:shadow-lg transition"
+            className="px-6 py-3 bg-gradient-to-r from-[#e05747] to-[#9c5698] text-white superellipse-xl font-semibold hover:shadow-lg transition"
           >
             {t?.errors?.invalidPlan?.seeAvailablePlans?.[language] || 'See available plans'}
           </button>

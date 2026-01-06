@@ -194,7 +194,7 @@ export default function InvitePage() {
           <div className="flex items-center gap-3 mb-2">
             <div className="w-14 h-14 superellipse-2xl flex items-center justify-center"
                  style={{
-                   background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)'
+                   background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)'
                  }}>
               <Users className="w-7 h-7 text-white" />
             </div>
@@ -226,10 +226,10 @@ export default function InvitePage() {
             <div className="flex gap-3">
               <div className="flex-1 p-2 bg-white superellipse-lg text-center border border-[#7CB89B]/20">
                 <div className="flex items-center justify-center gap-1">
-                  <Home className="w-3.5 h-3.5 text-[#ff651e]" />
+                  <Home className="w-3.5 h-3.5 text-[#e05747]" />
                   <span className="text-xs text-gray-600">{t?.rewards?.resident?.[language] || 'Resident'}</span>
                 </div>
-                <p className="font-bold text-[#ff651e]">{t?.rewards?.residentMonths?.[language] || '+2 months'}</p>
+                <p className="font-bold text-[#e05747]">{t?.rewards?.residentMonths?.[language] || '+2 months'}</p>
               </div>
               <div className="flex-1 p-2 bg-white superellipse-lg text-center border border-[#7CB89B]/20">
                 <div className="flex items-center justify-center gap-1">
@@ -313,7 +313,7 @@ export default function InvitePage() {
                 className={`w-full superellipse-xl py-6 text-white ${
                   selectedRole === 'owner'
                     ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
-                    : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]'
+                    : 'bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747]'
                 }`}
               >
                 {isGenerating ? (
@@ -351,7 +351,7 @@ export default function InvitePage() {
                     className={`flex-1 superellipse-xl ${
                       selectedRole === 'owner'
                         ? 'bg-gradient-to-r from-purple-500 to-indigo-600'
-                        : 'bg-gradient-to-r from-[#e05747] via-[#ff651e] to-[#ff9014]'
+                        : 'bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747]'
                     }`}
                   >
                     {copiedType === 'link' ? (
@@ -391,7 +391,7 @@ export default function InvitePage() {
                   <Button
                     onClick={handleShareEmail}
                     variant="outline"
-                    className="flex-1 superellipse-xl border-[#ff651e]/30 text-[#ff651e] hover:bg-[#FFF5F0]"
+                    className="flex-1 superellipse-xl border-[#e05747]/30 text-[#e05747] hover:bg-[#FFF5F0]"
                   >
                     <Mail className="w-5 h-5 mr-2" />
                     Email
@@ -432,7 +432,7 @@ export default function InvitePage() {
                       className="w-12 h-12 superellipse-xl object-cover"
                     />
                   ) : (
-                    <div className="w-12 h-12 superellipse-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)' }}>
+                    <div className="w-12 h-12 superellipse-xl flex items-center justify-center text-white font-bold text-lg" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}>
                       {member.user_profiles?.first_name?.charAt(0) || '?'}
                     </div>
                   )}

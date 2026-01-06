@@ -120,7 +120,7 @@ export default function ExpenseDetailModal({
           <div
             className="relative p-6 pb-4"
             style={{
-              background: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+              background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
             }}
           >
             <button

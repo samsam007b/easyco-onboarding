@@ -42,9 +42,9 @@ export const roleThemes = {
   },
   resident: {
     // V3 Option C Orange theme for residents
-    gradient: 'from-[#e05747] via-[#ff651e] to-[#ff9014]',
+    gradient: 'from-[#e05747] via-[#e05747] to-[#e05747]',
     gradientBg: 'from-orange-50 to-orange-100',
-    primary: '#ff651e',
+    primary: '#e05747',
     primaryLight: 'orange-50',
     focusRing: 'focus:ring-orange-500',
     selectedBorder: 'border-orange-500',
@@ -52,7 +52,7 @@ export const roleThemes = {
     accent: 'accent-orange-500',
     logoColors: {
       easy: 'text-[#e05747]',
-      co: 'text-[#ff9014]',
+      co: 'text-[#e05747]',
     },
   },
 } as const;

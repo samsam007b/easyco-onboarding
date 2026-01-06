@@ -87,13 +87,13 @@ export const messageVariantStyles = {
   hub: {
     // Resident orange theme
     gradient: 'from-orange-50/30 via-white to-orange-50/30',
-    accent: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-    accentGradient: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
+    accent: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
+    accentGradient: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
     accentLight: 'from-orange-50 to-red-50',
     border: 'border-orange-200',
     text: 'text-orange-600',
     shadow: 'rgba(255, 101, 30, 0.35)',
-    primary: '#ff651e',
+    primary: '#e05747',
     light: '#fff7ed',
     focusBorder: 'focus:border-orange-300',
     hoverBg: 'hover:border-orange-100',
@@ -274,7 +274,7 @@ export function MobileBackButton({
         size="icon"
         onClick={onBack}
         className={cn(
-          'md:hidden rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#ff9014]/10',
+          'md:hidden rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#e05747]/10',
           className
         )}
         aria-label={ariaLabels?.back?.[language] || 'Back'}

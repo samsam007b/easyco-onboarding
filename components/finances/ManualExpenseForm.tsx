@@ -29,8 +29,8 @@ import type { ExpenseCategory } from '@/types/finances.types';
 import type { ScanResult } from './ExpenseScanner';
 
 // V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)';
-const RESIDENT_PRIMARY = '#ff651e';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
 const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.25)';
 
@@ -150,7 +150,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
       />
       <div
         className="absolute -left-16 -bottom-16 w-40 h-40 rounded-full opacity-10 pointer-events-none"
-        style={{ background: 'linear-gradient(135deg, #ff9014 0%, #ff651e 100%)' }}
+        style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
       />
 
       {/* Header */}

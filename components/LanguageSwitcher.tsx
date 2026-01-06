@@ -19,8 +19,8 @@ type LanguageSwitcherVariant = 'hub' | 'owner' | 'searcher';
 
 const variantStyles = {
   hub: {
-    gradient: 'linear-gradient(135deg, #e05747 0%, #ff651e 50%, #ff9014 100%)',
-    primary: '#ff651e',
+    gradient: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
+    primary: '#e05747',
     hoverBg: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)',
     activeBg: 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)',
     hoverBgLight: 'linear-gradient(135deg, rgba(217, 87, 79, 0.05) 0%, rgba(255, 128, 23, 0.05) 100%)',

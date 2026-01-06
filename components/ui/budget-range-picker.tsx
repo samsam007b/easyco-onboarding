@@ -155,7 +155,7 @@ export default function BudgetRangePicker({
             style={{
               left: `${getMinPosition()}%`,
               right: `${100 - getMaxPosition()}%`,
-              background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)'
+              background: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #FFB10B 100%)'
             }}
           />
 
@@ -218,7 +218,7 @@ export default function BudgetRangePicker({
           onClick={handleApply}
           className="w-full py-2 px-4 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all text-sm"
           style={{
-            background: 'linear-gradient(135deg, #9c5698 0%, #FF5722 50%, #FFB10B 100%)'
+            background: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #FFB10B 100%)'
           }}
         >
           Appliquer
