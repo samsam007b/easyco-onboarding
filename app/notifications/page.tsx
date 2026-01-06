@@ -175,7 +175,7 @@ export default function NotificationsPage() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => router.back()}
-                className="flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors"
+                className="flex items-center gap-2 text-gray-600 hover:text-[#9c5698] transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>{common?.back?.[language] || 'Back'}</span>
@@ -184,8 +184,8 @@ export default function NotificationsPage() {
               <div className="h-6 w-px bg-gray-300" />
 
               <div className="flex items-center gap-3">
-                <Bell className="w-6 h-6 text-[#4A148C]" />
-                <h1 className="text-2xl font-bold text-[#4A148C]">Notifications</h1>
+                <Bell className="w-6 h-6 text-[#9c5698]" />
+                <h1 className="text-2xl font-bold text-[#9c5698]">Notifications</h1>
                 {unreadCount > 0 && (
                   <span className="bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
                     {unreadCount}
@@ -245,7 +245,7 @@ export default function NotificationsPage() {
                         onClick={() => setFilter(f)}
                         className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                           filter === f
-                            ? 'bg-[#4A148C] text-white'
+                            ? 'bg-[#9c5698] text-white'
                             : 'bg-white text-gray-700 hover:bg-gray-100'
                         }`}
                       >
@@ -268,7 +268,7 @@ export default function NotificationsPage() {
                           onClick={() => setTypeFilter('all')}
                           className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
                             typeFilter === 'all'
-                              ? 'bg-[#4A148C] text-white'
+                              ? 'bg-[#9c5698] text-white'
                               : 'bg-white text-gray-700 hover:bg-gray-100'
                           }`}
                         >
@@ -280,7 +280,7 @@ export default function NotificationsPage() {
                             onClick={() => setTypeFilter(type)}
                             className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors capitalize ${
                               typeFilter === type
-                                ? 'bg-[#4A148C] text-white'
+                                ? 'bg-[#9c5698] text-white'
                                 : 'bg-white text-gray-700 hover:bg-gray-100'
                             }`}
                           >
@@ -320,7 +320,7 @@ export default function NotificationsPage() {
                 key={notification.id}
                 onClick={() => handleNotificationClick(notification)}
                 className={`bg-white superellipse-2xl shadow hover:shadow-lg transition-all cursor-pointer p-5 ${
-                  !notification.read ? 'border-2 border-[#4A148C]' : 'border border-gray-200'
+                  !notification.read ? 'border-2 border-[#9c5698]' : 'border border-gray-200'
                 }`}
               >
                 <div className="flex items-start gap-4">
@@ -336,7 +336,7 @@ export default function NotificationsPage() {
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
                         <h3 className={`font-semibold mb-1 ${
-                          !notification.read ? 'text-[#4A148C]' : 'text-gray-900'
+                          !notification.read ? 'text-[#9c5698]' : 'text-gray-900'
                         }`}>
                           {notification.title}
                         </h3>
@@ -348,8 +348,8 @@ export default function NotificationsPage() {
                             {formatTimestamp(notification.created_at)}
                           </span>
                           {!notification.read && (
-                            <span className="inline-flex items-center gap-1 text-xs font-medium text-[#4A148C]">
-                              <div className="w-2 h-2 bg-[#4A148C] rounded-full" />
+                            <span className="inline-flex items-center gap-1 text-xs font-medium text-[#9c5698]">
+                              <div className="w-2 h-2 bg-[#9c5698] rounded-full" />
                               Unread
                             </span>
                           )}

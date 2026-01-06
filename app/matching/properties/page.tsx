@@ -208,7 +208,7 @@ export default function PropertyMatchesPage() {
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-[#4A148C] flex items-center gap-2">
+              <h1 className="text-3xl font-bold text-[#9c5698] flex items-center gap-2">
                 <Sparkles className="w-8 h-8" />
                 {matching.properties?.title || 'Your Matches'}
               </h1>
@@ -249,7 +249,7 @@ export default function PropertyMatchesPage() {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-[#4A148C]">
+                <div className="text-2xl font-bold text-[#9c5698]">
                   {statistics.total_matches}
                 </div>
                 <div className="text-sm text-gray-600">{matching.properties?.stats?.total || 'Total'}</div>
@@ -351,7 +351,7 @@ export default function PropertyMatchesPage() {
             <div className="text-6xl mb-4">
               <Home className="w-24 h-24 mx-auto text-gray-300" />
             </div>
-            <h3 className="text-2xl font-bold text-[#4A148C] mb-2">{matching.properties?.empty?.title || 'No matches found'}</h3>
+            <h3 className="text-2xl font-bold text-[#9c5698] mb-2">{matching.properties?.empty?.title || 'No matches found'}</h3>
             <p className="text-gray-600 mb-6">
               {statusFilter.length === 0
                 ? (matching.properties?.empty?.noFilter || 'Select at least one status filter')

@@ -208,7 +208,7 @@ export default function EditPropertyPage() {
         <Card>
           <CardContent className="p-6">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <Home className="w-5 h-5 text-[#4A148C]" />
+              <Home className="w-5 h-5 text-[#9c5698]" />
               {t('properties.add.sections.basicInfo')}
             </h3>
 
@@ -246,7 +246,7 @@ export default function EditPropertyPage() {
         <Card>
           <CardContent className="p-6">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-[#4A148C]" />
+              <MapPin className="w-5 h-5 text-[#9c5698]" />
               {t('properties.add.sections.location')}
             </h3>
 
@@ -284,7 +284,7 @@ export default function EditPropertyPage() {
         <Card>
           <CardContent className="p-6">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <Bed className="w-5 h-5 text-[#4A148C]" />
+              <Bed className="w-5 h-5 text-[#9c5698]" />
               {t('properties.add.sections.propertyDetails')}
             </h3>
 
@@ -329,7 +329,7 @@ export default function EditPropertyPage() {
         <Card>
           <CardContent className="p-6">
             <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-              <Euro className="w-5 h-5 text-[#4A148C]" />
+              <Euro className="w-5 h-5 text-[#9c5698]" />
               {t('properties.add.sections.pricing')}
             </h3>
 

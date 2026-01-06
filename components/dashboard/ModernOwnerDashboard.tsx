@@ -162,8 +162,9 @@ export default function ModernOwnerDashboard() {
   const revenueData = generateRevenueData();
   const occupationData = generateOccupationData();
 
-  // V3 Owner Gradient Colors: #9c5698 → #a5568d → #af5682 → #b85676 → #c2566b
-  const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
+  // V3 Color System - Official Owner Palette (Solid Color)
+  // Source: brand-identity/izzico-color-system.html
+  const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #9c5698 50%, #9c5698 100%)';
   const ownerGradientLight = 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)';
 
   const kpiCards = [
@@ -190,9 +191,9 @@ export default function ModernOwnerDashboard() {
       value: `${stats.occupation}%`,
       change: stats.occupationChange,
       icon: TrendingUp,
-      gradient: 'linear-gradient(135deg, #af5682 0%, #c2566b 100%)', // Owner variant
+      gradient: 'linear-gradient(135deg, #9c5698 0%, #9c5698 100%)', // Owner variant
       bgGradient: 'linear-gradient(135deg, #FDF5F9 0%, #FAE8F0 100%)',
-      textColor: '#af5682',
+      textColor: '#9c5698',
     },
     {
       title: owner?.applications || 'Candidatures',
@@ -270,7 +271,7 @@ export default function ModernOwnerDashboard() {
               animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
               transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
             >
-              <Sparkles className="w-5 h-5" style={{ color: '#c2566b' }} />
+              <Sparkles className="w-5 h-5" style={{ color: '#9c5698' }} />
             </motion.div>
           </motion.div>
           <div>
@@ -472,8 +473,8 @@ export default function ModernOwnerDashboard() {
                   <defs>
                     <linearGradient id="ownerGradient" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="0%" stopColor="#9c5698" />
-                      <stop offset="50%" stopColor="#af5682" />
-                      <stop offset="100%" stopColor="#c2566b" />
+                      <stop offset="50%" stopColor="#9c5698" />
+                      <stop offset="100%" stopColor="#9c5698" />
                     </linearGradient>
                   </defs>
                 </BarChart>
@@ -579,7 +580,7 @@ export default function ModernOwnerDashboard() {
                 animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
                 transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
               >
-                <Sparkles className="w-6 h-6" style={{ color: '#c2566b' }} />
+                <Sparkles className="w-6 h-6" style={{ color: '#9c5698' }} />
               </motion.div>
             </motion.div>
 
@@ -644,7 +645,7 @@ export default function ModernOwnerDashboard() {
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <Building2 className="w-12 h-12" style={{ color: '#af5682' }} />
+                      <Building2 className="w-12 h-12" style={{ color: '#9c5698' }} />
                     </div>
                   )}
                 </div>
@@ -704,7 +705,7 @@ export default function ModernOwnerDashboard() {
                 onClick={() => router.push('/dashboard/owner/properties')}
                 className="rounded-full border-2"
                 style={{
-                  borderColor: '#af5682',
+                  borderColor: '#9c5698',
                   color: '#9c5698',
                 }}
               >

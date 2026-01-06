@@ -203,8 +203,8 @@ export function ImageUpload({
       <div
         className={`
           relative border-2 border-dashed superellipse-2xl p-8 text-center transition-all
-          ${dragActive ? 'border-[#4A148C] bg-purple-50' : 'border-gray-300'}
-          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-[#4A148C]'}
+          ${dragActive ? 'border-[#9c5698] bg-purple-50' : 'border-gray-300'}
+          ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer hover:border-[#9c5698]'}
         `}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -224,7 +224,7 @@ export function ImageUpload({
 
         <div className="flex flex-col items-center gap-3">
           <div className="w-16 h-16 rounded-full bg-purple-100 flex items-center justify-center">
-            <Upload className="w-8 h-8 text-[#4A148C]" />
+            <Upload className="w-8 h-8 text-[#9c5698]" />
           </div>
           <div>
             <p className="text-lg font-semibold text-gray-700">
@@ -278,7 +278,7 @@ export function ImageUpload({
                   </button>
                 )}
                 {index === 0 && (
-                  <div className="absolute bottom-2 left-2 px-2 py-1 bg-[#4A148C] text-white text-xs font-medium rounded">
+                  <div className="absolute bottom-2 left-2 px-2 py-1 bg-[#9c5698] text-white text-xs font-medium rounded">
                     {t.ui.mainImage[lang]}
                   </div>
                 )}

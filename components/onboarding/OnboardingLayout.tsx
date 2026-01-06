@@ -27,16 +27,16 @@ export const roleThemes = {
   },
   owner: {
     // Purple theme for owners
-    gradient: 'from-[#4A148C] via-[#6A1B9A] to-[#7B1FA2]',
+    gradient: 'from-[#9c5698] via-[#9c5698] to-[#7B1FA2]',
     gradientBg: 'from-purple-50 to-purple-100',
-    primary: '#4A148C',
+    primary: '#9c5698',
     primaryLight: 'purple-50',
     focusRing: 'focus:ring-purple-500',
     selectedBorder: 'border-purple-500',
     selectedBg: 'bg-purple-50',
     accent: 'accent-purple-500',
     logoColors: {
-      easy: 'text-[#4A148C]',
+      easy: 'text-[#9c5698]',
       co: 'text-[#FFD600]',
     },
   },

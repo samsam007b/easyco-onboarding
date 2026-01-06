@@ -80,7 +80,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
               'disabled:bg-gray-100 disabled:cursor-not-allowed disabled:text-gray-500',
               hasError
                 ? 'border-red-300 focus:border-red-500 focus:ring-red-500/50'
-                : 'border-gray-300 focus:border-[#4A148C] focus:ring-[#4A148C]/50',
+                : 'border-gray-300 focus:border-[#9c5698] focus:ring-[#9c5698]/50',
               className
             )}
             {...props}

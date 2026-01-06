@@ -651,7 +651,7 @@ function AuthContent() {
                       type="checkbox"
                       checked={agreedToTerms}
                       onChange={(e) => setAgreedToTerms(e.target.checked)}
-                      className="mt-1 w-4 h-4 text-[#4A148C] border-gray-300 rounded focus:ring-[#4A148C]"
+                      className="mt-1 w-4 h-4 text-[#9c5698] border-gray-300 rounded focus:ring-[#9c5698]"
                     />
                     <span className="text-sm text-gray-600">
                       {t('auth.signup.agreeToTerms')}{' '}

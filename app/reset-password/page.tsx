@@ -146,7 +146,7 @@ function ResetPasswordContent() {
         <header className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="max-w-7xl mx-auto flex items-center justify-center">
             <div className="text-2xl font-bold">
-              <span className="text-[#4A148C]">EASY</span>
+              <span className="text-[#9c5698]">EASY</span>
               <span className="text-[#FFD600]">Co</span>
             </div>
           </div>
@@ -181,7 +181,7 @@ function ResetPasswordContent() {
         <header className="bg-white border-b border-gray-200 px-6 py-4">
           <div className="max-w-7xl mx-auto flex items-center justify-center">
             <div className="text-2xl font-bold">
-              <span className="text-[#4A148C]">EASY</span>
+              <span className="text-[#9c5698]">EASY</span>
               <span className="text-[#FFD600]">Co</span>
             </div>
           </div>
@@ -219,7 +219,7 @@ function ResetPasswordContent() {
             <span>{t('auth.resetPassword.backToLogin')}</span>
           </Link>
           <div className="text-2xl font-bold">
-            <span className="text-[#4A148C]">EASY</span>
+            <span className="text-[#9c5698]">EASY</span>
             <span className="text-[#FFD600]">Co</span>
           </div>
         </div>
@@ -231,10 +231,10 @@ function ResetPasswordContent() {
           <div className="bg-white superellipse-3xl shadow-lg p-8 border border-gray-100">
             {/* Title */}
             <div className="text-center mb-8">
-              <div className="w-16 h-16 bg-[#4A148C]/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Lock className="w-8 h-8 text-[#4A148C]" />
+              <div className="w-16 h-16 bg-[#9c5698]/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lock className="w-8 h-8 text-[#9c5698]" />
               </div>
-              <h1 className="text-3xl font-bold text-[#4A148C] mb-2">
+              <h1 className="text-3xl font-bold text-[#9c5698] mb-2">
                 {t('auth.resetPassword.title')}
               </h1>
               <p className="text-gray-600">
@@ -257,7 +257,7 @@ function ResetPasswordContent() {
                     placeholder={t('auth.resetPassword.newPasswordPlaceholder')}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
+                    className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#9c5698] focus:ring-0"
                     disabled={isLoading}
                     autoFocus
                   />
@@ -330,7 +330,7 @@ function ResetPasswordContent() {
                     placeholder={t('auth.resetPassword.confirmPasswordPlaceholder')}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#4A148C] focus:ring-0"
+                    className="pl-12 pr-12 py-6 rounded-full border-2 border-gray-300 focus:border-[#9c5698] focus:ring-0"
                     disabled={isLoading}
                   />
                   <button

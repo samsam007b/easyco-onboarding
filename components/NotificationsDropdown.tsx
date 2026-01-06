@@ -224,7 +224,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
                   setIsOpen(false);
                   router.push('/notifications');
                 }}
-                className="w-full text-center text-sm text-[#4A148C] font-semibold hover:text-[#311B92] transition-colors"
+                className="w-full text-center text-sm text-[#9c5698] font-semibold hover:text-[#311B92] transition-colors"
               >
                 {notificationsT?.viewAll || 'View all notifications'}
               </button>

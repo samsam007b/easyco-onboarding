@@ -148,7 +148,7 @@ export default function OnboardingCompletionPage() {
               userType === 'owner' ? 'bg-[#FFD600]' : 'bg-yellow-400'
             } rounded-full flex items-center justify-center shadow-lg`}>
               <Sparkles className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
-                userType === 'owner' ? 'text-[#4A148C]' : 'text-orange-600'
+                userType === 'owner' ? 'text-[#9c5698]' : 'text-orange-600'
               }`} />
             </div>
           </div>

@@ -171,7 +171,7 @@ export function LanguagesChipInput({
         {value.map(lang => (
           <div
             key={lang.code}
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#4A148C] text-white rounded-full text-sm font-medium"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#9c5698] text-white rounded-full text-sm font-medium"
             title={`${lang.canonicalEn} (${lang.code})`}
           >
             <Globe className="w-3.5 h-3.5" />

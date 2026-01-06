@@ -49,11 +49,11 @@ export default function RoleSwitchModal({
           {/* Header */}
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-full bg-[#4A148C]/10 flex items-center justify-center">
-                <RefreshCw className="w-6 h-6 text-[#4A148C]" />
+              <div className="w-12 h-12 rounded-full bg-[#9c5698]/10 flex items-center justify-center">
+                <RefreshCw className="w-6 h-6 text-[#9c5698]" />
               </div>
               <div>
-                <h2 className="text-2xl font-bold text-[#4A148C]">
+                <h2 className="text-2xl font-bold text-[#9c5698]">
                   Switch Role?
                 </h2>
                 <p className="text-sm text-gray-500 mt-0.5">
@@ -91,7 +91,7 @@ export default function RoleSwitchModal({
 
               <div className="space-y-2">
                 <div className="flex items-start gap-3 p-3 bg-purple-50 superellipse-xl">
-                  <div className="w-6 h-6 rounded-full bg-[#4A148C] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-full bg-[#9c5698] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                     1
                   </div>
                   <div>
@@ -103,7 +103,7 @@ export default function RoleSwitchModal({
                 </div>
 
                 <div className="flex items-start gap-3 p-3 bg-purple-50 superellipse-xl">
-                  <div className="w-6 h-6 rounded-full bg-[#4A148C] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-full bg-[#9c5698] text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
                     2
                   </div>
                   <div>
@@ -134,7 +134,7 @@ export default function RoleSwitchModal({
             <Button
               onClick={onConfirm}
               disabled={isLoading}
-              className="flex-1 bg-[#4A148C] hover:bg-[#6A1B9A] text-white py-6 superellipse-2xl font-semibold"
+              className="flex-1 bg-[#9c5698] hover:bg-[#9c5698] text-white py-6 superellipse-2xl font-semibold"
             >
               {isLoading ? (
                 <div className="flex items-center gap-2">

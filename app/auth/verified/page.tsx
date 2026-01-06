@@ -36,7 +36,7 @@ function EmailVerifiedContent() {
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-center">
           <div className="text-2xl font-bold">
-            <span className="text-[#4A148C]">IZZI</span>
+            <span className="text-[#9c5698]">IZZI</span>
             <span className="text-[#FFD600]">Co</span>
           </div>
         </div>
@@ -63,14 +63,14 @@ function EmailVerifiedContent() {
           {/* Countdown */}
           <div className="bg-gray-50 superellipse-2xl p-4 mb-4">
             <p className="text-sm text-gray-600">
-              {t('auth.verified.redirecting')} <span className="font-bold text-[#4A148C]">{countdown}</span> {countdown !== 1 ? t('auth.verified.seconds') : t('auth.verified.second')}...
+              {t('auth.verified.redirecting')} <span className="font-bold text-[#9c5698]">{countdown}</span> {countdown !== 1 ? t('auth.verified.seconds') : t('auth.verified.second')}...
             </p>
           </div>
 
           {/* Manual Redirect Button */}
           <button
             onClick={() => router.push(next)}
-            className="text-sm text-[#4A148C] hover:text-[#311B92] font-semibold underline"
+            className="text-sm text-[#9c5698] hover:text-[#311B92] font-semibold underline"
           >
             {t('auth.verified.clickHere')}
           </button>

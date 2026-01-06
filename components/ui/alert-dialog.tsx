@@ -103,7 +103,7 @@ const AlertDialogAction = React.forwardRef<
   <AlertDialogPrimitive.Action
     ref={ref}
     className={cn(
-      'inline-flex items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-12 px-6 py-2 bg-[#4A148C] text-white hover:bg-[#6A1B9A] focus-visible:ring-[#4A148C]',
+      'inline-flex items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-12 px-6 py-2 bg-[#9c5698] text-white hover:bg-[#9c5698] focus-visible:ring-[#9c5698]',
       className
     )}
     {...props}
@@ -118,7 +118,7 @@ const AlertDialogCancel = React.forwardRef<
   <AlertDialogPrimitive.Cancel
     ref={ref}
     className={cn(
-      'inline-flex items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-12 px-6 py-2 border-2 border-[#4A148C] text-[#4A148C] hover:bg-[#4A148C]/10',
+      'inline-flex items-center justify-center rounded-full font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 h-12 px-6 py-2 border-2 border-[#9c5698] text-[#9c5698] hover:bg-[#9c5698]/10',
       'mt-2 sm:mt-0',
       className
     )}

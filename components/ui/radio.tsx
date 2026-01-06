@@ -130,13 +130,13 @@ export function RadioGroup({
                     'disabled:cursor-not-allowed disabled:opacity-50',
                     hasError
                       ? 'border-red-300 focus:ring-red-500/50'
-                      : 'border-gray-300 focus:ring-[#4A148C]/50',
+                      : 'border-gray-300 focus:ring-[#9c5698]/50',
                     sizeStyles[size]
                   )}
                 />
                 <div
                   className={cn(
-                    'absolute pointer-events-none rounded-full bg-[#4A148C]',
+                    'absolute pointer-events-none rounded-full bg-[#9c5698]',
                     'opacity-0 peer-checked:opacity-100 transition-opacity',
                     size === 'sm' && 'w-2 h-2',
                     size === 'md' && 'w-2.5 h-2.5',

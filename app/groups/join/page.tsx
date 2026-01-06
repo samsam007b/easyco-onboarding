@@ -213,7 +213,7 @@ function JoinGroupContent() {
         {/* Back button */}
         <button
           onClick={() => router.push('/dashboard/searcher')}
-          className="mb-6 text-[#4A148C] hover:opacity-70 transition flex items-center gap-2"
+          className="mb-6 text-[#9c5698] hover:opacity-70 transition flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
           {t('groupJoin.backToDashboard')}
@@ -225,7 +225,7 @@ function JoinGroupContent() {
             <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
               <UserPlus className="w-6 h-6 text-purple-600" />
             </div>
-            <h1 className="text-3xl font-bold text-[#4A148C]">
+            <h1 className="text-3xl font-bold text-[#9c5698]">
               {t('groupJoin.title')}
             </h1>
           </div>
@@ -251,7 +251,7 @@ function JoinGroupContent() {
               <Button
                 onClick={handleSearchByCode}
                 disabled={isSearching || !inviteCode.trim()}
-                className="bg-[#4A148C] hover:bg-[#4A148C]/90"
+                className="bg-[#9c5698] hover:bg-[#9c5698]/90"
               >
                 {isSearching ? t('groupJoin.inviteCode.searching') : <Search className="w-5 h-5" />}
               </Button>
@@ -334,7 +334,7 @@ function JoinGroupContent() {
 
             <div className="space-y-3">
               {openGroups.map((group) => (
-                <div key={group.id} className="p-4 border-2 border-gray-200 superellipse-xl hover:border-[#4A148C] transition">
+                <div key={group.id} className="p-4 border-2 border-gray-200 superellipse-xl hover:border-[#9c5698] transition">
                   <div className="flex items-start justify-between mb-2">
                     <div className="flex-1">
                       <h3 className="font-semibold text-gray-900">{group.name}</h3>
@@ -351,7 +351,7 @@ function JoinGroupContent() {
                       onClick={() => handleJoinGroup(group.id)}
                       disabled={isJoining || (group.member_count || 0) >= group.max_members}
                       size="sm"
-                      className="bg-[#4A148C] hover:bg-[#4A148C]/90"
+                      className="bg-[#9c5698] hover:bg-[#9c5698]/90"
                     >
                       {(group.member_count || 0) >= group.max_members ? t('groupJoin.group.full') : t('groupJoin.group.joinShort')}
                     </Button>

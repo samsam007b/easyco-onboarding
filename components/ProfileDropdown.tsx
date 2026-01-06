@@ -17,7 +17,7 @@ interface ProfileDropdownProps {
   role?: 'searcher' | 'owner' | 'resident';
 }
 
-export default function ProfileDropdown({ profile, avatarColor = '#4A148C', role }: ProfileDropdownProps) {
+export default function ProfileDropdown({ profile, avatarColor = '#9c5698', role }: ProfileDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const router = useRouter();

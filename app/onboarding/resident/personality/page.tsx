@@ -123,7 +123,7 @@ export default function ResidentPersonalityPage() {
             <span>{common.back}</span>
           </button>
           <div className="text-2xl font-bold">
-            <span className="text-[#4A148C]">EASY</span>
+            <span className="text-[#9c5698]">EASY</span>
             <span className="text-[#FFD600]">Co</span>
           </div>
           <div className="w-20" />

@@ -47,10 +47,10 @@ const roleConfigs: Record<UserRole, RoleConfig> = {
   },
   owner: {
     color: 'var(--easy-purple)',
-    colorHex: '#4A148C',
+    colorHex: '#9c5698',
     gradient: {
-      from: '#4A148C',
-      to: '#6A1B9A',
+      from: '#9c5698',
+      to: '#9c5698',
     },
     icon: '🏠',
     label: {

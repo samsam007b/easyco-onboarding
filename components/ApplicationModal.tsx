@@ -72,7 +72,7 @@ export default function ApplicationModal({
         <div className="sticky top-0 bg-white border-b border-gray-200 p-6 superellipse-t-3xl">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-[#4A148C]">{t('applicationModal.title')}</h2>
+              <h2 className="text-2xl font-bold text-[#9c5698]">{t('applicationModal.title')}</h2>
               <p className="text-sm text-gray-600 mt-1">{propertyTitle}</p>
             </div>
             <button
@@ -154,7 +154,7 @@ export default function ApplicationModal({
                 <select
                   value={formData.lease_duration_months || 12}
                   onChange={(e) => handleChange('lease_duration_months', parseInt(e.target.value))}
-                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none"
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-[#9c5698] focus:outline-none"
                 >
                   <option value={3}>{t('applicationModal.leaseOptions.months3')}</option>
                   <option value={6}>{t('applicationModal.leaseOptions.months6')}</option>
@@ -224,7 +224,7 @@ export default function ApplicationModal({
               value={formData.message || ''}
               onChange={(e) => handleChange('message', e.target.value)}
               rows={4}
-              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-[#4A148C] focus:outline-none resize-none"
+              className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:border-[#9c5698] focus:outline-none resize-none"
               placeholder={t('applicationModal.placeholders.message')}
             />
             <p className="text-xs text-gray-500 mt-1">

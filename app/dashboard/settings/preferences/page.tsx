@@ -129,7 +129,7 @@ export default function PreferencesEditorPage() {
     <PageContainer>
       <div className="mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <Settings className="w-6 h-6 text-[#4A148C]" />
+          <Settings className="w-6 h-6 text-[#9c5698]" />
           <h1 className="text-3xl font-bold text-gray-900">Matching Preferences</h1>
         </div>
         <p className="text-gray-600">Customize your preferences to get better property matches</p>
@@ -156,7 +156,7 @@ export default function PreferencesEditorPage() {
                     type="number"
                     value={formData.min_budget || ''}
                     onChange={(e) => handleInputChange('min_budget', parseInt(e.target.value) || undefined)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                     placeholder="500"
                   />
                 </div>
@@ -168,7 +168,7 @@ export default function PreferencesEditorPage() {
                     type="number"
                     value={formData.max_budget || ''}
                     onChange={(e) => handleInputChange('max_budget', parseInt(e.target.value) || undefined)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                     placeholder="1500"
                   />
                 </div>
@@ -198,7 +198,7 @@ export default function PreferencesEditorPage() {
                   type="text"
                   value={formData.preferred_cities?.join(', ') || ''}
                   onChange={(e) => handleInputChange('preferred_cities', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                   placeholder="Paris, Lyon, Marseille"
                 />
               </div>
@@ -210,7 +210,7 @@ export default function PreferencesEditorPage() {
                   type="text"
                   value={formData.preferred_neighborhoods?.join(', ') || ''}
                   onChange={(e) => handleInputChange('preferred_neighborhoods', e.target.value.split(',').map(s => s.trim()).filter(Boolean))}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                   placeholder="Marais, Belleville, Bastille"
                 />
               </div>
@@ -234,7 +234,7 @@ export default function PreferencesEditorPage() {
                   <select
                     value={formData.min_bedrooms || ''}
                     onChange={(e) => handleInputChange('min_bedrooms', parseInt(e.target.value) || undefined)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                   >
                     <option value="">Any</option>
                     <option value="1">1+</option>
@@ -250,7 +250,7 @@ export default function PreferencesEditorPage() {
                   <select
                     value={formData.min_bathrooms || ''}
                     onChange={(e) => handleInputChange('min_bathrooms', parseInt(e.target.value) || undefined)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                   >
                     <option value="">Any</option>
                     <option value="1">1+</option>
@@ -266,7 +266,7 @@ export default function PreferencesEditorPage() {
                     type="checkbox"
                     checked={formData.furnished || false}
                     onChange={(e) => handleInputChange('furnished', e.target.checked)}
-                    className="w-4 h-4 text-[#4A148C] border-gray-300 rounded focus:ring-[#4A148C]"
+                    className="w-4 h-4 text-[#9c5698] border-gray-300 rounded focus:ring-[#9c5698]"
                   />
                   <span className="text-sm text-gray-700">Furnished</span>
                 </label>
@@ -275,7 +275,7 @@ export default function PreferencesEditorPage() {
                     type="checkbox"
                     checked={formData.balcony || false}
                     onChange={(e) => handleInputChange('balcony', e.target.checked)}
-                    className="w-4 h-4 text-[#4A148C] border-gray-300 rounded focus:ring-[#4A148C]"
+                    className="w-4 h-4 text-[#9c5698] border-gray-300 rounded focus:ring-[#9c5698]"
                   />
                   <span className="text-sm text-gray-700">Balcony</span>
                 </label>
@@ -284,7 +284,7 @@ export default function PreferencesEditorPage() {
                     type="checkbox"
                     checked={formData.parking || false}
                     onChange={(e) => handleInputChange('parking', e.target.checked)}
-                    className="w-4 h-4 text-[#4A148C] border-gray-300 rounded focus:ring-[#4A148C]"
+                    className="w-4 h-4 text-[#9c5698] border-gray-300 rounded focus:ring-[#9c5698]"
                   />
                   <span className="text-sm text-gray-700">Parking</span>
                 </label>
@@ -307,7 +307,7 @@ export default function PreferencesEditorPage() {
                     type="checkbox"
                     checked={formData.smoking || false}
                     onChange={(e) => handleInputChange('smoking', e.target.checked)}
-                    className="w-4 h-4 text-[#4A148C] border-gray-300 rounded focus:ring-[#4A148C]"
+                    className="w-4 h-4 text-[#9c5698] border-gray-300 rounded focus:ring-[#9c5698]"
                   />
                   <span className="text-sm text-gray-700">I smoke</span>
                 </label>
@@ -316,7 +316,7 @@ export default function PreferencesEditorPage() {
                     type="checkbox"
                     checked={formData.pets || false}
                     onChange={(e) => handleInputChange('pets', e.target.checked)}
-                    className="w-4 h-4 text-[#4A148C] border-gray-300 rounded focus:ring-[#4A148C]"
+                    className="w-4 h-4 text-[#9c5698] border-gray-300 rounded focus:ring-[#9c5698]"
                   />
                   <span className="text-sm text-gray-700">I have pets</span>
                 </label>
@@ -341,7 +341,7 @@ export default function PreferencesEditorPage() {
                   type="date"
                   value={formData.desired_move_in_date || ''}
                   onChange={(e) => handleInputChange('desired_move_in_date', e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                 />
               </div>
               <div>
@@ -352,7 +352,7 @@ export default function PreferencesEditorPage() {
                   type="number"
                   value={formData.desired_lease_duration_months || ''}
                   onChange={(e) => handleInputChange('desired_lease_duration_months', parseInt(e.target.value) || undefined)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#4A148C] focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#9c5698] focus:border-transparent"
                   placeholder="12"
                   min="1"
                   max="60"
@@ -388,7 +388,7 @@ export default function PreferencesEditorPage() {
             {/* Preview Score Card */}
             <Card className="bg-gradient-to-br from-purple-50 to-blue-50 border-purple-200">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-[#4A148C]">
+                <CardTitle className="flex items-center gap-2 text-[#9c5698]">
                   <Sparkles className="w-5 h-5" />
                   Live Preview
                 </CardTitle>
@@ -429,7 +429,7 @@ export default function PreferencesEditorPage() {
                     <p className="text-sm text-gray-600">Top Matches</p>
                     <p className="text-2xl font-bold text-gray-900">{topMatches.length}</p>
                   </div>
-                  <Users className="w-8 h-8 text-[#4A148C]" />
+                  <Users className="w-8 h-8 text-[#9c5698]" />
                 </div>
                 <p className="text-xs text-gray-500 mt-2">
                   Properties with 70%+ compatibility

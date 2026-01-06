@@ -22,9 +22,9 @@ export const enhanceThemes = {
     borderLight: 'border-orange-200',
   },
   owner: {
-    gradient: 'from-[#4A148C] via-[#6A1B9A] to-[#7B1FA2]',
+    gradient: 'from-[#9c5698] via-[#9c5698] to-[#7B1FA2]',
     gradientBg: 'from-purple-50 to-purple-100',
-    primary: '#4A148C',
+    primary: '#9c5698',
     focusRing: 'focus:ring-purple-500',
     selectedBorder: 'border-purple-500',
     selectedBg: 'bg-purple-50',

@@ -174,7 +174,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
       <CardContent className="p-5">
         {/* Property Title & Location */}
         <div className="mb-3">
-          <h3 className="text-xl font-bold text-[#4A148C] mb-2 line-clamp-1">
+          <h3 className="text-xl font-bold text-[#9c5698] mb-2 line-clamp-1">
             {property.title}
           </h3>
           <div className="flex items-center gap-2 text-gray-600">

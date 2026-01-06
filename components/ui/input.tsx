@@ -76,7 +76,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               leftIcon ? 'pl-10 pr-6' : 'px-6',
               hasError
                 ? 'border-red-300 focus-visible:border-red-500 focus-visible:ring-red-500'
-                : 'border-gray-300 focus-visible:border-[#4A148C] focus-visible:ring-[#4A148C]',
+                : 'border-gray-300 focus-visible:border-[#9c5698] focus-visible:ring-[#9c5698]',
               className
             )}
             {...props}

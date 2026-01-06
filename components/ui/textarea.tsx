@@ -79,7 +79,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
             'resize-y min-h-[100px]',
             hasError
               ? 'border-red-300 focus:border-red-500 focus:ring-red-500/50'
-              : 'border-gray-300 focus:border-[#4A148C] focus:ring-[#4A148C]/50',
+              : 'border-gray-300 focus:border-[#9c5698] focus:ring-[#9c5698]/50',
             className
           )}
           {...props}

@@ -273,7 +273,7 @@ export default function GroupSettingsPage() {
         {/* Back button */}
         <button
           onClick={() => router.push('/dashboard/searcher')}
-          className="mb-6 text-[#4A148C] hover:opacity-70 transition flex items-center gap-2"
+          className="mb-6 text-[#9c5698] hover:opacity-70 transition flex items-center gap-2"
         >
           <ArrowLeft className="w-5 h-5" />
           {t('groupSettings.backToDashboard')}
@@ -285,7 +285,7 @@ export default function GroupSettingsPage() {
             <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
               <SettingsIcon className="w-6 h-6 text-purple-600" />
             </div>
-            <h1 className="text-3xl font-bold text-[#4A148C]">
+            <h1 className="text-3xl font-bold text-[#9c5698]">
               {t('groupSettings.title')}
             </h1>
           </div>
@@ -317,7 +317,7 @@ export default function GroupSettingsPage() {
                   placeholder={t('groupSettings.basicInfo.descriptionPlaceholder')}
                   rows={3}
                   maxLength={500}
-                  className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-[#4A148C] focus:ring-2 focus:ring-[#4A148C]/20 outline-none transition"
+                  className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-[#9c5698] focus:ring-2 focus:ring-[#9c5698]/20 outline-none transition"
                 />
               </div>
 
@@ -331,7 +331,7 @@ export default function GroupSettingsPage() {
                   max="10"
                   value={maxMembers}
                   onChange={(e) => setMaxMembers(parseInt(e.target.value))}
-                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#4A148C]"
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#9c5698]"
                 />
               </div>
 
@@ -344,7 +344,7 @@ export default function GroupSettingsPage() {
                   <button
                     onClick={() => setIsOpen(!isOpen)}
                     className={`relative w-14 h-8 rounded-full transition ${
-                      isOpen ? 'bg-[#4A148C]' : 'bg-gray-300'
+                      isOpen ? 'bg-[#9c5698]' : 'bg-gray-300'
                     }`}
                   >
                     <div
@@ -363,7 +363,7 @@ export default function GroupSettingsPage() {
                   <button
                     onClick={() => setRequiresApproval(!requiresApproval)}
                     className={`relative w-14 h-8 rounded-full transition ${
-                      requiresApproval ? 'bg-[#4A148C]' : 'bg-gray-300'
+                      requiresApproval ? 'bg-[#9c5698]' : 'bg-gray-300'
                     }`}
                   >
                     <div
@@ -380,7 +380,7 @@ export default function GroupSettingsPage() {
               <Button
                 onClick={handleSaveSettings}
                 disabled={isSaving}
-                className="w-full bg-[#4A148C] hover:bg-[#4A148C]/90"
+                className="w-full bg-[#9c5698] hover:bg-[#9c5698]/90"
               >
                 {isSaving ? t('groupSettings.basicInfo.saving') : t('groupSettings.basicInfo.saveButton')}
               </Button>
@@ -398,7 +398,7 @@ export default function GroupSettingsPage() {
                   readOnly
                   className="flex-1 font-mono text-lg"
                 />
-                <Button onClick={copyInviteCode} className="bg-[#4A148C] hover:bg-[#4A148C]/90">
+                <Button onClick={copyInviteCode} className="bg-[#9c5698] hover:bg-[#9c5698]/90">
                   <Copy className="w-5 h-5" />
                 </Button>
               </div>

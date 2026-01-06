@@ -60,7 +60,7 @@ export function PageHeader({
               {crumb.href ? (
                 <Link
                   href={crumb.href}
-                  className="hover:text-[#4A148C] transition-colors"
+                  className="hover:text-[#9c5698] transition-colors"
                 >
                   {crumb.label}
                 </Link>
@@ -76,7 +76,7 @@ export function PageHeader({
       {back && (
         <Link
           href={back.href}
-          className="inline-flex items-center gap-2 text-gray-600 hover:text-[#4A148C] transition-colors w-fit"
+          className="inline-flex items-center gap-2 text-gray-600 hover:text-[#9c5698] transition-colors w-fit"
         >
           <ArrowLeft className="w-4 h-4" />
           <span className="text-sm font-medium">{back.label || 'Back'}</span>
@@ -86,7 +86,7 @@ export function PageHeader({
       {/* Title and actions */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex-1">
-          <h1 className="text-3xl font-bold text-[#4A148C] mb-2">{title}</h1>
+          <h1 className="text-3xl font-bold text-[#9c5698] mb-2">{title}</h1>
           {description && (
             <p className="text-gray-600 text-lg">{description}</p>
           )}
