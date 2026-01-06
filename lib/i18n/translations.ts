@@ -632,7 +632,7 @@ export const translations = {
           de: 'Was soll ich tun, wenn es ein Problem gibt?',
         },
         a: {
-          fr: 'Notre équipe support est disponible 24/7 pour t'aider. Tu peux nous contacter via le chat en direct, par email ou par téléphone. Nous nous engageons à résoudre tous les problèmes dans les 24 heures.',
+          fr: 'Notre équipe support est disponible 24/7 pour t\'aider. Tu peux nous contacter via le chat en direct, par email ou par téléphone. Nous nous engageons à résoudre tous les problèmes dans les 24 heures.',
           en: 'Our support team is available 24/7 to help you. You can contact us via live chat, email, or phone. We are committed to resolving all issues within 24 hours.',
           nl: 'Ons supportteam is 24/7 beschikbaar om je te helpen. Je kunt contact met ons opnemen via livechat, e-mail of telefoon. We zijn toegewijd om alle problemen binnen 24 uur op te lossen.',
           de: 'Unser Support-Team ist 24/7 verfügbar, um Ihnen zu helfen. Sie können uns über Live-Chat, E-Mail oder Telefon kontaktieren. Wir verpflichten uns, alle Probleme innerhalb von 24 Stunden zu lösen.',
@@ -645,7 +645,7 @@ export const translations = {
         de: 'Haben Sie weitere Fragen?',
       },
       contactSubtitle: {
-        fr: 'Notre équipe est là pour t'aider',
+        fr: 'Notre équipe est là pour t\'aider',
         en: 'Our team is here to help you',
         nl: 'Ons team is er om je te helpen',
         de: 'Unser Team ist hier, um Ihnen zu helfen',
@@ -1415,7 +1415,7 @@ export const translations = {
         de: 'Hoppla! Etwas ist schiefgelaufen',
       },
       description: {
-        fr: 'Nous sommes désolés, quelque chose d\'inattendu s\'est produit. Ne t'inquiète pas, tes données sont en sécurité.',
+        fr: 'Nous sommes désolés, quelque chose d\'inattendu s\'est produit. Ne t\'inquiète pas, tes données sont en sécurité.',
         en: 'We\'re sorry, but something unexpected happened. Don\'t worry, your data is safe.',
         nl: 'Sorry, er is iets onverwachts gebeurd. Maak je geen zorgen, je gegevens zijn veilig.',
         de: 'Es tut uns leid, aber etwas Unerwartetes ist passiert. Keine Sorge, Ihre Daten sind sicher.',
@@ -2356,7 +2356,7 @@ export const translations = {
         de: 'z.B. Profil für Emma, Für meinen Sohn',
       },
       profileNameHelp: {
-        fr: 'Cela t'aide à identifier ce profil dans ton tableau de bord',
+        fr: 'Cela t\'aide à identifier ce profil dans ton tableau de bord',
         en: 'This helps you identify this profile in your dashboard',
         nl: 'Dit helpt je dit profiel te identificeren in je dashboard',
         de: 'Dies hilft Ihnen, dieses Profil in Ihrem Dashboard zu identifizieren',
@@ -3173,7 +3173,7 @@ export const translations = {
           de: 'E-Mail-Verifizierung',
         },
         emailVerificationDesc: {
-          fr: 'Nous t'enverrons un lien de vérification à ton email',
+          fr: 'Nous t\'enverrons un lien de vérification à ton email',
           en: 'We\'ll send a verification link to your email',
           nl: 'We sturen een verificatielink naar je e-mail',
           de: 'Wir senden einen Verifizierungslink an Ihre E-Mail',
@@ -5914,7 +5914,7 @@ export const translations = {
         de: 'Passwort vergessen?',
       },
       subtitle: {
-        fr: 'Pas de souci ! Entrez ton e-mail et nous t'enverrons les instructions',
+        fr: 'Pas de souci ! Entrez ton e-mail et nous t\'enverrons les instructions',
         en: 'No worries! Enter your email and we\'ll send you reset instructions',
         nl: 'Geen zorgen! Voer je e-mail in en we sturen je reset-instructies',
         de: 'Keine Sorge! Geben Sie Ihre E-Mail ein und wir senden Ihnen Anweisungen zum Zurücksetzen',
@@ -9365,7 +9365,7 @@ export const translations = {
           de: '8. Aktualisierungen dieser Richtlinie',
         },
         content: {
-          fr: 'Nous pouvons mettre à jour cette politique cookies pour refléter les changements dans nos pratiques ou pour des raisons légales. Nous t'informerons de tout changement significatif.',
+          fr: 'Nous pouvons mettre à jour cette politique cookies pour refléter les changements dans nos pratiques ou pour des raisons légales. Nous t\'informerons de tout changement significatif.',
           en: 'We may update this cookie policy to reflect changes in our practices or for legal reasons. We will inform you of any significant changes.',
           nl: 'We kunnen dit cookiebeleid bijwerken om veranderingen in onze praktijken weer te geven of om juridische redenen. We zullen u informeren over belangrijke wijzigingen.',
           de: 'Wir können diese Cookie-Richtlinie aktualisieren, um Änderungen in unseren Praktiken oder aus rechtlichen Gründen widerzuspiegeln. Wir werden Sie über wesentliche Änderungen informieren.',
@@ -16554,7 +16554,7 @@ export const translations = {
         de: 'Ihre Persönlichkeit 💫',
       },
       subtitle: {
-        fr: 'Aide-nous à t'associer à des résidents compatibles',
+        fr: 'Aide-nous à t\'associer à des résidents compatibles',
         en: 'Help us match you with compatible roommates',
         nl: 'Help ons je te matchen met compatibele huisgenoten',
         de: 'Helfen Sie uns, Sie mit kompatiblen Mitbewohnern zu verbinden',
@@ -17903,7 +17903,7 @@ export const translations = {
         de: 'Ihre Nachricht (optional)',
       },
       messagePlaceholder: {
-        fr: 'Présente-toi et explique pourquoi ce logement t'intéresse...',
+        fr: 'Présente-toi et explique pourquoi ce logement t\'intéresse...',
         en: 'Introduce yourself and explain why you\'re interested in this property...',
         nl: 'Stel uzelf voor en leg uit waarom u geïnteresseerd bent in dit eigendom...',
         de: 'Stellen Sie sich vor und erklären Sie, warum Sie an dieser Immobilie interessiert sind...',
@@ -21017,7 +21017,7 @@ export const translations = {
         teamPlayer: { fr: 'Esprit d\'équipe', en: 'Team Player', nl: 'Teamspeler', de: 'Teamplayer' },
       },
       tip: { fr: 'Conseil', en: 'Tip', nl: 'Tip', de: 'Tipp' },
-      tipContent: { fr: 'Partager votre personnalité t'aide à te connecter avec des voisins partageant des intérêts et modes de vie similaires !', en: 'Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!', nl: 'Je persoonlijkheid delen helpt je in contact te komen met buren met vergelijkbare interesses en levensstijlen!', de: 'Das Teilen Ihrer Persönlichkeit hilft Ihnen, mit Nachbarn in Kontakt zu treten, die ähnliche Interessen und Lebensstile haben!' },
+      tipContent: { fr: 'Partager votre personnalité t\'aide à te connecter avec des voisins partageant des intérêts et modes de vie similaires !', en: 'Sharing your personality helps you connect with neighbors who share similar interests and lifestyles!', nl: 'Je persoonlijkheid delen helpt je in contact te komen met buren met vergelijkbare interesses en levensstijlen!', de: 'Das Teilen Ihrer Persönlichkeit hilft Ihnen, mit Nachbarn in Kontakt zu treten, die ähnliche Interessen und Lebensstile haben!' },
     },
     // Lifestyle Page
     lifestyle: {
@@ -21082,7 +21082,7 @@ export const translations = {
       },
       pending: {
         title: { fr: 'Vérification en cours', en: 'Verification Pending', nl: 'Verificatie in behandeling', de: 'Verifizierung ausstehend' },
-        description: { fr: 'Ta demande de vérification est en cours d\'examen. Nous t'informerons une fois terminé.', en: "Your verification request is being reviewed. We'll notify you once it's complete.", nl: 'Je verificatieverzoek wordt beoordeeld. We informeren je zodra het klaar is.', de: 'Ihre Verifizierungsanfrage wird geprüft. Wir benachrichtigen Sie, sobald sie abgeschlossen ist.' },
+        description: { fr: 'Ta demande de vérification est en cours d\'examen. Nous t\'informerons une fois terminé.', en: "Your verification request is being reviewed. We'll notify you once it's complete.", nl: 'Je verificatieverzoek wordt beoordeeld. We informeren je zodra het klaar is.', de: 'Ihre Verifizierungsanfrage wird geprüft. Wir benachrichtigen Sie, sobald sie abgeschlossen ist.' },
       },
       requestSubmitted: { fr: 'Demande de vérification envoyée ! Nous l\'examinerons bientôt.', en: "Verification request submitted! We'll review it soon.", nl: 'Verificatieverzoek ingediend! We bekijken het binnenkort.', de: 'Verifizierungsanfrage eingereicht! Wir werden sie bald prüfen.' },
       whyVerify: { fr: 'Pourquoi se faire vérifier ?', en: 'Why Get Verified?', nl: 'Waarom je laten verifiëren?', de: 'Warum verifizieren lassen?' },
@@ -21244,7 +21244,7 @@ export const translations = {
         title: { fr: 'Préférence heures calmes', en: 'Quiet Hours Preference', nl: 'Voorkeur voor stille uren', de: 'Präferenz für Ruhezeiten' },
         subtitle: { fr: 'Préférez-vous des heures calmes établies ?', en: 'Do you prefer established quiet hours?', nl: 'Heb je liever vastgestelde stille uren?', de: 'Bevorzugen Sie festgelegte Ruhezeiten?' },
       },
-      tip: { fr: 'Ces préférences nous aident à t'associer à des propriétés et communautés qui correspondent à votre situation de vie idéale.', en: 'These preferences help us match you with properties and communities that fit your ideal living situation.', nl: 'Deze voorkeuren helpen ons je te matchen met woningen en gemeenschappen die bij je ideale woonsituatie passen.', de: 'Diese Präferenzen helfen uns, Sie mit Immobilien und Gemeinschaften zusammenzubringen, die zu Ihrer idealen Wohnsituation passen.' },
+      tip: { fr: 'Ces préférences nous aident à t\'associer à des propriétés et communautés qui correspondent à votre situation de vie idéale.', en: 'These preferences help us match you with properties and communities that fit your ideal living situation.', nl: 'Deze voorkeuren helpen ons je te matchen met woningen en gemeenschappen die bij je ideale woonsituatie passen.', de: 'Diese Präferenzen helfen uns, Sie mit Immobilien und Gemeinschaften zusammenzubringen, die zu Ihrer idealen Wohnsituation passen.' },
     },
     // Lifestyle Details Page
     lifestyleDetails: {
@@ -22416,7 +22416,7 @@ export const translations = {
         de: 'z.B. 2500',
       },
       message: {
-        fr: 'Présente-toi et explique pourquoi ce bien t'intéresse...',
+        fr: 'Présente-toi et explique pourquoi ce bien t\'intéresse...',
         en: 'Introduce yourself and explain why you\'re interested in this property...',
         nl: 'Stel uzelf voor en leg uit waarom u geïnteresseerd bent in deze woning...',
         de: 'Stellen Sie sich vor und erklären Sie, warum Sie an dieser Immobilie interessiert sind...',
