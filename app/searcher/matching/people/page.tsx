@@ -41,11 +41,8 @@ const MATCHING_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FF8C20 100%)'; /
 const MATCHING_PRIMARY = '#FFA040';
 const MATCHING_DARK = '#FF8C20';
 const MATCHING_LIGHT = '#FFD080';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBF0 0%, #FFF4E0 100%)'; // Warm background
 
 // Semantic Colors
-const SEMANTIC_SUCCESS = '#10B981';
-const SEMANTIC_AMBER = '#F59E0B';
 
 // Animation variants
 const containerVariants = {
@@ -189,7 +186,7 @@ const ProfileCard = memo(function ProfileCard({
     >
       <Card className="overflow-hidden superellipse-3xl shadow-2xl border-0 bg-white/95 backdrop-blur-xl">
         {/* Profile Image */}
-        <div className="relative h-72 sm:h-80" style={{ background: CARD_BG_GRADIENT }}>
+        <div className="relative h-72 sm:h-80" style={{ background: 'var(--gradient-searcher-subtle)' }}>
           {profile.avatar_url ? (
             <Image
               src={profile.avatar_url}
@@ -489,7 +486,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: CARD_BG_GRADIENT }}>
+      <div className="min-h-screen flex items-center justify-center" style={{ background: 'var(--gradient-searcher-subtle)' }}>
         <LoadingHouse size={80} />
       </div>
     );
@@ -513,7 +510,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Link href="/searcher/matching">
-                  <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-amber-50">
+                  <Button variant="ghost" size="icon" className="superellipse-xl hover:bg-searcher-50">
                     <ArrowLeft className="w-5 h-5" />
                   </Button>
                 </Link>
@@ -640,7 +637,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: 'spring', stiffness: 400, damping: 25 }}
-            className="fixed bottom-28 md:bottom-8 left-4 right-4 max-w-md mx-auto bg-white superellipse-2xl shadow-2xl p-4 flex items-center gap-4 border border-amber-100 z-50"
+            className="fixed bottom-28 md:bottom-8 left-4 right-4 max-w-md mx-auto bg-white superellipse-2xl shadow-2xl p-4 flex items-center gap-4 border border-searcher-100 z-50"
           >
             <motion.div
               animate={{ scale: [1, 1.2, 1] }}

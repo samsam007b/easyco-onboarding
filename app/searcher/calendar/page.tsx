@@ -35,9 +35,7 @@ import {
 } from 'lucide-react';
 
 // V3-FUN Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFF9E6 0%, #FEF3C7 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
+// V3 Color System - Using CSS Variables from globals.css
 
 // Animation variants
 const containerVariants = {
@@ -74,9 +72,9 @@ const VISIT_COLORS = {
     badge: 'bg-emerald-100 text-emerald-700',
   },
   pending: {
-    bg: 'bg-gradient-to-r from-amber-500 to-amber-400',
+    bg: 'bg-gradient-to-r from-searcher-500 to-searcher-400',
     text: 'text-white',
-    badge: 'bg-amber-100 text-amber-700',
+    badge: 'bg-searcher-100 text-searcher-700',
   },
   completed: {
     bg: 'bg-gradient-to-r from-blue-500 to-blue-400',
@@ -186,7 +184,7 @@ export default function SearcherCalendarPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-amber-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-searcher-50 via-white to-searcher-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <motion.div
           variants={containerVariants}
@@ -211,7 +209,7 @@ export default function SearcherCalendarPage() {
                   <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                     <div
                       className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
-                      style={{ background: SEARCHER_GRADIENT }}
+                      style={{ background: 'var(--gradient-searcher)' }}
                     >
                       <CalendarDays className="w-6 h-6 text-white" />
                     </div>
@@ -226,7 +224,7 @@ export default function SearcherCalendarPage() {
               <Link href="/searcher/visits">
                 <Button
                   className="superellipse-xl text-white shadow-lg"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   <ListChecks className="w-4 h-4 mr-2" />
                   Voir la liste
@@ -243,10 +241,10 @@ export default function SearcherCalendarPage() {
               className="relative overflow-hidden superellipse-2xl p-5 shadow-sm border border-gray-200"
               style={{ background: SEARCHER_GRADIENT_SOFT }}
             >
-              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15" style={{ background: SEARCHER_GRADIENT }} />
+              <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15" style={{ background: 'var(--gradient-searcher)' }} />
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-600">Prochaine visite</span>
-                <div className="w-8 h-8 superellipse-xl flex items-center justify-center" style={{ background: SEARCHER_GRADIENT }}>
+                <div className="w-8 h-8 superellipse-xl flex items-center justify-center" style={{ background: 'var(--gradient-searcher)' }}>
                   <CalendarCheck className="w-4 h-4 text-white" />
                 </div>
               </div>
@@ -321,7 +319,7 @@ export default function SearcherCalendarPage() {
             {/* Calendar */}
             <motion.div
               whileHover={{ y: -4 }}
-              className="lg:col-span-2 bg-white superellipse-3xl shadow-lg p-6 border-2 border-amber-100"
+              className="lg:col-span-2 bg-white superellipse-3xl shadow-lg p-6 border-2 border-searcher-100"
             >
               {/* Calendar Header */}
               <div className="flex items-center justify-between mb-6">
@@ -329,7 +327,7 @@ export default function SearcherCalendarPage() {
                   <motion.div
                     whileHover={{ rotate: 5 }}
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <CalendarIcon className="w-5 h-5 text-white" />
                   </motion.div>
@@ -341,7 +339,7 @@ export default function SearcherCalendarPage() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={previousMonth}
-                    className="w-9 h-9 superellipse-xl flex items-center justify-center border-2 border-amber-200 text-amber-600 hover:bg-amber-50"
+                    className="w-9 h-9 superellipse-xl flex items-center justify-center border-2 border-searcher-200 text-searcher-600 hover:bg-searcher-50"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </motion.button>
@@ -350,7 +348,7 @@ export default function SearcherCalendarPage() {
                     whileTap={{ scale: 0.95 }}
                     onClick={() => setCurrentDate(new Date())}
                     className="px-4 h-9 superellipse-xl font-semibold text-white text-sm"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     Aujourd'hui
                   </motion.button>
@@ -358,7 +356,7 @@ export default function SearcherCalendarPage() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={nextMonth}
-                    className="w-9 h-9 superellipse-xl flex items-center justify-center border-2 border-amber-200 text-amber-600 hover:bg-amber-50"
+                    className="w-9 h-9 superellipse-xl flex items-center justify-center border-2 border-searcher-200 text-searcher-600 hover:bg-searcher-50"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </motion.button>
@@ -405,10 +403,10 @@ export default function SearcherCalendarPage() {
                       className={cn(
                         'min-h-[90px] p-2 border-2 superellipse-xl transition-all cursor-pointer',
                         day
-                          ? 'bg-white hover:border-amber-300 border-gray-100'
+                          ? 'bg-white hover:border-searcher-300 border-gray-100'
                           : 'bg-gray-50/50 border-gray-50',
-                        isTodayDay && 'ring-2 ring-amber-400 border-amber-200',
-                        isSelected && 'ring-2 ring-amber-500 border-amber-300 bg-amber-50'
+                        isTodayDay && 'ring-2 ring-amber-400 border-searcher-200',
+                        isSelected && 'ring-2 ring-amber-500 border-searcher-300 bg-searcher-50'
                       )}
                       style={
                         isTodayDay
@@ -428,12 +426,12 @@ export default function SearcherCalendarPage() {
                           <div
                             className={cn(
                               'text-sm font-bold mb-1 flex items-center gap-1',
-                              isTodayDay ? 'text-amber-600' : 'text-gray-900'
+                              isTodayDay ? 'text-searcher-600' : 'text-gray-900'
                             )}
                           >
                             {day}
                             {isTodayDay && (
-                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold text-white" style={{ background: SEARCHER_GRADIENT }}>
+                              <span className="text-[10px] px-1.5 py-0.5 rounded-full font-bold text-white" style={{ background: 'var(--gradient-searcher)' }}>
                                 Auj
                               </span>
                             )}
@@ -457,7 +455,7 @@ export default function SearcherCalendarPage() {
                               );
                             })}
                             {dayVisits.length > 2 && (
-                              <Badge className="text-[10px] border-none text-white font-semibold py-0" style={{ background: SEARCHER_GRADIENT }}>
+                              <Badge className="text-[10px] border-none text-white font-semibold py-0" style={{ background: 'var(--gradient-searcher)' }}>
                                 +{dayVisits.length - 2}
                               </Badge>
                             )}
@@ -477,7 +475,7 @@ export default function SearcherCalendarPage() {
                   <span className="text-xs text-gray-600">Confirmée</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-amber-500 to-amber-400" />
+                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-searcher-500 to-searcher-400" />
                   <span className="text-xs text-gray-600">En attente</span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -494,16 +492,16 @@ export default function SearcherCalendarPage() {
             {/* Selected Day Details */}
             <motion.div
               whileHover={{ y: -4 }}
-              className="bg-white superellipse-3xl shadow-lg overflow-hidden border-2 border-amber-100"
+              className="bg-white superellipse-3xl shadow-lg overflow-hidden border-2 border-searcher-100"
             >
               <div
-                className="p-4 border-b border-amber-100"
+                className="p-4 border-b border-searcher-100"
                 style={{ background: SEARCHER_GRADIENT_SOFT }}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Eye className="w-5 h-5 text-white" />
                   </div>
@@ -538,7 +536,7 @@ export default function SearcherCalendarPage() {
                         className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                         style={{ background: SEARCHER_GRADIENT_SOFT }}
                       >
-                        <CalendarIcon className="w-8 h-8" style={{ color: SEARCHER_PRIMARY }} />
+                        <CalendarIcon className="w-8 h-8" className="text-searcher-500" />
                       </div>
                       <p className="text-gray-500 text-sm">
                         {selectedDate ? 'Aucune visite ce jour' : 'Cliquez sur une date pour voir les détails'}
@@ -561,7 +559,7 @@ export default function SearcherCalendarPage() {
                           <motion.div
                             key={visit.id}
                             whileHover={{ scale: 1.02, x: 4 }}
-                            className="p-4 superellipse-2xl border-2 border-amber-100 hover:border-amber-200 transition-all cursor-pointer"
+                            className="p-4 superellipse-2xl border-2 border-searcher-100 hover:border-searcher-200 transition-all cursor-pointer"
                             style={{ background: 'linear-gradient(135deg, #FFFBF5 0%, #FFFFFF 100%)' }}
                             onClick={() => router.push(`/properties/${visit.property_id}`)}
                           >
@@ -577,7 +575,7 @@ export default function SearcherCalendarPage() {
                                   className="w-14 h-14 superellipse-xl flex items-center justify-center"
                                   style={{ background: SEARCHER_GRADIENT_SOFT }}
                                 >
-                                  <Home className="w-6 h-6" style={{ color: SEARCHER_PRIMARY }} />
+                                  <Home className="w-6 h-6" className="text-searcher-500" />
                                 </div>
                               )}
 
@@ -623,7 +621,7 @@ export default function SearcherCalendarPage() {
                                 <User className="w-3 h-3" />
                                 <span>{visit.owner?.full_name || 'Propriétaire'}</span>
                               </div>
-                              <div className="flex items-center gap-1 text-xs font-medium" style={{ color: SEARCHER_PRIMARY }}>
+                              <div className="flex items-center gap-1 text-xs font-medium" className="text-searcher-500">
                                 <span>Voir la propriété</span>
                                 <ArrowRight className="w-3 h-3" />
                               </div>
@@ -649,7 +647,7 @@ export default function SearcherCalendarPage() {
               <div className="flex items-center gap-3">
                 <div
                   className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   <Sparkles className="w-5 h-5 text-white" />
                 </div>
@@ -659,7 +657,7 @@ export default function SearcherCalendarPage() {
                 </div>
               </div>
               <Link href="/searcher/visits">
-                <Button variant="outline" className="superellipse-xl text-sm" style={{ borderColor: SEARCHER_PRIMARY, color: SEARCHER_PRIMARY }}>
+                <Button variant="outline" className="superellipse-xl text-sm" style={{ borderColor: SEARCHER_PRIMARY, color: 'var(--searcher-500)' }}>
                   Voir tout
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
@@ -674,7 +672,7 @@ export default function SearcherCalendarPage() {
                   <Link href="/searcher/explore">
                     <Button
                       className="mt-4 superellipse-xl text-white"
-                      style={{ background: SEARCHER_GRADIENT }}
+                      style={{ background: 'var(--gradient-searcher)' }}
                     >
                       Parcourir les propriétés
                     </Button>
@@ -691,7 +689,7 @@ export default function SearcherCalendarPage() {
                       <motion.div
                         key={visit.id}
                         whileHover={{ scale: 1.02, y: -4 }}
-                        className="p-4 superellipse-2xl border-2 border-amber-100 hover:border-amber-200 transition-all cursor-pointer"
+                        className="p-4 superellipse-2xl border-2 border-searcher-100 hover:border-searcher-200 transition-all cursor-pointer"
                         style={{ background: SEARCHER_GRADIENT_SOFT }}
                         onClick={() => router.push(`/properties/${visit.property_id}`)}
                       >
@@ -711,7 +709,7 @@ export default function SearcherCalendarPage() {
 
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2 text-gray-600">
-                            <CalendarIcon className="w-4 h-4" style={{ color: SEARCHER_PRIMARY }} />
+                            <CalendarIcon className="w-4 h-4" className="text-searcher-500" />
                             <span>
                               {visitDate.toLocaleDateString('fr-FR', {
                                 weekday: 'short',
@@ -721,7 +719,7 @@ export default function SearcherCalendarPage() {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-600">
-                            <Clock className="w-4 h-4" style={{ color: SEARCHER_PRIMARY }} />
+                            <Clock className="w-4 h-4" className="text-searcher-500" />
                             <span>
                               {visitDate.toLocaleTimeString('fr-FR', {
                                 hour: '2-digit',
@@ -730,7 +728,7 @@ export default function SearcherCalendarPage() {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-600">
-                            <MapPin className="w-4 h-4" style={{ color: SEARCHER_PRIMARY }} />
+                            <MapPin className="w-4 h-4" className="text-searcher-500" />
                             <span className="truncate">{visit.property?.city || 'Non renseigné'}</span>
                           </div>
                         </div>

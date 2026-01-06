@@ -156,7 +156,7 @@ export default function SearcherHubLayout({ children }: { children: React.ReactN
 
   if (!profile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-amber-50 via-white to-amber-50/50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-searcher-50 via-white to-searcher-50/50">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium mt-4">
@@ -172,7 +172,7 @@ export default function SearcherHubLayout({ children }: { children: React.ReactN
       <SearcherMegaMenuHeader profile={profile} stats={stats} />
       <main
         id="main-content"
-        className="min-h-screen bg-gradient-to-br from-amber-50/30 via-white to-amber-50/30 pt-16"
+        className="min-h-screen bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30 pt-16"
       >
         {children}
       </main>

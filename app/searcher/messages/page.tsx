@@ -28,8 +28,7 @@ import { Sparkles, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 
 // V3-FUN Searcher Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_LIGHT = 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FFF9E6 100%)';
+// V3 Color System - Using CSS Variables from globals.css
 
 /**
  * Searcher Messages Page
@@ -281,8 +280,8 @@ function SearcherMessagesContent() {
       return (
         <div className="relative flex flex-col items-center justify-center h-full p-8 text-center overflow-hidden">
           {/* V3-FUN Decorative circles */}
-          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-10" style={{ background: SEARCHER_GRADIENT }} />
-          <div className="absolute -bottom-8 -left-8 w-28 h-28 rounded-full opacity-10" style={{ background: SEARCHER_GRADIENT }} />
+          <div className="absolute -top-12 -right-12 w-40 h-40 rounded-full opacity-10" style={{ background: 'var(--gradient-searcher)' }} />
+          <div className="absolute -bottom-8 -left-8 w-28 h-28 rounded-full opacity-10" style={{ background: 'var(--gradient-searcher)' }} />
 
           {/* V3-FUN Animated Icon */}
           <div className="relative w-24 h-24 mx-auto mb-6">
@@ -290,11 +289,11 @@ function SearcherMessagesContent() {
               animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.4, 0.3] }}
               transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               className="absolute inset-0 superellipse-3xl blur-lg"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
             <div
               className="relative w-24 h-24 superellipse-3xl flex items-center justify-center shadow-lg"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             >
               <MessageCircle className="w-12 h-12 text-white" />
             </div>
@@ -303,7 +302,7 @@ function SearcherMessagesContent() {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               className="absolute -top-2 -right-2"
             >
-              <Sparkles className="w-6 h-6 text-amber-400" />
+              <Sparkles className="w-6 h-6 text-searcher-400" />
             </motion.div>
           </div>
 

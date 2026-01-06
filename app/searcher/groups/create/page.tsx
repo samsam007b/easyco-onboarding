@@ -31,9 +31,7 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import { getHookTranslation } from '@/lib/i18n/get-language';
 
 // V3-FUN Searcher Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFF9E6 0%, #FEF3C7 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
+// V3 Color System - Using CSS Variables from globals.css
 
 export default function SearcherCreateGroupPage() {
   const router = useRouter();
@@ -175,7 +173,7 @@ export default function SearcherCreateGroupPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-gradient-to-br from-amber-50 via-white to-yellow-50/30">
+      <div className="min-h-screen bg-gradient-to-br from-searcher-50 via-white to-yellow-50/30">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
           {/* Header */}
@@ -195,7 +193,7 @@ export default function SearcherCreateGroupPage() {
                 <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                   <div
                     className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Sparkles className="w-6 h-6 text-white" />
                   </div>
@@ -222,7 +220,7 @@ export default function SearcherCreateGroupPage() {
                 <div className="flex items-center gap-3 mb-6">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Users className="w-5 h-5 text-white" />
                   </div>
@@ -259,7 +257,7 @@ export default function SearcherCreateGroupPage() {
                       placeholder={t?.basicInfo?.descriptionPlaceholder?.[language] || 'Parlez-nous de votre groupe, vos intérêts, votre style de vie...'}
                       rows={4}
                       maxLength={500}
-                      className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-amber-400 focus:ring-2 focus:ring-amber-100 outline-none transition text-base"
+                      className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-searcher-400 focus:ring-2 focus:ring-amber-100 outline-none transition text-base"
                     />
                     <p className="text-xs text-gray-500 mt-1">
                       {description.length}/500 {t?.basicInfo?.characters?.[language] || 'caractères'}
@@ -269,7 +267,7 @@ export default function SearcherCreateGroupPage() {
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3">
                       {t?.basicInfo?.maxMembers?.[language] || 'Nombre maximum de membres'}:
-                      <span className="text-amber-600 text-lg font-bold ml-2">{maxMembers}</span>
+                      <span className="text-searcher-600 text-lg font-bold ml-2">{maxMembers}</span>
                     </label>
                     <input
                       type="range"
@@ -295,7 +293,7 @@ export default function SearcherCreateGroupPage() {
                 <div className="flex items-center gap-3 mb-6">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Settings className="w-5 h-5 text-white" />
                   </div>
@@ -305,7 +303,7 @@ export default function SearcherCreateGroupPage() {
                 </div>
 
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-amber-50/50 superellipse-xl border border-amber-100">
+                  <div className="flex items-center justify-between p-4 bg-searcher-50/50 superellipse-xl border border-searcher-100">
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900 flex items-center gap-2">
                         {t?.settings?.openToNew?.title?.[language] || 'Ouvert aux nouveaux membres'}
@@ -329,7 +327,7 @@ export default function SearcherCreateGroupPage() {
                     </button>
                   </div>
 
-                  <div className="flex items-center justify-between p-4 bg-amber-50/50 superellipse-xl border border-amber-100">
+                  <div className="flex items-center justify-between p-4 bg-searcher-50/50 superellipse-xl border border-searcher-100">
                     <div className="flex-1">
                       <div className="font-semibold text-gray-900 flex items-center gap-2">
                         {t?.settings?.approval?.title?.[language] || 'Approbation requise'}
@@ -368,7 +366,7 @@ export default function SearcherCreateGroupPage() {
                   {/* Budget */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                      <Euro className="w-4 h-4 text-amber-600" />
+                      <Euro className="w-4 h-4 text-searcher-600" />
                       {t?.preferences?.budgetLabel?.[language] || 'Budget par personne (€/mois)'}
                     </label>
                     <div className="grid grid-cols-2 gap-4">
@@ -398,7 +396,7 @@ export default function SearcherCreateGroupPage() {
                   {/* Preferred Cities */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                      <MapPin className="w-4 h-4 text-amber-600" />
+                      <MapPin className="w-4 h-4 text-searcher-600" />
                       {t?.preferences?.citiesLabel?.[language] || 'Villes préférées'}
                     </label>
                     <div className="flex gap-2 mb-3">
@@ -413,7 +411,7 @@ export default function SearcherCreateGroupPage() {
                       <Button
                         onClick={addCity}
                         className="text-white px-6 whitespace-nowrap superellipse-xl"
-                        style={{ background: SEARCHER_GRADIENT }}
+                        style={{ background: 'var(--gradient-searcher)' }}
                       >
                         {t?.preferences?.add?.[language] || 'Ajouter'}
                       </Button>
@@ -423,13 +421,13 @@ export default function SearcherCreateGroupPage() {
                         {preferredCities.map((city) => (
                           <span
                             key={city}
-                            className="px-3 py-2 bg-amber-50 text-amber-700 rounded-full text-sm font-medium flex items-center gap-2 border border-amber-200"
+                            className="px-3 py-2 bg-searcher-50 text-searcher-700 rounded-full text-sm font-medium flex items-center gap-2 border border-searcher-200"
                           >
                             <MapPin className="w-3 h-3" />
                             {city}
                             <button
                               onClick={() => removeCity(city)}
-                              className="hover:text-amber-900 ml-1"
+                              className="hover:text-searcher-900 ml-1"
                             >
                               <X className="w-3 h-3" />
                             </button>
@@ -442,7 +440,7 @@ export default function SearcherCreateGroupPage() {
                   {/* Move-in Date */}
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
-                      <CalendarDays className="w-4 h-4 text-amber-600" />
+                      <CalendarDays className="w-4 h-4 text-searcher-600" />
                       {t?.preferences?.moveInDate?.[language] || 'Date d\'emménagement souhaitée'}
                     </label>
                     <Input
@@ -470,7 +468,7 @@ export default function SearcherCreateGroupPage() {
                   onClick={handleCreateGroup}
                   disabled={isCreating || !groupName.trim()}
                   className="flex-1 py-6 text-base text-white superellipse-xl shadow-lg hover:shadow-xl transition-all font-semibold"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   {isCreating ? (
                     <>
@@ -497,9 +495,9 @@ export default function SearcherCreateGroupPage() {
               <div className="sticky top-6 space-y-6">
 
                 {/* Group Preview */}
-                <div className="bg-white superellipse-2xl p-6 shadow-lg border border-amber-100">
+                <div className="bg-white superellipse-2xl p-6 shadow-lg border border-searcher-100">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse" />
+                    <div className="w-2 h-2 bg-searcher-500 rounded-full animate-pulse" />
                     <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wide">
                       {t?.preview?.title?.[language] || 'Aperçu du groupe'}
                     </h3>
@@ -509,7 +507,7 @@ export default function SearcherCreateGroupPage() {
                     <div className="flex items-center gap-3">
                       <div
                         className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-md"
-                        style={{ background: SEARCHER_GRADIENT }}
+                        style={{ background: 'var(--gradient-searcher)' }}
                       >
                         <Users className="h-6 w-6 text-white" />
                       </div>
@@ -524,7 +522,7 @@ export default function SearcherCreateGroupPage() {
                     </div>
 
                     {description && (
-                      <p className="text-sm text-gray-600 line-clamp-3 bg-amber-50 p-3 superellipse-xl">
+                      <p className="text-sm text-gray-600 line-clamp-3 bg-searcher-50 p-3 superellipse-xl">
                         {description}
                       </p>
                     )}
@@ -532,7 +530,7 @@ export default function SearcherCreateGroupPage() {
                     <div className="space-y-2 pt-2">
                       {preferredCities.length > 0 && (
                         <div className="flex items-start gap-2 text-sm">
-                          <MapPin className="h-4 w-4 text-amber-600 mt-0.5 flex-shrink-0" />
+                          <MapPin className="h-4 w-4 text-searcher-600 mt-0.5 flex-shrink-0" />
                           <span className="text-gray-700 font-medium">
                             {preferredCities.join(', ')}
                           </span>
@@ -541,7 +539,7 @@ export default function SearcherCreateGroupPage() {
 
                       {(budgetMin || budgetMax) && (
                         <div className="flex items-center gap-2 text-sm">
-                          <Euro className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                          <Euro className="h-4 w-4 text-searcher-600 flex-shrink-0" />
                           <span className="text-gray-700 font-medium">
                             {formatBudget(budgetMin, budgetMax)}
                           </span>
@@ -550,7 +548,7 @@ export default function SearcherCreateGroupPage() {
 
                       {moveInDate && (
                         <div className="flex items-center gap-2 text-sm">
-                          <CalendarDays className="h-4 w-4 text-amber-600 flex-shrink-0" />
+                          <CalendarDays className="h-4 w-4 text-searcher-600 flex-shrink-0" />
                           <span className="text-gray-700 font-medium">
                             {new Date(moveInDate).toLocaleDateString(
                               language === 'fr' ? 'fr-FR' : language === 'de' ? 'de-DE' : language === 'nl' ? 'nl-NL' : 'en-GB',
@@ -578,28 +576,28 @@ export default function SearcherCreateGroupPage() {
 
                 {/* Benefits */}
                 <div
-                  className="superellipse-2xl p-6 border border-amber-200"
+                  className="superellipse-2xl p-6 border border-searcher-200"
                   style={{ background: SEARCHER_GRADIENT_SOFT }}
                 >
                   <div className="flex items-start gap-3">
-                    <Check className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <Check className="w-5 h-5 text-searcher-600 flex-shrink-0 mt-0.5" />
                     <div className="text-sm text-gray-700">
                       <p className="font-semibold mb-2">{t?.benefits?.title?.[language] || 'Que se passe-t-il ensuite ?'}</p>
                       <ul className="space-y-2 text-gray-600">
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                          <ChevronRight className="w-4 h-4 text-searcher-600 flex-shrink-0 mt-0.5" />
                           <span>{t?.benefits?.step1?.[language] || 'Vous recevrez un code d\'invitation'}</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                          <ChevronRight className="w-4 h-4 text-searcher-600 flex-shrink-0 mt-0.5" />
                           <span>{t?.benefits?.step2?.[language] || 'Invitez des amis ou trouvez des membres'}</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                          <ChevronRight className="w-4 h-4 text-searcher-600 flex-shrink-0 mt-0.5" />
                           <span>{t?.benefits?.step3?.[language] || 'Cherchez ensemble'}</span>
                         </li>
                         <li className="flex items-start gap-2">
-                          <ChevronRight className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
+                          <ChevronRight className="w-4 h-4 text-searcher-600 flex-shrink-0 mt-0.5" />
                           <span>{t?.benefits?.step4?.[language] || 'Postulez en groupe'}</span>
                         </li>
                       </ul>
@@ -647,7 +645,7 @@ export default function SearcherCreateGroupPage() {
 
               {/* Invite Code */}
               <div
-                className="superellipse-2xl p-6 mb-6 border-2 border-amber-200"
+                className="superellipse-2xl p-6 mb-6 border-2 border-searcher-200"
                 style={{ background: SEARCHER_GRADIENT_SOFT }}
               >
                 <div className="text-center">
@@ -655,7 +653,7 @@ export default function SearcherCreateGroupPage() {
                     {t?.successModal?.inviteCode?.label?.[language] || 'Code d\'invitation'}
                   </p>
                   <div className="flex items-center justify-center gap-3 mb-3">
-                    <code className="text-3xl font-bold text-amber-600 tracking-wider bg-white px-6 py-3 superellipse-xl border-2 border-amber-300">
+                    <code className="text-3xl font-bold text-searcher-600 tracking-wider bg-white px-6 py-3 superellipse-xl border-2 border-searcher-300">
                       {inviteCode}
                     </code>
                     <Button
@@ -682,7 +680,7 @@ export default function SearcherCreateGroupPage() {
                 <Button
                   onClick={() => router.push(`/groups/${createdGroup.id}`)}
                   className="w-full text-white superellipse-2xl py-6 text-base font-semibold shadow-lg gap-2 group"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   <Users className="w-5 h-5 group-hover:scale-110 transition-transform" />
                   {t?.successModal?.buttons?.viewGroup?.[language] || 'Voir mon groupe'}

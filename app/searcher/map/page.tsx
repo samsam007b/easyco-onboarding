@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 
 // V3-FUN Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
+// V3 Color System - Using CSS Variables from globals.css
 
 // Dynamically import the map component to avoid SSR issues
 const SafePropertyMap = dynamic(
@@ -33,7 +33,7 @@ const SafePropertyMap = dynamic(
     loading: () => (
       <div className="w-full h-full flex items-center justify-center bg-gray-100">
         <div className="text-center">
-          <div className="animate-spin w-8 h-8 border-4 border-amber-500 border-t-transparent rounded-full mx-auto mb-2" />
+          <div className="animate-spin w-8 h-8 border-4 border-searcher-500 border-t-transparent rounded-full mx-auto mb-2" />
           <p className="text-gray-600 text-sm">Chargement de la carte...</p>
         </div>
       </div>
@@ -109,7 +109,7 @@ export default function SearcherMapPage() {
           <div className="flex items-center gap-2">
             <div
               className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             >
               <MapIcon className="w-5 h-5 text-white" />
             </div>
@@ -159,8 +159,8 @@ export default function SearcherMapPage() {
                   whileHover={{ scale: 1.02 }}
                   className={`p-3 superellipse-xl border cursor-pointer transition-all ${
                     selectedProperty?.id === property.id
-                      ? 'border-amber-400 bg-amber-50'
-                      : 'border-gray-200 hover:border-amber-200'
+                      ? 'border-searcher-400 bg-searcher-50'
+                      : 'border-gray-200 hover:border-searcher-200'
                   }`}
                   onClick={() => setSelectedProperty(property)}
                 >

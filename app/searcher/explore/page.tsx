@@ -28,16 +28,8 @@ import {
 } from 'lucide-react';
 import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
 
-// V3-FUN Searcher Palette - Matching Hub Style
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)';
-const ACCENT_SHADOW = 'rgba(245, 158, 11, 0.15)';
-// Semantic Pastel Colors
-const SEMANTIC_SUCCESS = '#7CB89B';
-const SEMANTIC_PURPLE = '#8B5CF6';
-const SEMANTIC_BLUE = '#3B82F6';
-const SEMANTIC_PINK = '#EC4899';
+// V3 Color System - Using CSS Variables from globals.css
+// All colors now reference var(--searcher-*) and var(--gradient-searcher-*)
 
 // Animation variants
 const containerVariants = {
@@ -139,7 +131,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
       icon: Bookmark,
       value: quickStats.favorites,
       label: 'Favoris',
-      color: SEMANTIC_PINK,
+      color: '#EC4899',
       bgColor: '#FCE7F3',
       href: '/searcher/favorites',
     },
@@ -147,7 +139,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
       icon: TrendingUp,
       value: quickStats.propertiesViewed,
       label: 'Vus',
-      color: SEMANTIC_BLUE,
+      color: '#3B82F6',
       bgColor: '#DBEAFE',
       href: null,
     },
@@ -155,7 +147,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
       icon: Sparkles,
       value: `${quickStats.matchScore}%`,
       label: 'Match moyen',
-      color: SEMANTIC_SUCCESS,
+      color: '#7CB89B',
       bgColor: '#D1FAE5',
       href: '/searcher/matching',
     },
@@ -166,10 +158,10 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         {/* Glassmorphism background */}
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-yellow-400/5 to-amber-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -182,15 +174,15 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
 
   return (
     <div className="min-h-screen relative overflow-hidden">
-      {/* Glassmorphism background - V3 Searcher Amber */}
+      {/* Glassmorphism background - V3 Searcher */}
       <div className="fixed inset-0 -z-10">
         {/* Base gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-yellow-400/5 to-amber-300/3" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
 
         {/* Animated gradient blobs */}
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
 
         {/* Glass effect overlay */}
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
@@ -198,7 +190,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
 
       {/* Sticky Header - V3-fun Style */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-searcher-100/50">
           <div className="max-w-7xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -215,7 +207,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Search className="w-5 h-5 text-white" />
                   </div>
@@ -239,7 +231,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                     {quickStats.unreadMessages > 0 && (
                       <span
                         className="absolute -top-1 -right-1 w-5 h-5 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
-                        style={{ background: SEARCHER_GRADIENT }}
+                        style={{ background: 'var(--gradient-searcher)' }}
                       >
                         {quickStats.unreadMessages}
                       </span>
@@ -255,8 +247,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                     className="relative cursor-pointer"
                   >
                     <div
-                      className="w-10 h-10 superellipse-xl overflow-hidden shadow-sm"
-                      style={{ border: `2px solid ${SEARCHER_PRIMARY}` }}
+                      className="w-10 h-10 superellipse-xl overflow-hidden shadow-sm border-2 border-searcher-500"
                     >
                       {userData.avatar_url ? (
                         <Image
@@ -269,9 +260,9 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                       ) : (
                         <div
                           className="w-full h-full flex items-center justify-center"
-                          style={{ background: CARD_BG_GRADIENT }}
+                          style={{ background: 'var(--gradient-searcher-subtle)' }}
                         >
-                          <span className="text-sm font-bold" style={{ color: SEARCHER_PRIMARY }}>
+                          <span className="text-sm font-bold text-searcher-500">
                             {userData.full_name.charAt(0)}
                           </span>
                         </div>
@@ -291,7 +282,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-searcher-100/30"
         >
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex items-center justify-between">
@@ -331,7 +322,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex items-center gap-1.5 px-3 py-1.5 superellipse-xl text-sm font-medium text-gray-600 hover:bg-amber-50 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 superellipse-xl text-sm font-medium text-gray-600 hover:bg-searcher-50 transition-colors"
                   >
                     <Bell className="w-4 h-4" />
                     Alertes
@@ -342,7 +333,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="flex items-center gap-1.5 px-3 py-1.5 superellipse-xl text-sm font-medium text-white"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Heart className="w-4 h-4" />
                     Matching
@@ -361,7 +352,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
 
       {/* Mobile Bottom Bar - Quick Actions */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        <div className="bg-white/90 backdrop-blur-xl border-t border-amber-100/50 px-4 py-3 safe-area-pb">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-searcher-100/50 px-4 py-3 safe-area-pb">
           <div className="flex items-center justify-around">
             <Link href="/searcher">
               <motion.div
@@ -377,8 +368,8 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                 whileTap={{ scale: 0.95 }}
                 className="flex flex-col items-center gap-1"
               >
-                <Search className="w-5 h-5" style={{ color: SEARCHER_PRIMARY }} />
-                <span className="text-[10px] font-medium" style={{ color: SEARCHER_PRIMARY }}>Explorer</span>
+                <Search className="w-5 h-5 text-searcher-500" />
+                <span className="text-[10px] font-medium text-searcher-500">Explorer</span>
               </motion.div>
             </Link>
             <Link href="/searcher/matching">
@@ -398,8 +389,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                 <Bookmark className="w-5 h-5 text-gray-400" />
                 {quickStats.favorites > 0 && (
                   <span
-                    className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: SEMANTIC_PINK }}
+                    className="absolute -top-1 -right-1 w-4 h-4 bg-pink-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
                   >
                     {quickStats.favorites}
                   </span>
@@ -416,7 +406,7 @@ const SearcherExplorePage = memo(function SearcherExplorePage() {
                 {quickStats.unreadMessages > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     {quickStats.unreadMessages}
                   </span>

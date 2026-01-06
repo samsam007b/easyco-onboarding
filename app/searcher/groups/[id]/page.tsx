@@ -32,9 +32,7 @@ import {
 } from 'lucide-react';
 
 // V3-FUN Searcher Theme
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#FFB10B';
-const SEARCHER_DARK = '#F59E0B';
+// V3 Color System - Using CSS Variables from globals.css
 const GROUPS_GRADIENT = 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)';
 
 const containerVariants = {
@@ -166,7 +164,7 @@ export default function GroupDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-white to-amber-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-white to-searcher-50">
         <LoadingHouse size={80} />
       </div>
     );
@@ -174,7 +172,7 @@ export default function GroupDetailPage() {
 
   if (!group) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-white to-amber-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-violet-50 via-white to-searcher-50">
         <div className="text-center">
           <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">Groupe introuvable</h2>
@@ -191,9 +189,9 @@ export default function GroupDetailPage() {
     <div className="min-h-screen relative overflow-hidden pb-24 md:pb-8">
       {/* Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-white to-amber-50/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-white to-searcher-50/60" />
         <div className="absolute top-20 -left-32 w-96 h-96 rounded-full opacity-30 blur-3xl" style={{ background: GROUPS_GRADIENT }} />
-        <div className="absolute top-40 -right-32 w-80 h-80 rounded-full opacity-20 blur-3xl" style={{ background: SEARCHER_GRADIENT }} />
+        <div className="absolute top-40 -right-32 w-80 h-80 rounded-full opacity-20 blur-3xl" style={{ background: 'var(--gradient-searcher)' }} />
       </div>
 
       {/* Header */}
@@ -290,7 +288,7 @@ export default function GroupDetailPage() {
                 {group.property_types && (
                   <div className="flex items-center gap-2">
                     <div className="w-10 h-10 superellipse-xl flex items-center justify-center" style={{ background: 'rgba(245, 158, 11, 0.1)' }}>
-                      <Building2 className="w-5 h-5 text-amber-500" />
+                      <Building2 className="w-5 h-5 text-searcher-500" />
                     </div>
                     <div>
                       <p className="text-xs text-gray-500">Type</p>
@@ -340,7 +338,7 @@ export default function GroupDetailPage() {
                     )}
                   </div>
                   {member.role === 'admin' && (
-                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center">
+                    <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-searcher-400 flex items-center justify-center">
                       <Crown className="w-3 h-3 text-white" />
                     </div>
                   )}
@@ -367,7 +365,7 @@ export default function GroupDetailPage() {
             <Button
               onClick={() => router.push('/searcher/explore')}
               className="superellipse-2xl h-auto py-4 text-white"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             >
               <Search className="w-5 h-5 mr-2" />
               Chercher des biens ensemble

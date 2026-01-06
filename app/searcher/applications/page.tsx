@@ -38,17 +38,9 @@ const APPS_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 
 const APPS_PRIMARY = '#FFA040';
 const APPS_SECONDARY = '#FFB85C';
 const APPS_LIGHT = '#FFD080';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBF0 0%, #FFF4E0 100%)';
-const ACCENT_SHADOW = 'rgba(255, 160, 64, 0.15)';
 // Searcher colors for nav
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)';
-const SEARCHER_PRIMARY = '#FFA040';
+// V3 Color System - Using CSS Variables from globals.css
 // Semantic Colors
-const SEMANTIC_SUCCESS = '#10B981';
-const SEMANTIC_AMBER = '#F59E0B';
-const SEMANTIC_WARNING = '#F59E0B';
-const SEMANTIC_DANGER = '#EF4444';
-const SEMANTIC_PINK = '#EC4899';
 
 // Animation variants
 const containerVariants = {
@@ -206,8 +198,8 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-orange-400/5 to-yellow-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
           <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
           <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
@@ -224,8 +216,8 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
       {/* Glassmorphism background - Searcher for Applications */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-orange-400/5 to-yellow-300/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-orange-400/5 to-yellow-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
         <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
         <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
@@ -233,7 +225,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-searcher-100/50">
           <div className="max-w-4xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -268,7 +260,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/searcher/explore')}
                   className="flex items-center gap-2 px-4 py-2 superellipse-xl text-white text-sm font-medium shadow-md"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   <Sparkles className="w-4 h-4" />
                   <span className="hidden sm:inline">Découvrir plus</span>
@@ -282,7 +274,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-searcher-100/30"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
@@ -312,7 +304,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white/40 backdrop-blur-sm border-b border-amber-100/20"
+          className="bg-white/40 backdrop-blur-sm border-b border-searcher-100/20"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-2 overflow-x-auto no-scrollbar">
@@ -344,7 +336,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
-            style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
+            style={{ boxShadow: `0 8px 32px var(--searcher-shadow)` }}
           >
             {/* Decorative circles */}
             <div
@@ -373,7 +365,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => router.push('/searcher/explore')}
                   className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   <Sparkles className="w-4 h-4" />
                   Découvrir les propriétés
@@ -400,7 +392,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                     layout
                     exit={{ opacity: 0, x: -100, transition: { duration: 0.2 } }}
                   >
-                    <div className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all">
+                    <div className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-searcher-200 transition-all">
                       <div className="p-4">
                         <div className="flex items-start gap-3">
                           {/* Property Image */}
@@ -428,7 +420,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap mb-1">
                               <h3
-                                className="font-semibold text-gray-900 cursor-pointer hover:text-amber-600 transition-colors"
+                                className="font-semibold text-gray-900 cursor-pointer hover:text-searcher-600 transition-colors"
                                 onClick={() => application.property?.id && router.push(`/properties/${application.property.id}`)}
                               >
                                 {application.property?.title || 'Propriété'}
@@ -516,9 +508,9 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => handleWithdraw(application.id)}
-                                className="w-8 h-8 superellipse-lg bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
+                                className="w-8 h-8 superellipse-lg bg-searcher-50 flex items-center justify-center hover:bg-searcher-100 transition-colors"
                               >
-                                <XCircle className="w-3.5 h-3.5 text-amber-600" />
+                                <XCircle className="w-3.5 h-3.5 text-searcher-600" />
                               </motion.button>
                             )}
                             {(application.status === 'rejected' || application.status === 'withdrawn') && (
@@ -545,7 +537,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        <div className="bg-white/90 backdrop-blur-xl border-t border-amber-100/50 px-4 py-3 safe-area-pb">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-searcher-100/50 px-4 py-3 safe-area-pb">
           <div className="flex items-center justify-around">
             <Link href="/searcher">
               <motion.div
@@ -600,7 +592,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                 {unreadMessages > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     {unreadMessages}
                   </span>

@@ -36,18 +36,10 @@ import {
   Plus,
 } from 'lucide-react';
 
-// V3-FUN Searcher Palette - Matching Resident Style
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)';
-const ACCENT_SHADOW = 'rgba(245, 158, 11, 0.15)';
-// Semantic Pastel Colors
-const SEMANTIC_SUCCESS = '#7CB89B';
-const SEMANTIC_SUCCESS_BG = 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)';
-const SEMANTIC_PURPLE = '#8B5CF6';
-const SEMANTIC_PURPLE_BG = 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)';
-const SEMANTIC_BLUE = '#3B82F6';
-const SEMANTIC_BLUE_BG = 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)';
+// V3 Color System - Using CSS Variables from globals.css
+// Primary gradient: var(--gradient-searcher)
+// All Searcher colors: var(--searcher-50) through var(--searcher-900)
+// Semantic colors use Tailwind's built-in scales
 
 // Animation variants
 const containerVariants = {
@@ -219,8 +211,8 @@ const SearcherHub = memo(function SearcherHub() {
       value: stats.favorites,
       subtitle: 'Biens sauvegardés',
       icon: Bookmark,
-      iconGradient: SEMANTIC_PURPLE_BG,
-      iconColor: SEMANTIC_PURPLE,
+      iconGradient: 'linear-gradient(135deg, #F5F3FF 0%, #EDE9FE 100%)',
+      iconColor: '#8B5CF6',
       bgGradient: 'white',
       shadowColor: 'rgba(139, 92, 246, 0.12)',
       href: '/searcher/favorites',
@@ -230,8 +222,8 @@ const SearcherHub = memo(function SearcherHub() {
       value: stats.applications,
       subtitle: 'En cours',
       icon: FileText,
-      iconGradient: SEMANTIC_BLUE_BG,
-      iconColor: SEMANTIC_BLUE,
+      iconGradient: 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+      iconColor: '#3B82F6',
       bgGradient: 'white',
       shadowColor: 'rgba(59, 130, 246, 0.12)',
       href: '/searcher/applications',
@@ -241,8 +233,8 @@ const SearcherHub = memo(function SearcherHub() {
       value: stats.visits,
       subtitle: 'Planifiées',
       icon: Calendar,
-      iconGradient: SEMANTIC_SUCCESS_BG,
-      iconColor: SEMANTIC_SUCCESS,
+      iconGradient: 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)',
+      iconColor: '#7CB89B',
       bgGradient: 'white',
       shadowColor: 'rgba(124, 184, 155, 0.12)',
       href: '/searcher/visits',
@@ -252,10 +244,10 @@ const SearcherHub = memo(function SearcherHub() {
       value: stats.unreadMessages,
       subtitle: 'Non lus',
       icon: MessageCircle,
-      iconGradient: CARD_BG_GRADIENT,
-      iconColor: SEARCHER_PRIMARY,
+      iconGradient: 'var(--gradient-searcher-subtle)',
+      iconColor: 'var(--searcher-500)',
       bgGradient: 'white',
-      shadowColor: ACCENT_SHADOW,
+      shadowColor: 'var(--searcher-shadow)',
       href: '/messages',
       badge: stats.unreadMessages > 0,
     },
@@ -329,12 +321,12 @@ const SearcherHub = memo(function SearcherHub() {
       {/* Glassmorphism background - V3 Searcher Amber */}
       <div className="fixed inset-0 -z-10">
         {/* Base gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-yellow-400/5 to-amber-300/3" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
 
         {/* Animated gradient blobs */}
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
 
         {/* Glass effect overlay */}
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
@@ -351,7 +343,7 @@ const SearcherHub = memo(function SearcherHub() {
           {/* Left: Property Card (or Search CTA for Searcher) */}
           <div
             className="relative overflow-hidden superellipse-3xl p-6"
-            style={{ background: SEARCHER_GRADIENT }}
+            style={{ background: 'var(--gradient-searcher)' }}
           >
             {/* Decorative circles */}
             <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/10 -translate-y-1/2 translate-x-1/4" />
@@ -400,7 +392,7 @@ const SearcherHub = memo(function SearcherHub() {
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="mt-4 w-full bg-white text-amber-600 font-semibold px-4 py-3 superellipse-xl shadow-lg flex items-center justify-center gap-2"
+                  className="mt-4 w-full bg-white text-searcher-600 font-semibold px-4 py-3 superellipse-xl shadow-lg flex items-center justify-center gap-2"
                 >
                   <Compass className="w-5 h-5" />
                   <span>Explorer</span>
@@ -412,11 +404,11 @@ const SearcherHub = memo(function SearcherHub() {
           {/* Right: Welcome + Quick Actions */}
           <div className="lg:col-span-2 space-y-4">
             {/* Welcome Section */}
-            <div className="bg-white superellipse-2xl p-5" style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}>
+            <div className="bg-white superellipse-2xl p-5" style={{ boxShadow: '0 8px 24px var(--searcher-shadow)' }}>
               {/* Decorative blob */}
               <div
                 className="absolute -right-10 -top-10 w-32 h-32 rounded-full opacity-30 pointer-events-none"
-                style={{ background: SEARCHER_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               />
 
               <div className="relative z-10">
@@ -444,11 +436,11 @@ const SearcherHub = memo(function SearcherHub() {
                     className={`flex items-center gap-2 px-4 py-2.5 superellipse-xl font-medium text-sm transition-all ${
                       action.primary
                         ? 'text-white shadow-lg'
-                        : 'bg-white text-gray-700 border border-gray-200 hover:border-amber-200'
+                        : 'bg-white text-gray-700 border border-gray-200 hover:border-searcher-200'
                     }`}
                     style={action.primary ? {
-                      background: SEARCHER_GRADIENT,
-                      boxShadow: '0 4px 14px rgba(245, 158, 11, 0.35)'
+                      background: 'var(--gradient-searcher)',
+                      boxShadow: '0 4px 14px var(--searcher-shadow)'
                     } : undefined}
                   >
                     <action.icon className="w-4 h-4" />
@@ -463,12 +455,12 @@ const SearcherHub = memo(function SearcherHub() {
               <motion.div
                 whileHover={{ scale: 1.01, x: 4 }}
                 className="bg-white superellipse-2xl p-4 flex items-center justify-between cursor-pointer"
-                style={{ boxShadow: `0 4px 16px ${ACCENT_SHADOW}` }}
+                style={{ boxShadow: '0 4px 16px var(--searcher-shadow)' }}
               >
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <nextStep.icon className="w-5 h-5 text-white" />
                   </div>
@@ -548,12 +540,12 @@ const SearcherHub = memo(function SearcherHub() {
           {/* Navigation Tiles - Compact */}
           <motion.div
             variants={itemVariants}
-            className="relative overflow-hidden bg-white superellipse-2xl p-5 border-l-4 border-amber-400"
-            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+            className="relative overflow-hidden bg-white superellipse-2xl p-5 border-l-4 border-searcher-400"
+            style={{ boxShadow: '0 8px 24px var(--searcher-shadow)' }}
           >
             <div
               className="absolute -right-10 -top-10 w-28 h-28 rounded-full opacity-20 pointer-events-none"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative z-10">
@@ -562,7 +554,7 @@ const SearcherHub = memo(function SearcherHub() {
                   <motion.div
                     whileHover={{ rotate: 5 }}
                     className="w-8 h-8 superellipse-lg flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Compass className="w-4 h-4 text-white" />
                   </motion.div>
@@ -572,7 +564,7 @@ const SearcherHub = memo(function SearcherHub() {
 
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  { icon: Compass, label: 'Explorer', href: '/searcher/explore', bgColor: '#FEF3C7', iconColor: '#F59E0B' },
+                  { icon: Compass, label: 'Explorer', href: '/searcher/explore', bgColor: 'var(--searcher-100)', iconColor: 'var(--searcher-500)' },
                   { icon: Heart, label: 'Matching', href: '/searcher/matching', bgColor: '#FCE7F3', iconColor: '#EC4899' },
                   { icon: Map, label: 'Carte', href: '/searcher/map', bgColor: '#DBEAFE', iconColor: '#3B82F6' },
                   { icon: Users, label: 'Groupes', href: '/searcher/groups', bgColor: '#EDE9FE', iconColor: '#8B5CF6' },
@@ -583,7 +575,7 @@ const SearcherHub = memo(function SearcherHub() {
                     <motion.div
                       whileHover={{ scale: 1.02, x: 3 }}
                       whileTap={{ scale: 0.98 }}
-                      className="flex items-center gap-3 p-3 superellipse-xl bg-gray-50 hover:bg-amber-50/50 transition-all cursor-pointer"
+                      className="flex items-center gap-3 p-3 superellipse-xl bg-gray-50 hover:bg-searcher-50/50 transition-all cursor-pointer"
                     >
                       <div
                         className="w-9 h-9 superellipse-lg flex items-center justify-center"
@@ -603,11 +595,11 @@ const SearcherHub = memo(function SearcherHub() {
           <motion.div
             variants={itemVariants}
             className="relative overflow-hidden bg-white superellipse-2xl p-5"
-            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+            style={{ boxShadow: '0 8px 24px var(--searcher-shadow)' }}
           >
             <div
               className="absolute -left-10 -bottom-10 w-28 h-28 rounded-full opacity-20 pointer-events-none"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative z-10">
@@ -616,7 +608,7 @@ const SearcherHub = memo(function SearcherHub() {
                   <motion.div
                     whileHover={{ rotate: 5 }}
                     className="w-8 h-8 superellipse-lg flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Sparkles className="w-4 h-4 text-white" />
                   </motion.div>
@@ -626,8 +618,7 @@ const SearcherHub = memo(function SearcherHub() {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="rounded-full font-medium text-xs h-8 px-3"
-                    style={{ color: SEARCHER_PRIMARY }}
+                    className="rounded-full font-medium text-xs h-8 px-3 text-searcher-500"
                   >
                     Tout voir
                     <ArrowRight className="w-3.5 h-3.5 ml-1" />
@@ -669,11 +660,10 @@ const SearcherHub = memo(function SearcherHub() {
                           </p>
                         </div>
                         <div className="text-right">
-                          <p className="font-bold text-amber-600 text-sm">€{property.monthly_rent}</p>
+                          <p className="font-bold text-searcher-600 text-sm">€{property.monthly_rent}</p>
                           {property.match_score && (
                             <Badge
-                              className="text-xs border-none mt-1"
-                              style={{ background: 'rgba(245, 158, 11, 0.15)', color: SEARCHER_PRIMARY }}
+                              className="text-xs border-none mt-1 bg-searcher-100 text-searcher-600"
                             >
                               {property.match_score}%
                             </Badge>
@@ -686,9 +676,9 @@ const SearcherHub = memo(function SearcherHub() {
                   <div className="text-center py-8">
                     <div
                       className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-3"
-                      style={{ background: CARD_BG_GRADIENT }}
+                      style={{ background: 'var(--gradient-searcher-subtle)' }}
                     >
-                      <Search className="w-7 h-7" style={{ color: SEARCHER_PRIMARY }} />
+                      <Search className="w-7 h-7 text-searcher-500" />
                     </div>
                     <p className="font-medium text-gray-900 mb-1">Aucun bien pour le moment</p>
                     <p className="text-sm text-gray-500">Explorez les biens disponibles</p>
@@ -702,7 +692,7 @@ const SearcherHub = memo(function SearcherHub() {
         {/* Bottom Actions */}
         <motion.div variants={itemVariants} className="flex flex-wrap justify-center gap-3">
           <Link href="/searcher/alerts">
-            <Button variant="outline" className="superellipse-xl border-amber-200 text-amber-700 hover:bg-amber-50">
+            <Button variant="outline" className="superellipse-xl border-searcher-200 text-searcher-700 hover:bg-searcher-50">
               <Bell className="w-4 h-4 mr-2" />
               Créer une alerte
             </Button>

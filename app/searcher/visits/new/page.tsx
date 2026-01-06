@@ -21,9 +21,8 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 // V3-FUN Searcher Theme
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
+// V3 Color System - Using CSS Variables from globals.css
 const VISITS_GRADIENT = 'linear-gradient(135deg, #10B981 0%, #34D399 100%)';
-const ACCENT_SHADOW = 'rgba(16, 185, 129, 0.25)';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -76,7 +75,7 @@ export default function NewVisitComingSoon() {
     <div className="min-h-screen relative overflow-hidden pb-24 md:pb-8">
       {/* Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-white to-amber-50/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/80 via-white to-searcher-50/60" />
         <motion.div
           animate={{ scale: [1, 1.1, 1], x: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity }}
@@ -87,7 +86,7 @@ export default function NewVisitComingSoon() {
           animate={{ scale: [1, 1.2, 1], y: [0, -30, 0] }}
           transition={{ duration: 10, repeat: Infinity, delay: 1 }}
           className="absolute top-40 -right-20 w-80 h-80 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
-          style={{ background: SEARCHER_GRADIENT }}
+          style={{ background: 'var(--gradient-searcher)' }}
         />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/40" />
       </div>
@@ -115,7 +114,7 @@ export default function NewVisitComingSoon() {
               animate={{ scale: [1, 1.05, 1], rotate: [0, 3, -3, 0] }}
               transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
               className="w-28 h-28 md:w-32 md:h-32 superellipse-3xl flex items-center justify-center"
-              style={{ background: VISITS_GRADIENT, boxShadow: `0 20px 50px ${ACCENT_SHADOW}` }}
+              style={{ background: VISITS_GRADIENT, boxShadow: `0 20px 50px var(--searcher-shadow)` }}
             >
               <Calendar className="w-14 h-14 md:w-16 md:h-16 text-white" />
             </motion.div>
@@ -174,7 +173,7 @@ export default function NewVisitComingSoon() {
           <motion.div
             variants={itemVariants}
             className="relative overflow-hidden superellipse-3xl p-8 text-white mb-8"
-            style={{ background: VISITS_GRADIENT, boxShadow: `0 20px 60px ${ACCENT_SHADOW}` }}
+            style={{ background: VISITS_GRADIENT, boxShadow: `0 20px 60px var(--searcher-shadow)` }}
           >
             <div className="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-white/10" />
             <div className="relative z-10">
@@ -212,7 +211,7 @@ export default function NewVisitComingSoon() {
               En attendant
             </h4>
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
-              <Button onClick={() => router.push('/searcher/explore')} className="superellipse-xl px-6 py-5 text-white" style={{ background: SEARCHER_GRADIENT }}>
+              <Button onClick={() => router.push('/searcher/explore')} className="superellipse-xl px-6 py-5 text-white" style={{ background: 'var(--gradient-searcher)' }}>
                 <Home className="w-4 h-4 mr-2" />
                 Explorer les biens
               </Button>

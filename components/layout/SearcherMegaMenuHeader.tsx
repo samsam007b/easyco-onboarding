@@ -45,12 +45,8 @@ import { toast } from 'sonner';
 import { calculateProfileCompletion, type UserProfile } from '@/lib/profile/profile-completion';
 import VerificationBadge, { getVerificationLevel, type VerificationLevel } from '@/components/profile/VerificationBadge';
 
-// V3-FUN Searcher Palette (Amber/Gold theme)
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_GRADIENT_SOFT = 'linear-gradient(135deg, #FFF9E6 0%, #FEF3C7 100%)';
-const SEARCHER_PRIMARY = '#FFB10B';
-const SEARCHER_DARK = '#F59E0B';
-const ACCENT_SHADOW = 'rgba(255, 177, 11, 0.15)';
+// V3 Color System - Using CSS Variables from globals.css
+// All Searcher colors use var(--searcher-*) and var(--gradient-searcher-*)
 
 interface SearcherMegaMenuHeaderProps {
   profile: {
@@ -83,7 +79,7 @@ const navigationDomains = {
         label: 'Explorer',
         icon: Search,
         description: 'Parcourir tous les biens',
-        color: '#F59E0B'
+        color: 'var(--searcher-500)'
       },
       {
         id: 'map',
@@ -124,7 +120,7 @@ const navigationDomains = {
         label: 'Propriétés compatibles',
         icon: Home,
         description: 'Biens avec haut score',
-        color: '#F59E0B',
+        color: 'var(--searcher-500)',
         badgeKey: 'matchesCount'
       },
       {
@@ -375,7 +371,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
           backdropFilter: 'blur(32px) saturate(150%)'
         }}
       />
-      <div className="absolute inset-0 border-b border-amber-100/50 shadow-sm" />
+      <div className="absolute inset-0 border-b border-searcher-100/50 shadow-sm" />
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
@@ -409,8 +405,8 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                     className={cn(
                       "flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                       isActive || isOpen
-                        ? "text-amber-900 bg-amber-50"
-                        : "text-gray-600 hover:bg-amber-50/50"
+                        ? "text-searcher-800 bg-searcher-50"
+                        : "text-gray-600 hover:bg-searcher-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -418,7 +414,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                     {domainBadge > 0 && (
                       <Badge
                         className="ml-1 h-5 min-w-[20px] px-1.5 text-white"
-                        style={{ background: SEARCHER_GRADIENT }}
+                        style={{ background: 'var(--gradient-searcher)' }}
                       >
                         {domainBadge}
                       </Badge>
@@ -433,7 +429,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                   {isActive && !isOpen && (
                     <motion.div
                       className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
-                      style={{ borderTopColor: SEARCHER_PRIMARY }}
+                      style={{ borderTopColor: 'var(--searcher-500)' }}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
                     />
@@ -449,14 +445,14 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: -10, scale: 0.95 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                          className="absolute left-0 mt-3 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                          className="absolute left-0 mt-3 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-searcher-100/50 overflow-hidden z-20"
                         >
                           {/* Domain header */}
-                          <div className="px-4 py-3 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
+                          <div className="px-4 py-3 border-b border-searcher-100/50" style={{ background: 'var(--gradient-searcher-subtle)' }}>
                             <div className="flex items-center gap-2">
                               <div
                                 className="w-8 h-8 superellipse-lg flex items-center justify-center"
-                                style={{ background: SEARCHER_GRADIENT }}
+                                style={{ background: 'var(--gradient-searcher)' }}
                               >
                                 <Icon className="w-4 h-4 text-white" />
                               </div>
@@ -482,7 +478,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                                   className={cn(
                                     "flex items-center gap-3 px-3 py-2.5 superellipse-xl transition-all group",
                                     isItemActive
-                                      ? "bg-amber-50"
+                                      ? "bg-searcher-50"
                                       : "hover:bg-gray-50"
                                   )}
                                 >
@@ -495,7 +491,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                                   <div className="flex-1 min-w-0">
                                     <p className={cn(
                                       "text-sm font-medium",
-                                      isItemActive ? "text-amber-900" : "text-gray-900"
+                                      isItemActive ? "text-searcher-800" : "text-gray-900"
                                     )}>
                                       {item.label}
                                     </p>
@@ -528,21 +524,21 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
               className={cn(
                 "relative flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                 pathname?.startsWith('/searcher/messages')
-                  ? "text-amber-900 bg-amber-50"
-                  : "text-gray-600 hover:bg-amber-50/50"
+                  ? "text-searcher-800 bg-searcher-50"
+                  : "text-gray-600 hover:bg-searcher-50/50"
               )}
             >
               <MessageCircle className="w-4 h-4" />
               <span>Messages</span>
               {localStats.unreadMessages > 0 && (
-                <Badge className="ml-1 h-5 min-w-[20px] px-1.5 text-white" style={{ background: SEARCHER_GRADIENT }}>
+                <Badge className="ml-1 h-5 min-w-[20px] px-1.5 text-white" style={{ background: 'var(--gradient-searcher)' }}>
                   {localStats.unreadMessages}
                 </Badge>
               )}
               {pathname?.startsWith('/searcher/messages') && (
                 <motion.div
                   className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
-                  style={{ borderTopColor: SEARCHER_PRIMARY }}
+                  style={{ borderTopColor: 'var(--searcher-500)' }}
                   initial={{ opacity: 0, y: -5 }}
                   animate={{ opacity: 1, y: 0 }}
                 />
@@ -576,9 +572,9 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-64 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-searcher-100/50 overflow-hidden z-20"
                     >
-                      <div className="px-4 py-3 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
+                      <div className="px-4 py-3 border-b border-searcher-100/50" style={{ background: 'var(--gradient-searcher-subtle)' }}>
                         <p className="font-semibold text-gray-900">Actions rapides</p>
                       </div>
                       <div className="p-2">
@@ -613,7 +609,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             <div className="relative">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 superellipse-xl hover:bg-amber-50 transition-all"
+                className="relative p-2 superellipse-xl hover:bg-searcher-50 transition-all"
                 aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
               >
                 <Bell className="w-5 h-5 text-gray-700" />
@@ -633,16 +629,16 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-searcher-100/50 overflow-hidden z-20"
                     >
-                      <div className="px-4 py-3 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
+                      <div className="px-4 py-3 border-b border-searcher-100/50" style={{ background: 'var(--gradient-searcher-subtle)' }}>
                         <h3 className="font-semibold text-gray-900">Notifications</h3>
                       </div>
                       <div className="max-h-80 overflow-y-auto">
                         {localStats.unreadMessages > 0 && (
                           <Link
                             href="/searcher/messages"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-amber-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 superellipse-xl bg-blue-100 flex items-center justify-center">
@@ -659,7 +655,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                         {localStats.applicationsCount > 0 && (
                           <Link
                             href="/searcher/applications"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-amber-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 superellipse-xl bg-amber-100 flex items-center justify-center">
@@ -693,7 +689,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             <div className="relative">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 superellipse-xl hover:bg-amber-50 transition-all"
+                className="flex items-center gap-2 p-1.5 superellipse-xl hover:bg-searcher-50 transition-all"
               >
                 <div className="relative">
                   {/* Profile completion ring */}
@@ -749,10 +745,10 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-amber-100/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-searcher-100/50 overflow-hidden z-20"
                     >
                       {/* Profile header */}
-                      <div className="px-4 py-4 border-b border-amber-100/50" style={{ background: SEARCHER_GRADIENT_SOFT }}>
+                      <div className="px-4 py-4 border-b border-searcher-100/50" style={{ background: 'var(--gradient-searcher-subtle)' }}>
                         <div className="flex items-center gap-3">
                           <div className="relative">
                             <div className="w-12 h-12 superellipse-xl overflow-hidden bg-amber-100">
@@ -791,7 +787,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       </div>
 
                       {/* Quick stats */}
-                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-amber-100/50">
+                      <div className="grid grid-cols-3 gap-2 p-3 border-b border-searcher-100/50">
                         <div className="text-center">
                           <p className="text-lg font-bold text-gray-900">{localStats.favoritesCount}</p>
                           <p className="text-xs text-gray-500">Favoris</p>
@@ -841,7 +837,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 superellipse-xl hover:bg-amber-50 transition-all"
+              className="lg:hidden p-2 superellipse-xl hover:bg-searcher-50 transition-all"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6 text-gray-700" />
@@ -860,7 +856,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden border-t border-amber-100/50 bg-white/95 backdrop-blur-xl"
+            className="lg:hidden border-t border-searcher-100/50 bg-white/95 backdrop-blur-xl"
           >
             <div className="max-w-7xl mx-auto px-4 py-4 space-y-2">
               {/* Domain sections */}
@@ -869,10 +865,10 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                 const isExpanded = expandedMobileSection === domain.id;
 
                 return (
-                  <div key={domain.id} className="border border-amber-100/50 superellipse-xl overflow-hidden">
+                  <div key={domain.id} className="border border-searcher-100/50 superellipse-xl overflow-hidden">
                     <button
                       onClick={() => setExpandedMobileSection(isExpanded ? null : domain.id)}
-                      className="w-full flex items-center justify-between px-4 py-3 hover:bg-amber-50/50 transition-all"
+                      className="w-full flex items-center justify-between px-4 py-3 hover:bg-searcher-50/50 transition-all"
                     >
                       <div className="flex items-center gap-3">
                         <div
@@ -892,7 +888,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                           initial={{ opacity: 0, height: 0 }}
                           animate={{ opacity: 1, height: 'auto' }}
                           exit={{ opacity: 0, height: 0 }}
-                          className="border-t border-amber-100/50 bg-amber-50/30"
+                          className="border-t border-searcher-100/50 bg-searcher-50/30"
                         >
                           {domain.items.map((item) => {
                             const ItemIcon = item.icon;
@@ -903,7 +899,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                                 key={item.id}
                                 href={item.href}
                                 onClick={() => setMobileMenuOpen(false)}
-                                className="flex items-center gap-3 px-4 py-3 hover:bg-amber-50 transition-all"
+                                className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition-all"
                               >
                                 <div
                                   className="w-8 h-8 superellipse-lg flex items-center justify-center"
@@ -934,21 +930,21 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
               <Link
                 href="/searcher/messages"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-3 px-4 py-3 border border-amber-100/50 superellipse-xl hover:bg-amber-50/50 transition-all"
+                className="flex items-center gap-3 px-4 py-3 border border-searcher-100/50 superellipse-xl hover:bg-searcher-50/50 transition-all"
               >
                 <div className="w-8 h-8 superellipse-lg bg-blue-100 flex items-center justify-center">
                   <MessageCircle className="w-4 h-4 text-blue-600" />
                 </div>
                 <span className="font-medium text-gray-900">Messages</span>
                 {localStats.unreadMessages > 0 && (
-                  <Badge className="ml-auto text-white" style={{ background: SEARCHER_GRADIENT }}>
+                  <Badge className="ml-auto text-white" style={{ background: 'var(--gradient-searcher)' }}>
                     {localStats.unreadMessages}
                   </Badge>
                 )}
               </Link>
 
               {/* Quick Actions */}
-              <div className="pt-2 border-t border-amber-100/50">
+              <div className="pt-2 border-t border-searcher-100/50">
                 <p className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase">Actions rapides</p>
                 <div className="grid grid-cols-2 gap-2">
                   {quickActions.map((action) => {
@@ -958,7 +954,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                         key={action.id}
                         href={action.href}
                         onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center gap-2 px-3 py-2.5 superellipse-xl hover:bg-amber-50/50 transition-all"
+                        className="flex items-center gap-2 px-3 py-2.5 superellipse-xl hover:bg-searcher-50/50 transition-all"
                       >
                         <ActionIcon className="w-4 h-4" style={{ color: action.color }} />
                         <span className="text-sm text-gray-900">{action.label}</span>

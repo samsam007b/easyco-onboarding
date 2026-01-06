@@ -34,16 +34,9 @@ const GROUPS_GRADIENT = 'linear-gradient(135deg, #FFF9E6 0%, #FFD080 100%)'; // 
 const GROUPS_PRIMARY = '#FFD080';
 const GROUPS_DARK = '#FFA040';
 const GROUPS_LIGHT = '#FFF9E6';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFEF5 0%, #FFF9E6 100%)';
-const ACCENT_SHADOW = 'rgba(255, 208, 128, 0.15)';
 // Searcher colors for nav
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)';
-const SEARCHER_PRIMARY = '#FFA040';
+// V3 Color System - Using CSS Variables from globals.css
 // Semantic Colors
-const SEMANTIC_SUCCESS = '#10B981';
-const SEMANTIC_AMBER = '#F59E0B';
-const SEMANTIC_BLUE = '#3B82F6';
-const SEMANTIC_PINK = '#EC4899';
 
 // Animation variants
 const containerVariants = {
@@ -177,7 +170,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
         <div className="fixed inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-orange-200/3" />
           <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
           <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
@@ -195,14 +188,14 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-yellow-400/8 via-amber-300/5 to-orange-200/3" />
         <div className="absolute top-0 -left-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
         <div className="absolute -bottom-8 left-20 w-96 h-96 bg-orange-200/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-searcher-100/50">
           <div className="max-w-4xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -249,7 +242,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-searcher-100/30"
         >
           <div className="max-w-4xl mx-auto px-4 py-2">
             <div className="flex items-center gap-3">
@@ -282,7 +275,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
-            style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
+            style={{ boxShadow: `0 8px 32px var(--searcher-shadow)` }}
           >
             {/* Decorative circles */}
             <div
@@ -335,7 +328,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                   <motion.div
                     whileHover={{ scale: 1.01 }}
                     whileTap={{ scale: 0.99 }}
-                    className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-amber-200 transition-all cursor-pointer"
+                    className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-md hover:border-searcher-200 transition-all cursor-pointer"
                     onClick={() => router.push(`/searcher/groups/${group.id}`)}
                   >
                     <div className="p-4">
@@ -354,7 +347,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                               {group.is_owner && (
                                 <span
                                   className="px-2 py-0.5 rounded-md text-[10px] font-bold flex items-center gap-1"
-                                  style={{ backgroundColor: '#FEF3C7', color: SEARCHER_PRIMARY }}
+                                  style={{ backgroundColor: '#FEF3C7', color: 'var(--searcher-500)' }}
                                 >
                                   <Crown className="w-3 h-3" />
                                   Admin
@@ -437,7 +430,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                                 e.stopPropagation();
                                 router.push(`/messages?group=${group.id}`);
                               }}
-                              className="w-9 h-9 superellipse-xl bg-amber-50 flex items-center justify-center hover:bg-amber-100 transition-colors"
+                              className="w-9 h-9 superellipse-xl bg-searcher-50 flex items-center justify-center hover:bg-searcher-100 transition-colors"
                             >
                               <MessageCircle className="w-4 h-4" style={{ color: GROUPS_PRIMARY }} />
                             </motion.button>
@@ -469,7 +462,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        <div className="bg-white/90 backdrop-blur-xl border-t border-amber-100/50 px-4 py-3 safe-area-pb">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-searcher-100/50 px-4 py-3 safe-area-pb">
           <div className="flex items-center justify-around">
             <Link href="/searcher">
               <motion.div
@@ -524,7 +517,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 {unreadMessages > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     {unreadMessages}
                   </span>

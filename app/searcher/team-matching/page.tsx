@@ -26,10 +26,7 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import Link from 'next/link';
 
 // V3-FUN Searcher Theme (Gold/Amber)
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FFB10B 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#FFB10B';
-const SEARCHER_DARK = '#F59E0B';
-const ACCENT_SHADOW = 'rgba(255, 177, 11, 0.25)';
+// V3 Color System - Using CSS Variables from globals.css
 const MATCHING_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FF8C20 100%)';
 
 // Animation variants
@@ -136,14 +133,14 @@ export default function TeamMatchingComingSoon() {
     <div className="min-h-screen relative overflow-hidden pb-24 md:pb-8">
       {/* Glassmorphism Background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-50/80 via-white to-orange-50/60" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-50/80 via-white to-orange-50/60" />
 
         {/* Animated gradient blobs */}
         <motion.div
           animate={{ scale: [1, 1.1, 1], x: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity }}
           className="absolute top-20 -left-20 w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-40"
-          style={{ background: SEARCHER_GRADIENT }}
+          style={{ background: 'var(--gradient-searcher)' }}
         />
         <motion.div
           animate={{ scale: [1, 1.2, 1], y: [0, -30, 0] }}
@@ -172,7 +169,7 @@ export default function TeamMatchingComingSoon() {
         {/* Back button */}
         <motion.div variants={itemVariants} className="mb-8">
           <Link href="/searcher/matching">
-            <Button variant="ghost" className="gap-2 text-gray-600 hover:text-gray-900 hover:bg-amber-50 superellipse-xl">
+            <Button variant="ghost" className="gap-2 text-gray-600 hover:text-gray-900 hover:bg-searcher-50 superellipse-xl">
               <ArrowLeft className="w-5 h-5" />
               <span className="font-medium">Retour au matching</span>
             </Button>
@@ -198,7 +195,7 @@ export default function TeamMatchingComingSoon() {
               className="w-28 h-28 md:w-32 md:h-32 superellipse-3xl flex items-center justify-center"
               style={{
                 background: MATCHING_GRADIENT,
-                boxShadow: `0 20px 50px ${ACCENT_SHADOW}`,
+                boxShadow: `0 20px 50px var(--searcher-shadow)`,
               }}
             >
               <Users className="w-14 h-14 md:w-16 md:h-16 text-white" />
@@ -314,7 +311,7 @@ export default function TeamMatchingComingSoon() {
           <motion.div
             variants={itemVariants}
             className="bg-white superellipse-3xl p-8 md:p-10 mb-12"
-            style={{ boxShadow: `0 20px 60px ${ACCENT_SHADOW}` }}
+            style={{ boxShadow: `0 20px 60px var(--searcher-shadow)` }}
           >
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-8 flex items-center justify-center gap-3">
               <motion.div
@@ -338,12 +335,12 @@ export default function TeamMatchingComingSoon() {
                 >
                   {/* Connector line */}
                   {index < steps.length - 1 && (
-                    <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-amber-200 to-transparent" />
+                    <div className="hidden md:block absolute top-8 left-[60%] w-[80%] h-0.5 bg-gradient-to-r from-searcher-200 to-transparent" />
                   )}
 
                   <div
                     className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4 text-2xl font-black text-white"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     {step.number}
                   </div>
@@ -475,7 +472,7 @@ export default function TeamMatchingComingSoon() {
                   <Button
                     onClick={() => router.push('/searcher/matching')}
                     className="superellipse-xl px-6 py-5 font-semibold text-white border-none"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Home className="w-4 h-4 mr-2" />
                     Matching Proprietes

@@ -32,14 +32,8 @@ import { toast } from 'sonner';
 import { getHookTranslation } from '@/lib/i18n/get-language';
 
 // V3-FUN Searcher Palette
-const SEARCHER_GRADIENT = 'linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%)';
-const SEARCHER_PRIMARY = '#F59E0B';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)';
-const ACCENT_SHADOW = 'rgba(245, 158, 11, 0.15)';
+// V3 Color System - Using CSS Variables from globals.css
 // Semantic Colors
-const SEMANTIC_PINK = '#EC4899';
-const SEMANTIC_SUCCESS = '#10B981';
-const SEMANTIC_BLUE = '#3B82F6';
 
 // Animation variants
 const containerVariants = {
@@ -175,10 +169,10 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
     return (
       <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
         <div className="fixed inset-0 -z-10">
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-yellow-400/5 to-amber-300/3" />
-          <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+          <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-yellow-400/5 to-searcher-300/3" />
+          <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
           <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -193,16 +187,16 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
     <div className="min-h-screen relative overflow-hidden pb-20 md:pb-0">
       {/* Glassmorphism background */}
       <div className="fixed inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-br from-amber-500/8 via-yellow-400/5 to-amber-300/3" />
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-amber-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
+        <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-yellow-400/5 to-searcher-300/3" />
+        <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
         <div className="absolute top-0 -right-4 w-96 h-96 bg-yellow-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-amber-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 
       {/* Sticky Header */}
       <header className="sticky top-0 z-50">
-        <div className="bg-white/80 backdrop-blur-xl border-b border-amber-100/50">
+        <div className="bg-white/80 backdrop-blur-xl border-b border-searcher-100/50">
           <div className="max-w-7xl mx-auto px-4 py-3">
             <div className="flex items-center justify-between">
               {/* Left: Back + Title */}
@@ -219,7 +213,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Bookmark className="w-5 h-5 text-white" />
                   </div>
@@ -242,7 +236,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                     {unreadMessages > 0 && (
                       <span
                         className="absolute -top-1 -right-1 w-5 h-5 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
-                        style={{ background: SEARCHER_GRADIENT }}
+                        style={{ background: 'var(--gradient-searcher)' }}
                       >
                         {unreadMessages}
                       </span>
@@ -258,7 +252,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white/60 backdrop-blur-md border-b border-amber-100/30"
+          className="bg-white/60 backdrop-blur-md border-b border-searcher-100/30"
         >
           <div className="max-w-7xl mx-auto px-4 py-2">
             <div className="flex items-center justify-between">
@@ -289,7 +283,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="flex items-center gap-1.5 px-3 py-1.5 superellipse-xl text-sm font-medium text-white"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   <Search className="w-4 h-4" />
                   Explorer
@@ -307,16 +301,16 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             className="relative overflow-hidden superellipse-3xl bg-white shadow-lg"
-            style={{ boxShadow: `0 8px 32px ${ACCENT_SHADOW}` }}
+            style={{ boxShadow: `0 8px 32px var(--searcher-shadow)` }}
           >
             {/* Decorative circles */}
             <div
               className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
             <div
               className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-15"
-              style={{ background: SEARCHER_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative flex flex-col items-center justify-center py-16 px-8">
@@ -324,7 +318,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
-                style={{ background: SEARCHER_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Bookmark className="w-10 h-10 text-white" />
               </motion.div>
@@ -339,7 +333,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
-                  style={{ background: SEARCHER_GRADIENT }}
+                  style={{ background: 'var(--gradient-searcher)' }}
                 >
                   <Sparkles className="w-4 h-4" />
                   Découvrir les propriétés
@@ -363,7 +357,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                   exit={{ opacity: 0, scale: 0.8, transition: { duration: 0.2 } }}
                 >
                   <div
-                    className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-amber-200 transition-all group cursor-pointer"
+                    className="bg-white superellipse-2xl overflow-hidden shadow-sm border border-gray-100 hover:shadow-lg hover:border-searcher-200 transition-all group cursor-pointer"
                     onClick={() => router.push(`/properties/${favorite.property.id}`)}
                   >
                     {/* Image */}
@@ -378,9 +372,9 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                       ) : (
                         <div
                           className="w-full h-full flex items-center justify-center"
-                          style={{ background: CARD_BG_GRADIENT }}
+                          style={{ background: 'var(--gradient-searcher-subtle)' }}
                         >
-                          <Building2 className="w-10 h-10 text-amber-300" />
+                          <Building2 className="w-10 h-10 text-searcher-300" />
                         </div>
                       )}
 
@@ -453,7 +447,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                             router.push(`/properties/${favorite.property.id}/apply`);
                           }}
                           className="flex items-center gap-1.5 px-3 py-1.5 superellipse-lg text-white text-sm font-medium shadow-sm"
-                          style={{ background: SEARCHER_GRADIENT }}
+                          style={{ background: 'var(--gradient-searcher)' }}
                         >
                           <Send className="w-3.5 h-3.5" />
                           Postuler
@@ -470,7 +464,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
 
       {/* Mobile Bottom Navigation */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-40">
-        <div className="bg-white/90 backdrop-blur-xl border-t border-amber-100/50 px-4 py-3 safe-area-pb">
+        <div className="bg-white/90 backdrop-blur-xl border-t border-searcher-100/50 px-4 py-3 safe-area-pb">
           <div className="flex items-center justify-around">
             <Link href="/searcher">
               <motion.div
@@ -504,8 +498,8 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 whileTap={{ scale: 0.95 }}
                 className="flex flex-col items-center gap-1"
               >
-                <Bookmark className="w-5 h-5" style={{ color: SEARCHER_PRIMARY }} />
-                <span className="text-[10px] font-medium" style={{ color: SEARCHER_PRIMARY }}>Favoris</span>
+                <Bookmark className="w-5 h-5" className="text-searcher-500" />
+                <span className="text-[10px] font-medium" className="text-searcher-500">Favoris</span>
               </motion.div>
             </Link>
             <Link href="/messages">
@@ -517,7 +511,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 {unreadMessages > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ background: SEARCHER_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     {unreadMessages}
                   </span>
