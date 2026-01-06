@@ -1,9 +1,10 @@
 // V3 Owner Theme Constants
 // Centralized design tokens for the Owner dashboard
+// Source: brand-identity/izzico-color-system.html
 
-// Primary Owner Gradient (Mauve to Magenta)
-export const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
-export const ownerGradientSimple = 'linear-gradient(135deg, #9c5698 0%, #c2566b 100%)';
+// Primary Owner Gradient (V3 Solid Color)
+export const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #9c5698 50%, #9c5698 100%)';
+export const ownerGradientSimple = ownerGradient; // Alias for consistency
 export const ownerGradientLight = 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)';
 export const ownerPageBackground = 'linear-gradient(135deg, #F8F0F7 0%, #FFFFFF 50%, #FDF5F9 100%)';
 

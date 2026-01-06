@@ -40,8 +40,9 @@ import { getHookTranslation } from '@/lib/i18n/get-language';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 
-// V3 Owner gradient
-const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
+// V3 Owner gradient - Solid Color
+// Source: brand-identity/izzico-color-system.html
+const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #9c5698 50%, #9c5698 100%)';
 
 interface ModernOwnerHeaderProps {
   profile: {

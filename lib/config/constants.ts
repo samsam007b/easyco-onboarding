@@ -109,10 +109,11 @@ export const VALIDATION = {
 } as const;
 
 /**
- * Brand colors
+ * Brand colors - V3 Color System
+ * Source: brand-identity/izzico-color-system.html
  */
 export const BRAND_COLORS = {
-  PRIMARY: '#4A148C', // Izzico Purple
+  PRIMARY: '#9c5698', // Owner Primary v3
   ACCENT: '#FFD600', // Izzico Yellow
 } as const;
 
