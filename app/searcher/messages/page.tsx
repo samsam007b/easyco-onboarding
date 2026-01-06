@@ -256,7 +256,7 @@ function SearcherMessagesContent() {
     return (
       <div
         className="flex items-center justify-center py-20 min-h-screen"
-        style={{ background: SEARCHER_GRADIENT_LIGHT }}
+        style={{ background: 'var(--gradient-searcher-soft)' }}
       >
         <div className="text-center">
           <LoadingHouse size={80} />
@@ -339,7 +339,7 @@ function SearcherMessagesContent() {
   return (
     <div
       className="min-h-screen px-4 sm:px-6 lg:px-8 pb-8"
-      style={{ background: SEARCHER_GRADIENT_LIGHT }}
+      style={{ background: 'var(--gradient-searcher-soft)' }}
     >
       <MessagesLayout
         variant="searcher"
@@ -371,7 +371,7 @@ function MessagesFallback() {
   return (
     <div
       className="flex items-center justify-center py-20 min-h-screen"
-      style={{ background: SEARCHER_GRADIENT_LIGHT }}
+      style={{ background: 'var(--gradient-searcher-soft)' }}
     >
       <div className="text-center">
         <LoadingHouse size={80} />

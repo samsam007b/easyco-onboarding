@@ -34,10 +34,6 @@ import {
 import { toast } from 'sonner';
 
 // V3-FUN Applications Palette - Searcher Main Gradient
-const APPS_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'; // --gradient-searcher
-const APPS_PRIMARY = '#FFA040';
-const APPS_SECONDARY = '#FFB85C';
-const APPS_LIGHT = '#FFD080';
 // Searcher colors for nav
 // V3 Color System - Using CSS Variables from globals.css
 // Semantic Colors
@@ -133,10 +129,10 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
 
   const getStatusConfig = (status: Application['status']) => {
     const config = {
-      pending: { icon: Clock, label: 'En attente', color: SEMANTIC_WARNING, bgColor: '#FEF3C7' },
-      reviewing: { icon: Eye, label: 'En examen', color: APPS_PRIMARY, bgColor: '#FFF4E0' },
-      approved: { icon: CheckCircle, label: 'Acceptée', color: SEMANTIC_SUCCESS, bgColor: '#D1FAE5' },
-      rejected: { icon: XCircle, label: 'Refusée', color: SEMANTIC_DANGER, bgColor: '#FEE2E2' },
+      pending: { icon: Clock, label: 'En attente', color: '#F59E0B', bgColor: '#FEF3C7' },
+      reviewing: { icon: Eye, label: 'En examen', color: '#ffa000', bgColor: '#FFF4E0' },
+      approved: { icon: CheckCircle, label: 'Acceptée', color: '#10B981', bgColor: '#D1FAE5' },
+      rejected: { icon: XCircle, label: 'Refusée', color: '#EF4444', bgColor: '#FEE2E2' },
       withdrawn: { icon: XCircle, label: 'Retirée', color: '#6B7280', bgColor: '#F3F4F6' },
       expired: { icon: Clock, label: 'Expirée', color: '#6B7280', bgColor: '#F3F4F6' },
     };
@@ -160,28 +156,28 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
       icon: Send,
       value: stats.total,
       label: 'Total',
-      color: APPS_PRIMARY,
+      color: '#ffa000',
       bgColor: '#FFF4E0',
     },
     {
       icon: Clock,
       value: stats.pending,
       label: 'En attente',
-      color: SEMANTIC_WARNING,
+      color: '#F59E0B',
       bgColor: '#FEF3C7',
     },
     {
       icon: CheckCircle,
       value: stats.approved,
       label: 'Acceptées',
-      color: SEMANTIC_SUCCESS,
+      color: '#10B981',
       bgColor: '#D1FAE5',
     },
     {
       icon: XCircle,
       value: stats.rejected,
       label: 'Refusées',
-      color: SEMANTIC_DANGER,
+      color: '#EF4444',
       bgColor: '#FEE2E2',
     },
   ];
@@ -242,7 +238,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                    style={{ background: APPS_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <ClipboardList className="w-5 h-5 text-white" />
                   </div>
@@ -319,7 +315,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                       ? 'text-white shadow-md'
                       : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
                   }`}
-                  style={filterStatus === tab.id ? { background: APPS_GRADIENT } : {}}
+                  style={filterStatus === tab.id ? { background: 'var(--gradient-searcher)' } : {}}
                 >
                   {tab.label} ({tab.count})
                 </motion.button>
@@ -341,7 +337,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
             {/* Decorative circles */}
             <div
               className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
-              style={{ background: APPS_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative flex flex-col items-center justify-center py-16 px-8">
@@ -349,7 +345,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
-                style={{ background: APPS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <FileText className="w-10 h-10 text-white" />
               </motion.div>
@@ -575,7 +571,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
                 {favorites > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: SEMANTIC_PINK }}
+                    style={{ backgroundColor: '#EC4899' }}
                   >
                     {favorites}
                   </span>

@@ -144,14 +144,14 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
       icon: Bookmark,
       value: favorites.length,
       label: 'Favoris',
-      color: SEMANTIC_PINK,
+      color: '#EC4899',
       bgColor: '#FCE7F3',
     },
     {
       icon: Building2,
       value: [...new Set(favorites.map(f => f.property.city))].length,
       label: 'Villes',
-      color: SEMANTIC_BLUE,
+      color: '#3B82F6',
       bgColor: '#DBEAFE',
     },
     {
@@ -160,7 +160,7 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
         ? Math.round(favorites.reduce((a, b) => a + b.property.monthly_rent, 0) / favorites.length) + '€'
         : '0€',
       label: 'Loyer moy.',
-      color: SEARCHER_PRIMARY,
+      color: 'var(--searcher-500)',
       bgColor: '#FEF3C7',
     },
   ];
@@ -498,8 +498,8 @@ const SearcherFavoritesPage = memo(function SearcherFavoritesPage() {
                 whileTap={{ scale: 0.95 }}
                 className="flex flex-col items-center gap-1"
               >
-                <Bookmark className="w-5 h-5" className="text-searcher-500" />
-                <span className="text-[10px] font-medium" className="text-searcher-500">Favoris</span>
+                <Bookmark className="w-5 h-5 text-searcher-500" />
+                <span className="text-[10px] font-medium text-searcher-500">Favoris</span>
               </motion.div>
             </Link>
             <Link href="/messages">

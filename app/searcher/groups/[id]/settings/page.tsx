@@ -30,7 +30,6 @@ import {
 import { toast } from 'sonner';
 
 // V3-FUN Theme
-const GROUPS_GRADIENT = 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)';
 const DANGER_GRADIENT = 'linear-gradient(135deg, #EF4444 0%, #F87171 100%)';
 
 const containerVariants = {
@@ -112,7 +111,7 @@ export default function GroupSettingsPage() {
       {/* Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-white to-red-50/30" />
-        <div className="absolute top-20 -left-32 w-96 h-96 rounded-full opacity-30 blur-3xl" style={{ background: GROUPS_GRADIENT }} />
+        <div className="absolute top-20 -left-32 w-96 h-96 rounded-full opacity-30 blur-3xl" style={{ background: 'var(--gradient-searcher)' }} />
       </div>
 
       {/* Header */}
@@ -137,7 +136,7 @@ export default function GroupSettingsPage() {
               onClick={handleSave}
               disabled={saving}
               className="superellipse-xl text-white"
-              style={{ background: GROUPS_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             >
               {saving ? (
                 <span className="flex items-center gap-2">

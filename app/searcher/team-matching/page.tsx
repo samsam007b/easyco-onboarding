@@ -27,7 +27,6 @@ import Link from 'next/link';
 
 // V3-FUN Searcher Theme (Gold/Amber)
 // V3 Color System - Using CSS Variables from globals.css
-const MATCHING_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FF8C20 100%)';
 
 // Animation variants
 const containerVariants = {
@@ -71,7 +70,7 @@ export default function TeamMatchingComingSoon() {
       icon: Users,
       title: 'Formez votre Dream Team',
       description: 'Créez votre groupe de recherche idéal. Trouvez des personnes avec les mêmes critères et budgets que vous.',
-      gradient: MATCHING_GRADIENT,
+      gradient: 'var(--gradient-searcher)',
       bgColor: 'rgba(255, 160, 64, 0.1)',
     },
     {
@@ -146,7 +145,7 @@ export default function TeamMatchingComingSoon() {
           animate={{ scale: [1, 1.2, 1], y: [0, -30, 0] }}
           transition={{ duration: 10, repeat: Infinity, delay: 1 }}
           className="absolute top-40 -right-20 w-80 h-80 rounded-full mix-blend-multiply filter blur-3xl opacity-30"
-          style={{ background: MATCHING_GRADIENT }}
+          style={{ background: 'var(--gradient-searcher)' }}
         />
         <motion.div
           animate={{ scale: [1, 1.15, 1] }}
@@ -194,7 +193,7 @@ export default function TeamMatchingComingSoon() {
               }}
               className="w-28 h-28 md:w-32 md:h-32 superellipse-3xl flex items-center justify-center"
               style={{
-                background: MATCHING_GRADIENT,
+                background: 'var(--gradient-searcher)',
                 boxShadow: `0 20px 50px var(--searcher-shadow)`,
               }}
             >
@@ -224,7 +223,7 @@ export default function TeamMatchingComingSoon() {
           <motion.div variants={itemVariants} className="mb-2">
             <span
               className="inline-block px-4 py-1.5 rounded-full text-sm font-bold text-white mb-4"
-              style={{ background: MATCHING_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             >
               Bientot disponible
             </span>
@@ -251,7 +250,7 @@ export default function TeamMatchingComingSoon() {
             Trouvez vos{' '}
             <span
               className="font-bold bg-clip-text text-transparent"
-              style={{ backgroundImage: MATCHING_GRADIENT }}
+              style={{ backgroundImage: 'var(--gradient-searcher)' }}
             >
               colocataires idéaux
             </span>{' '}
@@ -317,7 +316,7 @@ export default function TeamMatchingComingSoon() {
               <motion.div
                 whileHover={{ rotate: 5 }}
                 className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                style={{ background: MATCHING_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Zap className="w-5 h-5 text-white" />
               </motion.div>
@@ -367,9 +366,9 @@ export default function TeamMatchingComingSoon() {
                 >
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3"
-                    style={{ background: `${SEARCHER_PRIMARY}20` }}
+                    style={{ background: `${'var(--searcher-500)'}20` }}
                   >
-                    <Icon className="w-5 h-5" style={{ color: SEARCHER_DARK }} />
+                    <Icon className="w-5 h-5" style={{ color: 'var(--searcher-600)' }} />
                   </div>
                   <h4 className="font-bold text-gray-900 text-sm mb-1">{benefit.title}</h4>
                   <p className="text-xs text-gray-500">{benefit.description}</p>
@@ -384,7 +383,7 @@ export default function TeamMatchingComingSoon() {
             whileHover={{ scale: 1.01 }}
             className="relative overflow-hidden superellipse-3xl p-8 md:p-10 text-white mb-8"
             style={{
-              background: MATCHING_GRADIENT,
+              background: 'var(--gradient-searcher)',
               boxShadow: `0 20px 60px rgba(255, 140, 32, 0.3)`,
             }}
           >

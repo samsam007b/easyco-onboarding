@@ -555,7 +555,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                   size="sm"
                   onClick={() => setShowQuickActions(!showQuickActions)}
                   className="rounded-full text-white shadow-lg"
-                  style={{ background: SEARCHER_GRADIENT, boxShadow: `0 4px 14px ${ACCENT_SHADOW}` }}
+                  style={{ background: 'var(--gradient-searcher)', boxShadow: `0 4px 14px ${'var(--searcher-shadow)'}` }}
                 >
                   <Zap className="w-4 h-4 mr-1.5" />
                   Actions
@@ -616,7 +616,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                 {totalNotifications > 0 && (
                   <span
                     className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full border-2 border-white"
-                    style={{ background: SEARCHER_PRIMARY }}
+                    style={{ background: 'var(--searcher-500)' }}
                   />
                 )}
               </button>
@@ -707,7 +707,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       cy="20"
                       r="18"
                       fill="none"
-                      stroke={SEARCHER_PRIMARY}
+                      stroke={'var(--searcher-500)'}
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeDasharray={`${(profileCompletion / 100) * 113} 113`}
@@ -724,7 +724,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                         className="w-full h-full object-cover"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center text-sm font-bold" style={{ color: SEARCHER_DARK }}>
+                      <div className="w-full h-full flex items-center justify-center text-sm font-bold" style={{ color: 'var(--searcher-600)' }}>
                         {profile.full_name.charAt(0)}
                       </div>
                     )}
@@ -761,7 +761,7 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                                   className="w-full h-full object-cover"
                                 />
                               ) : (
-                                <div className="w-full h-full flex items-center justify-center text-lg font-bold" style={{ color: SEARCHER_DARK }}>
+                                <div className="w-full h-full flex items-center justify-center text-lg font-bold" style={{ color: 'var(--searcher-600)' }}>
                                   {profile.full_name.charAt(0)}
                                 </div>
                               )}
@@ -777,10 +777,10 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                               <div className="flex-1 h-1.5 bg-gray-200 rounded-full overflow-hidden">
                                 <div
                                   className="h-full rounded-full"
-                                  style={{ width: `${profileCompletion}%`, background: SEARCHER_GRADIENT }}
+                                  style={{ width: `${profileCompletion}%`, background: 'var(--gradient-searcher)' }}
                                 />
                               </div>
-                              <span className="text-xs font-medium" style={{ color: SEARCHER_DARK }}>{profileCompletion}%</span>
+                              <span className="text-xs font-medium" style={{ color: 'var(--searcher-600)' }}>{profileCompletion}%</span>
                             </div>
                           </div>
                         </div>
@@ -873,9 +873,9 @@ const SearcherMegaMenuHeader = memo(function SearcherMegaMenuHeader({
                       <div className="flex items-center gap-3">
                         <div
                           className="w-8 h-8 superellipse-lg flex items-center justify-center"
-                          style={{ background: `${SEARCHER_PRIMARY}15` }}
+                          style={{ background: `${'var(--searcher-500)'}15` }}
                         >
-                          <Icon className="w-4 h-4" style={{ color: SEARCHER_PRIMARY }} />
+                          <Icon className="w-4 h-4" style={{ color: 'var(--searcher-500)' }} />
                         </div>
                         <span className="font-medium text-gray-900">{domain.label}</span>
                       </div>

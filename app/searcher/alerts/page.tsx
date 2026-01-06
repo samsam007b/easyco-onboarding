@@ -30,14 +30,8 @@ import {
 import { toast } from 'sonner';
 import { getHookTranslation } from '@/lib/i18n/get-language';
 
-// V3-FUN Alerts Palette - Searcher Medium Gradient
-const ALERTS_GRADIENT = 'linear-gradient(135deg, #FFB85C 0%, #FFA040 100%)'; // --gradient-searcher-medium
-const ALERTS_PRIMARY = '#FFB85C';
-const ALERTS_DARK = '#FFA040';
-const ALERTS_LIGHT = '#FFD080';
-// Searcher colors for nav
 // V3 Color System - Using CSS Variables from globals.css
-// Semantic Colors
+// All colors now reference var(--searcher-*) and var(--gradient-searcher-*)
 
 // Animation variants
 const containerVariants = {
@@ -171,21 +165,21 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
       icon: Bell,
       value: alerts.length,
       label: 'Alertes',
-      color: ALERTS_PRIMARY,
+      color: '#ffa000',
       bgColor: '#FFF8E6',
     },
     {
       icon: Zap,
       value: activeCount,
       label: 'Actives',
-      color: SEMANTIC_SUCCESS,
+      color: '#10B981',
       bgColor: '#D1FAE5',
     },
     {
       icon: Sparkles,
       value: totalNewMatches,
       label: 'Nouveaux',
-      color: SEMANTIC_PINK,
+      color: '#EC4899',
       bgColor: '#FCE7F3',
     },
   ];
@@ -238,7 +232,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                    style={{ background: ALERTS_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Bell className="w-5 h-5 text-white" />
                   </div>
@@ -255,7 +249,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/alerts/new')}
                 className="flex items-center gap-2 px-4 py-2 superellipse-xl text-white text-sm font-medium shadow-md"
-                style={{ background: ALERTS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">Nouvelle alerte</span>
@@ -306,7 +300,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
             {/* Decorative circles */}
             <div
               className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
-              style={{ background: ALERTS_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative flex flex-col items-center justify-center py-16 px-8">
@@ -314,7 +308,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
-                style={{ background: ALERTS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <BellRing className="w-10 h-10 text-white" />
               </motion.div>
@@ -329,7 +323,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/alerts/new')}
                 className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
-                style={{ background: ALERTS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Sparkles className="w-4 h-4" />
                 Créer ma première alerte
@@ -360,10 +354,10 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                         <div className="flex items-start gap-3 flex-1">
                           <div
                             className="w-11 h-11 superellipse-xl flex items-center justify-center flex-shrink-0"
-                            style={{ background: alert.is_active ? CARD_BG_GRADIENT : '#F3F4F6' }}
+                            style={{ background: alert.is_active ? 'var(--gradient-searcher-subtle)' : '#F3F4F6' }}
                           >
                             {alert.is_active ? (
-                              <BellRing className="w-5 h-5" style={{ color: ALERTS_PRIMARY }} />
+                              <BellRing className="w-5 h-5" style={{ color: 'var(--searcher-500)' }} />
                             ) : (
                               <BellOff className="w-5 h-5 text-gray-400" />
                             )}
@@ -374,7 +368,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                               {alert.new_matches > 0 && (
                                 <span
                                   className="px-2 py-0.5 rounded-md text-[10px] font-bold text-white"
-                                  style={{ background: ALERTS_GRADIENT }}
+                                  style={{ background: 'var(--gradient-searcher)' }}
                                 >
                                   {alert.new_matches} nouveau{alert.new_matches > 1 ? 'x' : ''}
                                 </span>
@@ -491,7 +485,7 @@ const SearcherAlertsPage = memo(function SearcherAlertsPage() {
                 {favorites > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: SEMANTIC_PINK }}
+                    style={{ backgroundColor: '#EC4899' }}
                   >
                     {favorites}
                   </span>

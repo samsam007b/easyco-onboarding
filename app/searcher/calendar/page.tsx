@@ -239,7 +239,7 @@ export default function SearcherCalendarPage() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               className="relative overflow-hidden superellipse-2xl p-5 shadow-sm border border-gray-200"
-              style={{ background: SEARCHER_GRADIENT_SOFT }}
+              style={{ background: 'var(--gradient-searcher-soft)' }}
             >
               <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-15" style={{ background: 'var(--gradient-searcher)' }} />
               <div className="flex items-center justify-between mb-2">
@@ -496,7 +496,7 @@ export default function SearcherCalendarPage() {
             >
               <div
                 className="p-4 border-b border-searcher-100"
-                style={{ background: SEARCHER_GRADIENT_SOFT }}
+                style={{ background: 'var(--gradient-searcher-soft)' }}
               >
                 <div className="flex items-center gap-3">
                   <div
@@ -534,9 +534,9 @@ export default function SearcherCalendarPage() {
                     >
                       <div
                         className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
-                        style={{ background: SEARCHER_GRADIENT_SOFT }}
+                        style={{ background: 'var(--gradient-searcher-soft)' }}
                       >
-                        <CalendarIcon className="w-8 h-8" className="text-searcher-500" />
+                        <CalendarIcon className="w-8 h-8 text-searcher-500" />
                       </div>
                       <p className="text-gray-500 text-sm">
                         {selectedDate ? 'Aucune visite ce jour' : 'Cliquez sur une date pour voir les détails'}
@@ -573,9 +573,9 @@ export default function SearcherCalendarPage() {
                               ) : (
                                 <div
                                   className="w-14 h-14 superellipse-xl flex items-center justify-center"
-                                  style={{ background: SEARCHER_GRADIENT_SOFT }}
+                                  style={{ background: 'var(--gradient-searcher-soft)' }}
                                 >
-                                  <Home className="w-6 h-6" className="text-searcher-500" />
+                                  <Home className="w-6 h-6 text-searcher-500" />
                                 </div>
                               )}
 
@@ -621,7 +621,7 @@ export default function SearcherCalendarPage() {
                                 <User className="w-3 h-3" />
                                 <span>{visit.owner?.full_name || 'Propriétaire'}</span>
                               </div>
-                              <div className="flex items-center gap-1 text-xs font-medium" className="text-searcher-500">
+                              <div className="flex items-center gap-1 text-xs font-medium text-searcher-500">
                                 <span>Voir la propriété</span>
                                 <ArrowRight className="w-3 h-3" />
                               </div>
@@ -641,7 +641,7 @@ export default function SearcherCalendarPage() {
             variants={itemVariants}
             whileHover={{ y: -4 }}
             className="bg-white superellipse-3xl shadow-lg overflow-hidden border-l-4"
-            style={{ borderLeftColor: SEARCHER_PRIMARY }}
+            style={{ borderLeftColor: 'var(--searcher-500)' }}
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-100">
               <div className="flex items-center gap-3">
@@ -657,7 +657,7 @@ export default function SearcherCalendarPage() {
                 </div>
               </div>
               <Link href="/searcher/visits">
-                <Button variant="outline" className="superellipse-xl text-sm" style={{ borderColor: SEARCHER_PRIMARY, color: 'var(--searcher-500)' }}>
+                <Button variant="outline" className="superellipse-xl text-sm" style={{ borderColor: 'var(--searcher-500)', color: 'var(--searcher-500)' }}>
                   Voir tout
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
@@ -690,7 +690,7 @@ export default function SearcherCalendarPage() {
                         key={visit.id}
                         whileHover={{ scale: 1.02, y: -4 }}
                         className="p-4 superellipse-2xl border-2 border-searcher-100 hover:border-searcher-200 transition-all cursor-pointer"
-                        style={{ background: SEARCHER_GRADIENT_SOFT }}
+                        style={{ background: 'var(--gradient-searcher-soft)' }}
                         onClick={() => router.push(`/properties/${visit.property_id}`)}
                       >
                         <div className="flex items-center justify-between mb-3">
@@ -709,7 +709,7 @@ export default function SearcherCalendarPage() {
 
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2 text-gray-600">
-                            <CalendarIcon className="w-4 h-4" className="text-searcher-500" />
+                            <CalendarIcon className="w-4 h-4 text-searcher-500" />
                             <span>
                               {visitDate.toLocaleDateString('fr-FR', {
                                 weekday: 'short',
@@ -719,7 +719,7 @@ export default function SearcherCalendarPage() {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-600">
-                            <Clock className="w-4 h-4" className="text-searcher-500" />
+                            <Clock className="w-4 h-4 text-searcher-500" />
                             <span>
                               {visitDate.toLocaleTimeString('fr-FR', {
                                 hour: '2-digit',
@@ -728,7 +728,7 @@ export default function SearcherCalendarPage() {
                             </span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-600">
-                            <MapPin className="w-4 h-4" className="text-searcher-500" />
+                            <MapPin className="w-4 h-4 text-searcher-500" />
                             <span className="truncate">{visit.property?.city || 'Non renseigné'}</span>
                           </div>
                         </div>

@@ -22,7 +22,6 @@ import Link from 'next/link';
 
 // V3-FUN Searcher Theme
 // V3 Color System - Using CSS Variables from globals.css
-const VISITS_GRADIENT = 'linear-gradient(135deg, #10B981 0%, #34D399 100%)';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -80,7 +79,7 @@ export default function NewVisitComingSoon() {
           animate={{ scale: [1, 1.1, 1], x: [0, 20, 0] }}
           transition={{ duration: 8, repeat: Infinity }}
           className="absolute top-20 -left-20 w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-40"
-          style={{ background: VISITS_GRADIENT }}
+          style={{ background: 'var(--gradient-searcher)' }}
         />
         <motion.div
           animate={{ scale: [1, 1.2, 1], y: [0, -30, 0] }}
@@ -114,7 +113,7 @@ export default function NewVisitComingSoon() {
               animate={{ scale: [1, 1.05, 1], rotate: [0, 3, -3, 0] }}
               transition={{ duration: 3, repeat: Infinity, repeatType: "reverse" }}
               className="w-28 h-28 md:w-32 md:h-32 superellipse-3xl flex items-center justify-center"
-              style={{ background: VISITS_GRADIENT, boxShadow: `0 20px 50px var(--searcher-shadow)` }}
+              style={{ background: 'var(--gradient-searcher)', boxShadow: `0 20px 50px var(--searcher-shadow)` }}
             >
               <Calendar className="w-14 h-14 md:w-16 md:h-16 text-white" />
             </motion.div>
@@ -129,7 +128,7 @@ export default function NewVisitComingSoon() {
 
           {/* Badge */}
           <motion.div variants={itemVariants} className="mb-2">
-            <span className="inline-block px-4 py-1.5 rounded-full text-sm font-bold text-white mb-4" style={{ background: VISITS_GRADIENT }}>
+            <span className="inline-block px-4 py-1.5 rounded-full text-sm font-bold text-white mb-4" style={{ background: 'var(--gradient-searcher)' }}>
               Bientot disponible
             </span>
           </motion.div>
@@ -140,7 +139,7 @@ export default function NewVisitComingSoon() {
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl text-gray-600 mb-10 max-w-xl mx-auto">
             Reservez vos visites{' '}
-            <span className="font-bold bg-clip-text text-transparent" style={{ backgroundImage: VISITS_GRADIENT }}>
+            <span className="font-bold bg-clip-text text-transparent" style={{ backgroundImage: 'var(--gradient-searcher)' }}>
               en quelques clics
             </span>{' '}
             et ne manquez plus aucune opportunite
@@ -173,7 +172,7 @@ export default function NewVisitComingSoon() {
           <motion.div
             variants={itemVariants}
             className="relative overflow-hidden superellipse-3xl p-8 text-white mb-8"
-            style={{ background: VISITS_GRADIENT, boxShadow: `0 20px 60px var(--searcher-shadow)` }}
+            style={{ background: 'var(--gradient-searcher)', boxShadow: `0 20px 60px var(--searcher-shadow)` }}
           >
             <div className="absolute -right-20 -top-20 w-64 h-64 rounded-full bg-white/10" />
             <div className="relative z-10">

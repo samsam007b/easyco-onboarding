@@ -35,10 +35,6 @@ import {
 } from 'lucide-react';
 
 // V3-FUN Matching Palette - Searcher Dark Gradient (intense for matching energy)
-const MATCHING_GRADIENT = 'linear-gradient(135deg, #FFA040 0%, #FF8C20 100%)'; // --gradient-searcher-dark
-const MATCHING_PRIMARY = '#FFA040';
-const MATCHING_DARK = '#FF8C20';
-const MATCHING_LIGHT = '#FFD080';
 // Semantic Colors
 
 // Animation variants
@@ -145,9 +141,9 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
   }, [supabase, router]);
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return SEMANTIC_SUCCESS;
-    if (score >= 80) return SEMANTIC_AMBER;
-    if (score >= 70) return SEMANTIC_BLUE;
+    if (score >= 90) return '#10B981';
+    if (score >= 80) return '#F59E0B';
+    if (score >= 70) return '#3B82F6';
     return '#6B7280';
   };
 
@@ -164,21 +160,21 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
       icon: Heart,
       value: matches.length,
       label: 'Matchs',
-      color: MATCHING_PRIMARY,
+      color: 'var(--searcher-500)',
       bgColor: '#FFF4E0',
     },
     {
       icon: Zap,
       value: matches.filter(m => m.compatibility_score >= 85).length,
       label: 'Top matchs',
-      color: SEMANTIC_SUCCESS,
+      color: '#10B981',
       bgColor: '#D1FAE5',
     },
     {
       icon: TrendingUp,
       value: matches.length > 0 ? Math.round(matches.reduce((a, b) => a + b.compatibility_score, 0) / matches.length) + '%' : '0%',
       label: 'Score moyen',
-      color: SEMANTIC_AMBER,
+      color: '#F59E0B',
       bgColor: '#FEF3C7',
     },
   ];
@@ -232,7 +228,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                    style={{ background: MATCHING_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Heart className="w-5 h-5 text-white" />
                   </div>
@@ -255,7 +251,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                     {unreadMessages > 0 && (
                       <span
                         className="absolute -top-1 -right-1 w-5 h-5 text-white text-[10px] font-bold rounded-full flex items-center justify-center"
-                        style={{ background: MATCHING_GRADIENT }}
+                        style={{ background: 'var(--gradient-searcher)' }}
                       >
                         {unreadMessages}
                       </span>
@@ -281,7 +277,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                       ? 'text-white shadow-md'
                       : 'text-gray-600 bg-white border border-gray-100 hover:bg-searcher-50'
                   }`}
-                  style={activeTab === 'properties' ? { background: MATCHING_GRADIENT } : {}}
+                  style={activeTab === 'properties' ? { background: 'var(--gradient-searcher)' } : {}}
                 >
                   <Building2 className="w-4 h-4" />
                   Propriétés
@@ -360,11 +356,11 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
             {/* Decorative circles */}
             <div
               className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
-              style={{ background: MATCHING_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
             <div
               className="absolute bottom-0 left-0 w-48 h-48 rounded-full blur-3xl translate-y-1/2 -translate-x-1/2 opacity-15"
-              style={{ background: MATCHING_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative flex flex-col items-center justify-center py-16 px-8">
@@ -372,7 +368,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
-                style={{ background: MATCHING_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Heart className="w-10 h-10 text-white" />
               </motion.div>
@@ -388,7 +384,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
-                    style={{ background: MATCHING_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Star className="w-4 h-4" />
                     Mon profil
@@ -478,7 +474,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                       {index < 3 && (
                         <div
                           className="absolute top-3 left-3 w-7 h-7 superellipse-lg flex items-center justify-center shadow-md"
-                          style={{ background: MATCHING_GRADIENT }}
+                          style={{ background: 'var(--gradient-searcher)' }}
                         >
                           <span className="font-bold text-white text-xs">#{index + 1}</span>
                         </div>
@@ -502,7 +498,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                           <span
                             key={i}
                             className="px-2 py-0.5 rounded-md text-[10px] font-medium"
-                            style={{ backgroundColor: '#FFF4E0', color: MATCHING_PRIMARY }}
+                            style={{ backgroundColor: '#FFF4E0', color: 'var(--searcher-500)' }}
                           >
                             {reason}
                           </span>
@@ -525,7 +521,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                             router.push(`/properties/${match.property.id}/apply`);
                           }}
                           className="flex items-center gap-1.5 px-3 py-1.5 superellipse-lg text-white text-sm font-medium shadow-sm"
-                          style={{ background: MATCHING_GRADIENT }}
+                          style={{ background: 'var(--gradient-searcher)' }}
                         >
                           <Send className="w-3.5 h-3.5" />
                           Postuler
@@ -567,8 +563,8 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 whileTap={{ scale: 0.95 }}
                 className="flex flex-col items-center gap-1"
               >
-                <Heart className="w-5 h-5" style={{ color: MATCHING_PRIMARY }} />
-                <span className="text-[10px] font-medium" style={{ color: MATCHING_PRIMARY }}>Matching</span>
+                <Heart className="w-5 h-5" style={{ color: 'var(--searcher-500)' }} />
+                <span className="text-[10px] font-medium" style={{ color: 'var(--searcher-500)' }}>Matching</span>
               </motion.div>
             </Link>
             <Link href="/searcher/favorites">
@@ -580,7 +576,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 {favorites > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: MATCHING_PRIMARY }}
+                    style={{ backgroundColor: 'var(--searcher-500)' }}
                   >
                     {favorites}
                   </span>
@@ -597,7 +593,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
                 {unreadMessages > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ background: MATCHING_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     {unreadMessages}
                   </span>

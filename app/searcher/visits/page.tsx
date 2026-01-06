@@ -30,10 +30,6 @@ import {
 } from 'lucide-react';
 
 // V3-FUN Visits Palette - Searcher Light Gradient (calendar/scheduling feel)
-const VISITS_GRADIENT = 'linear-gradient(135deg, #FFD080 0%, #FFE5A0 100%)'; // --gradient-searcher-light
-const VISITS_PRIMARY = '#FFD080';
-const VISITS_DARK = '#FFA040';
-const VISITS_LIGHT = '#FFE5A0';
 // Searcher colors for nav
 // V3 Color System - Using CSS Variables from globals.css
 // Semantic Colors
@@ -184,9 +180,9 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
 
   const getStatusConfig = (status: Visit['status']) => {
     const config = {
-      pending: { color: SEMANTIC_WARNING, bgColor: '#FEF3C7', label: 'En attente' },
-      confirmed: { color: SEMANTIC_SUCCESS, bgColor: '#D1FAE5', label: 'Confirmée' },
-      cancelled: { color: SEMANTIC_DANGER, bgColor: '#FEE2E2', label: 'Annulée' },
+      pending: { color: '#F59E0B', bgColor: '#FEF3C7', label: 'En attente' },
+      confirmed: { color: '#10B981', bgColor: '#D1FAE5', label: 'Confirmée' },
+      cancelled: { color: '#EF4444', bgColor: '#FEE2E2', label: 'Annulée' },
       completed: { color: '#6B7280', bgColor: '#F3F4F6', label: 'Terminée' }
     };
     return config[status];
@@ -215,21 +211,21 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
       icon: Calendar,
       value: visits.length,
       label: 'Total',
-      color: VISITS_DARK,
+      color: 'var(--searcher-600)',
       bgColor: '#FFF4E0',
     },
     {
       icon: CalendarClock,
       value: upcomingCount,
       label: 'À venir',
-      color: SEMANTIC_BLUE,
+      color: '#3B82F6',
       bgColor: '#DBEAFE',
     },
     {
       icon: CalendarCheck,
       value: confirmedCount,
       label: 'Confirmées',
-      color: SEMANTIC_SUCCESS,
+      color: '#10B981',
       bgColor: '#D1FAE5',
     },
   ];
@@ -289,7 +285,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                    style={{ background: VISITS_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <Calendar className="w-5 h-5 text-white" />
                   </div>
@@ -364,7 +360,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                       ? 'text-white shadow-md'
                       : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-100'
                   }`}
-                  style={filter === tab.id ? { background: VISITS_GRADIENT } : {}}
+                  style={filter === tab.id ? { background: 'var(--gradient-searcher)' } : {}}
                 >
                   {tab.label}
                 </motion.button>
@@ -386,7 +382,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
             {/* Decorative circles */}
             <div
               className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
-              style={{ background: VISITS_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative flex flex-col items-center justify-center py-16 px-8">
@@ -394,7 +390,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
-                style={{ background: VISITS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Calendar className="w-10 h-10 text-white" />
               </motion.div>
@@ -514,7 +510,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                                   whileTap={{ scale: 0.9 }}
                                   className="w-8 h-8 superellipse-lg bg-searcher-50 flex items-center justify-center hover:bg-searcher-100 transition-colors"
                                 >
-                                  <Phone className="w-3.5 h-3.5" style={{ color: VISITS_PRIMARY }} />
+                                  <Phone className="w-3.5 h-3.5" style={{ color: 'var(--searcher-500)' }} />
                                 </motion.button>
                               )}
                               <motion.button
@@ -578,7 +574,7 @@ const SearcherVisitsPage = memo(function SearcherVisitsPage() {
                 {favorites > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: SEMANTIC_PINK }}
+                    style={{ backgroundColor: '#EC4899' }}
                   >
                     {favorites}
                   </span>

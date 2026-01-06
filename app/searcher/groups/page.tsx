@@ -30,10 +30,6 @@ import {
 } from 'lucide-react';
 
 // V3-FUN Groups Palette - Searcher Soft Gradient (community feel)
-const GROUPS_GRADIENT = 'linear-gradient(135deg, #FFF9E6 0%, #FFD080 100%)'; // --gradient-searcher-soft
-const GROUPS_PRIMARY = '#FFD080';
-const GROUPS_DARK = '#FFA040';
-const GROUPS_LIGHT = '#FFF9E6';
 // Searcher colors for nav
 // V3 Color System - Using CSS Variables from globals.css
 // Semantic Colors
@@ -145,21 +141,21 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
       icon: UsersRound,
       value: groups.length,
       label: 'Groupes',
-      color: GROUPS_PRIMARY,
+      color: 'var(--searcher-500)',
       bgColor: '#FFF9E6',
     },
     {
       icon: Users,
       value: totalMembers,
       label: 'Membres',
-      color: SEMANTIC_BLUE,
+      color: '#3B82F6',
       bgColor: '#DBEAFE',
     },
     {
       icon: Crown,
       value: adminGroups,
       label: 'Admin',
-      color: SEARCHER_PRIMARY,
+      color: 'var(--searcher-500)',
       bgColor: '#FEF3C7',
     },
   ];
@@ -212,7 +208,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                    style={{ background: GROUPS_GRADIENT }}
+                    style={{ background: 'var(--gradient-searcher)' }}
                   >
                     <UsersRound className="w-5 h-5 text-white" />
                   </div>
@@ -229,7 +225,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/groups/create')}
                 className="flex items-center gap-2 px-4 py-2 superellipse-xl text-white text-sm font-medium shadow-md"
-                style={{ background: GROUPS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Plus className="w-4 h-4" />
                 <span className="hidden sm:inline">Créer un groupe</span>
@@ -280,7 +276,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
             {/* Decorative circles */}
             <div
               className="absolute top-0 right-0 w-64 h-64 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2 opacity-20"
-              style={{ background: GROUPS_GRADIENT }}
+              style={{ background: 'var(--gradient-searcher)' }}
             />
 
             <div className="relative flex flex-col items-center justify-center py-16 px-8">
@@ -288,7 +284,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-20 h-20 superellipse-2xl flex items-center justify-center mb-6 shadow-lg"
-                style={{ background: GROUPS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <UserPlus className="w-10 h-10 text-white" />
               </motion.div>
@@ -303,7 +299,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/searcher/groups/create')}
                 className="px-6 py-3 superellipse-xl text-white font-medium shadow-md flex items-center gap-2"
-                style={{ background: GROUPS_GRADIENT }}
+                style={{ background: 'var(--gradient-searcher)' }}
               >
                 <Sparkles className="w-4 h-4" />
                 Créer mon premier groupe
@@ -337,7 +333,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                         <div className="flex items-start gap-3 flex-1">
                           <div
                             className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0 shadow-md"
-                            style={{ background: GROUPS_GRADIENT }}
+                            style={{ background: 'var(--gradient-searcher)' }}
                           >
                             <Users className="w-6 h-6 text-white" />
                           </div>
@@ -432,7 +428,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                               }}
                               className="w-9 h-9 superellipse-xl bg-searcher-50 flex items-center justify-center hover:bg-searcher-100 transition-colors"
                             >
-                              <MessageCircle className="w-4 h-4" style={{ color: GROUPS_PRIMARY }} />
+                              <MessageCircle className="w-4 h-4" style={{ color: 'var(--searcher-500)' }} />
                             </motion.button>
                             {group.is_owner && (
                               <motion.button
@@ -500,7 +496,7 @@ const SearcherGroupsPage = memo(function SearcherGroupsPage() {
                 {favorites > 0 && (
                   <span
                     className="absolute -top-1 -right-1 w-4 h-4 text-white text-[9px] font-bold rounded-full flex items-center justify-center"
-                    style={{ backgroundColor: SEMANTIC_PINK }}
+                    style={{ backgroundColor: '#EC4899' }}
                   >
                     {favorites}
                   </span>

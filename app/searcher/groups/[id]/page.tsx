@@ -33,7 +33,6 @@ import {
 
 // V3-FUN Searcher Theme
 // V3 Color System - Using CSS Variables from globals.css
-const GROUPS_GRADIENT = 'linear-gradient(135deg, #8B5CF6 0%, #A78BFA 100%)';
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -86,7 +85,7 @@ const MobileBottomNav = memo(function MobileBottomNav() {
           <span className="text-xs text-gray-500">Explorer</span>
         </Link>
         <Link href="/searcher/groups" className="flex flex-col items-center gap-1 px-4 py-2">
-          <div className="w-10 h-10 superellipse-2xl flex items-center justify-center shadow-lg" style={{ background: GROUPS_GRADIENT }}>
+          <div className="w-10 h-10 superellipse-2xl flex items-center justify-center shadow-lg" style={{ background: 'var(--gradient-searcher)' }}>
             <Users className="w-5 h-5 text-white" />
           </div>
         </Link>
@@ -177,7 +176,7 @@ export default function GroupDetailPage() {
           <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-gray-900 mb-2">Groupe introuvable</h2>
           <p className="text-gray-600 mb-4">Ce groupe n'existe pas ou a ete supprime.</p>
-          <Button onClick={() => router.push('/searcher/groups')} style={{ background: GROUPS_GRADIENT }} className="text-white superellipse-xl">
+          <Button onClick={() => router.push('/searcher/groups')} style={{ background: 'var(--gradient-searcher)' }} className="text-white superellipse-xl">
             Retour aux groupes
           </Button>
         </div>
@@ -190,7 +189,7 @@ export default function GroupDetailPage() {
       {/* Background */}
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-violet-50/80 via-white to-searcher-50/60" />
-        <div className="absolute top-20 -left-32 w-96 h-96 rounded-full opacity-30 blur-3xl" style={{ background: GROUPS_GRADIENT }} />
+        <div className="absolute top-20 -left-32 w-96 h-96 rounded-full opacity-30 blur-3xl" style={{ background: 'var(--gradient-searcher)' }} />
         <div className="absolute top-40 -right-32 w-80 h-80 rounded-full opacity-20 blur-3xl" style={{ background: 'var(--gradient-searcher)' }} />
       </div>
 
@@ -237,7 +236,7 @@ export default function GroupDetailPage() {
         {/* Group Info Card */}
         <motion.div variants={itemVariants}>
           <Card className="superellipse-3xl border-0 shadow-lg overflow-hidden mb-6">
-            <div className="h-32 relative" style={{ background: GROUPS_GRADIENT }}>
+            <div className="h-32 relative" style={{ background: 'var(--gradient-searcher)' }}>
               <div className="absolute inset-0 bg-black/10" />
               <div className="absolute bottom-4 left-4 right-4">
                 <Badge className="bg-white/20 text-white border-0 backdrop-blur-sm">
@@ -306,7 +305,7 @@ export default function GroupDetailPage() {
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-bold text-gray-900">Membres ({group.members.length})</h2>
             {isAdmin && (
-              <Button size="sm" className="superellipse-xl text-white" style={{ background: GROUPS_GRADIENT }}>
+              <Button size="sm" className="superellipse-xl text-white" style={{ background: 'var(--gradient-searcher)' }}>
                 <UserPlus className="w-4 h-4 mr-2" />
                 Inviter
               </Button>

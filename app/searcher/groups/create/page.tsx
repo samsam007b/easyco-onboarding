@@ -277,7 +277,7 @@ export default function SearcherCreateGroupPage() {
                       onChange={(e) => setMaxMembers(parseInt(e.target.value))}
                       className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                       style={{
-                        background: `linear-gradient(to right, ${SEARCHER_PRIMARY} 0%, ${SEARCHER_PRIMARY} ${((maxMembers - 2) / 8) * 100}%, #E5E7EB ${((maxMembers - 2) / 8) * 100}%, #E5E7EB 100%)`
+                        background: `linear-gradient(to right, ${'var(--searcher-500)'} 0%, ${'var(--searcher-500)'} ${((maxMembers - 2) / 8) * 100}%, #E5E7EB ${((maxMembers - 2) / 8) * 100}%, #E5E7EB 100%)`
                       }}
                     />
                     <div className="flex justify-between text-xs text-gray-500 mt-2">
@@ -317,7 +317,7 @@ export default function SearcherCreateGroupPage() {
                       className={`relative w-14 h-8 rounded-full transition-all ${
                         isOpen ? '' : 'bg-gray-300'
                       }`}
-                      style={isOpen ? { background: SEARCHER_GRADIENT } : {}}
+                      style={isOpen ? { background: 'var(--gradient-searcher)' } : {}}
                     >
                       <div
                         className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all ${
@@ -341,7 +341,7 @@ export default function SearcherCreateGroupPage() {
                       className={`relative w-14 h-8 rounded-full transition-all ${
                         requiresApproval ? '' : 'bg-gray-300'
                       }`}
-                      style={requiresApproval ? { background: SEARCHER_GRADIENT } : {}}
+                      style={requiresApproval ? { background: 'var(--gradient-searcher)' } : {}}
                     >
                       <div
                         className={`absolute top-1 w-6 h-6 bg-white rounded-full shadow-md transition-all ${
@@ -577,7 +577,7 @@ export default function SearcherCreateGroupPage() {
                 {/* Benefits */}
                 <div
                   className="superellipse-2xl p-6 border border-searcher-200"
-                  style={{ background: SEARCHER_GRADIENT_SOFT }}
+                  style={{ background: 'var(--gradient-searcher-soft)' }}
                 >
                   <div className="flex items-start gap-3">
                     <Check className="w-5 h-5 text-searcher-600 flex-shrink-0 mt-0.5" />
@@ -646,7 +646,7 @@ export default function SearcherCreateGroupPage() {
               {/* Invite Code */}
               <div
                 className="superellipse-2xl p-6 mb-6 border-2 border-searcher-200"
-                style={{ background: SEARCHER_GRADIENT_SOFT }}
+                style={{ background: 'var(--gradient-searcher-soft)' }}
               >
                 <div className="text-center">
                   <p className="text-sm font-semibold text-gray-700 mb-2">
