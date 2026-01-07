@@ -430,10 +430,10 @@ export default function SwipePage() {
       </div>
 
       {/* Card Stack with Piles */}
-      <div className="max-w-7xl mx-auto relative px-4">
-        <div className="relative h-[500px] md:h-[550px] mb-6">
+      <div className="max-w-7xl mx-auto relative px-2 sm:px-4">
+        <div className="relative h-[400px] sm:h-[500px] md:h-[550px] mb-6">
           {/* Left Pile - Disliked */}
-          <div className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20">
+          <div className="absolute left-0 sm:left-4 md:left-8 top-1/2 -translate-y-1/2 z-20">
             <CardPile
               type="pass"
               cards={passedUsers}
@@ -442,7 +442,7 @@ export default function SwipePage() {
           </div>
 
           {/* Center - Current Card Stack */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 w-full max-w-md h-full">
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 w-full max-w-[200px] sm:max-w-xs md:max-w-md h-full">
             {!currentCard ? (
               <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white superellipse-3xl shadow-2xl">
                 <div className="w-24 h-24 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center mb-6">
@@ -558,7 +558,7 @@ export default function SwipePage() {
           </div>
 
           {/* Right Pile - Liked */}
-          <div className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20">
+          <div className="absolute right-0 sm:right-4 md:right-8 top-1/2 -translate-y-1/2 z-20">
             <CardPile
               type="like"
               cards={likedUsers}
@@ -586,7 +586,7 @@ export default function SwipePage() {
               </p>
 
               {/* Score Breakdown */}
-              <div className="grid grid-cols-5 gap-3 mb-4">
+              <div className="grid grid-cols-3 sm:grid-cols-5 gap-2 sm:gap-3 mb-4">
                 {[
                   { label: matching.swipe?.breakdown?.lifestyle || 'Lifestyle', score: currentCard.compatibility_result.breakdown.lifestyle, max: 30 },
                   { label: matching.swipe?.breakdown?.social || 'Social', score: currentCard.compatibility_result.breakdown.social, max: 25 },
@@ -644,28 +644,28 @@ export default function SwipePage() {
         <motion.div
           layout
           className={cn(
-            "flex items-center justify-center gap-6 relative z-50",
-            isCardExpanded ? "mt-8 mb-8" : "mt-6"
+            "flex items-center justify-center gap-3 sm:gap-4 md:gap-6 relative z-50",
+            isCardExpanded ? "mt-6 sm:mt-8 mb-6 sm:mb-8" : "mt-4 sm:mt-6"
           )}
         >
           {/* Pass Button */}
           <button
             onClick={handlePass}
             disabled={isAnimating}
-            className="w-16 h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
             aria-label="Pass"
           >
-            <X className="w-8 h-8 text-red-500" />
+            <X className="w-7 h-7 sm:w-8 sm:h-8 text-red-500" />
           </button>
 
           {/* Undo Button */}
           <button
             onClick={handleUndo}
             disabled={swipeHistory.length === 0 || isAnimating}
-            className="w-12 h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-white shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
             aria-label="Undo"
           >
-            <RotateCcw className="w-5 h-5 text-gray-600" />
+            <RotateCcw className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" />
           </button>
 
           {/* Info Button - Show/Hide compatibility */}
@@ -673,24 +673,24 @@ export default function SwipePage() {
             onClick={() => setIsCardExpanded(!isCardExpanded)}
             disabled={isAnimating}
             className={cn(
-              "w-12 h-12 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all active:scale-95 disabled:opacity-50",
+              "w-10 h-10 sm:w-12 sm:h-12 rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-all active:scale-95 disabled:opacity-50",
               isCardExpanded
                 ? "bg-orange-500 text-white"
                 : "bg-white text-orange-600"
             )}
             aria-label="Info"
           >
-            <Info className="w-5 h-5" />
+            <Info className="w-4 h-4 sm:w-5 sm:h-5" />
           </button>
 
           {/* Like Button */}
           <button
             onClick={handleLike}
             disabled={isAnimating}
-            className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
             aria-label="Like"
           >
-            <Heart className="w-8 h-8 text-white fill-current" />
+            <Heart className="w-7 h-7 sm:w-8 sm:h-8 text-white fill-current" />
           </button>
         </motion.div>
       )}

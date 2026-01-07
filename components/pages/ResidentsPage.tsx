@@ -86,7 +86,7 @@ export default function ResidentsPage() {
       {/* Split Hero Section */}
       <div className="pt-24 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
             {/* Left: Content */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -214,7 +214,7 @@ export default function ResidentsPage() {
             </span>
           </motion.h2>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (

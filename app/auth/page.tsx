@@ -353,7 +353,7 @@ function AuthContent() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
       {/* Header */}
-      <header className="px-6 py-4 flex justify-between items-center">
+      <header className="px-4 sm:px-6 py-4 flex justify-between items-center">
         <Link href="/" className="inline-flex items-center gap-2 text-owner-700 hover:text-owner-900 transition-colors">
           <ArrowLeft className="w-5 h-5" />
           <span className="font-semibold">{t('auth.login.backToHome')}</span>
@@ -362,7 +362,7 @@ function AuthContent() {
       </header>
 
       {/* Main Content */}
-      <main className="flex items-center justify-center px-6 py-12">
+      <main className="flex items-center justify-center px-4 sm:px-6 py-8 sm:py-12">
         <div className="w-full max-w-md">
           {/* Logo/Title */}
           <div className="text-center mb-8">
@@ -375,7 +375,7 @@ function AuthContent() {
           </div>
 
           {/* Auth Form */}
-          <div className="bg-white superellipse-3xl shadow-xl p-8">
+          <div className="bg-white superellipse-3xl shadow-xl p-5 sm:p-6 md:p-8">
             {/* Mode Toggle */}
             <div className="flex gap-2 mb-6 bg-gray-100 p-1 rounded-full">
               <button

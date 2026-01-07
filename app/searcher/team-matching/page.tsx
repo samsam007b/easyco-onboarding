@@ -267,7 +267,7 @@ export default function TeamMatchingComingSoon() {
           {/* Features Cards */}
           <motion.div
             variants={itemVariants}
-            className="grid md:grid-cols-3 gap-6 mb-12"
+            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-12"
           >
             {features.map((feature, index) => {
               const Icon = feature.icon;
@@ -323,7 +323,7 @@ export default function TeamMatchingComingSoon() {
               Comment ca marche ?
             </h2>
 
-            <div className="grid md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
               {steps.map((step, index) => (
                 <motion.div
                   key={index}

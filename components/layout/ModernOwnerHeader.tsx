@@ -329,7 +329,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: -10, scale: 0.95 }}
                           transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                          className="absolute left-0 mt-3 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
+                          className="absolute left-0 mt-3 w-[calc(100vw-2rem)] sm:w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
                         >
                           {/* Domain header */}
                           <div className="px-4 py-3 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)' }}>
@@ -467,7 +467,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
                     >
                       <div className="px-4 py-3 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)' }}>
                         <h3 className="font-semibold text-gray-900">{notifications?.title || 'Notifications'}</h3>
@@ -565,7 +565,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                       initial={{ opacity: 0, y: -10, scale: 0.95 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
-                      className="absolute right-0 mt-2 w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-72 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
                     >
                       {/* Profile Header */}
                       <div className="px-5 py-4" style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)' }}>

@@ -358,7 +358,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", duration: 0.3 }}
-                      className="absolute right-0 mt-2 w-80 bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
                     >
                       {/* Header with subtle gradient background */}
                       <div className="px-5 py-4 border-b border-gray-100" style={{ background: '#FEF2EE' }}>
@@ -510,7 +510,7 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      className="absolute right-0 mt-2 w-80 bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
+                      className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-20"
                     >
                       {/* Premium Header with Gradient */}
                       <div className="relative px-5 py-5 text-white" style={{ background: '#e05747' }}>
