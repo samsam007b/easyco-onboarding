@@ -220,8 +220,8 @@ export const SwipeCard = memo(function SwipeCard({
               quality={85}
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-orange-200 via-orange-100 to-yellow-100 flex items-center justify-center">
-              <div className="text-7xl font-bold text-orange-600 opacity-30">
+            <div className="w-full h-full bg-gradient-to-br from-resident-200 via-resident-100 to-resident-50 flex items-center justify-center">
+              <div className="text-7xl font-bold text-resident-600 opacity-30">
                 {user.first_name.charAt(0)}{user.last_name.charAt(0)}
               </div>
             </div>
@@ -234,10 +234,7 @@ export const SwipeCard = memo(function SwipeCard({
             {isScoreReliable ? (
               // Normal score badge
               <div
-                className="px-4 py-2.5 superellipse-2xl shadow-xl backdrop-blur-md border-2 border-white/50"
-                style={{
-                  background: `linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFCE7E 100%)`
-                }}
+                className="px-4 py-2.5 superellipse-2xl shadow-xl backdrop-blur-md border-2 border-white/50 bg-gradient-to-br from-searcher-500 to-searcher-400"
               >
                 <div className="flex items-center gap-2">
                   <Sparkles
@@ -335,7 +332,7 @@ export const SwipeCard = memo(function SwipeCard({
                         {/* CTA Button */}
                         <Link href="/profile/enhance" onClick={(e) => e.stopPropagation()}>
                           <Button
-                            className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold shadow-lg"
+                            className="w-full bg-searcher-600 hover:bg-searcher-700 text-white font-semibold shadow-lg"
                           >
                             <UserCog className="w-4 h-4 mr-2" />
                             {matching.profile?.enhanceProfile || 'Enrichir mon profil'}
