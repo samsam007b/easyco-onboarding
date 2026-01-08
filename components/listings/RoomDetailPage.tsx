@@ -191,7 +191,7 @@ export function RoomDetailPage({
                 {/* Aesthetic Score Badge */}
                 {aesthetics && (
                   <div className="text-center">
-                    <div className="inline-flex items-center gap-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full font-semibold">
+                    <div className="inline-flex items-center gap-1 bg-gradient-to-r from-searcher-500 to-searcher-600 text-white px-4 py-2 rounded-full font-semibold">
                       <Sparkles className="w-5 h-5" />
                       <span className="text-lg">{aestheticScore}/10</span>
                     </div>
@@ -209,7 +209,7 @@ export function RoomDetailPage({
             {aesthetics && (
               <div className="bg-white superellipse-xl p-6 shadow-sm">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                  <Sparkles className="w-5 h-5 text-purple-600" />
+                  <Sparkles className="w-5 h-5 text-searcher-600" />
                   Room Aesthetics & Atmosphere
                 </h3>
 
@@ -264,7 +264,7 @@ export function RoomDetailPage({
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Palette className="w-5 h-5 text-purple-500" />
+                          <Palette className="w-5 h-5 text-searcher-500" />
                           <span className="font-medium">Design Style</span>
                         </div>
                         {aesthetics.design_quality_rating && (
@@ -311,7 +311,7 @@ export function RoomDetailPage({
                     <div className="space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
-                          <Bed className="w-5 h-5 text-indigo-500" />
+                          <Bed className="w-5 h-5 text-searcher-500" />
                           <span className="font-medium">Furniture</span>
                         </div>
                         {aesthetics.furniture_quality_rating && (
@@ -490,13 +490,13 @@ export function RoomDetailPage({
               <div className="space-y-3">
                 <button
                   onClick={onBookVisit}
-                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md"
+                  className="w-full bg-gradient-to-r from-searcher-500 to-searcher-600 text-white py-3 rounded-lg font-semibold hover:from-searcher-600 hover:to-searcher-700 transition-all shadow-md"
                 >
                   Book a Visit
                 </button>
                 <button
                   onClick={onContactOwner}
-                  className="w-full border-2 border-purple-600 text-purple-600 py-3 rounded-lg font-semibold hover:bg-purple-50 transition-colors"
+                  className="w-full border-2 border-searcher-600 text-searcher-600 py-3 rounded-lg font-semibold hover:bg-searcher-50 transition-colors"
                 >
                   Contact Owner
                 </button>
@@ -560,7 +560,7 @@ function FeatureItem({
 
 function FeaturePill({ icon, label }: { icon: string; label: string }) {
   return (
-    <div className="flex items-center gap-2 px-3 py-2 bg-purple-50 rounded-lg text-sm text-purple-900">
+    <div className="flex items-center gap-2 px-3 py-2 bg-searcher-50 rounded-lg text-sm text-searcher-900">
       <span>{icon}</span>
       <span>{label}</span>
     </div>
