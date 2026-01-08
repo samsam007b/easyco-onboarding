@@ -57,7 +57,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
       case 'favorite':
         return <Heart className="w-5 h-5 text-red-500" />;
       case 'property_update':
-        return <Home className="w-5 h-5 text-purple-500" />;
+        return <Home className="w-5 h-5 text-owner-500" />;
       default:
         return <Bell className="w-5 h-5 text-gray-500" />;
     }
@@ -123,7 +123,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
       {isOpen && (
         <div className="absolute top-full right-0 mt-2 w-96 max-w-[calc(100vw-2rem)] bg-white superellipse-2xl shadow-2xl border border-gray-100 overflow-hidden z-50">
           {/* Header */}
-          <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-purple-50 to-yellow-50">
+          <div className="p-4 border-b border-gray-200 bg-gradient-to-r from-owner-50 to-searcher-50">
             <div className="flex items-center justify-between mb-2">
               <h3 className="text-lg font-bold text-gray-900">{notificationsT?.title || 'Notifications'}</h3>
               <button
@@ -175,7 +175,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
                     key={notification.id}
                     onClick={() => handleNotificationClick(notification)}
                     className={`w-full p-4 text-left hover:bg-gray-50 transition-colors relative ${
-                      !notification.read ? 'bg-purple-50/50' : ''
+                      !notification.read ? 'bg-owner-50/50' : ''
                     }`}
                   >
                     <div className="flex items-start gap-3">
@@ -224,7 +224,7 @@ export default function NotificationsDropdown({ userId }: NotificationsDropdownP
                   setIsOpen(false);
                   router.push('/notifications');
                 }}
-                className="w-full text-center text-sm text-[#9c5698] font-semibold hover:text-[#311B92] transition-colors"
+                className="w-full text-center text-sm text-owner-600 font-semibold hover:text-owner-700 transition-colors"
               >
                 {notificationsT?.viewAll || 'View all notifications'}
               </button>
