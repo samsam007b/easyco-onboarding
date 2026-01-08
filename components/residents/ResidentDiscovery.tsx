@@ -176,7 +176,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
     return (
       <div className="bg-white/80 backdrop-blur-sm superellipse-3xl p-12 border border-gray-200 text-center">
         <div className="max-w-md mx-auto">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-orange-100 to-pink-100 flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-resident-100 to-resident-100 flex items-center justify-center mx-auto mb-4">
             <Users className="w-10 h-10 text-gray-600" />
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -194,7 +194,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                 setLikedProfiles([]);
                 setPassedProfiles([]);
               }}
-              className="rounded-full bg-gradient-to-r from-orange-200/70 to-pink-200/70 text-gray-900"
+              className="rounded-full bg-gradient-to-r from-resident-200/70 to-resident-200/70 text-gray-900"
             >
               Recommencer
             </Button>
@@ -210,14 +210,14 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Heart className="w-6 h-6 text-pink-500" />
+            <Heart className="w-6 h-6 text-resident-500" />
             Nouveau Résident Discovery
           </h2>
           <p className="text-gray-600">
             Trouvez le colocataire parfait pour votre résidence
           </p>
         </div>
-        <Badge className="bg-gradient-to-r from-orange-100 to-pink-100 text-gray-800 border-orange-200">
+        <Badge className="bg-gradient-to-r from-resident-100 to-resident-100 text-gray-800 border-resident-200">
           {currentIndex + 1} / {searchers.length}
         </Badge>
       </div>
@@ -236,7 +236,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
             >
               <div className="bg-white superellipse-3xl shadow-2xl overflow-hidden border-2 border-gray-200">
                 {/* Image/Avatar Section */}
-                <div className="relative h-80 bg-gradient-to-br from-orange-200 to-pink-200">
+                <div className="relative h-80 bg-gradient-to-br from-resident-200 to-resident-200">
                   {currentSearcher.avatar_url ? (
                     <img
                       src={currentSearcher.avatar_url}
@@ -305,7 +305,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                           )}
                           {currentSearcher.onboarding_data.personality.social_level && (
                             <div className="flex items-center gap-2 text-sm">
-                              <Users className="w-4 h-4 text-orange-600" />
+                              <Users className="w-4 h-4 text-resident-600" />
                               <span className="text-gray-600">Social:</span>
                               <span className="font-semibold text-gray-900">
                                 {currentSearcher.onboarding_data.personality.social_level}/10
@@ -314,7 +314,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                           )}
                           {currentSearcher.onboarding_data.personality.noise_tolerance && (
                             <div className="flex items-center gap-2 text-sm">
-                              <Volume2 className="w-4 h-4 text-purple-600" />
+                              <Volume2 className="w-4 h-4 text-resident-600" />
                               <span className="text-gray-600">Bruit:</span>
                               <span className="font-semibold text-gray-900">
                                 {currentSearcher.onboarding_data.personality.noise_tolerance}/10
@@ -323,7 +323,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                           )}
                           {currentSearcher.onboarding_data.personality.sleep_schedule && (
                             <div className="flex items-center gap-2 text-sm">
-                              <Moon className="w-4 h-4 text-indigo-600" />
+                              <Moon className="w-4 h-4 text-resident-600" />
                               <span className="text-gray-600">Sommeil:</span>
                               <span className="font-semibold text-gray-900">
                                 {currentSearcher.onboarding_data.personality.sleep_schedule}
@@ -342,7 +342,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                           {currentSearcher.onboarding_data.interests.map((interest, i) => (
                             <Badge
                               key={i}
-                              className="bg-gradient-to-r from-orange-100 to-pink-100 text-gray-800 border-orange-200"
+                              className="bg-gradient-to-r from-resident-100 to-resident-100 text-gray-800 border-resident-200"
                             >
                               {interest}
                             </Badge>
@@ -370,7 +370,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                     <p className="text-gray-700 line-clamp-2">{currentSearcher.bio}</p>
                     <button
                       onClick={() => setShowDetails(true)}
-                      className="text-sm text-orange-600 font-semibold mt-2 flex items-center gap-1 hover:gap-2 transition-all"
+                      className="text-sm text-resident-600 font-semibold mt-2 flex items-center gap-1 hover:gap-2 transition-all"
                     >
                       Voir plus
                       <ChevronRight className="w-4 h-4" />
