@@ -32,7 +32,7 @@ export function QuickAccessBar({ items, className }: QuickAccessBarProps) {
           <Button
             key={index}
             variant="outline"
-            className="flex-shrink-0 superellipse-2xl px-6 py-6 hover:bg-purple-50 hover:border-purple-300 relative"
+            className="flex-shrink-0 superellipse-2xl px-6 py-6 hover:bg-searcher-50 hover:border-searcher-300 relative"
             onClick={item.onClick}
           >
             <div className="flex items-center gap-2">
@@ -41,7 +41,7 @@ export function QuickAccessBar({ items, className }: QuickAccessBarProps) {
               {item.count !== undefined && item.count > 0 && (
                 <Badge
                   variant="secondary"
-                  className="ml-1 bg-purple-100 text-purple-700"
+                  className="ml-1 bg-searcher-100 text-searcher-700"
                 >
                   {item.count}
                 </Badge>
