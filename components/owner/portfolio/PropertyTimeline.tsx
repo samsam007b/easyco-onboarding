@@ -76,8 +76,8 @@ const eventConfig: Record<string, {
   },
   application_received: {
     icon: FileText,
-    color: '#7C3AED',
-    bgColor: 'bg-purple-100',
+    color: 'hsl(var(--owner-600))',
+    bgColor: 'bg-owner-100',
   },
   application_approved: {
     icon: CheckCircle,
@@ -91,8 +91,8 @@ const eventConfig: Record<string, {
   },
   lease_created: {
     icon: FileText,
-    color: '#9c5698',
-    bgColor: 'bg-pink-100',
+    color: 'hsl(var(--owner-500))',
+    bgColor: 'bg-owner-100',
   },
   property_created: {
     icon: Home,
@@ -113,8 +113,8 @@ const categoryConfig: Record<TimelineCategory, {
   tenant: { label: 'Locataires', color: '#F59E0B' },
   maintenance: { label: 'Maintenance', color: '#2563EB' },
   payment: { label: 'Paiements', color: '#059669' },
-  application: { label: 'Candidatures', color: '#7C3AED' },
-  lease: { label: 'Baux', color: '#9c5698' },
+  application: { label: 'Candidatures', color: 'hsl(var(--owner-600))' },
+  lease: { label: 'Baux', color: 'hsl(var(--owner-500))' },
   property: { label: 'Propriété', color: '#6B7280' },
 };
 
@@ -197,7 +197,7 @@ export function PropertyTimeline({
   if (loading) {
     return (
       <div className={cn('flex flex-col items-center justify-center py-12', className)}>
-        <Loader2 className="w-8 h-8 animate-spin text-purple-500 mb-4" />
+        <Loader2 className="w-8 h-8 animate-spin text-owner-500 mb-4" />
         <p className="text-gray-500">Loading history...</p>
       </div>
     );
@@ -207,10 +207,9 @@ export function PropertyTimeline({
     return (
       <div className={cn('flex flex-col items-center justify-center py-12', className)}>
         <div
-          className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
-          style={{ background: 'linear-gradient(135deg, rgba(156,86,152,0.1), rgba(194,86,107,0.1))' }}
+          className="w-16 h-16 rounded-full flex items-center justify-center mb-4 bg-gradient-to-br from-owner-50 to-owner-100"
         >
-          <Calendar className="w-8 h-8 text-purple-400" />
+          <Calendar className="w-8 h-8 text-owner-400" />
         </div>
         <p className="text-gray-500 text-center">Aucun événement dans l'historique</p>
         <p className="text-sm text-gray-400 mt-1">
@@ -241,10 +240,10 @@ export function PropertyTimeline({
           <p className="text-lg font-bold text-emerald-700">{timelineData.stats.paymentsReceived}</p>
           <p className="text-[10px] text-emerald-600">Paiements</p>
         </div>
-        <div className="bg-purple-50 superellipse-xl p-3 text-center">
-          <Calendar className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-          <p className="text-lg font-bold text-purple-700">{timelineData.stats.totalEvents}</p>
-          <p className="text-[10px] text-purple-600">Total</p>
+        <div className="bg-owner-50 superellipse-xl p-3 text-center">
+          <Calendar className="w-5 h-5 text-owner-600 mx-auto mb-1" />
+          <p className="text-lg font-bold text-owner-700">{timelineData.stats.totalEvents}</p>
+          <p className="text-[10px] text-owner-600">Total</p>
         </div>
       </div>
 

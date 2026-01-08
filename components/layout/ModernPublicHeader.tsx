@@ -128,10 +128,10 @@ export default function ModernPublicHeader({
                       className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
                       style={{
                         borderTopColor: item.color === 'yellow'
-                          ? '#ffa000'
+                          ? 'hsl(var(--searcher-500))'
                           : item.color === 'orange'
-                          ? '#e05747'
-                          : '#9c5698'
+                          ? 'hsl(var(--resident-500))'
+                          : 'hsl(var(--owner-500))'
                       }}
                       initial={{ opacity: 0, y: -5 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -147,15 +147,15 @@ export default function ModernPublicHeader({
                       "relative z-10 flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-semibold transition-all",
                       isActive
                         ? item.color === 'yellow'
-                          ? "text-yellow-700 bg-yellow-50"
+                          ? "text-searcher-700 bg-searcher-50"
                           : item.color === 'orange'
-                          ? "text-orange-700 bg-orange-50"
-                          : "text-purple-700 bg-purple-50"
+                          ? "text-resident-700 bg-resident-50"
+                          : "text-owner-700 bg-owner-50"
                         : item.color === 'yellow'
-                        ? "text-gray-600 hover:text-yellow-700 hover:bg-yellow-50"
+                        ? "text-gray-600 hover:text-searcher-700 hover:bg-searcher-50"
                         : item.color === 'orange'
-                        ? "text-gray-600 hover:text-orange-700 hover:bg-orange-50"
-                        : "text-gray-600 hover:text-purple-700 hover:bg-purple-50"
+                        ? "text-gray-600 hover:text-resident-700 hover:bg-resident-50"
+                        : "text-gray-600 hover:text-owner-700 hover:bg-owner-50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -251,15 +251,15 @@ export default function ModernPublicHeader({
                             <span className={cn(
                               "font-medium transition-all flex-1 text-left",
                               language === lang.code
-                                ? "bg-gradient-to-r from-purple-600 via-orange-500 to-yellow-500 bg-clip-text text-transparent font-semibold"
+                                ? "bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 bg-clip-text text-transparent font-semibold"
                                 : resolvedTheme === 'dark'
-                                  ? "text-gray-200 group-hover:bg-gradient-to-r group-hover:from-purple-400 group-hover:via-orange-400 group-hover:to-yellow-400 group-hover:bg-clip-text group-hover:text-transparent"
-                                  : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-purple-600 group-hover:via-orange-500 group-hover:to-yellow-500 group-hover:bg-clip-text group-hover:text-transparent"
+                                  ? "text-gray-200 group-hover:bg-gradient-to-r group-hover:from-owner-400 group-hover:via-resident-400 group-hover:to-searcher-400 group-hover:bg-clip-text group-hover:text-transparent"
+                                  : "text-gray-700 group-hover:bg-gradient-to-r group-hover:from-owner-600 group-hover:via-resident-500 group-hover:to-searcher-500 group-hover:bg-clip-text group-hover:text-transparent"
                             )}>
                               {lang.label}
                             </span>
                             {language === lang.code && (
-                              <span className="text-purple-500 text-xs">✓</span>
+                              <span className="text-owner-500 text-xs">✓</span>
                             )}
                           </button>
                           {index < languages.length - 1 && (
@@ -326,8 +326,8 @@ export default function ModernPublicHeader({
                         "flex items-center gap-3 px-4 py-3 superellipse-lg transition-all text-left",
                         isActive
                           ? resolvedTheme === 'dark'
-                            ? "bg-purple-900/30 text-purple-300 font-semibold"
-                            : "bg-purple-100 text-purple-900 font-semibold"
+                            ? "bg-owner-900/30 text-owner-300 font-semibold"
+                            : "bg-owner-100 text-owner-900 font-semibold"
                           : resolvedTheme === 'dark'
                             ? "text-gray-200 hover:bg-white/5"
                             : "text-gray-700 hover:bg-gray-100"
@@ -356,8 +356,8 @@ export default function ModernPublicHeader({
                       className={cn(
                         "w-full rounded-full",
                         resolvedTheme === 'dark'
-                          ? "border-purple-400 text-purple-300"
-                          : "border-purple-600 text-purple-600"
+                          ? "border-owner-400 text-owner-300"
+                          : "border-owner-600 text-owner-600"
                       )}
                     >
                       {nav.login}

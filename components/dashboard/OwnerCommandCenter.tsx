@@ -631,14 +631,14 @@ export default function OwnerCommandCenter() {
                       onClick={() => {/* Export functionality */}}
                       className="cursor-pointer"
                     >
-                      <Download className="w-4 h-4 mr-2" style={{ color: '#6366f1' }} />
+                      <Download className="w-4 h-4 mr-2" style={{ color: '#af5682' }} />
                       Exporter rapport
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       onClick={() => router.push('/dashboard/owner/finances')}
                       className="cursor-pointer"
                     >
-                      <PieChart className="w-4 h-4 mr-2" style={{ color: '#8b5cf6' }} />
+                      <PieChart className="w-4 h-4 mr-2" style={{ color: '#b85676' }} />
                       Analytics & Finances
                     </DropdownMenuItem>
                   </DropdownMenuGroup>
