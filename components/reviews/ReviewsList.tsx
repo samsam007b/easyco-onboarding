@@ -137,7 +137,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
             key={star}
             className={`${starSize} ${
               star <= rating
-                ? 'fill-orange-500 text-orange-500'
+                ? 'fill-searcher-500 text-searcher-500'
                 : 'text-gray-300'
             }`}
           />
@@ -228,7 +228,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
           <CardContent className="pt-6">
             <div className="flex items-center gap-6 mb-6">
               <div className="text-center">
-                <div className="text-4xl font-bold text-orange-600 mb-2">
+                <div className="text-4xl font-bold text-searcher-600 mb-2">
                   {averages.overall}
                 </div>
                 {renderStars(Math.round(parseFloat(averages.overall)), 'lg')}
@@ -243,7 +243,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                     <span className="text-sm text-gray-600 w-32">{t?.cleanliness?.[language] || 'Cleanliness'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-orange-500 h-2 rounded-full"
+                        className="bg-searcher-500 h-2 rounded-full"
                         style={{ width: `${(parseFloat(averages.cleanliness) / 5) * 100}%` }}
                       />
                     </div>
@@ -255,7 +255,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                     <span className="text-sm text-gray-600 w-32">{t?.location?.[language] || 'Location'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-orange-500 h-2 rounded-full"
+                        className="bg-searcher-500 h-2 rounded-full"
                         style={{ width: `${(parseFloat(averages.location) / 5) * 100}%` }}
                       />
                     </div>
@@ -267,7 +267,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                     <span className="text-sm text-gray-600 w-32">{t?.valueForMoney?.[language] || 'Value for money'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-orange-500 h-2 rounded-full"
+                        className="bg-searcher-500 h-2 rounded-full"
                         style={{ width: `${(parseFloat(averages.value) / 5) * 100}%` }}
                       />
                     </div>
@@ -279,7 +279,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                     <span className="text-sm text-gray-600 w-32">{t?.amenities?.[language] || 'Amenities'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-orange-500 h-2 rounded-full"
+                        className="bg-searcher-500 h-2 rounded-full"
                         style={{ width: `${(parseFloat(averages.amenities) / 5) * 100}%` }}
                       />
                     </div>
@@ -291,7 +291,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                     <span className="text-sm text-gray-600 w-32">{t?.communication?.[language] || 'Communication'}</span>
                     <div className="flex-1 bg-gray-200 rounded-full h-2">
                       <div
-                        className="bg-orange-500 h-2 rounded-full"
+                        className="bg-searcher-500 h-2 rounded-full"
                         style={{ width: `${(parseFloat(averages.communication) / 5) * 100}%` }}
                       />
                     </div>
@@ -311,7 +311,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
                 {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center flex-shrink-0 text-white font-semibold">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-searcher-400 to-searcher-600 flex items-center justify-center flex-shrink-0 text-white font-semibold">
                   {review.reviewer.profile_photo_url ? (
                     <img
                       src={review.reviewer.profile_photo_url}
@@ -373,13 +373,13 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
                     onClick={() => handleHelpfulClick(review.id)}
                     className={`text-sm ${
                       helpfulVotes.has(review.id)
-                        ? 'text-orange-600'
+                        ? 'text-searcher-600'
                         : 'text-gray-600'
                     }`}
                   >
                     <ThumbsUp
                       className={`w-4 h-4 mr-1 ${
-                        helpfulVotes.has(review.id) ? 'fill-orange-600' : ''
+                        helpfulVotes.has(review.id) ? 'fill-searcher-600' : ''
                       }`}
                     />
                     {t?.helpful?.[language] || 'Helpful'} ({review.helpful_count})
