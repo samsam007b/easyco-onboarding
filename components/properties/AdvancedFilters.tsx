@@ -181,7 +181,7 @@ export function AdvancedFilters({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-purple-600" />
+            <Filter className="w-5 h-5 text-searcher-600" />
             <h3 className="text-lg font-semibold text-gray-900">Filtres avancés</h3>
             {activeFiltersCount > 0 && (
               <Badge variant="default" className="ml-2">
@@ -200,7 +200,7 @@ export function AdvancedFilters({
           {/* Price Range */}
           <div>
             <Label className="flex items-center gap-2 mb-3">
-              <Euro className="w-4 h-4 text-purple-600" />
+              <Euro className="w-4 h-4 text-searcher-600" />
               <span>Budget mensuel</span>
             </Label>
             <div className="space-y-3">
@@ -232,13 +232,13 @@ export function AdvancedFilters({
           {/* Property Type */}
           <div>
             <Label className="flex items-center gap-2 mb-3">
-              <Home className="w-4 h-4 text-purple-600" />
+              <Home className="w-4 h-4 text-searcher-600" />
               <span>Type de bien</span>
             </Label>
             <select
               value={localFilters.propertyType}
               onChange={(e) => updateFilter('propertyType', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-searcher-600 focus:border-transparent"
             >
               {PROPERTY_TYPES.map((type) => (
                 <option key={type.value} value={type.value}>
@@ -252,7 +252,7 @@ export function AdvancedFilters({
           <div className="grid grid-cols-2 gap-4">
             <div>
               <Label className="flex items-center gap-2 mb-3">
-                <Bed className="w-4 h-4 text-purple-600" />
+                <Bed className="w-4 h-4 text-searcher-600" />
                 <span>Chambres</span>
               </Label>
               <div className="flex gap-2 flex-wrap">
@@ -272,7 +272,7 @@ export function AdvancedFilters({
 
             <div>
               <Label className="flex items-center gap-2 mb-3">
-                <Bath className="w-4 h-4 text-purple-600" />
+                <Bath className="w-4 h-4 text-searcher-600" />
                 <span>Salles de bain</span>
               </Label>
               <div className="flex gap-2 flex-wrap">
@@ -357,7 +357,7 @@ export function AdvancedFilters({
             <select
               value={localFilters.floor}
               onChange={(e) => updateFilter('floor', e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-searcher-600 focus:border-transparent"
             >
               {FLOOR_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
