@@ -255,7 +255,7 @@ export default function CalendarEventModal({
             className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
           >
             <div
-              className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden pointer-events-auto relative border-2 border-orange-100"
+              className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden pointer-events-auto relative border-2 border-resident-100"
               style={{
                 boxShadow: `0 25px 80px ${ACCENT_SHADOW}`,
               }}
@@ -274,7 +274,7 @@ export default function CalendarEventModal({
               <div className="max-h-[90vh] overflow-y-auto relative">
                 {/* Header - sticky with solid background */}
                 <div
-                  className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between z-30"
+                  className="sticky top-0 border-b-2 border-resident-100 px-6 py-5 flex items-center justify-between z-30"
                   style={{ background: '#FFF5F0' }}
                 >
                 <div className="flex items-center gap-4">
@@ -326,8 +326,8 @@ export default function CalendarEventModal({
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder="ex: Réunion de colocation"
                     className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
-                      errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
-                    } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
+                      errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-resident-200'
+                    } focus:outline-none focus:border-resident-400 focus:bg-resident-50/30`}
                   />
                   {errors.title && (
                     <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.title}</p>
@@ -350,7 +350,7 @@ export default function CalendarEventModal({
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder="Ajoutez des détails sur l'événement..."
                     rows={3}
-                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-resident-200 focus:outline-none focus:border-resident-400 focus:bg-resident-50/30 resize-none transition-all"
                   />
                 </div>
 
@@ -371,8 +371,8 @@ export default function CalendarEventModal({
                       value={date}
                       onChange={(e) => setDate(e.target.value)}
                       className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
-                        errors.date ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
-                      } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
+                        errors.date ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-resident-200'
+                      } focus:outline-none focus:border-resident-400 focus:bg-resident-50/30`}
                     />
                     {errors.date && (
                       <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.date}</p>
@@ -394,8 +394,8 @@ export default function CalendarEventModal({
                       value={time}
                       onChange={(e) => setTime(e.target.value)}
                       className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
-                        errors.time ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
-                      } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
+                        errors.time ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-resident-200'
+                      } focus:outline-none focus:border-resident-400 focus:bg-resident-50/30`}
                     />
                     {errors.time && (
                       <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.time}</p>
@@ -419,7 +419,7 @@ export default function CalendarEventModal({
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
                     placeholder="ex: Salon, cuisine, extérieur..."
-                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-resident-200 focus:outline-none focus:border-resident-400 focus:bg-resident-50/30 transition-all"
                   />
                 </div>
 
@@ -448,7 +448,7 @@ export default function CalendarEventModal({
                           whileTap={{ scale: 0.99 }}
                           className={`flex items-center gap-3 p-3 superellipse-xl cursor-pointer transition-all ${
                             selectedAttendees.includes(member.user_id)
-                              ? 'bg-orange-50 border-2 border-orange-200'
+                              ? 'bg-resident-50 border-2 border-resident-200'
                               : 'hover:bg-gray-50 border-2 border-transparent'
                           }`}
                         >
