@@ -104,13 +104,13 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
   return (
     <div className="bg-white superellipse-xl shadow-sm border overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-4 border-b bg-gradient-to-r from-purple-50 to-pink-50">
+      <div className="px-6 py-4 border-b bg-gradient-to-r from-searcher-50 to-searcher-50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-purple-600" />
+            <Sparkles className="w-5 h-5 text-searcher-600" />
             <h3 className="font-semibold text-lg">{t.title}</h3>
             {activeFilterCount > 0 && (
-              <span className="px-2 py-1 bg-purple-600 text-white text-xs rounded-full">
+              <span className="px-2 py-1 bg-searcher-600 text-white text-xs rounded-full">
                 {activeFilterCount}
               </span>
             )}
@@ -118,7 +118,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
           {activeFilterCount > 0 && (
             <button
               onClick={onReset}
-              className="text-sm text-purple-600 hover:text-purple-700 font-medium flex items-center gap-1"
+              className="text-sm text-searcher-600 hover:text-searcher-700 font-medium flex items-center gap-1"
             >
               <X className="w-4 h-4" />
               {t.clearAll}
@@ -144,7 +144,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
                 onClick={() => handleDesignStyleToggle(style)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   filters.design_styles?.includes(style)
-                    ? 'bg-purple-600 text-white shadow-md'
+                    ? 'bg-searcher-600 text-white shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -170,7 +170,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
                   min_design_quality: parseInt(e.target.value),
                 })
               }
-              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-purple-600"
+              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-searcher-600"
             />
             <div className="flex justify-between text-xs text-gray-500 mt-1">
               <span>{t.basic}</span>
@@ -290,7 +290,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
                 onClick={() => handleFurnitureStyleToggle(style)}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   filters.furniture_styles?.includes(style)
-                    ? 'bg-indigo-600 text-white shadow-md'
+                    ? 'bg-searcher-600 text-white shadow-md'
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
@@ -330,7 +330,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
       <div className="px-6 py-4 bg-gray-50 flex gap-3">
         <button
           onClick={onApply}
-          className="flex-1 bg-gradient-to-r from-purple-600 to-pink-600 text-white py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md"
+          className="flex-1 bg-gradient-to-r from-searcher-600 to-searcher-700 text-white py-3 rounded-lg font-semibold hover:from-searcher-700 hover:to-searcher-800 transition-all shadow-md"
         >
           {t.applyFilters}
         </button>
@@ -373,7 +373,7 @@ function FilterSection({
           <Icon className="w-5 h-5 text-gray-600" />
           <span className="font-medium">{title}</span>
           {activeCount !== undefined && activeCount > 0 && (
-            <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs rounded-full font-medium">
+            <span className="px-2 py-0.5 bg-searcher-100 text-searcher-700 text-xs rounded-full font-medium">
               {activeCount}
             </span>
           )}
