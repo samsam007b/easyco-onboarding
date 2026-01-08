@@ -21,6 +21,20 @@ Tu as partagé ta clé API Gemini dans notre conversation Claude Code.
 
 ---
 
+## ⚠️ Note sur les Exemples dans la Documentation
+
+**IMPORTANT**: Ce document utilise des clés API factices (avec des `X`) dans tous les exemples.
+
+**Pourquoi jamais de vraies clés, même révoquées**:
+1. GitHub Secret Scanning alerte automatiquement sur les patterns de clés
+2. Les clés révoquées peuvent parfois être réactivées par erreur
+3. Elles donnent des indices sur la structure de tes vraies clés
+4. Les bots scrapent GitHub pour trouver des clés, même dans la doc
+
+**Règle**: Toujours utiliser `XXX...` ou `[REDACTED]` dans les exemples de code.
+
+---
+
 ## 🛡️ Règles d'Or - Clés API
 
 ### 1. **NE JAMAIS partager dans:**
@@ -43,8 +57,8 @@ Tu as partagé ta clé API Gemini dans notre conversation Claude Code.
 // ✅ BON - Variable d'environnement
 const apiKey = process.env.GEMINI_API_KEY;
 
-// ❌ MAUVAIS - Clé en dur
-const apiKey = "AIzaSyBxjemu_DxDbaHgKLWGDtcdNrPCoqBKx-w";
+// ❌ MAUVAIS - Clé en dur (EXEMPLE FACTICE - NE FONCTIONNE PAS)
+const apiKey = "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";
 ```
 
 ---
@@ -150,7 +164,7 @@ git clone --mirror https://github.com/ton-user/izzico.git izzico-backup
 bfg --replace-text passwords.txt izzico.git
 
 # passwords.txt contient:
-# AIzaSyBxjemu_DxDbaHgKLWGDtcdNrPCoqBKx-w==[REMOVED]
+# AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX==[REMOVED]
 
 # Force push (DANGER)
 cd izzico.git
