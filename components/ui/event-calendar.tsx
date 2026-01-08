@@ -73,7 +73,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
   const getColorClasses = (color?: string) => {
     switch (color) {
       case 'orange':
-        return 'bg-orange-500 hover:bg-orange-600 border-orange-600';
+        return 'bg-resident-500 hover:bg-resident-600 border-resident-600';
       case 'blue':
         return 'bg-blue-500 hover:bg-blue-600 border-blue-600';
       case 'green':
@@ -81,9 +81,9 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
       case 'red':
         return 'bg-red-500 hover:bg-red-600 border-red-600';
       case 'purple':
-        return 'bg-purple-500 hover:bg-purple-600 border-purple-600';
+        return 'bg-owner-500 hover:bg-owner-600 border-owner-600';
       default:
-        return 'bg-orange-500 hover:bg-orange-600 border-orange-600';
+        return 'bg-searcher-500 hover:bg-searcher-600 border-searcher-600';
     }
   };
 
@@ -126,7 +126,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
         {weekDays.map((day) => (
           <div
             key={day}
-            className="bg-gradient-to-r from-orange-50 to-orange-100/50 py-3 text-center text-sm font-semibold text-gray-700"
+            className="bg-gradient-to-r from-searcher-50 to-searcher-100/50 py-3 text-center text-sm font-semibold text-gray-700"
           >
             {day}
           </div>
@@ -144,23 +144,23 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
               key={idx}
               onClick={() => handleDateClick(day)}
               className={`
-                min-h-[120px] bg-white p-2 cursor-pointer transition-all hover:bg-orange-50/50
+                min-h-[120px] bg-white p-2 cursor-pointer transition-all hover:bg-searcher-50/50
                 ${!isCurrentMonth ? 'bg-gray-50 text-gray-400' : ''}
-                ${isSelected ? 'ring-2 ring-orange-500 ring-inset' : ''}
+                ${isSelected ? 'ring-2 ring-searcher-500 ring-inset' : ''}
               `}
             >
               <div className="flex items-center justify-between mb-1">
                 <span
                   className={`
                     text-sm font-medium inline-flex items-center justify-center w-7 h-7 rounded-full
-                    ${isTodayDate ? 'bg-orange-600 text-white' : ''}
+                    ${isTodayDate ? 'bg-searcher-600 text-white' : ''}
                     ${!isCurrentMonth ? 'text-gray-400' : 'text-gray-700'}
                   `}
                 >
                   {format(day, 'd')}
                 </span>
                 {dayEvents.length > 0 && (
-                  <span className="text-xs font-medium text-orange-600 bg-orange-100 px-1.5 py-0.5 rounded-full">
+                  <span className="text-xs font-medium text-searcher-600 bg-searcher-100 px-1.5 py-0.5 rounded-full">
                     {dayEvents.length}
                   </span>
                 )}
@@ -192,7 +192,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
                   </motion.div>
                 ))}
                 {dayEvents.length > 3 && (
-                  <div className="text-xs text-orange-600 font-medium pl-1">
+                  <div className="text-xs text-searcher-600 font-medium pl-1">
                     +{dayEvents.length - 3} {t?.moreEvents?.[language] || 'de plus'}
                   </div>
                 )}
@@ -245,7 +245,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
                         <div className="space-y-2">
                           {event.start && (
                             <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <Clock className="w-4 h-4 text-orange-600" />
+                              <Clock className="w-4 h-4 text-searcher-600" />
                               <span>
                                 {format(new Date(event.start), 'HH:mm', { locale })}
                                 {event.end && ` - ${format(new Date(event.end), 'HH:mm', { locale })}`}
@@ -254,7 +254,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
                           )}
                           {event.location && (
                             <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <MapPin className="w-4 h-4 text-orange-600" />
+                              <MapPin className="w-4 h-4 text-searcher-600" />
                               <span>{event.location}</span>
                             </div>
                           )}
