@@ -157,12 +157,12 @@ export default function DatePicker({
           className={cn(
             "h-7 w-7 rounded-full text-xs font-medium transition-all",
             isSelected
-              ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md scale-110"
+              ? "bg-gradient-to-r from-searcher-600 to-searcher-700 text-white shadow-md scale-110"
               : isToday
-              ? "bg-purple-100 text-purple-900 hover:bg-purple-200"
+              ? "bg-searcher-100 text-searcher-900 hover:bg-searcher-200"
               : isPast
               ? "text-gray-300 cursor-not-allowed"
-              : "text-gray-700 hover:bg-purple-50"
+              : "text-gray-700 hover:bg-searcher-50"
           )}
         >
           {day}
@@ -226,7 +226,7 @@ export default function DatePicker({
       {/* Flexible option */}
       <button
         onClick={handleFlexibleClick}
-        className="w-full py-1.5 px-3 rounded-lg text-xs font-medium text-purple-700 bg-purple-50 hover:bg-purple-100 transition-colors"
+        className="w-full py-1.5 px-3 rounded-lg text-xs font-medium text-searcher-700 bg-searcher-50 hover:bg-searcher-100 transition-colors"
       >
         Flexible
       </button>
