@@ -173,8 +173,8 @@ export function InvitationCard({
           ) : (
             <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg ${
               isOwner
-                ? 'bg-gradient-to-br from-purple-500 to-indigo-600'
-                : 'bg-gradient-to-br from-orange-500 to-pink-600'
+                ? 'bg-gradient-to-br from-owner-500 to-owner-600'
+                : 'bg-gradient-to-br from-resident-400 to-resident-600'
             }`}>
               {inviterName.charAt(0).toUpperCase()}
             </div>
@@ -194,15 +194,15 @@ export function InvitationCard({
 
       {/* Property info */}
       <div className={`p-4 superellipse-xl mb-4 ${
-        isOwner ? 'bg-purple-50' : 'bg-orange-50'
+        isOwner ? 'bg-owner-50' : 'bg-resident-50'
       }`}>
         <div className="flex items-center gap-2 mb-2">
           {isOwner ? (
-            <Building2 className="w-5 h-5 text-purple-600" />
+            <Building2 className="w-5 h-5 text-owner-600" />
           ) : (
-            <Home className="w-5 h-5 text-orange-600" />
+            <Home className="w-5 h-5 text-resident-600" />
           )}
-          <span className={`text-sm font-medium ${isOwner ? 'text-purple-700' : 'text-orange-700'}`}>
+          <span className={`text-sm font-medium ${isOwner ? 'text-owner-700' : 'text-resident-700'}`}>
             {t?.asRole?.[language] || 'As'} {isOwner ? (t?.roleOwner?.[language] || 'owner') : (t?.roleResident?.[language] || 'resident')}
           </span>
         </div>
@@ -245,7 +245,7 @@ export function InvitationCard({
             disabled={isLoading}
             className={`flex-1 superellipse-xl text-white ${
               isOwner
-                ? 'bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700'
+                ? 'bg-gradient-to-r from-owner-500 to-owner-600 hover:from-owner-600 hover:to-owner-700'
                 : 'bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] hover:opacity-90'
             }`}
           >
