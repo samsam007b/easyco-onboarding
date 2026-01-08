@@ -18,7 +18,7 @@ export function ProTipCard({ message, ctaText, onCtaClick, progress }: ProTipCar
   const t = getSection('components')?.proTipCard;
 
   return (
-    <Card className="superellipse-2xl shadow-lg bg-gradient-to-br from-yellow-400 to-yellow-500 border-0">
+    <Card className="superellipse-2xl shadow-lg bg-gradient-to-br from-searcher-400 to-searcher-500 border-0">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="p-3 bg-white/20 superellipse-xl">
@@ -37,7 +37,7 @@ export function ProTipCard({ message, ctaText, onCtaClick, progress }: ProTipCar
             )}
             <Button
               onClick={onCtaClick}
-              className="bg-white text-yellow-600 hover:bg-white/90 font-semibold superellipse-xl"
+              className="bg-white text-searcher-600 hover:bg-white/90 font-semibold superellipse-xl"
             >
               {ctaText}
             </Button>
