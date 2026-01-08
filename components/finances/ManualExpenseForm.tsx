@@ -189,8 +189,8 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
             onChange={(e) => setTitle(e.target.value)}
             placeholder="ex: Courses Carrefour"
             className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
-              errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
-            } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
+              errors.title ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-resident-200'
+            } focus:outline-none focus:border-resident-400 focus:bg-resident-50/30`}
           />
           {errors.title && (
             <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.title}</p>
@@ -217,8 +217,8 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
               onChange={(e) => setAmount(e.target.value)}
               placeholder="0.00"
               className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all text-xl font-bold ${
-                errors.amount ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
-              } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
+                errors.amount ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-resident-200'
+              } focus:outline-none focus:border-resident-400 focus:bg-resident-50/30`}
             />
             <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">€</span>
           </div>
@@ -305,8 +305,8 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
             value={date}
             onChange={(e) => setDate(e.target.value)}
             className={`w-full px-4 py-3.5 superellipse-2xl border-2 transition-all ${
-              errors.date ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-orange-200'
-            } focus:outline-none focus:border-orange-400 focus:bg-orange-50/30`}
+              errors.date ? 'border-red-400 bg-red-50' : 'border-gray-200 hover:border-resident-200'
+            } focus:outline-none focus:border-resident-400 focus:bg-resident-50/30`}
           />
           {errors.date && (
             <p className="text-red-500 text-sm mt-1.5 font-medium">{errors.date}</p>
@@ -329,7 +329,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Détails supplémentaires..."
             rows={2}
-            className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
+            className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-resident-200 focus:outline-none focus:border-resident-400 focus:bg-resident-50/30 resize-none transition-all"
           />
         </div>
 
