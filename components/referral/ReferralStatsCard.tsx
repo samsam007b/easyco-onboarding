@@ -85,7 +85,7 @@ export function ReferralStatsCard({ stats, isLoading }: ReferralStatsCardProps) 
         </div>
 
         {/* Credits Display */}
-        <div className="p-4 bg-gradient-to-r from-owner-50 to-purple-50 superellipse-xl border border-owner-200">
+        <div className="p-4 bg-gradient-to-r from-owner-50 to-owner-50 superellipse-xl border border-owner-200">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
               <Gift className="w-5 h-5 text-owner-600" />
@@ -104,7 +104,7 @@ export function ReferralStatsCard({ stats, isLoading }: ReferralStatsCardProps) 
             </div>
             <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
               <div
-                className="h-full bg-gradient-to-r from-owner-500 to-purple-500 transition-all"
+                className="h-full bg-gradient-to-r from-owner-500 to-owner-600 transition-all"
                 style={{
                   width: `${Math.min((stats.credits_earned / 24) * 100, 100)}%`,
                 }}
