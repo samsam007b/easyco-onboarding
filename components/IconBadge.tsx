@@ -1,9 +1,10 @@
 'use client';
 
+import { Icon as FeatherIcon } from 'react-feather';
 import { LucideIcon } from 'lucide-react';
 
 interface IconBadgeProps {
-  icon: LucideIcon;
+  icon: FeatherIcon | LucideIcon;
   variant?:
     | 'purple'
     | 'blue'
@@ -14,12 +15,29 @@ interface IconBadgeProps {
     | 'pink'
     | 'teal'
     | 'indigo'
-    | 'cyan';
+    | 'cyan'
+    | 'owner'
+    | 'resident'
+    | 'searcher';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
 }
 
 const variantStyles = {
+  // Role-based variants (Izzico brand colors - use these for role-specific UI)
+  owner: {
+    background: 'bg-owner-100',
+    icon: 'text-owner-600',
+  },
+  resident: {
+    background: 'bg-resident-100',
+    icon: 'text-resident-600',
+  },
+  searcher: {
+    background: 'bg-searcher-100',
+    icon: 'text-searcher-600',
+  },
+  // Categorical/semantic color variants (for non-role contexts like relationship types, status indicators, etc.)
   purple: {
     background: 'bg-purple-100',
     icon: 'text-purple-600',
@@ -83,7 +101,7 @@ const sizeStyles = {
 
 export default function IconBadge({
   icon: Icon,
-  variant = 'purple',
+  variant = 'blue',
   size = 'md',
   className = '',
 }: IconBadgeProps) {
