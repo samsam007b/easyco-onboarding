@@ -74,8 +74,8 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
     if (!score) return 'bg-gray-100 text-gray-600';
     if (score >= 90) return 'bg-emerald-100 text-emerald-700';
     if (score >= 80) return 'bg-green-100 text-green-700';
-    if (score >= 70) return 'bg-yellow-100 text-yellow-700';
-    return 'bg-orange-100 text-orange-700';
+    if (score >= 70) return 'bg-searcher-100 text-searcher-700';
+    return 'bg-searcher-100 text-searcher-700';
   };
 
   const getCompatibilityEmoji = (score?: number) => {
@@ -112,7 +112,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
   // Core info badges
   const coreInfo = [
-    { icon: Euro, label: `${property.monthly_rent}€/${matching.swipe?.perMonth || 'mois'}`, color: 'text-orange-600' },
+    { icon: Euro, label: `${property.monthly_rent}€/${matching.swipe?.perMonth || 'mois'}`, color: 'text-searcher-600' },
     { icon: Bed, label: `${property.bedrooms} ${matching.swipe?.bedrooms || 'chambres'}`, color: 'text-blue-600' },
     { icon: Bath, label: `${property.bathrooms} ${matching.swipe?.bathrooms || 'SdB'}`, color: 'text-purple-600' },
     { icon: Users, label: `${residents.length}/${property.total_rooms || property.bedrooms} ${matching.swipe?.roommates || 'colocataires'}`, color: 'text-green-600' },
@@ -181,8 +181,8 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 quality={90}
               />
             ) : (
-              <div className="w-full h-full bg-gradient-to-br from-orange-100 via-orange-50 to-yellow-50 flex items-center justify-center">
-                <Home className="w-24 h-24 text-orange-300" />
+              <div className="w-full h-full bg-gradient-to-br from-searcher-100 via-searcher-50 to-searcher-50 flex items-center justify-center">
+                <Home className="w-24 h-24 text-searcher-300" />
               </div>
             )}
 
@@ -212,7 +212,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             {/* Featured Badge */}
             {property.is_featured && (
               <div className="absolute top-4 left-4">
-                <Badge className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white border-0 shadow-lg">
+                <Badge className="bg-gradient-to-r from-searcher-400 to-searcher-500 text-white border-0 shadow-lg">
                   <Star className="w-3 h-3 mr-1 fill-current" />
                   {matching.swipe?.favorite || 'Coup de cœur'}
                 </Badge>
@@ -248,12 +248,12 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
           {/* Content Area - with glassmorphism */}
           <div className="relative h-[45%] overflow-hidden">
             {/* Animated background lights - Slow right to left */}
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-              <div className="absolute top-0 left-1/4 w-40 h-40 bg-orange-300/60 rounded-full blur-2xl"
+            <div className="absolute inset-0 bg-gradient-to-br from-searcher-50 via-searcher-100 to-searcher-50">
+              <div className="absolute top-0 left-1/4 w-40 h-40 bg-searcher-300/60 rounded-full blur-2xl"
                    style={{ animation: 'float 20s ease-in-out infinite' }} />
-              <div className="absolute bottom-0 right-1/3 w-48 h-48 bg-purple-300/50 rounded-full blur-2xl"
+              <div className="absolute bottom-0 right-1/3 w-48 h-48 bg-searcher-400/50 rounded-full blur-2xl"
                    style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
-              <div className="absolute top-1/2 left-1/2 w-44 h-44 bg-yellow-200/50 rounded-full blur-2xl"
+              <div className="absolute top-1/2 left-1/2 w-44 h-44 bg-searcher-200/50 rounded-full blur-2xl"
                    style={{ animation: 'float 22s ease-in-out infinite 10s' }} />
             </div>
 
@@ -282,10 +282,10 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
             {/* Residents Preview */}
             {residents.length > 0 && (
-              <div className="mb-4 p-4 bg-gradient-to-r from-orange-50 to-yellow-50 superellipse-xl">
+              <div className="mb-4 p-4 bg-gradient-to-r from-searcher-50 to-searcher-100 superellipse-xl">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm font-semibold text-gray-700 flex items-center gap-2">
-                    <Users className="w-4 h-4 text-orange-600" />
+                    <Users className="w-4 h-4 text-searcher-600" />
                     {matching.swipe?.currentRoommates || 'Colocataires actuels'}
                   </p>
                   <span className="text-xs text-gray-600">{residents.length} {residents.length > 1 ? (matching.swipe?.persons || 'personnes') : (matching.swipe?.person || 'personne')}</span>
@@ -294,7 +294,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                   {residents.slice(0, 4).map((resident, idx) => (
                     <div
                       key={idx}
-                      className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-md"
+                      className="w-10 h-10 rounded-full bg-gradient-to-br from-searcher-400 to-searcher-600 flex items-center justify-center text-white font-bold text-sm border-2 border-white shadow-md"
                       title={resident.full_name}
                     >
                       {resident.full_name?.charAt(0) || '?'}
@@ -345,7 +345,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
                 e.stopPropagation();
                 onCardClick?.();
               }}
-              className="w-full py-3 bg-gradient-to-r from-orange-50 to-yellow-50 border-2 border-orange-200 superellipse-xl flex items-center justify-center gap-2 text-orange-700 font-semibold hover:from-orange-100 hover:to-yellow-100 transition-all group"
+              className="w-full py-3 bg-gradient-to-r from-searcher-50 to-searcher-100 border-2 border-searcher-200 superellipse-xl flex items-center justify-center gap-2 text-searcher-700 font-semibold hover:from-searcher-100 hover:to-searcher-200 transition-all group"
             >
               <span>{matching.swipe?.viewAllDetails || 'Voir tous les détails'}</span>
               <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -459,7 +459,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
 
                 {/* CTA Button */}
                 <Button
-                  className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
+                  className="w-full bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700 text-white"
                   size="lg"
                   onClick={() => {
                     setShowDetails(false);

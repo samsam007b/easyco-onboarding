@@ -135,7 +135,7 @@ export default function InvoicesPage() {
         );
       case 'pending':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-1 superellipse-lg bg-yellow-100 text-yellow-800 text-xs font-semibold">
+          <span className="inline-flex items-center gap-1 px-2.5 py-1 superellipse-lg bg-searcher-100 text-searcher-800 text-xs font-semibold">
             <Calendar className="w-3 h-3" />
             {t?.status?.pending?.[language] || 'Pending'}
           </span>

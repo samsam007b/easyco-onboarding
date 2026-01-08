@@ -83,7 +83,7 @@ export default function PrivateCodesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-white to-orange-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-resident-50 via-white to-resident-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
@@ -94,7 +94,7 @@ export default function PrivateCodesPage() {
 
   if (!codes) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50/30 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gradient-to-br from-resident-50 via-white to-resident-50/30 flex items-center justify-center p-4">
         <Card className="p-8 max-w-md text-center">
           <div className="w-16 h-16 superellipse-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-8 h-8 text-gray-400" />
@@ -117,7 +117,7 @@ export default function PrivateCodesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-resident-50 via-white to-resident-50/30">
       {/* Header */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Button

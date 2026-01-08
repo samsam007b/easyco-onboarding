@@ -242,7 +242,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
   if (isLoading) {
     return (
       <div className="min-h-[400px] flex items-center justify-center">
-        <div className="animate-spin w-8 h-8 border-4 border-orange-500 border-t-transparent rounded-full" />
+        <div className="animate-spin w-8 h-8 border-4 border-searcher-500 border-t-transparent rounded-full" />
       </div>
     );
   }
@@ -290,7 +290,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
                   transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
                   className="absolute -top-1 -right-1"
                 >
-                  <Sparkles className="w-4 h-4 text-amber-400" />
+                  <Sparkles className="w-4 h-4 text-searcher-400" />
                 </motion.div>
               </div>
 
@@ -386,13 +386,13 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <Zap className="w-5 h-5 text-orange-500" />
+                <Zap className="w-5 h-5 text-searcher-500" />
                 Actions recommandées
               </h2>
               {urgentActions.length > 3 && (
                 <button
                   onClick={() => setShowAllActions(!showAllActions)}
-                  className="text-sm text-orange-600 hover:text-orange-700 font-medium"
+                  className="text-sm text-searcher-600 hover:text-searcher-700 font-medium"
                 >
                   {showAllActions ? 'Voir moins' : `Voir tout (${urgentActions.length})`}
                 </button>
@@ -423,12 +423,12 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
           >
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                <Star className="w-5 h-5 text-orange-500" />
+                <Star className="w-5 h-5 text-searcher-500" />
                 Vos Top Matches
               </h2>
               <Link
                 href="/dashboard/searcher/matching"
-                className="text-sm text-orange-600 hover:text-orange-700 font-medium flex items-center gap-1"
+                className="text-sm text-searcher-600 hover:text-searcher-700 font-medium flex items-center gap-1"
               >
                 Voir tout <ChevronRight className="w-4 h-4" />
               </Link>
@@ -494,7 +494,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
                         {match.location}
                       </p>
                       <div className="flex items-center justify-between mt-3">
-                        <span className="text-lg font-bold text-orange-600">
+                        <span className="text-lg font-bold text-searcher-600">
                           €{match.price}/mois
                         </span>
                         <span className="text-xs text-gray-500 flex items-center gap-1">
@@ -520,12 +520,12 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
             <div className="bg-white/80 backdrop-blur-sm superellipse-2xl shadow-sm border border-gray-200 p-5">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-bold text-gray-900 flex items-center gap-2">
-                  <Bell className="w-4 h-4 text-orange-500" />
+                  <Bell className="w-4 h-4 text-searcher-500" />
                   Alertes sauvées
                 </h3>
                 <Link
                   href="/dashboard/searcher/saved-searches"
-                  className="text-xs text-orange-600 hover:text-orange-700 font-medium"
+                  className="text-xs text-searcher-600 hover:text-searcher-700 font-medium"
                 >
                   Gérer
                 </Link>
@@ -537,7 +537,7 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
                     <Link
                       key={search.id}
                       href={`/dashboard/searcher?search=${search.id}`}
-                      className="flex items-center justify-between p-3 superellipse-xl bg-gray-50 hover:bg-orange-50 transition-all group"
+                      className="flex items-center justify-between p-3 superellipse-xl bg-gray-50 hover:bg-searcher-50 transition-all group"
                     >
                       <div className="flex-1 min-w-0">
                         <p className="font-medium text-gray-900 truncate text-sm">{search.name}</p>
@@ -574,54 +574,54 @@ export function SearcherCommandCenter({ userId, userData }: SearcherCommandCente
             {/* Quick Navigation */}
             <div className="bg-white/80 backdrop-blur-sm superellipse-2xl shadow-sm border border-gray-200 p-5">
               <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-orange-500" />
+                <Zap className="w-4 h-4 text-searcher-500" />
                 Accès rapide
               </h3>
 
               <div className="space-y-2">
                 <Link
                   href="/dashboard/searcher/groups"
-                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-orange-50 transition-all group"
+                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-searcher-50 transition-all group"
                 >
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255, 160, 64, 0.1)' }}
                   >
-                    <Users className="w-5 h-5 text-orange-600" />
+                    <Users className="w-5 h-5 text-searcher-600" />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-gray-900 text-sm">Groupes de recherche</p>
                     <p className="text-xs text-gray-500">Cherchez à plusieurs</p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-searcher-500 group-hover:translate-x-1 transition-all" />
                 </Link>
 
                 <Link
                   href="/dashboard/searcher/calendar"
-                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-orange-50 transition-all group"
+                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-searcher-50 transition-all group"
                 >
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255, 184, 92, 0.1)' }}
                   >
-                    <Calendar className="w-5 h-5 text-orange-500" />
+                    <Calendar className="w-5 h-5 text-searcher-500" />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-gray-900 text-sm">Calendrier</p>
                     <p className="text-xs text-gray-500">Vos visites planifiées</p>
                   </div>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-orange-500 group-hover:translate-x-1 transition-all" />
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-searcher-500 group-hover:translate-x-1 transition-all" />
                 </Link>
 
                 <Link
                   href="/profile"
-                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-orange-50 transition-all group"
+                  className="flex items-center gap-3 p-3 superellipse-xl hover:bg-searcher-50 transition-all group"
                 >
                   <div
                     className="w-10 h-10 superellipse-xl flex items-center justify-center"
                     style={{ background: 'rgba(255, 208, 128, 0.1)' }}
                   >
-                    <CheckCircle className="w-5 h-5 text-orange-400" />
+                    <CheckCircle className="w-5 h-5 text-searcher-400" />
                   </div>
                   <div className="flex-1">
                     <p className="font-medium text-gray-900 text-sm">Compléter mon profil</p>

@@ -27,7 +27,7 @@ import type {
 const t = {
   auth: {
     required: {
-      fr: 'Vous devez être connecté',
+      fr: 'Tu dois être connecté',
       en: 'You must be logged in',
       nl: 'U moet ingelogd zijn',
       de: 'Sie müssen angemeldet sein',

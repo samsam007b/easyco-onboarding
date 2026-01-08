@@ -125,8 +125,8 @@ export default function VendorsSettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-16"
           >
-            <div className="w-20 h-20 mx-auto mb-6 superellipse-2xl bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
-              <Users className="w-10 h-10 text-amber-600" />
+            <div className="w-20 h-20 mx-auto mb-6 superellipse-2xl bg-gradient-to-br from-searcher-100 to-searcher-200 flex items-center justify-center">
+              <Users className="w-10 h-10 text-searcher-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               Aucun prestataire enregistré
@@ -135,7 +135,7 @@ export default function VendorsSettingsPage() {
               Ajoutez vos artisans et prestataires de confiance pour faciliter la gestion de la maintenance de vos propriétés.
             </p>
             <Button
-              className="bg-gradient-to-r from-amber-500 to-orange-500 text-white superellipse-xl px-6 py-3 font-medium shadow-lg hover:shadow-xl transition-all"
+              className="bg-gradient-to-r from-searcher-500 to-resident-500 text-white superellipse-xl px-6 py-3 font-medium shadow-lg hover:shadow-xl transition-all"
               onClick={() => {
                 // TODO: Open add vendor modal
               }}
@@ -157,7 +157,7 @@ export default function VendorsSettingsPage() {
                 { icon: Sparkles, title: 'Historique', desc: 'Suivez les interventions' },
               ].map((feature, i) => (
                 <div key={i} className="p-4 superellipse-xl bg-white/60 border border-gray-200/50">
-                  <feature.icon className="w-6 h-6 text-amber-500 mb-2" />
+                  <feature.icon className="w-6 h-6 text-searcher-500 mb-2" />
                   <h3 className="font-semibold text-gray-900 text-sm">{feature.title}</h3>
                   <p className="text-xs text-gray-500">{feature.desc}</p>
                 </div>
@@ -179,7 +179,7 @@ export default function VendorsSettingsPage() {
                     <p className="text-sm text-gray-500">{vendor.specialty}</p>
                   </div>
                   {vendor.rating && (
-                    <div className="flex items-center gap-1 text-amber-500">
+                    <div className="flex items-center gap-1 text-searcher-500">
                       <Star className="w-4 h-4 fill-current" />
                       <span className="text-sm font-medium">{vendor.rating}</span>
                     </div>

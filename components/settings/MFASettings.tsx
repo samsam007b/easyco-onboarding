@@ -325,8 +325,8 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
   return (
     <div className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-purple-100 to-violet-100 flex items-center justify-center">
-          <Shield className="w-6 h-6 text-purple-700" />
+        <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-owner-100 to-owner-200 flex items-center justify-center">
+          <Shield className="w-6 h-6 text-owner-700" />
         </div>
         <div>
           <h2 className="text-xl font-bold text-gray-900">{mfa?.title || 'Two-Factor Authentication'}</h2>
@@ -359,7 +359,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               <h3 className="font-semibold text-gray-900">{mfa?.howItWorks || 'How does it work?'}</h3>
               <div className="grid gap-3">
                 <div className="flex items-start gap-3 p-3 bg-gray-50 superellipse-xl">
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
+                  <div className="w-8 h-8 rounded-lg bg-owner-100 flex items-center justify-center text-owner-700 font-bold text-sm">
                     1
                   </div>
                   <div>
@@ -370,7 +370,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-3 bg-gray-50 superellipse-xl">
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
+                  <div className="w-8 h-8 rounded-lg bg-owner-100 flex items-center justify-center text-owner-700 font-bold text-sm">
                     2
                   </div>
                   <div>
@@ -381,7 +381,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                   </div>
                 </div>
                 <div className="flex items-start gap-3 p-3 bg-gray-50 superellipse-xl">
-                  <div className="w-8 h-8 rounded-lg bg-purple-100 flex items-center justify-center text-purple-700 font-bold text-sm">
+                  <div className="w-8 h-8 rounded-lg bg-owner-100 flex items-center justify-center text-owner-700 font-bold text-sm">
                     3
                   </div>
                   <div>
@@ -397,7 +397,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             <Button
               onClick={handleStartSetup}
               disabled={isSubmitting}
-              className="w-full superellipse-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
+              className="w-full superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:from-owner-600 hover:to-owner-700"
             >
               {isSubmitting ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -478,7 +478,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               </Button>
               <Button
                 onClick={handleProceedToVerify}
-                className="flex-1 superellipse-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
+                className="flex-1 superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:from-owner-600 hover:to-owner-700"
               >
                 {mfa?.continue || 'Continue'}
               </Button>
@@ -513,12 +513,12 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
                 onChange={(e) => setVerificationCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
                 disabled={isSubmitting}
                 autoFocus
-                className="w-full text-center text-3xl font-mono tracking-[0.5em] py-4 px-6 superellipse-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                className="w-full text-center text-3xl font-mono tracking-[0.5em] py-4 px-6 superellipse-xl border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                 placeholder="------"
               />
               {isSubmitting && (
                 <div className="absolute inset-0 flex items-center justify-center bg-white/80 superellipse-xl">
-                  <Loader2 className="w-6 h-6 animate-spin text-purple-500" />
+                  <Loader2 className="w-6 h-6 animate-spin text-owner-500" />
                 </div>
               )}
             </div>
@@ -542,7 +542,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               <Button
                 onClick={handleVerify}
                 disabled={isSubmitting || verificationCode.length !== 6}
-                className="flex-1 superellipse-xl bg-gradient-to-r from-purple-500 to-violet-500 text-white hover:from-purple-600 hover:to-violet-600"
+                className="flex-1 superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:from-owner-600 hover:to-owner-700"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />

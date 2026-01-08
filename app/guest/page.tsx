@@ -50,7 +50,7 @@ interface SearchCriteria {
 const mockProperties = [
   {
     id: '1',
-    title: 'Coliving Moderne Bruxelles',
+    title: 'Co-living Moderne Bruxelles',
     city: 'Bruxelles',
     neighborhood: 'Ixelles',
     monthly_rent: 750,
@@ -72,7 +72,7 @@ const mockProperties = [
   },
   {
     id: '3',
-    title: 'Maison Coliving Verte',
+    title: 'Maison Co-living Verte',
     city: 'Bruxelles',
     neighborhood: 'Forest',
     monthly_rent: 580,
@@ -117,7 +117,7 @@ function GuestPageContent() {
       id: 'searcher' as GuestView,
       label: 'I\'m searching',
       icon: Search,
-      description: 'Find your ideal coliving',
+      description: 'Find your ideal co-living',
       color: '#ff9811',
       bgColor: 'bg-orange-50',
     },
@@ -125,7 +125,7 @@ function GuestPageContent() {
       id: 'resident' as GuestView,
       label: 'I\'m a resident',
       icon: Home,
-      description: 'Manage your coliving life',
+      description: 'Manage your co-living life',
       color: '#e05747',
       bgColor: 'bg-orange-50',
     },
@@ -633,20 +633,19 @@ function SearcherGuestView({
               >
                 <Users className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Find your ideal roommates</h3>
+              <h3 className="text-xl font-bold text-gray-900">Resident Swipe : trouve tes futurs colocs</h3>
               <Lock className="w-5 h-5" style={{ color: '#ff9811' }} />
             </div>
             <p className="text-gray-600 mb-4">
-              Our matching algorithm connects you with people who share your lifestyle,
-              your schedule and your values. Swipe to create your perfect group!
+              Swipe pour découvrir des profils vérifiés avec un score de compatibilité basé sur vos rythmes de vie et vos valeurs. Compatible ? Matche et discute. Incompatible ? Next. Simple, rapide, efficace.
             </p>
             <Button
-              onClick={() => onLockedFeature('Create your account to access smart matching')}
+              onClick={() => onLockedFeature('Create your account to access Living Match and Resident Swipe')}
               className="text-white font-semibold hover:brightness-110"
               style={{ background: 'linear-gradient(135deg, #e05747, #ff9811)' }}
             >
               <Sparkles className="w-4 h-4 mr-2" />
-              Discover matching
+              Découvrir le matching
             </Button>
           </div>
 
@@ -705,23 +704,23 @@ function ResidentGuestView({
   const features = [
     {
       icon: DollarSign,
-      title: 'Expense management',
-      description: 'Fair sharing of groceries, bills and rent with your roommates',
+      title: 'Smart Split',
+      description: 'Scanne ton ticket avec ton téléphone. Split & Scan calcule automatiquement qui paie quoi. Fini les prises de tête sur les factures — tout est clair, tout est juste.',
     },
     {
       icon: Calendar,
-      title: 'Shared calendar',
-      description: 'Coordinate household chores and house events',
+      title: 'Smart Rotation',
+      description: 'Les tâches tournent automatiquement — fini les disputes',
     },
     {
       icon: MessageCircle,
-      title: 'Group chat',
-      description: 'Easily communicate with all your roommates',
+      title: 'Living Rules',
+      description: 'Votez démocratiquement vos règles de maison',
     },
     {
       icon: Wrench,
-      title: 'Maintenance',
-      description: 'Report and track repairs with your landlord',
+      title: 'Issue Hub',
+      description: 'Une fuite ? Un problème de chauffage ? Crée un ticket en 2 clics avec photos. Ton propriétaire reçoit la demande, te répond et suit l'avancement. Tout est tracé, tout est transparent.',
     },
   ];
 
@@ -736,10 +735,10 @@ function ResidentGuestView({
       {/* Intro */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Simplify your coliving life
+          Simplifie ton quotidien en co-living
         </h2>
         <p className="text-gray-600">
-          Manage expenses, plan tasks and communicate with your roommates in one place
+          Partage des dépenses, tâches rotatives, communication fluide.
         </p>
       </div>
 
@@ -813,8 +812,8 @@ function ResidentGuestView({
           <div className="flex-1 text-center md:text-left">
             <h3 className="text-xl font-bold text-gray-900 mb-2">Your future residence</h3>
             <p className="text-gray-600 mb-4">
-              Once you have joined a coliving, you will be able to manage your entire
-              coliving life from this dashboard: expenses, tasks, communications...
+              Once you have joined a co-living, you will be able to manage your entire
+              co-living life from this dashboard: expenses, tasks, communications...
             </p>
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
               {['Rent management', 'Shared tasks', 'Group chat', 'Events'].map((tag) => (
@@ -849,12 +848,12 @@ function OwnerGuestView({
     {
       icon: Building2,
       title: 'Property management',
-      description: 'Publish and manage all your coliving listings in one place',
+      description: 'Publish and manage all your co-living listings in one place',
     },
     {
       icon: Users,
-      title: 'Tenant selection',
-      description: 'Receive applications from compatible and pre-qualified profiles',
+      title: 'Resident Match',
+      description: 'Reçois uniquement des candidatures compatibles avec tes résidents actuels. Resident Match analyse chaque profil et te présente les meilleurs matchs — mêmes valeurs, mêmes rythmes. Moins de tri, plus de qualité.',
     },
     {
       icon: DollarSign,
@@ -879,10 +878,10 @@ function OwnerGuestView({
       {/* Intro */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Manage your coliving portfolio
+          Gère ton portfolio de co-living
         </h2>
         <p className="text-gray-600">
-          Publish your listings, find the best tenants and track your performance
+          Candidatures qualifiées, résidents heureux, gestion simplifiée.
         </p>
       </div>
 

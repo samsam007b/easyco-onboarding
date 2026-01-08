@@ -535,7 +535,7 @@ export default function MyProfileOwnerPage() {
                 </span>
               </div>
               <span className="text-sm font-medium text-gray-700">
-                Profil complété
+                Living Persona complété
               </span>
             </div>
           </div>

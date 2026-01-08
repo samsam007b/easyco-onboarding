@@ -49,27 +49,27 @@ export default function PaymentsPage() {
     const role = user?.user_metadata?.user_type;
     if (role === 'owner') return {
       gradient: 'linear-gradient(135deg, #F3F1FF 0%, #F9F8FF 100%)',
-      primary: 'bg-purple-600',
-      primaryText: 'text-purple-600',
-      primaryHover: 'hover:bg-purple-700',
-      border: 'border-purple-200',
-      bg: 'bg-purple-50',
+      primary: 'bg-owner-600',
+      primaryText: 'text-owner-600',
+      primaryHover: 'hover:bg-owner-700',
+      border: 'border-owner-200',
+      bg: 'bg-owner-50',
     };
     if (role === 'resident') return {
       gradient: 'linear-gradient(135deg, #FFF3EF 0%, #FFE5DC 100%)',
-      primary: 'bg-orange-600',
-      primaryText: 'text-orange-600',
-      primaryHover: 'hover:bg-orange-700',
-      border: 'border-orange-200',
-      bg: 'bg-orange-50',
+      primary: 'bg-resident-600',
+      primaryText: 'text-resident-600',
+      primaryHover: 'hover:bg-resident-700',
+      border: 'border-resident-200',
+      bg: 'bg-resident-50',
     };
     return {
       gradient: 'linear-gradient(135deg, #FFF9E6 0%, #FFFBEA 100%)',
-      primary: 'bg-yellow-600',
-      primaryText: 'text-yellow-600',
-      primaryHover: 'hover:bg-yellow-700',
-      border: 'border-yellow-200',
-      bg: 'bg-yellow-50',
+      primary: 'bg-searcher-600',
+      primaryText: 'text-searcher-600',
+      primaryHover: 'hover:bg-searcher-700',
+      border: 'border-searcher-200',
+      bg: 'bg-searcher-50',
     };
   };
 
@@ -178,7 +178,7 @@ export default function PaymentsPage() {
                 >
                   <ArrowUpRight className="w-6 h-6 text-white" />
                 </div>
-                <TrendingUp className="w-5 h-5 text-orange-500" />
+                <TrendingUp className="w-5 h-5 text-resident-500" />
               </div>
               <p className="text-sm text-gray-600 mb-1">{t('payments.summary.totalPaid')}</p>
               <p className="text-2xl font-bold text-gray-900">
@@ -256,7 +256,7 @@ export default function PaymentsPage() {
         {upcomingPayments.length > 0 && (
           <div className="bg-white superellipse-2xl shadow-lg border border-gray-200 p-6 mb-8">
             <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-orange-500" />
+              <Calendar className="w-5 h-5 text-resident-500" />
               {t('payments.upcomingPayments')}
             </h2>
             <div className="space-y-3">
@@ -266,7 +266,7 @@ export default function PaymentsPage() {
                   className="flex items-center justify-between p-4 superellipse-xl bg-gray-50 hover:bg-gray-100 transition-colors"
                 >
                   <div className="flex items-center gap-4">
-                    <div className={`w-2 h-2 rounded-full ${payment.auto_pay_enabled ? 'bg-green-500' : 'bg-orange-500'}`}></div>
+                    <div className={`w-2 h-2 rounded-full ${payment.auto_pay_enabled ? 'bg-green-500' : 'bg-resident-500'}`}></div>
                     <div>
                       <p className="font-medium text-gray-900">
                         {getTransactionTypeLabel(payment.payment_type)}

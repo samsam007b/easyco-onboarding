@@ -62,7 +62,7 @@ export default function InvitationsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-resident-50/30 via-white to-resident-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
@@ -72,7 +72,7 @@ export default function InvitationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-resident-50/30 via-white to-resident-50/30">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -133,14 +133,14 @@ export default function InvitationsPage() {
             onClick={() => setFilter('pending')}
             className={`p-4 superellipse-xl border-2 transition-all ${
               filter === 'pending'
-                ? 'border-yellow-400 bg-yellow-50'
-                : 'border-gray-200 hover:border-yellow-200'
+                ? 'border-searcher-400 bg-searcher-50'
+                : 'border-gray-200 hover:border-searcher-200'
             }`}
           >
             <div className="flex items-center justify-center gap-2 mb-1">
-              <Clock className="w-5 h-5 text-yellow-600" />
+              <Clock className="w-5 h-5 text-searcher-600" />
             </div>
-            <p className="font-bold text-2xl text-yellow-700">{counts.pending}</p>
+            <p className="font-bold text-2xl text-searcher-700">{counts.pending}</p>
             <p className="text-xs text-gray-600">{t?.filters?.pending?.[language] || 'Pending'}</p>
           </button>
 
@@ -181,24 +181,24 @@ export default function InvitationsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="mb-6 p-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-yellow-200 superellipse-xl"
+            className="mb-6 p-4 bg-gradient-to-r from-searcher-50 to-searcher-50 border-2 border-searcher-200 superellipse-xl"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center">
-                <Clock className="w-5 h-5 text-yellow-600" />
+              <div className="w-10 h-10 rounded-full bg-searcher-100 flex items-center justify-center">
+                <Clock className="w-5 h-5 text-searcher-600" />
               </div>
               <div className="flex-1">
-                <p className="font-semibold text-yellow-800">
+                <p className="font-semibold text-searcher-800">
                   {pendingCount} {t?.alert?.invitation?.[language] || 'invitation'}{pendingCount > 1 ? 's' : ''} {t?.alert?.pending?.[language] || 'pending'}
                 </p>
-                <p className="text-sm text-yellow-700">
+                <p className="text-sm text-searcher-700">
                   {t?.alert?.respond?.[language] || 'Respond to join a shared housing'}
                 </p>
               </div>
               <Button
                 onClick={() => setFilter('pending')}
                 variant="outline"
-                className="border-yellow-300 text-yellow-700 hover:bg-yellow-100"
+                className="border-searcher-300 text-searcher-700 hover:bg-searcher-100"
               >
                 {t?.alert?.view?.[language] || 'View'}
               </Button>

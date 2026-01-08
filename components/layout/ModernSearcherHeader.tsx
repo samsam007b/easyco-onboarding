@@ -249,8 +249,8 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                     className={cn(
                       "nav-item-searcher relative z-10 flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                       isActive
-                        ? "active font-semibold bg-orange-50"
-                        : "text-gray-600 hover:bg-orange-50/50"
+                        ? "active font-semibold bg-searcher-50"
+                        : "text-gray-600 hover:bg-searcher-50/50"
                     )}
                   >
                     <Icon className="nav-icon w-4 h-4" />
@@ -277,10 +277,10 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
             {favoritesCount > 0 && (
               <Link
                 href="/dashboard/searcher/favorites"
-                className="hidden xl:flex items-center gap-2 px-4 py-2 superellipse-xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100/50 hover:shadow-md transition-all"
+                className="hidden xl:flex items-center gap-2 px-4 py-2 superellipse-xl border border-searcher-200 bg-searcher-50/50 hover:bg-searcher-100/50 hover:shadow-md transition-all"
               >
-                <Bookmark className="w-4 h-4 text-orange-600" />
-                <span className="text-sm font-medium text-orange-900">{favoritesCount} {common?.favorites?.[language] || 'favorites'}</span>
+                <Bookmark className="w-4 h-4 text-searcher-600" />
+                <span className="text-sm font-medium text-searcher-900">{favoritesCount} {common?.favorites?.[language] || 'favorites'}</span>
               </Link>
             )}
 
@@ -295,7 +295,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
               >
                 <Bell className="w-5 h-5 text-gray-700" />
                 {(matchesCount > 0 || unreadMessages > 0) && (
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-orange-500 rounded-full border-2 border-white" />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-searcher-500 rounded-full border-2 border-white" />
                 )}
               </button>
 
@@ -320,11 +320,11 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                         {matchesCount > 0 && (
                           <Link
                             href="/dashboard/searcher/groups"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
-                            <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
-                              <Heart className="w-5 h-5 text-orange-600" />
+                            <div className="w-10 h-10 rounded-full bg-searcher-100 flex items-center justify-center">
+                              <Heart className="w-5 h-5 text-searcher-600" />
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
@@ -362,14 +362,14 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                 aria-haspopup="true"
               >
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
+                  className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-searcher-200 group-hover:border-searcher-400 transition-colors"
                   style={{
                     background: 'var(--gradient-searcher)'
                   }}
                 >
                   <Search className="w-4 h-4 text-white" />
                 </div>
-                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-orange-600 transition-colors hidden md:block" />
+                <ChevronDown className="w-4 h-4 text-gray-600 group-hover:text-searcher-600 transition-colors hidden md:block" />
               </button>
 
               {/* Profile Dropdown */}
@@ -442,7 +442,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 bg-gradient-to-br from-orange-50/50 to-yellow-50/50 border-b border-orange-100/50">
+                      <div className="px-4 py-3 bg-gradient-to-br from-searcher-50/50 to-searcher-100/50 border-b border-searcher-200/50">
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
                             <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
@@ -450,7 +450,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                             </div>
                             <div className="text-xs text-gray-600">{nav.favorites}</div>
                           </div>
-                          <div className="text-center border-x border-orange-200/50">
+                          <div className="text-center border-x border-searcher-200/50">
                             <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
                               {matchesCount}
                             </div>
@@ -469,11 +469,11 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <User className="w-4 h-4 text-orange-700" />
+                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-searcher-100 to-searcher-200 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <User className="w-4 h-4 text-searcher-700" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">{common?.myProfile?.[language] || 'My Profile'}</span>
@@ -484,7 +484,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
 
                         <Link
                           href="/dashboard/searcher/saved-searches"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -499,7 +499,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -585,7 +585,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                       className={cn(
                         "flex items-center justify-between px-4 py-3 superellipse-xl transition-all",
                         isActive
-                          ? "bg-orange-50 text-orange-900 font-semibold"
+                          ? "bg-searcher-50 text-searcher-900 font-semibold"
                           : "text-gray-700 hover:bg-gray-100"
                       )}
                     >
@@ -594,7 +594,7 @@ const ModernSearcherHeader = memo(function ModernSearcherHeader({
                         {item.label}
                       </div>
                       {item.badge && (
-                        <Badge variant="error" className="bg-orange-500 hover:bg-orange-500 text-white border-0">
+                        <Badge variant="error" className="bg-searcher-500 hover:bg-searcher-500 text-white border-0">
                           {item.badge}
                         </Badge>
                       )}

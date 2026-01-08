@@ -189,7 +189,7 @@ export default function PropertyMatchesPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-yellow-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-owner-50 to-searcher-50">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600">{matching.common?.loadingMatches || 'Loading your matches...'}</p>
@@ -199,7 +199,7 @@ export default function PropertyMatchesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-yellow-50 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-owner-50 via-white to-searcher-50 p-4 md:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
@@ -208,7 +208,7 @@ export default function PropertyMatchesPage() {
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div>
-              <h1 className="text-3xl font-bold text-[#9c5698] flex items-center gap-2">
+              <h1 className="text-3xl font-bold text-owner-600 flex items-center gap-2">
                 <Sparkles className="w-8 h-8" />
                 {matching.properties?.title || 'Your Matches'}
               </h1>
@@ -249,7 +249,7 @@ export default function PropertyMatchesPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4 mb-8">
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-[#9c5698]">
+                <div className="text-2xl font-bold text-owner-600">
                   {statistics.total_matches}
                 </div>
                 <div className="text-sm text-gray-600">{matching.properties?.stats?.total || 'Total'}</div>
@@ -271,7 +271,7 @@ export default function PropertyMatchesPage() {
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-orange-600">
+                <div className="text-2xl font-bold text-searcher-600">
                   {Math.round(statistics.average_match_score)}%
                 </div>
                 <div className="text-sm text-gray-600">{matching.properties?.stats?.averageScore || 'Average score'}</div>
@@ -351,7 +351,7 @@ export default function PropertyMatchesPage() {
             <div className="text-6xl mb-4">
               <Home className="w-24 h-24 mx-auto text-gray-300" />
             </div>
-            <h3 className="text-2xl font-bold text-[#9c5698] mb-2">{matching.properties?.empty?.title || 'No matches found'}</h3>
+            <h3 className="text-2xl font-bold text-owner-600 mb-2">{matching.properties?.empty?.title || 'No matches found'}</h3>
             <p className="text-gray-600 mb-6">
               {statusFilter.length === 0
                 ? (matching.properties?.empty?.noFilter || 'Select at least one status filter')

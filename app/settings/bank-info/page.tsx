@@ -327,15 +327,15 @@ export default function BankInfoPage() {
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 bg-amber-50 superellipse-xl border border-amber-200"
+            className="mb-6 p-4 bg-searcher-50 superellipse-xl border border-searcher-200"
           >
             <div className="flex items-start gap-3">
-              <Clock className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              <Clock className="w-5 h-5 text-searcher-600 flex-shrink-0 mt-0.5" />
               <div className="text-sm">
-                <p className="font-semibold text-amber-900 mb-1">
+                <p className="font-semibold text-searcher-900 mb-1">
                   {t?.cooldown?.title?.[language] || 'Modification temporairement bloquée'}
                 </p>
-                <p className="text-amber-700">{cooldownMessage}</p>
+                <p className="text-searcher-700">{cooldownMessage}</p>
               </div>
             </div>
           </motion.div>

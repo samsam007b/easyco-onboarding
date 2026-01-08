@@ -47,13 +47,13 @@ const AssistantActionProvider = dynamic(
 // export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
 
 export const metadata: Metadata = {
-  title: "Izzico — Colocation fiable et compatible en Belgique",
-  description: "Trouve ta coloc idéale à Bruxelles, Liège, Gand. Vérification d'identité, matching intelligent, groupes pré-formés. Évite les arnaques.",
-  keywords: ['colocation Bruxelles', 'coliving Belgique', 'coloc Liège', 'coloc Gand', 'appartement partagé', 'kot étudiant', 'roommate Brussels', 'shared apartment Belgium'],
+  title: "Izzico — Co-living fiable et compatible en Belgique",
+  description: "Trouve ton espace de co-living idéal à Bruxelles, Liège, Gand. Vérification d'identité, matching intelligent, groupes pré-formés. Évite les arnaques.",
+  keywords: ['co-living Bruxelles', 'coliving Belgique', 'co-living Liège', 'co-living Gand', 'appartement partagé', 'kot étudiant', 'roommate Brussels', 'shared apartment Belgium'],
 
   // Open Graph (Facebook, LinkedIn, WhatsApp)
   openGraph: {
-    title: 'Izzico — Trouve ta coloc fiable et compatible',
+    title: 'Izzico — Trouve ton espace de co-living fiable et compatible',
     description: 'Évite les arnaques. Matching intelligent basé sur ton lifestyle. Rejoins des groupes pré-formés.',
     url: 'https://izzico.be',
     siteName: 'Izzico',
@@ -61,7 +61,7 @@ export const metadata: Metadata = {
       url: 'https://izzico.be/og-image.jpg',
       width: 1200,
       height: 630,
-      alt: 'Izzico - Plateforme de colocation fiable en Belgique',
+      alt: 'Izzico - Plateforme de co-living fiable en Belgique',
     }],
     locale: 'fr_BE',
     type: 'website',
@@ -71,8 +71,8 @@ export const metadata: Metadata = {
   // Twitter Cards
   twitter: {
     card: 'summary_large_image',
-    title: 'Izzico — Colocation fiable en Belgique',
-    description: 'Vérification ID, matching intelligent, zéro arnaque. Trouve ta coloc compatible en 3 étapes.',
+    title: 'Izzico — Co-living fiable en Belgique',
+    description: 'Vérification ID, matching intelligent, zéro arnaque. Trouve ton espace de co-living compatible en 3 étapes.',
     images: ['https://izzico.be/twitter-card.jpg'],
     creator: '@IzzicoBE',
   },

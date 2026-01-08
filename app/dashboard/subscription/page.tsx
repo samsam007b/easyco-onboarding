@@ -224,8 +224,8 @@ export default function SubscriptionPage() {
       icon: Users,
       title: 'Matching colocataires',
       description: 'Trouvez les candidats idéaux grâce à notre algorithme de compatibilité',
-      bgColor: 'bg-orange-100',
-      iconColor: 'text-orange-600',
+      bgColor: 'bg-resident-100',
+      iconColor: 'text-resident-600',
     },
     {
       icon: FileText,
@@ -262,8 +262,8 @@ export default function SubscriptionPage() {
       icon: Home,
       title: 'Colocations vérifiées',
       description: 'Accédez à des annonces de qualité avec propriétaires vérifiés',
-      bgColor: 'bg-orange-100',
-      iconColor: 'text-orange-600',
+      bgColor: 'bg-searcher-100',
+      iconColor: 'text-searcher-600',
     },
     {
       icon: Users,
@@ -288,7 +288,7 @@ export default function SubscriptionPage() {
     },
     {
       icon: Shield,
-      title: 'Profil vérifié',
+      title: 'Living Persona vérifié',
       description: 'Augmentez vos chances avec un badge de confiance',
       bgColor: 'bg-pink-100',
       iconColor: 'text-pink-600',
@@ -313,7 +313,7 @@ export default function SubscriptionPage() {
 
   if (!status) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-orange-50">
+      <div className="min-h-screen bg-gradient-to-br from-owner-50 via-white to-resident-50">
         {/* Header */}
         <div className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-10">
           <div className="max-w-6xl mx-auto px-4 py-4">
@@ -333,14 +333,14 @@ export default function SubscriptionPage() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-6xl mx-auto px-4 pt-12 pb-8 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-100 to-orange-100 rounded-full mb-6">
-            <Sparkles className="w-4 h-4 text-purple-600" />
-            <span className="text-sm font-medium text-purple-700">Essai gratuit disponible</span>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-owner-100 to-resident-100 rounded-full mb-6">
+            <Sparkles className="w-4 h-4 text-owner-600" />
+            <span className="text-sm font-medium text-owner-700">Essai gratuit disponible</span>
           </div>
 
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Débloquez tout le potentiel de{' '}
-            <span className="bg-gradient-to-r from-purple-600 via-orange-500 to-amber-500 bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 bg-clip-text text-transparent">
               IzzIco
             </span>
           </h1>
@@ -460,7 +460,7 @@ export default function SubscriptionPage() {
               {userRole ? (
                 <>
                   Abonnement{' '}
-                  <span className={userRole === 'owner' ? 'text-purple-600' : 'text-orange-500'}>
+                  <span className={userRole === 'owner' ? 'text-owner-600' : 'text-resident-500'}>
                     {userRole === 'owner' ? 'Owner' : 'Resident'}
                   </span>
                 </>
@@ -485,18 +485,18 @@ export default function SubscriptionPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 className={`bg-white superellipse-3xl p-8 shadow-lg relative overflow-hidden border-2 ${
-                  userRole === 'owner' ? 'border-purple-200' : 'border-orange-200'
+                  userRole === 'owner' ? 'border-owner-200' : 'border-resident-200'
                 }`}
               >
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                     userRole === 'owner'
-                      ? 'bg-gradient-to-br from-purple-100 to-indigo-100'
-                      : 'bg-gradient-to-br from-orange-100 to-amber-100'
+                      ? 'bg-gradient-to-br from-owner-100 to-owner-200'
+                      : 'bg-gradient-to-br from-resident-100 to-resident-200'
                   }`}>
                     {userRole === 'owner'
-                      ? <Crown className="w-6 h-6 text-purple-600" />
-                      : <Users className="w-6 h-6 text-orange-600" />
+                      ? <Crown className="w-6 h-6 text-owner-600" />
+                      : <Users className="w-6 h-6 text-resident-600" />
                     }
                   </div>
                   <div>
@@ -526,7 +526,7 @@ export default function SubscriptionPage() {
                     'Documents & contrats',
                     'Support prioritaire',
                   ] : [
-                    'Profil vérifié & visible',
+                    'Living Persona vérifié & visible',
                     'Matching de colocations',
                     'Messagerie illimitée',
                     'Alertes personnalisées',
@@ -535,7 +535,7 @@ export default function SubscriptionPage() {
                   ]).map((feature, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <CheckCircle2 className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
-                        userRole === 'owner' ? 'text-purple-600' : 'text-orange-500'
+                        userRole === 'owner' ? 'text-owner-600' : 'text-resident-500'
                       }`} />
                       <span className="text-gray-700">{feature}</span>
                     </li>
@@ -549,8 +549,8 @@ export default function SubscriptionPage() {
                   disabled={checkoutLoading}
                   className={`w-full py-4 superellipse-xl font-semibold transition-all border-2 disabled:opacity-50 disabled:cursor-not-allowed ${
                     userRole === 'owner'
-                      ? 'border-purple-300 text-purple-700 bg-purple-50 hover:bg-purple-100'
-                      : 'border-orange-300 text-orange-700 bg-orange-50 hover:bg-orange-100'
+                      ? 'border-owner-300 text-owner-700 bg-owner-50 hover:bg-owner-100'
+                      : 'border-resident-300 text-resident-700 bg-resident-50 hover:bg-resident-100'
                   }`}
                 >
                   {checkoutLoading ? (
@@ -571,15 +571,15 @@ export default function SubscriptionPage() {
                 viewport={{ once: true }}
                 className={`bg-white superellipse-3xl p-8 shadow-xl relative overflow-hidden ${
                   userRole === 'owner'
-                    ? 'border-2 border-purple-400 ring-4 ring-purple-100'
-                    : 'border-2 border-orange-400 ring-4 ring-orange-100'
+                    ? 'border-2 border-owner-400 ring-4 ring-owner-100'
+                    : 'border-2 border-resident-400 ring-4 ring-resident-100'
                 }`}
               >
                 {/* Best Value Badge */}
                 <div className={`absolute top-0 right-0 px-4 py-1 text-white text-xs font-semibold rounded-bl-xl ${
                   userRole === 'owner'
-                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600'
-                    : 'bg-gradient-to-r from-orange-500 to-amber-500'
+                    ? 'bg-gradient-to-r from-owner-600 to-owner-700'
+                    : 'bg-gradient-to-r from-resident-500 to-resident-600'
                 }`}>
                   MEILLEUR RAPPORT QUALITÉ-PRIX
                 </div>
@@ -588,7 +588,7 @@ export default function SubscriptionPage() {
                   <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                     userRole === 'owner'
                       ? 'bg-gradient-to-br from-purple-500 to-indigo-500'
-                      : 'bg-gradient-to-br from-orange-500 to-amber-500'
+                      : 'bg-gradient-to-br from-resident-500 to-resident-600'
                   }`}>
                     {userRole === 'owner'
                       ? <Crown className="w-6 h-6 text-white" />
@@ -614,8 +614,8 @@ export default function SubscriptionPage() {
                     </p>
                     <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                       userRole === 'owner'
-                        ? 'bg-purple-100 text-purple-700'
-                        : 'bg-orange-100 text-orange-700'
+                        ? 'bg-owner-100 text-owner-700'
+                        : 'bg-resident-100 text-resident-700'
                     }`}>
                       -{userRole === 'owner' ? '31,98€' : '15,98€'}
                     </span>
@@ -631,7 +631,7 @@ export default function SubscriptionPage() {
                     'Documents & contrats',
                     'Support prioritaire',
                   ] : [
-                    'Profil vérifié & visible',
+                    'Living Persona vérifié & visible',
                     'Matching de colocations',
                     'Messagerie illimitée',
                     'Alertes personnalisées',
@@ -640,7 +640,7 @@ export default function SubscriptionPage() {
                   ]).map((feature, i) => (
                     <li key={i} className="flex items-start gap-2">
                       <CheckCircle2 className={`w-5 h-5 mt-0.5 flex-shrink-0 ${
-                        userRole === 'owner' ? 'text-purple-600' : 'text-orange-500'
+                        userRole === 'owner' ? 'text-owner-600' : 'text-resident-500'
                       }`} />
                       <span className="text-gray-700">{feature}</span>
                     </li>
@@ -655,7 +655,7 @@ export default function SubscriptionPage() {
                   className={`w-full py-4 text-white superellipse-xl font-semibold shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     userRole === 'owner'
                       ? 'bg-gradient-to-r from-purple-600 to-indigo-600 shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30'
-                      : 'bg-gradient-to-r from-orange-500 to-amber-500 shadow-orange-500/25 hover:shadow-xl hover:shadow-orange-500/30'
+                      : 'bg-gradient-to-r from-resident-500 to-resident-600 shadow-resident-500/25 hover:shadow-xl hover:shadow-resident-500/30'
                   }`}
                 >
                   {checkoutLoading ? (
@@ -750,8 +750,8 @@ export default function SubscriptionPage() {
                 className="bg-white superellipse-3xl p-8 shadow-lg relative overflow-hidden border border-gray-200"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-orange-100 to-amber-100 superellipse-xl flex items-center justify-center">
-                    <Users className="w-6 h-6 text-orange-600" />
+                  <div className="w-12 h-12 bg-gradient-to-br from-resident-100 to-resident-200 superellipse-xl flex items-center justify-center">
+                    <Users className="w-6 h-6 text-resident-600" />
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Resident</h3>
@@ -774,7 +774,7 @@ export default function SubscriptionPage() {
 
                 <ul className="space-y-3 mb-8">
                   {[
-                    'Profil vérifié & visible',
+                    'Living Persona vérifié & visible',
                     'Matching de colocations',
                     'Messagerie illimitée',
                     'Alertes personnalisées',
@@ -782,7 +782,7 @@ export default function SubscriptionPage() {
                     'Support dédié',
                   ].map((feature, i) => (
                     <li key={i} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-orange-500 mt-0.5 flex-shrink-0" />
+                      <CheckCircle2 className="w-5 h-5 text-resident-500 mt-0.5 flex-shrink-0" />
                       <span className="text-gray-700">{feature}</span>
                     </li>
                   ))}
@@ -793,7 +793,7 @@ export default function SubscriptionPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => startCheckout('resident_annual')}
                   disabled={checkoutLoading}
-                  className="w-full py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white superellipse-xl font-semibold shadow-lg shadow-orange-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-gradient-to-r from-resident-500 to-resident-600 text-white superellipse-xl font-semibold shadow-lg shadow-resident-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -855,7 +855,7 @@ export default function SubscriptionPage() {
                 }
               }}
               disabled={checkoutLoading}
-              className="px-10 py-5 bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 text-white superellipse-2xl font-bold text-lg shadow-2xl shadow-purple-500/30 hover:shadow-purple-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-10 py-5 bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 text-white superellipse-2xl font-bold text-lg shadow-2xl shadow-owner-500/30 hover:shadow-owner-500/40 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {checkoutLoading ? (
                 <span className="flex items-center gap-3">
@@ -931,7 +931,7 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 p-4 sm:p-6">
+    <div className="min-h-screen bg-gradient-to-br from-owner-50 to-searcher-50 p-4 sm:p-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-6">

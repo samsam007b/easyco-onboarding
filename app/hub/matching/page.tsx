@@ -38,14 +38,14 @@ export default function MatchingComingSoonPage() {
     },
     {
       icon: Users,
-      title: 'Swipe & Match',
-      description: 'Parcours les profils des chercheurs et like ceux qui te plaisent. Si c\'est réciproque, c\'est un match !',
+      title: 'Swipe & Living Match',
+      description: 'Parcours les profils des chercheurs et like ceux qui te plaisent. Si c\'est réciproque, c\'est un Living Match !',
       gradient: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
     },
     {
       icon: MessageCircle,
       title: 'Chat intégré',
-      description: 'Discute directement avec tes matchs avant de les inviter à visiter ta coloc',
+      description: 'Discute directement avec tes Living Matchs avant de les inviter à visiter ta coloc',
       gradient: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
     },
     {
@@ -173,8 +173,8 @@ export default function MatchingComingSoonPage() {
                 {[
                   'Profils de chercheurs verifies',
                   'Algorithme de compatibilite avance',
-                  'Systeme de match reciproque',
-                  'Chat integre apres match',
+                  'Systeme de Living Match reciproque',
+                  'Chat integre apres Living Match',
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -292,7 +292,7 @@ export default function MatchingComingSoonPage() {
 
             {/* Additional link */}
             <p className="text-sm text-gray-500">
-              En attendant, prepare ton profil pour avoir les meilleurs matchs !
+              En attendant, prepare ton profil pour avoir les meilleurs Living Matchs !
             </p>
           </motion.div>
         </motion.div>

@@ -239,7 +239,7 @@ export function AdvancedFilters({
               </Button>
               <Button
                 onClick={onClose}
-                className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+                className="flex-1 bg-searcher-500 hover:bg-searcher-600 text-white"
               >
                 Appliquer
               </Button>
@@ -296,8 +296,8 @@ export function AdvancedFilters({
                         variant={filters.cities.includes(city) ? 'default' : 'secondary'}
                         className={`cursor-pointer transition ${
                           filters.cities.includes(city)
-                            ? 'bg-orange-600 hover:bg-orange-700'
-                            : 'hover:bg-orange-50'
+                            ? 'bg-searcher-600 hover:bg-searcher-700'
+                            : 'hover:bg-searcher-50'
                         }`}
                         onClick={() =>
                           updateFilters({
@@ -326,7 +326,7 @@ export function AdvancedFilters({
                   {PROPERTY_TYPES.map((type) => (
                     <label
                       key={type.value}
-                      className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
+                      className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-searcher-50 cursor-pointer transition"
                     >
                       <input
                         type="checkbox"
@@ -336,7 +336,7 @@ export function AdvancedFilters({
                             propertyTypes: toggleArrayItem(filters.propertyTypes, type.value),
                           })
                         }
-                        className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                        className="w-4 h-4 text-searcher-600 border-gray-300 rounded focus:ring-searcher-500"
                       />
                       <span className="text-sm font-medium">{type.label}</span>
                     </label>
@@ -368,7 +368,7 @@ export function AdvancedFilters({
                             },
                           })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-searcher-500"
                       >
                         <option value="any">Peu importe</option>
                         {[1, 2, 3, 4, 5, 6].map((num) => (
@@ -392,7 +392,7 @@ export function AdvancedFilters({
                           },
                         })
                       }
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-searcher-500"
                     >
                       <option value="any">Peu importe</option>
                       {[1, 2, 3, 4].map((num) => (
@@ -443,8 +443,8 @@ export function AdvancedFilters({
                           variant={filters.smoking === option.value ? 'default' : 'secondary'}
                           className={`cursor-pointer flex-1 justify-center ${
                             filters.smoking === option.value
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({ smoking: option.value as any })
@@ -473,8 +473,8 @@ export function AdvancedFilters({
                           variant={filters.pets === option.value ? 'default' : 'secondary'}
                           className={`cursor-pointer flex-1 justify-center ${
                             filters.pets === option.value
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({ pets: option.value as any })
@@ -521,8 +521,8 @@ export function AdvancedFilters({
                           variant={filters.socialLevel.includes(level.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.socialLevel.includes(level.value)
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({
@@ -556,7 +556,7 @@ export function AdvancedFilters({
                       {WAKE_UP_TIMES.map((time) => (
                         <label
                           key={time.value}
-                          className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
+                          className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-searcher-50 cursor-pointer transition"
                         >
                           <input
                             type="checkbox"
@@ -566,7 +566,7 @@ export function AdvancedFilters({
                                 wakeUpTime: toggleArrayItem(filters.wakeUpTime, time.value),
                               })
                             }
-                            className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                            className="w-4 h-4 text-searcher-600 border-gray-300 rounded focus:ring-searcher-500"
                           />
                           <span className="text-sm">{time.label}</span>
                         </label>
@@ -581,7 +581,7 @@ export function AdvancedFilters({
                       {SLEEP_TIMES.map((time) => (
                         <label
                           key={time.value}
-                          className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-orange-50 cursor-pointer transition"
+                          className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:bg-searcher-50 cursor-pointer transition"
                         >
                           <input
                             type="checkbox"
@@ -591,7 +591,7 @@ export function AdvancedFilters({
                                 sleepTime: toggleArrayItem(filters.sleepTime, time.value),
                               })
                             }
-                            className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                            className="w-4 h-4 text-searcher-600 border-gray-300 rounded focus:ring-searcher-500"
                           />
                           <span className="text-sm">{time.label}</span>
                         </label>
@@ -609,8 +609,8 @@ export function AdvancedFilters({
                           variant={filters.workSchedule.includes(schedule.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.workSchedule.includes(schedule.value)
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({
@@ -663,8 +663,8 @@ export function AdvancedFilters({
                           variant={filters.genderMix.includes(gender.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.genderMix.includes(gender.value)
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({
@@ -688,8 +688,8 @@ export function AdvancedFilters({
                           variant={filters.occupationTypes.includes(occupation.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.occupationTypes.includes(occupation.value)
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({
@@ -726,8 +726,8 @@ export function AdvancedFilters({
                           variant={filters.guestFrequency.includes(freq.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.guestFrequency.includes(freq.value)
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({
@@ -754,8 +754,8 @@ export function AdvancedFilters({
                           variant={filters.musicHabits.includes(habit.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.musicHabits.includes(habit.value)
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({
@@ -782,8 +782,8 @@ export function AdvancedFilters({
                           variant={filters.cookingFrequency.includes(freq.value) ? 'default' : 'secondary'}
                           className={`cursor-pointer ${
                             filters.cookingFrequency.includes(freq.value)
-                              ? 'bg-orange-600 hover:bg-orange-700'
-                              : 'hover:bg-orange-50'
+                              ? 'bg-searcher-600 hover:bg-searcher-700'
+                              : 'hover:bg-searcher-50'
                           }`}
                           onClick={() =>
                             updateFilters({
@@ -815,8 +815,8 @@ export function AdvancedFilters({
                       key={amenity.id}
                       className={`flex items-center gap-2 p-3 superellipse-xl border border-gray-200 cursor-pointer transition ${
                         filters.amenities.includes(amenity.id)
-                          ? 'bg-orange-50 border-orange-600'
-                          : 'hover:bg-orange-50'
+                          ? 'bg-searcher-50 border-searcher-600'
+                          : 'hover:bg-searcher-50'
                       }`}
                     >
                       <input
@@ -827,7 +827,7 @@ export function AdvancedFilters({
                             amenities: toggleArrayItem(filters.amenities, amenity.id),
                           })
                         }
-                        className="w-4 h-4 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                        className="w-4 h-4 text-searcher-600 border-gray-300 rounded focus:ring-searcher-500"
                       />
                       <span className="text-sm">{amenity.label}</span>
                     </label>
@@ -865,7 +865,7 @@ export function AdvancedFilters({
                                [&::-webkit-slider-thumb]:rounded-full
                                [&::-webkit-slider-thumb]:bg-white
                                [&::-webkit-slider-thumb]:border-2
-                               [&::-webkit-slider-thumb]:border-orange-600
+                               [&::-webkit-slider-thumb]:border-searcher-600
                                [&::-webkit-slider-thumb]:cursor-pointer
                                [&::-webkit-slider-thumb]:shadow-md
                                [&::-moz-range-thumb]:appearance-none
@@ -874,11 +874,11 @@ export function AdvancedFilters({
                                [&::-moz-range-thumb]:rounded-full
                                [&::-moz-range-thumb]:bg-white
                                [&::-moz-range-thumb]:border-2
-                               [&::-moz-range-thumb]:border-orange-600
+                               [&::-moz-range-thumb]:border-searcher-600
                                [&::-moz-range-thumb]:cursor-pointer
                                [&::-moz-range-thumb]:shadow-md"
                     style={{
-                      background: `linear-gradient(to right, #FFA040 0%, #FFA040 ${filters.minMatchScore}%, #E5E7EB ${filters.minMatchScore}%, #E5E7EB 100%)`
+                      background: `linear-gradient(to right, hsl(var(--searcher-500)) 0%, hsl(var(--searcher-500)) ${filters.minMatchScore}%, #E5E7EB ${filters.minMatchScore}%, #E5E7EB 100%)`
                     }}
                   />
                   <p className="text-xs text-gray-500">
@@ -904,7 +904,7 @@ export function AdvancedFilters({
             </Button>
             <Button
               onClick={onClose}
-              className="flex-1 bg-orange-500 hover:bg-orange-600 text-white"
+              className="flex-1 bg-searcher-500 hover:bg-searcher-600 text-white"
             >
               Voir les résultats
             </Button>

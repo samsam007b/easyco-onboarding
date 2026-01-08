@@ -364,8 +364,8 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                     className={cn(
                       "flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                       isActive || isOpen
-                        ? "text-orange-900 bg-orange-50"
-                        : "text-gray-600 hover:bg-orange-50/50"
+                        ? "text-searcher-900 bg-searcher-50"
+                        : "text-gray-600 hover:bg-searcher-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -437,7 +437,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                                   className={cn(
                                     "flex items-center gap-3 px-3 py-2.5 superellipse-xl transition-all group",
                                     isItemActive
-                                      ? "bg-orange-50"
+                                      ? "bg-searcher-50"
                                       : "hover:bg-gray-50"
                                   )}
                                 >
@@ -450,7 +450,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                                   <div className="flex-1 min-w-0">
                                     <p className={cn(
                                       "text-sm font-medium",
-                                      isItemActive ? "text-orange-900" : "text-gray-900"
+                                      isItemActive ? "text-searcher-900" : "text-gray-900"
                                     )}>
                                       {item.label}
                                     </p>
@@ -483,8 +483,8 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
               className={cn(
                 "relative flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                 pathname?.startsWith('/dashboard/searcher/messages')
-                  ? "text-orange-900 bg-orange-50"
-                  : "text-gray-600 hover:bg-orange-50/50"
+                  ? "text-searcher-900 bg-searcher-50"
+                  : "text-gray-600 hover:bg-searcher-50/50"
               )}
             >
               <MessageCircle className="w-4 h-4" />
@@ -592,11 +592,11 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                         {matchesCount > 0 && (
                           <Link
                             href="/dashboard/searcher/matching"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
-                            <div className="w-10 h-10 superellipse-xl bg-orange-100 flex items-center justify-center">
-                              <Sparkles className="w-5 h-5 text-orange-600" />
+                            <div className="w-10 h-10 superellipse-xl bg-searcher-100 flex items-center justify-center">
+                              <Sparkles className="w-5 h-5 text-searcher-600" />
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
@@ -609,7 +609,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                         {unreadMessages > 0 && (
                           <Link
                             href="/dashboard/searcher/messages"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 superellipse-xl bg-blue-100 flex items-center justify-center">
@@ -626,7 +626,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                         {pendingApplications > 0 && (
                           <Link
                             href="/dashboard/searcher/my-applications"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 superellipse-xl bg-amber-100 flex items-center justify-center">
@@ -643,7 +643,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                         {upcomingVisits > 0 && (
                           <Link
                             href="/dashboard/searcher/my-visits"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-orange-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 superellipse-xl bg-green-100 flex items-center justify-center">
@@ -698,7 +698,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                     />
                   </svg>
                   <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-orange-200 group-hover:border-orange-400 transition-colors"
+                    className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-searcher-200 group-hover:border-searcher-400 transition-colors"
                     style={{ background: searcherGradient }}
                   >
                     {profile.avatar_url ? (
@@ -780,7 +780,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 bg-gradient-to-br from-orange-50/50 to-yellow-50/50 border-b border-orange-100/50">
+                      <div className="px-4 py-3 bg-gradient-to-br from-searcher-50/50 to-searcher-100/50 border-b border-searcher-200/50">
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
                             <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
@@ -788,7 +788,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                             </div>
                             <div className="text-xs text-gray-600">Favoris</div>
                           </div>
-                          <div className="text-center border-x border-orange-200/50">
+                          <div className="text-center border-x border-searcher-200/50">
                             <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
                               {matchesCount}
                             </div>
@@ -807,11 +807,11 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-orange-100 to-yellow-100 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <User className="w-4 h-4 text-orange-700" />
+                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-searcher-100 to-searcher-200 flex items-center justify-center group-hover:scale-110 transition-transform">
+                            <User className="w-4 h-4 text-searcher-700" />
                           </div>
                           <div className="flex-1">
                             <span className="text-gray-900 font-medium block">Mon Profil</span>
@@ -822,7 +822,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
 
                         <Link
                           href="/dashboard/searcher/saved-searches"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -837,7 +837,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-orange-50 hover:to-yellow-50/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -924,7 +924,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                     <div key={domain.id}>
                       <button
                         onClick={() => setExpandedMobileSection(isExpanded ? null : domain.id)}
-                        className="w-full flex items-center justify-between px-4 py-3 superellipse-xl hover:bg-orange-50 transition"
+                        className="w-full flex items-center justify-between px-4 py-3 superellipse-xl hover:bg-searcher-50 transition"
                       >
                         <div className="flex items-center gap-3">
                           <Icon className="w-5 h-5 text-gray-700" />
@@ -962,7 +962,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={cn(
                                       "flex items-center justify-between px-4 py-2.5 superellipse-xl transition",
-                                      isActive ? "bg-orange-50 text-orange-900" : "text-gray-700 hover:bg-gray-50"
+                                      isActive ? "bg-searcher-50 text-searcher-900" : "text-gray-700 hover:bg-gray-50"
                                     )}
                                   >
                                     <div className="flex items-center gap-3">
@@ -992,7 +992,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                   className={cn(
                     "flex items-center justify-between px-4 py-3 superellipse-xl transition",
                     pathname?.startsWith('/dashboard/searcher/messages')
-                      ? "bg-orange-50 text-orange-900"
+                      ? "bg-searcher-50 text-searcher-900"
                       : "text-gray-700 hover:bg-gray-50"
                   )}
                 >
@@ -1018,7 +1018,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                           key={action.id}
                           href={action.href}
                           onClick={() => setMobileMenuOpen(false)}
-                          className="flex items-center gap-2 p-3 superellipse-xl bg-gray-50 hover:bg-orange-50 transition"
+                          className="flex items-center gap-2 p-3 superellipse-xl bg-gray-50 hover:bg-searcher-50 transition"
                         >
                           <ActionIcon className="w-4 h-4" style={{ color: action.color }} />
                           <span className="text-sm font-medium text-gray-900">{action.label}</span>

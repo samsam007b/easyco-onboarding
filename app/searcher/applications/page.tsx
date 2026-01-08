@@ -130,7 +130,7 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
   const getStatusConfig = (status: Application['status']) => {
     const config = {
       pending: { icon: Clock, label: 'En attente', color: '#F59E0B', bgColor: '#FEF3C7' },
-      reviewing: { icon: Eye, label: 'En examen', color: '#ffa000', bgColor: '#FFF4E0' },
+      reviewing: { icon: Eye, label: 'En examen', color: 'var(--searcher-500)', bgColor: 'var(--searcher-100)' },
       approved: { icon: CheckCircle, label: 'Acceptée', color: '#10B981', bgColor: '#D1FAE5' },
       rejected: { icon: XCircle, label: 'Refusée', color: '#EF4444', bgColor: '#FEE2E2' },
       withdrawn: { icon: XCircle, label: 'Retirée', color: '#6B7280', bgColor: '#F3F4F6' },
@@ -156,8 +156,8 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
       icon: Send,
       value: stats.total,
       label: 'Total',
-      color: '#ffa000',
-      bgColor: '#FFF4E0',
+      color: 'var(--searcher-500)',
+      bgColor: 'var(--searcher-100)',
     },
     {
       icon: Clock,
@@ -196,8 +196,8 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
         <div className="fixed inset-0 -z-10">
           <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
           <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-          <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+          <div className="absolute top-0 -right-4 w-96 h-96 bg-resident-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
           <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
         </div>
         <div className="text-center">
@@ -214,8 +214,8 @@ const SearcherApplicationsPage = memo(function SearcherApplicationsPage() {
       <div className="fixed inset-0 -z-10">
         <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
         <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-orange-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-yellow-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        <div className="absolute top-0 -right-4 w-96 h-96 bg-resident-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
+        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-searcher-300/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/60" />
       </div>
 

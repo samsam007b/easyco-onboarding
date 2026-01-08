@@ -351,7 +351,7 @@ function AuthContent() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-owner-50 to-searcher-50">
       {/* Header */}
       <header className="px-4 sm:px-6 py-4 flex justify-between items-center">
         <Link href="/" className="inline-flex items-center gap-2 text-owner-700 hover:text-owner-900 transition-colors">
@@ -712,7 +712,7 @@ function AuthContent() {
 export default function AuthPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-yellow-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-owner-50 to-searcher-50 flex items-center justify-center">
         <LoadingHouse size={80} />
       </div>
     }>

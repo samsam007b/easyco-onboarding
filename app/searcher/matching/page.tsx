@@ -159,14 +159,14 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
     {
       icon: Heart,
       value: matches.length,
-      label: 'Matchs',
+      label: 'Living Matchs',
       color: 'var(--searcher-500)',
       bgColor: '#FFF4E0',
     },
     {
       icon: Zap,
       value: matches.filter(m => m.compatibility_score >= 85).length,
-      label: 'Top matchs',
+      label: 'Top Living Matchs',
       color: '#10B981',
       bgColor: '#D1FAE5',
     },
@@ -192,7 +192,7 @@ const SearcherMatchingPage = memo(function SearcherMatchingPage() {
         </div>
         <div className="text-center">
           <LoadingHouse size={64} />
-          <p className="text-gray-600 font-medium mt-4">Recherche de vos matchs...</p>
+          <p className="text-gray-600 font-medium mt-4">Recherche de vos Living Matchs...</p>
         </div>
       </div>
     );

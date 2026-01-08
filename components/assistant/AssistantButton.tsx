@@ -97,7 +97,7 @@ const AssistantButton = memo(function AssistantButton() {
       icon: Lightbulb,
       label: assistant?.feedbackPrompts?.idea || 'An idea?',
       type: 'suggestion' as const,
-      color: 'from-amber-500 to-orange-500',
+      color: 'from-owner-600 via-resident-500 to-searcher-500',
     },
     {
       icon: Bug,
@@ -456,11 +456,11 @@ const AssistantButton = memo(function AssistantButton() {
         onClick={() => setIsOpen(true)}
         className={cn(
           'fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full shadow-lg',
-          'bg-gradient-to-br from-purple-600 to-indigo-600',
-          'hover:from-purple-700 hover:to-indigo-700',
+          'bg-gradient-to-br from-owner-600 via-resident-500 to-searcher-500',
+          'hover:from-owner-700 hover:via-resident-600 hover:to-searcher-600',
           'flex items-center justify-center',
           'transition-all duration-200 hover:scale-110',
-          'focus:outline-none focus:ring-4 focus:ring-purple-300',
+          'focus:outline-none focus:ring-4 focus:ring-owner-300',
           isOpen && 'hidden'
         )}
         aria-label={assistant?.openAssistant || "Open IzzIco assistant"}
@@ -472,12 +472,12 @@ const AssistantButton = memo(function AssistantButton() {
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-1 -right-1 w-4 h-4 bg-orange-500 rounded-full border-2 border-white"
+            className="absolute -top-1 -right-1 w-4 h-4 bg-amber-500 rounded-full border-2 border-white"
           />
         )}
 
         {/* Pulse animation */}
-        <span className="absolute inset-0 rounded-full bg-purple-400 animate-ping opacity-25" />
+        <span className="absolute inset-0 rounded-full bg-owner-400 animate-ping opacity-25" />
       </motion.button>
 
       {/* Chat Window */}
@@ -497,7 +497,7 @@ const AssistantButton = memo(function AssistantButton() {
             )}
           >
             {/* Header */}
-            <div className="bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-4 flex items-center justify-between">
+            <div className="bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 px-4 py-4 flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <Sparkles className="w-5 h-5 text-white" />
@@ -524,7 +524,7 @@ const AssistantButton = memo(function AssistantButton() {
               {messages.length === 0 && (
                 <div className="space-y-4">
                   <div className="flex gap-3">
-                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-owner-500 via-resident-400 to-searcher-400 flex items-center justify-center flex-shrink-0">
                       <Bot className="w-4 h-4 text-white" />
                     </div>
                     <div className="flex-1">
@@ -534,31 +534,31 @@ const AssistantButton = memo(function AssistantButton() {
                         </p>
                         <ul className="mt-2 space-y-1 text-sm text-gray-600">
                           <li className="flex items-center gap-2">
-                            <ArrowRight className="w-3 h-3 text-purple-500" />
+                            <ArrowRight className="w-3 h-3 text-owner-500" />
                             {assistant?.welcome?.helpItem1 || 'Understand the features'}
                           </li>
                           <li className="flex items-center gap-2">
-                            <ArrowRight className="w-3 h-3 text-purple-500" />
+                            <ArrowRight className="w-3 h-3 text-owner-500" />
                             {assistant?.welcome?.helpItem2 || 'Configure your search filters'}
                           </li>
                           <li className="flex items-center gap-2">
-                            <ArrowRight className="w-3 h-3 text-purple-500" />
+                            <ArrowRight className="w-3 h-3 text-owner-500" />
                             {assistant?.welcome?.helpItem3 || 'Navigate the application'}
                           </li>
                           <li className="flex items-center gap-2">
-                            <ArrowRight className="w-3 h-3 text-purple-500" />
+                            <ArrowRight className="w-3 h-3 text-owner-500" />
                             {assistant?.welcome?.helpItem4 || 'Change your settings'}
                           </li>
                         </ul>
                       </div>
 
                       {/* Suggestion prompt in welcome */}
-                      <div className="mt-3 p-3 bg-gradient-to-r from-amber-50 to-orange-50 superellipse-xl border border-amber-200">
-                        <div className="flex items-center gap-2 text-amber-700">
+                      <div className="mt-3 p-3 bg-gradient-to-r from-owner-50 via-resident-50 to-searcher-50 superellipse-xl border border-owner-200">
+                        <div className="flex items-center gap-2 text-owner-700">
                           <Lightbulb className="w-4 h-4" />
                           <span className="text-xs font-medium">{assistant?.welcome?.opinionMatters || 'Your opinion matters!'}</span>
                         </div>
-                        <p className="text-xs text-amber-600 mt-1">
+                        <p className="text-xs text-owner-600 mt-1">
                           {assistant?.welcome?.shareIdeas || "Feel free to share your improvement ideas or features you'd like to see."}
                         </p>
                       </div>
@@ -576,11 +576,11 @@ const AssistantButton = memo(function AssistantButton() {
                           'flex items-center gap-2 p-3 bg-white superellipse-xl border border-gray-200 transition text-left group',
                           isLoading
                             ? 'opacity-50 cursor-not-allowed'
-                            : 'hover:border-purple-300 hover:bg-purple-50'
+                            : 'hover:border-owner-300 hover:bg-owner-50'
                         )}
                       >
                         <action.icon className={cn(
-                          'w-4 h-4 text-purple-600 transition',
+                          'w-4 h-4 text-owner-600 transition',
                           !isLoading && 'group-hover:scale-110'
                         )} />
                         <span className="text-xs text-gray-700 font-medium">{action.label}</span>
@@ -596,7 +596,7 @@ const AssistantButton = memo(function AssistantButton() {
                       'w-full flex items-center justify-center gap-2 p-3 superellipse-xl transition font-medium text-sm',
                       isLoading
                         ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600'
+                        : 'bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 text-white hover:from-owner-700 hover:via-resident-600 hover:to-searcher-600'
                     )}
                   >
                     <MessageSquarePlus className="w-4 h-4" />
@@ -624,8 +624,8 @@ const AssistantButton = memo(function AssistantButton() {
                         className={cn(
                           'w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0',
                           message.role === 'user'
-                            ? 'bg-gradient-to-br from-orange-500 to-amber-500'
-                            : 'bg-gradient-to-br from-purple-500 to-indigo-500'
+                            ? 'bg-gradient-to-br from-owner-500 via-resident-400 to-searcher-400'
+                            : 'bg-gradient-to-br from-owner-500 via-resident-400 to-searcher-400'
                         )}
                       >
                         {message.role === 'user' ? (
@@ -638,7 +638,7 @@ const AssistantButton = memo(function AssistantButton() {
                         className={cn(
                           'max-w-[80%] superellipse-2xl p-3 shadow-sm',
                           message.role === 'user'
-                            ? 'bg-gradient-to-br from-orange-500 to-amber-500 text-white rounded-tr-sm'
+                            ? 'bg-gradient-to-br from-owner-500 via-resident-400 to-searcher-400 text-white rounded-tr-sm'
                             : 'bg-white text-gray-800 rounded-tl-sm'
                         )}
                       >
@@ -696,12 +696,12 @@ const AssistantButton = memo(function AssistantButton() {
               {/* Loading indicator */}
               {isLoading && (
                 <div className="flex gap-3">
-                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-500 to-indigo-500 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-owner-500 via-resident-400 to-searcher-400 flex items-center justify-center flex-shrink-0">
                     <Bot className="w-4 h-4 text-white" />
                   </div>
                   <div className="bg-white superellipse-2xl rounded-tl-sm p-3 shadow-sm">
                     <div className="flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 text-purple-600 animate-spin" />
+                      <Loader2 className="w-4 h-4 text-owner-600 animate-spin" />
                       <span className="text-sm text-gray-500">{assistant?.thinking || 'Thinking...'}</span>
                     </div>
                   </div>
@@ -713,11 +713,11 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-r from-indigo-50 to-purple-50 superellipse-xl p-3 border border-indigo-200"
+                  className="bg-gradient-to-r from-owner-50 via-resident-50 to-searcher-50 superellipse-xl p-3 border border-owner-200"
                 >
                   <div className="flex items-center gap-2 mb-2">
-                    <Zap className="w-4 h-4 text-indigo-600" />
-                    <span className="text-sm font-medium text-indigo-900">
+                    <Zap className="w-4 h-4 text-owner-600" />
+                    <span className="text-sm font-medium text-owner-900">
                       {executedActions.length > 0 ? (assistant?.actionsCompleted || 'Actions completed') : (assistant?.actionsInProgress || 'Actions in progress...')}
                     </span>
                   </div>
@@ -727,7 +727,7 @@ const AssistantButton = memo(function AssistantButton() {
                       return (
                         <div
                           key={index}
-                          className="flex items-center gap-2 text-xs text-indigo-700"
+                          className="flex items-center gap-2 text-xs text-owner-700"
                         >
                           {result ? (
                             result.success ? (
@@ -751,17 +751,17 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-r from-purple-50 to-indigo-50 superellipse-xl p-4 border border-purple-200"
+                  className="bg-gradient-to-r from-owner-50 via-resident-50 to-searcher-50 superellipse-xl p-4 border border-owner-200"
                 >
                   <div className="flex items-center gap-2 mb-3">
-                    <CheckCircle2 className="w-5 h-5 text-purple-600" />
+                    <CheckCircle2 className="w-5 h-5 text-owner-600" />
                     <span className="font-medium text-gray-900">{assistant?.suggestedAction || 'Suggested action'}</span>
                   </div>
                   <p className="text-sm text-gray-700 mb-3">{pendingAction.message}</p>
                   <div className="flex gap-2">
                     <button
                       onClick={executeAction}
-                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-indigo-700 transition text-sm"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 text-white rounded-lg font-medium hover:from-owner-700 hover:via-resident-600 hover:to-searcher-600 transition text-sm"
                     >
                       <ExternalLink className="w-4 h-4" />
                       {assistant?.execute || 'Execute'}
@@ -781,10 +781,10 @@ const AssistantButton = memo(function AssistantButton() {
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="bg-gradient-to-r from-purple-50 to-pink-50 superellipse-xl p-4 border border-purple-200"
+                  className="bg-gradient-to-r from-owner-50 via-resident-50 to-searcher-50 superellipse-xl p-4 border border-owner-200"
                 >
                   <div className="flex items-center gap-2 mb-3">
-                    <Heart className="w-5 h-5 text-pink-500" />
+                    <Heart className="w-5 h-5 text-resident-500" />
                     <span className="font-medium text-gray-900">{assistant?.feedback?.weCareAboutYourOpinion || 'We care about your feedback!'}</span>
                   </div>
                   <div className="grid grid-cols-3 gap-2">
@@ -803,7 +803,7 @@ const AssistantButton = memo(function AssistantButton() {
                         }}
                         className={cn(
                           'flex flex-col items-center gap-1 p-2 rounded-lg transition',
-                          'bg-white border border-gray-200 hover:border-purple-300',
+                          'bg-white border border-gray-200 hover:border-owner-300',
                           'hover:shadow-sm'
                         )}
                       >
@@ -847,7 +847,7 @@ const AssistantButton = memo(function AssistantButton() {
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
                     placeholder={assistant?.feedback?.commentOptional || 'Any comment? (optional)'}
-                    className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-300"
+                    className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-owner-300"
                     rows={2}
                   />
                   <div className="flex gap-2 mt-3">
@@ -857,7 +857,7 @@ const AssistantButton = memo(function AssistantButton() {
                       className={cn(
                         'flex-1 py-2 rounded-lg font-medium text-sm transition',
                         rating > 0
-                          ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700'
+                          ? 'bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 text-white hover:from-owner-700 hover:via-resident-600 hover:to-searcher-600'
                           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       )}
                     >
@@ -898,7 +898,7 @@ const AssistantButton = memo(function AssistantButton() {
                         className={cn(
                           'flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition',
                           suggestionCategory === cat.value
-                            ? 'bg-purple-100 text-purple-700 border-2 border-purple-300'
+                            ? 'bg-owner-100 text-owner-700 border-2 border-owner-300'
                             : 'bg-gray-100 text-gray-600 border-2 border-transparent hover:bg-gray-200'
                         )}
                       >
@@ -912,7 +912,7 @@ const AssistantButton = memo(function AssistantButton() {
                     value={feedbackText}
                     onChange={(e) => setFeedbackText(e.target.value)}
                     placeholder={assistant?.suggestion?.placeholder || "Describe your idea in detail... What would you like to see in the app?"}
-                    className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-purple-300"
+                    className="w-full p-3 text-sm border border-gray-200 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-owner-300"
                     rows={4}
                   />
                   <div className="flex gap-2 mt-3">
@@ -922,7 +922,7 @@ const AssistantButton = memo(function AssistantButton() {
                       className={cn(
                         'flex-1 py-2 rounded-lg font-medium text-sm transition flex items-center justify-center gap-2',
                         feedbackText.trim()
-                          ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white hover:from-amber-600 hover:to-orange-600'
+                          ? 'bg-gradient-to-r from-owner-600 via-resident-500 to-searcher-500 text-white hover:from-owner-700 hover:via-resident-600 hover:to-searcher-600'
                           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                       )}
                     >
@@ -968,7 +968,7 @@ const AssistantButton = memo(function AssistantButton() {
                   value={input}
                   onChange={handleInputChange}
                   placeholder={assistant?.inputPlaceholder || 'Ask a question or share an idea...'}
-                  className="flex-1 px-4 py-3 bg-gray-100 superellipse-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 transition"
+                  className="flex-1 px-4 py-3 bg-gray-100 superellipse-xl text-sm focus:outline-none focus:ring-2 focus:ring-owner-300 transition"
                   disabled={isLoading || feedbackMode !== 'none'}
                 />
                 <button
@@ -977,7 +977,7 @@ const AssistantButton = memo(function AssistantButton() {
                   className={cn(
                     'p-3 superellipse-xl transition',
                     input.trim() && !isLoading && feedbackMode === 'none'
-                      ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white hover:from-purple-700 hover:to-indigo-700'
+                      ? 'bg-gradient-to-br from-owner-600 via-resident-500 to-searcher-500 text-white hover:from-owner-700 hover:via-resident-600 hover:to-searcher-600'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   )}
                   aria-label={assistant?.feedback?.send || 'Send'}
@@ -990,7 +990,7 @@ const AssistantButton = memo(function AssistantButton() {
               {messages.length > 0 && feedbackMode === 'none' && !feedbackSubmitted && (
                 <button
                   onClick={() => setFeedbackMode('suggestion')}
-                  className="w-full mt-2 flex items-center justify-center gap-2 py-2 text-xs text-purple-600 hover:text-purple-700 hover:bg-purple-50 rounded-lg transition"
+                  className="w-full mt-2 flex items-center justify-center gap-2 py-2 text-xs text-owner-600 hover:text-owner-700 hover:bg-owner-50 rounded-lg transition"
                 >
                   <Lightbulb className="w-3 h-3" />
                   {assistant?.improvementIdea || 'An improvement idea?'}

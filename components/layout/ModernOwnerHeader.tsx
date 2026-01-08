@@ -263,8 +263,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                       className={cn(
                         "flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                         isActive
-                          ? "text-purple-900 bg-purple-50"
-                          : "text-gray-600 hover:bg-purple-50/50"
+                          ? "text-owner-900 bg-owner-50"
+                          : "text-gray-600 hover:bg-owner-50/50"
                       )}
                     >
                       <Icon className="w-4 h-4" />
@@ -273,7 +273,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                     {isActive && (
                       <motion.div
                         className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
-                        style={{ borderTopColor: '#9c5698' }}
+                        style={{ borderTopColor: 'var(--owner-600)' }}
                         initial={{ opacity: 0, y: -5 }}
                         animate={{ opacity: 1, y: 0 }}
                       />
@@ -289,8 +289,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                     className={cn(
                       "flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                       isActive || isOpen
-                        ? "text-purple-900 bg-purple-50"
-                        : "text-gray-600 hover:bg-purple-50/50"
+                        ? "text-owner-900 bg-owner-50"
+                        : "text-gray-600 hover:bg-owner-50/50"
                     )}
                   >
                     <Icon className="w-4 h-4" />
@@ -362,7 +362,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                                   className={cn(
                                     "flex items-center gap-3 px-3 py-2.5 superellipse-xl transition-all group",
                                     isItemActive
-                                      ? "bg-purple-50"
+                                      ? "bg-owner-50"
                                       : "hover:bg-gray-50"
                                   )}
                                 >
@@ -375,7 +375,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                                   <div className="flex-1 min-w-0">
                                     <p className={cn(
                                       "text-sm font-medium",
-                                      isItemActive ? "text-purple-900" : "text-gray-900"
+                                      isItemActive ? "text-owner-900" : "text-gray-900"
                                     )}>
                                       {item.label}
                                     </p>
@@ -408,8 +408,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
               className={cn(
                 "relative flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-medium transition-all",
                 pathname?.startsWith('/dashboard/owner/messages')
-                  ? "text-purple-900 bg-purple-50"
-                  : "text-gray-600 hover:bg-purple-50/50"
+                  ? "text-owner-900 bg-owner-50"
+                  : "text-gray-600 hover:bg-owner-50/50"
               )}
             >
               <MessageCircle className="w-4 h-4" />
@@ -476,11 +476,11 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                         {pendingApplications > 0 && (
                           <Link
                             href="/dashboard/owner/applications"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-owner-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
-                            <div className="w-10 h-10 superellipse-xl bg-amber-100 flex items-center justify-center">
-                              <UserCheck className="w-5 h-5 text-amber-600" />
+                            <div className="w-10 h-10 superellipse-xl bg-owner-100 flex items-center justify-center">
+                              <UserCheck className="w-5 h-5 text-owner-600" />
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
@@ -493,7 +493,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                         {unreadMessages > 0 && (
                           <Link
                             href="/dashboard/owner/messages"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-owner-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
                             <div className="w-10 h-10 superellipse-xl bg-blue-100 flex items-center justify-center">
@@ -510,11 +510,11 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                         {openMaintenance > 0 && (
                           <Link
                             href="/dashboard/owner/maintenance"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-purple-50 transition"
+                            className="flex items-center gap-3 px-4 py-3 hover:bg-owner-50 transition"
                             onClick={() => setShowNotifications(false)}
                           >
-                            <div className="w-10 h-10 superellipse-xl bg-orange-100 flex items-center justify-center">
-                              <Wrench className="w-5 h-5 text-orange-600" />
+                            <div className="w-10 h-10 superellipse-xl bg-owner-100 flex items-center justify-center">
+                              <Wrench className="w-5 h-5 text-owner-600" />
                             </div>
                             <div className="flex-1">
                               <p className="text-sm font-medium text-gray-900">
@@ -549,7 +549,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                 className="flex items-center gap-2 p-1.5 pr-3 rounded-full hover:bg-gray-100 transition-all group"
               >
                 <div
-                  className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-purple-200 group-hover:border-purple-400 transition-colors"
+                  className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-owner-200 group-hover:border-owner-400 transition-colors"
                   style={{ background: ownerGradient }}
                 >
                   <Building2 className="w-4 h-4 text-white" />
@@ -606,10 +606,10 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                           {roi > 0 && (
                             <div className="flex items-center justify-between mt-2">
                               <div className="flex items-center gap-2">
-                                <TrendingUp className="w-4 h-4 text-purple-600" />
+                                <TrendingUp className="w-4 h-4 text-owner-600" />
                                 <span className="text-sm text-gray-600">ROI</span>
                               </div>
-                              <span className="font-bold text-purple-900">{roi}%</span>
+                              <span className="font-bold text-owner-900">{roi}%</span>
                             </div>
                           )}
                         </div>
@@ -619,10 +619,10 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="flex items-center gap-3 px-4 py-2.5 hover:bg-purple-50 transition"
+                          className="flex items-center gap-3 px-4 py-2.5 hover:bg-owner-50 transition"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <User className="w-4 h-4 text-purple-600" />
+                          <User className="w-4 h-4 text-owner-600" />
                           <span className="text-sm font-medium text-gray-900">{common?.myProfile || 'My Profile'}</span>
                         </Link>
                         <Link
@@ -695,7 +695,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                         onClick={() => setMobileMenuOpen(false)}
                         className={cn(
                           "flex items-center gap-3 px-4 py-3 superellipse-xl transition",
-                          isActive ? "bg-purple-50 text-purple-900" : "hover:bg-purple-50"
+                          isActive ? "bg-owner-50 text-owner-900" : "hover:bg-owner-50"
                         )}
                       >
                         <Icon className="w-5 h-5 text-gray-700" />
@@ -708,7 +708,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                     <div key={domain.id}>
                       <button
                         onClick={() => setExpandedMobileSection(isExpanded ? null : domain.id)}
-                        className="w-full flex items-center justify-between px-4 py-3 superellipse-xl hover:bg-purple-50 transition"
+                        className="w-full flex items-center justify-between px-4 py-3 superellipse-xl hover:bg-owner-50 transition"
                       >
                         <div className="flex items-center gap-3">
                           <Icon className="w-5 h-5 text-gray-700" />
@@ -746,7 +746,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                                     onClick={() => setMobileMenuOpen(false)}
                                     className={cn(
                                       "flex items-center justify-between px-4 py-2.5 superellipse-xl transition",
-                                      isActive ? "bg-purple-50 text-purple-900" : "text-gray-700 hover:bg-gray-50"
+                                      isActive ? "bg-owner-50 text-owner-900" : "text-gray-700 hover:bg-gray-50"
                                     )}
                                   >
                                     <div className="flex items-center gap-3">
@@ -776,7 +776,7 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
                   className={cn(
                     "flex items-center justify-between px-4 py-3 superellipse-xl transition",
                     pathname?.startsWith('/dashboard/owner/messages')
-                      ? "bg-purple-50 text-purple-900"
+                      ? "bg-owner-50 text-owner-900"
                       : "text-gray-700 hover:bg-gray-50"
                   )}
                 >

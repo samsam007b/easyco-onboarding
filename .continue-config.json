@@ -1,0 +1,24 @@
+{
+  "models": [
+    {
+      "title": "Gemini 2.0 Flash",
+      "provider": "gemini",
+      "model": "gemini-2.0-flash-exp",
+      "apiKey": "${GEMINI_API_KEY}"
+    },
+    {
+      "title": "Gemini 2.0 Flash Thinking",
+      "provider": "gemini",
+      "model": "gemini-2.0-flash-thinking-exp",
+      "apiKey": "${GEMINI_API_KEY}"
+    }
+  ],
+  "tabAutocompleteModel": {
+    "title": "Gemini Flash Autocomplete",
+    "provider": "gemini",
+    "model": "gemini-2.0-flash-exp",
+    "apiKey": "${GEMINI_API_KEY}"
+  },
+  "allowAnonymousTelemetry": false,
+  "docs": []
+}

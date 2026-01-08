@@ -110,7 +110,7 @@ export default function NotificationsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-yellow-50/30 via-white to-amber-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
@@ -120,7 +120,7 @@ export default function NotificationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-yellow-50/30 via-white to-amber-50/30">
+    <div className="min-h-screen bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -138,7 +138,7 @@ export default function NotificationsPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-yellow-200/70 to-amber-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-searcher-200/70 to-searcher-200/70 flex items-center justify-center shadow-sm">
               <Bell className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -171,7 +171,7 @@ export default function NotificationsPage() {
           className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-searcher-100 to-searcher-100 flex items-center justify-center">
               <Smartphone className="w-6 h-6 text-gray-700" />
             </div>
             <div className="flex-1">
@@ -185,7 +185,7 @@ export default function NotificationsPage() {
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, pushEnabled: e.target.checked })}
                 className="sr-only peer"
               />
-              <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-yellow-500"></div>
+              <div className="w-14 h-7 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-searcher-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[4px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-6 after:w-6 after:transition-all peer-checked:bg-searcher-500"></div>
             </label>
           </div>
 
@@ -194,7 +194,7 @@ export default function NotificationsPage() {
             <span>{t?.push?.emailNote?.[language] || 'Email notifications can be configured in the Email section'}</span>
             <Button
               variant="ghost"
-              className="text-orange-600 p-0 h-auto hover:bg-transparent hover:underline"
+              className="text-resident-600 p-0 h-auto hover:bg-transparent hover:underline"
               onClick={() => router.push('/settings/email')}
             >
               {t?.push?.emailLink?.[language] || 'Configure'}
@@ -228,7 +228,7 @@ export default function NotificationsPage() {
               type="checkbox"
               checked={notificationSettings.newMessage}
               onChange={(e) => setNotificationSettings({ ...notificationSettings, newMessage: e.target.checked })}
-              className="w-5 h-5 rounded text-yellow-600"
+              className="w-5 h-5 rounded text-searcher-600"
             />
           </label>
         </motion.div>
@@ -260,7 +260,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.newEvent}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, newEvent: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
 
@@ -273,7 +273,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.eventReminder}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, eventReminder: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
 
@@ -286,7 +286,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.taskAssigned}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, taskAssigned: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
 
@@ -299,7 +299,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.taskDue}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, taskDue: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
           </div>
@@ -332,7 +332,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.paymentReminder}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, paymentReminder: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
 
@@ -345,7 +345,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.paymentReceived}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, paymentReceived: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
 
@@ -358,7 +358,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.expenseCreated}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, expenseCreated: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
           </div>
@@ -372,7 +372,7 @@ export default function NotificationsPage() {
           className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-orange-100 to-amber-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-searcher-100 to-searcher-100 flex items-center justify-center">
               <Users className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -391,7 +391,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.newMember}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, newMember: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
 
@@ -404,7 +404,7 @@ export default function NotificationsPage() {
                 type="checkbox"
                 checked={notificationSettings.announcements}
                 onChange={(e) => setNotificationSettings({ ...notificationSettings, announcements: e.target.checked })}
-                className="w-5 h-5 rounded text-yellow-600"
+                className="w-5 h-5 rounded text-searcher-600"
               />
             </label>
           </div>
@@ -419,7 +419,7 @@ export default function NotificationsPage() {
           <Button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="w-full superellipse-xl bg-gradient-to-r from-yellow-200/70 to-amber-200/70 text-gray-900 hover:from-yellow-300/70 hover:to-amber-300/70"
+            className="w-full superellipse-xl bg-gradient-to-r from-searcher-200/70 to-searcher-200/70 text-gray-900 hover:from-searcher-300/70 hover:to-searcher-300/70"
           >
             {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save changes')}
           </Button>

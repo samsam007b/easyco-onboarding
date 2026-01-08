@@ -557,26 +557,26 @@ html::after {
 }
 
 .btn-primary {
-  @apply bg-[var(--easy-purple-900)] text-white shadow-md;
-  @apply hover:bg-[var(--easy-purple-700)] hover:shadow-lg;
+  @apply bg-owner-500 text-white shadow-md;
+  @apply hover:bg-owner-600 hover:shadow-lg;
   @apply active:scale-95;
-  @apply focus:ring-[var(--easy-purple-300)];
-  @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[var(--easy-purple-900)];
+  @apply focus:ring-owner-300;
+  @apply disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-owner-500;
 }
 
 .btn-secondary {
-  @apply bg-[var(--easy-yellow-500)] text-black shadow-md;
-  @apply hover:bg-[var(--easy-yellow-600)] hover:shadow-lg;
+  @apply bg-searcher-500 text-black shadow-md;
+  @apply hover:bg-searcher-600 hover:shadow-lg;
   @apply active:scale-95;
-  @apply focus:ring-[var(--easy-yellow-400)];
+  @apply focus:ring-searcher-400;
   @apply disabled:opacity-50 disabled:cursor-not-allowed;
 }
 
 .btn-outline {
-  @apply border-2 border-[var(--easy-purple-900)] text-[var(--easy-purple-900)] bg-transparent;
-  @apply hover:bg-[var(--easy-purple-100)];
+  @apply border-2 border-owner-500 text-owner-500 bg-transparent;
+  @apply hover:bg-owner-100;
   @apply active:scale-95;
-  @apply focus:ring-[var(--easy-purple-300)];
+  @apply focus:ring-owner-300;
 }
 
 .btn-ghost {
@@ -613,7 +613,7 @@ html::after {
 /* Inputs */
 .input {
   @apply w-full px-4 py-3 rounded-xl border border-gray-300 bg-white;
-  @apply focus:border-[var(--easy-purple-900)] focus:ring-2 focus:ring-[var(--easy-purple-100)] outline-none;
+  @apply focus:border-owner-500 focus:ring-2 focus:ring-owner-100 outline-none;
   @apply transition-all duration-200;
   @apply placeholder:text-gray-400;
   @apply disabled:bg-gray-100 disabled:cursor-not-allowed;
@@ -629,7 +629,7 @@ html::after {
 }
 
 .badge-primary {
-  @apply bg-[var(--easy-purple-100)] text-[var(--easy-purple-900)];
+  @apply bg-owner-100 text-owner-900;
 }
 
 .badge-success {
@@ -2053,9 +2053,10 @@ html.dark::before {
 
 /* Add custom map pin icon using CSS */
 .pac-icon::before {
-  content: '📍';
+  content: '•';
   font-size: 16px;
-  filter: grayscale(0.3);
+  color: var(--owner-primary);
+  font-weight: bold;
 }
 
 /* Main text (city/place name) */

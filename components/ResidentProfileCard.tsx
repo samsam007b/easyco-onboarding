@@ -64,12 +64,12 @@ export default function ResidentProfileCard({
         <button
           onClick={() => setShowFullProfile(true)}
           className={cn(
-            "flex flex-col items-center gap-4 p-5 superellipse-2xl bg-gradient-to-br from-white to-orange-50/30 border-2 border-orange-100 hover:border-orange-300 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full",
+            "flex flex-col items-center gap-4 p-5 superellipse-2xl bg-gradient-to-br from-white to-resident-50/30 border-2 border-resident-100 hover:border-resident-300 hover:shadow-lg hover:scale-105 transition-all duration-200 w-full",
             className
           )}
         >
           <div className="relative">
-            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center shadow-lg ring-4 ring-white">
+            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center shadow-lg ring-4 ring-white">
               {resident.profile_photo_url ? (
                 <img
                   src={resident.profile_photo_url}
@@ -81,7 +81,7 @@ export default function ResidentProfileCard({
               )}
             </div>
             {resident.age && (
-              <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-orange-500 to-orange-600 text-white text-sm font-bold rounded-full w-9 h-9 flex items-center justify-center shadow-md ring-2 ring-white">
+              <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-resident-500 to-resident-600 text-white text-sm font-bold rounded-full w-9 h-9 flex items-center justify-center shadow-md ring-2 ring-white">
                 {resident.age}
               </div>
             )}
@@ -99,7 +99,7 @@ export default function ResidentProfileCard({
                 <Badge variant="default" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600 bg-gray-50">🐾</Badge>
               )}
               {resident.languages && resident.languages.length > 0 && (
-                <Badge variant="default" className="text-xs px-1.5 py-0 border-orange-200 text-orange-600 bg-orange-50">
+                <Badge variant="default" className="text-xs px-1.5 py-0 border-resident-200 text-resident-600 bg-resident-50">
                   {resident.languages[0]}
                 </Badge>
               )}
@@ -112,7 +112,7 @@ export default function ResidentProfileCard({
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-4">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center shadow-xl ring-4 ring-orange-50">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center shadow-xl ring-4 ring-resident-50">
                   {resident.profile_photo_url ? (
                     <img
                       src={resident.profile_photo_url}
@@ -135,7 +135,7 @@ export default function ResidentProfileCard({
               <div className="grid grid-cols-2 gap-4">
                 {resident.occupation && (
                   <div className="flex items-center gap-2">
-                    <Briefcase className="w-5 h-5 text-orange-600" />
+                    <Briefcase className="w-5 h-5 text-resident-600" />
                     <div>
                       <p className="text-xs text-gray-500">Profession</p>
                       <p className="font-medium text-gray-900">{resident.occupation}</p>
@@ -144,7 +144,7 @@ export default function ResidentProfileCard({
                 )}
                 {resident.nationality && (
                   <div className="flex items-center gap-2">
-                    <Globe className="w-5 h-5 text-orange-600" />
+                    <Globe className="w-5 h-5 text-resident-600" />
                     <div>
                       <p className="text-xs text-gray-500">Nationalité</p>
                       <p className="font-medium text-gray-900">{resident.nationality}</p>
@@ -157,12 +157,12 @@ export default function ResidentProfileCard({
               {resident.languages && resident.languages.length > 0 && (
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <Languages className="w-5 h-5 text-orange-600" />
+                    <Languages className="w-5 h-5 text-resident-600" />
                     <p className="font-semibold text-gray-900">Langues</p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {resident.languages.map((lang, idx) => (
-                      <Badge key={idx} variant="default" className="bg-orange-50 border-orange-200 text-orange-700">
+                      <Badge key={idx} variant="default" className="bg-resident-50 border-resident-200 text-resident-700">
                         {lang}
                       </Badge>
                     ))}
@@ -182,12 +182,12 @@ export default function ResidentProfileCard({
               {resident.interests && resident.interests.length > 0 && (
                 <div>
                   <div className="flex items-center gap-2 mb-2">
-                    <Heart className="w-5 h-5 text-orange-600" />
+                    <Heart className="w-5 h-5 text-resident-600" />
                     <p className="font-semibold text-gray-900">Centres d'intérêt</p>
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {resident.interests.map((interest, idx) => (
-                      <Badge key={idx} className="bg-orange-100 text-orange-700 border-orange-200">
+                      <Badge key={idx} className="bg-resident-100 text-resident-700 border-resident-200">
                         {interest}
                       </Badge>
                     ))}
@@ -212,8 +212,8 @@ export default function ResidentProfileCard({
 
                   {/* Noise Tolerance */}
                   {resident.noise_tolerance && (
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-yellow-50 border border-yellow-200">
-                      <Volume2 className="w-5 h-5 text-yellow-600" />
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-resident-50 border border-resident-200">
+                      <Volume2 className="w-5 h-5 text-resident-600" />
                       <div>
                         <p className="text-xs text-gray-500">Niveau sonore</p>
                         <p className="font-medium text-gray-900">{getNoiseToleranceLabel(resident.noise_tolerance)}</p>
@@ -223,8 +223,8 @@ export default function ResidentProfileCard({
 
                   {/* Sociability */}
                   {resident.sociability_level && (
-                    <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-orange-200">
-                      <Users className="w-5 h-5 text-orange-600" />
+                    <div className="flex items-center gap-3 p-3 rounded-lg bg-resident-50 border border-resident-200">
+                      <Users className="w-5 h-5 text-resident-600" />
                       <div>
                         <p className="text-xs text-gray-500">Sociabilité</p>
                         <p className="font-medium text-gray-900">{resident.sociability_level}/10</p>
@@ -235,7 +235,7 @@ export default function ResidentProfileCard({
                   {/* Smoking */}
                   {resident.is_smoker !== undefined && (
                     <div className={`flex items-center gap-3 p-3 rounded-lg ${
-                      resident.is_smoker ? 'bg-yellow-50 border border-yellow-200' : 'bg-green-50 border border-green-200'
+                      resident.is_smoker ? 'bg-resident-50 border border-resident-200' : 'bg-green-50 border border-green-200'
                     }`}>
                       <span className="text-xl">🚬</span>
                       <div>
@@ -271,7 +271,7 @@ export default function ResidentProfileCard({
     <Card className={cn("p-6", className)}>
       <div className="flex items-start gap-4">
         <div className="relative">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center">
             {resident.profile_photo_url ? (
               <img
                 src={resident.profile_photo_url}
@@ -283,7 +283,7 @@ export default function ResidentProfileCard({
             )}
           </div>
           {resident.age && (
-            <div className="absolute -bottom-1 -right-1 bg-orange-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center">
+            <div className="absolute -bottom-1 -right-1 bg-resident-500 text-white text-sm font-bold rounded-full w-8 h-8 flex items-center justify-center">
               {resident.age}
             </div>
           )}
@@ -303,7 +303,7 @@ export default function ResidentProfileCard({
             variant="outline"
             size="sm"
             onClick={() => setShowFullProfile(true)}
-            className="mt-3 text-orange-600 border-orange-300 hover:bg-orange-50"
+            className="mt-3 text-resident-600 border-resident-300 hover:bg-resident-50"
           >
             Voir plus
           </Button>
@@ -315,7 +315,7 @@ export default function ResidentProfileCard({
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#FFA040] to-[#FFB85C] flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center">
                 {resident.profile_photo_url ? (
                   <img
                     src={resident.profile_photo_url}
@@ -338,7 +338,7 @@ export default function ResidentProfileCard({
             <div className="grid grid-cols-2 gap-4">
               {resident.occupation && (
                 <div className="flex items-center gap-2">
-                  <Briefcase className="w-5 h-5 text-orange-600" />
+                  <Briefcase className="w-5 h-5 text-resident-600" />
                   <div>
                     <p className="text-xs text-gray-500">Profession</p>
                     <p className="font-medium text-gray-900">{resident.occupation}</p>
@@ -347,7 +347,7 @@ export default function ResidentProfileCard({
               )}
               {resident.nationality && (
                 <div className="flex items-center gap-2">
-                  <Globe className="w-5 h-5 text-orange-600" />
+                  <Globe className="w-5 h-5 text-resident-600" />
                   <div>
                     <p className="text-xs text-gray-500">Nationalité</p>
                     <p className="font-medium text-gray-900">{resident.nationality}</p>
@@ -360,12 +360,12 @@ export default function ResidentProfileCard({
             {resident.languages && resident.languages.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Languages className="w-5 h-5 text-orange-600" />
+                  <Languages className="w-5 h-5 text-resident-600" />
                   <p className="font-semibold text-gray-900">Langues</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {resident.languages.map((lang, idx) => (
-                    <Badge key={idx} variant="default" className="bg-orange-50 border-orange-200 text-orange-700">
+                    <Badge key={idx} variant="default" className="bg-resident-50 border-resident-200 text-resident-700">
                       {lang}
                     </Badge>
                   ))}
@@ -385,12 +385,12 @@ export default function ResidentProfileCard({
             {resident.interests && resident.interests.length > 0 && (
               <div>
                 <div className="flex items-center gap-2 mb-2">
-                  <Heart className="w-5 h-5 text-orange-600" />
+                  <Heart className="w-5 h-5 text-resident-600" />
                   <p className="font-semibold text-gray-900">Centres d'intérêt</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {resident.interests.map((interest, idx) => (
-                    <Badge key={idx} className="bg-orange-100 text-orange-700 border-orange-200">
+                    <Badge key={idx} className="bg-resident-100 text-resident-700 border-resident-200">
                       {interest}
                     </Badge>
                   ))}
@@ -415,8 +415,8 @@ export default function ResidentProfileCard({
 
                 {/* Noise Tolerance */}
                 {resident.noise_tolerance && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-yellow-50 border border-yellow-200">
-                    <Volume2 className="w-5 h-5 text-yellow-600" />
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-resident-50 border border-resident-200">
+                    <Volume2 className="w-5 h-5 text-resident-600" />
                     <div>
                       <p className="text-xs text-gray-500">Niveau sonore</p>
                       <p className="font-medium text-gray-900">{getNoiseToleranceLabel(resident.noise_tolerance)}</p>
@@ -426,8 +426,8 @@ export default function ResidentProfileCard({
 
                 {/* Sociability */}
                 {resident.sociability_level && (
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-purple-50 border border-orange-200">
-                    <Users className="w-5 h-5 text-orange-600" />
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-resident-50 border border-resident-200">
+                    <Users className="w-5 h-5 text-resident-600" />
                     <div>
                       <p className="text-xs text-gray-500">Sociabilité</p>
                       <p className="font-medium text-gray-900">{resident.sociability_level}/10</p>
@@ -438,7 +438,7 @@ export default function ResidentProfileCard({
                 {/* Smoking */}
                 {resident.is_smoker !== undefined && (
                   <div className={`flex items-center gap-3 p-3 rounded-lg ${
-                    resident.is_smoker ? 'bg-yellow-50 border border-yellow-200' : 'bg-green-50 border border-green-200'
+                    resident.is_smoker ? 'bg-resident-50 border border-resident-200' : 'bg-green-50 border border-green-200'
                   }`}>
                     <span className="text-xl">🚬</span>
                     <div>
