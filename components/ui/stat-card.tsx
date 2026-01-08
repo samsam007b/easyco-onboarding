@@ -17,8 +17,8 @@ export function StatCard({
   value,
   description,
   icon: Icon,
-  iconBgColor = 'bg-purple-100',
-  iconColor = 'text-purple-600',
+  iconBgColor = 'bg-owner-100',
+  iconColor = 'text-owner-600',
   className,
   onClick,
 }: StatCardProps) {
@@ -26,7 +26,7 @@ export function StatCard({
     <div
       className={cn(
         'bg-white superellipse-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md',
-        onClick && 'cursor-pointer hover:border-purple-300',
+        onClick && 'cursor-pointer hover:border-owner-300',
         className
       )}
       onClick={onClick}
