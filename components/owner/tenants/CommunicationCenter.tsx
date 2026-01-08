@@ -77,8 +77,8 @@ const quickTemplates: QuickTemplate[] = [
     icon: CalendarCheck,
     label: 'Renouvellement bail',
     description: 'Proposer le renouvellement du bail',
-    color: 'text-purple-600',
-    bgColor: 'bg-purple-50 hover:bg-purple-100 border-purple-200',
+    color: 'text-owner-600',
+    bgColor: 'bg-owner-50 hover:bg-owner-100 border-owner-200',
     category: 'reminder',
   },
   {
@@ -86,8 +86,8 @@ const quickTemplates: QuickTemplate[] = [
     icon: Heart,
     label: 'Message de bienvenue',
     description: 'Accueillir un nouveau locataire',
-    color: 'text-pink-600',
-    bgColor: 'bg-pink-50 hover:bg-pink-100 border-pink-200',
+    color: 'text-owner-600',
+    bgColor: 'bg-owner-50 hover:bg-owner-100 border-owner-200',
     category: 'welcome',
   },
 ];
@@ -108,7 +108,7 @@ export function CommunicationCenter({
       text: { icon: MessageCircle, color: 'text-gray-500' },
       maintenance: { icon: FileText, color: 'text-blue-500' },
       payment: { icon: AlertCircle, color: 'text-amber-500' },
-      lease: { icon: CalendarCheck, color: 'text-purple-500' },
+      lease: { icon: CalendarCheck, color: 'text-owner-500' },
     };
     return configs[type];
   };
@@ -156,7 +156,7 @@ export function CommunicationCenter({
             onClick={() => router.push('/dashboard/owner/messages')}
             variant="outline"
             size="sm"
-            className="rounded-full border-gray-200 hover:border-purple-300"
+            className="rounded-full border-gray-200 hover:border-owner-300"
           >
             Voir tout
             <ChevronRight className="w-4 h-4 ml-1" />
@@ -192,7 +192,7 @@ export function CommunicationCenter({
                     className={cn(
                       "flex items-center gap-3 p-3 superellipse-xl transition-all cursor-pointer",
                       conv.unread
-                        ? "bg-purple-50/50 border border-purple-100"
+                        ? "bg-owner-50/50 border border-owner-100"
                         : "bg-gray-50/50 hover:bg-gray-100 border border-transparent"
                     )}
                     onClick={() => router.push(`/dashboard/owner/messages?conversation=${conv.id}`)}
@@ -270,7 +270,7 @@ export function CommunicationCenter({
                   className={cn(
                     "flex flex-col items-center gap-2 p-3 superellipse-xl border transition-all text-center",
                     template.bgColor,
-                    isSelected && "ring-2 ring-purple-400"
+                    isSelected && "ring-2 ring-owner-400"
                   )}
                 >
                   <Icon className={cn("w-5 h-5", template.color)} />
@@ -286,7 +286,7 @@ export function CommunicationCenter({
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
             onClick={() => router.push('/dashboard/owner/messages/compose?bulk=true')}
-            className="w-full mt-4 flex items-center justify-center gap-2 p-3 superellipse-xl border-2 border-dashed border-gray-200 text-gray-500 hover:border-purple-300 hover:text-purple-600 transition-all"
+            className="w-full mt-4 flex items-center justify-center gap-2 p-3 superellipse-xl border-2 border-dashed border-gray-200 text-gray-500 hover:border-owner-300 hover:text-owner-600 transition-all"
           >
             <Send className="w-4 h-4" />
             <span className="text-sm font-medium">Message à tous ({tenantCount})</span>
