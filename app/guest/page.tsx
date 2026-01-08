@@ -720,7 +720,7 @@ function ResidentGuestView({
     {
       icon: Wrench,
       title: 'Issue Hub',
-      description: 'Une fuite ? Un problème de chauffage ? Crée un ticket en 2 clics avec photos. Ton propriétaire reçoit la demande, te répond et suit l'avancement. Tout est tracé, tout est transparent.',
+      description: "Une fuite ? Un problème de chauffage ? Crée un ticket en 2 clics avec photos. Ton propriétaire reçoit la demande, te répond et suit l'avancement. Tout est tracé, tout est transparent.",
     },
   ];
 
