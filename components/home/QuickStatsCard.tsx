@@ -23,7 +23,7 @@ export function QuickStatsCard({
   value,
   trend,
   gradient,
-  iconBgColor = 'bg-purple-100',
+  iconBgColor = 'bg-owner-100',
   onClick,
 }: QuickStatsCardProps) {
   return (
@@ -52,7 +52,7 @@ export function QuickStatsCard({
             )}
           </div>
           <div className={cn('p-3 superellipse-xl', iconBgColor)}>
-            <Icon className="h-6 w-6 text-purple-700" />
+            <Icon className="h-6 w-6 text-owner-700" />
           </div>
         </div>
       </CardContent>
