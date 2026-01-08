@@ -147,7 +147,7 @@ function OptimizedPropertyCard({
                     {residents.slice(0, 3).map((resident, index) => (
                       <div
                         key={resident.id}
-                        className="w-8 h-8 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white shadow-md flex items-center justify-center"
+                        className="w-8 h-8 rounded-full bg-gradient-to-br from-resident-400 to-resident-600 border-2 border-white shadow-md flex items-center justify-center"
                         style={{ zIndex: 10 - index }}
                       >
                         {resident.profile_photo_url ? (
@@ -201,10 +201,10 @@ function OptimizedPropertyCard({
               {/* Price section with glassmorphism */}
               <div className="relative -mx-3 -mb-3 mt-3 px-3 py-2 rounded-b-xl overflow-hidden">
                 {/* Animated background lights */}
-                <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-                  <div className="absolute top-0 left-1/4 w-24 h-24 bg-orange-300/60 rounded-full blur-xl"
+                <div className="absolute inset-0 bg-gradient-to-br from-searcher-50 via-searcher-50 to-searcher-50">
+                  <div className="absolute top-0 left-1/4 w-24 h-24 bg-searcher-300/60 rounded-full blur-xl"
                        style={{ animation: 'float 20s ease-in-out infinite' }} />
-                  <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-purple-300/50 rounded-full blur-2xl"
+                  <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-searcher-300/50 rounded-full blur-2xl"
                        style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
                 </div>
 
@@ -278,7 +278,7 @@ function OptimizedPropertyCard({
                   {residents.slice(0, 4).map((resident, index) => (
                     <div
                       key={resident.id}
-                      className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-2 border-white shadow-lg flex items-center justify-center"
+                      className="w-10 h-10 rounded-full bg-gradient-to-br from-resident-400 to-resident-600 border-2 border-white shadow-lg flex items-center justify-center"
                       style={{ zIndex: 10 - index }}
                     >
                       {resident.profile_photo_url ? (
@@ -367,10 +367,10 @@ function OptimizedPropertyCard({
             {/* Footer: Price and CTA */}
             <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden">
               {/* Animated background lights */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-                <div className="absolute top-0 left-1/4 w-32 h-32 bg-orange-300/60 rounded-full blur-2xl"
+              <div className="absolute inset-0 bg-gradient-to-br from-searcher-50 via-searcher-50 to-searcher-50">
+                <div className="absolute top-0 left-1/4 w-32 h-32 bg-searcher-300/60 rounded-full blur-2xl"
                      style={{ animation: 'float 20s ease-in-out infinite' }} />
-                <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-purple-300/50 rounded-full blur-2xl"
+                <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-searcher-300/50 rounded-full blur-2xl"
                      style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
               </div>
 
@@ -393,10 +393,7 @@ function OptimizedPropertyCard({
                 <div className="flex gap-2">
                   <button
                     onClick={handleBookVisit}
-                    className="px-4 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"
-                    style={{
-                      background: 'linear-gradient(135deg, #FFA040 0%, #FFB85C 50%, #FFD080 100%)'
-                    }}
+                    className="px-4 py-2 bg-gradient-to-r from-searcher-500 to-searcher-600 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center gap-2"
                   >
                     <Calendar className="w-4 h-4" />
                     <span className="hidden sm:inline">Visite</span>
@@ -406,10 +403,7 @@ function OptimizedPropertyCard({
                       e.preventDefault();
                       window.location.href = `/properties/${property.id}`;
                     }}
-                    className="px-5 py-2 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
-                    style={{
-                      background: 'linear-gradient(135deg, #7B5FB8 0%, #A67BB8 50%, #C98B9E 100%)'
-                    }}
+                    className="px-5 py-2 bg-gradient-to-r from-searcher-600 to-searcher-700 text-white font-semibold rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all"
                   >
                     Voir
                   </button>
