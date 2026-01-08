@@ -41,7 +41,7 @@ export function KPICard({
     <div
       className={cn(
         'bg-white superellipse-xl shadow-sm border border-gray-200 p-6 transition-all hover:shadow-md',
-        onClick && 'cursor-pointer hover:border-purple-300',
+        onClick && 'cursor-pointer hover:border-owner-300',
         className
       )}
       onClick={onClick}
@@ -52,8 +52,8 @@ export function KPICard({
           <p className="text-3xl font-bold text-gray-900">{value}</p>
         </div>
         {Icon && (
-          <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-            <Icon className="w-6 h-6 text-purple-600" />
+          <div className="w-12 h-12 bg-owner-100 rounded-lg flex items-center justify-center">
+            <Icon className="w-6 h-6 text-owner-600" />
           </div>
         )}
       </div>
