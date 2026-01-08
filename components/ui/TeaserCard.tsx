@@ -78,14 +78,14 @@ export function TeaserCard({
       {/* Overlay with CTA */}
       <div className="absolute inset-0 flex flex-col items-center justify-center bg-gradient-to-b from-white/80 via-white/90 to-white/95 backdrop-blur-sm">
         {badge && (
-          <div className="mb-3 px-3 py-1 bg-purple-100 text-purple-700 text-xs font-bold rounded-full uppercase tracking-wide">
+          <div className="mb-3 px-3 py-1 bg-owner-100 text-owner-700 text-xs font-bold rounded-full uppercase tracking-wide">
             {badge}
           </div>
         )}
 
         {/* Lock Icon */}
-        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-purple-100 rounded-full flex items-center justify-center mb-4">
-          <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-purple-600" />
+        <div className="w-12 h-12 sm:w-16 sm:h-16 bg-owner-100 rounded-full flex items-center justify-center mb-4">
+          <Lock className="w-6 h-6 sm:w-8 sm:h-8 text-owner-600" />
         </div>
 
         {/* CTA Text */}
@@ -97,14 +97,14 @@ export function TeaserCard({
         {ctaHref ? (
           <Link
             href={ctaHref}
-            className="px-6 py-3 bg-[var(--easy-purple-900)] text-white font-semibold rounded-full hover:bg-[var(--easy-purple-700)] transition-all shadow-lg hover:shadow-xl hover:scale-105"
+            className="px-6 py-3 bg-owner-600 text-white font-semibold rounded-full hover:bg-owner-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
           >
             {teaser?.createFreeAccount || 'Créer un compte gratuit'}
           </Link>
         ) : onCtaClick ? (
           <button
             onClick={onCtaClick}
-            className="px-6 py-3 bg-[var(--easy-purple-900)] text-white font-semibold rounded-full hover:bg-[var(--easy-purple-700)] transition-all shadow-lg hover:shadow-xl hover:scale-105"
+            className="px-6 py-3 bg-owner-600 text-white font-semibold rounded-full hover:bg-owner-700 transition-all shadow-lg hover:shadow-xl hover:scale-105"
           >
             {teaser?.unlock || 'Débloquer'}
           </button>
@@ -114,7 +114,7 @@ export function TeaserCard({
         {ctaHref && (
           <Link
             href="/auth"
-            className="mt-3 text-sm text-gray-600 hover:text-purple-600 transition underline"
+            className="mt-3 text-sm text-gray-600 hover:text-owner-600 transition underline"
           >
             {teaser?.alreadyHaveAccount || "J'ai déjà un compte"}
           </Link>
@@ -148,7 +148,7 @@ export function TeaserCardCompact({
       <div className="absolute inset-0 flex items-center justify-center bg-white/90 backdrop-blur-sm">
         <Link
           href={ctaHref}
-          className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white text-sm font-semibold rounded-lg hover:bg-purple-700 transition"
+          className="flex items-center gap-2 px-4 py-2 bg-owner-600 text-white text-sm font-semibold rounded-lg hover:bg-owner-700 transition"
         >
           <Lock className="w-4 h-4" />
           {defaultCtaText}
@@ -205,8 +205,8 @@ export function TeaserModal({
         </button>
 
         {/* Icon */}
-        <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-          <Lock className="w-8 h-8 text-purple-600" />
+        <div className="w-16 h-16 bg-owner-100 rounded-full flex items-center justify-center mx-auto mb-4">
+          <Lock className="w-8 h-8 text-owner-600" />
         </div>
 
         {/* Title */}
@@ -226,13 +226,13 @@ export function TeaserModal({
         <div className="flex flex-col gap-3">
           <Link
             href={ctaHref}
-            className="w-full px-6 py-3 bg-[var(--easy-purple-900)] text-white font-semibold rounded-full hover:bg-[var(--easy-purple-700)] transition text-center"
+            className="w-full px-6 py-3 bg-owner-600 text-white font-semibold rounded-full hover:bg-owner-700 transition text-center"
           >
             {teaser?.createMyFreeAccount || 'Créer mon compte gratuit'}
           </Link>
           <Link
             href="/auth"
-            className="w-full px-6 py-3 border-2 border-purple-200 text-gray-700 font-semibold rounded-full hover:bg-purple-50 transition text-center"
+            className="w-full px-6 py-3 border-2 border-owner-200 text-gray-700 font-semibold rounded-full hover:bg-owner-50 transition text-center"
           >
             {teaser?.alreadyHaveAccount || "J'ai déjà un compte"}
           </Link>
