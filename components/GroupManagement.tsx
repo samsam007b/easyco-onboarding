@@ -291,7 +291,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
     return (
       <div className="bg-white superellipse-3xl shadow-lg p-8">
         <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <Users className="w-6 h-6 text-purple-600" />
+          <Users className="w-6 h-6 text-searcher-600" />
           Search with a Group
         </h3>
         <p className="text-gray-600 mb-6">
@@ -331,12 +331,12 @@ export default function GroupManagement({ userId }: { userId: string }) {
   return (
     <div className="bg-white superellipse-3xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-br from-purple-600 to-purple-700 p-6 text-white">
+      <div className="bg-gradient-to-br from-searcher-600 to-searcher-700 p-6 text-white">
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="text-2xl font-bold mb-2">{currentGroup.name}</h3>
             {currentGroup.description && (
-              <p className="text-purple-100 text-sm">{currentGroup.description}</p>
+              <p className="text-searcher-100 text-sm">{currentGroup.description}</p>
             )}
           </div>
           <div className="bg-white/20 backdrop-blur-sm px-3 py-1.5 rounded-full text-sm font-medium">
@@ -349,14 +349,14 @@ export default function GroupManagement({ userId }: { userId: string }) {
         {/* Members List */}
         <div className="mb-6">
           <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-            <Users className="w-5 h-5 text-purple-600" />
+            <Users className="w-5 h-5 text-searcher-600" />
             Members
           </h4>
           <div className="space-y-2">
             {activeMembers.map((member) => (
               <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  <div className="w-10 h-10 bg-gradient-to-br from-searcher-500 to-searcher-600 rounded-full flex items-center justify-center text-white font-semibold">
                     {member.users.full_name.charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -420,7 +420,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
         {isCreatorOrAdmin && activeMembers.length < currentGroup.max_members && (
           <div className="mb-6">
             <h4 className="font-semibold text-gray-900 mb-3 flex items-center gap-2">
-              <UserPlus className="w-5 h-5 text-purple-600" />
+              <UserPlus className="w-5 h-5 text-searcher-600" />
               Invite Members
             </h4>
 
