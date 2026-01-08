@@ -67,8 +67,8 @@ export default function CookieConsentBanner() {
             {/* Header */}
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-orange-100 superellipse-xl flex items-center justify-center flex-shrink-0">
-                  <Cookie className="w-6 h-6 text-orange-600" />
+                <div className="w-12 h-12 bg-searcher-100 superellipse-xl flex items-center justify-center flex-shrink-0">
+                  <Cookie className="w-6 h-6 text-searcher-600" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-gray-900">
@@ -107,7 +107,7 @@ export default function CookieConsentBanner() {
                       type="checkbox"
                       checked={true}
                       disabled
-                      className="w-5 h-5 text-orange-600 border-gray-300 rounded focus:ring-orange-500 disabled:opacity-50"
+                      className="w-5 h-5 text-searcher-600 border-gray-300 rounded focus:ring-searcher-500 disabled:opacity-50"
                     />
                     <span className="ml-2 text-sm text-gray-500">Toujours actifs</span>
                   </div>
@@ -131,7 +131,7 @@ export default function CookieConsentBanner() {
                       onChange={(e) =>
                         setPreferences({ ...preferences, analytics: e.target.checked })
                       }
-                      className="w-5 h-5 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                      className="w-5 h-5 text-searcher-600 border-gray-300 rounded focus:ring-searcher-500"
                     />
                   </div>
                 </div>
@@ -153,7 +153,7 @@ export default function CookieConsentBanner() {
                       onChange={(e) =>
                         setPreferences({ ...preferences, marketing: e.target.checked })
                       }
-                      className="w-5 h-5 text-orange-600 border-gray-300 rounded focus:ring-orange-500"
+                      className="w-5 h-5 text-searcher-600 border-gray-300 rounded focus:ring-searcher-500"
                     />
                   </div>
                 </div>
@@ -162,11 +162,11 @@ export default function CookieConsentBanner() {
                 <div className="pt-4 border-t border-gray-200">
                   <p className="text-sm text-gray-600">
                     Pour plus d'informations, consultez notre{' '}
-                    <a href="/privacy" className="text-orange-600 hover:text-orange-700 font-medium">
+                    <a href="/privacy" className="text-searcher-600 hover:text-searcher-700 font-medium">
                       politique de confidentialité
                     </a>{' '}
                     et nos{' '}
-                    <a href="/terms" className="text-orange-600 hover:text-orange-700 font-medium">
+                    <a href="/terms" className="text-searcher-600 hover:text-searcher-700 font-medium">
                       conditions d'utilisation
                     </a>
                     .
@@ -187,7 +187,7 @@ export default function CookieConsentBanner() {
                   </button>
                   <button
                     onClick={handleSavePreferences}
-                    className="flex-1 px-6 py-3 bg-orange-600 text-white font-medium superellipse-xl hover:bg-orange-700 transition shadow-lg shadow-orange-600/30"
+                    className="flex-1 px-6 py-3 bg-searcher-600 text-white font-medium superellipse-xl hover:bg-searcher-700 transition shadow-lg shadow-searcher-600/30"
                   >
                     Enregistrer mes préférences
                   </button>
@@ -202,14 +202,14 @@ export default function CookieConsentBanner() {
                   </button>
                   <button
                     onClick={() => setShowDetails(true)}
-                    className="flex-1 px-6 py-3 border-2 border-orange-600 text-orange-600 font-medium superellipse-xl hover:bg-orange-50 transition flex items-center justify-center gap-2"
+                    className="flex-1 px-6 py-3 border-2 border-searcher-600 text-searcher-600 font-medium superellipse-xl hover:bg-searcher-50 transition flex items-center justify-center gap-2"
                   >
                     <Settings className="w-5 h-5" />
                     Personnaliser
                   </button>
                   <button
                     onClick={handleAcceptAll}
-                    className="flex-1 px-6 py-3 bg-orange-600 text-white font-medium superellipse-xl hover:bg-orange-700 transition shadow-lg shadow-orange-600/30"
+                    className="flex-1 px-6 py-3 bg-searcher-600 text-white font-medium superellipse-xl hover:bg-searcher-700 transition shadow-lg shadow-searcher-600/30"
                   >
                     Accepter tout
                   </button>
