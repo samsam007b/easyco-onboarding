@@ -135,12 +135,12 @@ export default function BudgetRangePicker({
         <div className="flex items-center justify-between">
           <div className="text-center">
             <div className="text-xs text-gray-500 mb-0.5">Min</div>
-            <div className="text-base font-bold text-purple-700">€{minValue}</div>
+            <div className="text-base font-bold text-searcher-700">€{minValue}</div>
           </div>
           <div className="text-gray-400 text-sm">—</div>
           <div className="text-center">
             <div className="text-xs text-gray-500 mb-0.5">Max</div>
-            <div className="text-base font-bold text-purple-700">€{maxValue}</div>
+            <div className="text-base font-bold text-searcher-700">€{maxValue}</div>
           </div>
         </div>
 
@@ -155,7 +155,7 @@ export default function BudgetRangePicker({
             style={{
               left: `${getMinPosition()}%`,
               right: `${100 - getMaxPosition()}%`,
-              background: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #FFB10B 100%)'
+              background: 'hsl(var(--searcher-600))'
             }}
           />
 
@@ -167,7 +167,7 @@ export default function BudgetRangePicker({
             step="50"
             value={minValue}
             onChange={handleMinChange}
-            className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-purple-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-purple-600 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:shadow-md"
+            className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-searcher-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-searcher-600 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:shadow-md"
             style={{ zIndex: minValue > (maxBudget - minBudget) / 2 ? 5 : 3 }}
           />
 
@@ -179,7 +179,7 @@ export default function BudgetRangePicker({
             step="50"
             value={maxValue}
             onChange={handleMaxChange}
-            className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-purple-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-purple-600 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:shadow-md"
+            className="absolute w-full h-2 appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-searcher-600 [&::-webkit-slider-thumb]:cursor-pointer [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:shadow-md [&::-moz-range-thumb]:w-5 [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-searcher-600 [&::-moz-range-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:shadow-md"
             style={{ zIndex: maxValue <= (maxBudget - minBudget) / 2 ? 5 : 3 }}
           />
         </div>
@@ -204,7 +204,7 @@ export default function BudgetRangePicker({
               className={cn(
                 "px-2.5 py-1 text-xs font-medium rounded-full transition-all",
                 minValue === preset.min && maxValue === preset.max
-                  ? "bg-gradient-to-r from-purple-600 to-purple-700 text-white shadow-md"
+                  ? "bg-searcher-600 text-white shadow-md"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               )}
             >
@@ -216,10 +216,7 @@ export default function BudgetRangePicker({
         {/* Apply Button */}
         <button
           onClick={handleApply}
-          className="w-full py-2 px-4 rounded-lg font-semibold text-white shadow-lg hover:shadow-xl transition-all text-sm"
-          style={{
-            background: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #FFB10B 100%)'
-          }}
+          className="w-full py-2 px-4 rounded-lg font-semibold text-white bg-searcher-600 hover:bg-searcher-700 shadow-lg hover:shadow-xl transition-all text-sm"
         >
           Appliquer
         </button>
