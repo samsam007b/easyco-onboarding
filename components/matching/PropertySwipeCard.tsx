@@ -114,7 +114,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
   const coreInfo = [
     { icon: Euro, label: `${property.monthly_rent}€/${matching.swipe?.perMonth || 'mois'}`, color: 'text-searcher-600' },
     { icon: Bed, label: `${property.bedrooms} ${matching.swipe?.bedrooms || 'chambres'}`, color: 'text-blue-600' },
-    { icon: Bath, label: `${property.bathrooms} ${matching.swipe?.bathrooms || 'SdB'}`, color: 'text-purple-600' },
+    { icon: Bath, label: `${property.bathrooms} ${matching.swipe?.bathrooms || 'SdB'}`, color: 'text-cyan-600' },
     { icon: Users, label: `${residents.length}/${property.total_rooms || property.bedrooms} ${matching.swipe?.roommates || 'colocataires'}`, color: 'text-green-600' },
   ];
 
@@ -376,7 +376,7 @@ export const PropertySwipeCard = memo(function PropertySwipeCard({
             className="absolute top-20 left-1/2 -translate-x-1/2 pointer-events-none z-20"
             style={{ opacity: superLikeOpacity }}
           >
-            <div className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white text-3xl font-bold superellipse-2xl shadow-2xl border-4 border-white flex items-center gap-2">
+            <div className="px-6 py-3 bg-gradient-to-r from-owner-500 to-searcher-500 text-white text-3xl font-bold superellipse-2xl shadow-2xl border-4 border-white flex items-center gap-2">
               <Star className="w-8 h-8 fill-current" />
               {matching.swipe?.superLike || 'SUPER LIKE'}
             </div>
