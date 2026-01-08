@@ -72,13 +72,13 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Search Bar */}
-      <div className="bg-gradient-to-r from-purple-600 via-pink-600 to-purple-700 text-white py-12">
+      <div className="bg-gradient-to-r from-searcher-600 via-searcher-500 to-searcher-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
             <Sparkles className="w-10 h-10" />
             Find Your Perfect Room
           </h1>
-          <p className="text-purple-100 mb-8">
+          <p className="text-searcher-100 mb-8">
             Search by design style, natural light, heating, and atmosphere
           </p>
 
@@ -100,7 +100,7 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
                 showFilters
-                  ? 'bg-purple-600 text-white'
+                  ? 'bg-searcher-600 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
               }`}
             >
@@ -108,7 +108,7 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
               <span>Aesthetic Filters</span>
               {Object.keys(filters).filter((k) => filters[k as keyof AestheticSearchFilters])
                 .length > 0 && (
-                <span className="px-2 py-0.5 bg-white text-purple-600 text-xs rounded-full font-bold">
+                <span className="px-2 py-0.5 bg-white text-searcher-600 text-xs rounded-full font-bold">
                   {
                     Object.keys(filters).filter((k) => filters[k as keyof AestheticSearchFilters])
                       .length
@@ -119,7 +119,7 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
 
             <button
               onClick={handleSearch}
-              className="bg-gradient-to-r from-purple-600 to-pink-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md flex items-center gap-2"
+              className="bg-gradient-to-r from-searcher-500 to-searcher-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-searcher-600 hover:to-searcher-700 transition-all shadow-md flex items-center gap-2"
             >
               <Search className="w-5 h-5" />
               Search
@@ -232,7 +232,7 @@ function RoomCard({ room, onClick }: RoomCardProps) {
 
         {/* Aesthetic Score Badge */}
         <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1 rounded-full shadow-lg flex items-center gap-1">
-          <Sparkles className="w-4 h-4 text-purple-600" />
+          <Sparkles className="w-4 h-4 text-searcher-600" />
           <span className="font-bold text-sm">{room.aesthetic_score.toFixed(1)}</span>
           <span className="text-xs text-gray-500">/10</span>
         </div>
@@ -280,7 +280,7 @@ function RoomCard({ room, onClick }: RoomCardProps) {
         {/* Atmosphere Tag */}
         {room.room_atmosphere && (
           <div className="mb-3">
-            <span className="inline-flex items-center gap-1 px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full font-medium">
+            <span className="inline-flex items-center gap-1 px-2 py-1 bg-searcher-50 text-searcher-700 text-xs rounded-full font-medium">
               <Palette className="w-3 h-3" />
               {room.room_atmosphere}
             </span>
@@ -299,7 +299,7 @@ function RoomCard({ room, onClick }: RoomCardProps) {
             <p className="text-xs text-gray-500">All costs included</p>
           </div>
 
-          <button className="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg text-sm font-semibold hover:from-purple-700 hover:to-pink-700 transition-all shadow-md">
+          <button className="px-4 py-2 bg-gradient-to-r from-searcher-500 to-searcher-600 text-white rounded-lg text-sm font-semibold hover:from-searcher-600 hover:to-searcher-700 transition-all shadow-md">
             View Details
           </button>
         </div>
