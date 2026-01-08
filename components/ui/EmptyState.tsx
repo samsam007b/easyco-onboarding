@@ -219,7 +219,7 @@ export default function EmptyState({
               <Button
                 onClick={secondaryAction.onClick}
                 variant="outline"
-                className="border-2 border-gray-300 hover:border-orange-300 hover:bg-orange-50 transition-all px-6 py-3 superellipse-xl"
+                className="border-2 border-gray-300 hover:border-searcher-300 hover:bg-searcher-50 transition-all px-6 py-3 superellipse-xl"
               >
                 {secondaryAction.label}
               </Button>
@@ -232,7 +232,7 @@ export default function EmptyState({
       {variant === 'minimal' && primaryAction && (
         <button
           onClick={primaryAction.onClick}
-          className="text-orange-600 hover:text-orange-700 font-semibold text-sm underline"
+          className="text-searcher-600 hover:text-searcher-700 font-semibold text-sm underline"
         >
           {primaryAction.label}
         </button>
