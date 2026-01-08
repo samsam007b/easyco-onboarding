@@ -43,7 +43,7 @@ export function ActionCard({
       <CardContent className="p-8 relative">
         {/* Badge */}
         {badge && (
-          <Badge className="absolute top-4 right-4 bg-white text-purple-700 font-semibold">
+          <Badge className="absolute top-4 right-4 bg-white text-searcher-700 font-semibold">
             {badge}
           </Badge>
         )}
@@ -101,7 +101,7 @@ export function ActionCard({
 
         {/* Button */}
         <Button
-          className="w-full bg-white text-purple-700 hover:bg-white/90 font-semibold superellipse-2xl"
+          className="w-full bg-white text-searcher-700 hover:bg-white/90 font-semibold superellipse-2xl"
           onClick={(e) => {
             e.stopPropagation();
             onClick();
