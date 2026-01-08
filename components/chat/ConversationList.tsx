@@ -50,8 +50,8 @@ export function ConversationList({
           className={cn(
             'p-4 mb-2 cursor-pointer transition-all hover:shadow-md border-l-4',
             selectedId === conversation.conversation_id
-              ? 'border-l-purple-600 bg-purple-50'
-              : 'border-l-transparent hover:border-l-purple-300'
+              ? 'border-l-owner-600 bg-owner-50'
+              : 'border-l-transparent hover:border-l-owner-300'
           )}
           onClick={() => onSelect(conversation.conversation_id)}
         >
@@ -65,8 +65,8 @@ export function ConversationList({
                   className="w-12 h-12 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-full bg-purple-200 flex items-center justify-center">
-                  <span className="text-purple-700 font-semibold text-lg">
+                <div className="w-12 h-12 rounded-full bg-owner-200 flex items-center justify-center">
+                  <span className="text-owner-700 font-semibold text-lg">
                     {conversation.other_user_name.charAt(0)}
                   </span>
                 </div>
