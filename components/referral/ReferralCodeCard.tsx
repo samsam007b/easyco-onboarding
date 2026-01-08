@@ -133,7 +133,7 @@ export function ReferralCodeCard({
 
   if (variant === 'compact') {
     return (
-      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-owner-50 to-purple-50 superellipse-xl border border-owner-200">
+      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-owner-50 to-owner-50 superellipse-xl border border-owner-200">
         <div className="p-2 bg-owner-100 superellipse-lg">
           <Gift className="w-5 h-5 text-owner-600" />
         </div>
@@ -164,7 +164,7 @@ export function ReferralCodeCard({
       className="bg-white superellipse-2xl shadow-lg border border-gray-100 overflow-hidden"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-owner-600 to-purple-600 p-6 text-white">
+      <div className="bg-gradient-to-r from-owner-600 to-owner-600 p-6 text-white">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-white/20 superellipse-lg">
             <Gift className="w-6 h-6" />
@@ -198,13 +198,13 @@ export function ReferralCodeCard({
 
         {/* Rewards Info */}
         <div className="grid grid-cols-2 gap-4 mb-6">
-          <div className="p-4 bg-orange-50 superellipse-xl text-center">
-            <p className="text-2xl font-bold text-orange-600">+2</p>
+          <div className="p-4 bg-resident-50 superellipse-xl text-center">
+            <p className="text-2xl font-bold text-resident-600">+2</p>
             <p className="text-sm text-gray-600">{t.freeMonths[lang]}</p>
             <p className="text-xs text-gray-500 mt-1">{t.forInvitedResident[lang]}</p>
           </div>
-          <div className="p-4 bg-purple-50 superellipse-xl text-center">
-            <p className="text-2xl font-bold text-purple-600">+3</p>
+          <div className="p-4 bg-owner-50 superellipse-xl text-center">
+            <p className="text-2xl font-bold text-owner-600">+3</p>
             <p className="text-sm text-gray-600">{t.freeMonths[lang]}</p>
             <p className="text-xs text-gray-500 mt-1">{t.forInvitedOwner[lang]}</p>
           </div>
