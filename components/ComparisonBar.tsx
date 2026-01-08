@@ -21,9 +21,9 @@ export default function ComparisonBar() {
         exit={{ y: 100, opacity: 0 }}
         className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50"
       >
-        <div className="bg-white rounded-full shadow-2xl border-2 border-yellow-500 px-6 py-4 flex items-center gap-4">
+        <div className="bg-white rounded-full shadow-2xl border-2 border-searcher-500 px-6 py-4 flex items-center gap-4">
           {/* Icon */}
-          <div className="w-12 h-12 bg-gradient-to-r from-yellow-600 to-orange-600 rounded-full flex items-center justify-center">
+          <div className="w-12 h-12 bg-gradient-to-r from-searcher-500 to-searcher-600 rounded-full flex items-center justify-center">
             <Scale className="w-6 h-6 text-white" />
           </div>
 
@@ -45,7 +45,7 @@ export default function ComparisonBar() {
             <Button
               onClick={goToComparison}
               disabled={selectedPropertyIds.length < 2}
-              className="bg-gradient-to-r from-yellow-600 to-orange-600 hover:from-yellow-700 hover:to-orange-700"
+              className="bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700"
             >
               <Scale className="w-4 h-4 mr-2" />
               Comparer
