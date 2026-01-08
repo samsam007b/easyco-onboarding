@@ -372,7 +372,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                   <MapPin className="h-4 w-4" />
                   <span>{property.address ? `${property.address}, ` : ''}{property.city}</span>
                 </div>
-                <p className="text-purple-700 font-bold mt-1">€{property.monthly_rent}{t.perMonth[lang]}</p>
+                <p className="text-searcher-700 font-bold mt-1">€{property.monthly_rent}{t.perMonth[lang]}</p>
               </div>
             </div>
 
@@ -384,11 +384,11 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                   onClick={() => setVisitType('in_person')}
                   className={`p-4 superellipse-xl border-2 transition-all ${
                     visitType === 'in_person'
-                      ? 'border-purple-600 bg-purple-50'
+                      ? 'border-searcher-600 bg-searcher-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <MapPin className="h-6 w-6 mx-auto mb-2 text-purple-600" />
+                  <MapPin className="h-6 w-6 mx-auto mb-2 text-searcher-600" />
                   <div className="font-semibold text-gray-900">{t.visitType.inPerson[lang]}</div>
                   <div className="text-xs text-gray-500 mt-1">{t.visitType.inPersonDesc[lang]}</div>
                 </button>
@@ -396,11 +396,11 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                   onClick={() => setVisitType('virtual')}
                   className={`p-4 superellipse-xl border-2 transition-all ${
                     visitType === 'virtual'
-                      ? 'border-purple-600 bg-purple-50'
+                      ? 'border-searcher-600 bg-searcher-50'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <Video className="h-6 w-6 mx-auto mb-2 text-purple-600" />
+                  <Video className="h-6 w-6 mx-auto mb-2 text-searcher-600" />
                   <div className="font-semibold text-gray-900">{t.visitType.virtual[lang]}</div>
                   <div className="text-xs text-gray-500 mt-1">{t.visitType.virtualDesc[lang]}</div>
                 </button>
@@ -423,7 +423,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                     }}
                     className={`p-2 superellipse-xl text-center transition-all ${
                       selectedDate === day.date
-                        ? 'bg-purple-600 text-white shadow-lg'
+                        ? 'bg-searcher-600 text-white shadow-lg'
                         : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                     }`}
                   >
@@ -460,7 +460,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                         disabled={!slot.is_available}
                         className={`p-3 superellipse-xl text-sm font-medium transition-all ${
                           selectedSlot === slot.slot_start
-                            ? 'bg-purple-600 text-white shadow-lg'
+                            ? 'bg-searcher-600 text-white shadow-lg'
                             : slot.is_available
                             ? 'bg-green-50 text-green-700 hover:bg-green-100 border border-green-200'
                             : 'bg-gray-100 text-gray-400 cursor-not-allowed'
@@ -520,7 +520,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                     placeholder={t.contact.messagePlaceholder[lang]}
                     rows={3}
                     maxLength={500}
-                    className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-purple-600 focus:ring-2 focus:ring-purple-600/20 outline-none transition"
+                    className="w-full px-4 py-3 superellipse-xl border border-gray-200 focus:border-searcher-600 focus:ring-2 focus:ring-searcher-600/20 outline-none transition"
                   />
                 </div>
               </motion.div>
@@ -532,10 +532,10 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-gradient-to-br from-purple-50 to-blue-50 superellipse-xl p-4 border border-purple-200"
+                className="bg-gradient-to-br from-searcher-50 to-blue-50 superellipse-xl p-4 border border-searcher-200"
               >
                 <div className="flex items-start gap-3">
-                  <CheckCircle2 className="h-5 w-5 text-purple-600 flex-shrink-0 mt-0.5" />
+                  <CheckCircle2 className="h-5 w-5 text-searcher-600 flex-shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-2">{t.summary.title[lang]}</h4>
                     <div className="space-y-1 text-sm text-gray-700">
@@ -582,7 +582,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
             <Button
               onClick={handleBookVisit}
               disabled={booking || !selectedSlot || !visitorPhone.trim()}
-              className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white superellipse-xl shadow-lg"
+              className="flex-1 bg-gradient-to-r from-searcher-600 to-searcher-700 hover:from-searcher-700 hover:to-searcher-800 text-white superellipse-xl shadow-lg"
             >
               {booking ? t.buttons.booking[lang] : t.buttons.confirm[lang]}
             </Button>
