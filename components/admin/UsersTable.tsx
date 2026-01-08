@@ -68,11 +68,11 @@ export default function UsersTable({ users }: UsersTableProps) {
   const getUserTypeColor = (type: string | null) => {
     switch (type) {
       case 'owner':
-        return 'bg-purple-500/20 text-purple-400';
+        return 'bg-owner-500/20 text-owner-400';
       case 'searcher':
-        return 'bg-orange-500/20 text-orange-400';
+        return 'bg-searcher-500/20 text-searcher-400';
       case 'resident':
-        return 'bg-blue-500/20 text-blue-400';
+        return 'bg-resident-500/20 text-resident-400';
       default:
         return 'bg-slate-500/20 text-slate-400';
     }
@@ -203,7 +203,7 @@ export default function UsersTable({ users }: UsersTableProps) {
               >
                 <td className="py-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
+                    <div className="w-10 h-10 bg-slate-600 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {profile?.profile_photo ? (
                         <img
                           src={profile.profile_photo}
