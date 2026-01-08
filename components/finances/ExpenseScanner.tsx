@@ -83,9 +83,9 @@ const CATEGORY_OPTIONS: Array<{
     value: 'utilities',
     label: 'Factures',
     icon: Zap,
-    color: 'from-yellow-500 to-orange-600',
-    gradient: 'linear-gradient(135deg, #eab308 0%, #ea580c 100%)',
-    shadow: 'rgba(234, 179, 8, 0.4)',
+    color: 'from-amber-500 to-amber-600',
+    gradient: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+    shadow: 'rgba(245, 158, 11, 0.4)',
   },
   {
     value: 'cleaning',
@@ -99,9 +99,9 @@ const CATEGORY_OPTIONS: Array<{
     value: 'internet',
     label: 'Internet',
     icon: Wifi,
-    color: 'from-purple-500 to-indigo-600',
-    gradient: 'linear-gradient(135deg, #a855f7 0%, #4f46e5 100%)',
-    shadow: 'rgba(168, 85, 247, 0.4)',
+    color: 'from-owner-500 to-owner-600',
+    gradient: 'linear-gradient(135deg, #9c5698 0%, #8b4d87 100%)',
+    shadow: 'rgba(156, 86, 152, 0.4)',
   },
   {
     value: 'maintenance',
@@ -115,9 +115,9 @@ const CATEGORY_OPTIONS: Array<{
     value: 'other',
     label: 'Autre',
     icon: Package,
-    color: 'from-pink-500 to-rose-600',
-    gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
-    shadow: 'rgba(236, 72, 153, 0.4)',
+    color: 'from-resident-500 to-resident-600',
+    gradient: 'linear-gradient(135deg, #e05747 0%, #d94839 100%)',
+    shadow: 'rgba(224, 87, 71, 0.4)',
   },
 ];
 
@@ -557,8 +557,8 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 onClick={() => fileInputRef.current?.click()}
                 className="group relative overflow-hidden superellipse-3xl p-8 text-white transition-all"
                 style={{
-                  background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #c084fc 100%)',
-                  boxShadow: '0 12px 30px rgba(124, 58, 237, 0.35)',
+                  background: 'linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%)',
+                  boxShadow: '0 12px 30px rgba(156, 86, 152, 0.35)',
                 }}
               >
                 <div className="relative z-10">
@@ -593,7 +593,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <Button
                 variant="outline"
                 onClick={onCancel}
-                className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                className="w-full superellipse-2xl border-2 border-gray-200 hover:border-resident-200 font-semibold py-6 transition-all"
                 style={{ color: '#e05747' }}
               >
                 <X className="w-4 h-4 mr-2" />
@@ -783,10 +783,10 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="bg-gradient-to-r from-yellow-50 to-orange-50 border-2 border-yellow-200 superellipse-2xl p-4 flex items-center gap-3"
+                className="bg-gradient-to-r from-amber-50 to-amber-100 border-2 border-amber-200 superellipse-2xl p-4 flex items-center gap-3"
               >
-                <AlertTriangle className="w-6 h-6 text-yellow-600 flex-shrink-0" />
-                <p className="text-sm text-yellow-800 font-medium">{scanError}</p>
+                <AlertTriangle className="w-6 h-6 text-amber-600 flex-shrink-0" />
+                <p className="text-sm text-amber-800 font-medium">{scanError}</p>
               </motion.div>
             )}
 
@@ -837,7 +837,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={scanner?.titlePlaceholder?.[language] || 'E.g.: Weekly groceries'}
-                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-resident-200 focus:outline-none focus:border-resident-400 focus:bg-resident-50/30 transition-all"
                 />
               </motion.div>
 
@@ -860,7 +860,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                     placeholder="0.00"
-                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all text-xl font-bold"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-resident-200 focus:outline-none focus:border-resident-400 focus:bg-resident-50/30 transition-all text-xl font-bold"
                   />
                   <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 font-bold">€</span>
                 </div>
@@ -882,7 +882,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     type="date"
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
-                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-resident-200 focus:outline-none focus:border-resident-400 focus:bg-resident-50/30 transition-all"
                   />
                 </motion.div>
 
@@ -901,7 +901,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     placeholder={scanner?.optional?.[language] || 'Optional'}
-                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                    className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-resident-200 focus:outline-none focus:border-resident-400 focus:bg-resident-50/30 transition-all"
                   />
                 </motion.div>
               </div>
@@ -1029,7 +1029,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                     cleanup();
                     setCurrentStep('upload');
                   }}
-                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-resident-200 font-semibold py-6 transition-all"
                   style={{ color: '#e05747' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -1151,7 +1151,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <Button
                   variant="outline"
                   onClick={() => setCurrentStep('review')}
-                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-resident-200 font-semibold py-6 transition-all"
                   style={{ color: '#e05747' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
@@ -1324,7 +1324,7 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                 <Button
                   variant="outline"
                   onClick={() => setCurrentStep('category')}
-                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-orange-200 font-semibold py-6 transition-all"
+                  className="w-full superellipse-2xl border-2 border-gray-200 hover:border-resident-200 font-semibold py-6 transition-all"
                   style={{ color: '#e05747' }}
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />

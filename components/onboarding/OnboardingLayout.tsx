@@ -11,45 +11,45 @@ export type OnboardingRole = 'searcher' | 'owner' | 'resident';
 // Theme colors per role
 export const roleThemes = {
   searcher: {
-    // Orange theme for searchers
-    gradient: 'from-[#FF8C42] via-[#FFA040] to-[#FFB85C]',
-    gradientBg: 'from-orange-50 to-orange-100',
-    primary: '#FF8C42',
-    primaryLight: 'orange-50',
-    focusRing: 'focus:ring-orange-500',
-    selectedBorder: 'border-orange-500',
-    selectedBg: 'bg-orange-50',
-    accent: 'accent-orange-500',
+    // Searcher theme - v3 color system
+    gradient: 'from-searcher-600 via-searcher-500 to-searcher-400',
+    gradientBg: 'from-searcher-50 to-searcher-100',
+    primary: 'hsl(var(--searcher-500))',
+    primaryLight: 'searcher-50',
+    focusRing: 'focus:ring-searcher-500',
+    selectedBorder: 'border-searcher-500',
+    selectedBg: 'bg-searcher-50',
+    accent: 'accent-searcher-500',
     logoColors: {
       easy: 'text-[#FF8C42]',
       co: 'text-[#FFB85C]',
     },
   },
   owner: {
-    // Purple theme for owners
-    gradient: 'from-[#9c5698] via-[#9c5698] to-[#7B1FA2]',
-    gradientBg: 'from-purple-50 to-purple-100',
-    primary: '#9c5698',
-    primaryLight: 'purple-50',
-    focusRing: 'focus:ring-purple-500',
-    selectedBorder: 'border-purple-500',
-    selectedBg: 'bg-purple-50',
-    accent: 'accent-purple-500',
+    // Owner theme - v3 color system
+    gradient: 'from-owner-600 via-owner-500 to-owner-400',
+    gradientBg: 'from-owner-50 to-owner-100',
+    primary: 'hsl(var(--owner-500))',
+    primaryLight: 'owner-50',
+    focusRing: 'focus:ring-owner-500',
+    selectedBorder: 'border-owner-500',
+    selectedBg: 'bg-owner-50',
+    accent: 'accent-owner-500',
     logoColors: {
       easy: 'text-[#9c5698]',
       co: 'text-[#FFD600]',
     },
   },
   resident: {
-    // V3 Option C Orange theme for residents
-    gradient: 'from-[#e05747] via-[#e05747] to-[#e05747]',
-    gradientBg: 'from-orange-50 to-orange-100',
-    primary: '#e05747',
-    primaryLight: 'orange-50',
-    focusRing: 'focus:ring-orange-500',
-    selectedBorder: 'border-orange-500',
-    selectedBg: 'bg-orange-50',
-    accent: 'accent-orange-500',
+    // Resident theme - v3 color system
+    gradient: 'from-resident-600 via-resident-500 to-resident-400',
+    gradientBg: 'from-resident-50 to-resident-100',
+    primary: 'hsl(var(--resident-500))',
+    primaryLight: 'resident-50',
+    focusRing: 'focus:ring-resident-500',
+    selectedBorder: 'border-resident-500',
+    selectedBg: 'bg-resident-50',
+    accent: 'accent-resident-500',
     logoColors: {
       easy: 'text-[#e05747]',
       co: 'text-[#e05747]',

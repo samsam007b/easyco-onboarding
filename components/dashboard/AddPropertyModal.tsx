@@ -361,7 +361,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                   className={cn(
                     "flex items-center gap-2 px-3 py-1.5 rounded-full text-sm transition-all",
                     currentStep === step.id
-                      ? "bg-white text-purple-700 font-medium"
+                      ? "bg-white text-owner-700 font-medium"
                       : index < currentStepIndex
                         ? "bg-white/30 text-white cursor-pointer hover:bg-white/40"
                         : "bg-white/10 text-white/60 cursor-not-allowed"
@@ -416,15 +416,15 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className={cn(
                           "flex items-center gap-3 p-4 superellipse-xl border-2 transition-all",
                           formData.property_type === type.value
-                            ? "border-purple-500 bg-purple-50"
-                            : "border-gray-200 hover:border-purple-300"
+                            ? "border-owner-500 bg-owner-50"
+                            : "border-gray-200 hover:border-owner-300"
                         )}
                       >
                         <div
                           className={cn(
                             "w-10 h-10 rounded-lg flex items-center justify-center",
                             formData.property_type === type.value
-                              ? "bg-purple-500 text-white"
+                              ? "bg-owner-500 text-white"
                               : "bg-gray-100 text-gray-500"
                           )}
                         >
@@ -432,7 +432,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         </div>
                         <span className={cn(
                           "font-medium",
-                          formData.property_type === type.value ? "text-purple-700" : "text-gray-700"
+                          formData.property_type === type.value ? "text-owner-700" : "text-gray-700"
                         )}>
                           {translations.propertyTypes[type.value as keyof typeof translations.propertyTypes]?.[lang] || type.label}
                         </span>
@@ -603,15 +603,15 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         className={cn(
                           "flex flex-col items-center gap-1.5 p-3 superellipse-xl border-2 transition-all text-center",
                           selectedAmenities.includes(amenity.value)
-                            ? "border-purple-500 bg-purple-50"
-                            : "border-gray-200 hover:border-purple-300"
+                            ? "border-owner-500 bg-owner-50"
+                            : "border-gray-200 hover:border-owner-300"
                         )}
                       >
                         <div
                           className={cn(
                             "w-8 h-8 rounded-lg flex items-center justify-center",
                             selectedAmenities.includes(amenity.value)
-                              ? "bg-purple-500 text-white"
+                              ? "bg-owner-500 text-white"
                               : "bg-gray-100 text-gray-500"
                           )}
                         >
@@ -619,7 +619,7 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                         </div>
                         <span className={cn(
                           "text-xs font-medium",
-                          selectedAmenities.includes(amenity.value) ? "text-purple-700" : "text-gray-600"
+                          selectedAmenities.includes(amenity.value) ? "text-owner-700" : "text-gray-600"
                         )}>
                           {translations.amenitiesLabels[amenity.value as keyof typeof translations.amenitiesLabels]?.[lang] || amenity.label}
                         </span>
@@ -633,32 +633,32 @@ export function AddPropertyModal({ open, onOpenChange, onSuccess }: AddPropertyM
                     {translations.form.houseRules[lang]}
                   </label>
                   <div className="space-y-2">
-                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
+                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-owner-300 cursor-pointer transition-all">
                       <input
                         type="checkbox"
                         checked={formData.pets_allowed}
                         onChange={(e) => handleInputChange('pets_allowed', e.target.checked)}
-                        className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                        className="w-4 h-4 rounded border-gray-300 text-owner-600 focus:ring-owner-500"
                       />
                       <PawPrint className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-700">{translations.form.petsAllowed[lang]}</span>
                     </label>
-                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
+                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-owner-300 cursor-pointer transition-all">
                       <input
                         type="checkbox"
                         checked={formData.smoking_allowed}
                         onChange={(e) => handleInputChange('smoking_allowed', e.target.checked)}
-                        className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                        className="w-4 h-4 rounded border-gray-300 text-owner-600 focus:ring-owner-500"
                       />
                       <Cigarette className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-700">{translations.form.smokingAllowed[lang]}</span>
                     </label>
-                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-purple-300 cursor-pointer transition-all">
+                    <label className="flex items-center gap-3 p-3 superellipse-xl border border-gray-200 hover:border-owner-300 cursor-pointer transition-all">
                       <input
                         type="checkbox"
                         checked={formData.couples_allowed}
                         onChange={(e) => handleInputChange('couples_allowed', e.target.checked)}
-                        className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+                        className="w-4 h-4 rounded border-gray-300 text-owner-600 focus:ring-owner-500"
                       />
                       <Users className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-700">{translations.form.couplesAllowed[lang]}</span>

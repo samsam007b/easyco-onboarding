@@ -79,7 +79,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
   const getColorScheme = () => {
     if (isCritical) {
       return {
-        bg: 'from-red-50 to-orange-50',
+        bg: 'from-red-50 to-red-100',
         border: 'border-red-200',
         text: 'text-red-800',
         accent: 'text-red-600',
@@ -89,21 +89,21 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
     }
     if (isEndingSoon) {
       return {
-        bg: 'from-yellow-50 to-orange-50',
-        border: 'border-yellow-200',
-        text: 'text-yellow-900',
-        accent: 'text-yellow-700',
-        progress: 'bg-yellow-500',
-        icon: 'text-yellow-600',
+        bg: 'from-amber-50 to-amber-100',
+        border: 'border-amber-200',
+        text: 'text-amber-900',
+        accent: 'text-amber-700',
+        progress: 'bg-amber-500',
+        icon: 'text-amber-600',
       };
     }
     return {
-      bg: status.user_type === 'owner' ? 'from-purple-50 to-indigo-50' : 'from-orange-50 to-yellow-50',
-      border: status.user_type === 'owner' ? 'border-purple-200' : 'border-orange-200',
+      bg: status.user_type === 'owner' ? 'from-owner-50 to-owner-100' : 'from-resident-50 to-resident-100',
+      border: status.user_type === 'owner' ? 'border-owner-200' : 'border-resident-200',
       text: 'text-gray-800',
-      accent: status.user_type === 'owner' ? 'text-purple-700' : 'text-orange-700',
-      progress: status.user_type === 'owner' ? 'bg-purple-500' : 'bg-orange-500',
-      icon: status.user_type === 'owner' ? 'text-purple-600' : 'text-orange-600',
+      accent: status.user_type === 'owner' ? 'text-owner-700' : 'text-resident-700',
+      progress: status.user_type === 'owner' ? 'bg-owner-500' : 'bg-resident-500',
+      icon: status.user_type === 'owner' ? 'text-owner-600' : 'text-resident-600',
     };
   };
 
@@ -237,13 +237,13 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className={`mt-4 p-3 superellipse-lg ${
-                  isCritical ? 'bg-red-100 border border-red-200' : 'bg-yellow-100 border border-yellow-200'
+                  isCritical ? 'bg-red-100 border border-red-200' : 'bg-amber-100 border border-amber-200'
                 }`}
               >
-                <p className={`text-sm font-medium ${isCritical ? 'text-red-800' : 'text-yellow-800'}`}>
+                <p className={`text-sm font-medium ${isCritical ? 'text-red-800' : 'text-amber-800'}`}>
                   {isCritical ? '⚠️ Votre essai se termine très bientôt !' : '⏰ Votre essai se termine bientôt'}
                 </p>
-                <p className={`text-xs mt-1 ${isCritical ? 'text-red-700' : 'text-yellow-700'}`}>
+                <p className={`text-xs mt-1 ${isCritical ? 'text-red-700' : 'text-amber-700'}`}>
                   Ajoutez un moyen de paiement pour continuer à profiter de toutes les fonctionnalités.
                 </p>
               </motion.div>
@@ -277,8 +277,8 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
               onClick={() => (window.location.href = '/dashboard/subscription')}
               className={`mt-4 w-full py-3 px-4 superellipse-lg font-semibold text-white shadow-md hover:shadow-lg transition-all ${
                 status.user_type === 'owner'
-                  ? 'bg-purple-600 hover:bg-purple-700'
-                  : 'bg-orange-600 hover:bg-orange-700'
+                  ? 'bg-owner-600 hover:bg-owner-700'
+                  : 'bg-resident-600 hover:bg-resident-700'
               }`}
             >
               Gérer mon abonnement

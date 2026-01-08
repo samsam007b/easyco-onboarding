@@ -455,13 +455,13 @@ export function DocumentsModal({
                   <button
                     key={docType.id}
                     onClick={() => handleSelectType(docType.id)}
-                    className="w-full p-4 superellipse-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/50 transition-all flex items-center gap-4 text-left group"
+                    className="w-full p-4 superellipse-xl border border-gray-200 hover:border-owner-300 hover:bg-owner-50/50 transition-all flex items-center gap-4 text-left group"
                   >
                     <div
                       className="w-12 h-12 superellipse-xl flex items-center justify-center transition-all group-hover:scale-110"
                       style={{ background: 'linear-gradient(135deg, rgba(156,86,152,0.1), rgba(194,86,107,0.1))' }}
                     >
-                      <docType.icon className="w-6 h-6 text-purple-600" />
+                      <docType.icon className="w-6 h-6 text-owner-600" />
                     </div>
                     <div className="flex-1">
                       <p className="font-medium text-gray-900">{docType.label}</p>
@@ -481,7 +481,7 @@ export function DocumentsModal({
               >
                 {isLoading ? (
                   <div className="flex items-center justify-center py-12">
-                    <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+                    <Loader2 className="w-8 h-8 animate-spin text-owner-600" />
                   </div>
                 ) : tenants.length === 0 ? (
                   <div className="text-center py-12">
@@ -493,9 +493,9 @@ export function DocumentsModal({
                     <button
                       key={tenant.id}
                       onClick={() => handleSelectTenant(tenant)}
-                      className="w-full p-4 superellipse-xl border border-gray-200 hover:border-purple-300 hover:bg-purple-50/50 transition-all flex items-center gap-4 text-left group"
+                      className="w-full p-4 superellipse-xl border border-gray-200 hover:border-owner-300 hover:bg-owner-50/50 transition-all flex items-center gap-4 text-left group"
                     >
-                      <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-semibold">
+                      <div className="w-12 h-12 rounded-full bg-owner-100 flex items-center justify-center text-owner-600 font-semibold">
                         {tenant.name.charAt(0).toUpperCase()}
                       </div>
                       <div className="flex-1">
@@ -529,7 +529,7 @@ export function DocumentsModal({
                 {/* Tenant Summary */}
                 <div className="p-4 superellipse-xl bg-gray-50">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-semibold">
+                    <div className="w-10 h-10 rounded-full bg-owner-100 flex items-center justify-center text-owner-600 font-semibold">
                       {selectedTenant.name.charAt(0).toUpperCase()}
                     </div>
                     <div>
@@ -551,7 +551,7 @@ export function DocumentsModal({
                         <select
                           value={selectedMonth}
                           onChange={(e) => setSelectedMonth(parseInt(e.target.value))}
-                          className="px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                         >
                           {getMonths().map((month, idx) => (
                             <option key={idx} value={idx + 1}>
@@ -562,7 +562,7 @@ export function DocumentsModal({
                         <select
                           value={selectedYear}
                           onChange={(e) => setSelectedYear(parseInt(e.target.value))}
-                          className="px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                         >
                           {getYearOptions().map((year) => (
                             <option key={year} value={year}>
@@ -582,7 +582,7 @@ export function DocumentsModal({
                         type="date"
                         value={paymentDate}
                         onChange={(e) => setPaymentDate(e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                       />
                     </div>
 
@@ -598,7 +598,7 @@ export function DocumentsModal({
                           onChange={(e) => setRentAmount(parseFloat(e.target.value) || 0)}
                           min={0}
                           step={0.01}
-                          className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                         />
                       </div>
                       <div>
@@ -611,7 +611,7 @@ export function DocumentsModal({
                           onChange={(e) => setChargesAmount(parseFloat(e.target.value) || 0)}
                           min={0}
                           step={0.01}
-                          className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                          className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                         />
                       </div>
                     </div>
@@ -624,7 +624,7 @@ export function DocumentsModal({
                       <select
                         value={paymentMethod}
                         onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                       >
                         <option value={t?.bankTransfer?.[language] || 'Bank transfer'}>{t?.bankTransfer?.[language] || 'Bank transfer'}</option>
                         <option value={t?.check?.[language] || 'Check'}>{t?.check?.[language] || 'Check'}</option>
@@ -634,10 +634,10 @@ export function DocumentsModal({
                     </div>
 
                     {/* Total */}
-                    <div className="p-4 superellipse-xl bg-purple-50 border border-purple-100">
+                    <div className="p-4 superellipse-xl bg-owner-50 border border-owner-100">
                       <div className="flex justify-between items-center">
                         <span className="text-gray-600">{t?.total?.[language] || 'Total'}</span>
-                        <span className="text-xl font-bold text-purple-600">
+                        <span className="text-xl font-bold text-owner-600">
                           {new Intl.NumberFormat(localeMap[language] || 'fr-FR', { style: 'currency', currency: 'EUR' }).format(
                             rentAmount + chargesAmount
                           )}
@@ -662,7 +662,7 @@ export function DocumentsModal({
                             onChange={(e) => setRentAmount(parseFloat(e.target.value) || 0)}
                             min={0}
                             step={0.01}
-                            className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                           />
                         </div>
                         <div>
@@ -675,7 +675,7 @@ export function DocumentsModal({
                             onChange={(e) => setChargesAmount(parseFloat(e.target.value) || 0)}
                             min={0}
                             step={0.01}
-                            className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                            className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                           />
                         </div>
                       </div>
@@ -690,7 +690,7 @@ export function DocumentsModal({
                         value={purpose}
                         onChange={(e) => setPurpose(e.target.value)}
                         placeholder={t?.purposePlaceholder?.[language] || 'Ex: CAF application'}
-                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                        className="w-full px-4 py-2.5 border border-gray-300 superellipse-xl focus:ring-2 focus:ring-owner-500 focus:border-transparent"
                       />
                     </div>
                   </>
@@ -705,7 +705,7 @@ export function DocumentsModal({
                 animate={{ opacity: 1, y: 0 }}
                 className="py-12 text-center"
               >
-                <Loader2 className="w-12 h-12 mx-auto animate-spin text-purple-600 mb-4" />
+                <Loader2 className="w-12 h-12 mx-auto animate-spin text-owner-600 mb-4" />
                 <p className="text-gray-600">{t?.generatingDocument?.[language] || 'Generating document...'}</p>
               </motion.div>
             )}

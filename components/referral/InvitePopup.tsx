@@ -276,7 +276,7 @@ export function InvitePopup({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="p-6 text-white" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}>
+          <div className="p-6 text-white bg-gradient-to-r from-resident-600 via-resident-500 to-resident-400">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 superellipse-xl bg-white/20 backdrop-blur flex items-center justify-center">
@@ -298,7 +298,7 @@ export function InvitePopup({
 
           {isLoading ? (
             <div className="p-8 text-center">
-              <div className="w-8 h-8 border-2 border-orange-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <div className="w-8 h-8 border-2 border-resident-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
               <p className="text-gray-500 text-sm">{t.loading[lang]}</p>
             </div>
           ) : (
@@ -315,17 +315,17 @@ export function InvitePopup({
                 <div className="mt-3 flex gap-2">
                   <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
                     <div className="flex items-center justify-center gap-1">
-                      <Home className="w-3.5 h-3.5 text-orange-600" />
+                      <Home className="w-3.5 h-3.5 text-resident-600" />
                       <span className="text-xs text-gray-600">{t.resident[lang]}</span>
                     </div>
-                    <p className="font-bold text-orange-600">+2 {t.months[lang]}</p>
+                    <p className="font-bold text-resident-600">+2 {t.months[lang]}</p>
                   </div>
                   <div className="flex-1 p-2 bg-white rounded-lg text-center border border-green-100">
                     <div className="flex items-center justify-center gap-1">
-                      <Building2 className="w-3.5 h-3.5 text-purple-600" />
+                      <Building2 className="w-3.5 h-3.5 text-owner-600" />
                       <span className="text-xs text-gray-600">{t.owner[lang]}</span>
                     </div>
-                    <p className="font-bold text-purple-600">+3 {t.months[lang]}</p>
+                    <p className="font-bold text-owner-600">+3 {t.months[lang]}</p>
                   </div>
                 </div>
               </div>
@@ -334,8 +334,8 @@ export function InvitePopup({
               {showResidenceCodes && residenceData?.invitationCode && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 superellipse-lg bg-orange-100 flex items-center justify-center">
-                      <Home className="w-4 h-4 text-orange-600" />
+                    <div className="w-8 h-8 superellipse-lg bg-resident-100 flex items-center justify-center">
+                      <Home className="w-4 h-4 text-resident-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">{t.roommateCode[lang]}</h3>
@@ -344,14 +344,14 @@ export function InvitePopup({
                   </div>
 
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="flex-1 bg-gradient-to-r from-orange-50 to-yellow-50 superellipse-xl px-4 py-3 border-2 border-orange-200">
-                      <p className="font-mono text-lg font-bold text-orange-700 break-all text-center">
+                    <div className="flex-1 bg-gradient-to-r from-resident-50 to-resident-100 superellipse-xl px-4 py-3 border-2 border-resident-200">
+                      <p className="font-mono text-lg font-bold text-resident-700 break-all text-center">
                         {residenceData.invitationCode}
                       </p>
                     </div>
                     <button
                       onClick={() => copyToClipboard(residenceData.invitationCode!, 'residence')}
-                      className="p-3 superellipse-xl bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:shadow-lg transition-all"
+                      className="p-3 superellipse-xl bg-gradient-to-r from-resident-500 to-resident-600 text-white hover:shadow-lg transition-all"
                     >
                       {copiedCode === 'residence' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>
@@ -381,8 +381,8 @@ export function InvitePopup({
               {showResidenceCodes && residenceData?.isCreator && residenceData?.ownerCode && (
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="w-8 h-8 superellipse-lg bg-purple-100 flex items-center justify-center">
-                      <Building2 className="w-4 h-4 text-purple-600" />
+                    <div className="w-8 h-8 superellipse-lg bg-owner-100 flex items-center justify-center">
+                      <Building2 className="w-4 h-4 text-owner-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">{t.ownerCode[lang]}</h3>
@@ -391,14 +391,14 @@ export function InvitePopup({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gradient-to-r from-purple-50 to-pink-50 superellipse-xl px-4 py-3 border-2 border-purple-200">
-                      <p className="font-mono text-lg font-bold text-purple-700 break-all text-center">
+                    <div className="flex-1 bg-gradient-to-r from-owner-50 to-owner-100 superellipse-xl px-4 py-3 border-2 border-owner-200">
+                      <p className="font-mono text-lg font-bold text-owner-700 break-all text-center">
                         {residenceData.ownerCode}
                       </p>
                     </div>
                     <button
                       onClick={() => copyToClipboard(residenceData.ownerCode!, 'owner')}
-                      className="p-3 superellipse-xl bg-gradient-to-r from-purple-500 to-purple-600 text-white hover:shadow-lg transition-all"
+                      className="p-3 superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:shadow-lg transition-all"
                     >
                       {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>
