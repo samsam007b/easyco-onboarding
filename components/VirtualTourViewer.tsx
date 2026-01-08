@@ -112,7 +112,7 @@ export default function VirtualTourViewer({
   if (!isPlaying) {
     return (
       <Card className="relative overflow-hidden group">
-        <div className="relative h-[400px] bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+        <div className="relative h-[400px] bg-gradient-to-br from-searcher-600 to-searcher-700 flex items-center justify-center">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -135,13 +135,13 @@ export default function VirtualTourViewer({
             <Button
               size="lg"
               onClick={() => setIsPlaying(true)}
-              className="w-24 h-24 rounded-full bg-white text-purple-600 hover:bg-gray-100 shadow-2xl group-hover:scale-110 transition"
+              className="w-24 h-24 rounded-full bg-white text-searcher-600 hover:bg-gray-100 shadow-2xl group-hover:scale-110 transition"
             >
               <Play className="w-12 h-12 ml-2" />
             </Button>
 
             <div className="mt-6">
-              <Badge className="bg-white text-purple-600 px-4 py-2">
+              <Badge className="bg-white text-searcher-600 px-4 py-2">
                 <Eye className="w-4 h-4 mr-2" />
                 Visite Virtuelle 360°
               </Badge>
@@ -207,7 +207,7 @@ export default function VirtualTourViewer({
         </div>
 
         {/* Tour Info Banner */}
-        <div className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-4 py-3">
+        <div className="bg-gradient-to-r from-searcher-600 to-searcher-700 text-white px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Video className="w-5 h-5" />
