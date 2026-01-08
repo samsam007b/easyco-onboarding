@@ -77,9 +77,9 @@ export default function RoomPricingSelector({
             className={cn(
               "w-full text-left p-4 superellipse-xl border-2 transition-all",
               isSelected
-                ? "border-orange-500 bg-orange-50 shadow-md"
+                ? "border-searcher-500 bg-searcher-50 shadow-md"
                 : room.is_available
-                ? "border-gray-200 hover:border-orange-300 hover:bg-orange-50/30"
+                ? "border-gray-200 hover:border-searcher-300 hover:bg-searcher-50/30"
                 : "border-gray-100 bg-gray-50 opacity-60"
             )}
           >
@@ -100,7 +100,7 @@ export default function RoomPricingSelector({
                       {room.room_name || `${roomSelector?.room || 'Chambre'} ${room.room_number}`}
                     </h4>
                     {isSelected && (
-                      <div className="w-5 h-5 rounded-full bg-orange-500 flex items-center justify-center">
+                      <div className="w-5 h-5 rounded-full bg-searcher-500 flex items-center justify-center">
                         <Check className="w-3 h-3 text-white" />
                       </div>
                     )}
@@ -162,7 +162,7 @@ export default function RoomPricingSelector({
                 <div className="text-right ml-4">
                   <div className={cn(
                     "text-xl font-bold",
-                    isSelected ? "text-orange-600" : "text-gray-900"
+                    isSelected ? "text-searcher-600" : "text-gray-900"
                   )}>
                     €{room.price}
                   </div>
@@ -182,7 +182,7 @@ export default function RoomPricingSelector({
                 e.stopPropagation();
                 setSelectedRoomForModal(room);
               }}
-              className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
+              className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
             >
               <Eye className="w-4 h-4" />
               <span className="text-sm font-medium">{roomSelector?.viewAllDetails || 'Voir tous les détails'}</span>
