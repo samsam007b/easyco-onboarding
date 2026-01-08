@@ -32,7 +32,7 @@ export function Slider({
         <div className="flex items-center justify-between text-sm">
           {leftLabel && <span className="text-gray-600">{leftLabel}</span>}
           {showValue && (
-            <span className="font-semibold text-[color:var(--easy-purple)] bg-purple-100 px-3 py-1 rounded-full">
+            <span className="font-semibold text-searcher-700 bg-searcher-100 px-3 py-1 rounded-full">
               {value}/{max}
             </span>
           )}
@@ -50,11 +50,11 @@ export function Slider({
           value={value}
           onChange={(e) => onChange(Number(e.target.value))}
           className="slider-input w-full h-2 bg-gray-200 rounded-full appearance-none cursor-pointer
-                     focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-offset-2"
+                     focus:outline-none focus:ring-2 focus:ring-searcher-300 focus:ring-offset-2"
           style={{
             background: `linear-gradient(to right,
-              var(--easy-purple) 0%,
-              var(--easy-purple) ${percentage}%,
+              hsl(var(--searcher-600)) 0%,
+              hsl(var(--searcher-600)) ${percentage}%,
               #E5E7EB ${percentage}%,
               #E5E7EB 100%)`
           }}
@@ -67,7 +67,7 @@ export function Slider({
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: var(--easy-purple);
+            background: hsl(var(--searcher-600));
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             transition: transform 0.2s;
@@ -81,7 +81,7 @@ export function Slider({
             width: 24px;
             height: 24px;
             border-radius: 50%;
-            background: var(--easy-purple);
+            background: hsl(var(--searcher-600));
             cursor: pointer;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             border: none;
