@@ -180,7 +180,7 @@ export default function ItsmeVerificationSettings({
         </div>
 
         {/* Coming Soon Content */}
-        <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 superellipse-xl p-5">
+        <div className="bg-gradient-to-br from-owner-50 to-owner-100/50 superellipse-xl p-5">
           <div className="flex justify-center mb-4">
             <ItsmeLogo className="w-28 h-auto opacity-60" />
           </div>
@@ -223,7 +223,7 @@ export default function ItsmeVerificationSettings({
           "w-10 h-10 superellipse-xl flex items-center justify-center",
           isVerified
             ? "bg-emerald-100 text-emerald-600"
-            : "bg-orange-100 text-orange-600"
+            : "bg-owner-100 text-owner-600"
         )}>
           <BadgeCheck className="w-5 h-5" />
         </div>
@@ -256,7 +256,7 @@ export default function ItsmeVerificationSettings({
             className="space-y-4"
           >
             {/* ITSME Logo & Description */}
-            <div className="bg-gradient-to-br from-orange-50 to-orange-100/50 superellipse-xl p-6 text-center">
+            <div className="bg-gradient-to-br from-owner-50 to-owner-100/50 superellipse-xl p-6 text-center">
               <div className="flex justify-center mb-4">
                 <ItsmeLogo className="w-32 h-auto" />
               </div>
@@ -279,7 +279,7 @@ export default function ItsmeVerificationSettings({
                 <span className="text-sm text-gray-700">{verification?.itsme?.verifiedBadge || 'Verified badge'}</span>
               </div>
               <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
-                <Globe className="w-5 h-5 text-purple-600" />
+                <Globe className="w-5 h-5 text-owner-600" />
                 <span className="text-sm text-gray-700">{verification?.itsme?.trust || 'Trust'}</span>
               </div>
             </div>
