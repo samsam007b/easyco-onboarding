@@ -52,11 +52,11 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
       <div className="flex items-center gap-2">
         <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-orange-400 to-orange-600 rounded-full transition-all"
+            className="h-full bg-gradient-to-r from-searcher-400 to-searcher-600 rounded-full transition-all"
             style={{ width: `${(rating / 10) * 100}%` }}
           />
         </div>
-        <span className="text-sm font-medium text-orange-600 w-8">{rating}/10</span>
+        <span className="text-sm font-medium text-searcher-600 w-8">{rating}/10</span>
       </div>
     </div>
   );
@@ -95,8 +95,8 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
           <div className="p-6 space-y-6">
             {/* Basic Info Section */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="flex items-center gap-3 p-4 bg-orange-50 superellipse-xl">
-                <Maximize className="w-5 h-5 text-orange-600" />
+              <div className="flex items-center gap-3 p-4 bg-searcher-50 superellipse-xl">
+                <Maximize className="w-5 h-5 text-searcher-600" />
                 <div>
                   <p className="text-xs text-gray-600">{roomDetails?.surface || 'Surface'}</p>
                   <p className="font-semibold text-gray-900">{room.size} m²</p>
@@ -139,7 +139,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
               <>
                 <div className="border-t pt-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                    <Sparkles className="w-5 h-5 text-orange-600" />
+                    <Sparkles className="w-5 h-5 text-searcher-600" />
                     {roomDetails?.ambianceComfort || 'Ambiance & Confort'}
                   </h3>
 
@@ -336,7 +336,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
               </div>
               <div className="text-right">
                 <p className="text-sm text-gray-600">{roomDetails?.monthlyPrice || 'Prix mensuel'}</p>
-                <p className="text-2xl font-bold text-orange-600">{room.price}€</p>
+                <p className="text-2xl font-bold text-searcher-600">{room.price}€</p>
               </div>
             </div>
           </div>
