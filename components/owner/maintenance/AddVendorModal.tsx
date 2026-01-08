@@ -247,7 +247,7 @@ export function AddVendorModal({
                         onChange={(e) => updateField('name', e.target.value)}
                         placeholder={t?.vendorNamePlaceholder?.[language] || 'Ex: John Smith'}
                         className={cn(
-                          'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400',
+                          'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400',
                           errors.name ? 'border-red-300 bg-red-50' : 'border-gray-200'
                         )}
                       />
@@ -266,7 +266,7 @@ export function AddVendorModal({
                         value={formData.companyName || ''}
                         onChange={(e) => updateField('companyName', e.target.value)}
                         placeholder={t?.companyNamePlaceholder?.[language] || 'Ex: Plumbing Express LLC'}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
+                        className="w-full pl-10 pr-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400"
                       />
                     </div>
                   </div>
@@ -286,8 +286,8 @@ export function AddVendorModal({
                         className={cn(
                           'px-3 py-2 text-xs font-medium superellipse-lg border transition-all',
                           formData.category === cat
-                            ? 'border-purple-500 bg-purple-50 text-purple-700'
-                            : 'border-gray-200 hover:border-purple-300 text-gray-600'
+                            ? 'border-owner-500 bg-owner-50 text-owner-700'
+                            : 'border-gray-200 hover:border-owner-300 text-gray-600'
                         )}
                       >
                         {vendorCategoryLabels[cat]}
@@ -310,7 +310,7 @@ export function AddVendorModal({
                         onChange={(e) => updateField('phone', e.target.value)}
                         placeholder="06 12 34 56 78"
                         className={cn(
-                          'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400',
+                          'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400',
                           errors.phone ? 'border-red-300 bg-red-50' : 'border-gray-200'
                         )}
                       />
@@ -330,7 +330,7 @@ export function AddVendorModal({
                         onChange={(e) => updateField('email', e.target.value)}
                         placeholder="contact@example.com"
                         className={cn(
-                          'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400',
+                          'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400',
                           errors.email ? 'border-red-300 bg-red-50' : 'border-gray-200'
                         )}
                       />
@@ -351,7 +351,7 @@ export function AddVendorModal({
                       value={formData.address || ''}
                       onChange={(e) => updateField('address', e.target.value)}
                       placeholder={t?.addressPlaceholder?.[language] || '123 Example Street'}
-                      className="w-full pl-10 pr-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
+                      className="w-full pl-10 pr-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400"
                     />
                   </div>
                 </div>
@@ -366,7 +366,7 @@ export function AddVendorModal({
                       value={formData.city || ''}
                       onChange={(e) => updateField('city', e.target.value)}
                       placeholder={t?.cityPlaceholder?.[language] || 'Paris'}
-                      className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
+                      className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400"
                     />
                   </div>
                   <div>
@@ -378,7 +378,7 @@ export function AddVendorModal({
                       value={formData.postalCode || ''}
                       onChange={(e) => updateField('postalCode', e.target.value)}
                       placeholder="75001"
-                      className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
+                      className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400"
                     />
                   </div>
                 </div>
@@ -396,7 +396,7 @@ export function AddVendorModal({
                       onChange={(e) => updateField('siret', e.target.value)}
                       placeholder="12345678901234"
                       className={cn(
-                        'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400',
+                        'w-full pl-10 pr-4 py-2 border superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400',
                         errors.siret ? 'border-red-300 bg-red-50' : 'border-gray-200'
                       )}
                     />
@@ -414,7 +414,7 @@ export function AddVendorModal({
                     onChange={(e) => updateField('notes', e.target.value)}
                     placeholder={t?.notesPlaceholder?.[language] || 'Personal notes about this vendor...'}
                     rows={2}
-                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 resize-none"
+                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400 resize-none"
                   />
                 </div>
 
@@ -425,7 +425,7 @@ export function AddVendorModal({
                     id="isFavorite"
                     checked={formData.isFavorite}
                     onChange={(e) => updateField('isFavorite', e.target.checked)}
-                    className="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                    className="w-4 h-4 text-owner-600 border-gray-300 rounded focus:ring-owner-500"
                   />
                   <label htmlFor="isFavorite" className="text-sm text-gray-700">
                     {t?.addToFavorites?.[language] || 'Add to favorites'}
