@@ -458,12 +458,12 @@ export const SwipeCard = memo(function SwipeCard({
               </Badge>
             )}
             {user.cooking_frequency && ['often', 'daily'].includes(user.cooking_frequency) && (
-              <Badge variant="default" size="sm" className="bg-orange-50 border-orange-200 text-orange-700">
+              <Badge variant="default" size="sm" className="bg-amber-50 border-amber-200 text-amber-700">
                 <Utensils className="w-3 h-3 mr-1" /> {matching.profile?.cooksOften || 'Cuisine souvent'}
               </Badge>
             )}
             {user.shared_meals_interest && (
-              <Badge variant="default" size="sm" className="bg-pink-50 border-pink-200 text-pink-700">
+              <Badge variant="default" size="sm" className="bg-resident-50 border-resident-200 text-resident-700">
                 <Heart className="w-3 h-3 mr-1" /> {matching.profile?.sharedMeals || 'Repas partagés'}
               </Badge>
             )}
@@ -480,7 +480,7 @@ export const SwipeCard = memo(function SwipeCard({
           )}
 
           {/* Expand Indicator */}
-          <div className="flex items-center justify-center gap-2 text-orange-500 font-medium text-sm">
+          <div className="flex items-center justify-center gap-2 text-resident-500 font-medium text-sm">
             <span>{isExpanded ? (matching.profile?.seeLess || 'Voir moins') : (matching.profile?.seeMore || 'Voir plus de détails')}</span>
             <motion.div
               animate={{ rotate: isExpanded ? 180 : 0 }}
@@ -534,7 +534,7 @@ export const SwipeCard = memo(function SwipeCard({
                   </p>
                   <div className="flex flex-wrap gap-2">
                     {user.core_values.map((value, idx) => (
-                      <Badge key={idx} variant="default" size="sm" className="capitalize bg-orange-100 text-orange-700 border-orange-200">
+                      <Badge key={idx} variant="default" size="sm" className="capitalize bg-resident-100 text-resident-700 border-resident-200">
                         {value}
                       </Badge>
                     ))}
