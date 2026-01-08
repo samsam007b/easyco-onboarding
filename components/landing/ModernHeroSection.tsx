@@ -167,7 +167,7 @@ export default function ModernHeroSection() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-4xl md:text-5xl font-bold text-white text-center mb-2 leading-tight"
             >
-              Trouve ton Co-living
+              Trouve ton co-living
             </motion.h1>
 
             {/* Subtitle - Valeurs de la marque */}
@@ -191,27 +191,27 @@ export default function ModernHeroSection() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-2">
 
               {/* Location Input */}
-              <div className="p-4 superellipse-2xl hover:bg-purple-50/50 transition-all group">
+              <div className="p-4 superellipse-2xl hover:bg-searcher-50/50 transition-all group">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Où ?
                 </label>
                 <SafeGooglePlacesAutocomplete
                   onPlaceSelect={handlePlaceSelect}
                   placeholder="Ville, quartier..."
-                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors"
+                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-searcher-600 transition-colors"
                   inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
                 />
               </div>
 
               {/* Budget Input */}
-              <div className="p-4 superellipse-2xl hover:bg-purple-50/50 transition-all group border-l-0 md:border-l border-gray-200">
+              <div className="p-4 superellipse-2xl hover:bg-searcher-50/50 transition-all group border-l-0 md:border-l border-gray-200">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Budget
                 </label>
                 <BudgetRangePicker
                   onBudgetChange={handleBudgetChange}
                   placeholder="€800/mois"
-                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors"
+                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-searcher-600 transition-colors"
                   inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
                   minBudget={0}
                   maxBudget={2000}
@@ -219,14 +219,14 @@ export default function ModernHeroSection() {
               </div>
 
               {/* Date Input */}
-              <div className="p-4 superellipse-2xl hover:bg-purple-50/50 transition-all group border-l-0 md:border-l border-gray-200">
+              <div className="p-4 superellipse-2xl hover:bg-searcher-50/50 transition-all group border-l-0 md:border-l border-gray-200">
                 <label className="block text-xs font-semibold text-gray-900 mb-1">
                   Quand ?
                 </label>
                 <DatePicker
                   onDateSelect={handleDateSelect}
                   placeholder="Flexible"
-                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-purple-600 transition-colors"
+                  iconClassName="w-4 h-4 text-gray-400 group-hover:text-searcher-600 transition-colors"
                   inputClassName="w-full text-sm text-gray-600 placeholder:text-gray-400 bg-transparent outline-none"
                 />
               </div>
