@@ -122,7 +122,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
   const scoreBreakdown = match.score_breakdown;
 
   return (
-    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-purple-200">
+    <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-searcher-200">
       {/* Property Image */}
       <div className="relative h-56 overflow-hidden group">
         {property.photo_urls && property.photo_urls.length > 0 ? (
@@ -132,8 +132,8 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-purple-200 via-purple-100 to-yellow-100 flex items-center justify-center">
-            <Home className="w-16 h-16 text-purple-300" />
+          <div className="w-full h-full bg-gradient-to-br from-searcher-200 via-searcher-100 to-searcher-50 flex items-center justify-center">
+            <Home className="w-16 h-16 text-searcher-300" />
           </div>
         )}
 
@@ -174,7 +174,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
       <CardContent className="p-5">
         {/* Property Title & Location */}
         <div className="mb-3">
-          <h3 className="text-xl font-bold text-[#9c5698] mb-2 line-clamp-1">
+          <h3 className="text-xl font-bold text-searcher-600 mb-2 line-clamp-1">
             {property.title}
           </h3>
           <div className="flex items-center gap-2 text-gray-600">
@@ -333,13 +333,13 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
 
         {/* Action Buttons - with glassmorphism */}
         <div className="relative -mx-5 -mb-5 mt-4 px-5 py-4 rounded-b-2xl overflow-hidden">
-          {/* Animated background lights - Slow right to left */}
-          <div className="absolute inset-0 bg-gradient-to-br from-orange-50 via-purple-50 to-yellow-50">
-            <div className="absolute top-0 left-1/4 w-32 h-32 bg-orange-300/60 rounded-full blur-2xl"
+          {/* Animated background lights - Signature gradient (brand) */}
+          <div className="absolute inset-0 bg-gradient-to-br from-resident-50 via-owner-50 to-searcher-50">
+            <div className="absolute top-0 left-1/4 w-32 h-32 bg-resident-300/60 rounded-full blur-2xl"
                  style={{ animation: 'float 20s ease-in-out infinite' }} />
-            <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-purple-300/50 rounded-full blur-2xl"
+            <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-owner-300/50 rounded-full blur-2xl"
                  style={{ animation: 'float 25s ease-in-out infinite 5s' }} />
-            <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-yellow-200/50 rounded-full blur-2xl"
+            <div className="absolute top-1/2 left-1/2 w-36 h-36 bg-searcher-200/50 rounded-full blur-2xl"
                  style={{ animation: 'float 22s ease-in-out infinite 10s' }} />
           </div>
 

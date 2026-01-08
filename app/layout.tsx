@@ -49,7 +49,7 @@ const AssistantActionProvider = dynamic(
 export const metadata: Metadata = {
   title: "Izzico — Co-living fiable et compatible en Belgique",
   description: "Trouve ton espace de co-living idéal à Bruxelles, Liège, Gand. Vérification d'identité, matching intelligent, groupes pré-formés. Évite les arnaques.",
-  keywords: ['co-living Bruxelles', 'coliving Belgique', 'co-living Liège', 'co-living Gand', 'appartement partagé', 'kot étudiant', 'roommate Brussels', 'shared apartment Belgium'],
+  keywords: ['co-living Bruxelles', 'co-living Belgique', 'co-living Liège', 'co-living Gand', 'appartement partagé', 'kot étudiant', 'roommate Brussels', 'shared apartment Belgium'],
 
   // Open Graph (Facebook, LinkedIn, WhatsApp)
   openGraph: {

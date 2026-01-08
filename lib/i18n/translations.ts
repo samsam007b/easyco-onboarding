@@ -268,13 +268,13 @@ export const translations = {
     benefits: {
       verified: {
         title: {
-          fr: 'Vérification d\'identité',
+          fr: 'Profils Vérifiés',
           en: 'Identity Verification',
           nl: 'Identiteitsverificatie',
           de: 'Identitätsverifizierung',
         },
         description: {
-          fr: 'Vérification d\'identité par KYC. Tous les signalements sont vérifiés et traités sous 24h.',
+          fr: 'Tous les profils sont vérifiés (identité, photo). Recherche sereine, zéro mauvaise surprise.',
           en: 'KYC identity verification. All reports are verified and processed within 24h.',
           nl: 'KYC-identiteitsverificatie. Alle meldingen worden binnen 24u geverifieerd en verwerkt.',
           de: 'KYC-Identitätsverifizierung. Alle Meldungen werden innerhalb von 24h verifiziert und bearbeitet.',
@@ -282,13 +282,13 @@ export const translations = {
       },
       compatibility: {
         title: {
-          fr: 'Compatibilité Sociale',
+          fr: 'Living Match',
           en: 'Social Compatibility',
           nl: 'Sociale Compatibiliteit',
           de: 'Soziale Kompatibilität',
         },
         description: {
-          fr: 'Matching intelligent basé sur ton lifestyle, tes horaires et tes valeurs.',
+          fr: 'Crée ton Living Persona en 3 minutes — on trouve ceux qui te ressemblent vraiment. Score de compatibilité clair (70-90%+).',
           en: 'Smart matching based on your lifestyle, schedule and values.',
           nl: 'Slimme matching op basis van je levensstijl, schema en waarden.',
           de: 'Intelligentes Matching basierend auf Lebensstil, Zeitplan und Werten.',
@@ -296,13 +296,13 @@ export const translations = {
       },
       groups: {
         title: {
-          fr: 'Groupes Pré-formés',
+          fr: 'Search Squads',
           en: 'Pre-formed Groups',
           nl: 'Voorgevormde Groepen',
           de: 'Vorgeformte Gruppen',
         },
         description: {
-          fr: 'Rejoins des groupes de 2-4 personnes déjà compatibles. 3x plus rapide.',
+          fr: 'Cherche avec tes potes — créez votre groupe et trouvez ensemble votre prochain chez-vous.',
           en: 'Join groups of 2-4 already compatible people. 3x faster.',
           nl: 'Sluit je aan bij groepen van 2-4 reeds compatibele mensen. 3x sneller.',
           de: 'Tritt Gruppen von 2-4 bereits kompatiblen Personen bei. 3x schneller.',
@@ -389,13 +389,13 @@ export const translations = {
       },
       step3: {
         title: {
-          fr: 'Rejoins un groupe',
+          fr: 'Créez votre Search Squad',
           en: 'Join a group',
           nl: 'Sluit je aan bij een groep',
           de: 'Tritt einer Gruppe bei',
         },
         description: {
-          fr: 'Connecte-toi avec 2-4 personnes qui te ressemblent et cherchez ensemble. C\'est 3x plus rapide et beaucoup plus simple.',
+          fr: 'Cherche avec 2-4 potes qui te ressemblent. Trouvez ensemble votre prochain chez-vous — c\'est 3x plus rapide.',
           en: 'Connect with 2-4 people like you and search together. It\'s 3x faster and much simpler.',
           nl: 'Maak verbinding met 2-4 mensen zoals jij en zoek samen. Het is 3x sneller en veel eenvoudiger.',
           de: 'Verbinde dich mit 2-4 Menschen wie dir und sucht zusammen. Es ist 3x schneller und viel einfacher.',
@@ -584,13 +584,13 @@ export const translations = {
       },
       question3: {
         q: {
-          fr: 'Comment fonctionne le matching ?',
+          fr: 'Comment fonctionne Living Match ?',
           en: 'How does the matching work?',
           nl: 'Hoe werkt de matching?',
           de: 'Wie funktioniert das Matching?',
         },
         a: {
-          fr: 'Notre algorithme analyse tes réponses à 15 questions sur ton lifestyle, tes horaires, tes habitudes et tes valeurs. Il compare ensuite ces données avec celles des autres utilisateurs pour te proposer les personnes les plus compatibles avec toi.',
+          fr: 'Crée ton Living Persona en 3 minutes — on analyse tes rythmes de vie, tes valeurs et ton quotidien. Notre algorithme compare ensuite ton Living Persona avec ceux des autres utilisateurs pour te proposer des Living Matchs avec un score de compatibilité clair (70-90%+). Tu sais exactement pourquoi ça matche.',
           en: 'Our algorithm analyzes your answers to 15 questions about your lifestyle, schedule, habits, and values. It then compares this data with other users to suggest the most compatible people for you.',
           nl: 'Ons algoritme analyseert je antwoorden op 15 vragen over je levensstijl, schema, gewoonten en waarden. Het vergelijkt deze gegevens vervolgens met andere gebruikers om de meest compatibele mensen voor je voor te stellen.',
           de: 'Unser Algorithmus analysiert Ihre Antworten auf 15 Fragen zu Ihrem Lebensstil, Zeitplan, Gewohnheiten und Werten. Er vergleicht dann diese Daten mit anderen Nutzern, um Ihnen die kompatibelsten Personen vorzuschlagen.',
@@ -612,13 +612,13 @@ export const translations = {
       },
       question5: {
         q: {
-          fr: 'Comment rejoindre un groupe ?',
+          fr: 'Comment rejoindre un Search Squad ?',
           en: 'How do I join a group?',
           nl: 'Hoe sluit ik me aan bij een groep?',
           de: 'Wie trete ich einer Gruppe bei?',
         },
         a: {
-          fr: 'Une fois ton Living Persona créé, notre algorithme te proposera des groupes de 2-4 personnes compatibles avec toi. Tu peux parcourir ces groupes, voir leurs Living Personas et demander à les rejoindre. C\'est aussi simple que ça !',
+          fr: 'Une fois ton Living Persona créé, notre algorithme te proposera des Search Squads de 2-4 personnes compatibles avec toi. Tu peux parcourir ces squads, voir leurs Living Personas et demander à les rejoindre. Chercher à plusieurs, c\'est 3x plus rapide !',
           en: 'Once your profile is created, our algorithm will suggest groups of 2-4 people compatible with you. You can browse these groups, view their profiles, and request to join them. It\'s that simple!',
           nl: 'Zodra je profiel is aangemaakt, stelt ons algoritme groepen van 2-4 mensen voor die compatibel zijn met jou. Je kunt deze groepen bekijken, hun profielen bekijken en verzoeken om lid te worden. Zo simpel is het!',
           de: 'Sobald Ihr Profil erstellt ist, schlägt unser Algorithmus Gruppen von 2-4 Personen vor, die mit Ihnen kompatibel sind. Sie können diese Gruppen durchsuchen, ihre Profile anzeigen und eine Beitrittsanfrage stellen. So einfach ist das!',
@@ -632,7 +632,7 @@ export const translations = {
           de: 'Was soll ich tun, wenn es ein Problem gibt?',
         },
         a: {
-          fr: 'Notre équipe support est disponible 24/7 pour t\'aider. Tu peux nous contacter via le chat en direct, par email ou par téléphone. Nous nous engageons à résoudre tous les problèmes dans les 24 heures.',
+          fr: 'Contacte-nous directement via le chat, par email (hello@izzico.be) ou dans ton espace perso. Notre équipe te répond en moins de 24h en semaine. Pour les urgences, utilise le système de signalement en 1 clic — on intervient en priorité.',
           en: 'Our support team is available 24/7 to help you. You can contact us via live chat, email, or phone. We are committed to resolving all issues within 24 hours.',
           nl: 'Ons supportteam is 24/7 beschikbaar om je te helpen. Je kunt contact met ons opnemen via livechat, e-mail of telefoon. We zijn toegewijd om alle problemen binnen 24 uur op te lossen.',
           de: 'Unser Support-Team ist 24/7 verfügbar, um Ihnen zu helfen. Sie können uns über Live-Chat, E-Mail oder Telefon kontaktieren. Wir verpflichten uns, alle Probleme innerhalb von 24 Stunden zu lösen.',
@@ -2849,7 +2849,7 @@ export const translations = {
           de: 'Privatzimmer',
         },
         colivingSpace: {
-          fr: 'Espace Coliving',
+          fr: 'Espace Co-living',
           en: 'Coliving Space',
           nl: 'Coliving Ruimte',
           de: 'Coliving Raum',
@@ -3300,7 +3300,7 @@ export const translations = {
           de: 'Studio',
         },
         coliving: {
-          fr: 'Coliving',
+          fr: 'Co-living',
           en: 'Coliving',
           nl: 'Coliving',
           de: 'Coliving',
@@ -4224,10 +4224,10 @@ export const translations = {
       },
     },
 
-    // Ideal Coliving Page
+    // Ideal Co-living Page
     idealColiving: {
       title: {
-        fr: 'Coliving idéal',
+        fr: 'Co-living idéal',
         en: 'Ideal Coliving',
         nl: 'Ideale coliving',
         de: 'Ideales Coliving',
@@ -4239,7 +4239,7 @@ export const translations = {
         de: 'Beschreiben Sie Ihre ideale Wohnatmosphäre.',
       },
       preferredColivingSize: {
-        fr: 'Taille de coliving préférée',
+        fr: 'Taille de co-living préférée',
         en: 'Preferred coliving size',
         nl: 'Gewenste coliving grootte',
         de: 'Bevorzugte Coliving-Größe',
@@ -5033,7 +5033,7 @@ export const translations = {
         de: 'Tägliche Gewohnheiten',
       },
       idealColivingSection: {
-        fr: 'Coliving idéal',
+        fr: 'Co-living idéal',
         en: 'Ideal Coliving',
         nl: 'Ideale coliving',
         de: 'Ideales Coliving',
@@ -5111,7 +5111,7 @@ export const translations = {
         de: 'Nein',
       },
       colivingSizeLabel: {
-        fr: 'Taille de coliving :',
+        fr: 'Taille de co-living :',
         en: 'Coliving Size:',
         nl: 'Coliving grootte:',
         de: 'Coliving-Größe:',
@@ -5546,7 +5546,7 @@ export const translations = {
         de: 'Tritt Izzico bei',
       },
       subtitle: {
-        fr: 'Commencez votre aventure coliving aujourd\'hui',
+        fr: 'Commencez votre aventure co-living aujourd\'hui',
         en: 'Start your coliving journey today',
         nl: 'Begin vandaag je coliving reis',
         de: 'Beginnen Sie heute Ihre Coliving-Reise',
@@ -6418,7 +6418,7 @@ export const translations = {
         de: 'Suchender',
       },
       searcherDescription: {
-        fr: 'Je cherche un espace de coliving ou des résidents',
+        fr: 'Je cherche un espace de co-living ou des résidents',
         en: 'Looking for a coliving space or roommates',
         nl: 'Op zoek naar een coliving ruimte of huisgenoten',
         de: 'Auf der Suche nach einem Coliving-Raum oder Mitbewohnern',
@@ -6442,7 +6442,7 @@ export const translations = {
         de: 'Bewohner',
       },
       residentDescription: {
-        fr: 'Je vis déjà dans un espace de coliving',
+        fr: 'Je vis déjà dans un espace de co-living',
         en: 'I already live in a coliving space',
         nl: 'Ik woon al in een coliving ruimte',
         de: 'Ich lebe bereits in einem Coliving-Raum',
@@ -9011,7 +9011,7 @@ export const translations = {
           de: '6. Tätigkeit',
         },
         content: {
-          fr: 'Izzico est une plateforme digitale de mise en relation pour la co-living et le coliving en Belgique. Nous facilitons la recherche de résidents compatibles et de logements adaptés grâce à des algorithmes de matching intelligents.',
+          fr: 'Izzico est une plateforme digitale de mise en relation pour le co-living en Belgique. Nous facilitons la recherche de résidents compatibles et de logements adaptés grâce à des algorithmes de matching intelligents.',
           en: 'Izzico is a digital matching platform for flatsharing and coliving in Belgium. We facilitate the search for compatible flatmates and suitable housing through smart matching algorithms.',
           nl: 'Izzico is een digitaal matchingplatform voor flatsharing en coliving in België. We faciliteren het zoeken naar compatibele huisgenoten en geschikte huisvesting via slimme matching-algoritmen.',
           de: 'Izzico ist eine digitale Matching-Plattform für WG-Suche und Coliving in Belgien. Wir erleichtern die Suche nach kompatiblen Mitbewohnern und geeigneten Unterkünften durch intelligente Matching-Algorithmen.',
@@ -17494,7 +17494,7 @@ export const translations = {
           de: 'Studio',
         },
         coliving: {
-          fr: 'Espace de coliving',
+          fr: 'Espace de co-living',
           en: 'Coliving Space',
           nl: 'Coliving ruimte',
           de: 'Coliving-Raum',
@@ -20105,7 +20105,7 @@ export const translations = {
           de: 'Beschreiben Sie Ihre ideale Wohnsituation und die Art von Menschen, mit denen Sie leben möchten',
         },
         placeholder: {
-          fr: 'ex: Je cherche une chambre conviviale dans un coliving mixte avec des personnes qui respectent les espaces partagés et apprécient les activités sociales occasionnelles...',
+          fr: 'ex: Je cherche une chambre conviviale dans un co-living mixte avec des personnes qui respectent les espaces partagés et apprécient les activités sociales occasionnelles...',
           en: 'e.g., Looking for a convivial room in a mixed coliving with people who respect shared spaces and enjoy occasional social activities...',
           nl: 'bijv. Op zoek naar een gezellige kamer in een gemengd coliving met mensen die gedeelde ruimtes respecteren en af en toe sociale activiteiten waarderen...',
           de: 'z.B. Suche ein gemütliches Zimmer in einem gemischten Coliving mit Menschen, die Gemeinschaftsräume respektieren und gelegentliche soziale Aktivitäten genießen...',
@@ -20521,7 +20521,7 @@ export const translations = {
         title: { fr: 'Avantages de la communauté', en: 'Community Perks', nl: 'Community-voordelen', de: 'Community-Vorteile' },
         perk1: { fr: 'Trouver des résidents avec une énergie sociale similaire', en: 'Find flatmates with similar social energy', nl: 'Vind huisgenoten met vergelijkbare sociale energie', de: 'Finde Mitbewohner mit ähnlicher sozialer Energie' },
         perk2: { fr: 'Être associé à des styles de vie compatibles', en: 'Get matched with compatible living styles', nl: 'Gematcht worden met compatibele leefstijlen', de: 'Mit kompatiblen Lebensstilen gematcht werden' },
-        perk3: { fr: 'Découvrir des espaces de coliving qui te correspondent', en: 'Discover coliving spaces that fit your vibe', nl: 'Ontdek coliving-ruimtes die bij je passen', de: 'Entdecken Sie Coliving-Räume, die zu Ihnen passen' },
+        perk3: { fr: 'Découvrir des espaces de co-living qui te correspondent', en: 'Discover coliving spaces that fit your vibe', nl: 'Ontdek coliving-ruimtes die bij je passen', de: 'Entdecken Sie Coliving-Räume, die zu Ihnen passen' },
       },
     },
     verification: {
@@ -21173,7 +21173,7 @@ export const translations = {
       lookingFor: {
         label: { fr: 'Ce que je recherche', en: "What I'm Looking For", nl: 'Waar ik naar zoek', de: 'Was ich suche' },
         helper: { fr: 'Décris ta situation de vie idéale et le type de personnes avec qui tu aimerais vivre', en: "Describe your ideal living situation and the kind of people you'd like to live with", nl: 'Beschrijf je ideale woonsituatie en het type mensen waarmee je zou willen wonen', de: 'Beschreiben Sie Ihre ideale Wohnsituation und die Art von Menschen, mit denen Sie leben möchten' },
-        placeholder: { fr: 'ex. Je cherche une chambre conviviale dans un coliving mixte avec des personnes qui respectent les espaces partagés et aiment les activités sociales occasionnelles...', en: 'e.g., Looking for a convivial room in a mixed coliving with people who respect shared spaces and enjoy occasional social activities...', nl: 'bijv. Op zoek naar een gezellige kamer in een gemengde coliving met mensen die gedeelde ruimtes respecteren en af en toe sociale activiteiten leuk vinden...', de: 'z.B. Suche ein geselliges Zimmer in einer gemischten Coliving-WG mit Menschen, die gemeinsame Räume respektieren und gelegentliche soziale Aktivitäten genießen...' },
+        placeholder: { fr: 'ex. Je cherche une chambre conviviale dans un co-living mixte avec des personnes qui respectent les espaces partagés et aiment les activités sociales occasionnelles...', en: 'e.g., Looking for a convivial room in a mixed coliving with people who respect shared spaces and enjoy occasional social activities...', nl: 'bijv. Op zoek naar een gezellige kamer in een gemengde coliving met mensen die gedeelde ruimtes respecteren en af en toe sociale activiteiten leuk vinden...', de: 'z.B. Suche ein geselliges Zimmer in einer gemischten Coliving-WG mit Menschen, die gemeinsame Räume respektieren und gelegentliche soziale Aktivitäten genießen...' },
       },
     },
     // Community Page
@@ -21201,13 +21201,13 @@ export const translations = {
         title: { fr: 'Avantages communautaires', en: 'Community Perks', nl: 'Gemeenschapsvoordelen', de: 'Gemeinschaftsvorteile' },
         findFlatmates: { fr: 'Trouvez des résidents avec une énergie sociale similaire', en: 'Find flatmates with similar social energy', nl: 'Vind huisgenoten met vergelijkbare sociale energie', de: 'Finden Sie Mitbewohner mit ähnlicher sozialer Energie' },
         matchedStyles: { fr: 'Soyez associé à des styles de vie compatibles', en: 'Get matched with compatible living styles', nl: 'Word gematcht met compatibele levensstijlen', de: 'Werden Sie mit kompatiblen Lebensstilen zusammengebracht' },
-        discoverSpaces: { fr: 'Découvrez des espaces de coliving qui correspondent à votre ambiance', en: 'Discover coliving spaces that fit your vibe', nl: 'Ontdek coliving-ruimtes die bij je vibe passen', de: 'Entdecken Sie Coliving-Räume, die zu Ihrer Stimmung passen' },
+        discoverSpaces: { fr: 'Découvrez des espaces de co-living qui correspondent à votre ambiance', en: 'Discover coliving spaces that fit your vibe', nl: 'Ontdek coliving-ruimtes die bij je vibe passen', de: 'Entdecken Sie Coliving-Räume, die zu Ihrer Stimmung passen' },
       },
     },
     // Ideal Living Page
     idealLiving: {
       title: { fr: 'Situation de vie idéale', en: 'Ideal Living Situation', nl: 'Ideale woonsituatie', de: 'Ideale Wohnsituation' },
-      description: { fr: 'Parle-nous de ta environnement de coliving idéal', en: 'Tell us about your ideal coliving environment', nl: 'Vertel ons over je ideale coliving-omgeving', de: 'Erzählen Sie uns von Ihrer idealen Coliving-Umgebung' },
+      description: { fr: 'Parle-nous de ton environnement de co-living idéal', en: 'Tell us about your ideal coliving environment', nl: 'Vertel ons over je ideale coliving-omgeving', de: 'Erzählen Sie uns von Ihrer idealen Coliving-Umgebung' },
       communitySize: {
         title: { fr: 'Taille de communauté préférée', en: 'Preferred Community Size', nl: 'Gewenste gemeenschapsgrootte', de: 'Bevorzugte Gemeinschaftsgröße' },
         subtitle: { fr: 'Avec combien de personnes aimerais-tu vivre ?', en: 'How many people would you like to live with?', nl: 'Met hoeveel mensen zou je willen wonen?', de: 'Mit wie vielen Menschen möchten Sie zusammenleben?' },
