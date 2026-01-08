@@ -188,7 +188,7 @@ export default function PropertyCTASidebar({
           <div className="space-y-3 pt-4 border-t">
             <Button
               onClick={handleApply}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-6"
+              className="w-full bg-searcher-500 hover:bg-searcher-600 text-white font-semibold py-6"
               disabled={!selectedRoom?.is_available}
             >
               <Send className="w-5 h-5 mr-2" />
