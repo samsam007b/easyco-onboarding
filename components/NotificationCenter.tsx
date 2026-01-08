@@ -43,7 +43,7 @@ const notificationIcons = {
 
 const notificationColors = {
   message: 'text-blue-600',
-  match: 'text-purple-600',
+  match: 'text-searcher-600',
   favorite: 'text-red-600',
   application: 'text-green-600',
   system: 'text-yellow-600',
@@ -153,13 +153,13 @@ export function NotificationCenter() {
                     key={notification.id}
                     className={cn(
                       'relative px-4 py-3 hover:bg-gray-50 cursor-pointer transition-colors',
-                      !notification.is_read && 'bg-purple-50/50'
+                      !notification.is_read && 'bg-searcher-50/50'
                     )}
                     onClick={() => handleNotificationClick(notification)}
                   >
                     {/* Unread indicator */}
                     {!notification.is_read && (
-                      <div className="absolute left-2 top-1/2 -translate-y-1/2 w-2 h-2 bg-purple-600 rounded-full" />
+                      <div className="absolute left-2 top-1/2 -translate-y-1/2 w-2 h-2 bg-searcher-600 rounded-full" />
                     )}
 
                     <div className="flex gap-3">
@@ -197,7 +197,7 @@ export function NotificationCenter() {
                           </span>
 
                           {notification.action_label && (
-                            <span className="text-xs font-medium text-purple-600">
+                            <span className="text-xs font-medium text-searcher-600">
                               {notification.action_label} →
                             </span>
                           )}
