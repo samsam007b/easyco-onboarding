@@ -133,13 +133,13 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'popular':
-        return <TrendingUp className="w-4 h-4 text-orange-600" />;
+        return <TrendingUp className="w-4 h-4 text-searcher-600" />;
       case 'recent':
         return <Clock className="w-4 h-4 text-blue-600" />;
       case 'trending':
-        return <Sparkles className="w-4 h-4 text-purple-600" />;
+        return <Sparkles className="w-4 h-4 text-searcher-600" />;
       case 'personalized':
-        return <Sparkles className="w-4 h-4 text-pink-600" />;
+        return <Sparkles className="w-4 h-4 text-searcher-600" />;
       default:
         return null;
     }
@@ -148,13 +148,13 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'popular':
-        return 'from-orange-50 to-orange-100 border-orange-200 hover:border-orange-300';
+        return 'from-searcher-50 to-searcher-100 border-searcher-200 hover:border-searcher-300';
       case 'recent':
         return 'from-blue-50 to-blue-100 border-blue-200 hover:border-blue-300';
       case 'trending':
-        return 'from-purple-50 to-purple-100 border-purple-200 hover:border-purple-300';
+        return 'from-searcher-50 to-searcher-100 border-searcher-200 hover:border-searcher-300';
       case 'personalized':
-        return 'from-pink-50 to-pink-100 border-pink-200 hover:border-pink-300';
+        return 'from-searcher-50 to-searcher-100 border-searcher-200 hover:border-searcher-300';
       default:
         return 'from-gray-50 to-gray-100 border-gray-200 hover:border-gray-300';
     }
@@ -186,7 +186,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 onClick={() => handleSuggestionClick(suggestion)}
                 className={`relative p-4 superellipse-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
                   suggestion.category
-                )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-orange-500' : ''}`}
+                )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-searcher-500' : ''}`}
               >
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center flex-shrink-0">
@@ -199,7 +199,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 </div>
                 {selectedSuggestion === suggestion.id && (
                   <div className="absolute top-2 right-2">
-                    <Badge className="bg-orange-500 text-white text-xs">Actif</Badge>
+                    <Badge className="bg-searcher-500 text-white text-xs">Actif</Badge>
                   </div>
                 )}
               </motion.button>
@@ -227,7 +227,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 onClick={() => handleSuggestionClick(suggestion)}
                 className={`relative p-4 superellipse-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
                   suggestion.category
-                )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-orange-500' : ''}`}
+                )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-searcher-500' : ''}`}
               >
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center flex-shrink-0">
@@ -240,7 +240,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 </div>
                 {selectedSuggestion === suggestion.id && (
                   <div className="absolute top-2 right-2">
-                    <Badge className="bg-orange-500 text-white text-xs">Actif</Badge>
+                    <Badge className="bg-searcher-500 text-white text-xs">Actif</Badge>
                   </div>
                 )}
               </motion.button>
@@ -267,7 +267,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 onClick={() => handleSuggestionClick(suggestion)}
                 className={`relative p-4 superellipse-xl border-2 transition-all text-left bg-gradient-to-br ${getCategoryColor(
                   suggestion.category
-                )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-orange-500' : ''}`}
+                )} ${selectedSuggestion === suggestion.id ? 'ring-2 ring-searcher-500' : ''}`}
               >
                 <div className="flex items-start gap-3">
                   <div className="w-10 h-10 rounded-lg bg-white shadow-sm flex items-center justify-center flex-shrink-0">
@@ -283,7 +283,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
                 </div>
                 {selectedSuggestion === suggestion.id && (
                   <div className="absolute top-2 right-2">
-                    <Badge className="bg-orange-500 text-white text-xs">Actif</Badge>
+                    <Badge className="bg-searcher-500 text-white text-xs">Actif</Badge>
                   </div>
                 )}
               </motion.button>
@@ -295,10 +295,10 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-gradient-to-r from-orange-50 to-yellow-50 border border-orange-200 superellipse-xl p-4"
+        className="bg-gradient-to-r from-searcher-50 to-searcher-50 border border-searcher-200 superellipse-xl p-4"
       >
         <div className="flex items-start gap-3">
-          <Sparkles className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
+          <Sparkles className="w-5 h-5 text-searcher-600 flex-shrink-0 mt-0.5" />
           <div className="flex-1">
             <h4 className="font-semibold text-gray-900 text-sm mb-1">Filtres intelligents</h4>
             <p className="text-xs text-gray-600">
