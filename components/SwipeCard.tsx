@@ -124,7 +124,7 @@ export default function SwipeCard({ property, onSwipe, onSuperLike }: SwipeCardP
 
           {/* Compatibility Score Badge */}
           {property.compatibilityScore && (
-            <div className="absolute top-4 right-4 bg-gradient-to-r from-yellow-400 to-yellow-500 text-white px-4 py-2 rounded-full shadow-lg">
+            <div className="absolute top-4 right-4 bg-gradient-to-r from-searcher-400 to-searcher-500 text-white px-4 py-2 rounded-full shadow-lg">
               <span className="font-bold text-lg">{property.compatibilityScore}%</span>
               <span className="text-sm ml-1">Match</span>
             </div>
@@ -169,7 +169,7 @@ export default function SwipeCard({ property, onSwipe, onSuperLike }: SwipeCardP
               </div>
             </div>
             <div className="text-right">
-              <p className="text-3xl font-bold text-purple-600">
+              <p className="text-3xl font-bold text-searcher-600">
                 €{property.monthly_rent}
               </p>
               <p className="text-xs text-gray-500">par mois</p>
@@ -178,11 +178,11 @@ export default function SwipeCard({ property, onSwipe, onSuperLike }: SwipeCardP
 
           <div className="flex items-center gap-4 mb-3">
             <div className="flex items-center text-gray-700">
-              <Bed className="w-5 h-5 mr-1 text-purple-600" />
+              <Bed className="w-5 h-5 mr-1 text-searcher-600" />
               <span className="font-medium">{property.bedrooms} ch.</span>
             </div>
             <div className="flex items-center text-gray-700">
-              <Bath className="w-5 h-5 mr-1 text-purple-600" />
+              <Bath className="w-5 h-5 mr-1 text-searcher-600" />
               <span className="font-medium">{property.bathrooms} sdb.</span>
             </div>
           </div>
