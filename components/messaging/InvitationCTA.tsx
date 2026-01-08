@@ -108,8 +108,8 @@ export function InvitationCTA({
             className={cn(
               'w-24 h-24 superellipse-3xl flex items-center justify-center mx-auto mb-6 shadow-lg',
               type === 'owner'
-                ? 'bg-gradient-to-br from-purple-500 to-indigo-500'
-                : 'bg-gradient-to-br from-[#7CB89B] to-[#9ECDB5]'
+                ? 'bg-gradient-to-br from-owner-500 to-owner-500'
+                : 'bg-gradient-to-br from-resident-500 to-resident-400'
             )}
           >
             {type === 'owner' ? (
@@ -141,8 +141,8 @@ export function InvitationCTA({
               className={cn(
                 'rounded-full px-6 font-semibold shadow-md hover:shadow-lg transition-all',
                 type === 'owner'
-                  ? 'bg-gradient-to-r from-purple-500 to-indigo-500 hover:opacity-90'
-                  : 'bg-gradient-to-r from-[#7CB89B] to-[#9ECDB5] hover:opacity-90'
+                  ? 'bg-gradient-to-r from-owner-500 to-owner-500 hover:opacity-90'
+                  : 'bg-gradient-to-r from-resident-500 to-resident-400 hover:opacity-90'
               )}
             >
               {isLoading ? (
@@ -181,7 +181,7 @@ export function InvitationCTA({
                   className="superellipse-xl flex-shrink-0"
                 >
                   {copied ? (
-                    <Check className="w-4 h-4 text-[#7CB89B]" />
+                    <Check className="w-4 h-4 text-resident-500" />
                   ) : (
                     <Copy className="w-4 h-4" />
                   )}
@@ -204,8 +204,8 @@ export function InvitationCTA({
                     className={cn(
                       'rounded-full',
                       type === 'owner'
-                        ? 'bg-gradient-to-r from-purple-500 to-indigo-500'
-                        : 'bg-gradient-to-r from-[#7CB89B] to-[#9ECDB5]'
+                        ? 'bg-gradient-to-r from-owner-500 to-owner-500'
+                        : 'bg-gradient-to-r from-resident-500 to-resident-400'
                     )}
                   >
                     <Share2 className="w-4 h-4 mr-2" />
@@ -227,28 +227,28 @@ export function InvitationCTA({
         className={cn(
           'p-4 superellipse-xl border',
           type === 'owner'
-            ? 'bg-purple-50 border-purple-200'
-            : 'bg-[#F0F7F4] border-[#7CB89B]/30'
+            ? 'bg-owner-50 border-owner-200'
+            : 'bg-resident-50 border-resident-200/30'
         )}
       >
         <div className="flex items-start gap-3">
           <div
             className={cn(
               'w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0',
-              type === 'owner' ? 'bg-purple-100' : 'bg-[#E8F5EE]'
+              type === 'owner' ? 'bg-owner-100' : 'bg-resident-100'
             )}
           >
             {type === 'owner' ? (
-              <Key className="w-5 h-5 text-purple-600" />
+              <Key className="w-5 h-5 text-owner-600" />
             ) : (
-              <UserPlus className="w-5 h-5 text-[#7CB89B]" />
+              <UserPlus className="w-5 h-5 text-resident-500" />
             )}
           </div>
           <div className="flex-1 min-w-0">
             <h4
               className={cn(
                 'font-semibold text-sm',
-                type === 'owner' ? 'text-purple-900' : 'text-[#5A9A7C]'
+                type === 'owner' ? 'text-owner-900' : 'text-resident-700'
               )}
             >
               {type === 'owner'
@@ -258,7 +258,7 @@ export function InvitationCTA({
             <p
               className={cn(
                 'text-xs mt-0.5',
-                type === 'owner' ? 'text-purple-700' : 'text-[#7CB89B]'
+                type === 'owner' ? 'text-owner-700' : 'text-resident-600'
               )}
             >
               {type === 'owner'
@@ -272,8 +272,8 @@ export function InvitationCTA({
               className={cn(
                 'mt-3 rounded-full text-xs h-8',
                 type === 'owner'
-                  ? 'bg-purple-600 hover:bg-purple-700'
-                  : 'bg-[#7CB89B] hover:bg-[#5A9A7C]'
+                  ? 'bg-owner-600 hover:bg-owner-700'
+                  : 'bg-resident-500 hover:bg-resident-600'
               )}
             >
               <ArrowRight className="w-3 h-3 mr-1" />
@@ -312,12 +312,12 @@ export function InvitationDialog({
           <DialogTitle className="flex items-center gap-2">
             {type === 'owner' ? (
               <>
-                <Key className="w-5 h-5 text-purple-600" />
+                <Key className="w-5 h-5 text-owner-600" />
                 Inviter votre propriétaire
               </>
             ) : (
               <>
-                <UserPlus className="w-5 h-5 text-[#7CB89B]" />
+                <UserPlus className="w-5 h-5 text-resident-500" />
                 Inviter des colocataires
               </>
             )}
