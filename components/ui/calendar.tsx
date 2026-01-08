@@ -34,20 +34,20 @@ function Calendar({
         head_cell:
           "text-gray-500 rounded-md w-9 font-normal text-[0.8rem]",
         row: "flex w-full mt-2",
-        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-orange-100/50 [&:has([aria-selected])]:bg-orange-100 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
+        cell: "h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-searcher-100/50 [&:has([aria-selected])]:bg-searcher-100 first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20",
         day: cn(
           "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground",
           "h-9 w-9 p-0 font-normal aria-selected:opacity-100"
         ),
         day_range_end: "day-range-end",
         day_selected:
-          "bg-orange-600 text-white hover:bg-orange-600 hover:text-white focus:bg-orange-600 focus:text-white",
-        day_today: "bg-orange-100 text-orange-900",
+          "bg-searcher-600 text-white hover:bg-searcher-600 hover:text-white focus:bg-searcher-600 focus:text-white",
+        day_today: "bg-searcher-100 text-searcher-900",
         day_outside:
-          "day-outside text-gray-400 opacity-50 aria-selected:bg-orange-100/50 aria-selected:text-gray-500 aria-selected:opacity-30",
+          "day-outside text-gray-400 opacity-50 aria-selected:bg-searcher-100/50 aria-selected:text-gray-500 aria-selected:opacity-30",
         day_disabled: "text-gray-400 opacity-50",
         day_range_middle:
-          "aria-selected:bg-orange-100 aria-selected:text-orange-900",
+          "aria-selected:bg-searcher-100 aria-selected:text-searcher-900",
         day_hidden: "invisible",
         ...classNames,
       }}
