@@ -41,7 +41,7 @@ export function RangeSlider({
 
       {/* Active range */}
       <div
-        className="absolute h-2 bg-orange-600 rounded-full"
+        className="absolute h-2 bg-searcher-600 rounded-full"
         style={{
           left: `${minPercent}%`,
           right: `${100 - maxPercent}%`,
@@ -64,7 +64,7 @@ export function RangeSlider({
                    [&::-webkit-slider-thumb]:rounded-full
                    [&::-webkit-slider-thumb]:bg-white
                    [&::-webkit-slider-thumb]:border-2
-                   [&::-webkit-slider-thumb]:border-orange-600
+                   [&::-webkit-slider-thumb]:border-searcher-600
                    [&::-webkit-slider-thumb]:cursor-pointer
                    [&::-webkit-slider-thumb]:shadow-md
                    [&::-moz-range-thumb]:pointer-events-auto
@@ -74,7 +74,7 @@ export function RangeSlider({
                    [&::-moz-range-thumb]:rounded-full
                    [&::-moz-range-thumb]:bg-white
                    [&::-moz-range-thumb]:border-2
-                   [&::-moz-range-thumb]:border-orange-600
+                   [&::-moz-range-thumb]:border-searcher-600
                    [&::-moz-range-thumb]:cursor-pointer
                    [&::-moz-range-thumb]:shadow-md"
       />
@@ -95,7 +95,7 @@ export function RangeSlider({
                    [&::-webkit-slider-thumb]:rounded-full
                    [&::-webkit-slider-thumb]:bg-white
                    [&::-webkit-slider-thumb]:border-2
-                   [&::-webkit-slider-thumb]:border-orange-600
+                   [&::-webkit-slider-thumb]:border-searcher-600
                    [&::-webkit-slider-thumb]:cursor-pointer
                    [&::-webkit-slider-thumb]:shadow-md
                    [&::-moz-range-thumb]:pointer-events-auto
@@ -105,7 +105,7 @@ export function RangeSlider({
                    [&::-moz-range-thumb]:rounded-full
                    [&::-moz-range-thumb]:bg-white
                    [&::-moz-range-thumb]:border-2
-                   [&::-moz-range-thumb]:border-orange-600
+                   [&::-moz-range-thumb]:border-searcher-600
                    [&::-moz-range-thumb]:cursor-pointer
                    [&::-moz-range-thumb]:shadow-md"
       />
