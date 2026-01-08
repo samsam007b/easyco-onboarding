@@ -190,7 +190,7 @@ export function PropertyFilters({
                 variant="outline"
                 className={cn(
                   'superellipse-xl justify-between min-w-[160px]',
-                  filters.status !== 'all' && 'border-purple-300 bg-purple-50'
+                  filters.status !== 'all' && 'border-owner-300 bg-owner-50'
                 )}
               >
                 <span className="flex items-center gap-2">
@@ -205,7 +205,7 @@ export function PropertyFilters({
                 <DropdownMenuItem
                   key={option.value}
                   onClick={() => updateFilter('status', option.value)}
-                  className={cn(filters.status === option.value && 'bg-purple-50')}
+                  className={cn(filters.status === option.value && 'bg-owner-50')}
                 >
                   <option.icon className="w-4 h-4 mr-2" />
                   {getLabel(option.labelKey)}
@@ -221,7 +221,7 @@ export function PropertyFilters({
                 variant="outline"
                 className={cn(
                   'superellipse-xl justify-between min-w-[140px]',
-                  filters.health !== 'all' && 'border-purple-300 bg-purple-50'
+                  filters.health !== 'all' && 'border-owner-300 bg-owner-50'
                 )}
               >
                 <span className="flex items-center gap-2">
@@ -239,7 +239,7 @@ export function PropertyFilters({
                 <DropdownMenuItem
                   key={option.value}
                   onClick={() => updateFilter('health', option.value)}
-                  className={cn(filters.health === option.value && 'bg-purple-50')}
+                  className={cn(filters.health === option.value && 'bg-owner-50')}
                 >
                   <span
                     className="w-2.5 h-2.5 rounded-full mr-2"
@@ -259,7 +259,7 @@ export function PropertyFilters({
                   variant="outline"
                   className={cn(
                     'superellipse-xl justify-between min-w-[140px]',
-                    filters.city && 'border-purple-300 bg-purple-50'
+                    filters.city && 'border-owner-300 bg-owner-50'
                   )}
                 >
                   <span className="flex items-center gap-2">
@@ -272,7 +272,7 @@ export function PropertyFilters({
               <DropdownMenuContent align="end" className="w-48 max-h-60 overflow-auto">
                 <DropdownMenuItem
                   onClick={() => updateFilter('city', '')}
-                  className={cn(!filters.city && 'bg-purple-50')}
+                  className={cn(!filters.city && 'bg-owner-50')}
                 >
                   {getLabel('allCitiesLong')}
                 </DropdownMenuItem>
@@ -296,7 +296,7 @@ export function PropertyFilters({
             onClick={() => setShowAdvanced(!showAdvanced)}
             className={cn(
               'superellipse-xl',
-              showAdvanced && 'border-purple-300 bg-purple-50'
+              showAdvanced && 'border-owner-300 bg-owner-50'
             )}
           >
             <Filter className="w-4 h-4 mr-2" />
@@ -318,7 +318,7 @@ export function PropertyFilters({
               className={cn(
                 'p-2 superellipse-lg transition-colors',
                 viewMode === 'grid'
-                  ? 'bg-purple-100 text-purple-600'
+                  ? 'bg-owner-100 text-owner-600'
                   : 'text-gray-400 hover:text-gray-600'
               )}
             >
@@ -329,7 +329,7 @@ export function PropertyFilters({
               className={cn(
                 'p-2 superellipse-lg transition-colors',
                 viewMode === 'list'
-                  ? 'bg-purple-100 text-purple-600'
+                  ? 'bg-owner-100 text-owner-600'
                   : 'text-gray-400 hover:text-gray-600'
               )}
             >
@@ -460,7 +460,7 @@ export function PropertyFilters({
         {hasActiveFilters && (
           <button
             onClick={resetFilters}
-            className="text-purple-600 hover:text-purple-700 font-medium"
+            className="text-owner-600 hover:text-owner-700 font-medium"
           >
             {getLabel('clearFilters')}
           </button>
