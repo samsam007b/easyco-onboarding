@@ -186,7 +186,7 @@ export default function ResidenceProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-resident-50/30 via-white to-resident-50/30 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6 lg:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-6">
@@ -211,7 +211,7 @@ export default function ResidenceProfilePage() {
             {!isEditing ? (
               <Button
                 onClick={() => setIsEditing(true)}
-                className="bg-gradient-to-r from-resident-500 to-resident-600 hover:shadow-lg"
+                className="bg-resident-500 hover:bg-resident-600 hover:shadow-lg"
               >
                 <Edit2 className="w-4 h-4 mr-2" />
                 {t?.buttons?.edit?.[language] || 'Edit'}
@@ -328,7 +328,7 @@ export default function ResidenceProfilePage() {
           </h2>
 
           <div className="grid grid-cols-3 gap-4">
-            <div className="text-center p-4 bg-gradient-to-br from-resident-50 to-resident-50 superellipse-xl">
+            <div className="text-center p-4 bg-resident-50 superellipse-xl">
               <Users className="w-8 h-8 text-resident-600 mx-auto mb-2" />
               <div className="text-2xl font-bold text-gray-900">{residence.memberCount}</div>
               <div className="text-sm text-gray-600">{t?.stats?.roommates?.[language] || 'Roommates'}</div>
