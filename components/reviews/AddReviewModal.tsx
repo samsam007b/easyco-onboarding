@@ -61,7 +61,7 @@ export default function AddReviewModal({
               <Star
                 className={`w-8 h-8 ${
                   star <= currentValue
-                    ? 'fill-orange-500 text-orange-500'
+                    ? 'fill-searcher-500 text-searcher-500'
                     : 'text-gray-300'
                 }`}
               />
@@ -172,7 +172,7 @@ export default function AddReviewModal({
                     <Star
                       className={`w-10 h-10 ${
                         star <= formData.rating
-                          ? 'fill-orange-500 text-orange-500'
+                          ? 'fill-searcher-500 text-searcher-500'
                           : 'text-gray-300'
                       }`}
                     />
@@ -190,7 +190,7 @@ export default function AddReviewModal({
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder={t?.titlePlaceholder?.[language] || 'Summarize your experience'}
-                className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-searcher-500"
                 maxLength={100}
               />
             </div>
@@ -204,7 +204,7 @@ export default function AddReviewModal({
                 value={formData.comment}
                 onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
                 placeholder={t?.commentPlaceholder?.[language] || 'Share your experience with future tenants...'}
-                className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500"
+                className="w-full mt-2 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-searcher-500"
               />
             </div>
 
@@ -233,7 +233,7 @@ export default function AddReviewModal({
               <Button
                 type="submit"
                 disabled={submitting || formData.rating === 0}
-                className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
+                className="bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700 text-white"
               >
                 {submitting ? (
                   <div className="flex items-center gap-2">

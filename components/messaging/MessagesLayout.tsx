@@ -85,20 +85,20 @@ export const messageVariantStyles = {
     selectedBorder: 'rgba(156, 86, 152, 0.3)',
   },
   hub: {
-    // Resident orange theme
-    gradient: 'from-orange-50/30 via-white to-orange-50/30',
+    // Resident v3 theme
+    gradient: 'from-resident-50/30 via-white to-resident-50/30',
     accent: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
     accentGradient: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-    accentLight: 'from-orange-50 to-red-50',
-    border: 'border-orange-200',
-    text: 'text-orange-600',
-    shadow: 'rgba(255, 101, 30, 0.35)',
+    accentLight: 'from-resident-50 to-resident-100',
+    border: 'border-resident-200',
+    text: 'text-resident-600',
+    shadow: 'rgba(224, 87, 71, 0.35)',
     primary: '#e05747',
     light: '#fff7ed',
-    focusBorder: 'focus:border-orange-300',
-    hoverBg: 'hover:border-orange-100',
+    focusBorder: 'focus:border-resident-300',
+    hoverBg: 'hover:border-resident-100',
     selectedBg: 'rgba(255, 245, 243, 1)',
-    selectedBorder: 'rgba(255, 91, 33, 0.3)',
+    selectedBorder: 'rgba(224, 87, 71, 0.3)',
   },
 };
 
