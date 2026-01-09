@@ -114,7 +114,7 @@ class GestionService {
         lastUpdated: new Date().toISOString(),
       };
     } catch (error) {
-      console.error('[Gestion] ❌ Failed to fetch overview:', error);
+      console.error('[Gestion] ERROR: Failed to fetch overview:', error);
       return this.getEmptyOverview();
     }
   }
@@ -160,7 +160,7 @@ class GestionService {
 
       return { total, active, newThisMonth, withIssues, leavingSoon };
     } catch (error) {
-      console.error('[Gestion] ❌ Failed to fetch tenant stats:', error);
+      console.error('[Gestion] ERROR: Failed to fetch tenant stats:', error);
       return { total: 0, active: 0, newThisMonth: 0, withIssues: 0, leavingSoon: 0 };
     }
   }
@@ -210,7 +210,7 @@ class GestionService {
         totalMonthlyRent,
       };
     } catch (error) {
-      console.error('[Gestion] ❌ Failed to fetch lease stats:', error);
+      console.error('[Gestion] ERROR: Failed to fetch lease stats:', error);
       return { total: 0, active: 0, expiringSoon: 0, expired: 0, totalMonthlyRent: 0 };
     }
   }
@@ -258,7 +258,7 @@ class GestionService {
         totalCost,
       };
     } catch (error) {
-      console.error('[Gestion] ❌ Failed to fetch maintenance stats:', error);
+      console.error('[Gestion] ERROR: Failed to fetch maintenance stats:', error);
       return { total: 0, open: 0, inProgress: 0, resolved: 0, urgent: 0, avgResolutionHours: 0, totalCost: 0 };
     }
   }
@@ -403,7 +403,7 @@ class GestionService {
         return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
       });
     } catch (error) {
-      console.error('[Gestion] ❌ Failed to fetch urgent actions:', error);
+      console.error('[Gestion] ERROR: Failed to fetch urgent actions:', error);
       return [];
     }
   }
@@ -468,7 +468,7 @@ class GestionService {
         .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
         .slice(0, limit);
     } catch (error) {
-      console.error('[Gestion] ❌ Failed to fetch activity:', error);
+      console.error('[Gestion] ERROR: Failed to fetch activity:', error);
       return [];
     }
   }

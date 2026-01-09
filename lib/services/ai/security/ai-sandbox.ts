@@ -171,7 +171,7 @@ export function sanitizeText(text: string): string {
 export function validatePrompt(prompt: string): boolean {
   for (const pattern of AI_SECURITY_CONFIG.FORBIDDEN_PATTERNS) {
     if (pattern.test(prompt)) {
-      console.error(`[AI Sandbox] ⚠️ BLOCKED: Prompt contains forbidden pattern: ${pattern}`);
+      console.error(`[AI Sandbox] BLOCKED: Prompt contains forbidden pattern: ${pattern}`);
       return false;
     }
   }

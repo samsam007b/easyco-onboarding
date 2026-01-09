@@ -1788,11 +1788,11 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   messaging: (ctx) => {
     const name = getUserName(ctx);
-    let response = `💬 **Messagerie${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Messagerie${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show unread messages
     if (ctx.unreadMessagesCount && ctx.unreadMessagesCount > 0) {
-      response += `📬 **${ctx.unreadMessagesCount} message${ctx.unreadMessagesCount > 1 ? 's' : ''} non lu${ctx.unreadMessagesCount > 1 ? 's' : ''}**\n\n`;
+      response += `**${ctx.unreadMessagesCount} message${ctx.unreadMessagesCount > 1 ? 's' : ''} non lu${ctx.unreadMessagesCount > 1 ? 's' : ''}**\n\n`;
     }
 
     response += `**Fonctionnalités :**\n`;
@@ -1802,9 +1802,9 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     response += `• Historique complet\n\n`;
 
     if (ctx.userType === 'owner') {
-      response += `💡 **Conseil propriétaire :** Répondez rapidement aux candidats pour augmenter votre taux de conversion !`;
+      response += `**Conseil propriétaire :** Répondez rapidement aux candidats pour augmenter votre taux de conversion !`;
     } else if (ctx.userType === 'searcher') {
-      response += `💡 **Conseil :** N'hésitez pas à contacter les propriétaires pour poser vos questions avant de postuler.`;
+      response += `**Conseil :** N'hésitez pas à contacter les propriétaires pour poser vos questions avant de postuler.`;
     }
 
     return {
@@ -1822,19 +1822,19 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   verification: (ctx) => {
     const name = getUserName(ctx);
-    let response = `✅ **Vérification de profil${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Vérification de profil${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show current verification status
     response += `**Votre statut actuel :**\n`;
-    response += `• Email : ${ctx.emailVerified ? '✅ Vérifié' : '❌ Non vérifié'}\n`;
-    response += `• Téléphone : ${ctx.phoneVerified ? '✅ Vérifié' : '❌ Non vérifié'}\n`;
-    response += `• Identité : ${ctx.idVerified ? '✅ Vérifié' : ctx.kycStatus === 'pending' ? '⏳ En attente' : '❌ Non vérifié'}\n\n`;
+    response += `• Email : ${ctx.emailVerified ? 'Vérifié' : 'Non vérifié'}\n`;
+    response += `• Téléphone : ${ctx.phoneVerified ? 'Vérifié' : 'Non vérifié'}\n`;
+    response += `• Identité : ${ctx.idVerified ? 'Vérifié' : ctx.kycStatus === 'pending' ? 'En attente' : 'Non vérifié'}\n\n`;
 
     // Count verified items
     const verifiedCount = [ctx.emailVerified, ctx.phoneVerified, ctx.idVerified].filter(Boolean).length;
 
     if (verifiedCount === 3) {
-      response += `🎉 **Profil entièrement vérifié !**\n`;
+      response += `**Profil entièrement vérifié !**\n`;
       response += `Vous bénéficiez de la confiance maximale sur la plateforme.\n`;
     } else {
       response += `**Avantages de la vérification :**\n`;
@@ -1843,7 +1843,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response += `• Plus de candidatures/réponses\n`;
 
       if (!ctx.phoneVerified) {
-        response += `\n💡 **Suggestion :** Vérifiez votre téléphone pour un badge de confiance rapide !`;
+        response += `\n**Suggestion :** Vérifiez votre téléphone pour un badge de confiance rapide !`;
       }
     }
 
@@ -1862,7 +1862,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   navigation: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🧭 **Navigation${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Navigation${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Pages principales `;
 
@@ -1901,33 +1901,33 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   help: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🤝 **Comment puis-je vous aider${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
+    let response = `**Comment puis-je vous aider${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
 
     // Contextual suggestions based on user type and status
     if (!ctx.onboardingCompleted) {
-      response += `📋 Il semble que votre inscription ne soit pas terminée.\n`;
+      response += `Il semble que votre inscription ne soit pas terminée.\n`;
       response += `Voulez-vous que je vous aide à la finaliser ?\n\n`;
     }
 
     response += `**Je peux vous renseigner sur :**\n`;
 
     if (ctx.userType === 'owner') {
-      response += `• 🏠 **Propriétés** - Ajouter, gérer vos annonces\n`;
-      response += `• 📋 **Candidatures** - Voir et gérer les demandes\n`;
-      response += `• 💰 **Tarifs** - Prix et abonnement propriétaire\n`;
+      response += `• **Propriétés** — Ajouter, gérer vos annonces\n`;
+      response += `• **Candidatures** — Voir et gérer les demandes\n`;
+      response += `• **Tarifs** — Prix et abonnement propriétaire\n`;
     } else if (ctx.userType === 'resident') {
-      response += `• 💰 **Finances** - Gérer les dépenses partagées\n`;
-      response += `• 👥 **Colocataires** - Voir les profils\n`;
-      response += `• 🏠 **Ma coloc** - Infos sur votre logement\n`;
+      response += `• **Finances** — Gérer les dépenses partagées\n`;
+      response += `• **Colocataires** — Voir les profils\n`;
+      response += `• **Ma coloc** — Infos sur votre logement\n`;
     } else {
-      response += `• 🔍 **Recherche** - Trouver une colocation\n`;
-      response += `• 🎯 **Matching** - Comprendre le système\n`;
-      response += `• 📝 **Candidatures** - Postuler efficacement\n`;
+      response += `• **Recherche** — Trouver une colocation\n`;
+      response += `• **Matching** — Comprendre le système\n`;
+      response += `• **Candidatures** — Postuler efficacement\n`;
     }
 
-    response += `• 🎁 **Parrainage** - Gagner des mois gratuits\n`;
-    response += `• ⚙️ **Compte** - Paramètres, abonnement\n`;
-    response += `• ✅ **Vérification** - Badge de confiance\n\n`;
+    response += `• **Parrainage** — Gagner des mois gratuits\n`;
+    response += `• **Compte** — Paramètres, abonnement\n`;
+    response += `• **Vérification** — Badge de confiance\n\n`;
 
     response += `Posez votre question ou choisissez un sujet !`;
 
@@ -1950,12 +1950,12 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   notifications: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🔔 **Notifications${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Notifications${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Types de notifications disponibles :**\n`;
-    response += `• 📧 **Email** - Nouveaux messages, candidatures, matchs\n`;
-    response += `• 📱 **Push** - Alertes instantanées (si app mobile)\n`;
-    response += `• 🔔 **In-app** - Notifications dans l'application\n\n`;
+    response += `• **Email** — Nouveaux messages, candidatures, matchs\n`;
+    response += `• **Push** — Alertes instantanées (si app mobile)\n`;
+    response += `• **In-app** — Notifications dans l'application\n\n`;
 
     if (ctx.userType === 'owner') {
       response += `**Alertes propriétaire :**\n`;
@@ -1974,7 +1974,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response += `• Rappels de tâches\n`;
     }
 
-    response += `\n**💡 Conseil :** Personnalisez vos alertes dans les paramètres pour ne recevoir que ce qui vous intéresse.`;
+    response += `\n**Conseil :** Personnalisez vos alertes dans les paramètres pour ne recevoir que ce qui vous intéresse.`;
 
     return {
       intent: 'notifications',
@@ -1991,25 +1991,25 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   security: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🔐 **Sécurité du compte${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Sécurité du compte${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Actions de sécurité :**\n\n`;
-    response += `🔑 **Mot de passe**\n`;
+    response += `**Mot de passe**\n`;
     response += `• Modifier : Paramètres → Sécurité → Changer le mot de passe\n`;
     response += `• Mot de passe oublié : Cliquez "Mot de passe oublié" sur la page de connexion\n\n`;
 
-    response += `📱 **Double authentification (2FA)**\n`;
+    response += `**Double authentification (2FA)**\n`;
     response += `• Recommandé pour une sécurité maximale\n`;
     response += `• Active : email de confirmation à chaque connexion\n\n`;
 
-    response += `🛡️ **Conseils de sécurité :**\n`;
+    response += `**Conseils de sécurité :**\n`;
     response += `• Utilisez un mot de passe unique pour IzzIco\n`;
     response += `• Ne partagez jamais vos identifiants\n`;
     response += `• Déconnectez-vous sur les appareils partagés\n`;
     response += `• Méfiez-vous des emails suspects (phishing)\n\n`;
 
     if (!ctx.phoneVerified) {
-      response += `⚠️ **Recommandation :** Vérifiez votre téléphone pour sécuriser la récupération de compte.`;
+      response += `**Recommandation :** Vérifiez votre téléphone pour sécuriser la récupération de compte.`;
     }
 
     return {
@@ -2027,31 +2027,31 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   payment: (ctx) => {
     const name = getUserName(ctx);
-    let response = `💳 **Paiement et facturation${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Paiement et facturation${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Current subscription status
     if (ctx.subscriptionStatus === 'trial') {
-      response += `✨ **Vous êtes en période d'essai gratuite**\n`;
+      response += `**Vous êtes en période d'essai gratuite**\n`;
       if (ctx.trialDaysRemaining !== undefined) {
         response += `Il vous reste ${ctx.trialDaysRemaining} jours avant la fin de l'essai.\n\n`;
       }
       response += `Aucun paiement requis pour l'instant !\n\n`;
     } else if (ctx.subscriptionStatus === 'active') {
-      response += `✅ **Abonnement actif**\n`;
+      response += `**Abonnement actif**\n`;
       response += `Votre prochain paiement sera prélevé automatiquement.\n\n`;
     }
 
     response += `**Modes de paiement acceptés :**\n`;
-    response += `• 💳 Carte bancaire (Visa, Mastercard)\n`;
-    response += `• 🏦 Prélèvement SEPA\n`;
-    response += `• 📱 Apple Pay / Google Pay\n\n`;
+    response += `• Carte bancaire (Visa, Mastercard)\n`;
+    response += `• Prélèvement SEPA\n`;
+    response += `• Apple Pay / Google Pay\n\n`;
 
     response += `**Gestion des paiements :**\n`;
     response += `• Modifier votre carte\n`;
     response += `• Télécharger vos factures\n`;
     response += `• Voir l'historique des paiements\n\n`;
 
-    response += `**❓ Problème de paiement ?**\n`;
+    response += `**Problème de paiement ?**\n`;
     response += `• Vérifiez que votre carte est valide\n`;
     response += `• Contactez votre banque si refus répété\n`;
     response += `• Notre support est là pour vous aider`;
@@ -2072,7 +2072,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   calendar: (ctx) => {
     const name = getUserName(ctx);
-    let response = `📅 **Calendrier et visites${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Calendrier et visites${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.userType === 'owner') {
       response += `**En tant que propriétaire :**\n`;
@@ -2116,14 +2116,14 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   documents: (ctx) => {
     const name = getUserName(ctx);
-    let response = `📄 **Documents${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Documents${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.userType === 'owner') {
       response += `**Documents propriétaire :**\n`;
-      response += `• 📋 Bail type (modèle Belgique)\n`;
-      response += `• 🏠 État des lieux (template)\n`;
-      response += `• 📜 Règlement intérieur\n`;
-      response += `• 💰 Historique des paiements\n\n`;
+      response += `• Bail type (modèle Belgique)\n`;
+      response += `• État des lieux (template)\n`;
+      response += `• Règlement intérieur\n`;
+      response += `• Historique des paiements\n\n`;
 
       response += `**Documents requis des candidats :**\n`;
       response += `• Pièce d'identité\n`;
@@ -2131,16 +2131,16 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response += `• Certificat de domicile (optionnel)\n`;
     } else {
       response += `**Vos documents :**\n`;
-      response += `• 🪪 Pièce d'identité (pour vérification)\n`;
-      response += `• 💼 Justificatifs de revenus\n`;
-      response += `• 📄 Attestations diverses\n\n`;
+      response += `• Pièce d'identité (pour vérification)\n`;
+      response += `• Justificatifs de revenus\n`;
+      response += `• Attestations diverses\n\n`;
 
       response += `**Documents à télécharger :**\n`;
       response += `• Vos factures d'abonnement\n`;
       response += `• Vos données personnelles (RGPD)\n`;
     }
 
-    response += `\n**💡 Tous vos documents sont stockés de manière sécurisée et chiffrée.**`;
+    response += `\n**Tous vos documents sont stockés de manière sécurisée et chiffrée.**`;
 
     return {
       intent: 'documents',
@@ -2157,18 +2157,18 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   support: (ctx) => {
     const name = getUserName(ctx);
-    let response = `💬 **Besoin d'aide${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
+    let response = `**Besoin d'aide${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
 
     response += `Je suis là pour vous aider ! Mais si vous avez besoin de parler à notre équipe humaine, voici comment nous contacter :\n\n`;
 
-    response += `**📧 Email :** support@izzico.be\n`;
+    response += `**Email :** support@izzico.be\n`;
     response += `Réponse sous 24h en jours ouvrés\n\n`;
 
-    response += `**💬 Chat en direct :**\n`;
+    response += `**Chat en direct :**\n`;
     response += `Disponible du lundi au vendredi, 9h-18h\n`;
     response += `Cliquez sur le bouton "Chat" en bas à droite\n\n`;
 
-    response += `**📞 Téléphone :**\n`;
+    response += `**Téléphone :**\n`;
     response += `+32 2 XXX XX XX (jours ouvrés, 10h-17h)\n\n`;
 
     response += `**Avant de nous contacter, avez-vous essayé :**\n`;
@@ -2177,9 +2177,9 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
     // Add context-specific tips
     if (!ctx.onboardingCompleted) {
-      response += `💡 Je vois que votre inscription n'est pas terminée. Puis-je vous aider avec ça ?`;
+      response += `Je vois que votre inscription n'est pas terminée. Puis-je vous aider avec ça ?`;
     } else if (ctx.unreadMessagesCount && ctx.unreadMessagesCount > 0) {
-      response += `💡 Vous avez des messages non lus, peut-être y a-t-il déjà une réponse dedans ?`;
+      response += `Vous avez des messages non lus, peut-être y a-t-il déjà une réponse dedans ?`;
     }
 
     return {
@@ -2198,49 +2198,49 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   tips: (ctx) => {
     const name = getUserName(ctx);
-    let response = `💡 **Conseils et astuces${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Conseils et astuces${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Personalized tips based on user type
     if (ctx.userType === 'owner') {
-      response += `**🏠 Conseils pour propriétaires :**\n\n`;
-      response += `📸 **Photos de qualité**\n`;
+      response += `**Conseils pour propriétaires :**\n\n`;
+      response += `**Photos de qualité**\n`;
       response += `• Photos lumineuses et nettes\n`;
       response += `• Montrez chaque pièce\n`;
       response += `• Incluez les espaces communs\n\n`;
 
-      response += `📝 **Annonce attractive**\n`;
+      response += `**Annonce attractive**\n`;
       response += `• Description détaillée et honnête\n`;
       response += `• Mentionnez les équipements\n`;
       response += `• Indiquez la proximité des transports\n\n`;
 
-      response += `⚡ **Réactivité**\n`;
+      response += `**Réactivité**\n`;
       response += `• Répondez vite aux candidatures\n`;
       response += `• Proposez des créneaux de visite flexibles\n`;
       response += `• Donnez des réponses claires (même négatives)\n`;
     } else if (ctx.userType === 'searcher') {
-      response += `**🔍 Conseils pour trouver la coloc idéale :**\n\n`;
-      response += `👤 **Profil complet**\n`;
+      response += `**Conseils pour trouver la coloc idéale :**\n\n`;
+      response += `**Profil complet**\n`;
       response += `• Photo souriante et claire\n`;
       response += `• Bio authentique et personnelle\n`;
       response += `• Décrivez vos habitudes honnêtement\n\n`;
 
-      response += `📨 **Candidature efficace**\n`;
+      response += `**Candidature efficace**\n`;
       response += `• Personnalisez chaque message\n`;
       response += `• Présentez-vous brièvement\n`;
       response += `• Posez des questions pertinentes\n\n`;
 
-      response += `🎯 **Utilisez le matching**\n`;
+      response += `**Utilisez le matching**\n`;
       response += `• Complétez le test de personnalité\n`;
       response += `• Faites confiance aux scores élevés\n`;
       response += `• Contactez vos matchs en priorité\n`;
     } else if (ctx.userType === 'resident') {
-      response += `**🏡 Conseils pour la vie en coloc :**\n\n`;
-      response += `💰 **Finances partagées**\n`;
+      response += `**Conseils pour la vie en coloc :**\n\n`;
+      response += `**Finances partagées**\n`;
       response += `• Scannez tous les tickets\n`;
       response += `• Régularisez vite les dettes\n`;
       response += `• Communiquez sur les grosses dépenses\n\n`;
 
-      response += `🤝 **Bonne entente**\n`;
+      response += `**Bonne entente**\n`;
       response += `• Utilisez la messagerie de groupe\n`;
       response += `• Définissez les règles ensemble\n`;
       response += `• Organisez des moments conviviaux\n`;
@@ -2254,7 +2254,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
     // Add profile-specific tip
     if (ctx.profileCompletionScore !== undefined && ctx.profileCompletionScore < 80) {
-      response += `\n\n⭐ **Conseil prioritaire :** Complétez votre profil (${ctx.profileCompletionScore}%) pour 5x plus de résultats !`;
+      response += `\n\n**Conseil prioritaire :** Complétez votre profil (${ctx.profileCompletionScore}%) pour 5x plus de résultats !`;
     }
 
     return {
@@ -2272,24 +2272,24 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   feedback: (ctx) => {
     const name = getUserName(ctx);
-    let response = `📝 **Votre avis compte${name !== 'vous' ? `, ${name}` : ''} !**\n\n`;
+    let response = `**Votre avis compte${name !== 'vous' ? `, ${name}` : ''} !**\n\n`;
 
     response += `Nous adorons recevoir vos retours pour améliorer IzzIco.\n\n`;
 
     response += `**Comment donner votre avis :**\n\n`;
-    response += `⭐ **Note l'application**\n`;
+    response += `**Notez l'application**\n`;
     response += `Sur l'App Store ou Google Play\n\n`;
 
-    response += `💬 **Suggestion d'amélioration**\n`;
+    response += `**Suggestion d'amélioration**\n`;
     response += `Envoyez-nous un email à feedback@izzico.be\n\n`;
 
-    response += `🐛 **Signaler un bug**\n`;
+    response += `**Signaler un bug**\n`;
     response += `Décrivez le problème dans les paramètres\n\n`;
 
-    response += `💡 **Idée de fonctionnalité**\n`;
+    response += `**Idée de fonctionnalité**\n`;
     response += `Proposez vos idées, on lit tout !\n\n`;
 
-    response += `Merci de contribuer à rendre IzzIco meilleur pour tous les utilisateurs ! 🙏`;
+    response += `Merci de contribuer à rendre IzzIco meilleur pour tous les utilisateurs !`;
 
     return {
       intent: 'feedback',
@@ -2306,22 +2306,22 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   settings: (ctx) => {
     const name = getUserName(ctx);
-    let response = `⚙️ **Paramètres${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Paramètres${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Accès aux paramètres :**\n`;
     response += `Menu → Paramètres (ou /settings)\n\n`;
 
     response += `**Sections disponibles :**\n`;
-    response += `• 👤 **Profil** - Infos personnelles, photo\n`;
-    response += `• 🔔 **Notifications** - Emails, push, alertes\n`;
-    response += `• 💳 **Abonnement** - Forfait, facturation\n`;
-    response += `• 🔐 **Sécurité** - Mot de passe, 2FA\n`;
-    response += `• 🌐 **Langue** - Français, Nederlands, English\n`;
-    response += `• 📄 **Confidentialité** - RGPD, données\n`;
-    response += `• 🎁 **Parrainage** - Code, statistiques\n`;
+    response += `• **Profil** — Infos personnelles, photo\n`;
+    response += `• **Notifications** — Emails, push, alertes\n`;
+    response += `• **Abonnement** — Forfait, facturation\n`;
+    response += `• **Sécurité** — Mot de passe, 2FA\n`;
+    response += `• **Langue** — Français, Nederlands, English\n`;
+    response += `• **Confidentialité** — RGPD, données\n`;
+    response += `• **Parrainage** — Code, statistiques\n`;
 
     if (ctx.userType === 'owner') {
-      response += `• 🏠 **Propriétés** - Gérer vos annonces\n`;
+      response += `• **Propriétés** — Gérer vos annonces\n`;
     }
 
     return {
@@ -2339,13 +2339,13 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   privacy: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🔒 **Confidentialité et données${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Confidentialité et données${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Vos droits RGPD :**\n`;
-    response += `• 📥 **Accès** - Téléchargez toutes vos données\n`;
-    response += `• ✏️ **Rectification** - Modifiez vos informations\n`;
-    response += `• 🗑️ **Effacement** - Supprimez votre compte\n`;
-    response += `• 📤 **Portabilité** - Export de vos données\n\n`;
+    response += `• **Accès** — Téléchargez toutes vos données\n`;
+    response += `• **Rectification** — Modifiez vos informations\n`;
+    response += `• **Effacement** — Supprimez votre compte\n`;
+    response += `• **Portabilité** — Export de vos données\n\n`;
 
     response += `**Qui voit quoi ?**\n`;
     response += `• Profil public : Photo, prénom, bio, personnalité\n`;
@@ -2353,10 +2353,10 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     response += `• Visible après match : Informations de contact\n\n`;
 
     response += `**Nos engagements :**\n`;
-    response += `• ✅ Vos données ne sont JAMAIS vendues\n`;
-    response += `• ✅ Hébergement sécurisé en Europe\n`;
-    response += `• ✅ Chiffrement de bout en bout\n`;
-    response += `• ✅ Suppression à la demande\n`;
+    response += `• Vos données ne sont JAMAIS vendues\n`;
+    response += `• Hébergement sécurisé en Europe\n`;
+    response += `• Chiffrement de bout en bout\n`;
+    response += `• Suppression à la demande\n`;
 
     return {
       intent: 'privacy',
@@ -2374,27 +2374,27 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   delete_account: (ctx) => {
     const name = getUserName(ctx);
-    let response = `⚠️ **Suppression de compte${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Suppression de compte${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
-    response += `Nous sommes tristes de vous voir partir ! 😢\n\n`;
+    response += `Nous sommes tristes de vous voir partir !\n\n`;
 
     response += `**Avant de supprimer, sachez que :**\n`;
-    response += `• ❌ Toutes vos données seront effacées\n`;
-    response += `• ❌ Vos conversations seront supprimées\n`;
-    response += `• ❌ Vos crédits de parrainage seront perdus\n`;
+    response += `• Toutes vos données seront effacées\n`;
+    response += `• Vos conversations seront supprimées\n`;
+    response += `• Vos crédits de parrainage seront perdus\n`;
 
     if (ctx.referralCreditsMonths && ctx.referralCreditsMonths > 0) {
-      response += `\n⚠️ **Attention !** Vous avez ${ctx.referralCreditsMonths} mois de crédit parrainage qui seront perdus.\n`;
+      response += `\n**Attention !** Vous avez ${ctx.referralCreditsMonths} mois de crédit parrainage qui seront perdus.\n`;
     }
 
     if (ctx.subscriptionStatus === 'trial' && ctx.trialDaysRemaining && ctx.trialDaysRemaining > 30) {
-      response += `\n⚠️ Vous êtes encore en essai gratuit pendant ${ctx.trialDaysRemaining} jours. Profitez-en avant de partir !\n`;
+      response += `\nVous êtes encore en essai gratuit pendant ${ctx.trialDaysRemaining} jours. Profitez-en avant de partir !\n`;
     }
 
     response += `\n**Alternatives :**\n`;
-    response += `• 😴 **Pause** - Désactivez temporairement votre profil\n`;
-    response += `• 🔕 **Notifications** - Désactivez les alertes\n`;
-    response += `• 💬 **Parlez-nous** - On peut peut-être vous aider\n\n`;
+    response += `• **Pause** — Désactivez temporairement votre profil\n`;
+    response += `• **Notifications** — Désactivez les alertes\n`;
+    response += `• **Parlez-nous** — On peut peut-être vous aider\n\n`;
 
     response += `**Pour supprimer définitivement :**\n`;
     response += `Paramètres → Compte → Supprimer mon compte`;
@@ -2415,12 +2415,12 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   language: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🌐 **Langues${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Langues${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Langues disponibles :**\n`;
-    response += `• 🇫🇷 Français\n`;
-    response += `• 🇧🇪 Nederlands\n`;
-    response += `• 🇬🇧 English\n\n`;
+    response += `• Français (FR)\n`;
+    response += `• Nederlands (NL)\n`;
+    response += `• English (EN)\n\n`;
 
     response += `**Changer de langue :**\n`;
     response += `Paramètres → Langue → Sélectionner\n\n`;
@@ -2442,20 +2442,20 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   mobile_app: (ctx) => {
     const name = getUserName(ctx);
-    let response = `📱 **Application mobile${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Application mobile${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Téléchargez IzzIco sur votre téléphone !**\n\n`;
 
-    response += `📲 **Disponible sur :**\n`;
+    response += `**Disponible sur :**\n`;
     response += `• App Store (iPhone)\n`;
     response += `• Google Play (Android)\n\n`;
 
     response += `**Avantages de l'app :**\n`;
-    response += `• 🔔 Notifications push instantanées\n`;
-    response += `• 📷 Scanner de tickets plus rapide\n`;
-    response += `• 💬 Messagerie optimisée\n`;
-    response += `• 📍 Recherche géolocalisée\n`;
-    response += `• 🔐 Connexion biométrique (Face ID, Touch ID)\n\n`;
+    response += `• Notifications push instantanées\n`;
+    response += `• Scanner de tickets plus rapide\n`;
+    response += `• Messagerie optimisée\n`;
+    response += `• Recherche géolocalisée\n`;
+    response += `• Connexion biométrique (Face ID, Touch ID)\n\n`;
 
     response += `Votre compte est synchronisé automatiquement entre web et mobile.`;
 
@@ -2474,26 +2474,26 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   bug_report: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🐛 **Problème technique${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
+    let response = `**Problème technique${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
 
     response += `Je suis désolé que vous rencontriez un problème ! Voici comment le résoudre :\n\n`;
 
-    response += `**🔄 Essayez d'abord :**\n`;
+    response += `**Essayez d'abord :**\n`;
     response += `1. Rafraîchir la page (F5 ou Cmd+R)\n`;
     response += `2. Vider le cache du navigateur\n`;
     response += `3. Essayer un autre navigateur\n`;
     response += `4. Vérifier votre connexion internet\n\n`;
 
-    response += `**📝 Si le problème persiste :**\n`;
+    response += `**Si le problème persiste :**\n`;
     response += `Signalez-le en incluant :\n`;
     response += `• La page concernée\n`;
     response += `• Les étapes pour reproduire le bug\n`;
     response += `• Une capture d'écran si possible\n`;
     response += `• Votre navigateur et appareil\n\n`;
 
-    response += `**📧 Envoyer le rapport à :** bugs@izzico.be\n\n`;
+    response += `**Envoyer le rapport à :** bugs@izzico.be\n\n`;
 
-    response += `Notre équipe technique traite les bugs en priorité. Merci de nous aider à améliorer IzzIco ! 🙏`;
+    response += `Notre équipe technique traite les bugs en priorité. Merci de nous aider à améliorer IzzIco !`;
 
     return {
       intent: 'bug_report',
@@ -2510,7 +2510,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   feature_request: (ctx) => {
     const name = getUserName(ctx);
-    let response = `💡 **Vous avez une idée${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
+    let response = `**Vous avez une idée${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
 
     response += `Nous adorons recevoir des suggestions d'amélioration !\n\n`;
 
@@ -2520,12 +2520,12 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     response += `3. Envoyez à : ideas@izzico.be\n\n`;
 
     response += `**Fonctionnalités récentes ajoutées grâce à vous :**\n`;
-    response += `• 📷 Scanner de tickets amélioré\n`;
-    response += `• 🎯 Matching de personnalité\n`;
-    response += `• 💬 Messagerie de groupe\n`;
-    response += `• 🔔 Alertes personnalisées\n\n`;
+    response += `• Scanner de tickets amélioré\n`;
+    response += `• Matching de personnalité\n`;
+    response += `• Messagerie de groupe\n`;
+    response += `• Alertes personnalisées\n\n`;
 
-    response += `Votre avis compte vraiment ! Les meilleures idées sont souvent implémentées. 🚀`;
+    response += `Votre avis compte vraiment ! Les meilleures idées sont souvent implémentées.`;
 
     return {
       intent: 'feature_request',
@@ -2542,35 +2542,35 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   how_it_works: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🏠 **Comment fonctionne IzzIco${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
+    let response = `**Comment fonctionne IzzIco${name !== 'vous' ? `, ${name}` : ''} ?**\n\n`;
 
     response += `**IzzIco, c'est quoi ?**\n`;
     response += `Une plateforme qui connecte propriétaires et chercheurs de colocation en Belgique, avec un système de matching basé sur la personnalité.\n\n`;
 
     response += `**Le concept :**\n\n`;
 
-    response += `🏠 **Pour les propriétaires :**\n`;
+    response += `**Pour les propriétaires :**\n`;
     response += `1. Publiez votre annonce (photos, description)\n`;
     response += `2. Recevez des candidatures compatibles\n`;
     response += `3. Échangez via la messagerie\n`;
     response += `4. Choisissez le meilleur profil\n\n`;
 
-    response += `🔍 **Pour les chercheurs :**\n`;
+    response += `**Pour les chercheurs :**\n`;
     response += `1. Créez votre profil et test de personnalité\n`;
     response += `2. Recherchez par critères et score de matching\n`;
     response += `3. Candidatez aux annonces\n`;
     response += `4. Visitez et emménagez !\n\n`;
 
-    response += `🤝 **Pour les résidents :**\n`;
+    response += `**Pour les résidents :**\n`;
     response += `• Gérez les finances partagées\n`;
     response += `• Communiquez avec vos colocataires\n`;
     response += `• Organisez la vie commune\n\n`;
 
     response += `**Ce qui nous différencie :**\n`;
-    response += `• 🎯 Matching de personnalité (pas juste le budget)\n`;
-    response += `• 📷 IA pour scanner les tickets de caisse\n`;
-    response += `• ✅ Profils vérifiés\n`;
-    response += `• 💬 Messagerie intégrée`;
+    response += `• Matching de personnalité (pas juste le budget)\n`;
+    response += `• IA pour scanner les tickets de caisse\n`;
+    response += `• Profils vérifiés\n`;
+    response += `• Messagerie intégrée`;
 
     return {
       intent: 'how_it_works',
@@ -2587,26 +2587,26 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   trust_safety: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🛡️ **Confiance et sécurité${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Confiance et sécurité${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Comment on vous protège :**\n\n`;
 
-    response += `✅ **Vérification des profils**\n`;
+    response += `**Vérification des profils**\n`;
     response += `• Email vérifié obligatoire\n`;
     response += `• Vérification téléphone disponible\n`;
     response += `• Vérification d'identité (KYC) pour les propriétaires\n\n`;
 
-    response += `🔒 **Sécurité des données**\n`;
+    response += `**Sécurité des données**\n`;
     response += `• Chiffrement SSL/TLS\n`;
     response += `• Hébergement sécurisé en Europe\n`;
     response += `• Conformité RGPD\n\n`;
 
-    response += `⚠️ **Signalement**\n`;
+    response += `**Signalement**\n`;
     response += `• Signalez les comportements suspects\n`;
     response += `• Équipe de modération réactive\n`;
     response += `• Bannissement des comptes frauduleux\n\n`;
 
-    response += `**🚨 Conseils de prudence :**\n`;
+    response += `**Conseils de prudence :**\n`;
     response += `• Ne communiquez JAMAIS hors plateforme avant la visite\n`;
     response += `• Ne payez JAMAIS avant d'avoir visité\n`;
     response += `• Méfiez-vous des offres trop belles\n`;
@@ -2627,17 +2627,17 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   success_stories: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🌟 **Témoignages${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Témoignages${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Ils ont trouvé leur coloc idéale sur IzzIco :**\n\n`;
 
-    response += `💬 *"J'ai trouvé ma coloc en 2 semaines grâce au matching de personnalité. On s'entend super bien !"*\n`;
+    response += `*"J'ai trouvé ma coloc en 2 semaines grâce au matching de personnalité. On s'entend super bien !"*\n`;
     response += `— **Marie**, 26 ans, Bruxelles\n\n`;
 
-    response += `💬 *"En tant que propriétaire, je reçois des candidatures de qualité. Les profils sont vérifiés et le matching aide vraiment."*\n`;
+    response += `*"En tant que propriétaire, je reçois des candidatures de qualité. Les profils sont vérifiés et le matching aide vraiment."*\n`;
     response += `— **Thomas**, propriétaire à Liège\n\n`;
 
-    response += `💬 *"Le scanner de tickets est génial ! Plus de discussions sur qui doit quoi."*\n`;
+    response += `*"Le scanner de tickets est génial ! Plus de discussions sur qui doit quoi."*\n`;
     response += `— **Sofia**, résidente à Namur\n\n`;
 
     response += `**En chiffres :**\n`;
@@ -2657,14 +2657,14 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   community: (ctx) => {
     const name = getUserName(ctx);
-    let response = `👥 **Communauté IzzIco${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Communauté IzzIco${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `Rejoignez la communauté des colocataires belges !\n\n`;
 
     response += `**Nos réseaux :**\n`;
-    response += `• 📸 Instagram : @izzico_be\n`;
-    response += `• 👥 Facebook : IzzIco Belgique\n`;
-    response += `• 💼 LinkedIn : IzzIco\n\n`;
+    response += `• Instagram : @izzico_be\n`;
+    response += `• Facebook : IzzIco Belgique\n`;
+    response += `• LinkedIn : IzzIco\n\n`;
 
     response += `**Ce qu'on partage :**\n`;
     response += `• Conseils colocation\n`;
@@ -2689,17 +2689,17 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   events: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🎉 **Événements${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Événements${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Événements IzzIco :**\n\n`;
 
-    response += `🥂 **Afterworks coloc**\n`;
+    response += `**Afterworks coloc**\n`;
     response += `Rencontrez d'autres colocataires dans une ambiance détendue.\n\n`;
 
-    response += `🏠 **Journées portes ouvertes**\n`;
+    response += `**Journées portes ouvertes**\n`;
     response += `Visitez plusieurs colocations en une journée.\n\n`;
 
-    response += `📚 **Ateliers pratiques**\n`;
+    response += `**Ateliers pratiques**\n`;
     response += `• Comment bien chercher une coloc\n`;
     response += `• Gérer les finances partagées\n`;
     response += `• Droits et devoirs du locataire\n\n`;
@@ -2708,7 +2708,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     response += `Suivez-nous sur Instagram @izzico_be pour les annonces !\n`;
 
     if (ctx.userType === 'resident' && ctx.currentPropertyName) {
-      response += `\n💡 **Astuce :** Organisez un événement dans votre coloc et invitez la communauté !`;
+      response += `\n**Astuce :** Organisez un événement dans votre coloc et invitez la communauté !`;
     }
 
     return {
@@ -2723,32 +2723,32 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   moving: (ctx) => {
     const name = getUserName(ctx);
-    let response = `📦 **Déménagement${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Déménagement${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.userType === 'resident') {
       response += `**Vous quittez votre coloc ?**\n\n`;
-      response += `📝 **Étapes importantes :**\n`;
+      response += `**Étapes importantes :**\n`;
       response += `1. Prévenez vos colocataires (respect du préavis)\n`;
       response += `2. Informez le propriétaire\n`;
       response += `3. Régularisez les finances partagées\n`;
       response += `4. Faites l'état des lieux de sortie\n`;
       response += `5. Mettez à jour votre profil IzzIco\n\n`;
 
-      response += `**💰 N'oubliez pas :**\n`;
+      response += `**N'oubliez pas :**\n`;
       response += `• Récupérer votre caution\n`;
       response += `• Solder tous les comptes\n`;
       response += `• Transférer les abonnements (internet, énergie)`;
     } else if (ctx.userType === 'searcher') {
       response += `**Vous emménagez bientôt ?**\n\n`;
-      response += `📋 **Checklist emménagement :**\n`;
-      response += `• ✅ Signer le bail\n`;
-      response += `• ✅ Payer la caution et premier loyer\n`;
-      response += `• ✅ État des lieux d'entrée\n`;
-      response += `• ✅ Assurance locataire\n`;
-      response += `• ✅ Changement d'adresse\n`;
-      response += `• ✅ Abonnements (internet, énergie)\n\n`;
+      response += `**Checklist emménagement :**\n`;
+      response += `• [Fait] Signer le bail\n`;
+      response += `• [Fait] Payer la caution et premier loyer\n`;
+      response += `• [Fait] État des lieux d'entrée\n`;
+      response += `• [Fait] Assurance locataire\n`;
+      response += `• [Fait] Changement d'adresse\n`;
+      response += `• [Fait] Abonnements (internet, énergie)\n\n`;
 
-      response += `**📱 Sur IzzIco :**\n`;
+      response += `**Sur IzzIco :**\n`;
       response += `• Passez votre profil en "Résident"\n`;
       response += `• Rejoignez le groupe de votre coloc\n`;
       response += `• Commencez à scanner vos tickets !`;
@@ -2776,31 +2776,31 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   lease: (ctx) => {
     const name = getUserName(ctx);
-    let response = `📜 **Bail et contrat${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Bail et contrat${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Types de baux en Belgique :**\n\n`;
 
-    response += `📝 **Bail de résidence principale**\n`;
+    response += `**Bail de résidence principale**\n`;
     response += `• Durée : 9 ans (standard) ou 3 ans (courte durée)\n`;
     response += `• Enregistrement obligatoire\n`;
     response += `• Préavis : 3 mois\n\n`;
 
-    response += `📝 **Bail étudiant**\n`;
+    response += `**Bail étudiant**\n`;
     response += `• Durée : 10-12 mois renouvelable\n`;
     response += `• Préavis : 2 mois avant la fin\n\n`;
 
-    response += `📝 **Colocation**\n`;
+    response += `**Colocation**\n`;
     response += `• Bail commun OU baux individuels\n`;
     response += `• Clause de solidarité (attention !)\n`;
     response += `• Sous-location à vérifier\n\n`;
 
-    response += `**⚠️ Points de vigilance :**\n`;
+    response += `**Points de vigilance :**\n`;
     response += `• Lisez TOUT le contrat avant de signer\n`;
     response += `• Vérifiez les charges incluses/exclues\n`;
     response += `• Photographiez l'état des lieux\n`;
     response += `• Conservez une copie signée\n\n`;
 
-    response += `**💡 IzzIco ne fournit pas de conseils juridiques. En cas de doute, consultez un professionnel.**`;
+    response += `**IzzIco ne fournit pas de conseils juridiques. En cas de doute, consultez un professionnel.**`;
 
     return {
       intent: 'lease',
@@ -2814,27 +2814,27 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   insurance: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🛡️ **Assurance${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Assurance${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     response += `**Assurance locataire (obligatoire) :**\n\n`;
 
-    response += `✅ **Ce qu'elle couvre :**\n`;
+    response += `**Ce qu'elle couvre :**\n`;
     response += `• Dégâts des eaux\n`;
     response += `• Incendie\n`;
     response += `• Vol (selon contrat)\n`;
     response += `• Responsabilité civile\n\n`;
 
-    response += `💰 **Coût moyen :**\n`;
+    response += `**Coût moyen :**\n`;
     response += `• Studio : 60-100€/an\n`;
     response += `• Appartement : 100-150€/an\n`;
     response += `• Colocation : 80-120€/personne/an\n\n`;
 
-    response += `**📋 Spécificités colocation :**\n`;
+    response += `**Spécificités colocation :**\n`;
     response += `• Chaque colocataire doit être assuré\n`;
     response += `• Vérifiez la clause "colocation"\n`;
     response += `• Optez pour une RC étendue\n\n`;
 
-    response += `**💡 Conseils :**\n`;
+    response += `**Conseils :**\n`;
     response += `• Comparez plusieurs assureurs\n`;
     response += `• Vérifiez les franchises\n`;
     response += `• Conservez les factures de vos biens\n`;

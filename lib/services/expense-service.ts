@@ -124,9 +124,9 @@ class ExpenseService {
           receiptImageUrl = uploadResult.url;
 
           // Scan receipt with OCR
-          console.log('[Expense] 🔍 Scanning receipt with OCR...');
+          console.log('[Expense] SCAN: Scanning receipt with OCR...');
           const ocrResult = await ocrService.scanReceipt(form.receipt);
-          console.log('[Expense] 🔍 OCR result:', ocrResult.success);
+          console.log('[Expense] SCAN: OCR result:', ocrResult.success);
 
           if (ocrResult.success && ocrResult.data) {
             ocrData = ocrResult.data;
@@ -170,24 +170,24 @@ class ExpenseService {
         .single();
 
       if (expenseError) {
-        console.error('[Expense] ❌ Supabase insert error:', expenseError);
+        console.error('[Expense] ERROR: Supabase insert error:', expenseError);
         throw expenseError;
       }
 
-      console.log('[Expense] ✅ Expense created successfully:', {
+      console.log('[Expense] OK: Expense created successfully:', {
         id: expense.id,
         title: expense.title,
         amount: expense.amount,
       });
 
       // Create splits
-      console.log('[Expense] 👥 Creating splits...');
+      console.log('[Expense] SPLITS: Creating splits...');
       await this.createSplits(expense.id, splitConfig);
-      console.log('[Expense] ✅ Splits created successfully');
+      console.log('[Expense] OK: Splits created successfully');
 
       return { success: true, expense };
     } catch (error: any) {
-      console.error('[Expense] ❌ Failed to create expense:', error);
+      console.error('[Expense] ERROR: Failed to create expense:', error);
       return {
         success: false,
         error: error.message || translations.errors.createExpense[currentLang],
@@ -221,7 +221,7 @@ class ExpenseService {
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
-      console.error('[Expense] ❌ Failed to upload receipt:', error);
+      console.error('[Expense] ERROR: Failed to upload receipt:', error);
       return {
         success: false,
         error: error.message || translations.errors.uploadReceipt[currentLang],
@@ -248,11 +248,11 @@ class ExpenseService {
     const { error } = await this.supabase.from('expense_splits').insert(splits);
 
     if (error) {
-      console.error('[Expense] ❌ Failed to create splits:', error);
+      console.error('[Expense] ERROR: Failed to create splits:', error);
       throw error;
     }
 
-    console.log(`[Expense] ✅ Created ${splits.length} splits`);
+    console.log(`[Expense] OK: Created ${splits.length} splits`);
   }
 
   /**
@@ -313,7 +313,7 @@ class ExpenseService {
 
       return enriched;
     } catch (error) {
-      console.error('[Expense] ❌ Failed to fetch expenses:', error);
+      console.error('[Expense] ERROR: Failed to fetch expenses:', error);
       return [];
     }
   }
@@ -384,7 +384,7 @@ class ExpenseService {
 
       return balances.filter((b) => Math.abs(b.amount) > 0.01);
     } catch (error) {
-      console.error('[Expense] ❌ Failed to calculate balances:', error);
+      console.error('[Expense] ERROR: Failed to calculate balances:', error);
       return [];
     }
   }
@@ -485,7 +485,7 @@ class ExpenseService {
         blob,
       };
     } catch (error) {
-      console.error('[Expense] ❌ Failed to export PDF:', error);
+      console.error('[Expense] ERROR: Failed to export PDF:', error);
       throw error;
     }
   }

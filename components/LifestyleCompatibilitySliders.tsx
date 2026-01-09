@@ -158,7 +158,7 @@ export default function LifestyleCompatibilitySliders({
             {/* Shared Meals */}
             {metrics.shared_meals_frequency && (
               <div className="flex items-center gap-2 p-3 rounded-lg bg-resident-50 border border-resident-200">
-                <span className="text-xl">🍽️</span>
+                <span className="text-xl">•</span>
                 <div>
                   <div className="text-sm font-medium text-gray-900">Repas communs</div>
                   <div className="text-xs text-resident-700 capitalize">

@@ -126,7 +126,7 @@ function Testimonials() {
       role: testimonials.testimonial1.role,
       text: testimonials.testimonial1.text,
       rating: 5,
-      avatar: '👨‍💼',
+      avatar: 'M',
       colors: ROLE_COLORS.owner,
     },
     {
@@ -134,7 +134,7 @@ function Testimonials() {
       role: testimonials.testimonial2.role,
       text: testimonials.testimonial2.text,
       rating: 5,
-      avatar: '👩‍🎓',
+      avatar: 'S',
       colors: ROLE_COLORS.searcher,
     },
     {
@@ -142,7 +142,7 @@ function Testimonials() {
       role: testimonials.testimonial3.role,
       text: testimonials.testimonial3.text,
       rating: 5,
-      avatar: '👨‍💻',
+      avatar: 'T',
       colors: ROLE_COLORS.owner,
     },
   ], [testimonials]);

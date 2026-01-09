@@ -107,15 +107,15 @@ export const CATEGORY_LABELS: Record<ExpenseCategory, string> = {
   other: 'Autres',
 };
 
-// Category icons
+// Category icons (using text labels instead of emojis per brand guidelines)
 export const CATEGORY_ICONS: Record<ExpenseCategory, string> = {
-  groceries: '🛒',
-  cleaning: '🧹',
-  utilities: '💡',
-  internet: '📡',
-  rent: '🏠',
-  entertainment: '🎉',
-  transport: '🚗',
-  health: '🏥',
-  other: '📦',
+  groceries: '•',
+  cleaning: '•',
+  utilities: '•',
+  internet: '•',
+  rent: '•',
+  entertainment: '•',
+  transport: '•',
+  health: '•',
+  other: '•',
 };

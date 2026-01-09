@@ -15,7 +15,7 @@ L'algorithme de matching de propriétés calcule un score de compatibilité (0-1
 
 ### 1. Property Filters Match (0-40 points)
 
-#### Budget (0-15 points) ⭐ CRITÈRE LE PLUS IMPORTANT
+#### Budget (0-15 points) - CRITÈRE LE PLUS IMPORTANT
 - **Parfait (15 pts)**: Loyer dans le budget
 - **Bon (10-15 pts)**: En dessous du budget
 - **Acceptable (5-10 pts)**: Jusqu'à 10% au-dessus du budget
@@ -88,11 +88,11 @@ Utilise l'algorithme de matching user-to-user existant pour calculer la compatib
 
 | Score | Label | Description |
 |-------|-------|-------------|
-| 85-100% | Perfect Match 💚 | Propriété idéale pour vous |
-| 70-84% | Excellent Match 💙 | Fortement recommandé |
-| 55-69% | Good Match 💛 | Vaut la peine d'être considéré |
-| 40-54% | Fair Match 🧡 | Compatibilité modérée |
-| 0-39% | Low Match ❤️ | Peut ne pas convenir |
+| 85-100% | Perfect Match | Propriété idéale pour vous |
+| 70-84% | Excellent Match | Fortement recommandé |
+| 55-69% | Good Match | Vaut la peine d'être considéré |
+| 40-54% | Fair Match | Compatibilité modérée |
+| 0-39% | Low Match | Peut ne pas convenir |
 
 ## Utilisation
 
@@ -139,14 +139,14 @@ matchResult.residentMatches?.forEach(match => {
 ### Scénario 1: Match Parfait (95%)
 ```typescript
 Property:
-  - Loyer: 700€ (budget: 500-800€) ✅
-  - Paris 11 (préféré) ✅
-  - Coliving (préféré) ✅
-  - 5 chambres (min 3 requis) ✅
-  - Meublé ✅
-  - WiFi + Machine à laver + Gym ✅
-  - Non-fumeur ✅
-  - Résidents: 85% compatibilité moyenne ✅
+  - Loyer: 700€ (budget: 500-800€) [OK]
+  - Paris 11 (préféré) [OK]
+  - Coliving (préféré) [OK]
+  - 5 chambres (min 3 requis) [OK]
+  - Meublé [OK]
+  - WiFi + Machine à laver + Gym [OK]
+  - Non-fumeur [OK]
+  - Résidents: 85% compatibilité moyenne [OK]
 
 Breakdown:
   - Property Filters: 38/40
@@ -158,14 +158,14 @@ Breakdown:
 ### Scénario 2: Good Match avec considérations (65%)
 ```typescript
 Property:
-  - Loyer: 850€ (budget: 500-800€, +6% au-dessus) ⚠️
-  - Paris 12 (pas dans les préférés) ⚠️
-  - Appartement (coliving préféré) ⚠️
-  - 4 chambres (min 3 requis) ✅
-  - Meublé ✅
-  - WiFi + Machine à laver (pas de gym) ✅
-  - Non-fumeur ✅
-  - Résidents: 70% compatibilité moyenne ⚠️
+  - Loyer: 850€ (budget: 500-800€, +6% au-dessus) [WARN]
+  - Paris 12 (pas dans les préférés) [WARN]
+  - Appartement (coliving préféré) [WARN]
+  - 4 chambres (min 3 requis) [OK]
+  - Meublé [OK]
+  - WiFi + Machine à laver (pas de gym) [OK]
+  - Non-fumeur [OK]
+  - Résidents: 70% compatibilité moyenne [WARN]
 
 Breakdown:
   - Property Filters: 22/40
@@ -174,17 +174,17 @@ Breakdown:
   - Location & Practical: 8/10
 
 Considerations:
-  - ⚠️ Loyer 6% au-dessus du budget
-  - ⚠️ Quartier non préféré
-  - ⚠️ Type de propriété différent
+  - [WARN] Loyer 6% au-dessus du budget
+  - [WARN] Quartier non préféré
+  - [WARN] Type de propriété différent
 ```
 
 ### Scénario 3: Dealbreakers (25%)
 ```typescript
 Property:
-  - Loyer: 1000€ (budget: 500-800€, +25% au-dessus) ❌
-  - Animaux interdits (searcher a un chien) ❌
-  - Pas de WiFi (équipement requis) ❌
+  - Loyer: 1000€ (budget: 500-800€, +25% au-dessus) [X]
+  - Animaux interdits (searcher a un chien) [X]
+  - Pas de WiFi (équipement requis) [X]
 
 Breakdown:
   - Property Filters: 5/40
@@ -193,9 +193,9 @@ Breakdown:
   - Location & Practical: 5/10
 
 Dealbreakers:
-  - 💰 Loyer très au-dessus du budget
-  - 🐾 Animaux non autorisés
-  - ❌ Équipements requis manquants (WiFi)
+  - Loyer très au-dessus du budget
+  - Animaux non autorisés
+  - Équipements requis manquants (WiFi)
 ```
 
 ## Intégration avec l'algorithme User-to-User

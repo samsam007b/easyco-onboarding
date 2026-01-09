@@ -70,16 +70,16 @@ class AIService {
 
     if (geminiKey) {
       this.gemini = new GeminiProvider(geminiKey);
-      console.log('[AI] ✅ Gemini provider initialized');
+      console.log('[AI] OK: Gemini provider initialized');
     }
 
     if (groqKey) {
       this.groq = new GroqProvider(groqKey);
-      console.log('[AI] ✅ Groq provider initialized');
+      console.log('[AI] OK: Groq provider initialized');
     }
 
     if (!geminiKey) {
-      console.warn('[AI] ⚠️ No vision AI providers configured, using Tesseract fallback');
+      console.warn('[AI] WARN: No vision AI providers configured, using Tesseract fallback');
     }
   }
 
@@ -103,7 +103,7 @@ class AIService {
 
     // Check if we're approaching the limit
     if (shouldSwitchProvider(usage.count, limit)) {
-      console.log(`[AI] ⚠️ ${provider} at ${usage.count}/${limit} (${Math.round(usage.count/limit*100)}%) - SWITCHING to stay free`);
+      console.log(`[AI] WARN: ${provider} at ${usage.count}/${limit} (${Math.round(usage.count/limit*100)}%) - SWITCHING to stay free`);
       return false;
     }
 
@@ -131,7 +131,7 @@ class AIService {
 
     // Warn if approaching limit
     if (percentage >= 70) {
-      console.warn(`[AI] ⚠️ ${provider} approaching limit: ${percentage}%`);
+      console.warn(`[AI] WARN: ${provider} approaching limit: ${percentage}%`);
     }
   }
 
@@ -182,7 +182,7 @@ class AIService {
       if (result.success && result.provider) {
         // Track usage for the provider that was used
         this.trackUsage(result.provider as AIProvider, true, latencyMs);
-        console.log(`[AI] ✅ Server-side OCR succeeded with ${result.provider}`);
+        console.log(`[AI] OK: Server-side OCR succeeded with ${result.provider}`);
         return { ...result, latencyMs };
       }
 

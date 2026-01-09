@@ -218,7 +218,7 @@ export function analyzeComplexity(
   if (actionMatch) {
     score += 0.3; // Force to AI tier
     reasons.push('action_request');
-    console.log('[Complexity] ✅ ACTION REQUEST DETECTED - score now:', score, '- bypassing FAQ');
+    console.log('[Complexity] OK: ACTION REQUEST DETECTED - score now:', score, '- bypassing FAQ');
   }
 
   // Also detect imperative navigation commands
@@ -228,7 +228,7 @@ export function analyzeComplexity(
     if (/\b(am[eè]ne|emmène|va|montre|ouvre)\b/i.test(message)) {
       score += 0.3;
       reasons.push('action_request');
-      console.log('[Complexity] ✅ NAVIGATION REQUEST DETECTED - score now:', score);
+      console.log('[Complexity] OK: NAVIGATION REQUEST DETECTED - score now:', score);
     }
   }
 
@@ -416,12 +416,12 @@ Tours: onboarding, dashboard, search, finances, messaging, properties, settings,
 
 [ACTION:navigate:{"path":"/hub/finances","description":"Page des finances"}]
 
-Une fois sur la page, vous verrez le bouton **+ Ajouter** en haut à droite. C'est là que vous pourrez saisir vos dépenses à l'avenir ! 💡"
+Une fois sur la page, vous verrez le bouton **+ Ajouter** en haut à droite. C'est là que vous pourrez saisir vos dépenses à l'avenir !"
 
 ## Règles de réponse
 1. Réponds TOUJOURS en français
 2. Sois concis mais utile
-3. Utilise des emojis avec modération
+3. N'utilise pas d'emojis
 4. Si tu ne sais pas, dis-le honnêtement
 5. **Utilise les actions quand l'utilisateur veut faire quelque chose**
 6. Après chaque action, montre comment faire soi-même`;
@@ -842,7 +842,7 @@ export async function processAssistantMessage(
   // =====================================================
   if ((targetProvider === 'groq' || !options.forceProvider) && isGroqAvailable()) {
     try {
-      console.log(`[Assistant] ✅ FAQ BYPASSED - Using Groq AI (${usageTracker.groq.count}/${ASSISTANT_CONFIG.primary.dailyLimit})`);
+      console.log(`[Assistant] OK: FAQ BYPASSED - Using Groq AI (${usageTracker.groq.count}/${ASSISTANT_CONFIG.primary.dailyLimit})`);
 
       const messages: ChatMessage[] = [
         ...conversationHistory,
@@ -854,9 +854,9 @@ export async function processAssistantMessage(
 
       // Check if response contains actions
       if (groqResult.content.includes('[ACTION:')) {
-        console.log(`[Assistant] ✅ ACTION DETECTED in Groq response!`);
+        console.log(`[Assistant] OK: ACTION DETECTED in Groq response!`);
       } else {
-        console.log(`[Assistant] ⚠️ No [ACTION:] found in Groq response`);
+        console.log(`[Assistant] WARN: No [ACTION:] found in Groq response`);
       }
 
       // Track usage
@@ -908,7 +908,7 @@ export async function processAssistantMessage(
   // =====================================================
   if ((targetProvider === 'gemini' || !options.forceProvider) && isGeminiConfigured()) {
     try {
-      console.log(`[Assistant] ✅ Using Gemini Flash (${usageTracker.gemini.count} calls today)`);
+      console.log(`[Assistant] OK: Using Gemini Flash (${usageTracker.gemini.count} calls today)`);
 
       const messages: ChatMessage[] = [
         ...conversationHistory,
@@ -920,9 +920,9 @@ export async function processAssistantMessage(
 
       // Check if response contains actions
       if (geminiResult.content.includes('[ACTION:')) {
-        console.log(`[Assistant] ✅ ACTION DETECTED in Gemini response!`);
+        console.log(`[Assistant] OK: ACTION DETECTED in Gemini response!`);
       } else {
-        console.log(`[Assistant] ⚠️ No [ACTION:] found in Gemini response`);
+        console.log(`[Assistant] WARN: No [ACTION:] found in Gemini response`);
       }
 
       // Track usage

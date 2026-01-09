@@ -264,22 +264,22 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
                     <div className="flex flex-wrap gap-2">
                       {aesthetics.has_plants && (
                         <span className="px-3 py-1.5 bg-green-100 text-green-700 rounded-full text-sm font-medium">
-                          🌿 {roomDetails?.plants || 'Plantes'}
+                          {roomDetails?.plants || 'Plantes'}
                         </span>
                       )}
                       {aesthetics.has_artwork && (
                         <span className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-medium">
-                          🎨 {roomDetails?.artwork || 'Artwork'}
+                          {roomDetails?.artwork || 'Artwork'}
                         </span>
                       )}
                       {aesthetics.has_mood_lighting && (
                         <span className="px-3 py-1.5 bg-yellow-100 text-yellow-700 rounded-full text-sm font-medium">
-                          💡 {roomDetails?.moodLighting || 'Éclairage d\'ambiance'}
+                          {roomDetails?.moodLighting || 'Éclairage d\'ambiance'}
                         </span>
                       )}
                       {aesthetics.has_smart_home_features && (
                         <span className="px-3 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-medium">
-                          🏠 {roomDetails?.smartHome || 'Smart Home'}
+                          {roomDetails?.smartHome || 'Smart Home'}
                         </span>
                       )}
                     </div>

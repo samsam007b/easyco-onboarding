@@ -429,35 +429,35 @@ function generateStrengths(
   const strengths: string[] = [];
 
   if (breakdown.lifestyle >= 24) {
-    strengths.push('🏠 Lifestyle très compatible (propreté, bruit, invités)');
+    strengths.push('Lifestyle très compatible (propreté, bruit, invités)');
   }
 
   if (breakdown.schedule >= 16) {
-    strengths.push('⏰ Rythmes de vie similaires');
+    strengths.push('Rythmes de vie similaires');
   }
 
   if (breakdown.social >= 16) {
-    strengths.push('🤝 Energie sociale alignée');
+    strengths.push('Énergie sociale alignée');
   }
 
   if (breakdown.values >= 12) {
-    strengths.push('💭 Valeurs partagées');
+    strengths.push('Valeurs partagées');
   }
 
   if (breakdown.habits >= 12) {
-    strengths.push('✅ Habitudes compatibles');
+    strengths.push('Habitudes compatibles');
   }
 
   // Specific positive matches
   if (searcher.cleanliness_level && resident.cleanliness_level) {
     const diff = Math.abs(searcher.cleanliness_level - resident.cleanliness_level);
     if (diff <= 1) {
-      strengths.push(`✨ Même niveau de propreté (${searcher.cleanliness_level}/10)`);
+      strengths.push(`Même niveau de propreté (${searcher.cleanliness_level}/10)`);
     }
   }
 
   if (searcher.shared_meals_interest && resident.shared_meals_interest) {
-    strengths.push('🍽️ Intérêt pour les repas partagés');
+    strengths.push('Intérêt pour les repas partagés');
   }
 
   return strengths;
@@ -474,27 +474,27 @@ function generateConcerns(
   const concerns: string[] = [];
 
   if (breakdown.lifestyle < 20) {
-    concerns.push('⚠️ Différences de style de vie');
+    concerns.push('Différences de style de vie');
   }
 
   if (breakdown.schedule < 12) {
-    concerns.push('⏰ Horaires potentiellement incompatibles');
+    concerns.push('Horaires potentiellement incompatibles');
   }
 
   if (breakdown.social < 12) {
-    concerns.push('🤔 Niveaux sociaux différents');
+    concerns.push('Niveaux sociaux différents');
   }
 
   // Specific mismatches
   if (searcher.cleanliness_level && resident.cleanliness_level) {
     const diff = Math.abs(searcher.cleanliness_level - resident.cleanliness_level);
     if (diff >= 4) {
-      concerns.push(`🧹 Grande différence de propreté (toi: ${searcher.cleanliness_level}/10, résident: ${resident.cleanliness_level}/10)`);
+      concerns.push(`Grande différence de propreté (toi: ${searcher.cleanliness_level}/10, résident: ${resident.cleanliness_level}/10)`);
     }
   }
 
   if (searcher.sleep_time === 'early' && resident.sleep_time === 'late') {
-    concerns.push('🌙 Couche-tôt vs couche-tard');
+    concerns.push('Couche-tôt vs couche-tard');
   }
 
   return concerns;
@@ -511,14 +511,14 @@ function generateDealbreakers(
 
   // Smoking mismatch
   if (searcher.smoking === false && resident.smoking === true) {
-    dealbreakers.push('🚭 Tu ne fumes pas mais le résident fume');
+    dealbreakers.push('Tu ne fumes pas mais le résident fume');
   }
 
   // Extreme cleanliness mismatch
   if (searcher.cleanliness_level && resident.cleanliness_level) {
     const diff = Math.abs(searcher.cleanliness_level - resident.cleanliness_level);
     if (diff >= 7) {
-      dealbreakers.push('❗ Incompatibilité majeure sur la propreté');
+      dealbreakers.push('Incompatibilité majeure sur la propreté');
     }
   }
 
@@ -539,35 +539,35 @@ export function getCompatibilityDescription(level: string): {
       return {
         label: 'Excellent Match',
         color: 'green',
-        icon: '🌟',
-        description: 'Vous êtes très compatibles! Bon potentiel de colocation',
+        icon: '',
+        description: 'Vous êtes très compatibles! Bon potentiel de co-living',
       };
     case 'good':
       return {
         label: 'Bon Match',
         color: 'blue',
-        icon: '✨',
+        icon: '',
         description: 'Bonne compatibilité générale',
       };
     case 'fair':
       return {
         label: 'Compatibilité Moyenne',
         color: 'yellow',
-        icon: '👍',
+        icon: '',
         description: 'Quelques différences mais gérable',
       };
     case 'low':
       return {
         label: 'Faible Compatibilité',
         color: 'orange',
-        icon: '⚠️',
+        icon: '',
         description: 'Différences importantes à considérer',
       };
     default:
       return {
         label: 'Non évalué',
         color: 'gray',
-        icon: '❓',
+        icon: '',
         description: 'Pas assez de données',
       };
   }

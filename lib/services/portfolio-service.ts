@@ -194,7 +194,7 @@ class PortfolioService {
         lastUpdated: new Date().toISOString(),
       };
     } catch (error) {
-      console.error('[Portfolio] ❌ Failed to fetch overview:', error);
+      console.error('[Portfolio] ERROR: Failed to fetch overview:', error);
       return this.getEmptyOverview();
     }
   }
@@ -257,7 +257,7 @@ class PortfolioService {
         group,
       };
     } catch (error) {
-      console.error('[Portfolio] ❌ Failed to fetch application stats:', error);
+      console.error('[Portfolio] ERROR: Failed to fetch application stats:', error);
       return { total: 0, pending: 0, reviewing: 0, approved: 0, rejected: 0, individual: 0, group: 0 };
     }
   }
@@ -420,7 +420,7 @@ class PortfolioService {
       const severityOrder = { critical: 0, warning: 1, info: 2 };
       return actions.sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity]);
     } catch (error) {
-      console.error('[Portfolio] ❌ Failed to fetch actions:', error);
+      console.error('[Portfolio] ERROR: Failed to fetch actions:', error);
       return [];
     }
   }
@@ -470,7 +470,7 @@ class PortfolioService {
         };
       });
     } catch (error) {
-      console.error('[Portfolio] ❌ Failed to fetch recent properties:', error);
+      console.error('[Portfolio] ERROR: Failed to fetch recent properties:', error);
       return [];
     }
   }

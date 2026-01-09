@@ -191,7 +191,7 @@ class TaskService {
 
       return enriched;
     } catch (error) {
-      console.error('[Task] ❌ Failed to fetch tasks:', error);
+      console.error('[Task] ERROR: Failed to fetch tasks:', error);
       return [];
     }
   }
@@ -224,11 +224,11 @@ class TaskService {
 
       if (error) throw error;
 
-      console.log('[Task] ✅ Task created:', task.id);
+      console.log('[Task] OK: Task created:', task.id);
 
       return { success: true, task };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to create task:', error);
+      console.error('[Task] ERROR: Failed to create task:', error);
       return {
         success: false,
         error: error.message || translations.errors.createTask[currentLang],
@@ -288,11 +288,11 @@ class TaskService {
           .eq('id', form.task_id);
       }
 
-      console.log('[Task] ✅ Rotation configured:', rotation.id);
+      console.log('[Task] OK: Rotation configured:', rotation.id);
 
       return { success: true, rotation };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to setup rotation:', error);
+      console.error('[Task] ERROR: Failed to setup rotation:', error);
       return {
         success: false,
         error: error.message || translations.errors.setupRotation[currentLang],
@@ -334,7 +334,7 @@ class TaskService {
         message: result?.message || translations.rotationFailed[currentLang],
       };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to rotate task:', error);
+      console.error('[Task] ERROR: Failed to rotate task:', error);
       return {
         success: false,
         message: error.message || translations.errors.rotateTask[currentLang],
@@ -368,13 +368,13 @@ class TaskService {
 
       if (error) throw error;
 
-      console.log('[Task] ✅ Exchange requested:', exchange.id);
+      console.log('[Task] OK: Exchange requested:', exchange.id);
 
       // TODO: Send notification to target user
 
       return { success: true, exchange };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to request exchange:', error);
+      console.error('[Task] ERROR: Failed to request exchange:', error);
       return {
         success: false,
         error: error.message || translations.errors.requestExchange[currentLang],
@@ -415,15 +415,15 @@ class TaskService {
         if (exchange) {
           // Swap in task_rotations if exists
           // (Implementation depends on your exact requirements)
-          console.log('[Task] ✅ Exchange accepted, swapping assignments...');
+          console.log('[Task] OK: Exchange accepted, swapping assignments...');
         }
       }
 
-      console.log(`[Task] ✅ Exchange ${status}`);
+      console.log(`[Task] OK: Exchange ${status}`);
 
       return { success: true };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to respond to exchange:', error);
+      console.error('[Task] ERROR: Failed to respond to exchange:', error);
       return {
         success: false,
         error: error.message || translations.errors.respondToExchange[currentLang],
@@ -466,11 +466,11 @@ class TaskService {
         );
       }
 
-      console.log('[Task] ✅ Unavailability set:', availability.id);
+      console.log('[Task] OK: Unavailability set:', availability.id);
 
       return { success: true, availability };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to set unavailability:', error);
+      console.error('[Task] ERROR: Failed to set unavailability:', error);
       return {
         success: false,
         error: error.message || translations.errors.setUnavailability[currentLang],
@@ -504,9 +504,9 @@ class TaskService {
         }
       }
 
-      console.log(`[Task] ✅ Reassigned ${tasks?.length || 0} tasks`);
+      console.log(`[Task] OK: Reassigned ${tasks?.length || 0} tasks`);
     } catch (error) {
-      console.error('[Task] ❌ Failed to reassign tasks:', error);
+      console.error('[Task] ERROR: Failed to reassign tasks:', error);
     }
   }
 
@@ -540,11 +540,11 @@ class TaskService {
 
       if (error) throw error;
 
-      console.log('[Task] ✅ Task completed:', form.task_id);
+      console.log('[Task] OK: Task completed:', form.task_id);
 
       return { success: true };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to complete task:', error);
+      console.error('[Task] ERROR: Failed to complete task:', error);
       return {
         success: false,
         error: error.message || translations.errors.completeTask[currentLang],
@@ -577,7 +577,7 @@ class TaskService {
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
-      console.error('[Task] ❌ Failed to upload proof:', error);
+      console.error('[Task] ERROR: Failed to upload proof:', error);
       return {
         success: false,
         error: error.message || translations.errors.uploadProof[currentLang],
@@ -602,7 +602,7 @@ class TaskService {
 
       return data || [];
     } catch (error) {
-      console.error('[Task] ❌ Failed to get upcoming tasks:', error);
+      console.error('[Task] ERROR: Failed to get upcoming tasks:', error);
       return [];
     }
   }
@@ -666,7 +666,7 @@ class TaskService {
         by_user: [], // Can be implemented if needed
       };
     } catch (error) {
-      console.error('[Task] ❌ Failed to get stats:', error);
+      console.error('[Task] ERROR: Failed to get stats:', error);
       return {
         total_tasks: 0,
         completed_tasks: 0,

@@ -71,7 +71,7 @@ class RentService {
 
       return data || [];
     } catch (error) {
-      console.error('[Rent] ❌ Failed to fetch upcoming dues:', error);
+      console.error('[Rent] ERROR: Failed to fetch upcoming dues:', error);
       return [];
     }
   }
@@ -110,7 +110,7 @@ class RentService {
 
       return enriched;
     } catch (error) {
-      console.error('[Rent] ❌ Failed to fetch payment history:', error);
+      console.error('[Rent] ERROR: Failed to fetch payment history:', error);
       return [];
     }
   }
@@ -158,11 +158,11 @@ class RentService {
 
       if (error) throw error;
 
-      console.log('[Rent] ✅ Payment recorded:', payment.id);
+      console.log('[Rent] OK: Payment recorded:', payment.id);
 
       return { success: true, payment };
     } catch (error: any) {
-      console.error('[Rent] ❌ Failed to record payment:', error);
+      console.error('[Rent] ERROR: Failed to record payment:', error);
       return {
         success: false,
         error: error.message || translations.errors.recordPayment[currentLang],
@@ -197,7 +197,7 @@ class RentService {
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
-      console.error('[Rent] ❌ Failed to upload proof:', error);
+      console.error('[Rent] ERROR: Failed to upload proof:', error);
       return {
         success: false,
         error: error.message || translations.errors.uploadProof[currentLang],
@@ -255,7 +255,7 @@ class RentService {
         overdue_count: overduePayments.length,
       };
     } catch (error) {
-      console.error('[Rent] ❌ Failed to calculate stats:', error);
+      console.error('[Rent] ERROR: Failed to calculate stats:', error);
       return {
         total_paid: 0,
         total_pending: 0,
@@ -282,11 +282,11 @@ class RentService {
       if (error) throw error;
 
       const count = data?.length || 0;
-      console.log(`[Rent] ✅ Marked ${count} payments as overdue`);
+      console.log(`[Rent] OK: Marked ${count} payments as overdue`);
 
       return count;
     } catch (error) {
-      console.error('[Rent] ❌ Failed to mark overdue payments:', error);
+      console.error('[Rent] ERROR: Failed to mark overdue payments:', error);
       return 0;
     }
   }
@@ -330,11 +330,11 @@ class RentService {
       if (error) throw error;
 
       const created = data?.length || 0;
-      console.log(`[Rent] ✅ Created payment schedule: ${created} payments`);
+      console.log(`[Rent] OK: Created payment schedule: ${created} payments`);
 
       return { success: true, created };
     } catch (error: any) {
-      console.error('[Rent] ❌ Failed to create payment schedule:', error);
+      console.error('[Rent] ERROR: Failed to create payment schedule:', error);
       return {
         success: false,
         created: 0,

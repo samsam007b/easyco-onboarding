@@ -152,7 +152,7 @@ class PropertyTimelineService {
         stats,
       };
     } catch (error) {
-      console.error('[PropertyTimeline] ❌ Failed to fetch timeline:', error);
+      console.error('[PropertyTimeline] ERROR: Failed to fetch timeline:', error);
       return {
         propertyId,
         propertyTitle: 'Erreur',
@@ -210,7 +210,7 @@ class PropertyTimelineService {
         }
       });
     } catch (error) {
-      console.error('[PropertyTimeline] ❌ Failed to fetch tenant events:', error);
+      console.error('[PropertyTimeline] ERROR: Failed to fetch tenant events:', error);
     }
 
     return events;
@@ -266,7 +266,7 @@ class PropertyTimelineService {
         }
       });
     } catch (error) {
-      console.error('[PropertyTimeline] ❌ Failed to fetch maintenance events:', error);
+      console.error('[PropertyTimeline] ERROR: Failed to fetch maintenance events:', error);
     }
 
     return events;
@@ -316,7 +316,7 @@ class PropertyTimelineService {
         }
       });
     } catch (error) {
-      console.error('[PropertyTimeline] ❌ Failed to fetch payment events:', error);
+      console.error('[PropertyTimeline] ERROR: Failed to fetch payment events:', error);
     }
 
     return events;
@@ -378,7 +378,7 @@ class PropertyTimelineService {
         }
       });
     } catch (error) {
-      console.error('[PropertyTimeline] ❌ Failed to fetch application events:', error);
+      console.error('[PropertyTimeline] ERROR: Failed to fetch application events:', error);
     }
 
     return events;

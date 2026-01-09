@@ -367,29 +367,29 @@ function generateInsights(
 
   // Budget insights
   if (breakdown.budget >= 23) {
-    insights.push('💰 Excellent price match for your budget');
+    insights.push('Excellent price match for your budget');
   } else if (breakdown.budget >= 15) {
-    insights.push('💵 Price is slightly above your budget but still reasonable');
+    insights.push('Price is slightly above your budget but still reasonable');
   }
 
   // Location insights
   if (breakdown.location >= 18) {
-    insights.push('📍 Perfect location match');
+    insights.push('Perfect location match');
   }
 
   // Lifestyle insights
   if (breakdown.lifestyle === 20) {
-    insights.push('🌟 Lifestyle preferences align perfectly');
+    insights.push('Lifestyle preferences align perfectly');
   }
 
   // Features insights
   if (breakdown.features >= 13) {
-    insights.push('✨ Property has most of your desired features');
+    insights.push('Property has most of your desired features');
   }
 
   // Timing insights
   if (breakdown.timing >= 9) {
-    insights.push('📅 Move-in timing works great');
+    insights.push('Move-in timing works great');
   }
 
   return insights;
@@ -407,27 +407,27 @@ function generateWarnings(
 
   // Budget warnings
   if (breakdown.budget < 10) {
-    warnings.push('⚠️ Price is significantly above your budget');
+    warnings.push('Price is significantly above your budget');
   }
 
   // Lifestyle warnings
   if (breakdown.lifestyle < 15) {
     if (userPrefs.smoking && !property.smoking_allowed) {
-      warnings.push('🚭 Smoking not allowed in this property');
+      warnings.push('Smoking not allowed in this property');
     }
     if (userPrefs.pets && !property.pets_allowed) {
-      warnings.push('🐾 Pets not allowed in this property');
+      warnings.push('Pets not allowed in this property');
     }
   }
 
   // Features warnings
   if (breakdown.features < 8) {
-    warnings.push('⚠️ This property is missing several features you wanted');
+    warnings.push('This property is missing several features you wanted');
   }
 
   // Timing warnings
   if (breakdown.timing < 6) {
-    warnings.push('📅 Property available date may not align with your needs');
+    warnings.push('Property available date may not align with your needs');
   }
 
   return warnings;

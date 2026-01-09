@@ -109,9 +109,9 @@ class OCRService {
       });
 
       this.isInitialized = true;
-      console.log('[OCR] ✅ Worker initialized successfully');
+      console.log('[OCR] OK: Worker initialized successfully');
     } catch (error) {
-      console.error('[OCR] ❌ Failed to initialize worker:', error);
+      console.error('[OCR] ERROR: Failed to initialize worker:', error);
       throw new Error(translations.errors.initScanner[currentLang]);
     }
   }
@@ -138,18 +138,18 @@ class OCRService {
       // Check file size (max 10MB)
       const MAX_SIZE = 10 * 1024 * 1024; // 10MB
       if (imageFile.size > MAX_SIZE) {
-        console.log('[OCR] ⚠️ File too large, compressing...');
+        console.log('[OCR] WARN: File too large, compressing...');
         imageFile = await this.compressImage(imageFile);
       }
 
       // Convert File to base64 for better compatibility
       const imageDataUrl = await this.fileToDataURL(imageFile);
-      console.log('[OCR] ✅ Image converted to base64');
+      console.log('[OCR] OK: Image converted to base64');
 
       // Preprocess image for better OCR results
-      console.log('[OCR] 🔧 Preprocessing image for better OCR...');
+      console.log('[OCR] PROCESS: Preprocessing image for better OCR...');
       const preprocessedDataUrl = await this.preprocessImage(imageDataUrl);
-      console.log('[OCR] ✅ Image preprocessed');
+      console.log('[OCR] OK: Image preprocessed');
 
       // Initialize worker if needed
       await this.initialize();
@@ -161,13 +161,13 @@ class OCRService {
       const startTime = Date.now();
 
       // Perform OCR with the preprocessed image
-      console.log('[OCR] 🔍 Starting Tesseract recognition...');
+      console.log('[OCR] SCAN: Starting Tesseract recognition...');
       const { data } = await this.worker.recognize(preprocessedDataUrl);
 
       const duration = Date.now() - startTime;
-      console.log(`[OCR] ✅ Scan completed in ${duration}ms`);
+      console.log(`[OCR] OK: Scan completed in ${duration}ms`);
       console.log(`[OCR] 📊 Confidence: ${data.confidence.toFixed(1)}%`);
-      console.log(`[OCR] 📝 Text length: ${data.text.length} characters`);
+      console.log(`[OCR] TEXT: Text length: ${data.text.length} characters`);
 
       // Extract structured data from raw text
       const ocrData = this.parseReceiptText(data.text, data.confidence / 100);
@@ -177,7 +177,7 @@ class OCRService {
         data: ocrData,
       };
     } catch (error: any) {
-      console.error('[OCR] ❌ Scan failed:', error);
+      console.error('[OCR] ERROR: Scan failed:', error);
       console.error('[OCR] Error details:', {
         message: error.message,
         stack: error.stack?.substring(0, 200),
@@ -264,7 +264,7 @@ class OCRService {
           // Convert canvas to data URL
           const processedDataUrl = canvas.toDataURL('image/png');
 
-          console.log('[OCR] 🔧 Applied preprocessing: 2x upscale → grayscale → gentle contrast (1.2x) → denoise');
+          console.log('[OCR] PROCESS: Applied preprocessing: 2x upscale → grayscale → gentle contrast (1.2x) → denoise');
           resolve(processedDataUrl);
         } catch (error) {
           reject(error);
@@ -366,7 +366,7 @@ class OCRService {
                 lastModified: Date.now(),
               });
 
-              console.log('[OCR] ✅ Image compressed:', {
+              console.log('[OCR] OK: Image compressed:', {
                 original: file.size,
                 compressed: compressedFile.size,
                 ratio: `${((compressedFile.size / file.size) * 100).toFixed(1)}%`,
@@ -414,7 +414,7 @@ class OCRService {
    * This is where we apply heuristics to find merchant, total, date, items
    */
   private parseReceiptText(rawText: string, confidence: number): OCRData {
-    console.log('[OCR] 🔍 Parsing receipt text...');
+    console.log('[OCR] SCAN: Parsing receipt text...');
     console.log('[OCR] Raw text:', rawText);
 
     const ocrData: OCRData = {
@@ -448,7 +448,7 @@ class OCRService {
       ocrData.items = items;
     }
 
-    console.log('[OCR] ✅ Parsed data:', ocrData);
+    console.log('[OCR] OK: Parsed data:', ocrData);
     return ocrData;
   }
 
@@ -488,7 +488,7 @@ class OCRService {
     // First, try to find known merchants
     for (const merchant of merchants) {
       if (upperText.includes(merchant)) {
-        console.log(`[OCR] ✅ Known merchant found: ${merchant}`);
+        console.log(`[OCR] OK: Known merchant found: ${merchant}`);
         return merchant;
       }
     }
@@ -507,7 +507,7 @@ class OCRService {
         // Ignore generic words like "TICKET", "DE", "CAISSE", "TVA"
         const genericWords = ['TICKET', 'DE', 'CAISSE', 'TVA', 'FACTURE', 'RECU'];
         if (!genericWords.includes(extracted.toUpperCase())) {
-          console.log(`[OCR] ✅ Merchant from header: ${extracted}`);
+          console.log(`[OCR] OK: Merchant from header: ${extracted}`);
           return extracted;
         }
       }
@@ -527,11 +527,11 @@ class OCRService {
 
     if (lines.length > 0) {
       const firstLine = lines[0].trim();
-      console.log(`[OCR] ⚠️ Using first line as merchant: ${firstLine}`);
+      console.log(`[OCR] WARN: Using first line as merchant: ${firstLine}`);
       return firstLine.length > 50 ? firstLine.substring(0, 50) : firstLine;
     }
 
-    console.log('[OCR] ❌ No merchant found');
+    console.log('[OCR] ERROR: No merchant found');
     return undefined;
   }
 
@@ -540,7 +540,7 @@ class OCRService {
    * Looks for patterns like "TOTAL 45.50", "Total: 45,50€", "Grand Total: 47.90", "Cash 47,90" etc.
    */
   private extractTotal(text: string): number | undefined {
-    console.log('[OCR] 💰 Extracting total from text (v3 - prioritize Total: over Grand Votal)...');
+    console.log('[OCR] AMOUNT: Extracting total from text (v3 - prioritize Total: over Grand Votal)...');
 
     const lines = text.split('\n');
 
@@ -559,7 +559,7 @@ class OCRService {
           const amountStr = lastNumber.replace(',', '.');
           const amount = parseFloat(amountStr);
           if (!isNaN(amount) && amount > 0 && amount < 100000) {
-            console.log(`[OCR] ✅ Total found on "Total:" line: ${amount} (from: "${trimmedLine.substring(0, 60)}...")`);
+            console.log(`[OCR] OK: Total found on "Total:" line: ${amount} (from: "${trimmedLine.substring(0, 60)}...")`);
             return amount;
           }
         }
@@ -584,7 +584,7 @@ class OCRService {
             const amountStr = lastNumber.replace(',', '.');
             const amount = parseFloat(amountStr);
             if (!isNaN(amount) && amount > 0 && amount < 100000) {
-              console.log(`[OCR] ✅ Total found on "${keyword.name}" line: ${amount}`);
+              console.log(`[OCR] OK: Total found on "${keyword.name}" line: ${amount}`);
               return amount;
             }
           }
@@ -601,7 +601,7 @@ class OCRService {
           const amountStr = lastNumber.replace(',', '.');
           const amount = parseFloat(amountStr);
           if (!isNaN(amount) && amount > 0 && amount < 100000) {
-            console.log(`[OCR] ⚠️ Total found on "Grand Votal" line: ${amount} (last resort)`);
+            console.log(`[OCR] WARN: Total found on "Grand Votal" line: ${amount} (last resort)`);
             return amount;
           }
         }
@@ -617,12 +617,12 @@ class OCRService {
         .sort((a, b) => b - a);
 
       if (amounts.length > 0) {
-        console.log(`[OCR] ⚠️ Using fallback - largest number: ${amounts[0]}`);
+        console.log(`[OCR] WARN: Using fallback - largest number: ${amounts[0]}`);
         return amounts[0];
       }
     }
 
-    console.log('[OCR] ❌ No total found');
+    console.log('[OCR] ERROR: No total found');
     return undefined;
   }
 
@@ -672,13 +672,13 @@ class OCRService {
           yearNum <= 2100
         ) {
           const isoDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-          console.log(`[OCR] ✅ Date found: ${isoDate}`);
+          console.log(`[OCR] OK: Date found: ${isoDate}`);
           return isoDate;
         }
       }
     }
 
-    console.log('[OCR] ❌ No valid date found, using today');
+    console.log('[OCR] ERROR: No valid date found, using today');
     // Fallback to today's date
     return new Date().toISOString().split('T')[0];
   }
@@ -795,13 +795,13 @@ class OCRService {
             }
 
             items.push(item);
-            console.log(`[OCR] ✅ Item found: "${name}" - ${totalPrice}€ (qty: ${quantity}, unit: ${unitPrice}€)`);
+            console.log(`[OCR] OK: Item found: "${name}" - ${totalPrice}€ (qty: ${quantity}, unit: ${unitPrice}€)`);
           }
         }
       }
     }
 
-    console.log(`[OCR] ✅ Extracted ${items.length} line items`);
+    console.log(`[OCR] OK: Extracted ${items.length} line items`);
     return items;
   }
 

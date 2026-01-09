@@ -444,12 +444,12 @@ class AlertsNotificationService {
       if (result.success) {
         sent++;
         console.log(
-          `[AlertsNotification] ✅ Sent lease expiration alert for ${alert.propertyTitle}`
+          `[AlertsNotification] OK: Sent lease expiration alert for ${alert.propertyTitle}`
         );
       } else {
         failed++;
         console.error(
-          `[AlertsNotification] ❌ Failed to send lease alert: ${result.error}`
+          `[AlertsNotification] ERROR: Failed to send lease alert: ${result.error}`
         );
       }
     }
@@ -473,12 +473,12 @@ class AlertsNotificationService {
       if (result.success) {
         sent++;
         console.log(
-          `[AlertsNotification] ✅ Sent maintenance alert for ${alert.ticketTitle}`
+          `[AlertsNotification] OK: Sent maintenance alert for ${alert.ticketTitle}`
         );
       } else {
         failed++;
         console.error(
-          `[AlertsNotification] ❌ Failed to send maintenance alert: ${result.error}`
+          `[AlertsNotification] ERROR: Failed to send maintenance alert: ${result.error}`
         );
       }
     }
@@ -501,11 +501,11 @@ class AlertsNotificationService {
       const result = await sendDailyDigest(digestData);
       if (result.success) {
         sent++;
-        console.log(`[AlertsNotification] ✅ Sent daily digest to ${owner.email}`);
+        console.log(`[AlertsNotification] OK: Sent daily digest to ${owner.email}`);
       } else {
         failed++;
         console.error(
-          `[AlertsNotification] ❌ Failed to send digest to ${owner.email}: ${result.error}`
+          `[AlertsNotification] ERROR: Failed to send digest to ${owner.email}: ${result.error}`
         );
       }
     }

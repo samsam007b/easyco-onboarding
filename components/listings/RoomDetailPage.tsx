@@ -378,13 +378,13 @@ export function RoomDetailPage({
                       Special Features
                     </h4>
                     <div className="grid grid-cols-2 gap-2">
-                      {aesthetics.has_plants && <FeaturePill icon="🌿" label="Indoor plants" />}
-                      {aesthetics.has_artwork && <FeaturePill icon="🖼️" label="Artwork" />}
+                      {aesthetics.has_plants && <FeaturePill icon="•" label="Indoor plants" />}
+                      {aesthetics.has_artwork && <FeaturePill icon="•" label="Artwork" />}
                       {aesthetics.has_mood_lighting && (
-                        <FeaturePill icon="💡" label="Mood lighting" />
+                        <FeaturePill icon="•" label="Mood lighting" />
                       )}
                       {aesthetics.has_smart_home_features && (
-                        <FeaturePill icon="🏠" label="Smart home" />
+                        <FeaturePill icon="•" label="Smart home" />
                       )}
                     </div>
                   </div>

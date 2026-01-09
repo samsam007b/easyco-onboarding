@@ -294,31 +294,31 @@ function generateTenantInsights(
 
   // Financial insights
   if (breakdown.financial >= 25) {
-    insights.push('💰 Strong financial profile - low risk');
+    insights.push('Strong financial profile - low risk');
   } else if (breakdown.financial >= 18) {
-    insights.push('💵 Good financial stability');
+    insights.push('Good financial stability');
   }
 
   // Profile insights
   if (breakdown.profile >= 16) {
-    insights.push('✨ Complete and detailed profile');
+    insights.push('Complete and detailed profile');
   }
 
   // Lifestyle insights
   if (breakdown.lifestyle === 20) {
-    insights.push('🌟 Perfect lifestyle compatibility');
+    insights.push('Perfect lifestyle compatibility');
   } else if (breakdown.lifestyle >= 15) {
-    insights.push('👍 Good lifestyle match');
+    insights.push('Good lifestyle match');
   }
 
   // Verification insights
   if (breakdown.verification >= 12) {
-    insights.push('✅ Well-verified tenant');
+    insights.push('Well-verified tenant');
   }
 
   // Timing
   if (breakdown.timing >= 13) {
-    insights.push('📅 Excellent timing alignment');
+    insights.push('Excellent timing alignment');
   }
 
   return insights;
@@ -337,30 +337,30 @@ function generateTenantWarnings(
   // Financial warnings
   if (breakdown.financial < 15) {
     if (!tenant.monthly_income) {
-      warnings.push('⚠️ No income information provided');
+      warnings.push('No income information provided');
     } else if (tenant.monthly_income < property.monthly_price * (property.min_income_ratio || 3)) {
-      warnings.push('⚠️ Income below recommended threshold');
+      warnings.push('Income below recommended threshold');
     }
   }
 
   // Lifestyle warnings
   if (breakdown.lifestyle < 15) {
     if (tenant.smoking && !property.smoking_allowed) {
-      warnings.push('🚭 Tenant smokes but property is non-smoking');
+      warnings.push('Tenant smokes but property is non-smoking');
     }
     if (tenant.pets && !property.pets_allowed) {
-      warnings.push('🐾 Tenant has pets but property does not allow them');
+      warnings.push('Tenant has pets but property does not allow them');
     }
   }
 
   // Verification warnings
   if (breakdown.verification < 8) {
-    warnings.push('⚠️ Limited verification - request more documents');
+    warnings.push('Limited verification - request more documents');
   }
 
   // Profile warnings
   if (breakdown.profile < 10) {
-    warnings.push('⚠️ Incomplete profile - may not be serious');
+    warnings.push('Incomplete profile - may not be serious');
   }
 
   return warnings;

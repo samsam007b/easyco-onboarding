@@ -363,22 +363,22 @@ function generatePropertyStrengths(
   const strengths: string[] = [];
 
   if (breakdown.propertyFilters >= 32) {
-    strengths.push('✅ Excellent match for your search criteria');
+    strengths.push('Excellent match for your search criteria');
   } else if (breakdown.propertyFilters >= 24) {
-    strengths.push('✅ Good fit for your requirements');
+    strengths.push('Good fit for your requirements');
   }
 
   if (breakdown.residentCompatibility >= 28) {
-    strengths.push('👥 Very compatible with current residents');
+    strengths.push('Very compatible with current residents');
   } else if (breakdown.residentCompatibility >= 21) {
-    strengths.push('👥 Good compatibility with housemates');
+    strengths.push('Good compatibility with housemates');
   }
 
   // Budget strength
   if (searcher.min_budget && searcher.max_budget) {
     const totalRent = property.monthly_rent + (property.charges || 0);
     if (totalRent >= searcher.min_budget && totalRent <= searcher.max_budget) {
-      strengths.push('💰 Within your budget range');
+      strengths.push('Within your budget range');
     }
   }
 
@@ -388,7 +388,7 @@ function generatePropertyStrengths(
       property.city.toLowerCase().includes(neighborhood.toLowerCase())
     );
     if (cityMatch) {
-      strengths.push(`📍 Located in your preferred area (${property.city})`);
+      strengths.push(`Located in your preferred area (${property.city})`);
     }
   }
 
@@ -398,13 +398,13 @@ function generatePropertyStrengths(
       property.amenities.includes(amenity as any)
     );
     if (hasAllRequired) {
-      strengths.push('🏠 Has all your required amenities');
+      strengths.push('Has all your required amenities');
     }
   }
 
   // Best resident match
   if (residentMatches && residentMatches.length > 0 && residentMatches[0].compatibilityScore >= 70) {
-    strengths.push(`🌟 Great compatibility with ${residentMatches[0].resident.first_name} (${residentMatches[0].compatibilityScore}%)`);
+    strengths.push(`Great compatibility with ${residentMatches[0].resident.first_name} (${residentMatches[0].compatibilityScore}%)`);
   }
 
   return strengths;
@@ -421,11 +421,11 @@ function generatePropertyConsiderations(
   const considerations: string[] = [];
 
   if (breakdown.propertyFilters < 24) {
-    considerations.push('⚠️ Some of your criteria may not be fully met');
+    considerations.push('Some of your criteria may not be fully met');
   }
 
   if (breakdown.residentCompatibility < 21 && property.residents && property.residents.length > 0) {
-    considerations.push('⚠️ Compatibility with current residents could be better');
+    considerations.push('Compatibility with current residents could be better');
   }
 
   // Budget consideration
@@ -433,13 +433,13 @@ function generatePropertyConsiderations(
     const totalRent = property.monthly_rent + (property.charges || 0);
     if (totalRent > searcher.max_budget) {
       const overPercent = Math.round(((totalRent - searcher.max_budget) / searcher.max_budget) * 100);
-      considerations.push(`⚠️ Rent is ${overPercent}% over your budget (${totalRent}€ vs ${searcher.max_budget}€)`);
+      considerations.push(`Rent is ${overPercent}% over your budget (${totalRent}€ vs ${searcher.max_budget}€)`);
     }
   }
 
   // Minimum stay consideration
   if (property.minimum_stay_months && property.minimum_stay_months > 6) {
-    considerations.push(`⚠️ Requires minimum ${property.minimum_stay_months} months commitment`);
+    considerations.push(`Requires minimum ${property.minimum_stay_months} months commitment`);
   }
 
   // Availability consideration
@@ -448,7 +448,7 @@ function generatePropertyConsiderations(
       (new Date(property.available_from).getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24)
     );
     if (daysUntilAvailable > 30) {
-      considerations.push(`⚠️ Available in ${Math.round(daysUntilAvailable / 30)} months`);
+      considerations.push(`Available in ${Math.round(daysUntilAvailable / 30)} months`);
     }
   }
 
@@ -466,12 +466,12 @@ function generatePropertyDealbreakers(
 
   // Smoking dealbreaker
   if (searcher.smoking && !property.smoking_allowed) {
-    dealbreakers.push('🚭 You smoke but smoking is not allowed in this property');
+    dealbreakers.push('You smoke but smoking is not allowed in this property');
   }
 
   // Pets dealbreaker
   if (searcher.pets && !property.pets_allowed) {
-    dealbreakers.push('🐾 You have pets but pets are not allowed in this property');
+    dealbreakers.push('You have pets but pets are not allowed in this property');
   }
 
   // Required amenities dealbreaker
@@ -480,7 +480,7 @@ function generatePropertyDealbreakers(
       !property.amenities.includes(amenity as any)
     );
     if (missingRequired.length > 0) {
-      dealbreakers.push(`❌ Missing required amenities: ${missingRequired.join(', ')}`);
+      dealbreakers.push(`Missing required amenities: ${missingRequired.join(', ')}`);
     }
   }
 
@@ -488,13 +488,13 @@ function generatePropertyDealbreakers(
   if (searcher.max_budget) {
     const totalRent = property.monthly_rent + (property.charges || 0);
     if (totalRent > searcher.max_budget * 1.2) { // More than 20% over budget
-      dealbreakers.push(`💰 Rent significantly exceeds your budget (${totalRent}€ vs ${searcher.max_budget}€ max)`);
+      dealbreakers.push(`Rent significantly exceeds your budget (${totalRent}€ vs ${searcher.max_budget}€ max)`);
     }
   }
 
   // Bedrooms dealbreaker
   if (searcher.min_bedrooms && property.bedrooms < searcher.min_bedrooms) {
-    dealbreakers.push(`🛏️ Not enough bedrooms (${property.bedrooms} vs ${searcher.min_bedrooms} required)`);
+    dealbreakers.push(`Not enough bedrooms (${property.bedrooms} vs ${searcher.min_bedrooms} required)`);
   }
 
   return dealbreakers;
@@ -513,35 +513,35 @@ export function getPropertyMatchQuality(score: number): {
     return {
       label: 'Perfect Match',
       color: 'green',
-      emoji: '💚',
+      emoji: '',
       description: 'This property is ideal for you!',
     };
   } else if (score >= 70) {
     return {
       label: 'Excellent Match',
       color: 'blue',
-      emoji: '💙',
+      emoji: '',
       description: 'Highly recommended - check it out!',
     };
   } else if (score >= 55) {
     return {
       label: 'Good Match',
       color: 'yellow',
-      emoji: '💛',
+      emoji: '',
       description: 'Worth considering - review the details',
     };
   } else if (score >= 40) {
     return {
       label: 'Fair Match',
       color: 'orange',
-      emoji: '🧡',
+      emoji: '',
       description: 'Some compatibility - review considerations',
     };
   } else {
     return {
       label: 'Low Match',
       color: 'red',
-      emoji: '❤️',
+      emoji: '',
       description: 'May not be the best fit for you',
     };
   }

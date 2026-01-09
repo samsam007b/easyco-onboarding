@@ -118,7 +118,7 @@ Rules:
         };
       }
 
-      console.log('[Gemini] ✅ Receipt analyzed:', {
+      console.log('[Gemini] OK: Receipt analyzed:', {
         merchant: parsed.merchant,
         total: parsed.total,
         itemCount: parsed.items?.length || 0,

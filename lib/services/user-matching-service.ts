@@ -729,32 +729,32 @@ function generateStrengths(
   const strengths: string[] = [];
 
   if (breakdown.lifestyle >= 25) {
-    strengths.push('🏠 Very similar daily routines and lifestyle habits');
+    strengths.push('Very similar daily routines and lifestyle habits');
   } else if (breakdown.lifestyle >= 20) {
-    strengths.push('🏠 Compatible lifestyle preferences');
+    strengths.push('Compatible lifestyle preferences');
   }
 
   if (breakdown.social >= 20) {
-    strengths.push('✨ Great social compatibility and communication style');
+    strengths.push('Great social compatibility and communication style');
   } else if (breakdown.social >= 15) {
-    strengths.push('✨ Good social vibe match');
+    strengths.push('Good social vibe match');
   }
 
   if (breakdown.practical >= 16) {
-    strengths.push('💰 Practical aspects align well (budget, location, preferences)');
+    strengths.push('Practical aspects align well (budget, location, preferences)');
   }
 
   if (breakdown.values >= 12) {
-    strengths.push('💎 Shared core values and principles');
+    strengths.push('Shared core values and principles');
   }
 
   // Specific strengths
   if (user1.shared_meals_interest && user2.shared_meals_interest) {
-    strengths.push('🍽️ Both enjoy sharing meals');
+    strengths.push('Both enjoy sharing meals');
   }
 
   if (user1.cleanliness_level && user2.cleanliness_level && Math.abs(user1.cleanliness_level - user2.cleanliness_level) <= 2) {
-    strengths.push('✨ Similar cleanliness standards');
+    strengths.push('Similar cleanliness standards');
   }
 
   return strengths;
@@ -771,24 +771,24 @@ function generateConsiderations(
   const considerations: string[] = [];
 
   if (breakdown.lifestyle < 20) {
-    considerations.push('⚠️ Different daily routines - may need to discuss schedules');
+    considerations.push('Different daily routines - may need to discuss schedules');
   }
 
   if (breakdown.social < 15) {
-    considerations.push('⚠️ Different social preferences - communication will be key');
+    considerations.push('Different social preferences - communication will be key');
   }
 
   if (breakdown.practical < 12) {
-    considerations.push('⚠️ Some practical aspects may need discussion (budget, location)');
+    considerations.push('Some practical aspects may need discussion (budget, location)');
   }
 
   // Specific considerations
   if (user1.cleanliness_level && user2.cleanliness_level && Math.abs(user1.cleanliness_level - user2.cleanliness_level) > 3) {
-    considerations.push('⚠️ Different cleanliness standards - consider house rules');
+    considerations.push('Different cleanliness standards - consider house rules');
   }
 
   if (user1.guest_frequency !== user2.guest_frequency) {
-    considerations.push('⚠️ Different preferences for having guests over');
+    considerations.push('Different preferences for having guests over');
   }
 
   return considerations;
@@ -802,18 +802,18 @@ function generateDealbreakers(user1: UserProfile, user2: UserProfile): string[] 
 
   // Smoking dealbreaker
   if (user1.smoking && user2.smoking_tolerance === false) {
-    dealbreakers.push('🚭 User 1 smokes but User 2 does not tolerate smoking');
+    dealbreakers.push('User 1 smokes but User 2 does not tolerate smoking');
   }
   if (user2.smoking && user1.smoking_tolerance === false) {
-    dealbreakers.push('🚭 User 2 smokes but User 1 does not tolerate smoking');
+    dealbreakers.push('User 2 smokes but User 1 does not tolerate smoking');
   }
 
   // Pets dealbreaker
   if (user1.pets && user2.pets_tolerance === false) {
-    dealbreakers.push('🐾 User 1 has pets but User 2 does not tolerate pets');
+    dealbreakers.push('User 1 has pets but User 2 does not tolerate pets');
   }
   if (user2.pets && user1.pets_tolerance === false) {
-    dealbreakers.push('🐾 User 2 has pets but User 1 does not tolerate pets');
+    dealbreakers.push('User 2 has pets but User 1 does not tolerate pets');
   }
 
   // Age preference dealbreaker
@@ -822,10 +822,10 @@ function generateDealbreakers(user1: UserProfile, user2: UserProfile): string[] 
     const age2 = calculateAge(user2.date_of_birth);
 
     if (user1.age_range_min && user1.age_range_max && (age2 < user1.age_range_min || age2 > user1.age_range_max)) {
-      dealbreakers.push(`⚠️ Age mismatch: User 2 (${age2}) outside User 1's preferred range (${user1.age_range_min}-${user1.age_range_max})`);
+      dealbreakers.push(`Age mismatch: User 2 (${age2}) outside User 1's preferred range (${user1.age_range_min}-${user1.age_range_max})`);
     }
     if (user2.age_range_min && user2.age_range_max && (age1 < user2.age_range_min || age1 > user2.age_range_max)) {
-      dealbreakers.push(`⚠️ Age mismatch: User 1 (${age1}) outside User 2's preferred range (${user2.age_range_min}-${user2.age_range_max})`);
+      dealbreakers.push(`Age mismatch: User 1 (${age1}) outside User 2's preferred range (${user2.age_range_min}-${user2.age_range_max})`);
     }
   }
 
@@ -861,35 +861,35 @@ export function getCompatibilityQuality(score: number): {
     return {
       label: 'Excellent Match',
       color: 'green',
-      emoji: '💚',
+      emoji: '',
       description: 'You two would be amazing roommates!',
     };
   } else if (score >= 70) {
     return {
       label: 'Great Match',
       color: 'blue',
-      emoji: '💙',
+      emoji: '',
       description: 'Strong compatibility - worth connecting!',
     };
   } else if (score >= 55) {
     return {
       label: 'Good Match',
       color: 'yellow',
-      emoji: '💛',
+      emoji: '',
       description: 'Good potential - have a chat to explore more',
     };
   } else if (score >= 40) {
     return {
       label: 'Fair Match',
       color: 'orange',
-      emoji: '🧡',
+      emoji: '',
       description: 'Some compatibility - review considerations carefully',
     };
   } else {
     return {
       label: 'Low Match',
       color: 'red',
-      emoji: '❤️',
+      emoji: '',
       description: 'Limited compatibility - may face challenges',
     };
   }

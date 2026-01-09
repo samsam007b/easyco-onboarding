@@ -166,10 +166,10 @@ class MaintenanceService {
           property_name: propertyMap.get(r.property_id) || translations.property[currentLang],
         })) || [];
 
-      console.log(`[Maintenance] ✅ Batch fetched ${enriched.length} requests for ${properties.length} properties`);
+      console.log(`[Maintenance] OK: Batch fetched ${enriched.length} requests for ${properties.length} properties`);
       return enriched;
     } catch (error) {
-      console.error('[Maintenance] ❌ Failed to batch fetch requests:', error);
+      console.error('[Maintenance] ERROR: Failed to batch fetch requests:', error);
       return [];
     }
   }
@@ -219,10 +219,10 @@ class MaintenanceService {
           creator_avatar: r.profiles?.avatar_url,
         })) || [];
 
-      console.log(`[Maintenance] ✅ Fetched ${enriched.length} requests`);
+      console.log(`[Maintenance] OK: Fetched ${enriched.length} requests`);
       return enriched;
     } catch (error) {
-      console.error('[Maintenance] ❌ Failed to fetch requests:', error);
+      console.error('[Maintenance] ERROR: Failed to fetch requests:', error);
       return [];
     }
   }
@@ -257,7 +257,7 @@ class MaintenanceService {
 
       return enriched;
     } catch (error) {
-      console.error('[Maintenance] ❌ Failed to fetch request:', error);
+      console.error('[Maintenance] ERROR: Failed to fetch request:', error);
       return null;
     }
   }
@@ -299,11 +299,11 @@ class MaintenanceService {
 
       if (error) throw error;
 
-      console.log('[Maintenance] ✅ Request created:', request.id);
+      console.log('[Maintenance] OK: Request created:', request.id);
 
       return { success: true, request };
     } catch (error: any) {
-      console.error('[Maintenance] ❌ Failed to create request:', error);
+      console.error('[Maintenance] ERROR: Failed to create request:', error);
       return {
         success: false,
         error: error.message || translations.errors.createRequest[currentLang],
@@ -335,11 +335,11 @@ class MaintenanceService {
 
       if (error) throw error;
 
-      console.log('[Maintenance] ✅ Request updated:', request.id);
+      console.log('[Maintenance] OK: Request updated:', request.id);
 
       return { success: true, request };
     } catch (error: any) {
-      console.error('[Maintenance] ❌ Failed to update request:', error);
+      console.error('[Maintenance] ERROR: Failed to update request:', error);
       return {
         success: false,
         error: error.message || translations.errors.updateRequest[currentLang],
@@ -368,11 +368,11 @@ class MaintenanceService {
 
       if (error) throw error;
 
-      console.log(`[Maintenance] ✅ Status updated to '${status}'`);
+      console.log(`[Maintenance] OK: Status updated to '${status}'`);
 
       return { success: true };
     } catch (error: any) {
-      console.error('[Maintenance] ❌ Failed to update status:', error);
+      console.error('[Maintenance] ERROR: Failed to update status:', error);
       return {
         success: false,
         error: error.message || translations.errors.updateStatus[currentLang],
@@ -392,11 +392,11 @@ class MaintenanceService {
 
       if (error) throw error;
 
-      console.log('[Maintenance] ✅ Request deleted:', requestId);
+      console.log('[Maintenance] OK: Request deleted:', requestId);
 
       return { success: true };
     } catch (error: any) {
-      console.error('[Maintenance] ❌ Failed to delete request:', error);
+      console.error('[Maintenance] ERROR: Failed to delete request:', error);
       return {
         success: false,
         error: error.message || translations.errors.deleteRequest[currentLang],
@@ -432,7 +432,7 @@ class MaintenanceService {
 
         return publicUrl;
       } catch (error) {
-        console.error('[Maintenance] ❌ Failed to upload image:', error);
+        console.error('[Maintenance] ERROR: Failed to upload image:', error);
         return null;
       }
     });
@@ -521,10 +521,10 @@ class MaintenanceService {
         });
       });
 
-      console.log(`[Maintenance] ✅ Batch stats for ${propertyIds.length} properties`);
+      console.log(`[Maintenance] OK: Batch stats for ${propertyIds.length} properties`);
       return result;
     } catch (error) {
-      console.error('[Maintenance] ❌ Failed to batch fetch stats:', error);
+      console.error('[Maintenance] ERROR: Failed to batch fetch stats:', error);
       return result;
     }
   }
@@ -595,7 +595,7 @@ class MaintenanceService {
         by_priority,
       };
     } catch (error) {
-      console.error('[Maintenance] ❌ Failed to calculate stats:', error);
+      console.error('[Maintenance] ERROR: Failed to calculate stats:', error);
       return {
         total_requests: 0,
         open_count: 0,
@@ -624,7 +624,7 @@ class MaintenanceService {
 
       return count || 0;
     } catch (error) {
-      console.error('[Maintenance] ❌ Failed to get open count:', error);
+      console.error('[Maintenance] ERROR: Failed to get open count:', error);
       return 0;
     }
   }

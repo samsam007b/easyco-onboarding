@@ -208,7 +208,7 @@ class LeaseManagementService {
       }
       */
 
-      console.log(`[LeaseManagement] ✅ Created lease for ${data.applicantName} at property ${data.propertyId}`);
+      console.log(`[LeaseManagement] OK: Created lease for ${data.applicantName} at property ${data.propertyId}`);
 
       return {
         success: true,

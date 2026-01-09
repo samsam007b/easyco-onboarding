@@ -184,7 +184,7 @@ export default function Footer() {
         >
           <div className="max-w-md">
             <h3 className={`font-semibold mb-2 ${resolvedTheme === 'dark' ? 'text-gray-100' : 'text-gray-900'}`}>
-              Reste informé 📬
+              Reste informé
             </h3>
             <p className={`text-sm mb-4 ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
               Reçois nos dernières annonces et conseils directement par email
@@ -268,12 +268,12 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-6">
           <div className={`flex flex-col md:flex-row items-center justify-between gap-4 text-xs ${resolvedTheme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
             <div className="flex items-center gap-4">
-              <span>🇧🇪 Belgique</span>
+              <span>Belgique</span>
               <span>•</span>
               <span>Français</span>
             </div>
             <div className="flex items-center gap-4">
-              <span>Fait avec ❤️ à Bruxelles</span>
+              <span>Fait avec soin à Bruxelles</span>
             </div>
           </div>
         </div>

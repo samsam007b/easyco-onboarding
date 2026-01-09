@@ -119,10 +119,10 @@ class DocumentService {
           is_expiring_soon: isDocumentExpiringSoon(doc.expires_at),
         })) || [];
 
-      console.log(`[Documents] ✅ Fetched ${enriched.length} documents`);
+      console.log(`[Documents] OK: Fetched ${enriched.length} documents`);
       return enriched;
     } catch (error) {
-      console.error('[Documents] ❌ Failed to fetch documents:', error);
+      console.error('[Documents] ERROR: Failed to fetch documents:', error);
       return [];
     }
   }
@@ -158,7 +158,7 @@ class DocumentService {
 
       return enriched;
     } catch (error) {
-      console.error('[Documents] ❌ Failed to fetch document:', error);
+      console.error('[Documents] ERROR: Failed to fetch document:', error);
       return null;
     }
   }
@@ -204,11 +204,11 @@ class DocumentService {
 
       if (error) throw error;
 
-      console.log('[Documents] ✅ Document uploaded:', document.id);
+      console.log('[Documents] OK: Document uploaded:', document.id);
 
       return { success: true, document };
     } catch (error: any) {
-      console.error('[Documents] ❌ Failed to upload document:', error);
+      console.error('[Documents] ERROR: Failed to upload document:', error);
       return {
         success: false,
         error: error.message || translations.errors.uploadDocument[currentLang],
@@ -243,7 +243,7 @@ class DocumentService {
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
-      console.error('[Documents] ❌ Failed to upload file:', error);
+      console.error('[Documents] ERROR: Failed to upload file:', error);
       return {
         success: false,
         error: error.message || translations.errors.uploadFile[currentLang],
@@ -279,11 +279,11 @@ class DocumentService {
 
       if (error) throw error;
 
-      console.log('[Documents] ✅ Document deleted:', documentId);
+      console.log('[Documents] OK: Document deleted:', documentId);
 
       return { success: true };
     } catch (error: any) {
-      console.error('[Documents] ❌ Failed to delete document:', error);
+      console.error('[Documents] ERROR: Failed to delete document:', error);
       return {
         success: false,
         error: error.message || translations.errors.deleteDocument[currentLang],
@@ -314,11 +314,11 @@ class DocumentService {
 
       if (error) throw error;
 
-      console.log('[Documents] ✅ Document shared:', share.id);
+      console.log('[Documents] OK: Document shared:', share.id);
 
       return { success: true, share };
     } catch (error: any) {
-      console.error('[Documents] ❌ Failed to share document:', error);
+      console.error('[Documents] ERROR: Failed to share document:', error);
       return {
         success: false,
         error: error.message || translations.errors.shareDocument[currentLang],
@@ -355,7 +355,7 @@ class DocumentService {
 
       return enriched;
     } catch (error) {
-      console.error('[Documents] ❌ Failed to fetch shares:', error);
+      console.error('[Documents] ERROR: Failed to fetch shares:', error);
       return [];
     }
   }
@@ -369,11 +369,11 @@ class DocumentService {
 
       if (error) throw error;
 
-      console.log('[Documents] ✅ Share removed:', shareId);
+      console.log('[Documents] OK: Share removed:', shareId);
 
       return { success: true };
     } catch (error: any) {
-      console.error('[Documents] ❌ Failed to remove share:', error);
+      console.error('[Documents] ERROR: Failed to remove share:', error);
       return {
         success: false,
         error: error.message || translations.errors.removeShare[currentLang],
@@ -393,11 +393,11 @@ class DocumentService {
 
       if (error) throw error;
 
-      console.log(`[Documents] ✅ Search found ${data?.length || 0} results`);
+      console.log(`[Documents] OK: Search found ${data?.length || 0} results`);
 
       return data || [];
     } catch (error) {
-      console.error('[Documents] ❌ Search failed:', error);
+      console.error('[Documents] ERROR: Search failed:', error);
       return [];
     }
   }
@@ -433,7 +433,7 @@ class DocumentService {
         expired: stats.expired || 0,
       };
     } catch (error) {
-      console.error('[Documents] ❌ Failed to get stats:', error);
+      console.error('[Documents] ERROR: Failed to get stats:', error);
       return {
         total_documents: 0,
         total_size_bytes: 0,
@@ -483,7 +483,7 @@ class DocumentService {
 
       return enriched;
     } catch (error) {
-      console.error('[Documents] ❌ Failed to fetch expiring documents:', error);
+      console.error('[Documents] ERROR: Failed to fetch expiring documents:', error);
       return [];
     }
   }

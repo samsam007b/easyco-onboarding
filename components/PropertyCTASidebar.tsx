@@ -285,13 +285,13 @@ export default function PropertyCTASidebar({
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
-                <span className="text-lg">🔒</span>
+                <span className="text-lg">✓</span>
               </div>
               <p className="text-sm font-medium text-gray-900">{property?.sidebar?.securePayment || 'Paiement sécurisé'}</p>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
-                <span className="text-lg">📋</span>
+                <span className="text-lg">✓</span>
               </div>
               <p className="text-sm font-medium text-gray-900">{property?.sidebar?.standardLease || 'Contrat de bail standard'}</p>
             </div>

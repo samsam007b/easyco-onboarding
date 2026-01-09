@@ -291,35 +291,35 @@ describe('Property Matching Service', () => {
       const quality = getPropertyMatchQuality(90);
       expect(quality.label).toBe('Perfect Match');
       expect(quality.color).toBe('green');
-      expect(quality.emoji).toBe('💚');
+      expect(quality.emoji).toBe('');
     });
 
     it('should return Excellent Match for scores 70-84', () => {
       const quality = getPropertyMatchQuality(75);
       expect(quality.label).toBe('Excellent Match');
       expect(quality.color).toBe('blue');
-      expect(quality.emoji).toBe('💙');
+      expect(quality.emoji).toBe('');
     });
 
     it('should return Good Match for scores 55-69', () => {
       const quality = getPropertyMatchQuality(60);
       expect(quality.label).toBe('Good Match');
       expect(quality.color).toBe('yellow');
-      expect(quality.emoji).toBe('💛');
+      expect(quality.emoji).toBe('');
     });
 
     it('should return Fair Match for scores 40-54', () => {
       const quality = getPropertyMatchQuality(45);
       expect(quality.label).toBe('Fair Match');
       expect(quality.color).toBe('orange');
-      expect(quality.emoji).toBe('🧡');
+      expect(quality.emoji).toBe('');
     });
 
     it('should return Low Match for scores < 40', () => {
       const quality = getPropertyMatchQuality(30);
       expect(quality.label).toBe('Low Match');
       expect(quality.color).toBe('red');
-      expect(quality.emoji).toBe('❤️');
+      expect(quality.emoji).toBe('');
     });
   });
 

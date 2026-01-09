@@ -127,10 +127,10 @@ class RulesService {
           };
         }) || [];
 
-      console.log(`[Rules] ✅ Fetched ${enriched.length} rules`);
+      console.log(`[Rules] OK: Fetched ${enriched.length} rules`);
       return enriched;
     } catch (error) {
-      console.error('[Rules] ❌ Failed to fetch rules:', error);
+      console.error('[Rules] ERROR: Failed to fetch rules:', error);
       return [];
     }
   }
@@ -180,7 +180,7 @@ class RulesService {
 
       return enriched;
     } catch (error) {
-      console.error('[Rules] ❌ Failed to fetch rule:', error);
+      console.error('[Rules] ERROR: Failed to fetch rule:', error);
       return null;
     }
   }
@@ -224,11 +224,11 @@ class RulesService {
 
       if (error) throw error;
 
-      console.log('[Rules] ✅ Rule created:', rule.id);
+      console.log('[Rules] OK: Rule created:', rule.id);
 
       return { success: true, rule };
     } catch (error: any) {
-      console.error('[Rules] ❌ Failed to create rule:', error);
+      console.error('[Rules] ERROR: Failed to create rule:', error);
       return {
         success: false,
         error: error.message || translations.errors.createRule[currentLang],
@@ -256,11 +256,11 @@ class RulesService {
 
       const result = data[0] as CastVoteResult;
 
-      console.log('[Rules] ✅ Vote cast:', result);
+      console.log('[Rules] OK: Vote cast:', result);
 
       return { success: true, result };
     } catch (error: any) {
-      console.error('[Rules] ❌ Failed to cast vote:', error);
+      console.error('[Rules] ERROR: Failed to cast vote:', error);
       return {
         success: false,
         error: error.message || translations.errors.castVote[currentLang],
@@ -283,11 +283,11 @@ class RulesService {
 
       const result = data[0] as FinalizeVoteResult;
 
-      console.log('[Rules] ✅ Voting finalized:', result);
+      console.log('[Rules] OK: Voting finalized:', result);
 
       return { success: true, result };
     } catch (error: any) {
-      console.error('[Rules] ❌ Failed to finalize voting:', error);
+      console.error('[Rules] ERROR: Failed to finalize voting:', error);
       return {
         success: false,
         error: error.message || translations.errors.finalize[currentLang],
@@ -310,11 +310,11 @@ class RulesService {
 
       if (error) throw error;
 
-      console.log('[Rules] ✅ Rule archived:', ruleId);
+      console.log('[Rules] OK: Rule archived:', ruleId);
 
       return { success: true };
     } catch (error: any) {
-      console.error('[Rules] ❌ Failed to archive rule:', error);
+      console.error('[Rules] ERROR: Failed to archive rule:', error);
       return {
         success: false,
         error: error.message || translations.errors.archive[currentLang],
@@ -352,7 +352,7 @@ class RulesService {
 
       return enriched;
     } catch (error) {
-      console.error('[Rules] ❌ Failed to fetch votes:', error);
+      console.error('[Rules] ERROR: Failed to fetch votes:', error);
       return [];
     }
   }
@@ -401,7 +401,7 @@ class RulesService {
         recent_rules: stats.recent_rules || [],
       };
     } catch (error) {
-      console.error('[Rules] ❌ Failed to get stats:', error);
+      console.error('[Rules] ERROR: Failed to get stats:', error);
       return {
         total_active: 0,
         total_voting: 0,

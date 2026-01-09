@@ -581,7 +581,7 @@ export function generateMaintenanceAlertHTML(data: MaintenanceAlertData): string
 
 export async function sendMaintenanceAlert(data: MaintenanceAlertData): Promise<{ success: boolean; messageId?: string; error?: string }> {
   const html = generateMaintenanceAlertHTML(data);
-  const priorityPrefix = data.priority === 'urgent' ? '🚨 URGENT: ' : data.priority === 'high' ? '⚠️ ' : '';
+  const priorityPrefix = data.priority === 'urgent' ? '[URGENT] ' : data.priority === 'high' ? '[Important] ' : '';
 
   return sendEmail({
     to: data.ownerEmail,
@@ -636,10 +636,10 @@ export function generateDailyDigestHTML(data: DailyDigestData): string {
     : 0;
 
   const alertIcons: Record<string, string> = {
-    payment_overdue: '💰',
-    lease_expiring: '📋',
-    maintenance_urgent: '🔧',
-    application_pending: '👤',
+    payment_overdue: '•',
+    lease_expiring: '•',
+    maintenance_urgent: '•',
+    application_pending: '•',
   };
 
   const alertsHTML = data.alerts.length > 0
@@ -649,7 +649,7 @@ export function generateDailyDigestHTML(data: DailyDigestData): string {
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td width="40" valign="top">
-                <span style="font-size: 20px;">${alertIcons[alert.type] || '⚠️'}</span>
+                <span style="font-size: 20px;">${alertIcons[alert.type] || '•'}</span>
               </td>
               <td>
                 <strong style="color: #1f2937; font-size: 14px;">${escapeHtml(alert.title)}</strong><br>
@@ -818,7 +818,7 @@ export function generateDailyDigestHTML(data: DailyDigestData): string {
                 <tr>
                   <td>
                     <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #10b981;">
-                      💰 Paiements récents
+                      Paiements récents
                     </h3>
                     <table width="100%" cellpadding="0" cellspacing="0" style="background: #fafafa; border-radius: 12px;">
                       ${paymentsHTML}
