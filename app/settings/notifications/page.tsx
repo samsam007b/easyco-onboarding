@@ -138,7 +138,7 @@ export default function NotificationsPage() {
           </Button>
 
           <div className="flex items-center gap-4 mb-2">
-            <div className="w-16 h-16 superellipse-2xl bg-gradient-to-br from-searcher-200/70 to-searcher-200/70 flex items-center justify-center shadow-sm">
+            <div className="w-16 h-16 superellipse-2xl bg-searcher-200/70 flex items-center justify-center shadow-sm">
               <Bell className="w-8 h-8 text-gray-700" />
             </div>
             <div>
@@ -171,7 +171,7 @@ export default function NotificationsPage() {
           className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-searcher-100 to-searcher-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-searcher-100 flex items-center justify-center">
               <Smartphone className="w-6 h-6 text-gray-700" />
             </div>
             <div className="flex-1">
@@ -372,7 +372,7 @@ export default function NotificationsPage() {
           className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-searcher-100 to-searcher-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-searcher-100 flex items-center justify-center">
               <Users className="w-6 h-6 text-gray-700" />
             </div>
             <div>
@@ -419,7 +419,7 @@ export default function NotificationsPage() {
           <Button
             onClick={handleSaveSettings}
             disabled={isSaving}
-            className="w-full superellipse-xl bg-gradient-to-r from-searcher-200/70 to-searcher-200/70 text-gray-900 hover:from-searcher-300/70 hover:to-searcher-300/70"
+            className="w-full superellipse-xl bg-searcher-200/70 hover:bg-searcher-300/70 text-gray-900"
           >
             {isSaving ? (t?.buttons?.saving?.[language] || 'Saving...') : (t?.buttons?.save?.[language] || 'Save changes')}
           </Button>
