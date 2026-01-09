@@ -186,7 +186,7 @@ export function trackEvent(
 
   // Don't track in development mode
   if (process.env.NODE_ENV === 'development') {
-    console.log('📊 [Analytics]', eventName, sanitizedProperties);
+    console.log('[STATS] [Analytics]', eventName, sanitizedProperties);
     return;
   }
 

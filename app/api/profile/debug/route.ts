@@ -69,14 +69,14 @@ export async function GET() {
         totalFields: libCompletion.totalFields,
         missingFields: libCompletion.missingFields,
         sections: libCompletion.sections,
-        note: '🎯 This is what dashboard/header shows'
+        note: '[TARGET] This is what dashboard/header shows'
       },
       pageCompletion: {
         completed,
         total,
         percentage: pagePercentage,
         details: pageCompletionDetails,
-        note: '📄 This is what /profile page shows'
+        note: '[INFO] This is what /profile page shows'
       },
       rawProfileData: profileData
     });

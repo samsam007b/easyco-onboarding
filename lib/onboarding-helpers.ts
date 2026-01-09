@@ -276,12 +276,12 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     }
 
     // Upsert to user_profiles (insert or update)
-    // 🔍 DETAILED LOGGING FOR DEBUGGING
+    // [DEBUG] DETAILED LOGGING FOR DEBUGGING
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('🔍 UPSERT ATTEMPT - saveOnboardingData Helper');
-    console.log('🆔 User ID:', userId);
-    console.log('📦 User Type:', userType);
-    console.log('📝 Profile Data:', JSON.stringify(profileData, null, 2));
+    console.log('[DEBUG] UPSERT ATTEMPT - saveOnboardingData Helper');
+    console.log('[ID] User ID:', userId);
+    console.log('[SECTION] User Type:', userType);
+    console.log('[DATA] Profile Data:', JSON.stringify(profileData, null, 2));
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     const { error: profileError } = await supabase
@@ -291,18 +291,18 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
       })
 
     if (profileError) {
-      console.error('❌ PROFILE SAVE ERROR:', {
+      console.error('[ERROR] PROFILE SAVE ERROR:', {
         code: profileError.code,
         message: profileError.message,
         details: profileError.details,
         hint: profileError.hint,
       });
-      console.error('📝 Data that caused error:', profileData);
+      console.error('[DATA] Data that caused error:', profileData);
       console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       throw profileError
     }
 
-    console.log('✅ UPSERT SUCCESS');
+    console.log('[OK] UPSERT SUCCESS');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     // Save verification data if present

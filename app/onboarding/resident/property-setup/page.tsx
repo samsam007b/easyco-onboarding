@@ -138,7 +138,7 @@ export default function ResidentPropertySetupPage() {
         throw createError;
       }
 
-      console.log('✅ Property + Membership created:', result);
+      console.log('[OK] Property + Membership created:', result);
 
       // Extract property and membership from result
       const property = result.property;
@@ -172,7 +172,7 @@ export default function ResidentPropertySetupPage() {
       // Show Main Resident welcome modal
       setShowMainResidentWelcome(true);
     } catch (error: any) {
-      console.error('❌ Error creating property:', error);
+      console.error('[ERROR] Error creating property:', error);
       toast.error(`${t('residentOnboarding.propertySetup.errors.error')}: ${error.message || t('residentOnboarding.propertySetup.errors.unknown')}`);
       setIsSubmitting(false);
     }
@@ -215,11 +215,11 @@ export default function ResidentPropertySetupPage() {
         .single();
 
       if (memberError) {
-        console.error('❌ Error creating membership:', memberError);
+        console.error('[ERROR] Error creating membership:', memberError);
         throw memberError;
       }
 
-      console.log('✅ Membership created:', membershipData);
+      console.log('[OK] Membership created:', membershipData);
 
       // Store property info in sessionStorage
       sessionStorage.setItem('currentProperty', JSON.stringify({
@@ -245,7 +245,7 @@ export default function ResidentPropertySetupPage() {
       // Show Resident welcome modal
       setShowResidentWelcome(true);
     } catch (error: any) {
-      console.error('❌ Error joining property:', error);
+      console.error('[ERROR] Error joining property:', error);
       toast.error(`${t('residentOnboarding.propertySetup.errors.error')}: ${error.message || t('residentOnboarding.propertySetup.errors.unknown')}`);
       setIsSubmitting(false);
     }

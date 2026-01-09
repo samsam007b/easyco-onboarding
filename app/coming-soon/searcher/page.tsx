@@ -155,14 +155,7 @@ export default function SearcherComingSoon() {
             variants={itemVariants}
             className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-900 mb-4"
           >
-            {t?.title?.[language] || 'Coming Soon!'}{' '}
-            <motion.span
-              animate={{ rotate: [0, 10, -10, 0] }}
-              transition={{ duration: 0.5, repeat: Infinity, repeatDelay: 2 }}
-              className="inline-block"
-            >
-              🚀
-            </motion.span>
+            {t?.title?.[language] || 'Coming Soon!'}
           </motion.h1>
 
           <motion.p
@@ -307,7 +300,7 @@ export default function SearcherComingSoon() {
                   animate={{ scale: 1, opacity: 1 }}
                   className="bg-white/20 backdrop-blur-sm superellipse-2xl p-6 max-w-md mx-auto"
                 >
-                  <p className="text-xl font-bold">{t?.waitlist?.success?.title?.[language] || '✅ Thanks! You\'re on the list!'}</p>
+                  <p className="text-xl font-bold">{t?.waitlist?.success?.title?.[language] || 'Thanks! You\'re on the list!'}</p>
                   <p className="text-white/90 mt-2">
                     {t?.waitlist?.success?.message?.[language] || 'We\'ll contact you as soon as the marketplace opens.'}
                   </p>

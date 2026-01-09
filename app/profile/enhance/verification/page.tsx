@@ -204,9 +204,9 @@ export default function VerificationPage() {
           {badgeLevel !== 'premium' && (
             <div className="mt-4 p-3 bg-white/50 superellipse-lg border border-gray-200">
               <p className="text-xs font-medium text-gray-700">
-                {badgeLevel === 'starter' && `✨ ${t('profileEnhance.verification.progress.nextBadge.starter')}`}
-                {badgeLevel === 'basic' && `✨ ${t('profileEnhance.verification.progress.nextBadge.basic')}`}
-                {badgeLevel === 'verified' && `✨ ${t('profileEnhance.verification.progress.nextBadge.verified')}`}
+                {badgeLevel === 'starter' && t('profileEnhance.verification.progress.nextBadge.starter')}
+                {badgeLevel === 'basic' && t('profileEnhance.verification.progress.nextBadge.basic')}
+                {badgeLevel === 'verified' && t('profileEnhance.verification.progress.nextBadge.verified')}
               </p>
             </div>
           )}

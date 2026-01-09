@@ -77,10 +77,10 @@ export default function PropertyDetailGuestExample({ isAuthenticated }: { isAuth
               </div>
               <p className="text-sm text-gray-500 mt-1">Propriétaire vérifié ✓</p>
               <p className="text-sm text-gray-600 mt-2">
-                📧 marie.dupont@example.com
+                marie.dupont@example.com
               </p>
               <p className="text-sm text-gray-600">
-                📞 +32 470 12 34 56
+                +32 470 12 34 56
               </p>
             </div>
           </div>

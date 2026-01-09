@@ -80,13 +80,13 @@ export async function POST(request: NextRequest) {
     // Use native upsert instead of manual INSERT/UPDATE logic
     // This avoids 400 errors from NOT NULL constraints
 
-    // 🔍 DETAILED LOGGING FOR DEBUGGING
+    // [DEBUG] DETAILED LOGGING FOR DEBUGGING
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log('🔍 UPSERT ATTEMPT - Profile Enhance API');
-    console.log('📧 User:', user.email);
-    console.log('🆔 User ID:', user.id);
-    console.log('📦 Section:', section);
-    console.log('📝 Update Data:', JSON.stringify(updateData, null, 2));
+    console.log('[DEBUG] UPSERT ATTEMPT - Profile Enhance API');
+    console.log('[EMAIL] User:', user.email);
+    console.log('[ID] User ID:', user.id);
+    console.log('[SECTION] Section:', section);
+    console.log('[DATA] Update Data:', JSON.stringify(updateData, null, 2));
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     const result = await supabase
@@ -103,7 +103,7 @@ export async function POST(request: NextRequest) {
       );
 
     if (result.error) {
-      console.error('❌ DATABASE ERROR:', {
+      console.error('[ERROR] DATABASE ERROR:', {
         message: result.error.message,
         details: result.error.details,
         hint: result.error.hint,
@@ -121,7 +121,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('✅ UPSERT SUCCESS');
+    console.log('[OK] UPSERT SUCCESS');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     return NextResponse.json({ success: true });

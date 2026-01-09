@@ -38,7 +38,7 @@ async function loadTranslations(lang: Language): Promise<Translations> {
     return translationsCache[lang]!;
   }
 
-  console.log(`📦 Loading ${lang} translations dynamically...`);
+  console.log(`[SECTION] Loading ${lang} translations dynamically...`);
 
   try {
     // Dynamic import - only loads the requested language
@@ -54,10 +54,10 @@ async function loadTranslations(lang: Language): Promise<Translations> {
     // Cache it
     translationsCache[lang] = translations;
 
-    console.log(`✅ ${lang} translations loaded`);
+    console.log(`[OK] ${lang} translations loaded`);
     return translations;
   } catch (error) {
-    console.error(`❌ Failed to load ${lang} translations:`, error);
+    console.error(`[ERROR] Failed to load ${lang} translations:`, error);
     // Fallback to FR
     if (lang !== 'fr') {
       return loadTranslations('fr');

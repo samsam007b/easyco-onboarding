@@ -431,7 +431,7 @@ async function createGroqStreamResponse(messages: ChatMessage[], metadata: any) 
  */
 function createErrorStreamResponse(errorMessage: string, lang: Language = 'fr') {
   const retryMessage = apiT('assistant.retryOrContact', lang);
-  const userFriendlyMessage = `⚠️ ${errorMessage}\n\n${retryMessage}`;
+  const userFriendlyMessage = `[WARN] ${errorMessage}\n\n${retryMessage}`;
   return createManualSSEResponse(userFriendlyMessage, { provider: 'error' });
 }
 

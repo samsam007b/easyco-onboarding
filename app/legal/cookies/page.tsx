@@ -232,25 +232,25 @@ export default function CookiePolicyPage() {
             <div className="space-y-4">
               <div className="bg-red-50 border-2 border-red-200 superellipse-xl p-4">
                 <p className="text-gray-700">
-                  <strong className="text-red-700">⚠️ {cookies.types.essential.title}:</strong>{' '}
+                  <strong className="text-red-700">{cookies.types.essential.title}:</strong>{' '}
                   {cookies.impact.essential}
                 </p>
               </div>
               <div className="bg-yellow-50 border-2 border-yellow-200 superellipse-xl p-4">
                 <p className="text-gray-700">
-                  <strong className="text-yellow-700">⚡ {cookies.types.functional.title}:</strong>{' '}
+                  <strong className="text-yellow-700">{cookies.types.functional.title}:</strong>{' '}
                   {cookies.impact.functional}
                 </p>
               </div>
               <div className="bg-blue-50 border-2 border-blue-200 superellipse-xl p-4">
                 <p className="text-gray-700">
-                  <strong className="text-blue-700">📊 {cookies.types.analytics.title}:</strong>{' '}
+                  <strong className="text-blue-700">{cookies.types.analytics.title}:</strong>{' '}
                   {cookies.impact.analytics}
                 </p>
               </div>
               <div className="bg-purple-50 border-2 border-purple-200 superellipse-xl p-4">
                 <p className="text-gray-700">
-                  <strong className="text-purple-700">📢 {cookies.types.marketing.title}:</strong>{' '}
+                  <strong className="text-purple-700">{cookies.types.marketing.title}:</strong>{' '}
                   {cookies.impact.marketing}
                 </p>
               </div>

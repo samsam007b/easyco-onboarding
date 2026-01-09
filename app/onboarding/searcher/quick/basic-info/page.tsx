@@ -115,11 +115,11 @@ export default function QuickBasicInfoPage() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (user) {
-        // 🔍 DETAILED LOGGING FOR DEBUGGING
+        // [DEBUG] DETAILED LOGGING FOR DEBUGGING
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-        console.log('🔍 UPSERT ATTEMPT - Quick Onboarding Basic Info');
-        console.log('🆔 User ID:', user.id);
-        console.log('📝 Data:', {
+        console.log('[DEBUG] UPSERT ATTEMPT - Quick Onboarding Basic Info');
+        console.log('[ID] User ID:', user.id);
+        console.log('[DATA] Data:', {
           user_id: user.id,
           first_name: firstName.trim(),
           last_name: lastName.trim(),
@@ -143,7 +143,7 @@ export default function QuickBasicInfoPage() {
           );
 
         if (error) {
-          console.error('❌ UPSERT ERROR:', {
+          console.error('[ERROR] UPSERT ERROR:', {
             message: error.message,
             details: error.details,
             hint: error.hint,
@@ -152,7 +152,7 @@ export default function QuickBasicInfoPage() {
           throw error;
         }
 
-        console.log('✅ UPSERT SUCCESS');
+        console.log('[OK] UPSERT SUCCESS');
         console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
       }
 

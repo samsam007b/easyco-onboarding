@@ -44,7 +44,7 @@ const AssistantActionProvider = dynamic(
 
 // IMPORTANT: Ne pas mettre force-dynamic ici sauf si absolument nécessaire
 // Cela désactive le cache Next.js et ralentit toutes les pages
-// export const dynamic = 'force-dynamic' // ❌ SUPPRIMÉ pour meilleures performances
+// export const dynamic = 'force-dynamic' // REMOVED for better performance
 
 export const metadata: Metadata = {
   title: "Izzico — Co-living fiable et compatible en Belgique",

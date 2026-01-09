@@ -7693,9 +7693,9 @@ export const translations = {
         success: {
           title: {
             fr: 'Merci ! Tu es sur la liste !',
-            en: '✅ Thanks! You\'re on the list!',
-            nl: '✅ Bedankt! Je staat op de lijst!',
-            de: '✅ Danke! Sie sind auf der Liste!',
+            en: 'Thanks! You\'re on the list!',
+            nl: 'Bedankt! Je staat op de lijst!',
+            de: 'Danke! Sie sind auf der Liste!',
           },
           message: {
             fr: 'Nous te contacterons dès l\'ouverture de la marketplace.',
@@ -16549,9 +16549,9 @@ export const translations = {
     personality: {
       title: {
         fr: 'Ta Personnalité',
-        en: 'Your Personality 💫',
-        nl: 'Je Persoonlijkheid 💫',
-        de: 'Ihre Persönlichkeit 💫',
+        en: 'Your Personality',
+        nl: 'Je Persoonlijkheid',
+        de: 'Ihre Persönlichkeit',
       },
       subtitle: {
         fr: 'Aide-nous à t\'associer à des résidents compatibles',

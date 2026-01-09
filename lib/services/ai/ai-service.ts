@@ -119,7 +119,7 @@ class AIService {
     const limit = DAILY_LIMITS[provider];
     const percentage = Math.round((usage.count / limit) * 100);
 
-    console.log(`[AI] 📊 ${provider}: ${usage.count}/${limit} (${percentage}%)`);
+    console.log(`[AI] [STATS] ${provider}: ${usage.count}/${limit} (${percentage}%)`);
 
     // Audit log (no sensitive data)
     auditLog('ai_call', provider, {

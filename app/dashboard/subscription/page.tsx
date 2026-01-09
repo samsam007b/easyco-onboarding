@@ -170,11 +170,11 @@ export default function SubscriptionPage() {
 
       if (error) throw error;
 
-      alert('✅ Votre abonnement sera annulé à la fin de la période en cours.');
+      alert(' Votre abonnement sera annulé à la fin de la période en cours.');
       loadData(); // Refresh data
     } catch (error) {
       console.error('Error canceling subscription:', error);
-      alert('❌ Erreur lors de l\'annulation. Veuillez réessayer.');
+      alert(' Erreur lors de l\'annulation. Veuillez réessayer.');
     }
   };
 
@@ -192,11 +192,11 @@ export default function SubscriptionPage() {
 
       if (error) throw error;
 
-      alert('✅ Votre abonnement a été réactivé !');
+      alert(' Votre abonnement a été réactivé !');
       loadData(); // Refresh data
     } catch (error) {
       console.error('Error reactivating subscription:', error);
-      alert('❌ Erreur lors de la réactivation. Veuillez réessayer.');
+      alert(' Erreur lors de la réactivation. Veuillez réessayer.');
     }
   };
 

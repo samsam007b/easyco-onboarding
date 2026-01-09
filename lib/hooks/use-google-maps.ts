@@ -128,7 +128,7 @@ export function useGoogleMaps(): UseGoogleMapsReturn {
         setLoaded(true);
         setError(null);
 
-        console.log('✅ Google Maps API loaded successfully');
+        console.log('[OK] Google Maps API loaded successfully');
 
         // Notify all waiting callbacks
         callbacks.forEach(cb => cb(true));

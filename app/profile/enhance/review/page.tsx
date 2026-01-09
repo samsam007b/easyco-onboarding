@@ -158,7 +158,7 @@ export default function EnhanceReviewPage() {
       />
 
       {!hasAnyData ? (
-        <EnhanceProfileInfoBox role="searcher" icon="⚠️">
+        <EnhanceProfileInfoBox role="searcher" icon="AlertTriangle">
           <div className="flex items-start gap-3">
             <AlertCircle className="w-5 h-5 text-orange-600 flex-shrink-0 mt-0.5" />
             <p className="text-gray-700">

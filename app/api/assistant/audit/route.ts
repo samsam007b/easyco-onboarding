@@ -213,8 +213,8 @@ async function runSingleTest(testCase: TestCase): Promise<TestResult> {
   }
 
   const verdict = success
-    ? '✅ CORRECT'
-    : `❌ Expected ${testCase.expectedLayer}, got ${actualProvider}`;
+    ? '[OK] CORRECT'
+    : `[ERROR] Expected ${testCase.expectedLayer}, got ${actualProvider}`;
 
   return {
     question: testCase.question.substring(0, 80) + (testCase.question.length > 80 ? '...' : ''),
@@ -414,22 +414,22 @@ export async function GET(request: Request) {
   const recommendations: string[] = [];
 
   if (summary.by_layer.faq.wrong > 0) {
-    recommendations.push('⚠️ Some FAQ questions are escaping to AI - review FAQ patterns');
+    recommendations.push('[WARN] Some FAQ questions are escaping to AI - review FAQ patterns');
   }
   if (summary.by_layer.groq.wrong > 0 && summary.providers_used['faq'] > 0) {
-    recommendations.push('⚠️ Some moderate questions are being handled by FAQ - may need complexity tuning');
+    recommendations.push('[WARN] Some moderate questions are being handled by FAQ - may need complexity tuning');
   }
   if (!config.gemini_configured) {
-    recommendations.push('💡 Consider adding Gemini for better fallback (cheaper than OpenAI)');
+    recommendations.push('[TIP] Consider adding Gemini for better fallback (cheaper than OpenAI)');
   }
   if (!config.openai_configured) {
-    recommendations.push('💡 Consider adding OpenAI for handling complex escalations');
+    recommendations.push('[TIP] Consider adding OpenAI for handling complex escalations');
   }
   if (summary.avg_latency_ms > 2000) {
-    recommendations.push('⚠️ Average latency is high (>2s) - consider optimizing');
+    recommendations.push('[WARN] Average latency is high (>2s) - consider optimizing');
   }
   if (summary.passed === summary.total_tests && summary.total_tests > 0) {
-    recommendations.push('✅ All tests passed! Cascade system is working correctly');
+    recommendations.push('[OK] All tests passed! Cascade system is working correctly');
   }
 
   const auditDuration = Date.now() - auditStart;

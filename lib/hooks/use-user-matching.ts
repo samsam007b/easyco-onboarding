@@ -279,8 +279,8 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
           if (process.env.NODE_ENV === 'development') {
             const { profileCompleteness, isScoreReliable } = compatibilityResult;
             console.log(`[Matching] ${mappedUser.first_name}: Score ${compatibilityResult.score}% | Reliable: ${isScoreReliable}`, {
-              '⚠️ SCORE_RELIABLE': isScoreReliable,
-              '👤 TON PROFIL': {
+              '[WARN] SCORE_RELIABLE': isScoreReliable,
+              '[USER] TON PROFIL': {
                 completeness: `${profileCompleteness.user1.percentage}% (${profileCompleteness.user1.filledFields}/${profileCompleteness.user1.totalFields} champs)`,
                 isComplete: profileCompleteness.user1.isComplete,
                 missingCategories: profileCompleteness.user1.missingCategories,
@@ -294,7 +294,7 @@ export function useUserMatching(currentUserId: string, context: SwipeContext) {
                   pets: currentUserProfile.pets,
                 },
               },
-              '🎯 LEUR PROFIL': {
+              '[TARGET] LEUR PROFIL': {
                 name: mappedUser.first_name,
                 completeness: `${profileCompleteness.user2.percentage}% (${profileCompleteness.user2.filledFields}/${profileCompleteness.user2.totalFields} champs)`,
                 isComplete: profileCompleteness.user2.isComplete,

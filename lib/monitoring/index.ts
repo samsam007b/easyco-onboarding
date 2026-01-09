@@ -38,9 +38,9 @@ export async function initializeMonitoring(): Promise<void> {
     // Exemple: Vérifier que les tables existent
     // Exemple: Charger les configurations depuis la DB
 
-    console.log('[MONITORING] ✅ Monitoring systems initialized successfully');
+    console.log('[MONITORING] [OK] Monitoring systems initialized successfully');
   } catch (error) {
-    console.error('[MONITORING] ❌ Failed to initialize monitoring systems:', error);
+    console.error('[MONITORING] [ERROR] Failed to initialize monitoring systems:', error);
     throw error;
   }
 }
@@ -60,9 +60,9 @@ export async function shutdownMonitoring(): Promise<void> {
     errorTracker.stopAutoFlush();
     routeMonitor.stopAutoFlush();
 
-    console.log('[MONITORING] ✅ Monitoring systems shut down successfully');
+    console.log('[MONITORING] [OK] Monitoring systems shut down successfully');
   } catch (error) {
-    console.error('[MONITORING] ❌ Failed to shut down monitoring systems:', error);
+    console.error('[MONITORING] [ERROR] Failed to shut down monitoring systems:', error);
   }
 }
 

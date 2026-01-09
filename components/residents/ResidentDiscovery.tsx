@@ -176,7 +176,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
     return (
       <div className="bg-white/80 backdrop-blur-sm superellipse-3xl p-12 border border-gray-200 text-center">
         <div className="max-w-md mx-auto">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-resident-100 to-resident-100 flex items-center justify-center mx-auto mb-4">
+          <div className="w-20 h-20 rounded-full bg-resident-100 flex items-center justify-center mx-auto mb-4">
             <Users className="w-10 h-10 text-gray-600" />
           </div>
           <h3 className="text-2xl font-bold text-gray-900 mb-2">
@@ -194,7 +194,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                 setLikedProfiles([]);
                 setPassedProfiles([]);
               }}
-              className="rounded-full bg-gradient-to-r from-resident-200/70 to-resident-200/70 text-gray-900"
+              className="rounded-full bg-resident-200/70 hover:bg-resident-300/70 text-gray-900"
             >
               Recommencer
             </Button>
@@ -217,7 +217,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
             Trouvez le colocataire parfait pour votre résidence
           </p>
         </div>
-        <Badge className="bg-gradient-to-r from-resident-100 to-resident-100 text-gray-800 border-resident-200">
+        <Badge className="bg-resident-100 text-gray-800 border-resident-200">
           {currentIndex + 1} / {searchers.length}
         </Badge>
       </div>
@@ -236,7 +236,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
             >
               <div className="bg-white superellipse-3xl shadow-2xl overflow-hidden border-2 border-gray-200">
                 {/* Image/Avatar Section */}
-                <div className="relative h-80 bg-gradient-to-br from-resident-200 to-resident-200">
+                <div className="relative h-80 bg-resident-200">
                   {currentSearcher.avatar_url ? (
                     <img
                       src={currentSearcher.avatar_url}
@@ -342,7 +342,7 @@ export default function ResidentDiscovery({ propertyId }: ResidentDiscoveryProps
                           {currentSearcher.onboarding_data.interests.map((interest, i) => (
                             <Badge
                               key={i}
-                              className="bg-gradient-to-r from-resident-100 to-resident-100 text-gray-800 border-resident-200"
+                              className="bg-resident-100 text-gray-800 border-resident-200"
                             >
                               {interest}
                             </Badge>

@@ -150,9 +150,9 @@ function analyzeQuestion(question: string, category: string, expectedType: strin
 
     // Verdict
     verdict: expectedType === 'faq'
-      ? (would_use_faq ? '✅ CORRECT' : '❌ SHOULD USE FAQ')
+      ? (would_use_faq ? '[OK] CORRECT' : '[ERROR] SHOULD USE FAQ')
       : expectedType === 'ai'
-        ? (!would_use_faq ? '✅ CORRECT' : '❌ SHOULD USE AI')
-        : '⚪ EDGE CASE',
+        ? (!would_use_faq ? '[OK] CORRECT' : '[ERROR] SHOULD USE AI')
+        : '[EDGE] EDGE CASE',
   };
 }

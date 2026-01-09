@@ -98,7 +98,7 @@ class ExpenseService {
     form: CreateExpenseForm,
     splitConfig: SplitConfig
   ): Promise<{ success: boolean; expense?: Expense; error?: string }> {
-    console.log('[Expense] 🚀 createExpense called with:', {
+    console.log('[Expense] [START] createExpense called with:', {
       propertyId,
       userId,
       title: form.title,

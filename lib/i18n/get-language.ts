@@ -557,10 +557,10 @@ export const hookTranslations = {
       de: 'Fehler: Fehlende Daten',
     },
     expenseCreated: {
-      fr: 'Dépense créée avec succès ! 🎉',
-      en: 'Expense created successfully! 🎉',
-      nl: 'Uitgave succesvol aangemaakt! 🎉',
-      de: 'Ausgabe erfolgreich erstellt! 🎉',
+      fr: 'Dépense créée avec succès !',
+      en: 'Expense created successfully!',
+      nl: 'Uitgave succesvol aangemaakt!',
+      de: 'Ausgabe erfolgreich erstellt!',
     },
     expenseCreateFailed: {
       fr: 'Erreur lors de la création de la dépense',

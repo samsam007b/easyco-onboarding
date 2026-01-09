@@ -123,8 +123,8 @@ class OCRService {
    */
   async scanReceipt(imageFile: File): Promise<OCRResult> {
     try {
-      console.log('[OCR] 📸 Starting receipt scan...');
-      console.log('[OCR] 📄 File details:', {
+      console.log('[OCR] [START] Starting receipt scan...');
+      console.log('[OCR] [INFO] File details:', {
         name: imageFile.name,
         size: imageFile.size,
         type: imageFile.type,
@@ -166,7 +166,7 @@ class OCRService {
 
       const duration = Date.now() - startTime;
       console.log(`[OCR] OK: Scan completed in ${duration}ms`);
-      console.log(`[OCR] 📊 Confidence: ${data.confidence.toFixed(1)}%`);
+      console.log(`[OCR] [STATS] Confidence: ${data.confidence.toFixed(1)}%`);
       console.log(`[OCR] TEXT: Text length: ${data.text.length} characters`);
 
       // Extract structured data from raw text

@@ -208,7 +208,7 @@ export const MOCK_EVENTS: Event[] = [
     title: 'Expo Van Gogh Immersive Experience',
     description:
       "Découvre l'univers de Van Gogh comme jamais auparavant ! Cette exposition immersive utilise la technologie de projection à 360° pour te plonger dans les peintures iconiques de l'artiste. Marche à travers La Nuit Étoilée, Les Tournesols et bien plus. Une expérience sensorielle unique avec musique originale.",
-    short_description: 'Immersion totale dans l\'univers de Van Gogh 🎨',
+    short_description: 'Immersion totale dans l\'univers de Van Gogh',
     category_id: 'cat-2',
     category: MOCK_CATEGORIES[1],
     city: 'Bruxelles',
@@ -247,10 +247,10 @@ export const MOCK_EVENTS: Event[] = [
   {
     id: 'evt-4',
     event_type: 'property',
-    title: '🍕 Pizza Party - Maison Izzico',
+    title: 'Pizza Party - Maison Izzico',
     description:
       "C'est l'heure de se retrouver autour d'une bonne pizza faite maison ! On se retrouve dans le salon pour cuisiner ensemble, rigoler et mieux se connaître. Chacun apporte sa garniture préférée et on teste des combinaisons délirantes. Soirée jeux de société après le repas !",
-    short_description: 'Soirée conviviale entre colocataires 🎉',
+    short_description: 'Soirée conviviale entre colocataires',
     category_id: 'cat-5',
     category: MOCK_CATEGORIES[4],
     city: 'Bruxelles',
@@ -482,10 +482,10 @@ export const MOCK_EVENTS: Event[] = [
   {
     id: 'evt-10',
     event_type: 'community',
-    title: '🏠 Izzico Community Meetup',
+    title: 'Izzico Community Meetup',
     description:
       "Rejoins la communauté Izzico pour une soirée networking exclusivement réservée aux membres ! Rencontre d'autres résidents et searchers, partage tes expériences de co-living et fais-toi de nouveaux potes. Cocktails offerts, DJ set et animations surprises. Event organisé par l'équipe Izzico.",
-    short_description: 'Networking exclusif membres Izzico 💫',
+    short_description: 'Networking exclusif membres Izzico',
     category_id: 'cat-10',
     category: MOCK_CATEGORIES[9],
     city: 'Bruxelles',

@@ -156,7 +156,7 @@ async function extractTextWithVision(
       return { success: false, error: 'No text detected in image', latencyMs };
     }
 
-    console.log('[CloudVision] ✅ Text extracted:', {
+    console.log('[CloudVision] [OK] Text extracted:', {
       length: extractedText.length,
       preview: extractedText.substring(0, 100) + '...',
       latencyMs,
@@ -263,7 +263,7 @@ OTHER RULES:
       };
     }
 
-    console.log('[Gemini] ✅ Text structured:', {
+    console.log('[Gemini] [OK] Text structured:', {
       merchant: parsed.merchant,
       total: parsed.total,
       itemCount: parsed.items?.length || 0,
@@ -392,7 +392,7 @@ OTHER RULES:
       };
     }
 
-    console.log('[Gemini] ✅ Receipt analyzed:', {
+    console.log('[Gemini] [OK] Receipt analyzed:', {
       merchant: parsed.merchant,
       total: parsed.total,
       itemCount: parsed.items?.length || 0,
@@ -477,7 +477,7 @@ export async function POST(request: NextRequest) {
     // STRATEGY 1: Cloud Vision (OCR) + Gemini (text analysis) - CHEAPEST
     // ============================================================
     if (googleKey && canUseProvider('vision') && canUseProvider('gemini')) {
-      console.log('[API OCR] 💰 Trying cost-effective pipeline: Vision OCR + Gemini text...');
+      console.log('[API OCR] [COST] Trying cost-effective pipeline: Vision OCR + Gemini text...');
 
       // Step 1: Extract text with Cloud Vision (cheap)
       const visionResult = await extractTextWithVision(imageBase64, googleKey);
@@ -491,7 +491,7 @@ export async function POST(request: NextRequest) {
         trackUsage('gemini');
 
         if (structuredResult.success) {
-          console.log('[API OCR] ✅ Cost-effective pipeline succeeded!');
+          console.log('[API OCR] [OK] Cost-effective pipeline succeeded!');
           // Add total latency
           structuredResult.latencyMs = (structuredResult.latencyMs || 0) + visionResult.latencyMs;
           return NextResponse.json(structuredResult);
@@ -508,12 +508,12 @@ export async function POST(request: NextRequest) {
     // STRATEGY 2: Gemini with image (more expensive fallback)
     // ============================================================
     if (googleKey && canUseProvider('gemini')) {
-      console.log('[API OCR] 📸 Falling back to Gemini with image (more expensive)...');
+      console.log('[API OCR] [IMAGE] Falling back to Gemini with image (more expensive)...');
       const result = await analyzeWithGemini(imageBase64, mimeType, googleKey);
       trackUsage('gemini');
 
       if (result.success) {
-        console.log('[API OCR] ✅ Gemini image analysis succeeded');
+        console.log('[API OCR] [OK] Gemini image analysis succeeded');
         return NextResponse.json(result);
       }
       geminiError = result.error || 'Unknown Gemini error';
