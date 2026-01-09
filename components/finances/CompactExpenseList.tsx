@@ -153,7 +153,7 @@ export default function CompactExpenseList({
                 <span
                   className={cn(
                     'text-xs px-1.5 py-0.5 rounded font-medium',
-                    'bg-orange-50 text-orange-600'
+                    'bg-resident-50 text-resident-600'
                   )}
                 >
                   {list?.yourShare || 'Ta part:'} €{(expense.your_share || 0).toFixed(0)}

@@ -175,7 +175,7 @@ export default function PropertyComparison({
         className="bg-white superellipse-3xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden"
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-orange-500 to-orange-600 text-white p-6">
+        <div className="bg-gradient-to-r from-searcher-500 to-searcher-600 text-white p-6">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -243,7 +243,7 @@ export default function PropertyComparison({
                       <Link href={`/properties/${property.id}`}>
                         <Button
                           size="sm"
-                          className="w-full bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white"
+                          className="w-full bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700 text-white"
                         >
                           Voir détails
                           <ArrowRight className="w-4 h-4 ml-1" />
@@ -258,11 +258,11 @@ export default function PropertyComparison({
               {comparisonRows.map((row, rowIndex) => (
                 <tr
                   key={rowIndex}
-                  className={`${rowIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-orange-50/30 transition`}
+                  className={`${rowIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-searcher-50/30 transition`}
                 >
                   <td className="p-4 border-b border-gray-200">
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 superellipse-lg bg-orange-100 flex items-center justify-center text-orange-600">
+                      <div className="w-8 h-8 superellipse-lg bg-searcher-100 flex items-center justify-center text-searcher-600">
                         {row.icon}
                       </div>
                       <span className="font-medium text-gray-900 text-sm">{row.label}</span>
@@ -286,7 +286,7 @@ export default function PropertyComparison({
         <div className="bg-gray-50 border-t border-gray-200 p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Sparkles className="w-4 h-4 text-orange-600" />
+              <Sparkles className="w-4 h-4 text-searcher-600" />
               <span>Les meilleures valeurs sont en <span className="text-green-600 font-semibold">vert</span></span>
             </div>
             <Button variant="outline" onClick={onClose}>

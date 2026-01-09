@@ -48,7 +48,7 @@ export default function RoomAestheticsDropdown({
           e.stopPropagation();
           onToggle();
         }}
-        className="w-full flex items-center justify-between text-xs text-gray-600 hover:text-orange-600 transition-colors py-1"
+        className="w-full flex items-center justify-between text-xs text-gray-600 hover:text-searcher-600 transition-colors py-1"
       >
         <div className="flex items-center gap-1.5">
           <Sparkles className="w-3.5 h-3.5" />
