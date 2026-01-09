@@ -126,7 +126,7 @@ export function EventCalendar({ events, onEventClick, onDateClick }: EventCalend
         {weekDays.map((day) => (
           <div
             key={day}
-            className="bg-gradient-to-r from-searcher-50 to-searcher-100/50 py-3 text-center text-sm font-semibold text-gray-700"
+            className="bg-searcher-50 py-3 text-center text-sm font-semibold text-gray-700"
           >
             {day}
           </div>

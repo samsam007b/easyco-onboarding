@@ -157,7 +157,7 @@ export default function DatePicker({
           className={cn(
             "h-7 w-7 rounded-full text-xs font-medium transition-all",
             isSelected
-              ? "bg-gradient-to-r from-searcher-600 to-searcher-700 text-white shadow-md scale-110"
+              ? "bg-searcher-600 text-white shadow-md scale-110"
               : isToday
               ? "bg-searcher-100 text-searcher-900 hover:bg-searcher-200"
               : isPast
