@@ -9,9 +9,9 @@ export type EnhanceRole = 'searcher' | 'owner' | 'resident';
 
 export const enhanceThemes = {
   searcher: {
-    gradient: 'from-searcher-600 via-searcher-500 to-searcher-400',
-    gradientBg: 'from-searcher-50 to-searcher-100',
     primary: 'hsl(var(--searcher-500))',
+    primaryColor: 'searcher-500',
+    primaryLight: 'searcher-50',
     focusRing: 'focus:ring-searcher-500',
     selectedBorder: 'border-searcher-500',
     selectedBg: 'bg-searcher-50',
@@ -22,9 +22,9 @@ export const enhanceThemes = {
     borderLight: 'border-searcher-200',
   },
   owner: {
-    gradient: 'from-owner-600 via-owner-500 to-owner-400',
-    gradientBg: 'from-owner-50 to-owner-100',
     primary: 'hsl(var(--owner-500))',
+    primaryColor: 'owner-500',
+    primaryLight: 'owner-50',
     focusRing: 'focus:ring-owner-500',
     selectedBorder: 'border-owner-500',
     selectedBg: 'bg-owner-50',
@@ -35,9 +35,9 @@ export const enhanceThemes = {
     borderLight: 'border-owner-200',
   },
   resident: {
-    gradient: 'from-resident-600 via-resident-500 to-resident-400',
-    gradientBg: 'from-resident-50 to-resident-100',
     primary: 'hsl(var(--resident-500))',
+    primaryColor: 'resident-500',
+    primaryLight: 'resident-50',
     focusRing: 'focus:ring-resident-500',
     selectedBorder: 'border-resident-500',
     selectedBg: 'bg-resident-50',
@@ -78,7 +78,7 @@ export default function EnhanceProfileLayout({
 
   if (isLoading) {
     return (
-      <div className={`min-h-screen bg-gradient-to-br ${theme.gradientBg} flex items-center justify-center`}>
+      <div className={`min-h-screen bg-${theme.primaryLight} flex items-center justify-center`}>
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 mt-4">{loadingText}</p>
@@ -88,7 +88,7 @@ export default function EnhanceProfileLayout({
   }
 
   return (
-    <main className={`min-h-screen bg-gradient-to-br ${theme.gradientBg} p-4 sm:p-6`}>
+    <main className={`min-h-screen bg-${theme.primaryLight} p-4 sm:p-6`}>
       <div className="max-w-3xl mx-auto">
         {/* Back Button */}
         <button
@@ -112,7 +112,7 @@ export default function EnhanceProfileLayout({
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className={`bg-gradient-to-r ${theme.gradient} h-2 rounded-full transition-all duration-300`}
+                className={`bg-${theme.primaryColor} h-2 rounded-full transition-all duration-300`}
                 style={{ width: `${(progress.current / progress.total) * 100}%` }}
               />
             </div>
