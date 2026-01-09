@@ -175,7 +175,7 @@ export default function PropertyComparison({
         className="bg-white superellipse-3xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden"
       >
         {/* Header */}
-        <div className="bg-gradient-to-r from-searcher-500 to-searcher-600 text-white p-6">
+        <div className="bg-searcher-600 text-white p-6">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -243,7 +243,7 @@ export default function PropertyComparison({
                       <Link href={`/properties/${property.id}`}>
                         <Button
                           size="sm"
-                          className="w-full bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700 text-white"
+                          className="w-full bg-searcher-500 hover:bg-searcher-600 text-white"
                         >
                           Voir détails
                           <ArrowRight className="w-4 h-4 ml-1" />

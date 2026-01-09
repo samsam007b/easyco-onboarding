@@ -233,7 +233,7 @@ export default function AddReviewModal({
               <Button
                 type="submit"
                 disabled={submitting || formData.rating === 0}
-                className="bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700 text-white"
+                className="bg-searcher-500 hover:bg-searcher-600 text-white"
               >
                 {submitting ? (
                   <div className="flex items-center gap-2">
