@@ -139,7 +139,7 @@ function SortableTicketCard({
       style={style}
       className={cn(
         "bg-white superellipse-xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer",
-        isDragging && "opacity-50 shadow-lg ring-2 ring-purple-400"
+        isDragging && "opacity-50 shadow-lg ring-2 ring-owner-400"
       )}
       onClick={onClick}
     >
@@ -236,7 +236,7 @@ function DragOverlayCard({ ticket }: { ticket: MaintenanceTicket }) {
   const priorityConfig = priorityColors[ticket.priority];
 
   return (
-    <div className="bg-white superellipse-xl border-2 border-purple-400 shadow-xl p-4 w-[280px]">
+    <div className="bg-white superellipse-xl border-2 border-owner-400 shadow-xl p-4 w-[280px]">
       <div className="flex items-center gap-2 mb-2">
         <Badge
           className={cn(
@@ -444,7 +444,7 @@ export function TicketKanbanBoard({
                     <div
                       className={cn(
                         "space-y-3 min-h-[300px] p-1 superellipse-lg transition-colors",
-                        activeId && "bg-purple-50/50 border-2 border-dashed border-purple-200"
+                        activeId && "bg-owner-50/50 border-2 border-dashed border-owner-200"
                       )}
                       data-column={column.id}
                     >

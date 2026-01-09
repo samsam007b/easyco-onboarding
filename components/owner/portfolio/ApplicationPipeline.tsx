@@ -166,7 +166,7 @@ function SortableApplicationCard({
       style={style}
       className={cn(
         'bg-white superellipse-xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer',
-        isDragging && 'opacity-50 shadow-lg ring-2 ring-purple-400'
+        isDragging && 'opacity-50 shadow-lg ring-2 ring-owner-400'
       )}
       onClick={onClick}
     >
@@ -209,7 +209,7 @@ function SortableApplicationCard({
                     {application.applicantName}
                   </p>
                   {application.type === 'group' && (
-                    <Badge className="bg-purple-100 text-purple-700 border-purple-200 text-[10px] px-1.5 py-0">
+                    <Badge className="bg-owner-100 text-owner-700 border-owner-200 text-[10px] px-1.5 py-0">
                       <Users className="w-3 h-3 mr-1" />
                       {application.groupSize || 2}
                     </Badge>
@@ -333,7 +333,7 @@ function SortableApplicationCard({
 // Drag Overlay Card
 function DragOverlayCard({ application }: { application: ApplicationData }) {
   return (
-    <div className="bg-white superellipse-xl border-2 border-purple-400 shadow-xl p-4 w-[280px]">
+    <div className="bg-white superellipse-xl border-2 border-owner-400 shadow-xl p-4 w-[280px]">
       <div className="flex items-center gap-2 mb-2">
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold"
@@ -548,7 +548,7 @@ export function ApplicationPipeline({
                     <div
                       className={cn(
                         'space-y-3 min-h-[300px] p-1 superellipse-lg transition-colors',
-                        activeId && 'bg-purple-50/50 border-2 border-dashed border-purple-200'
+                        activeId && 'bg-owner-50/50 border-2 border-dashed border-owner-200'
                       )}
                       data-column={column.id}
                     >

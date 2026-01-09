@@ -166,7 +166,7 @@ export function PropertyCard({
         className={cn(
           'flex items-center gap-4 p-4 bg-white superellipse-xl border border-gray-200',
           'hover:shadow-md hover:border-gray-300 transition-all cursor-pointer',
-          selected && 'ring-2 ring-purple-400 border-purple-300',
+          selected && 'ring-2 ring-owner-400 border-owner-300',
           className
         )}
       >
@@ -179,7 +179,7 @@ export function PropertyCard({
               e.stopPropagation();
               onSelect(e.target.checked);
             }}
-            className="w-4 h-4 rounded border-gray-300 text-purple-600 focus:ring-purple-500"
+            className="w-4 h-4 rounded border-gray-300 text-owner-600 focus:ring-owner-500"
           />
         )}
 
@@ -306,7 +306,7 @@ export function PropertyCard({
         className={cn(
           'bg-white superellipse-xl border border-gray-200 overflow-hidden',
           'hover:shadow-lg hover:border-gray-300 transition-all cursor-pointer',
-          selected && 'ring-2 ring-purple-400',
+          selected && 'ring-2 ring-owner-400',
           className
         )}
       >
@@ -386,7 +386,7 @@ export function PropertyCard({
       className={cn(
         'bg-white superellipse-2xl border border-gray-200 overflow-hidden',
         'hover:shadow-xl hover:border-gray-300 transition-all cursor-pointer',
-        selected && 'ring-2 ring-purple-400',
+        selected && 'ring-2 ring-owner-400',
         className
       )}
     >
@@ -438,7 +438,7 @@ export function PropertyCard({
                 e.stopPropagation();
                 onSelect(e.target.checked);
               }}
-              className="w-5 h-5 rounded border-white/50 bg-white/20 text-purple-600 focus:ring-purple-500"
+              className="w-5 h-5 rounded border-white/50 bg-white/20 text-owner-600 focus:ring-owner-500"
             />
           </div>
         )}
