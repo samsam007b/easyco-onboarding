@@ -250,7 +250,7 @@ export default function LanguagePage() {
           className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm mb-6"
         >
           <div className="flex items-center gap-3 mb-6">
-            <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-resident-100 to-resident-100 flex items-center justify-center">
+            <div className="w-12 h-12 superellipse-xl bg-resident-100 flex items-center justify-center">
               <Calendar className="w-6 h-6 text-gray-700" />
             </div>
             <div>
