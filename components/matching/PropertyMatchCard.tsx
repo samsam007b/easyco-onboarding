@@ -132,7 +132,7 @@ export const PropertyMatchCard = memo(function PropertyMatchCard({
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-searcher-200 via-searcher-100 to-searcher-50 flex items-center justify-center">
+          <div className="w-full h-full bg-searcher-100 flex items-center justify-center">
             <Home className="w-16 h-16 text-searcher-300" />
           </div>
         )}

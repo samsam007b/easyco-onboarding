@@ -220,7 +220,7 @@ export const SwipeCard = memo(function SwipeCard({
               quality={85}
             />
           ) : (
-            <div className="w-full h-full bg-gradient-to-br from-resident-200 via-resident-100 to-resident-50 flex items-center justify-center">
+            <div className="w-full h-full bg-resident-100 flex items-center justify-center">
               <div className="text-7xl font-bold text-resident-600 opacity-30">
                 {user.first_name.charAt(0)}{user.last_name.charAt(0)}
               </div>
@@ -234,7 +234,7 @@ export const SwipeCard = memo(function SwipeCard({
             {isScoreReliable ? (
               // Normal score badge
               <div
-                className="px-4 py-2.5 superellipse-2xl shadow-xl backdrop-blur-md border-2 border-white/50 bg-gradient-to-br from-searcher-500 to-searcher-400"
+                className="px-4 py-2.5 superellipse-2xl shadow-xl backdrop-blur-md border-2 border-white/50 bg-searcher-500"
               >
                 <div className="flex items-center gap-2">
                   <Sparkles
