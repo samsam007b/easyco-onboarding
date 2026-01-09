@@ -108,8 +108,8 @@ export function InvitationCTA({
             className={cn(
               'w-24 h-24 superellipse-3xl flex items-center justify-center mx-auto mb-6 shadow-lg',
               type === 'owner'
-                ? 'bg-gradient-to-br from-owner-500 to-owner-500'
-                : 'bg-gradient-to-br from-resident-500 to-resident-400'
+                ? 'bg-owner-500'
+                : 'bg-resident-500'
             )}
           >
             {type === 'owner' ? (
@@ -141,8 +141,8 @@ export function InvitationCTA({
               className={cn(
                 'rounded-full px-6 font-semibold shadow-md hover:shadow-lg transition-all',
                 type === 'owner'
-                  ? 'bg-gradient-to-r from-owner-500 to-owner-500 hover:opacity-90'
-                  : 'bg-gradient-to-r from-resident-500 to-resident-400 hover:opacity-90'
+                  ? 'bg-owner-500 hover:bg-owner-600'
+                  : 'bg-resident-500 hover:bg-resident-600'
               )}
             >
               {isLoading ? (
@@ -204,8 +204,8 @@ export function InvitationCTA({
                     className={cn(
                       'rounded-full',
                       type === 'owner'
-                        ? 'bg-gradient-to-r from-owner-500 to-owner-500'
-                        : 'bg-gradient-to-r from-resident-500 to-resident-400'
+                        ? 'bg-owner-500 hover:bg-owner-600'
+                        : 'bg-resident-500 hover:bg-resident-600'
                     )}
                   >
                     <Share2 className="w-4 h-4 mr-2" />
