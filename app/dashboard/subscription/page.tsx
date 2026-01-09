@@ -313,7 +313,7 @@ export default function SubscriptionPage() {
 
   if (!status) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-owner-50 via-white to-resident-50">
+      <div className="min-h-screen bg-gray-50">
         {/* Header */}
         <div className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-10">
           <div className="max-w-6xl mx-auto px-4 py-4">
@@ -333,7 +333,7 @@ export default function SubscriptionPage() {
           animate={{ opacity: 1, y: 0 }}
           className="max-w-6xl mx-auto px-4 pt-12 pb-8 text-center"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-owner-100 to-resident-100 rounded-full mb-6">
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-owner-100 rounded-full mb-6">
             <Sparkles className="w-4 h-4 text-owner-600" />
             <span className="text-sm font-medium text-owner-700">Essai gratuit disponible</span>
           </div>
@@ -491,8 +491,8 @@ export default function SubscriptionPage() {
                 <div className="flex items-center gap-3 mb-4">
                   <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                     userRole === 'owner'
-                      ? 'bg-gradient-to-br from-owner-100 to-owner-200'
-                      : 'bg-gradient-to-br from-resident-100 to-resident-200'
+                      ? 'bg-owner-100'
+                      : 'bg-resident-100'
                   }`}>
                     {userRole === 'owner'
                       ? <Crown className="w-6 h-6 text-owner-600" />
@@ -578,8 +578,8 @@ export default function SubscriptionPage() {
                 {/* Best Value Badge */}
                 <div className={`absolute top-0 right-0 px-4 py-1 text-white text-xs font-semibold rounded-bl-xl ${
                   userRole === 'owner'
-                    ? 'bg-gradient-to-r from-owner-600 to-owner-700'
-                    : 'bg-gradient-to-r from-resident-500 to-resident-600'
+                    ? 'bg-owner-600'
+                    : 'bg-resident-500'
                 }`}>
                   MEILLEUR RAPPORT QUALITÉ-PRIX
                 </div>
@@ -587,8 +587,8 @@ export default function SubscriptionPage() {
                 <div className="flex items-center gap-3 mb-4 mt-2">
                   <div className={`w-12 h-12 superellipse-xl flex items-center justify-center ${
                     userRole === 'owner'
-                      ? 'bg-gradient-to-br from-purple-500 to-indigo-500'
-                      : 'bg-gradient-to-br from-resident-500 to-resident-600'
+                      ? 'bg-purple-500'
+                      : 'bg-resident-500'
                   }`}>
                     {userRole === 'owner'
                       ? <Crown className="w-6 h-6 text-white" />
@@ -654,8 +654,8 @@ export default function SubscriptionPage() {
                   disabled={checkoutLoading}
                   className={`w-full py-4 text-white superellipse-xl font-semibold shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed ${
                     userRole === 'owner'
-                      ? 'bg-gradient-to-r from-purple-600 to-indigo-600 shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30'
-                      : 'bg-gradient-to-r from-resident-500 to-resident-600 shadow-resident-500/25 hover:shadow-xl hover:shadow-resident-500/30'
+                      ? 'bg-purple-600 shadow-purple-500/25 hover:shadow-xl hover:shadow-purple-500/30'
+                      : 'bg-resident-500 shadow-resident-500/25 hover:shadow-xl hover:shadow-resident-500/30'
                   }`}
                 >
                   {checkoutLoading ? (
@@ -750,7 +750,7 @@ export default function SubscriptionPage() {
                 className="bg-white superellipse-3xl p-8 shadow-lg relative overflow-hidden border border-gray-200"
               >
                 <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-12 bg-gradient-to-br from-resident-100 to-resident-200 superellipse-xl flex items-center justify-center">
+                  <div className="w-12 h-12 bg-resident-100 superellipse-xl flex items-center justify-center">
                     <Users className="w-6 h-6 text-resident-600" />
                   </div>
                   <div>
@@ -793,7 +793,7 @@ export default function SubscriptionPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => startCheckout('resident_annual')}
                   disabled={checkoutLoading}
-                  className="w-full py-4 bg-gradient-to-r from-resident-500 to-resident-600 text-white superellipse-xl font-semibold shadow-lg shadow-resident-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full py-4 bg-resident-500 text-white superellipse-xl font-semibold shadow-lg shadow-resident-500/25 hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {checkoutLoading ? (
                     <span className="flex items-center justify-center gap-2">
@@ -904,7 +904,7 @@ export default function SubscriptionPage() {
       case 'trial':
         return (
           <span className="px-4 py-2 bg-green-100 text-green-800 rounded-full text-sm font-semibold">
-            ✨ Essai Gratuit
+            Essai Gratuit
           </span>
         );
       case 'active':
@@ -916,7 +916,7 @@ export default function SubscriptionPage() {
       case 'past_due':
         return (
           <span className="px-4 py-2 bg-red-100 text-red-800 rounded-full text-sm font-semibold">
-            ⚠️ Paiement en retard
+            Paiement en retard
           </span>
         );
       case 'canceled':
@@ -931,7 +931,7 @@ export default function SubscriptionPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-owner-50 to-searcher-50 p-4 sm:p-6">
+    <div className="min-h-screen bg-gray-50 p-4 sm:p-6">
       <div className="max-w-5xl mx-auto">
         {/* Header */}
         <div className="mb-6">
@@ -1020,7 +1020,7 @@ export default function SubscriptionPage() {
                 {status.cancel_at_period_end && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
                     <p className="text-sm text-yellow-800 font-medium">
-                      ⚠️ Votre abonnement sera annulé le {formatDate(status.next_billing_date || status.trial_end_date)}
+                      Votre abonnement sera annulé le {formatDate(status.next_billing_date || status.trial_end_date)}
                     </p>
                   </div>
                 )}
