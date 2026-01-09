@@ -62,17 +62,14 @@ export default function ReferralsSettingsPage() {
   // Role-specific colors
   const getRoleColors = () => {
     if (userType === 'owner') return {
-      gradient: 'from-owner-100 to-owner-200/70',
       light: 'from-owner-50/30 via-white to-owner-100/20',
       accent: 'owner',
     };
     if (userType === 'resident') return {
-      gradient: 'from-resident-100 to-resident-200/70',
       light: 'from-resident-50/30 via-white to-resident-100/20',
       accent: 'resident',
     };
     return {
-      gradient: 'from-searcher-400 to-searcher-500',
       light: 'from-searcher-50 via-white to-searcher-100/30',
       accent: 'searcher',
     };
