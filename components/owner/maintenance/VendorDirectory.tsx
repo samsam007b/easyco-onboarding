@@ -168,7 +168,7 @@ export function VendorDirectory({
             placeholder={t?.searchVendor?.[language] || 'Rechercher un prestataire...'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-400 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 text-sm border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-400 focus:border-transparent"
           />
         </div>
 
@@ -236,8 +236,8 @@ export function VendorDirectory({
                     className={cn(
                       "p-4 superellipse-xl border transition-all",
                       vendor.isFavorite
-                        ? "bg-purple-50/50 border-purple-200"
-                        : "bg-white border-gray-200 hover:border-purple-200"
+                        ? "bg-owner-50/50 border-owner-200"
+                        : "bg-white border-gray-200 hover:border-owner-200"
                     )}
                   >
                     <div className="flex items-start gap-3">

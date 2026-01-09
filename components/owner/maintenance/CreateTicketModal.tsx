@@ -162,7 +162,7 @@ export function CreateTicketModal({
                   id="property"
                   value={selectedProperty}
                   onChange={(e) => setSelectedProperty(e.target.value)}
-                  className="mt-1 w-full px-4 py-2.5 superellipse-xl border border-gray-300 bg-white focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all"
+                  className="mt-1 w-full px-4 py-2.5 superellipse-xl border border-gray-300 bg-white focus:border-owner-500 focus:ring-1 focus:ring-owner-500 outline-none transition-all"
                   required
                 >
                   <option value="">{t?.selectProperty?.[language] || 'Select a property'}</option>
@@ -199,7 +199,7 @@ export function CreateTicketModal({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder={t?.descriptionPlaceholder?.[language] || 'Describe the issue in detail...'}
-                  className="mt-1 w-full px-4 py-3 superellipse-xl border border-gray-300 focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition-all resize-none"
+                  className="mt-1 w-full px-4 py-3 superellipse-xl border border-gray-300 focus:border-owner-500 focus:ring-1 focus:ring-owner-500 outline-none transition-all resize-none"
                   rows={3}
                   required
                 />
@@ -217,7 +217,7 @@ export function CreateTicketModal({
                       className={cn(
                         'flex flex-col items-center p-2 superellipse-xl border-2 transition-all',
                         category === cat.value
-                          ? 'border-purple-500 bg-purple-50'
+                          ? 'border-owner-500 bg-owner-50'
                           : 'border-gray-200 hover:border-gray-300'
                       )}
                     >
@@ -323,7 +323,7 @@ export function CreateTicketModal({
                     </div>
                   )}
                   {images.length < 5 && (
-                    <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 superellipse-xl cursor-pointer hover:border-purple-400 hover:bg-purple-50/50 transition-all">
+                    <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 superellipse-xl cursor-pointer hover:border-owner-400 hover:bg-owner-50/50 transition-all">
                       <Upload className="w-5 h-5 text-gray-400" />
                       <span className="text-sm text-gray-500">
                         {t?.addPhotos?.[language] || 'Add photos'}
