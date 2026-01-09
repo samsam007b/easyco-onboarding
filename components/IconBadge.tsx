@@ -1,10 +1,9 @@
 'use client';
 
-import { Icon as FeatherIcon } from 'react-feather';
 import { LucideIcon } from 'lucide-react';
 
 interface IconBadgeProps {
-  icon: FeatherIcon | LucideIcon;
+  icon: LucideIcon;
   variant?:
     | 'purple'
     | 'blue'
