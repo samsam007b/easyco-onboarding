@@ -12,9 +12,8 @@ export type OnboardingRole = 'searcher' | 'owner' | 'resident';
 export const roleThemes = {
   searcher: {
     // Searcher theme - v3 color system
-    gradient: 'from-searcher-600 via-searcher-500 to-searcher-400',
-    gradientBg: 'from-searcher-50 to-searcher-100',
     primary: 'hsl(var(--searcher-500))',
+    primaryColor: 'searcher-500',
     primaryLight: 'searcher-50',
     focusRing: 'focus:ring-searcher-500',
     selectedBorder: 'border-searcher-500',
@@ -27,9 +26,8 @@ export const roleThemes = {
   },
   owner: {
     // Owner theme - v3 color system
-    gradient: 'from-owner-600 via-owner-500 to-owner-400',
-    gradientBg: 'from-owner-50 to-owner-100',
     primary: 'hsl(var(--owner-500))',
+    primaryColor: 'owner-500',
     primaryLight: 'owner-50',
     focusRing: 'focus:ring-owner-500',
     selectedBorder: 'border-owner-500',
@@ -42,9 +40,8 @@ export const roleThemes = {
   },
   resident: {
     // Resident theme - v3 color system
-    gradient: 'from-resident-600 via-resident-500 to-resident-400',
-    gradientBg: 'from-resident-50 to-resident-100',
     primary: 'hsl(var(--resident-500))',
+    primaryColor: 'resident-500',
     primaryLight: 'resident-50',
     focusRing: 'focus:ring-resident-500',
     selectedBorder: 'border-resident-500',
@@ -87,7 +84,7 @@ export default function OnboardingLayout({
 
   if (isLoading) {
     return (
-      <div className={`min-h-screen bg-gradient-to-br ${theme.gradientBg} flex items-center justify-center`}>
+      <div className={`min-h-screen bg-${theme.primaryLight} flex items-center justify-center`}>
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 mt-4">{loadingText}</p>
@@ -97,7 +94,7 @@ export default function OnboardingLayout({
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${theme.gradientBg}`}>
+    <div className={`min-h-screen bg-${theme.primaryLight}`}>
       {/* Language Switcher */}
       <div className="absolute top-6 right-6 z-50">
         <LanguageSwitcher />
@@ -114,8 +111,8 @@ export default function OnboardingLayout({
             <span>{backLabel}</span>
           </button>
           <div className="text-2xl font-bold">
-            <span className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`}>EASY</span>
-            <span className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`}>Co</span>
+            <span className={`text-${theme.primaryColor}`}>EASY</span>
+            <span className={`text-${theme.primaryColor}`}>Co</span>
           </div>
           <div className="w-20" />
         </div>
@@ -136,7 +133,7 @@ export default function OnboardingLayout({
             </div>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
-                className={`bg-gradient-to-r ${theme.gradient} h-2 rounded-full transition-all duration-300`}
+                className={`bg-${theme.primaryColor} h-2 rounded-full transition-all duration-300`}
                 style={{ width: `${progressPercent}%` }}
               />
             </div>
