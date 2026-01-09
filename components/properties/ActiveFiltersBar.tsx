@@ -165,14 +165,14 @@ export function ActiveFiltersBar({ filters, onRemoveFilter, onClearAll }: Active
   }
 
   return (
-    <div className="flex items-center gap-2 flex-wrap p-4 bg-purple-50 rounded-lg border border-purple-200">
+    <div className="flex items-center gap-2 flex-wrap p-4 bg-searcher-50 rounded-lg border border-searcher-200">
       <span className="text-sm font-medium text-gray-700">Filtres actifs:</span>
 
       {activeFilters.map((filter, index) => (
         <Badge
           key={`${filter.key}-${index}`}
           variant="secondary"
-          className="gap-1 py-1 px-3 hover:bg-purple-200 transition-colors"
+          className="gap-1 py-1 px-3 hover:bg-searcher-200 transition-colors"
         >
           <span>{filter.label}</span>
           <button
@@ -189,7 +189,7 @@ export function ActiveFiltersBar({ filters, onRemoveFilter, onClearAll }: Active
         variant="ghost"
         size="sm"
         onClick={onClearAll}
-        className="gap-2 text-purple-700 hover:text-purple-900 hover:bg-purple-100"
+        className="gap-2 text-searcher-700 hover:text-searcher-900 hover:bg-searcher-100"
       >
         <RotateCcw className="w-3 h-3" />
         Tout effacer

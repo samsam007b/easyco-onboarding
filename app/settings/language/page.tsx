@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { motion } from 'framer-motion';
+import { FlagIcon, type CountryCode } from '@/components/icons/custom';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import {
   Globe,
@@ -18,11 +19,11 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
 
 const languages = [
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'en', name: 'English', flag: '🇬🇧' },
-  { code: 'es', name: 'Español', flag: '🇪🇸' },
-  { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
-  { code: 'it', name: 'Italiano', flag: '🇮🇹' },
+  { code: 'fr', name: 'Français', flagCode: 'FR' as CountryCode },
+  { code: 'en', name: 'English', flagCode: 'GB' as CountryCode },
+  { code: 'es', name: 'Español', flagCode: 'ES' as CountryCode },
+  { code: 'de', name: 'Deutsch', flagCode: 'DE' as CountryCode },
+  { code: 'nl', name: 'Nederlands', flagCode: 'NL' as CountryCode },
 ];
 
 const timezones = [
@@ -201,7 +202,7 @@ export default function LanguagePage() {
                   onChange={(e) => setSettings({ ...settings, language: e.target.value })}
                   className="w-5 h-5 text-emerald-600"
                 />
-                <span className="text-2xl">{lang.flag}</span>
+                <FlagIcon country={lang.flagCode} size={28} />
                 <span className="flex-1 font-semibold text-gray-900">{lang.name}</span>
                 {settings.language === lang.code && (
                   <Check className="w-5 h-5 text-emerald-600" />

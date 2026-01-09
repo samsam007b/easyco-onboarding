@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Home, Smartphone, Target, Clipboard } from 'react-feather';
 
 export default function LogoComparisonPage() {
   return (
@@ -156,7 +157,7 @@ export default function LogoComparisonPage() {
         <section className="mb-12 bg-gradient-to-br from-purple-50 via-orange-50 to-amber-50 superellipse-2xl shadow-2xl p-8 border-4 border-purple-200">
           <div className="flex items-center gap-3 mb-4">
             <h2 className="text-3xl font-bold text-slate-900">
-              ⭐ Version FINALE - Z miroir + Gradient diagonal CODE
+              Version FINALE - Z miroir + Gradient diagonal CODE
             </h2>
             <span className="px-4 py-1 bg-gradient-to-r from-purple-600 to-orange-600 text-white text-sm font-bold rounded-full">
               CHOIX FINAL
@@ -275,24 +276,26 @@ export default function LogoComparisonPage() {
           </div>
 
           <div className="mt-8 bg-white superellipse-xl p-6">
-            <h3 className="font-bold text-lg mb-4 text-slate-900">📋 Recommandations</h3>
+            <h3 className="font-bold text-lg mb-4 text-slate-900 flex items-center gap-2">
+              <Clipboard className="w-5 h-5" /> Recommandations
+            </h3>
             <div className="space-y-3 text-sm text-slate-700">
               <div className="flex items-start gap-3">
-                <span className="text-2xl">🏠</span>
+                <Home className="w-6 h-6 text-purple-600 flex-shrink-0" />
                 <div>
                   <strong>Icône (favicon, app mobile) :</strong>
                   <p>Garder l'icône maison actuelle - parfaite pour les petits formats</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-2xl">📱</span>
+                <Smartphone className="w-6 h-6 text-orange-600 flex-shrink-0" />
                 <div>
                   <strong>Logo header web :</strong>
                   <p>Utiliser le logo textuel pour l'identité de marque sur desktop</p>
                 </div>
               </div>
               <div className="flex items-start gap-3">
-                <span className="text-2xl">🎯</span>
+                <Target className="w-6 h-6 text-amber-600 flex-shrink-0" />
                 <div>
                   <strong>Choix V1 vs V2 :</strong>
                   <p><strong>V1 (50%)</strong> = équilibre parfait des 3 rôles</p>

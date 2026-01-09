@@ -207,7 +207,7 @@ const sections: { id: Section; label: string; icon: React.ElementType }[] = [
   { id: 'shadows', label: 'Ombres & Effets', icon: Moon },
   { id: 'inputs', label: 'Formulaires', icon: ToggleLeft },
   { id: 'badges', label: 'Badges', icon: BoxSelect },
-  { id: 'interface-resident', label: '🔑 Interface Resident', icon: Key },
+  { id: 'interface-resident', label: 'Interface Resident', icon: Key },
   { id: 'choices', label: 'V1 vs V2', icon: Sparkles },
 ];
 
@@ -1835,7 +1835,7 @@ function IconsSection() {
         <div className="flex items-center gap-3 mb-4">
           <Crown className="w-6 h-6 text-purple-600" />
           <h3 className="text-xl font-bold text-slate-900 dark:text-white">
-            ⭐ Logo textuel FINAL (Version signature)
+            Logo textuel FINAL (Version signature)
           </h3>
           <Badge className="bg-gradient-to-r from-purple-600 to-orange-600 text-white border-0">
             OFFICIEL
@@ -6283,8 +6283,8 @@ function SearcherDashboardSection() {
           onClick={() => setSelectedVariant('v2')}
         >
           {selectedVariant === 'v2' && (
-            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold">
-              Sélectionné ⭐
+            <div className="absolute top-4 right-4 z-20 bg-[#FFB10B] text-gray-900 px-3 py-1 rounded-full text-sm font-bold flex items-center gap-1">
+              Sélectionné <Check className="w-4 h-4" />
             </div>
           )}
 

@@ -81,7 +81,7 @@ export default function LandingPageAudit() {
           </Link>
         </div>
         <div className="bg-gradient-to-r from-purple-900/50 via-orange-900/50 to-amber-900/50 superellipse-xl border border-purple-700/50 p-6">
-          <h1 className="text-3xl font-bold mb-2">🔍 Audit Landing Page</h1>
+          <h1 className="text-3xl font-bold mb-2">Audit Landing Page</h1>
           <p className="text-slate-300">
             Analyse des éléments graphiques et détection des incohérences avec le design system
           </p>

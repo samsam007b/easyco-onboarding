@@ -4,10 +4,10 @@
 export type Language = 'fr' | 'en' | 'nl' | 'de';
 
 export const languages = {
-  fr: { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  en: { code: 'en', name: 'English', flag: '🇬🇧' },
-  nl: { code: 'nl', name: 'Nederlands', flag: '🇳🇱' },
-  de: { code: 'de', name: 'Deutsch', flag: '🇩🇪' },
+  fr: { code: 'fr', name: 'Français', flagCode: 'FR' as const },
+  en: { code: 'en', name: 'English', flagCode: 'GB' as const },
+  nl: { code: 'nl', name: 'Nederlands', flagCode: 'NL' as const },
+  de: { code: 'de', name: 'Deutsch', flagCode: 'DE' as const },
 } as const;
 
 export const translations = {
@@ -3215,28 +3215,28 @@ export const translations = {
           de: 'Warum als Vermieter verifizieren?',
         },
         whyVerify1: {
-          fr: '⭐ Créez la confiance avec les résidents potentiels',
-          en: '⭐ Build trust with potential tenants',
-          nl: '⭐ Bouw vertrouwen met potentiële huurders',
-          de: '⭐ Vertrauen bei potenziellen Mietern aufbauen',
+          fr: '•Créez la confiance avec les résidents potentiels',
+          en: '•Build trust with potential tenants',
+          nl: '•Bouw vertrouwen met potentiële huurders',
+          de: '•Vertrauen bei potenziellen Mietern aufbauen',
         },
         whyVerify2: {
-          fr: '⭐ Obtenez un placement prioritaire des résidences',
-          en: '⭐ Get priority listing placement',
-          nl: '⭐ Krijg prioriteit bij advertentievermelding',
-          de: '⭐ Erhalten Sie vorrangige Anzeigenplatzierung',
+          fr: '•Obtenez un placement prioritaire des résidences',
+          en: '•Get priority listing placement',
+          nl: '•Krijg prioriteit bij advertentievermelding',
+          de: '•Erhalten Sie vorrangige Anzeigenplatzierung',
         },
         whyVerify3: {
-          fr: '⭐ Débloquez le badge de propriétaire vérifié',
-          en: '⭐ Unlock verified landlord badge',
-          nl: '⭐ Ontgrendel geverifieerde verhuurdersbadge',
-          de: '⭐ Verifiziertes Vermieter-Badge freischalten',
+          fr: '•Débloquez le badge de propriétaire vérifié',
+          en: '•Unlock verified landlord badge',
+          nl: '•Ontgrendel geverifieerde verhuurdersbadge',
+          de: '•Verifiziertes Vermieter-Badge freischalten',
         },
         whyVerify4: {
-          fr: '⭐ Respectez les exigences légales',
-          en: '⭐ Comply with legal requirements',
-          nl: '⭐ Voldoe aan wettelijke vereisten',
-          de: '⭐ Erfüllen Sie gesetzliche Anforderungen',
+          fr: '•Respectez les exigences légales',
+          en: '•Comply with legal requirements',
+          nl: '•Voldoe aan wettelijke vereisten',
+          de: '•Erfüllen Sie gesetzliche Anforderungen',
         },
         saveProgress: {
           fr: 'Enregistrer la progression',

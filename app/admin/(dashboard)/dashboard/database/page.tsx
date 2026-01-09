@@ -1,14 +1,24 @@
 import { createClient } from '@/lib/auth/supabase-server';
 import {
   Database,
-  Table,
   HardDrive,
   Activity,
   Clock,
   CheckCircle,
   AlertCircle,
   RefreshCw,
-} from 'lucide-react';
+  User,
+  Home,
+  FileText,
+  MessageCircle,
+  MessageSquare,
+  Bell,
+  Heart,
+  Clipboard,
+  Shield,
+  Grid,
+} from 'react-feather';
+import type { Icon } from 'react-feather';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -54,16 +64,16 @@ async function getDatabaseStats() {
 export default async function AdminDatabasePage() {
   const stats = await getDatabaseStats();
 
-  const tables = [
-    { name: 'users', label: 'Utilisateurs', count: stats.users, icon: '👤' },
-    { name: 'properties', label: 'Propriétés', count: stats.properties, icon: '🏠' },
-    { name: 'applications', label: 'Candidatures', count: stats.applications, icon: '📝' },
-    { name: 'messages', label: 'Messages', count: stats.messages, icon: '💬' },
-    { name: 'conversations', label: 'Conversations', count: stats.conversations, icon: '🗣️' },
-    { name: 'notifications', label: 'Notifications', count: stats.notifications, icon: '🔔' },
-    { name: 'matches', label: 'Matchs', count: stats.matches, icon: '❤️' },
-    { name: 'audit_logs', label: 'Logs d\'audit', count: stats.auditLogs, icon: '📋' },
-    { name: 'admins', label: 'Administrateurs', count: stats.admins, icon: '🛡️' },
+  const tables: Array<{ name: string; label: string; count: number; icon: Icon }> = [
+    { name: 'users', label: 'Utilisateurs', count: stats.users, icon: User },
+    { name: 'properties', label: 'Propriétés', count: stats.properties, icon: Home },
+    { name: 'applications', label: 'Candidatures', count: stats.applications, icon: FileText },
+    { name: 'messages', label: 'Messages', count: stats.messages, icon: MessageCircle },
+    { name: 'conversations', label: 'Conversations', count: stats.conversations, icon: MessageSquare },
+    { name: 'notifications', label: 'Notifications', count: stats.notifications, icon: Bell },
+    { name: 'matches', label: 'Matchs', count: stats.matches, icon: Heart },
+    { name: 'audit_logs', label: 'Logs d\'audit', count: stats.auditLogs, icon: Clipboard },
+    { name: 'admins', label: 'Administrateurs', count: stats.admins, icon: Shield },
   ];
 
   const totalRecords = Object.values(stats).reduce((a, b) => a + b, 0);
@@ -98,7 +108,7 @@ export default async function AdminDatabasePage() {
                 </p>
               </div>
               <div className="p-2 rounded-lg bg-blue-500/10">
-                <Table className="w-5 h-5 text-blue-400" />
+                <Grid className="w-5 h-5 text-blue-400" />
               </div>
             </div>
           </CardContent>
@@ -138,7 +148,7 @@ export default async function AdminDatabasePage() {
                 className="flex items-center justify-between p-4 rounded-lg bg-slate-700/30 hover:bg-slate-700/50 transition-colors"
               >
                 <div className="flex items-center gap-3">
-                  <span className="text-2xl">{table.icon}</span>
+                  <table.icon className="w-6 h-6 text-slate-300" />
                   <div>
                     <p className="text-sm font-medium text-white">{table.label}</p>
                     <p className="text-xs text-slate-500 font-mono">{table.name}</p>

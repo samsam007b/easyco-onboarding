@@ -189,7 +189,7 @@ export function SavedSearches({ onLoadSearch }: SavedSearchesProps) {
                   }
                 >
                   {search.notifications_enabled ? (
-                    <Bell className="w-4 h-4 text-purple-600" />
+                    <Bell className="w-4 h-4 text-searcher-600" />
                   ) : (
                     <BellOff className="w-4 h-4 text-gray-400" />
                   )}

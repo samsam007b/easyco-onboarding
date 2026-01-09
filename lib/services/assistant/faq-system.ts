@@ -207,16 +207,16 @@ function getSeasonalContext(): string {
   const day = now.getDate();
 
   // Special dates
-  if (month === 11 && day >= 20 && day <= 25) return " 🎄 Joyeuses fêtes !";
-  if (month === 0 && day === 1) return " 🎉 Bonne année !";
-  if (month === 1 && day === 14) return " 💕";
-  if (month === 5 && day === 21) return " ☀️ C'est l'été !";
+  if (month === 11 && day >= 20 && day <= 25) return " — Joyeuses fêtes !";
+  if (month === 0 && day === 1) return " — Bonne année !";
+  if (month === 1 && day === 14) return "";
+  if (month === 5 && day === 21) return " — C'est l'été !";
 
   // Seasonal touches
-  if (month >= 2 && month <= 4) return pickRandom(['', ' 🌸', ' Le printemps est là !']);
-  if (month >= 5 && month <= 7) return pickRandom(['', ' ☀️', '']);
-  if (month >= 8 && month <= 10) return pickRandom(['', ' 🍂', '']);
-  if (month === 11 || month <= 1) return pickRandom(['', ' ❄️', '']);
+  if (month >= 2 && month <= 4) return pickRandom(['', '', ' Le printemps est là !']);
+  if (month >= 5 && month <= 7) return pickRandom(['', '', '']);
+  if (month >= 8 && month <= 10) return pickRandom(['', '', '']);
+  if (month === 11 || month <= 1) return pickRandom(['', '', '']);
 
   return '';
 }
@@ -230,7 +230,7 @@ function getEncouragingMessage(ctx: UserContext): string {
   // Profile completion encouragement
   if (ctx.profileCompletionScore !== undefined) {
     if (ctx.profileCompletionScore < 30) {
-      messages.push("Petit conseil : un profil complet, c'est 5x plus de chances de succès ! 🚀");
+      messages.push("Petit conseil : un profil complet, c'est 5x plus de chances de succès !");
     } else if (ctx.profileCompletionScore < 60) {
       messages.push("Vous avancez bien ! Encore quelques infos et votre profil sera top.");
     } else if (ctx.profileCompletionScore < 90) {
@@ -259,7 +259,7 @@ function getEncouragingMessage(ctx: UserContext): string {
 
   // Referral nudge
   if (ctx.referralsCount === 0 && ctx.subscriptionStatus === 'trial') {
-    messages.push("💡 Saviez-vous que le parrainage peut vous offrir jusqu'à 24 mois gratuits ?");
+    messages.push("Astuce : le parrainage peut vous offrir jusqu'à 24 mois gratuits !");
   }
 
   return messages.length > 0 ? pickRandom(messages) : '';
@@ -272,7 +272,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   // Priority 1: Trial ending soon
   if (ctx.subscriptionStatus === 'trial' && ctx.trialDaysRemaining !== undefined && ctx.trialDaysRemaining < 14) {
     return {
-      message: `⏰ Votre essai se termine dans ${ctx.trialDaysRemaining} jours. Pensez au parrainage pour prolonger gratuitement !`,
+      message: `Attention : votre essai se termine dans ${ctx.trialDaysRemaining} jours. Pensez au parrainage pour prolonger gratuitement !`,
       action: { label: 'Voir le parrainage', value: '/settings/referrals' }
     };
   }
@@ -280,7 +280,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   // Priority 2: Unread messages
   if (ctx.unreadMessagesCount && ctx.unreadMessagesCount >= 3) {
     return {
-      message: `📬 Vous avez ${ctx.unreadMessagesCount} messages en attente !`,
+      message: `Vous avez ${ctx.unreadMessagesCount} messages en attente !`,
       action: { label: 'Voir les messages', value: '/messages' }
     };
   }
@@ -288,7 +288,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   // Priority 3: Pending applications (for owners)
   if (ctx.userType === 'owner' && ctx.applicationsCount && ctx.applicationsCount >= 2) {
     return {
-      message: `📋 ${ctx.applicationsCount} candidatures attendent votre réponse.`,
+      message: `${ctx.applicationsCount} candidatures attendent votre réponse.`,
       action: { label: 'Voir les candidatures', value: '/dashboard/owner/applications' }
     };
   }
@@ -296,7 +296,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   // Priority 4: Profile incomplete
   if (ctx.profileCompletionScore !== undefined && ctx.profileCompletionScore < 50) {
     return {
-      message: `📊 Profil à ${ctx.profileCompletionScore}% - Complétez-le pour de meilleurs résultats !`,
+      message: `Profil à ${ctx.profileCompletionScore}% — Complétez-le pour de meilleurs résultats !`,
       action: { label: 'Compléter', value: '/profile/edit' }
     };
   }
@@ -304,7 +304,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   // Priority 5: High matches for searchers
   if (ctx.userType === 'searcher' && ctx.matchesCount && ctx.matchesCount >= 5) {
     return {
-      message: `🎯 ${ctx.matchesCount} matchs compatibles vous attendent !`,
+      message: `${ctx.matchesCount} matchs compatibles vous attendent !`,
       action: { label: 'Voir les matchs', value: '/matching/properties' }
     };
   }
@@ -312,7 +312,7 @@ function getProactiveRecommendation(ctx: UserContext): { message: string; action
   // Priority 6: No verification
   if (!ctx.emailVerified || !ctx.phoneVerified) {
     return {
-      message: `✅ Vérifiez votre profil pour gagner en visibilité et confiance.`,
+      message: `Vérifiez votre profil pour gagner en visibilité et confiance.`,
       action: { label: 'Vérifier', value: '/settings/verification' }
     };
   }
@@ -374,16 +374,16 @@ function getOnboardingMessage(ctx: UserContext): string {
   }
   if (ctx.profileCompletionScore !== undefined) {
     if (ctx.profileCompletionScore < 50) {
-      return `\n\n💡 **Conseil** : Votre profil est complété à ${ctx.profileCompletionScore}%. Complétez-le pour améliorer vos chances de matching !`;
+      return `\n\n**Conseil** : Votre profil est complété à ${ctx.profileCompletionScore}%. Complétez-le pour améliorer vos chances de matching !`;
     }
     if (ctx.profileCompletionScore < 100) {
-      return `\n\n💡 Plus que quelques étapes pour compléter votre profil (${ctx.profileCompletionScore}% complété) !`;
+      return `\n\nPlus que quelques étapes pour compléter votre profil (${ctx.profileCompletionScore}% complété) !`;
     }
   }
   if (ctx.onboardingStep) {
-    return `\n\n📋 Vous êtes à l'étape "${ctx.onboardingStep}" de votre inscription.`;
+    return `\n\nVous êtes à l'étape "${ctx.onboardingStep}" de votre inscription.`;
   }
-  return `\n\n📋 N'oubliez pas de terminer votre inscription pour profiter de toutes les fonctionnalités !`;
+  return `\n\nN'oubliez pas de terminer votre inscription pour profiter de toutes les fonctionnalités !`;
 }
 
 /**
@@ -391,10 +391,10 @@ function getOnboardingMessage(ctx: UserContext): string {
  */
 function getReferralEncouragement(ctx: UserContext): string {
   if (ctx.referralCreditsMonths && ctx.referralCreditsMonths > 0) {
-    return `\n\n🎁 Vous avez ${ctx.referralCreditsMonths} mois de crédit parrainage !`;
+    return `\n\nVous avez ${ctx.referralCreditsMonths} mois de crédit parrainage !`;
   }
   if (ctx.referralsCount === 0) {
-    return `\n\n🎁 Astuce : Parrainez un ami et gagnez des mois gratuits !`;
+    return `\n\nAstuce : Parrainez un ami et gagnez des mois gratuits !`;
   }
   return '';
 }
@@ -946,9 +946,9 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
     // Personalized greeting with seasonal touch
     if (name !== 'vous') {
-      response = `${greeting} ${name} !${seasonal} 👋`;
+      response = `${greeting} ${name} !${seasonal}`;
     } else {
-      response = `${greeting} !${seasonal} 👋`;
+      response = `${greeting} !${seasonal}`;
     }
 
     // Add context-specific welcome with variations
@@ -960,7 +960,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       ];
       response += `\n\n${pickRandom(welcomeVariations)}`;
       if (ctx.profileCompletionScore !== undefined && ctx.profileCompletionScore < 100) {
-        response += `\n\n📊 Votre profil est complété à **${ctx.profileCompletionScore}%**. Voulez-vous que je vous aide à le finaliser ?`;
+        response += `\n\nVotre profil est complété à **${ctx.profileCompletionScore}%**. Voulez-vous que je vous aide à le finaliser ?`;
       }
     } else {
       const returnVariations = [
@@ -982,39 +982,39 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     if (ctx.userType === 'owner') {
       if (ctx.applicationsCount && ctx.applicationsCount > 0) {
         const appVariations = [
-          `📬 Vous avez **${ctx.applicationsCount} candidature${ctx.applicationsCount > 1 ? 's' : ''}** en attente.`,
-          `📬 **${ctx.applicationsCount}** personne${ctx.applicationsCount > 1 ? 's' : ''} ${ctx.applicationsCount > 1 ? 'attendent' : 'attend'} votre réponse !`,
-          `📬 Bonne nouvelle : **${ctx.applicationsCount} candidature${ctx.applicationsCount > 1 ? 's' : ''}** à consulter.`,
+          `Vous avez **${ctx.applicationsCount} candidature${ctx.applicationsCount > 1 ? 's' : ''}** en attente.`,
+          `**${ctx.applicationsCount}** personne${ctx.applicationsCount > 1 ? 's' : ''} ${ctx.applicationsCount > 1 ? 'attendent' : 'attend'} votre réponse !`,
+          `Bonne nouvelle : **${ctx.applicationsCount} candidature${ctx.applicationsCount > 1 ? 's' : ''}** à consulter.`,
         ];
         response += `\n\n${pickRandom(appVariations)}`;
       }
       if (ctx.propertiesCount === 0) {
-        response += `\n\n🏠 Vous n'avez pas encore de propriété. Voulez-vous en ajouter une ?`;
+        response += `\n\nVous n'avez pas encore de propriété. Voulez-vous en ajouter une ?`;
       }
     } else if (ctx.userType === 'searcher') {
       if (ctx.matchesCount && ctx.matchesCount > 0) {
         const matchVariations = [
-          `🎯 Vous avez **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** à découvrir !`,
-          `🎯 **${ctx.matchesCount}** colocation${ctx.matchesCount > 1 ? 's correspondent' : ' correspond'} à votre profil !`,
-          `🎯 Nouvelle${ctx.matchesCount > 1 ? 's' : ''} correspondance${ctx.matchesCount > 1 ? 's' : ''} : **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** !`,
+          `Vous avez **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** à découvrir !`,
+          `**${ctx.matchesCount}** colocation${ctx.matchesCount > 1 ? 's correspondent' : ' correspond'} à votre profil !`,
+          `Nouvelle${ctx.matchesCount > 1 ? 's' : ''} correspondance${ctx.matchesCount > 1 ? 's' : ''} : **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** !`,
         ];
         response += `\n\n${pickRandom(matchVariations)}`;
       }
       if (ctx.favoritesCount && ctx.favoritesCount > 0) {
-        response += `\n\n💜 ${ctx.favoritesCount} annonce${ctx.favoritesCount > 1 ? 's' : ''} dans vos favoris.`;
+        response += `\n\n${ctx.favoritesCount} annonce${ctx.favoritesCount > 1 ? 's' : ''} dans vos favoris.`;
       }
     } else if (ctx.userType === 'resident' && ctx.currentPropertyName) {
       const residentVariations = [
-        `🏠 Comment ça se passe à "${ctx.currentPropertyName}" ?`,
-        `🏠 Tout roule à "${ctx.currentPropertyName}" ?`,
-        `🏠 Du nouveau à "${ctx.currentPropertyName}" ?`,
+        `Comment ça se passe à "${ctx.currentPropertyName}" ?`,
+        `Tout roule à "${ctx.currentPropertyName}" ?`,
+        `Du nouveau à "${ctx.currentPropertyName}" ?`,
       ];
       response += `\n\n${pickRandom(residentVariations)}`;
     }
 
     // Unread messages notification
     if (ctx.unreadMessagesCount && ctx.unreadMessagesCount > 0) {
-      response += `\n\n💬 Vous avez **${ctx.unreadMessagesCount} message${ctx.unreadMessagesCount > 1 ? 's' : ''} non lu${ctx.unreadMessagesCount > 1 ? 's' : ''}**.`;
+      response += `\n\nVous avez **${ctx.unreadMessagesCount} message${ctx.unreadMessagesCount > 1 ? 's' : ''} non lu${ctx.unreadMessagesCount > 1 ? 's' : ''}**.`;
     }
 
     // Proactive recommendation
@@ -1024,13 +1024,13 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     response += `\n\n**Je peux vous aider avec :**\n`;
 
     if (ctx.userType === 'owner') {
-      response += `• 🏠 Gérer vos propriétés\n• 📋 Voir les candidatures\n• 💰 Tarifs et abonnement\n• 🎁 Parrainage`;
+      response += `• Gérer vos propriétés\n• Voir les candidatures\n• Tarifs et abonnement\n• Parrainage`;
     } else if (ctx.userType === 'searcher') {
-      response += `• 🔍 Trouver une colocation\n• 🎯 Comprendre le matching\n• 💰 Tarifs et abonnement\n• 🎁 Parrainage`;
+      response += `• Trouver une colocation\n• Comprendre le matching\n• Tarifs et abonnement\n• Parrainage`;
     } else if (ctx.userType === 'resident') {
-      response += `• 💰 Gérer les finances partagées\n• 👥 Mes colocataires\n• 💬 Messages\n• 🎁 Parrainage`;
+      response += `• Gérer les finances partagées\n• Mes colocataires\n• Messages\n• Parrainage`;
     } else {
-      response += `• 💰 Les tarifs et abonnements\n• 🎁 Le programme de parrainage\n• 🔍 La recherche de colocation\n• 🏠 Publier une annonce`;
+      response += `• Les tarifs et abonnements\n• Le programme de parrainage\n• La recherche de colocation\n• Publier une annonce`;
     }
 
     // Build suggested actions
@@ -1074,16 +1074,16 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     // Farewell variations
     const farewellVariations = name !== 'vous'
       ? [
-          `Au revoir ${name} !${seasonal} 👋`,
-          `À bientôt ${name} !${seasonal} 👋`,
-          `Bonne continuation ${name} !${seasonal} 👋`,
-          `À très vite ${name} !${seasonal} 👋`,
+          `Au revoir ${name} !${seasonal}`,
+          `À bientôt ${name} !${seasonal}`,
+          `Bonne continuation ${name} !${seasonal}`,
+          `À très vite ${name} !${seasonal}`,
         ]
       : [
-          `Au revoir !${seasonal} 👋`,
-          `À bientôt !${seasonal} 👋`,
-          `Bonne continuation !${seasonal} 👋`,
-          `À très vite !${seasonal} 👋`,
+          `Au revoir !${seasonal}`,
+          `À bientôt !${seasonal}`,
+          `Bonne continuation !${seasonal}`,
+          `À très vite !${seasonal}`,
         ];
 
     response = pickRandom(farewellVariations);
@@ -1093,7 +1093,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       const searcherTips = [
         `N'oubliez pas de terminer votre profil pour maximiser vos chances de trouver la coloc idéale !`,
         `Pensez à compléter votre profil, ça augmente vraiment vos chances !`,
-        `Un profil complet = plus de matchs. À méditer ! 😉`,
+        `Un profil complet = plus de matchs. À méditer !`,
       ];
       response += `\n\n${pickRandom(searcherTips)}`;
     } else if (ctx.userType === 'owner' && ctx.applicationsCount && ctx.applicationsCount > 0) {
@@ -1114,7 +1114,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   my_account: (ctx) => {
     const name = getUserName(ctx);
-    let response = `📋 **Votre compte${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Votre compte${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Account type
     response += `**Type de compte :** ${getUserTypeLabel(ctx).charAt(0).toUpperCase() + getUserTypeLabel(ctx).slice(1)}\n`;
@@ -1127,8 +1127,8 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
     // Subscription status
     if (ctx.subscriptionStatus) {
-      const statusEmoji = ctx.subscriptionStatus === 'active' ? '✅' : ctx.subscriptionStatus === 'trial' ? '🎁' : '⚠️';
-      response += `**Abonnement :** ${statusEmoji} `;
+      const statusLabel = ctx.subscriptionStatus === 'active' ? 'Actif' : ctx.subscriptionStatus === 'trial' ? 'Essai' : 'Attention';
+      response += `**Abonnement :** `;
       if (ctx.subscriptionStatus === 'trial' && ctx.trialDaysRemaining) {
         response += `Essai gratuit (${ctx.trialDaysRemaining} jours restants)\n`;
       } else if (ctx.subscriptionStatus === 'active') {
@@ -1140,9 +1140,9 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
     // Verification status
     response += `\n**Vérifications :**\n`;
-    response += `• Email : ${ctx.emailVerified ? '✅' : '❌'}\n`;
-    response += `• Téléphone : ${ctx.phoneVerified ? '✅' : '❌'}\n`;
-    response += `• Identité : ${ctx.idVerified ? '✅' : ctx.kycStatus === 'pending' ? '⏳' : '❌'}\n`;
+    response += `• Email : ${ctx.emailVerified ? 'Vérifié' : 'Non vérifié'}\n`;
+    response += `• Téléphone : ${ctx.phoneVerified ? 'Vérifié' : 'Non vérifié'}\n`;
+    response += `• Identité : ${ctx.idVerified ? 'Vérifié' : ctx.kycStatus === 'pending' ? 'En cours' : 'Non vérifié'}\n`;
 
     // Referral stats
     if (ctx.referralCode) {
@@ -1152,7 +1152,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
         response += `• Filleuls : ${ctx.referralsCount}\n`;
       }
       if (ctx.referralCreditsMonths && ctx.referralCreditsMonths > 0) {
-        response += `• Crédits : ${ctx.referralCreditsMonths} mois 🎁\n`;
+        response += `• Crédits : ${ctx.referralCreditsMonths} mois\n`;
       }
     }
 
@@ -1193,13 +1193,13 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     if (ctx.onboardingCompleted) {
       return {
         intent: 'onboarding_help',
-        response: `${name !== 'vous' ? `${name}, v` : 'V'}otre inscription est déjà terminée ! ✅\n\nVotre profil est complet${ctx.profileCompletionScore ? ` à ${ctx.profileCompletionScore}%` : ''}.\n\nVoulez-vous que je vous aide avec autre chose ?`,
+        response: `${name !== 'vous' ? `${name}, v` : 'V'}otre inscription est déjà terminée.\n\nVotre profil est complet${ctx.profileCompletionScore ? ` à ${ctx.profileCompletionScore}%` : ''}.\n\nVoulez-vous que je vous aide avec autre chose ?`,
         confidence: 0.95,
         suggestedActions: [{ type: 'navigate', label: 'Voir mon profil', value: '/profile' }],
       };
     }
 
-    let response = `📋 **Votre inscription${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Votre inscription${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.profileCompletionScore !== undefined) {
       response += `Vous êtes à **${ctx.profileCompletionScore}%** de votre inscription.\n\n`;
@@ -1208,18 +1208,18 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     // Guide based on user type
     if (ctx.userType === 'owner') {
       response += `**Prochaines étapes pour les propriétaires :**\n`;
-      response += `1. ✅ Créer votre compte\n`;
-      response += `2. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 50 ? '✅' : '⏳'} Compléter votre profil\n`;
-      response += `3. ${ctx.propertiesCount && ctx.propertiesCount > 0 ? '✅' : '⏳'} Ajouter votre première propriété\n`;
-      response += `4. ⏳ Publier votre annonce\n`;
-      response += `5. ⏳ Recevoir vos premières candidatures\n`;
+      response += `1. [Fait] Créer votre compte\n`;
+      response += `2. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 50 ? '[Fait]' : '[En cours]'} Compléter votre profil\n`;
+      response += `3. ${ctx.propertiesCount && ctx.propertiesCount > 0 ? '[Fait]' : '[En cours]'} Ajouter votre première propriété\n`;
+      response += `4. [En cours] Publier votre annonce\n`;
+      response += `5. [En cours] Recevoir vos premières candidatures\n`;
     } else if (ctx.userType === 'searcher') {
       response += `**Prochaines étapes pour trouver votre coloc :**\n`;
-      response += `1. ✅ Créer votre compte\n`;
-      response += `2. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 30 ? '✅' : '⏳'} Renseigner vos infos de base\n`;
-      response += `3. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 60 ? '✅' : '⏳'} Compléter votre personnalité (pour le matching)\n`;
-      response += `4. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 80 ? '✅' : '⏳'} Définir vos préférences de logement\n`;
-      response += `5. ⏳ Commencer à explorer les annonces\n`;
+      response += `1. [Fait] Créer votre compte\n`;
+      response += `2. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 30 ? '[Fait]' : '[En cours]'} Renseigner vos infos de base\n`;
+      response += `3. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 60 ? '[Fait]' : '[En cours]'} Compléter votre personnalité (pour le matching)\n`;
+      response += `4. ${ctx.profileCompletionScore && ctx.profileCompletionScore >= 80 ? '[Fait]' : '[En cours]'} Définir vos préférences de logement\n`;
+      response += `5. [En cours] Commencer à explorer les annonces\n`;
     } else {
       response += `**Prochaines étapes :**\n`;
       response += `1. Compléter vos informations personnelles\n`;
@@ -1228,10 +1228,10 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     }
 
     if (ctx.onboardingStep) {
-      response += `\n\n📍 **Étape actuelle :** ${ctx.onboardingStep}`;
+      response += `\n\n**Étape actuelle :** ${ctx.onboardingStep}`;
     }
 
-    response += `\n\n💡 Un profil complet augmente vos chances de succès de 80% !`;
+    response += `\n\nUn profil complet augmente vos chances de succès de 80% !`;
 
     return {
       intent: 'onboarding_help',
@@ -1250,23 +1250,23 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     const name = getUserName(ctx);
     const score = ctx.profileCompletionScore || 0;
 
-    let response = `📊 **Votre profil${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Votre profil${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Progress visualization
     const progressBar = '█'.repeat(Math.floor(score / 10)) + '░'.repeat(10 - Math.floor(score / 10));
     response += `**Progression :** ${progressBar} **${score}%**\n\n`;
 
     if (score === 100) {
-      response += `🎉 **Félicitations !** Votre profil est complet !\n\n`;
+      response += `**Félicitations !** Votre profil est complet !\n\n`;
       response += `Vous maximisez vos chances de matching et de visibilité sur la plateforme.`;
     } else if (score >= 80) {
-      response += `💪 **Excellent !** Vous y êtes presque !\n\n`;
+      response += `**Excellent !** Vous y êtes presque !\n\n`;
       response += `Quelques informations manquantes pour un profil parfait. Un profil à 100% est 3x plus visible !`;
     } else if (score >= 50) {
-      response += `👍 **Bon début !** Continuez sur cette lancée.\n\n`;
+      response += `**Bon début !** Continuez sur cette lancée.\n\n`;
       response += `Les profils complets reçoivent en moyenne 5x plus de matchs !`;
     } else {
-      response += `📝 **Commencez à remplir votre profil**\n\n`;
+      response += `**Commencez à remplir votre profil**\n\n`;
       response += `Plus votre profil est complet, meilleures sont vos chances de trouver la colocation idéale.`;
     }
 
@@ -1301,7 +1301,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     const name = getUserName(ctx);
     const userType = ctx.userType;
 
-    let response = `💰 **Tarifs IzzIco${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Tarifs IzzIco${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show relevant pricing first based on user type
     if (userType === 'owner') {
@@ -1330,7 +1330,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     }
 
     // Referral bonus
-    response += `\n\n🎁 **Astuce parrainage :** Gagnez jusqu'à **24 mois gratuits** en invitant vos amis !`;
+    response += `\n\n**Astuce parrainage :** Gagnez jusqu'à **24 mois gratuits** en invitant vos amis !`;
     if (ctx.referralCode) {
       response += `\nVotre code : \`${ctx.referralCode}\``;
     }
@@ -1351,29 +1351,29 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   trial: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🎁 **Période d'essai${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Période d'essai${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show user's specific trial status
     if (ctx.subscriptionStatus === 'trial' && ctx.trialDaysRemaining !== undefined) {
       if (ctx.trialDaysRemaining > 30) {
         const months = Math.floor(ctx.trialDaysRemaining / 30);
-        response += `✨ **Votre essai gratuit est actif !**\n`;
+        response += `**Votre essai gratuit est actif !**\n`;
         response += `Il vous reste environ **${months} mois** (${ctx.trialDaysRemaining} jours).\n\n`;
         response += `Profitez de toutes les fonctionnalités premium sans aucun engagement.\n`;
       } else if (ctx.trialDaysRemaining > 7) {
-        response += `⏰ **Votre essai gratuit se termine dans ${ctx.trialDaysRemaining} jours.**\n\n`;
+        response += `**Votre essai gratuit se termine dans ${ctx.trialDaysRemaining} jours.**\n\n`;
         response += `Pensez à souscrire un abonnement ou à utiliser le parrainage pour prolonger gratuitement !`;
       } else if (ctx.trialDaysRemaining > 0) {
-        response += `⚠️ **Attention !** Votre essai se termine dans **${ctx.trialDaysRemaining} jour${ctx.trialDaysRemaining > 1 ? 's' : ''}**.\n\n`;
+        response += `**Attention !** Votre essai se termine dans **${ctx.trialDaysRemaining} jour${ctx.trialDaysRemaining > 1 ? 's' : ''}**.\n\n`;
         response += `Pour continuer à utiliser IzzIco :\n`;
         response += `• Souscrivez un abonnement\n`;
         response += `• Ou parrainez des amis pour gagner des mois gratuits`;
       } else {
-        response += `❌ **Votre période d'essai est terminée.**\n\n`;
+        response += `**Votre période d'essai est terminée.**\n\n`;
         response += `Abonnez-vous pour continuer à profiter d'IzzIco !`;
       }
     } else if (ctx.subscriptionStatus === 'active') {
-      response += `Vous êtes déjà abonné ! 🎉\n\n`;
+      response += `Vous êtes déjà abonné !\n\n`;
       response += `Votre abonnement est actif, vous avez accès à toutes les fonctionnalités.`;
     } else {
       // Generic info
@@ -1407,29 +1407,29 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   subscription: (ctx) => {
     const name = getUserName(ctx);
-    let response = `⚙️ **Votre abonnement${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Votre abonnement${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show current status
     if (ctx.subscriptionStatus === 'active') {
-      response += `✅ **Statut :** Abonnement actif${ctx.isPremium ? ' (Premium)' : ''}\n`;
+      response += `**Statut :** Abonnement actif${ctx.isPremium ? ' (Premium)' : ''}\n`;
       if (ctx.subscriptionEndDate) {
-        response += `📅 **Prochain renouvellement :** ${new Date(ctx.subscriptionEndDate).toLocaleDateString('fr-FR')}\n`;
+        response += `**Prochain renouvellement :** ${new Date(ctx.subscriptionEndDate).toLocaleDateString('fr-FR')}\n`;
       }
     } else if (ctx.subscriptionStatus === 'trial') {
-      response += `🎁 **Statut :** Période d'essai\n`;
+      response += `**Statut :** Période d'essai\n`;
       if (ctx.trialDaysRemaining !== undefined) {
-        response += `⏰ **Jours restants :** ${ctx.trialDaysRemaining}\n`;
+        response += `**Jours restants :** ${ctx.trialDaysRemaining}\n`;
       }
     } else if (ctx.subscriptionStatus === 'expired') {
-      response += `⚠️ **Statut :** Abonnement expiré\n`;
+      response += `**Statut :** Abonnement expiré\n`;
       response += `Réactivez votre abonnement pour continuer à utiliser IzzIco.\n`;
     } else if (ctx.subscriptionStatus === 'cancelled') {
-      response += `❌ **Statut :** Abonnement annulé\n`;
+      response += `**Statut :** Abonnement annulé\n`;
     }
 
     // Referral credits
     if (ctx.referralCreditsMonths && ctx.referralCreditsMonths > 0) {
-      response += `\n🎁 **Crédits parrainage :** ${ctx.referralCreditsMonths} mois gratuits disponibles !\n`;
+      response += `\n**Crédits parrainage :** ${ctx.referralCreditsMonths} mois gratuits disponibles !\n`;
     }
 
     response += `\n**Actions disponibles :**\n`;
@@ -1454,7 +1454,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   referral: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🎁 **Programme de parrainage${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Programme de parrainage${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show personal stats if available
     if (ctx.referralCode) {
@@ -1462,33 +1462,33 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
       if (ctx.referralsCount !== undefined) {
         if (ctx.referralsCount > 0) {
-          response += `🎉 Vous avez déjà parrainé **${ctx.referralsCount} personne${ctx.referralsCount > 1 ? 's' : ''}** !\n`;
+          response += `Vous avez déjà parrainé **${ctx.referralsCount} personne${ctx.referralsCount > 1 ? 's' : ''}** !\n`;
         } else {
-          response += `📢 Vous n'avez pas encore de filleuls. Partagez votre code !\n`;
+          response += `Vous n'avez pas encore de filleuls. Partagez votre code !\n`;
         }
       }
 
       if (ctx.referralCreditsMonths && ctx.referralCreditsMonths > 0) {
-        response += `💰 **Crédits accumulés :** ${ctx.referralCreditsMonths} mois gratuits\n`;
+        response += `**Crédits accumulés :** ${ctx.referralCreditsMonths} mois gratuits\n`;
       }
       response += `\n`;
     }
 
     // Rewards explanation
     response += `**Comment ça marche :**\n\n`;
-    response += `📤 **Vous parrainez un propriétaire**\n`;
+    response += `**Vous parrainez un propriétaire**\n`;
     response += `   → Vous gagnez **+3 mois** gratuits\n`;
     response += `   → Il/elle gagne **+1 mois** bonus\n\n`;
-    response += `📤 **Vous parrainez un résident/chercheur**\n`;
+    response += `**Vous parrainez un résident/chercheur**\n`;
     response += `   → Vous gagnez **+2 mois** gratuits\n`;
     response += `   → Il/elle gagne **+1 mois** bonus\n\n`;
-    response += `⭐ **Maximum :** 24 mois accumulables\n`;
+    response += `**Maximum :** 24 mois accumulables\n`;
 
     // Call to action based on current status
     if (!ctx.referralsCount || ctx.referralsCount === 0) {
-      response += `\n💡 **Astuce :** Partagez votre code sur les réseaux sociaux ou par email pour maximiser vos parrainages !`;
+      response += `\n**Astuce :** Partagez votre code sur les réseaux sociaux ou par email pour maximiser vos parrainages !`;
     } else if (ctx.referralsCount < 5) {
-      response += `\n💡 **Continuez !** Plus que ${5 - ctx.referralsCount} parrainages pour atteindre 10 mois gratuits !`;
+      response += `\n**Continuez !** Plus que ${5 - ctx.referralsCount} parrainages pour atteindre 10 mois gratuits !`;
     }
 
     return {
@@ -1518,7 +1518,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       };
     }
 
-    let response = `📋 **Vos candidatures${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Vos candidatures${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.applicationsCount && ctx.applicationsCount > 0) {
       response += `Vous avez **${ctx.applicationsCount} candidature${ctx.applicationsCount > 1 ? 's' : ''}** en attente !\n\n`;
@@ -1566,10 +1566,10 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       };
     }
 
-    let response = `👥 **Colocataires${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Colocataires${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.userType === 'resident' && ctx.currentPropertyName) {
-      response += `🏠 **Votre colocation :** ${ctx.currentPropertyName}\n\n`;
+      response += `**Votre colocation :** ${ctx.currentPropertyName}\n\n`;
       response += `**Fonctionnalités disponibles :**\n`;
       response += `• Voir les profils de vos colocataires\n`;
       response += `• Envoyer des messages groupés\n`;
@@ -1579,7 +1579,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
       response += `Vous n'êtes pas encore dans une colocation.\n\n`;
 
       if (ctx.matchesCount && ctx.matchesCount > 0) {
-        response += `🎯 Bonne nouvelle ! Vous avez **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** à explorer.\n\n`;
+        response += `Bonne nouvelle ! Vous avez **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** à explorer.\n\n`;
       }
 
       response += `**Pour trouver vos futurs colocataires :**\n`;
@@ -1605,15 +1605,15 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   matching: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🎯 **Système de Matching${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Système de Matching${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show personal matching stats if available
     if (ctx.matchesCount !== undefined && ctx.matchesCount > 0) {
-      response += `✨ Vous avez **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** en ce moment !\n\n`;
+      response += `Vous avez **${ctx.matchesCount} match${ctx.matchesCount > 1 ? 's' : ''}** en ce moment !\n\n`;
     }
 
     response += `Notre algorithme analyse la compatibilité selon :\n\n`;
-    response += `**📊 Critères analysés :**\n`;
+    response += `**Critères analysés :**\n`;
     response += `• Personnalité (extraverti/introverti)\n`;
     response += `• Habitudes de vie (horaires, propreté)\n`;
     response += `• Préférences (fumeur, animaux, fêtes)\n`;
@@ -1621,7 +1621,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
 
     // Personalized tips based on profile
     if (ctx.profileCompletionScore !== undefined && ctx.profileCompletionScore < 80) {
-      response += `⚠️ **Important :** Votre profil est à ${ctx.profileCompletionScore}%. Complétez-le pour des matchs plus précis !\n\n`;
+      response += `**Important :** Votre profil est à ${ctx.profileCompletionScore}%. Complétez-le pour des matchs plus précis !\n\n`;
     }
 
     // Show user's own matching criteria if available
@@ -1635,8 +1635,8 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     }
 
     response += `**Score de compatibilité :**\n`;
-    response += `• 90%+ : Excellente compatibilité 🌟\n`;
-    response += `• 70-89% : Bonne compatibilité ✨\n`;
+    response += `• 90%+ : Excellente compatibilité\n`;
+    response += `• 70-89% : Bonne compatibilité\n`;
     response += `• <70% : Compatibilité moyenne\n`;
 
     return {
@@ -1655,7 +1655,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   property: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🏠 **Gestion de propriété${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Gestion de propriété${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.userType === 'owner') {
       // Show owner's property stats
@@ -1699,21 +1699,21 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   search: (ctx) => {
     const name = getUserName(ctx);
-    let response = `🔍 **Recherche de colocation${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Recherche de colocation${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     // Show personalized search info
     if (ctx.preferredCity) {
-      response += `📍 **Votre zone de recherche :** ${ctx.preferredCity}\n`;
+      response += `**Votre zone de recherche :** ${ctx.preferredCity}\n`;
     }
     if (ctx.budgetMin !== undefined && ctx.budgetMax !== undefined) {
-      response += `💰 **Votre budget :** ${ctx.budgetMin}€ - ${ctx.budgetMax}€/mois\n`;
+      response += `**Votre budget :** ${ctx.budgetMin}€ - ${ctx.budgetMax}€/mois\n`;
     }
 
     if (ctx.savedSearchesCount && ctx.savedSearchesCount > 0) {
-      response += `📌 **Recherches sauvées :** ${ctx.savedSearchesCount}\n`;
+      response += `**Recherches sauvées :** ${ctx.savedSearchesCount}\n`;
     }
     if (ctx.favoritesCount && ctx.favoritesCount > 0) {
-      response += `💜 **Favoris :** ${ctx.favoritesCount} annonce${ctx.favoritesCount > 1 ? 's' : ''}\n`;
+      response += `**Favoris :** ${ctx.favoritesCount} annonce${ctx.favoritesCount > 1 ? 's' : ''}\n`;
     }
 
     response += `\n**Filtres disponibles :**\n`;
@@ -1723,7 +1723,7 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
     response += `• Équipements (wifi, parking, etc.)\n`;
     response += `• Compatibilité (score de matching)\n\n`;
 
-    response += `**💡 Conseils :**\n`;
+    response += `**Conseils :**\n`;
     if (ctx.profileCompletionScore !== undefined && ctx.profileCompletionScore < 80) {
       response += `• Complétez votre profil (${ctx.profileCompletionScore}%) pour voir les scores de matching\n`;
     } else {
@@ -1748,18 +1748,18 @@ const FAQ_RESPONSES: Record<Intent, (ctx: UserContext) => FAQResponse> = {
   // ─────────────────────────────────────────────────────
   finances: (ctx) => {
     const name = getUserName(ctx);
-    let response = `💰 **Finances partagées${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
+    let response = `**Finances partagées${name !== 'vous' ? `, ${name}` : ''}**\n\n`;
 
     if (ctx.userType === 'resident') {
       if (ctx.currentPropertyName) {
-        response += `🏠 **Colocation :** ${ctx.currentPropertyName}\n\n`;
+        response += `**Colocation :** ${ctx.currentPropertyName}\n\n`;
       }
 
       response += `**Fonctionnalités disponibles :**\n`;
-      response += `• 📷 **Scanner de tickets** - Photographiez vos reçus, l'IA extrait les infos\n`;
-      response += `• 📁 **Catégorisation auto** - Courses, charges, internet...\n`;
-      response += `• ⚖️ **Répartition équitable** - Calcul automatique des parts\n`;
-      response += `• 📊 **Historique** - Suivez toutes les dépenses\n\n`;
+      response += `• **Scanner de tickets** — Photographiez vos reçus, l'IA extrait les infos\n`;
+      response += `• **Catégorisation auto** — Courses, charges, internet...\n`;
+      response += `• **Répartition équitable** — Calcul automatique des parts\n`;
+      response += `• **Historique** — Suivez toutes les dépenses\n\n`;
 
       response += `**Comment ajouter une dépense :**\n`;
       response += `1. Cliquez sur "+" dans la section Finances\n`;

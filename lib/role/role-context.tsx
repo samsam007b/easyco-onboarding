@@ -36,7 +36,7 @@ const roleConfigs: Record<UserRole, RoleConfig> = {
       from: '#FFD700',
       to: '#FFC700',
     },
-    icon: '🔍',
+    icon: 'searcher', // Use <SearcherIcon /> from @/components/icons/custom
     label: {
       fr: 'Chercheur',
       en: 'Searcher',
@@ -52,7 +52,7 @@ const roleConfigs: Record<UserRole, RoleConfig> = {
       from: '#9c5698',
       to: '#9c5698',
     },
-    icon: '🏠',
+    icon: 'owner', // Use <OwnerIcon /> from @/components/icons/custom
     label: {
       fr: 'Propriétaire',
       en: 'Owner',
@@ -68,7 +68,7 @@ const roleConfigs: Record<UserRole, RoleConfig> = {
       from: '#e05747',
       to: '#e05747',
     },
-    icon: '🔑',
+    icon: 'resident', // Use <ResidentIcon /> from @/components/icons/custom
     label: {
       fr: 'Résident',
       en: 'Resident',
