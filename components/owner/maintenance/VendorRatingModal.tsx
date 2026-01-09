@@ -455,7 +455,7 @@ export function VendorRatingModal({
                     {ratingCategories.map((category) => (
                       <div
                         key={category.key}
-                        className="p-3 superellipse-xl border border-gray-200 hover:border-purple-200 transition-colors"
+                        className="p-3 superellipse-xl border border-gray-200 hover:border-owner-200 transition-colors"
                       >
                         <div className="flex items-center gap-2 mb-2">
                           <category.icon className="w-4 h-4 text-gray-500" />
@@ -533,7 +533,7 @@ export function VendorRatingModal({
                     onChange={(e) => setTitle(e.target.value)}
                     placeholder={t.labels.titlePlaceholder[lang]}
                     maxLength={100}
-                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400"
+                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400"
                   />
                 </div>
 
@@ -548,7 +548,7 @@ export function VendorRatingModal({
                     placeholder={t.labels.commentPlaceholder[lang]}
                     rows={3}
                     maxLength={500}
-                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-purple-200 focus:border-purple-400 resize-none"
+                    className="w-full px-4 py-2 border border-gray-200 superellipse-xl focus:outline-none focus:ring-2 focus:ring-owner-200 focus:border-owner-400 resize-none"
                   />
                   <p className="text-xs text-gray-500 mt-1 text-right">
                     {comment.length}/500

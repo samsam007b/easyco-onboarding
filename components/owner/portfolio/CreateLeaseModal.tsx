@@ -270,7 +270,7 @@ export function CreateLeaseModal({
                       'py-2 px-3 superellipse-xl text-sm font-medium transition-all border',
                       leaseDuration === duration.value
                         ? 'text-white border-transparent shadow-md'
-                        : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-purple-300'
+                        : 'bg-gray-50 text-gray-700 border-gray-200 hover:border-owner-300'
                     )}
                     style={
                       leaseDuration === duration.value

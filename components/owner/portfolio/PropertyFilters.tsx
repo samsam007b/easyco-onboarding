@@ -281,7 +281,7 @@ export function PropertyFilters({
                   <DropdownMenuItem
                     key={city}
                     onClick={() => updateFilter('city', city)}
-                    className={cn(filters.city === city && 'bg-purple-50')}
+                    className={cn(filters.city === city && 'bg-owner-50')}
                   >
                     {city}
                   </DropdownMenuItem>
@@ -402,7 +402,7 @@ export function PropertyFilters({
                             <DropdownMenuItem
                               key={option.value}
                               onClick={() => updateFilter('sortField', option.value)}
-                              className={cn(filters.sortField === option.value && 'bg-purple-50')}
+                              className={cn(filters.sortField === option.value && 'bg-owner-50')}
                             >
                               {getLabel(option.labelKey)}
                             </DropdownMenuItem>
