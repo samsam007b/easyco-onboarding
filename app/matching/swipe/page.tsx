@@ -255,7 +255,7 @@ export default function SwipePage() {
 
   if (!user || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium mt-4">{matching.common?.loading || 'Loading profiles...'}</p>
@@ -270,7 +270,7 @@ export default function SwipePage() {
     const incompleteCategories = profileCompletion.missingCategories.filter(c => !c.isComplete);
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-searcher-50/30 via-white to-searcher-50/30 p-4 md:p-8">
+      <div className="min-h-screen bg-gray-50 p-4 md:p-8">
         <div className="max-w-md mx-auto">
           {/* Header */}
           <div className="flex items-center justify-between mb-8">
@@ -291,7 +291,7 @@ export default function SwipePage() {
           >
             <Card className="p-8 text-center bg-white superellipse-3xl shadow-2xl border-0">
               {/* Lock Icon */}
-              <div className="w-24 h-24 bg-gradient-to-br from-searcher-100 to-searcher-200 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-24 h-24 bg-searcher-100 rounded-full flex items-center justify-center mx-auto mb-6">
                 <Lock className="w-12 h-12 text-searcher-500" />
               </div>
 
@@ -315,7 +315,7 @@ export default function SwipePage() {
                     initial={{ width: 0 }}
                     animate={{ width: `${profileCompletion.percentage}%` }}
                     transition={{ duration: 0.8, ease: "easeOut" }}
-                    className="h-full bg-gradient-to-r from-searcher-400 to-searcher-500 rounded-full"
+                    className="h-full bg-searcher-500 rounded-full"
                   />
                 </div>
                 <p className="text-xs text-gray-500 mt-1">
@@ -346,7 +346,7 @@ export default function SwipePage() {
               {/* CTA Button */}
               <Button
                 onClick={() => router.push('/profile/edit')}
-                className="w-full bg-gradient-to-r from-[#FFA040] to-[#FFB85C] hover:from-[#FF8C30] hover:to-[#FFA548] text-white font-semibold py-6 superellipse-xl text-lg"
+                className="w-full bg-searcher-500 hover:bg-searcher-600 text-white font-semibold py-6 superellipse-xl text-lg"
               >
                 <UserCircle className="w-5 h-5 mr-2" />
                 {matching.gate?.completeProfile || 'Complete my profile'}
@@ -407,7 +407,7 @@ export default function SwipePage() {
           <Button
             variant={context === 'searcher_matching' ? 'default' : 'outline'}
             onClick={() => handleContextChange('searcher_matching')}
-            className={`flex-1 ${context === 'searcher_matching' ? 'bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700' : ''}`}
+            className={`flex-1 ${context === 'searcher_matching' ? 'bg-searcher-500 hover:bg-searcher-600' : ''}`}
           >
             <Users className="w-4 h-4 mr-2" />
             {matching.swipe?.searchers || 'Searchers'}
@@ -415,7 +415,7 @@ export default function SwipePage() {
           <Button
             variant={context === 'resident_matching' ? 'default' : 'outline'}
             onClick={() => handleContextChange('resident_matching')}
-            className={`flex-1 ${context === 'resident_matching' ? 'bg-gradient-to-r from-resident-500 to-resident-600 hover:from-resident-600 hover:to-resident-700' : ''}`}
+            className={`flex-1 ${context === 'resident_matching' ? 'bg-resident-500 hover:bg-resident-600' : ''}`}
           >
             <Heart className="w-4 h-4 mr-2" />
             {matching.swipe?.roommates || 'Roommates'}
@@ -445,11 +445,11 @@ export default function SwipePage() {
           <div className="absolute left-1/2 -translate-x-1/2 top-0 w-full max-w-[200px] sm:max-w-xs md:max-w-md h-full">
             {!currentCard ? (
               <Card className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center bg-white superellipse-3xl shadow-2xl">
-                <div className="w-24 h-24 bg-gradient-to-br from-searcher-400 to-searcher-600 rounded-full flex items-center justify-center mb-6">
+                <div className="w-24 h-24 bg-searcher-500 rounded-full flex items-center justify-center mb-6">
                   <Users className="w-12 h-12 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  {matching.swipe?.allSeen?.title || 'You\'ve seen everyone!'} 🎉
+                  {matching.swipe?.allSeen?.title || "You've seen everyone!"}
                 </h3>
                 <p className="text-gray-600 mb-6">
                   {matching.swipe?.allSeen?.description || 'Come back later for new profiles or adjust your preferences.'}
@@ -458,7 +458,7 @@ export default function SwipePage() {
                   <Button
                     onClick={handleReload}
                     disabled={isAnimating}
-                    className="bg-gradient-to-r from-searcher-500 to-searcher-600 text-white hover:from-searcher-600 hover:to-searcher-700 disabled:opacity-50"
+                    className="bg-searcher-500 text-white hover:bg-searcher-600 disabled:opacity-50"
                   >
                     <RotateCcw className="w-4 h-4 mr-2" />
                     {matching.swipe?.reload || 'Reload'}
@@ -510,7 +510,7 @@ export default function SwipePage() {
                               className="w-full h-full object-cover"
                             />
                           ) : (
-                            <div className="w-full h-full bg-gradient-to-br from-searcher-200 via-searcher-100 to-searcher-50 flex items-center justify-center">
+                            <div className="w-full h-full bg-searcher-100 flex items-center justify-center">
                               <div className="text-6xl font-bold text-searcher-600 opacity-30">
                                 {card.first_name.charAt(0)}
                                 {card.last_name.charAt(0)}
@@ -579,7 +579,7 @@ export default function SwipePage() {
             transition={{ duration: 0.3, delay: 0.1 }}
             className="max-w-md mx-auto mt-6 px-4"
           >
-            <div className="bg-gradient-to-r from-searcher-50 to-searcher-100 superellipse-2xl p-5 shadow-lg border border-searcher-200">
+            <div className="bg-searcher-50 superellipse-2xl p-5 shadow-lg border border-searcher-200">
               <p className="text-base font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <Sparkles className="w-5 h-5 text-searcher-500" />
                 {matching.swipe?.whyMatch || 'Why this match?'}
@@ -600,7 +600,7 @@ export default function SwipePage() {
                         initial={{ width: 0 }}
                         animate={{ width: `${(item.score / item.max) * 100}%` }}
                         transition={{ duration: 0.5, delay: idx * 0.1 }}
-                        className="absolute inset-y-0 left-0 bg-gradient-to-r from-searcher-400 to-searcher-500 rounded-full"
+                        className="absolute inset-y-0 left-0 bg-searcher-500 rounded-full"
                       />
                     </div>
                     <p className="text-[10px] text-gray-600 font-medium">{item.label}</p>
@@ -687,7 +687,7 @@ export default function SwipePage() {
           <button
             onClick={handleLike}
             disabled={isAnimating}
-            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-searcher-500 to-searcher-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-searcher-500 hover:bg-searcher-600 shadow-xl flex items-center justify-center hover:scale-110 transition-transform active:scale-95 disabled:opacity-50"
             aria-label="Like"
           >
             <Heart className="w-7 h-7 sm:w-8 sm:h-8 text-white fill-current" />

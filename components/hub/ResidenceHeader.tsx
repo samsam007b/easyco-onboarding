@@ -401,7 +401,7 @@ export default function ResidenceHeader() {
                   <Sparkles className="w-5 h-5 text-white" />
                 </motion.div>
                 <span className="text-white font-bold text-lg">
-                  🎉 {hub?.congratulations || 'Félicitations ! Votre résidence est complète !'}
+                  {hub?.congratulations || 'Félicitations ! Votre résidence est complète !'}
                 </span>
               </div>
             </motion.div>

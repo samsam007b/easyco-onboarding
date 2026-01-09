@@ -113,7 +113,7 @@ export default function LandingPageAudit() {
         {activeSection === 'overview' && (
           <div className="space-y-6">
             <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
-              <h2 className="text-2xl font-bold mb-4">📊 Résumé de l'audit</h2>
+              <h2 className="text-2xl font-bold mb-4">Resume de l'audit</h2>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4">
                   <div className="text-red-400 text-2xl font-bold mb-1">
@@ -137,7 +137,7 @@ export default function LandingPageAudit() {
             </div>
 
             <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
-              <h3 className="text-xl font-bold mb-4">🎯 Objectifs de l'uniformisation</h3>
+              <h3 className="text-xl font-bold mb-4">Objectifs de l'uniformisation</h3>
               <ul className="space-y-3">
                 <li className="flex items-start gap-3">
                   <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
@@ -175,12 +175,12 @@ export default function LandingPageAudit() {
         {activeSection === 'buttons' && (
           <div className="space-y-6">
             <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
-              <h2 className="text-2xl font-bold mb-6">🔘 Boutons CTA de la landing page</h2>
+              <h2 className="text-2xl font-bold mb-6">Boutons CTA de la landing page</h2>
 
               {/* Comparaison rapide */}
               <div className="bg-gradient-to-r from-purple-900/30 via-orange-900/30 to-amber-900/30 superellipse-xl border border-purple-700/30 p-6 mb-8">
                 <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                  ⚖️ Comparaison : Opaque vs Glassmorphism
+                  Comparaison : Opaque vs Glassmorphism
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Version Opaque */}
@@ -273,7 +273,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-sm">
                     <p className="text-red-300 mb-2">
-                      <strong>❌ Problème:</strong> Couleur rgba(110, 86, 207, 0.6) différente de la charte (#9c5698)
+                      <strong>Probleme:</strong> Couleur rgba(110, 86, 207, 0.6) différente de la charte (#9c5698)
                     </p>
                     <code className="text-xs text-red-200">
                       background: rgba(110, 86, 207, 0.6)
@@ -305,7 +305,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
                     <p className="text-green-300 mb-2">
-                      <strong>✅ Avantages:</strong> Couleur vibrante, maximum de visibilité
+                      <strong>Avantages:</strong> Couleur vibrante, maximum de visibilité
                     </p>
                     <code className="text-xs text-green-200">background: {designSystemColors.owner.hex}</code>
                   </div>
@@ -335,7 +335,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
                     <p className="text-green-300 mb-2">
-                      <strong>✅ Avantages:</strong> Effet verre moderne, laisse passer l'arrière-plan
+                      <strong>Avantages:</strong> Effet verre moderne, laisse passer l'arrière-plan
                     </p>
                     <code className="text-xs text-green-200">background: {designSystemColors.owner.hex}d9 (85% opacité) + backdrop-blur-xl</code>
                   </div>
@@ -362,7 +362,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-red-500/10 border border-red-500/30 rounded-lg p-4 text-sm">
                     <p className="text-red-300 mb-2">
-                      <strong>❌ Problème:</strong> Couleur rgba(255, 111, 60, 0.6) différente de la charte (#FF5722)
+                      <strong>Probleme:</strong> Couleur rgba(255, 111, 60, 0.6) différente de la charte (#FF5722)
                     </p>
                     <code className="text-xs text-red-200">background: rgba(255, 111, 60, 0.6)</code>
                   </div>
@@ -392,7 +392,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
                     <p className="text-green-300 mb-2">
-                      <strong>✅ Avantages:</strong> Couleur vibrante, maximum de visibilité
+                      <strong>Avantages:</strong> Couleur vibrante, maximum de visibilité
                     </p>
                     <code className="text-xs text-green-200">background: {designSystemColors.resident.hex}</code>
                   </div>
@@ -422,7 +422,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-sm">
                     <p className="text-green-300 mb-2">
-                      <strong>✅ Avantages:</strong> Effet verre moderne, laisse passer l'arrière-plan
+                      <strong>Avantages:</strong> Effet verre moderne, laisse passer l'arrière-plan
                     </p>
                     <code className="text-xs text-green-200">background: {designSystemColors.resident.hex}d9 (85% opacité) + backdrop-blur-xl</code>
                   </div>
@@ -452,7 +452,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-sm">
                     <p className="text-yellow-300 mb-2">
-                      <strong>⚠️ À ajouter:</strong> Couleur vibrante, maximum de visibilité
+                      <strong>A ajouter:</strong> Couleur vibrante, maximum de visibilité
                     </p>
                     <code className="text-xs text-yellow-200">background: {designSystemColors.searcher.hex}</code>
                   </div>
@@ -482,7 +482,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 text-sm">
                     <p className="text-yellow-300 mb-2">
-                      <strong>⚠️ À ajouter:</strong> Effet verre moderne, laisse passer l'arrière-plan
+                      <strong>A ajouter:</strong> Effet verre moderne, laisse passer l'arrière-plan
                     </p>
                     <code className="text-xs text-yellow-200">background: {designSystemColors.searcher.hex}d9 (85% opacité) + backdrop-blur-xl</code>
                   </div>
@@ -511,7 +511,7 @@ export default function LandingPageAudit() {
                   </div>
                   <div className="bg-purple-500/10 border border-purple-500/30 rounded-lg p-4 text-sm">
                     <p className="text-purple-300 mb-2">
-                      <strong>✨ Spécial:</strong> Le bouton CTA principal conserve le gradient signature IzzIco
+                      <strong>Special:</strong> Le bouton CTA principal conserve le gradient signature IzzIco
                     </p>
                     <code className="text-xs text-purple-200">
                       {designSystemColors.signature.gradient}
@@ -527,7 +527,7 @@ export default function LandingPageAudit() {
         {activeSection === 'colors' && (
           <div className="space-y-6">
             <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
-              <h2 className="text-2xl font-bold mb-4">🎨 Comparaison des couleurs</h2>
+              <h2 className="text-2xl font-bold mb-4">Comparaison des couleurs</h2>
 
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* Owner */}
@@ -543,7 +543,7 @@ export default function LandingPageAudit() {
                       <p className="text-xs text-red-400 mt-2">rgba(110, 86, 207, 0.6)</p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-400 mb-2">Design System ✅</p>
+                      <p className="text-sm text-slate-400 mb-2">Design System [OK]</p>
                       <div className="h-16 rounded-lg border border-slate-600" style={{ background: designSystemColors.owner.hex }} />
                       <p className="text-xs text-green-400 mt-2">{designSystemColors.owner.hex}</p>
                     </div>
@@ -563,7 +563,7 @@ export default function LandingPageAudit() {
                       <p className="text-xs text-red-400 mt-2">rgba(255, 111, 60, 0.6)</p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-400 mb-2">Design System ✅</p>
+                      <p className="text-sm text-slate-400 mb-2">Design System [OK]</p>
                       <div className="h-16 rounded-lg border border-slate-600" style={{ background: designSystemColors.resident.hex }} />
                       <p className="text-xs text-green-400 mt-2">{designSystemColors.resident.hex}</p>
                     </div>
@@ -585,7 +585,7 @@ export default function LandingPageAudit() {
                       <p className="text-xs text-yellow-400 mt-2">Manquant</p>
                     </div>
                     <div>
-                      <p className="text-sm text-slate-400 mb-2">Design System ✅</p>
+                      <p className="text-sm text-slate-400 mb-2">Design System [OK]</p>
                       <div className="h-16 rounded-lg border border-slate-600" style={{ background: designSystemColors.searcher.hex }} />
                       <p className="text-xs text-green-400 mt-2">{designSystemColors.searcher.hex}</p>
                     </div>
@@ -600,7 +600,7 @@ export default function LandingPageAudit() {
         {activeSection === 'gradients' && (
           <div className="space-y-6">
             <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
-              <h2 className="text-2xl font-bold mb-4">✨ Gradient Signature</h2>
+              <h2 className="text-2xl font-bold mb-4">Gradient Signature</h2>
 
               <div className="bg-slate-900 rounded-lg p-8 mb-6">
                 <div className="h-32 superellipse-xl" style={{ background: designSystemColors.signature.gradient }} />
@@ -611,7 +611,7 @@ export default function LandingPageAudit() {
 
               <div className="bg-blue-500/10 border border-blue-500/30 rounded-lg p-4">
                 <p className="text-blue-300">
-                  <strong>📌 Règle:</strong> Le gradient signature doit être réservé uniquement au bouton CTA principal
+                  <strong>Regle:</strong> Le gradient signature doit être réservé uniquement au bouton CTA principal
                   "Rechercher" ou "S'inscrire". Les autres boutons (par rôle) utilisent leur couleur dominante pure.
                 </p>
               </div>
@@ -623,7 +623,7 @@ export default function LandingPageAudit() {
         {activeSection === 'issues' && (
           <div className="space-y-4">
             <div className="bg-slate-800 superellipse-xl border border-slate-700 p-6">
-              <h2 className="text-2xl font-bold mb-4">⚠️ Issues détectées ({issues.length})</h2>
+              <h2 className="text-2xl font-bold mb-4">Issues detectees ({issues.length})</h2>
 
               <div className="space-y-4">
                 {issues.map((issue, index) => (
@@ -663,7 +663,7 @@ export default function LandingPageAudit() {
                         </p>
                         <div className="bg-slate-900 rounded p-3 text-sm">
                           <p className="text-green-400 mb-1">
-                            <strong>✅ Solution proposée:</strong>
+                            <strong>Solution proposee:</strong>
                           </p>
                           <p className="text-slate-300">{issue.fix}</p>
                         </div>
@@ -676,7 +676,7 @@ export default function LandingPageAudit() {
 
             {/* Action buttons */}
             <div className="bg-gradient-to-r from-purple-900/50 via-orange-900/50 to-amber-900/50 superellipse-xl border border-purple-700/50 p-6">
-              <h3 className="text-xl font-bold mb-4">🚀 Prochaines étapes</h3>
+              <h3 className="text-xl font-bold mb-4">Prochaines etapes</h3>
               <div className="space-y-3">
                 <button
                   className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg transition-colors flex items-center justify-center gap-2"

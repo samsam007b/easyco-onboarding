@@ -147,7 +147,7 @@ export default function ProximityFilterPanel({
         {/* Info */}
         <div className="bg-blue-50 rounded-lg p-3">
           <p className="text-xs text-blue-900">
-            💡 Les propriétés seront filtrées pour ne montrer que celles situées dans le rayon
+            Les propriétés seront filtrées pour ne montrer que celles situées dans le rayon
             défini autour des points d'intérêt sélectionnés.
           </p>
         </div>

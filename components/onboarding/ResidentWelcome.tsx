@@ -80,7 +80,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
             <Home className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            👋 Bienvenue !
+            Bienvenue !
           </h1>
           <p className="text-lg text-gray-600">
             Vous avez rejoint avec succès
@@ -90,7 +90,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
           </p>
           {propertyData.city && (
             <p className="text-sm text-gray-500 mt-1">
-              📍 {propertyData.city}
+              {propertyData.city}
             </p>
           )}
         </div>
@@ -143,7 +143,7 @@ export default function ResidentWelcome({ propertyData, onClose }: ResidentWelco
                 ))}
               </ul>
               <p className="text-xs text-gray-600 mt-3">
-                💡 Si vous êtes le propriétaire légal, demandez le <strong>code propriétaire</strong> au créateur pour obtenir tous les droits.
+                Si vous êtes le propriétaire légal, demandez le <strong>code propriétaire</strong> au créateur pour obtenir tous les droits.
               </p>
             </div>
           </div>

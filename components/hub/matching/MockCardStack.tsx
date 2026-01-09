@@ -21,7 +21,7 @@ const MOCK_PROFILES = [
     occupation: 'Designer',
     image: null,
     initials: 'ML',
-    trait: '🎨 Créative',
+    trait: 'Créative',
   },
   {
     name: 'Thomas B.',
@@ -31,7 +31,7 @@ const MOCK_PROFILES = [
     occupation: 'Développeur',
     image: null,
     initials: 'TB',
-    trait: '💻 Tech-savvy',
+    trait: 'Tech-savvy',
   },
   {
     name: 'Sophie M.',
@@ -41,7 +41,7 @@ const MOCK_PROFILES = [
     occupation: 'Étudiante',
     image: null,
     initials: 'SM',
-    trait: '📚 Studieuse',
+    trait: 'Studieuse',
   },
 ];
 

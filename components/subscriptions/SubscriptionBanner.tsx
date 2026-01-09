@@ -241,7 +241,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
                 }`}
               >
                 <p className={`text-sm font-medium ${isCritical ? 'text-red-800' : 'text-amber-800'}`}>
-                  {isCritical ? '⚠️ Votre essai se termine très bientôt !' : '⏰ Votre essai se termine bientôt'}
+                  {isCritical ? 'Votre essai se termine très bientôt !' : 'Votre essai se termine bientôt'}
                 </p>
                 <p className={`text-xs mt-1 ${isCritical ? 'text-red-700' : 'text-amber-700'}`}>
                   Ajoutez un moyen de paiement pour continuer à profiter de toutes les fonctionnalités.

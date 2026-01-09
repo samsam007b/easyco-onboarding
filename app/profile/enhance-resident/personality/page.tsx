@@ -240,7 +240,7 @@ export default function PersonalityResidentPage() {
         </EnhanceProfileSection>
 
         {/* Info callout */}
-        <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.personality.tip')} icon="💡">
+        <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.personality.tip')} icon="lightbulb">
           {t('enhanceResident.personality.tipContent')}
         </EnhanceProfileInfoBox>
       </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, Sparkles, Home, Heart, Users, ArrowRight } from 'lucide-react';
+import { CheckCircle, Sparkles, Home, Heart, Users, ArrowRight, PartyPopper, Lightbulb } from 'lucide-react';
 import { motion } from 'framer-motion';
 import confetti from 'canvas-confetti';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -113,8 +113,9 @@ export default function QuickCompletePage() {
           transition={{ delay: 0.3 }}
           className="text-center mb-12"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            🎉 {t('quickOnboarding.complete.congrats')}
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 flex items-center justify-center gap-3">
+            <PartyPopper className="w-10 h-10 text-orange-500" />
+            {t('quickOnboarding.complete.congrats')}
           </h1>
           <p className="text-xl text-gray-600 mb-2">
             {t('quickOnboarding.complete.profileReady')}
@@ -222,8 +223,9 @@ export default function QuickCompletePage() {
           transition={{ delay: 1 }}
           className="mt-8 bg-blue-50 border border-blue-200 superellipse-2xl p-6"
         >
-          <p className="text-sm text-blue-800">
-            💡 <span className="font-semibold">{t('quickOnboarding.complete.proTip.label')}</span> {t('quickOnboarding.complete.proTip.text')}
+          <p className="text-sm text-blue-800 flex items-start gap-2">
+            <Lightbulb className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span><span className="font-semibold">{t('quickOnboarding.complete.proTip.label')}</span> {t('quickOnboarding.complete.proTip.text')}</span>
           </p>
         </motion.div>
       </div>

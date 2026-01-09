@@ -139,46 +139,46 @@ export interface FinalizeVoteResult {
 export const RULE_CATEGORIES: Array<{
   value: RuleCategory;
   label: string;
-  emoji: string;
+  iconName: string;
   color: string;
 }> = [
-  { value: 'cleaning', label: 'Ménage', emoji: '🧹', color: 'bg-blue-100 text-blue-700' },
-  { value: 'noise', label: 'Bruit', emoji: '🔇', color: 'bg-purple-100 text-purple-700' },
-  { value: 'guests', label: 'Invités', emoji: '👥', color: 'bg-green-100 text-green-700' },
+  { value: 'cleaning', label: 'Ménage', iconName: 'Sparkles', color: 'bg-blue-100 text-blue-700' },
+  { value: 'noise', label: 'Bruit', iconName: 'VolumeX', color: 'bg-purple-100 text-purple-700' },
+  { value: 'guests', label: 'Invités', iconName: 'Users', color: 'bg-green-100 text-green-700' },
   {
     value: 'common_areas',
     label: 'Espaces communs',
-    emoji: '🏠',
+    iconName: 'Home',
     color: 'bg-orange-100 text-orange-700',
   },
-  { value: 'kitchen', label: 'Cuisine', emoji: '🍳', color: 'bg-yellow-100 text-yellow-700' },
+  { value: 'kitchen', label: 'Cuisine', iconName: 'UtensilsCrossed', color: 'bg-yellow-100 text-yellow-700' },
   {
     value: 'bathroom',
     label: 'Salle de bain',
-    emoji: '🚿',
+    iconName: 'Droplets',
     color: 'bg-cyan-100 text-cyan-700',
   },
-  { value: 'pets', label: 'Animaux', emoji: '🐾', color: 'bg-pink-100 text-pink-700' },
-  { value: 'smoking', label: 'Tabac', emoji: '🚭', color: 'bg-red-100 text-red-700' },
-  { value: 'other', label: 'Autre', emoji: '📋', color: 'bg-gray-100 text-gray-700' },
+  { value: 'pets', label: 'Animaux', iconName: 'PawPrint', color: 'bg-pink-100 text-pink-700' },
+  { value: 'smoking', label: 'Tabac', iconName: 'Ban', color: 'bg-red-100 text-red-700' },
+  { value: 'other', label: 'Autre', iconName: 'FileText', color: 'bg-gray-100 text-gray-700' },
 ];
 
 export const RULE_STATUSES: Array<{
   value: RuleStatus;
   label: string;
-  icon: string;
+  iconName: string;
   color: string;
 }> = [
-  { value: 'voting', label: 'En vote', icon: '🗳️', color: 'bg-blue-100 text-blue-700' },
-  { value: 'active', label: 'Active', icon: '✅', color: 'bg-green-100 text-green-700' },
-  { value: 'rejected', label: 'Rejetée', icon: '❌', color: 'bg-red-100 text-red-700' },
-  { value: 'archived', label: 'Archivée', icon: '📦', color: 'bg-gray-100 text-gray-700' },
+  { value: 'voting', label: 'En vote', iconName: 'Vote', color: 'bg-blue-100 text-blue-700' },
+  { value: 'active', label: 'Active', iconName: 'CheckCircle', color: 'bg-green-100 text-green-700' },
+  { value: 'rejected', label: 'Rejetée', iconName: 'XCircle', color: 'bg-red-100 text-red-700' },
+  { value: 'archived', label: 'Archivée', iconName: 'Archive', color: 'bg-gray-100 text-gray-700' },
 ];
 
 export const VOTE_TYPES: Array<{
   value: VoteType;
   label: string;
-  emoji: string;
+  iconName: string;
   color: string;
   bgColor: string;
   borderColor: string;
@@ -186,7 +186,7 @@ export const VOTE_TYPES: Array<{
   {
     value: 'for',
     label: 'Pour',
-    emoji: '👍',
+    iconName: 'ThumbsUp',
     color: 'text-green-700',
     bgColor: 'bg-green-50',
     borderColor: 'border-green-500',
@@ -194,7 +194,7 @@ export const VOTE_TYPES: Array<{
   {
     value: 'against',
     label: 'Contre',
-    emoji: '👎',
+    iconName: 'ThumbsDown',
     color: 'text-red-700',
     bgColor: 'bg-red-50',
     borderColor: 'border-red-500',
@@ -202,7 +202,7 @@ export const VOTE_TYPES: Array<{
   {
     value: 'abstain',
     label: 'Abstention',
-    emoji: '🤷',
+    iconName: 'Minus',
     color: 'text-gray-700',
     bgColor: 'bg-gray-50',
     borderColor: 'border-gray-500',

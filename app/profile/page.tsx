@@ -6,7 +6,7 @@ import { createClient } from '@/lib/auth/supabase-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
-import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target, TrendingUp, Rocket, ChevronDown, MapPin, Euro, ShieldCheck, Edit } from 'lucide-react'
+import { User, Mail, Lock, LogOut, Trash2, Camera, Check, X, Eye, EyeOff, AlertCircle, RefreshCw, Settings, Shield, UserCircle, ArrowLeft, DollarSign, Users, Heart, ChevronRight, Sparkles, Award, Trophy, Star, Zap, Target, TrendingUp, Rocket, ChevronDown, MapPin, Euro, ShieldCheck, Edit, Palette } from 'lucide-react'
 import { toast } from 'sonner'
 import RoleSwitchModal from '@/components/RoleSwitchModal'
 import { useRole } from '@/lib/role/role-context'
@@ -924,7 +924,7 @@ export default function ProfilePage() {
                         {/* Hobbies */}
                         {userProfile?.hobbies && userProfile.hobbies.length > 0 && (
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs font-semibold text-gray-600">🎨 {t('profile.sections.hobbies')}:</span>
+                            <span className="text-xs font-semibold text-gray-600 flex items-center gap-1"><Palette className="w-3 h-3" /> {t('profile.sections.hobbies')}:</span>
                             {userProfile.hobbies.slice(0, 3).map((hobby, idx) => (
                               <span key={idx} className={`px-2 py-1 ${colors.bg} ${colors.text} text-xs rounded-full`}>
                                 {hobby}
@@ -941,7 +941,7 @@ export default function ProfilePage() {
                         {/* Values */}
                         {userProfile?.core_values && userProfile.core_values.length > 0 && (
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs font-semibold text-gray-600">❤️ {t('profile.sections.values')}:</span>
+                            <span className="text-xs font-semibold text-gray-600 flex items-center gap-1"><Heart className="w-3 h-3" /> {t('profile.sections.values')}:</span>
                             {userProfile.core_values.slice(0, 3).map((value, idx) => (
                               <span key={idx} className={`px-2 py-1 ${colors.bg} ${colors.text} text-xs rounded-full`}>
                                 {value}

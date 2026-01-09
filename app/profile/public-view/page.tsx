@@ -28,7 +28,17 @@ import {
   Clock,
   Shield,
   Star,
-  MessageCircle
+  MessageCircle,
+  Lightbulb,
+  Wrench,
+  Check,
+  X,
+  Ban,
+  Palette,
+  DollarSign,
+  Handshake,
+  TrendingUp,
+  type LucideIcon
 } from 'lucide-react'
 import { toast } from 'sonner'
 import LoadingHouse from '@/components/ui/LoadingHouse'
@@ -105,12 +115,20 @@ const amenityLabels: Record<string, string> = {
   kitchen: 'Cuisine équipée',
 }
 
-// Service labels in French
-const serviceLabels: Record<string, { label: string; emoji: string }> = {
-  utilities: { label: 'Charges incluses', emoji: '💡' },
-  cleaning: { label: 'Ménage', emoji: '🧹' },
-  maintenance: { label: 'Maintenance', emoji: '🔧' },
-  insurance: { label: 'Assurance', emoji: '🛡️' },
+// Service labels in French with icon names
+const serviceLabels: Record<string, { label: string; iconName: string }> = {
+  utilities: { label: 'Charges incluses', iconName: 'Lightbulb' },
+  cleaning: { label: 'Ménage', iconName: 'Sparkles' },
+  maintenance: { label: 'Maintenance', iconName: 'Wrench' },
+  insurance: { label: 'Assurance', iconName: 'Shield' },
+}
+
+// Icon mapping for services
+const SERVICE_ICONS: Record<string, LucideIcon> = {
+  Lightbulb,
+  Sparkles,
+  Wrench,
+  Shield,
 }
 
 // Experience years labels
@@ -129,12 +147,20 @@ const managementLabels: Record<string, { label: string; desc: string }> = {
   'hybrid': { label: 'Mixte', desc: 'Gestion partagée' },
 }
 
-// Motivation labels
-const motivationLabels: Record<string, { label: string; emoji: string }> = {
-  income: { label: 'Revenu', emoji: '💰' },
-  community: { label: 'Communauté', emoji: '🤝' },
-  investment: { label: 'Investissement', emoji: '📈' },
-  other: { label: 'Autre', emoji: '✨' },
+// Motivation labels with icon names
+const motivationLabels: Record<string, { label: string; iconName: string }> = {
+  income: { label: 'Revenu', iconName: 'DollarSign' },
+  community: { label: 'Communauté', iconName: 'Handshake' },
+  investment: { label: 'Investissement', iconName: 'TrendingUp' },
+  other: { label: 'Autre', iconName: 'Sparkles' },
+}
+
+// Icon mapping for motivations
+const MOTIVATION_ICONS: Record<string, LucideIcon> = {
+  DollarSign,
+  Handshake,
+  TrendingUp,
+  Sparkles,
 }
 
 // Lease duration labels
@@ -328,7 +354,11 @@ export default function PublicViewPage() {
                   <span className="text-xs font-semibold text-gray-600">Motivation principale</span>
                 </div>
                 <p className="text-sm font-bold text-gray-900 flex items-center gap-2">
-                  <span>{motivationLabels[userProfile.primary_motivation]?.emoji}</span>
+                  {(() => {
+                    const iconName = motivationLabels[userProfile.primary_motivation]?.iconName;
+                    const MotivationIcon = iconName ? MOTIVATION_ICONS[iconName] : Sparkles;
+                    return <MotivationIcon className="w-4 h-4" />;
+                  })()}
                   {motivationLabels[userProfile.primary_motivation]?.label || userProfile.primary_motivation}
                 </p>
               </div>
@@ -383,19 +413,23 @@ export default function PublicViewPage() {
             Services inclus
           </h2>
           <div className="flex flex-wrap gap-2">
-            {userProfile.included_services.map((service, idx) => (
-              <span
-                key={idx}
-                className="px-4 py-2 text-sm font-medium rounded-full flex items-center gap-2"
-                style={{
-                  background: 'rgba(175, 86, 130, 0.1)',
-                  color: '#af5682'
-                }}
-              >
-                <span>{serviceLabels[service]?.emoji || '✨'}</span>
-                {serviceLabels[service]?.label || service}
-              </span>
-            ))}
+            {userProfile.included_services.map((service, idx) => {
+              const iconName = serviceLabels[service]?.iconName || 'Sparkles';
+              const ServiceIcon = SERVICE_ICONS[iconName] || Sparkles;
+              return (
+                <span
+                  key={idx}
+                  className="px-4 py-2 text-sm font-medium rounded-full flex items-center gap-2"
+                  style={{
+                    background: 'rgba(175, 86, 130, 0.1)',
+                    color: '#af5682'
+                  }}
+                >
+                  <ServiceIcon className="w-4 h-4" />
+                  {serviceLabels[service]?.label || service}
+                </span>
+              );
+            })}
           </div>
         </div>
       )}
@@ -423,8 +457,12 @@ export default function PublicViewPage() {
               >
                 <div className="flex items-center gap-2">
                   <PawPrint className="w-4 h-4" style={{ color: '#b85676' }} />
-                  <span className="text-sm font-medium text-gray-900">
-                    Animaux {userProfile.pets_allowed ? '✅ Acceptés' : '🚫 Non acceptés'}
+                  <span className="text-sm font-medium text-gray-900 flex items-center gap-1">
+                    Animaux {userProfile.pets_allowed ? (
+                      <><Check className="w-4 h-4 text-green-600" /> Acceptés</>
+                    ) : (
+                      <><X className="w-4 h-4 text-red-500" /> Non acceptés</>
+                    )}
                   </span>
                 </div>
               </div>
@@ -436,8 +474,12 @@ export default function PublicViewPage() {
               >
                 <div className="flex items-center gap-2">
                   <Cigarette className="w-4 h-4" style={{ color: '#b85676' }} />
-                  <span className="text-sm font-medium text-gray-900">
-                    Fumeur {userProfile.smoking_allowed ? '✅ Autorisé' : '🚭 Non autorisé'}
+                  <span className="text-sm font-medium text-gray-900 flex items-center gap-1">
+                    Fumeur {userProfile.smoking_allowed ? (
+                      <><Check className="w-4 h-4 text-green-600" /> Autorisé</>
+                    ) : (
+                      <><Ban className="w-4 h-4 text-red-500" /> Non autorisé</>
+                    )}
                   </span>
                 </div>
               </div>
@@ -567,7 +609,8 @@ export default function PublicViewPage() {
       {userProfile?.hobbies && userProfile.hobbies.length > 0 && (
         <div className="mb-6">
           <h2 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-            🎨 {t('publicView.sections.hobbies')}
+            <Palette className="w-5 h-5 text-blue-500" />
+            {t('publicView.sections.hobbies')}
           </h2>
           <div className="flex flex-wrap gap-2">
             {userProfile.hobbies.map((hobby, idx) => (

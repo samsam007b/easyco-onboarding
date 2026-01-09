@@ -2,7 +2,34 @@
 
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Loader2, Upload, Trash2, AlertTriangle } from 'lucide-react';
+import {
+  X,
+  Loader2,
+  Upload,
+  Trash2,
+  AlertTriangle,
+  Droplets,
+  Zap,
+  Flame,
+  Plug,
+  Building2,
+  Sparkles,
+  Bug,
+  Wrench,
+  type LucideIcon,
+} from 'lucide-react';
+
+// Icon mapping for maintenance categories
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  Droplets,
+  Zap,
+  Flame,
+  Plug,
+  Building2,
+  Sparkles,
+  Bug,
+  Wrench,
+};
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -209,24 +236,27 @@ export function CreateTicketModal({
               <div>
                 <Label className="text-sm font-medium text-gray-700">{t?.category?.[language] || 'Category'} *</Label>
                 <div className="mt-2 grid grid-cols-4 gap-2">
-                  {MAINTENANCE_CATEGORIES.map((cat) => (
-                    <button
-                      key={cat.value}
-                      type="button"
-                      onClick={() => setCategory(cat.value)}
-                      className={cn(
-                        'flex flex-col items-center p-2 superellipse-xl border-2 transition-all',
-                        category === cat.value
-                          ? 'border-owner-500 bg-owner-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      )}
-                    >
-                      <span className="text-xl">{cat.emoji}</span>
-                      <span className="text-xs mt-1 text-gray-600 text-center leading-tight">
-                        {cat.label}
-                      </span>
-                    </button>
-                  ))}
+                  {MAINTENANCE_CATEGORIES.map((cat) => {
+                    const CatIcon = CATEGORY_ICONS[cat.iconName];
+                    return (
+                      <button
+                        key={cat.value}
+                        type="button"
+                        onClick={() => setCategory(cat.value)}
+                        className={cn(
+                          'flex flex-col items-center p-2 superellipse-xl border-2 transition-all',
+                          category === cat.value
+                            ? 'border-owner-500 bg-owner-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        )}
+                      >
+                        {CatIcon && <CatIcon className="w-5 h-5 text-gray-700" />}
+                        <span className="text-xs mt-1 text-gray-600 text-center leading-tight">
+                          {cat.label}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Zap, ListChecks, ArrowRight, Clock, Target } from 'lucide-react';
+import { Zap, ListChecks, ArrowRight, Clock, Target, Lightbulb } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { motion } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n/use-language';
@@ -53,8 +53,9 @@ export default function ModeSelectionPage() {
             className="relative group bg-white superellipse-3xl p-8 border-2 border-orange-200 hover:border-orange-400 hover:shadow-2xl transition-all duration-300 text-left"
           >
             {/* Recommended Badge */}
-            <div className="absolute -top-4 right-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">
-              ⚡ {t('modeSelection.quick.recommended')}
+            <div className="absolute -top-4 right-8 bg-gradient-to-r from-orange-500 to-orange-600 text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg flex items-center gap-1">
+              <Zap className="w-4 h-4" />
+              {t('modeSelection.quick.recommended')}
             </div>
 
             {/* Icon */}
@@ -161,9 +162,10 @@ export default function ModeSelectionPage() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="text-center text-sm text-gray-500 mt-8"
+          className="text-center text-sm text-gray-500 mt-8 flex items-center justify-center gap-2"
         >
-          💡 {t('modeSelection.footer')}
+          <Lightbulb className="w-4 h-4" />
+          {t('modeSelection.footer')}
         </motion.p>
       </div>
     </div>

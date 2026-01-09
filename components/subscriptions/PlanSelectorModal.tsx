@@ -225,7 +225,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
                     </div>
 
                     <div className="mt-6 p-4 bg-blue-50 border border-blue-200 superellipse-xl">
-                      <p className="text-sm text-blue-900 font-medium">💡 Garantie satisfaction</p>
+                      <p className="text-sm text-blue-900 font-medium">Garantie satisfaction</p>
                       <p className="text-xs text-blue-700 mt-1">
                         Vous pouvez annuler votre abonnement à tout moment, sans frais ni engagement.
                       </p>

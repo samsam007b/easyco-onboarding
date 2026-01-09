@@ -285,7 +285,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
     {
       id: 'welcome',
       target: '[data-onboarding="kpi-cards"]',
-      title: searcher?.onboarding?.welcome?.title || 'Bienvenue sur IzzIco ! 🏠',
+      title: searcher?.onboarding?.welcome?.title || 'Bienvenue sur IzzIco !',
       description: searcher?.onboarding?.welcome?.description || 'Voici ton tableau de bord. Tu y trouveras un résumé de ton activité.',
       position: 'bottom',
     },
@@ -837,7 +837,7 @@ const ModernSearcherDashboard = memo(function ModernSearcherDashboard({
                 {/* Welcome message */}
                 <h2 className="text-2xl lg:text-3xl font-black text-gray-900 mb-1">
                   {searcher?.welcomeBack || 'Salut'}
-                  {firstName ? `, ${firstName}` : ''} ! 👋
+                  {firstName ? `, ${firstName}` : ''} !
                 </h2>
                 <p className="text-gray-500 font-medium">
                   {searcher?.welcomeSubtitle || 'Prêt à trouver ton futur chez-toi ?'}

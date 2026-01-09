@@ -163,7 +163,7 @@ export default function VerificationResidentPage() {
               </div>
             </EnhanceProfileSection>
 
-            <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.verification.whatWeNeed')} icon="📋">
+            <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.verification.whatWeNeed')} icon="clipboard">
               <ul className="space-y-2">
                 <li className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />
@@ -180,7 +180,7 @@ export default function VerificationResidentPage() {
               </ul>
             </EnhanceProfileInfoBox>
 
-            <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.verification.privacyProtected')} icon="🔒">
+            <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.verification.privacyProtected')} icon="lock">
               {t('enhanceResident.verification.privacyContent')}
             </EnhanceProfileInfoBox>
 

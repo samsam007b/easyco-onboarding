@@ -155,7 +155,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
     {
       id: 'welcome',
       target: '[data-onboarding="kpi-cards"]',
-      title: resident?.onboarding?.welcome?.title || 'Bienvenue dans ton Hub ! 🏠',
+      title: resident?.onboarding?.welcome?.title || 'Bienvenue dans ton Hub !',
       description: resident?.onboarding?.welcome?.description || 'Ici tu retrouves un aperçu de ta coloc : loyer, dépenses partagées et solde avec tes colocs.',
       position: 'bottom',
     },

@@ -500,27 +500,27 @@ export function formatSunHours(hours?: number, exposure?: SunExposure): string {
 }
 
 /**
- * Get icon/emoji for design style
+ * Get icon name for design style (use with Lucide icons)
  */
-export function getDesignStyleIcon(style?: DesignStyle): string {
+export function getDesignStyleIconName(style?: DesignStyle): string {
   const icons: Record<DesignStyle, string> = {
-    modern: '✨',
-    contemporary: '🏢',
-    minimalist: '⬜',
-    scandinavian: '🌲',
-    industrial: '🏭',
-    bohemian: '🌺',
-    vintage: '📻',
-    mid_century: '🛋️',
-    rustic: '🪵',
-    traditional: '🏛️',
-    eclectic: '🎨',
-    japandi: '🎋',
-    art_deco: '💎',
-    coastal: '🌊',
-    farmhouse: '🏡',
-    mixed: '🔀',
+    modern: 'Sparkles',
+    contemporary: 'Building2',
+    minimalist: 'Square',
+    scandinavian: 'TreePine',
+    industrial: 'Factory',
+    bohemian: 'Flower2',
+    vintage: 'Radio',
+    mid_century: 'Armchair',
+    rustic: 'TreeDeciduous',
+    traditional: 'Landmark',
+    eclectic: 'Palette',
+    japandi: 'Leaf',
+    art_deco: 'Gem',
+    coastal: 'Waves',
+    farmhouse: 'Home',
+    mixed: 'Shuffle',
   };
 
-  return style ? icons[style] : '🏠';
+  return style ? icons[style] : 'Home';
 }

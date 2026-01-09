@@ -3,7 +3,12 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { Coffee, Moon, Music, Utensils, Calendar } from 'lucide-react';
+import {
+  Coffee, Moon, Music, Utensils, Calendar,
+  Sunrise, Bird, Clock, Sparkles, ThumbsUp, Smile,
+  VolumeX, Volume1, Volume2, ChefHat, CookingPot, Pizza,
+  type LucideIcon
+} from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import {
@@ -57,6 +62,31 @@ export default function LifestyleResidentPage() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // Icon mappings for lifestyle options
+  const SLEEP_ICONS: Record<string, LucideIcon> = {
+    'early-bird': Sunrise,
+    'night-owl': Bird,
+    'flexible': Clock,
+  };
+
+  const CLEANLINESS_ICONS: Record<string, LucideIcon> = {
+    'very-clean': Sparkles,
+    'moderately-clean': ThumbsUp,
+    'relaxed': Smile,
+  };
+
+  const NOISE_ICONS: Record<string, LucideIcon> = {
+    'quiet': VolumeX,
+    'moderate': Volume1,
+    'lively': Volume2,
+  };
+
+  const COOKING_ICONS: Record<string, LucideIcon> = {
+    'daily': ChefHat,
+    'often': CookingPot,
+    'rarely': Pizza,
   };
 
   const handleSave = async () => {
@@ -129,23 +159,28 @@ export default function LifestyleResidentPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'early-bird', emoji: '🌅', labelKey: 'earlyBird', descKey: 'earlyBirdDesc' },
-              { value: 'night-owl', emoji: '🦉', labelKey: 'nightOwl', descKey: 'nightOwlDesc' },
-              { value: 'flexible', emoji: '⏰', labelKey: 'flexible', descKey: 'flexibleDesc' }
-            ].map(option => (
-              <EnhanceProfileSelectionCard
-                key={option.value}
-                role="resident"
-                selected={sleepSchedule === option.value}
-                onClick={() => setSleepSchedule(option.value as any)}
-              >
-                <div className="text-center">
-                  <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{t(`enhanceResident.lifestyle.sleep.${option.labelKey}`)}</div>
-                  <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.sleep.${option.descKey}`)}</div>
-                </div>
-              </EnhanceProfileSelectionCard>
-            ))}
+              { value: 'early-bird', labelKey: 'earlyBird', descKey: 'earlyBirdDesc' },
+              { value: 'night-owl', labelKey: 'nightOwl', descKey: 'nightOwlDesc' },
+              { value: 'flexible', labelKey: 'flexible', descKey: 'flexibleDesc' }
+            ].map(option => {
+              const IconComponent = SLEEP_ICONS[option.value];
+              return (
+                <EnhanceProfileSelectionCard
+                  key={option.value}
+                  role="resident"
+                  selected={sleepSchedule === option.value}
+                  onClick={() => setSleepSchedule(option.value as any)}
+                >
+                  <div className="text-center">
+                    <div className="flex justify-center mb-1">
+                      <IconComponent className="w-6 h-6 text-blue-500" />
+                    </div>
+                    <div className="font-medium">{t(`enhanceResident.lifestyle.sleep.${option.labelKey}`)}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.sleep.${option.descKey}`)}</div>
+                  </div>
+                </EnhanceProfileSelectionCard>
+              );
+            })}
           </div>
         </EnhanceProfileSection>
 
@@ -162,23 +197,28 @@ export default function LifestyleResidentPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'very-clean', emoji: '✨', labelKey: 'veryClean', descKey: 'veryCleanDesc' },
-              { value: 'moderately-clean', emoji: '👍', labelKey: 'moderate', descKey: 'moderateDesc' },
-              { value: 'relaxed', emoji: '😌', labelKey: 'relaxed', descKey: 'relaxedDesc' }
-            ].map(option => (
-              <EnhanceProfileSelectionCard
-                key={option.value}
-                role="resident"
-                selected={cleanliness === option.value}
-                onClick={() => setCleanliness(option.value as any)}
-              >
-                <div className="text-center">
-                  <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{t(`enhanceResident.lifestyle.cleanliness.${option.labelKey}`)}</div>
-                  <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.cleanliness.${option.descKey}`)}</div>
-                </div>
-              </EnhanceProfileSelectionCard>
-            ))}
+              { value: 'very-clean', labelKey: 'veryClean', descKey: 'veryCleanDesc' },
+              { value: 'moderately-clean', labelKey: 'moderate', descKey: 'moderateDesc' },
+              { value: 'relaxed', labelKey: 'relaxed', descKey: 'relaxedDesc' }
+            ].map(option => {
+              const IconComponent = CLEANLINESS_ICONS[option.value];
+              return (
+                <EnhanceProfileSelectionCard
+                  key={option.value}
+                  role="resident"
+                  selected={cleanliness === option.value}
+                  onClick={() => setCleanliness(option.value as any)}
+                >
+                  <div className="text-center">
+                    <div className="flex justify-center mb-1">
+                      <IconComponent className="w-6 h-6 text-orange-500" />
+                    </div>
+                    <div className="font-medium">{t(`enhanceResident.lifestyle.cleanliness.${option.labelKey}`)}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.cleanliness.${option.descKey}`)}</div>
+                  </div>
+                </EnhanceProfileSelectionCard>
+              );
+            })}
           </div>
         </EnhanceProfileSection>
 
@@ -195,23 +235,28 @@ export default function LifestyleResidentPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'quiet', emoji: '🤫', labelKey: 'quiet', descKey: 'quietDesc' },
-              { value: 'moderate', emoji: '🔉', labelKey: 'moderate', descKey: 'moderateDesc' },
-              { value: 'lively', emoji: '🔊', labelKey: 'lively', descKey: 'livelyDesc' }
-            ].map(option => (
-              <EnhanceProfileSelectionCard
-                key={option.value}
-                role="resident"
-                selected={noiseTolerance === option.value}
-                onClick={() => setNoiseTolerance(option.value as any)}
-              >
-                <div className="text-center">
-                  <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{t(`enhanceResident.lifestyle.noise.${option.labelKey}`)}</div>
-                  <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.noise.${option.descKey}`)}</div>
-                </div>
-              </EnhanceProfileSelectionCard>
-            ))}
+              { value: 'quiet', labelKey: 'quiet', descKey: 'quietDesc' },
+              { value: 'moderate', labelKey: 'moderate', descKey: 'moderateDesc' },
+              { value: 'lively', labelKey: 'lively', descKey: 'livelyDesc' }
+            ].map(option => {
+              const IconComponent = NOISE_ICONS[option.value];
+              return (
+                <EnhanceProfileSelectionCard
+                  key={option.value}
+                  role="resident"
+                  selected={noiseTolerance === option.value}
+                  onClick={() => setNoiseTolerance(option.value as any)}
+                >
+                  <div className="text-center">
+                    <div className="flex justify-center mb-1">
+                      <IconComponent className="w-6 h-6 text-pink-500" />
+                    </div>
+                    <div className="font-medium">{t(`enhanceResident.lifestyle.noise.${option.labelKey}`)}</div>
+                    <div className="text-xs text-gray-500 mt-1">{t(`enhanceResident.lifestyle.noise.${option.descKey}`)}</div>
+                  </div>
+                </EnhanceProfileSelectionCard>
+              );
+            })}
           </div>
         </EnhanceProfileSection>
 
@@ -228,22 +273,27 @@ export default function LifestyleResidentPage() {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
             {[
-              { value: 'daily', key: 'daily', emoji: '👨‍🍳' },
-              { value: 'often', key: 'often', emoji: '🍳' },
-              { value: 'rarely', key: 'rarely', emoji: '🍕' }
-            ].map(option => (
-              <EnhanceProfileSelectionCard
-                key={option.value}
-                role="resident"
-                selected={cookingFrequency === option.value}
-                onClick={() => setCookingFrequency(option.value as any)}
-              >
-                <div className="text-center">
-                  <div className="text-2xl mb-1">{option.emoji}</div>
-                  <div className="font-medium">{t(`enhanceResident.lifestyle.cooking.${option.key}`)}</div>
-                </div>
-              </EnhanceProfileSelectionCard>
-            ))}
+              { value: 'daily', key: 'daily' },
+              { value: 'often', key: 'often' },
+              { value: 'rarely', key: 'rarely' }
+            ].map(option => {
+              const IconComponent = COOKING_ICONS[option.value];
+              return (
+                <EnhanceProfileSelectionCard
+                  key={option.value}
+                  role="resident"
+                  selected={cookingFrequency === option.value}
+                  onClick={() => setCookingFrequency(option.value as any)}
+                >
+                  <div className="text-center">
+                    <div className="flex justify-center mb-1">
+                      <IconComponent className="w-6 h-6 text-orange-500" />
+                    </div>
+                    <div className="font-medium">{t(`enhanceResident.lifestyle.cooking.${option.key}`)}</div>
+                  </div>
+                </EnhanceProfileSelectionCard>
+              );
+            })}
           </div>
         </EnhanceProfileSection>
 

@@ -2,7 +2,15 @@
 
 import { ReactNode, TextareaHTMLAttributes, ButtonHTMLAttributes } from 'react';
 import { enhanceThemes, EnhanceRole } from './EnhanceProfileLayout';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Lightbulb, ClipboardList, Lock, Zap } from 'lucide-react';
+
+// Map icon names to Lucide components for EnhanceProfileInfoBox
+const ICON_MAP: Record<string, ReactNode> = {
+  'lightbulb': <Lightbulb className="w-4 h-4" />,
+  'clipboard': <ClipboardList className="w-4 h-4" />,
+  'lock': <Lock className="w-4 h-4" />,
+  'sparkles': <Sparkles className="w-4 h-4" />,
+};
 
 interface EnhanceProfileHeadingProps {
   role: EnhanceRole;
@@ -168,17 +176,20 @@ interface EnhanceProfileInfoBoxProps {
   role: EnhanceRole;
   title?: string;
   children: ReactNode;
-  icon?: string;
+  icon?: string | ReactNode;
 }
 
-export function EnhanceProfileInfoBox({ role, title, children, icon = '💡' }: EnhanceProfileInfoBoxProps) {
+export function EnhanceProfileInfoBox({ role, title, children, icon }: EnhanceProfileInfoBoxProps) {
   const theme = enhanceThemes[role];
+
+  // Resolve string icons to Lucide components
+  const resolvedIcon = typeof icon === 'string' ? (ICON_MAP[icon] || icon) : icon;
 
   return (
     <div className={`${theme.bgLight} ${theme.borderLight} border superellipse-xl p-4`}>
       {title && (
         <h3 className="font-medium text-gray-900 mb-2 flex items-center gap-2">
-          <span>{icon}</span>
+          {resolvedIcon && <span className="flex items-center">{resolvedIcon}</span>}
           {title}
         </h3>
       )}

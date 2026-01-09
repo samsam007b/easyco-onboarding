@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
-import { PartyPopper, Users, UtensilsCrossed, Sparkles } from 'lucide-react';
+import { PartyPopper, Users, UtensilsCrossed, Sparkles, Meh, Smile, type LucideIcon } from 'lucide-react';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
 import {
@@ -91,10 +91,17 @@ export default function CommunityEventsResidentPage() {
 
   const canContinue = eventInterest !== '';
 
+  // Icon mapping for interest levels
+  const INTEREST_ICONS: Record<string, LucideIcon> = {
+    low: Meh,
+    medium: Smile,
+    high: PartyPopper,
+  };
+
   const interestLevels = [
-    { value: 'low' as const, emoji: '😐', labelKey: 'low', descKey: 'lowDesc' },
-    { value: 'medium' as const, emoji: '😊', labelKey: 'medium', descKey: 'mediumDesc' },
-    { value: 'high' as const, emoji: '🎉', labelKey: 'high', descKey: 'highDesc' },
+    { value: 'low' as const, iconName: 'low', labelKey: 'low', descKey: 'lowDesc' },
+    { value: 'medium' as const, iconName: 'medium', labelKey: 'medium', descKey: 'mediumDesc' },
+    { value: 'high' as const, iconName: 'high', labelKey: 'high', descKey: 'highDesc' },
   ];
 
   return (
@@ -122,22 +129,25 @@ export default function CommunityEventsResidentPage() {
             {t('enhanceResident.community.eventInterest.label')}
           </label>
           <div className="grid grid-cols-3 gap-3">
-            {interestLevels.map((level) => (
-              <EnhanceProfileSelectionCard
-                key={level.value}
-                role="resident"
-                selected={eventInterest === level.value}
-                onClick={() => setEventInterest(level.value)}
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <span className="text-3xl">{level.emoji}</span>
-                  <span className="font-semibold text-sm">{t(`enhanceResident.community.eventInterest.${level.labelKey}`)}</span>
-                  <span className="text-xs text-center text-gray-500">
-                    {t(`enhanceResident.community.eventInterest.${level.descKey}`)}
-                  </span>
-                </div>
-              </EnhanceProfileSelectionCard>
-            ))}
+            {interestLevels.map((level) => {
+              const IconComponent = INTEREST_ICONS[level.iconName];
+              return (
+                <EnhanceProfileSelectionCard
+                  key={level.value}
+                  role="resident"
+                  selected={eventInterest === level.value}
+                  onClick={() => setEventInterest(level.value)}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <IconComponent className="w-8 h-8 text-orange-500" />
+                    <span className="font-semibold text-sm">{t(`enhanceResident.community.eventInterest.${level.labelKey}`)}</span>
+                    <span className="text-xs text-center text-gray-500">
+                      {t(`enhanceResident.community.eventInterest.${level.descKey}`)}
+                    </span>
+                  </div>
+                </EnhanceProfileSelectionCard>
+              );
+            })}
           </div>
         </EnhanceProfileSection>
 
@@ -196,7 +206,7 @@ export default function CommunityEventsResidentPage() {
         </div>
 
         {/* Community perks callout */}
-        <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.community.perks.title')} icon="✨">
+        <EnhanceProfileInfoBox role="resident" title={t('enhanceResident.community.perks.title')} icon="sparkles">
           <ul className="space-y-1">
             <li className="flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-orange-500" />

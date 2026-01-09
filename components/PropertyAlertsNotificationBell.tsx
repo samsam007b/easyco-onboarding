@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Bell } from 'lucide-react';
+import { Bell, Home, TrendingDown, FileText, Heart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -104,15 +104,15 @@ export default function PropertyAlertsNotificationBell() {
   const getNotificationIcon = (type: PropertyNotification['type']) => {
     switch (type) {
       case 'new_property':
-        return '🏠';
+        return <Home className="w-5 h-5 text-blue-600" />;
       case 'price_drop':
-        return '💰';
+        return <TrendingDown className="w-5 h-5 text-green-600" />;
       case 'status_change':
-        return '📝';
+        return <FileText className="w-5 h-5 text-orange-600" />;
       case 'new_match':
-        return '💖';
+        return <Heart className="w-5 h-5 text-pink-600" />;
       default:
-        return '🔔';
+        return <Bell className="w-5 h-5 text-gray-600" />;
     }
   };
 

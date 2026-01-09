@@ -128,7 +128,7 @@ export default function UpgradeNotification() {
           bgClass: 'bg-gradient-to-r from-green-50 to-emerald-50 border-green-300',
           iconBg: 'bg-green-100',
           icon: <CheckCircle className="w-7 h-7 text-green-600" />,
-          title: '🎉 Paiement réussi !',
+          title: 'Paiement réussi !',
           titleClass: 'text-green-900',
           message: trialInfo
             ? `Votre abonnement a été activé avec succès. ${trialInfo}. Profitez de toutes les fonctionnalités premium !`

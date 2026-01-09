@@ -644,7 +644,7 @@ const SearcherMatchingPeoplePage = memo(function SearcherMatchingPeoplePage() {
               <Heart className="w-7 h-7 text-white" />
             </motion.div>
             <div className="flex-1">
-              <p className="font-bold text-gray-900 text-lg">C'est un Match ! 🎉</p>
+              <p className="font-bold text-gray-900 text-lg">C'est un Match !</p>
               <p className="text-sm text-gray-600">Vous pouvez maintenant discuter</p>
             </div>
             <Button

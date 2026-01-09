@@ -195,7 +195,7 @@ export default function DocumentsPage() {
       });
 
       if (result.success) {
-        console.log('[Documents] ✅ Document uploaded successfully');
+        console.log('[Documents] Document uploaded successfully');
         setShowUploadModal(false);
         resetUploadForm();
         await loadData();
@@ -217,7 +217,7 @@ export default function DocumentsPage() {
       const result = await documentService.deleteDocument(documentId);
 
       if (result.success) {
-        console.log('[Documents] ✅ Document deleted');
+        console.log('[Documents] Document deleted');
         setShowViewModal(false);
         await loadData();
       } else {
@@ -580,7 +580,7 @@ export default function DocumentsPage() {
                     {/* Private Badge */}
                     {doc.is_private && (
                       <Badge variant="secondary" className="text-xs">
-                        🔒 {t?.privateLabel?.[language] || 'Private'}
+                        {t?.privateLabel?.[language] || 'Private'}
                       </Badge>
                     )}
                   </motion.div>

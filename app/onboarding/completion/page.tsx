@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/auth/supabase-client';
 import { logger } from '@/lib/utils/logger';
-import { Home, Sparkles, CheckCircle2, ArrowRight } from 'lucide-react';
+import { Home, Sparkles, CheckCircle2, ArrowRight, Lightbulb } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { roleThemes, OnboardingRole } from '@/components/onboarding/OnboardingLayout';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
@@ -159,7 +159,7 @@ export default function OnboardingCompletionPage() {
           <div className="text-center mb-8">
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
               <span className={`bg-gradient-to-r ${theme.gradient} bg-clip-text text-transparent`}>
-                🎉 {onboarding.completion.congratulations}, {userName}!
+                {onboarding.completion.congratulations}, {userName}!
               </span>
             </h1>
             <p className="text-base sm:text-lg text-gray-600">
@@ -248,7 +248,7 @@ export default function OnboardingCompletionPage() {
             userType === 'owner' ? 'bg-purple-50 border-purple-100' : 'bg-orange-50 border-orange-100'
           } border superellipse-xl p-4 text-sm text-gray-700`}>
             <p className="flex items-start gap-2">
-              <span className="text-base flex-shrink-0">💡</span>
+              <Lightbulb className={`w-5 h-5 flex-shrink-0 ${userType === 'owner' ? 'text-purple-500' : 'text-orange-500'}`} />
               <span>
                 <strong className={userType === 'owner' ? 'text-purple-900' : 'text-orange-900'}>
                   {onboarding.completion.tipTitle} :

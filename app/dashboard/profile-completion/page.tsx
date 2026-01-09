@@ -52,10 +52,10 @@ export default function ProfileCompletionPage() {
   }
 
   const sections = [
-    { key: 'basic', title: t('profileCompletion.sections.basic'), icon: '👤', route: '/dashboard/my-profile' },
-    { key: 'preferences', title: t('profileCompletion.sections.preferences'), icon: '🔍', route: '/dashboard/my-profile' },
-    { key: 'lifestyle', title: t('profileCompletion.sections.lifestyle'), icon: '🏠', route: '/dashboard/my-profile' },
-    { key: 'personality', title: t('profileCompletion.sections.personality'), icon: '✨', route: '/dashboard/my-profile' },
+    { key: 'basic', title: t('profileCompletion.sections.basic'), icon: '', route: '/dashboard/my-profile' },
+    { key: 'preferences', title: t('profileCompletion.sections.preferences'), icon: '', route: '/dashboard/my-profile' },
+    { key: 'lifestyle', title: t('profileCompletion.sections.lifestyle'), icon: '', route: '/dashboard/my-profile' },
+    { key: 'personality', title: t('profileCompletion.sections.personality'), icon: '', route: '/dashboard/my-profile' },
     { key: 'verification', title: t('profileCompletion.sections.verification'), icon: '✓', route: '/dashboard/my-profile' },
   ];
 

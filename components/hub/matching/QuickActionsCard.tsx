@@ -187,7 +187,7 @@ export default function QuickActionsCard({
           style={{ background: CARD_BG_GRADIENT }}
         >
           <p className="text-xs font-semibold" style={{ color: RESIDENT_PRIMARY }}>
-            🎯 Algorithme qui analyse 50+ critères de compatibilité
+            Algorithme qui analyse 50+ critères de compatibilité
           </p>
         </motion.div>
       </div>

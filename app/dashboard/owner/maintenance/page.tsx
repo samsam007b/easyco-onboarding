@@ -30,6 +30,14 @@ import {
   List,
   Euro,
   Phone,
+  Droplets,
+  Zap,
+  Flame,
+  Plug,
+  Building2,
+  Sparkles,
+  Bug,
+  type LucideIcon,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { maintenanceService } from '@/lib/services/maintenance-service';
@@ -71,16 +79,16 @@ import { getHookTranslation } from '@/lib/i18n/get-language';
 
 import { ownerGradient, ownerGradientLight } from '@/lib/constants/owner-theme';
 
-// Category config for display - now using emojis and colors only (labels translated dynamically)
-const CATEGORY_STYLES: Record<MaintenanceCategory, { emoji: string; color: string }> = {
-  plumbing: { emoji: '🚰', color: 'bg-blue-100 text-blue-700 border-blue-200' },
-  electrical: { emoji: '⚡', color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
-  heating: { emoji: '🔥', color: 'bg-orange-100 text-orange-700 border-orange-200' },
-  appliances: { emoji: '🔌', color: 'bg-purple-100 text-purple-700 border-purple-200' },
-  structural: { emoji: '🏗️', color: 'bg-gray-100 text-gray-700 border-gray-200' },
-  cleaning: { emoji: '🧹', color: 'bg-green-100 text-green-700 border-green-200' },
-  pest_control: { emoji: '🐛', color: 'bg-red-100 text-red-700 border-red-200' },
-  other: { emoji: '🔧', color: 'bg-indigo-100 text-indigo-700 border-indigo-200' },
+// Category config for display - using Lucide icons and colors (labels translated dynamically)
+const CATEGORY_STYLES: Record<MaintenanceCategory, { icon: LucideIcon; color: string }> = {
+  plumbing: { icon: Droplets, color: 'bg-blue-100 text-blue-700 border-blue-200' },
+  electrical: { icon: Zap, color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
+  heating: { icon: Flame, color: 'bg-orange-100 text-orange-700 border-orange-200' },
+  appliances: { icon: Plug, color: 'bg-purple-100 text-purple-700 border-purple-200' },
+  structural: { icon: Building2, color: 'bg-gray-100 text-gray-700 border-gray-200' },
+  cleaning: { icon: Sparkles, color: 'bg-green-100 text-green-700 border-green-200' },
+  pest_control: { icon: Bug, color: 'bg-red-100 text-red-700 border-red-200' },
+  other: { icon: Wrench, color: 'bg-indigo-100 text-indigo-700 border-indigo-200' },
 };
 
 // Map backend categories to Kanban categories
@@ -780,10 +788,10 @@ export default function MaintenancePage() {
                             <div className="flex items-start gap-3 mb-3">
                               {/* Category Icon */}
                               <div
-                                className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 shadow-sm text-xl"
+                                className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 shadow-sm"
                                 style={{ background: ownerGradientLight }}
                               >
-                                {categoryConfig.emoji}
+                                <categoryConfig.icon className="w-5 h-5 text-purple-700" />
                               </div>
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-2 flex-wrap">

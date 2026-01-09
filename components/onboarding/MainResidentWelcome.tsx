@@ -49,7 +49,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
       icon: UserPlus,
       title: 'Inviter des colocataires',
       description: 'Partagez le code d\'invitation avec vos futurs colocataires',
-      color: 'from-resident-500 to-resident-600',
+      color: 'bg-resident-500',
       action: () => {
         setCurrentStep('codes');
       }
@@ -58,7 +58,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
       icon: Camera,
       title: 'Ajouter une photo',
       description: 'Personnalisez votre résidence avec une belle photo',
-      color: 'from-green-500 to-emerald-600',
+      color: 'bg-green-500',
       action: () => {
         onClose();
         router.push('/settings/residence-profile');
@@ -68,7 +68,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
       icon: DollarSign,
       title: 'Gérer les finances',
       description: 'Configurez le système de partage des dépenses',
-      color: 'from-resident-500 to-resident-600',
+      color: 'bg-resident-500',
       action: () => {
         onClose();
         router.push('/hub/finances');
@@ -78,7 +78,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
       icon: FileText,
       title: 'Ajouter des documents',
       description: 'Importez le bail, règlement intérieur, etc.',
-      color: 'from-owner-500 to-owner-600',
+      color: 'bg-owner-500',
       action: () => {
         onClose();
         router.push('/hub/documents');
@@ -129,7 +129,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                 </p>
               </div>
 
-              <Card className="p-6 mb-6 border-2 border-resident-200 bg-gradient-to-br from-resident-50 to-resident-100">
+              <Card className="p-6 mb-6 border-2 border-resident-200 bg-resident-50">
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 superellipse-xl bg-white flex items-center justify-center flex-shrink-0 shadow-sm">
                     <Shield className="w-6 h-6 text-resident-600" />
@@ -181,7 +181,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
               className="p-8"
             >
               <div className="text-center mb-6">
-                <div className="w-16 h-16 superellipse-2xl mx-auto mb-4 flex items-center justify-center bg-gradient-to-br from-owner-500 to-owner-600">
+                <div className="w-16 h-16 superellipse-2xl mx-auto mb-4 flex items-center justify-center bg-owner-500">
                   <Key className="w-8 h-8 text-white" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900 mb-2">
@@ -193,7 +193,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
               </div>
 
               {/* Invitation Code */}
-              <Card className="p-6 mb-4 border-2 border-resident-200 bg-gradient-to-br from-resident-50 to-resident-100">
+              <Card className="p-6 mb-4 border-2 border-resident-200 bg-resident-50">
                 <div className="flex items-center gap-2 mb-3">
                   <Users className="w-5 h-5 text-resident-600" />
                   <h3 className="font-bold text-gray-900">Code pour les Colocataires</h3>
@@ -204,7 +204,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                   </div>
                   <button
                     onClick={() => copyToClipboard(propertyData.invitation_code, 'invitation')}
-                    className="p-3 superellipse-lg text-white transition-all hover:scale-105 bg-gradient-to-r from-resident-500 to-resident-600"
+                    className="p-3 superellipse-lg text-white transition-all hover:scale-105 bg-resident-500 hover:bg-resident-600"
                   >
                     {copiedCode === 'invitation' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                   </button>
@@ -215,7 +215,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
               </Card>
 
               {/* Owner Code */}
-              <Card className="p-6 mb-6 border-2 border-owner-200 bg-gradient-to-br from-owner-50 to-owner-100">
+              <Card className="p-6 mb-6 border-2 border-owner-200 bg-owner-50">
                 <div className="flex items-center gap-2 mb-3">
                   <Shield className="w-5 h-5 text-owner-600" />
                   <h3 className="font-bold text-gray-900">Code Propriétaire</h3>
@@ -226,7 +226,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                   </div>
                   <button
                     onClick={() => copyToClipboard(propertyData.owner_code, 'owner')}
-                    className="p-3 superellipse-lg text-white transition-all hover:scale-105 bg-gradient-to-r from-owner-500 to-owner-600"
+                    className="p-3 superellipse-lg text-white transition-all hover:scale-105 bg-owner-500 hover:bg-owner-600"
                   >
                     {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                   </button>
@@ -288,7 +288,7 @@ export default function MainResidentWelcome({ propertyData, onClose }: MainResid
                       className="p-4 cursor-pointer hover:shadow-lg transition-all border-2 border-transparent hover:border-resident-200"
                     >
                       <div className="flex items-start gap-3">
-                        <div className={`w-10 h-10 superellipse-lg flex items-center justify-center bg-gradient-to-br ${step.color} flex-shrink-0`}>
+                        <div className={`w-10 h-10 superellipse-lg flex items-center justify-center ${step.color} flex-shrink-0`}>
                           <Icon className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">

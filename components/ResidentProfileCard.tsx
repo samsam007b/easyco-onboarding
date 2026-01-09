@@ -93,10 +93,10 @@ export default function ResidentProfileCard({
             )}
             <div className="flex flex-wrap gap-1 justify-center">
               {resident.is_smoker && (
-                <Badge variant="default" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600 bg-gray-50">🚬</Badge>
+                <Badge variant="default" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600 bg-gray-50">F</Badge>
               )}
               {resident.has_pets && (
-                <Badge variant="default" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600 bg-gray-50">🐾</Badge>
+                <Badge variant="default" className="text-xs px-1.5 py-0 border-gray-300 text-gray-600 bg-gray-50">P</Badge>
               )}
               {resident.languages && resident.languages.length > 0 && (
                 <Badge variant="default" className="text-xs px-1.5 py-0 border-resident-200 text-resident-600 bg-resident-50">
@@ -237,7 +237,7 @@ export default function ResidentProfileCard({
                     <div className={`flex items-center gap-3 p-3 rounded-lg ${
                       resident.is_smoker ? 'bg-resident-50 border border-resident-200' : 'bg-green-50 border border-green-200'
                     }`}>
-                      <span className="text-xl">🚬</span>
+                      <span className="text-xl">•</span>
                       <div>
                         <p className="text-xs text-gray-500">Fumeur</p>
                         <p className="font-medium text-gray-900">{resident.is_smoker ? 'Oui' : 'Non'}</p>
@@ -250,7 +250,7 @@ export default function ResidentProfileCard({
                     <div className={`flex items-center gap-3 p-3 rounded-lg ${
                       resident.has_pets ? 'bg-blue-50 border border-blue-200' : 'bg-gray-50 border border-gray-200'
                     }`}>
-                      <span className="text-xl">🐾</span>
+                      <span className="text-xl">•</span>
                       <div>
                         <p className="text-xs text-gray-500">Animaux</p>
                         <p className="font-medium text-gray-900">{resident.has_pets ? 'Oui' : 'Non'}</p>
@@ -440,7 +440,7 @@ export default function ResidentProfileCard({
                   <div className={`flex items-center gap-3 p-3 rounded-lg ${
                     resident.is_smoker ? 'bg-resident-50 border border-resident-200' : 'bg-green-50 border border-green-200'
                   }`}>
-                    <span className="text-xl">🚬</span>
+                    <span className="text-xl">•</span>
                     <div>
                       <p className="text-xs text-gray-500">Fumeur</p>
                       <p className="font-medium text-gray-900">{resident.is_smoker ? 'Oui' : 'Non'}</p>
@@ -453,7 +453,7 @@ export default function ResidentProfileCard({
                   <div className={`flex items-center gap-3 p-3 rounded-lg ${
                     resident.has_pets ? 'bg-blue-50 border border-blue-200' : 'bg-gray-50 border border-gray-200'
                   }`}>
-                    <span className="text-xl">🐾</span>
+                    <span className="text-xl">•</span>
                     <div>
                       <p className="text-xs text-gray-500">Animaux</p>
                       <p className="font-medium text-gray-900">{resident.has_pets ? 'Oui' : 'Non'}</p>

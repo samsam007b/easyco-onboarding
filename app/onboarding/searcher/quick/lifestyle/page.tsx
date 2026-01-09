@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Sparkles, Dog, Cigarette, Trash2 } from 'lucide-react';
+import { ArrowRight, Sparkles, Dog, Cigarette, Trash2, Smile, Meh, Frown, Brush } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
@@ -105,11 +105,11 @@ export default function QuickLifestylePage() {
   };
 
   const cleanlinessLabels = [
-    { value: 1, labelKey: 'relaxed', emoji: '😊' },
-    { value: 2, labelKey: 'flexible', emoji: '🙂' },
-    { value: 3, labelKey: 'normal', emoji: '😐' },
-    { value: 4, labelKey: 'organized', emoji: '🧹' },
-    { value: 5, labelKey: 'veryClean', emoji: '✨' },
+    { value: 1, labelKey: 'relaxed', icon: Smile },
+    { value: 2, labelKey: 'flexible', icon: Smile },
+    { value: 3, labelKey: 'normal', icon: Meh },
+    { value: 4, labelKey: 'organized', icon: Brush },
+    { value: 5, labelKey: 'veryClean', icon: Sparkles },
   ];
 
   return (
@@ -205,24 +205,27 @@ export default function QuickLifestylePage() {
 
           {/* Cleanliness Options */}
           <div className="grid grid-cols-5 gap-2">
-            {cleanlinessLabels.map((item) => (
-              <button
-                key={item.value}
-                onClick={() => setCleanlinessLevel(item.value)}
-                className={`
-                  flex flex-col items-center gap-2 p-3 superellipse-xl border-2 transition-all
-                  ${cleanlinessLevel === item.value
-                    ? 'border-orange-500 bg-orange-50 shadow-md scale-105'
-                    : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
-                  }
-                `}
-              >
-                <span className="text-2xl">{item.emoji}</span>
-                <span className="text-xs font-medium text-center text-gray-700">
-                  {t(`quickOnboarding.lifestyle.cleanliness.levels.${item.labelKey}`)}
-                </span>
-              </button>
-            ))}
+            {cleanlinessLabels.map((item) => {
+              const IconComponent = item.icon;
+              return (
+                <button
+                  key={item.value}
+                  onClick={() => setCleanlinessLevel(item.value)}
+                  className={`
+                    flex flex-col items-center gap-2 p-3 superellipse-xl border-2 transition-all
+                    ${cleanlinessLevel === item.value
+                      ? 'border-orange-500 bg-orange-50 shadow-md scale-105'
+                      : 'border-gray-200 hover:border-orange-300 hover:bg-orange-50/50'
+                    }
+                  `}
+                >
+                  <IconComponent className={`w-6 h-6 ${cleanlinessLevel === item.value ? 'text-orange-600' : 'text-gray-500'}`} />
+                  <span className="text-xs font-medium text-center text-gray-700">
+                    {t(`quickOnboarding.lifestyle.cleanliness.levels.${item.labelKey}`)}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Selected Level Display */}

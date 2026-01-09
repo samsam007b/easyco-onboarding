@@ -240,7 +240,7 @@ function OverviewSection() {
             </div>
 
             <div className="mt-6 p-4 bg-slate-900/80 rounded-lg border border-orange-500/30">
-              <p className="text-sm text-orange-300 font-medium mb-2">💡 Usage recommandé</p>
+              <p className="text-sm text-orange-300 font-medium mb-2">Usage recommande</p>
               <p className="text-xs text-slate-400">
                 Utilisez ces 5 couleurs pour créer des variations dans vos boutons, badges, icônes et composants.
                 Le gradient complet (3 couleurs) est réservé aux grandes surfaces comme les headers.
@@ -337,7 +337,7 @@ function OverviewSection() {
               <div className="flex-1">
                 <p className="text-white font-mono font-bold">#c23f21</p>
                 <p className="text-xs text-slate-400">Variante plus foncée (non recommandée)</p>
-                <p className="text-xs text-yellow-400 mt-1">⚠️ Incohérence détectée : utilisé sur bouton "membres" - préférer #ee5736</p>
+                <p className="text-xs text-yellow-400 mt-1">[!] Incoherence detectee : utilise sur bouton "membres" - preferer #ee5736</p>
               </div>
             </div>
           </div>
@@ -640,7 +640,7 @@ function OverviewSection() {
 
           {/* Recommandations d'usage */}
           <div className="mt-6 p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 superellipse-xl border border-orange-500/30">
-            <h4 className="text-sm font-bold text-orange-300 mb-3">💡 Recommandations d'usage</h4>
+            <h4 className="text-sm font-bold text-orange-300 mb-3">Recommandations d'usage</h4>
             <div className="space-y-2 text-xs text-slate-300">
               <p><strong className="text-white">Version 1 (Gradient complet):</strong> Idéal pour les sections qui nécessitent une attention maximale - Actions Rapides, Profile Dropdown Background, Logo IzzIco</p>
               <p><strong className="text-white">Version 2 (Couleur unie):</strong> Parfait pour les boutons généraux d'utilisation de l'app - Navigation, CTAs standards</p>
@@ -1487,13 +1487,13 @@ function ComponentsSection() {
 
           {/* Recommendations */}
           <div className="p-4 bg-gradient-to-r from-orange-500/10 to-orange-600/10 superellipse-xl border border-orange-500/30">
-            <h4 className="text-sm font-bold text-orange-300 mb-3">💡 Design Principles Appliqués</h4>
+            <h4 className="text-sm font-bold text-orange-300 mb-3">Design Principles Appliques</h4>
             <div className="space-y-2 text-xs text-slate-300">
-              <p>✨ <strong className="text-white">Hiérarchie Visuelle:</strong> Photo résidence en haut à gauche (principe F-pattern), CTA principal en haut à droite</p>
-              <p>📊 <strong className="text-white">Data Visualization:</strong> Grand pourcentage circulaire pour le bonheur (inspiré des fitness apps)</p>
-              <p>🎯 <strong className="text-white">Gamification:</strong> Progression de complétion avec checklist (inspiré d'Airbnb host onboarding)</p>
-              <p>🚀 <strong className="text-white">Call-to-Actions:</strong> Boutons d'action rapide avec icons colorés différenciés (inspiré de Notion)</p>
-              <p>🎨 <strong className="text-white">Visual Consistency:</strong> Gradient signature utilisé stratégiquement pour attirer l'attention</p>
+              <p><strong className="text-white">Hierarchie Visuelle:</strong> Photo residence en haut a gauche (principe F-pattern), CTA principal en haut a droite</p>
+              <p><strong className="text-white">Data Visualization:</strong> Grand pourcentage circulaire pour le bonheur (inspire des fitness apps)</p>
+              <p><strong className="text-white">Gamification:</strong> Progression de completion avec checklist (inspire d'Airbnb host onboarding)</p>
+              <p><strong className="text-white">Call-to-Actions:</strong> Boutons d'action rapide avec icons colores differencies (inspire de Notion)</p>
+              <p><strong className="text-white">Visual Consistency:</strong> Gradient signature utilise strategiquement pour attirer l'attention</p>
             </div>
           </div>
         </CardContent>
@@ -1527,7 +1527,7 @@ function OppositionsSection() {
           description: 'Avant correction: le texte restait gris au hover. Maintenant corrigé avec texte blanc.',
           severity: 'fixed',
           location: 'ModernResidentHeader.tsx:309-338',
-          fix: '✅ Corrigé - Texte blanc sur fond orange au hover/actif'
+          fix: '[OK] Corrige - Texte blanc sur fond orange au hover/actif'
         }
       ]
     },
@@ -1539,7 +1539,7 @@ function OppositionsSection() {
           description: 'Le logo à 110x34px dominait trop le header',
           severity: 'fixed',
           location: 'Tous les headers',
-          fix: '✅ Réduit à 90x28px (-18%) pour meilleur équilibre'
+          fix: '[OK] Reduit a 90x28px (-18%) pour meilleur equilibre'
         }
       ]
     },

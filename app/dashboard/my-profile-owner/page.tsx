@@ -761,7 +761,7 @@ export default function MyProfileOwnerPage() {
                         {/* Hobbies */}
                         {userProfile?.hobbies && userProfile.hobbies.length > 0 && (
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs font-semibold text-gray-600">🎨 Loisirs:</span>
+                            <span className="text-xs font-semibold text-gray-600">Loisirs:</span>
                             {userProfile.hobbies.slice(0, 3).map((hobby, idx) => (
                               <span key={idx} className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">
                                 {hobby}
@@ -778,7 +778,7 @@ export default function MyProfileOwnerPage() {
                         {/* Values */}
                         {userProfile?.core_values && userProfile.core_values.length > 0 && (
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs font-semibold text-gray-600">❤️ Valeurs:</span>
+                            <span className="text-xs font-semibold text-gray-600">Valeurs:</span>
                             {userProfile.core_values.slice(0, 3).map((value, idx) => (
                               <span key={idx} className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded-full">
                                 {value}

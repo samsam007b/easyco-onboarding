@@ -179,7 +179,7 @@ export default function CompareGradientsPage() {
         <h2 className="text-2xl font-bold text-white">{title}</h2>
         {isDifferent ? (
           <span className="px-3 py-1 bg-yellow-500/20 text-yellow-300 border border-yellow-500/40 rounded-full text-xs font-semibold">
-            ⚠️ Différences détectées
+            [!] Differences detectees
           </span>
         ) : (
           <span className="px-3 py-1 bg-green-500/20 text-green-300 border border-green-500/40 rounded-full text-xs font-semibold">
@@ -225,7 +225,7 @@ export default function CompareGradientsPage() {
 
         {/* Gradient Signature (IMPORTANT - seul différent) */}
         <ComparisonRow
-          title="🌈 Gradient Signature (Logo/Brand)"
+          title="Gradient Signature (Logo/Brand)"
           figmaGradient={figmaGradients.brand}
           codeGradient={codeGradients.brand}
           isDifferent={true}
@@ -235,7 +235,7 @@ export default function CompareGradientsPage() {
 
         {/* Owner CTA */}
         <ComparisonRow
-          title="🟣 Gradient Owner CTA"
+          title="Gradient Owner CTA"
           figmaGradient={figmaGradients.owner}
           codeGradient={codeGradients.owner}
           isDifferent={false}
@@ -245,7 +245,7 @@ export default function CompareGradientsPage() {
 
         {/* Resident CTA */}
         <ComparisonRow
-          title="🟠 Gradient Resident CTA"
+          title="Gradient Resident CTA"
           figmaGradient={figmaGradients.resident}
           codeGradient={codeGradients.resident}
           isDifferent={false}
@@ -255,7 +255,7 @@ export default function CompareGradientsPage() {
 
         {/* Searcher CTA */}
         <ComparisonRow
-          title="🟡 Gradient Searcher CTA"
+          title="Gradient Searcher CTA"
           figmaGradient={figmaGradients.searcher}
           codeGradient={codeGradients.searcher}
           isDifferent={false}
@@ -263,10 +263,10 @@ export default function CompareGradientsPage() {
 
         {/* Summary */}
         <div className="mt-12 bg-gradient-to-r from-purple-500/10 via-orange-500/10 to-yellow-500/10 border border-purple-500/30 superellipse-2xl p-8">
-          <h3 className="text-xl font-bold text-white mb-4">📊 Résumé des différences</h3>
+          <h3 className="text-xl font-bold text-white mb-4">Resume des differences</h3>
           <div className="space-y-3 text-slate-300">
             <div className="flex items-start gap-3">
-              <span className="text-yellow-400 font-bold">⚠️</span>
+              <span className="text-yellow-400 font-bold">[!]</span>
               <div>
                 <p className="font-semibold text-white mb-1">Gradient Signature (Brand) :</p>
                 <p className="text-sm">
@@ -279,7 +279,7 @@ export default function CompareGradientsPage() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <span className="text-green-400 font-bold">✓</span>
+              <span className="text-green-400 font-bold">[OK]</span>
               <div>
                 <p className="font-semibold text-white mb-1">Gradients CTA par rôle :</p>
                 <p className="text-sm">Owner, Resident, Searcher sont <strong>identiques</strong> entre Figma et Code</p>

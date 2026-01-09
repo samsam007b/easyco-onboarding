@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { PartyPopper, Users, UtensilsCrossed, Sparkles } from 'lucide-react';
+import { PartyPopper, Users, UtensilsCrossed, Sparkles, Meh, Smile } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
@@ -76,9 +76,9 @@ export default function OnboardingCommunityEventsPage() {
   const canContinue = eventInterest !== '';
 
   const interestLevels = [
-    { value: 'low' as const, emoji: '😐', labelKey: 'low', descKey: 'lowDesc' },
-    { value: 'medium' as const, emoji: '😊', labelKey: 'medium', descKey: 'mediumDesc' },
-    { value: 'high' as const, emoji: '🎉', labelKey: 'high', descKey: 'highDesc' },
+    { value: 'low' as const, icon: Meh, labelKey: 'low', descKey: 'lowDesc' },
+    { value: 'medium' as const, icon: Smile, labelKey: 'medium', descKey: 'mediumDesc' },
+    { value: 'high' as const, icon: PartyPopper, labelKey: 'high', descKey: 'highDesc' },
   ];
 
   return (
@@ -107,25 +107,28 @@ export default function OnboardingCommunityEventsPage() {
             {t('enhanceSearcher.community.eventInterest.label')}
           </label>
           <div className="grid grid-cols-3 gap-3">
-            {interestLevels.map((level) => (
-              <button
-                key={level.value}
-                onClick={() => setEventInterest(level.value)}
-                className={`p-4 superellipse-xl transition border-2 flex flex-col items-center gap-2 ${
-                  eventInterest === level.value
-                    ? 'bg-orange-500 text-white border-orange-500'
-                    : 'bg-white text-gray-700 border-gray-300 hover:border-orange-500'
-                }`}
-              >
-                <span className="text-3xl">{level.emoji}</span>
-                <span className="font-semibold text-sm">{t(`enhanceSearcher.community.eventInterest.${level.labelKey}`)}</span>
-                <span className={`text-xs text-center ${
-                  eventInterest === level.value ? 'text-orange-100' : 'text-gray-500'
-                }`}>
-                  {t(`enhanceSearcher.community.eventInterest.${level.descKey}`)}
-                </span>
-              </button>
-            ))}
+            {interestLevels.map((level) => {
+              const IconComponent = level.icon;
+              return (
+                <button
+                  key={level.value}
+                  onClick={() => setEventInterest(level.value)}
+                  className={`p-4 superellipse-xl transition border-2 flex flex-col items-center gap-2 ${
+                    eventInterest === level.value
+                      ? 'bg-orange-500 text-white border-orange-500'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-orange-500'
+                  }`}
+                >
+                  <IconComponent className={`w-8 h-8 ${eventInterest === level.value ? 'text-white' : 'text-gray-500'}`} />
+                  <span className="font-semibold text-sm">{t(`enhanceSearcher.community.eventInterest.${level.labelKey}`)}</span>
+                  <span className={`text-xs text-center ${
+                    eventInterest === level.value ? 'text-orange-100' : 'text-gray-500'
+                  }`}>
+                    {t(`enhanceSearcher.community.eventInterest.${level.descKey}`)}
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </EnhanceProfileSection>
 

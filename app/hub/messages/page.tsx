@@ -27,6 +27,7 @@ import {
 } from '@/lib/services/messaging-service';
 import { toast } from 'sonner';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { Home, User } from 'lucide-react';
 
 /**
  * Hub Messages Page
@@ -301,9 +302,9 @@ function HubMessagesContent() {
         <div className="flex flex-col items-center justify-center h-full p-8 text-center">
           <div className="w-24 h-24 superellipse-3xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mx-auto mb-6 shadow-lg">
             {selectedConversation.type === 'residence_group' ? (
-              <span className="text-4xl">🏠</span>
+              <Home className="w-12 h-12 text-white" />
             ) : (
-              <span className="text-4xl">👤</span>
+              <User className="w-12 h-12 text-white" />
             )}
           </div>
           <h3 className="text-xl font-bold text-gray-900 mb-2">

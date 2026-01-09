@@ -192,7 +192,7 @@ export default function LogoComparisonPage() {
                 />
               </div>
               <div className="mt-4 text-sm text-slate-600 space-y-2">
-                <p><strong>✨ Caractéristiques :</strong></p>
+                <p><strong>Caracteristiques :</strong></p>
                 <ul className="list-disc list-inside ml-2">
                   <li><strong>Z en miroir</strong> (effet symétrique)</li>
                   <li>Gradient diagonal <strong>135deg</strong></li>
@@ -206,7 +206,7 @@ export default function LogoComparisonPage() {
           {/* Version compacte pour headers */}
           <div className="mt-8 pt-8 border-t-2 border-purple-200">
             <h3 className="text-xl font-bold text-slate-900 mb-4">
-              📱 Version compacte (pour headers)
+              Version compacte (pour headers)
             </h3>
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-white border-2 border-slate-200 superellipse-xl p-6 flex items-center justify-center">
@@ -237,7 +237,7 @@ export default function LogoComparisonPage() {
         {/* Analyse comparative */}
         <section className="bg-gradient-to-br from-indigo-50 to-purple-50 superellipse-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-6 text-slate-900">
-            🎨 Analyse comparative
+            Analyse comparative
           </h2>
 
           <div className="grid md:grid-cols-3 gap-6">
@@ -248,7 +248,7 @@ export default function LogoComparisonPage() {
                 <li>✓ Format carré (versatile)</li>
                 <li>✓ Gradient diagonal (dynamique)</li>
                 <li>✓ Fonctionne en petit (favicon)</li>
-                <li>⚠ Ne montre pas le nom "IzzIco"</li>
+                <li>[!] Ne montre pas le nom "IzzIco"</li>
               </ul>
             </div>
 
@@ -259,7 +259,7 @@ export default function LogoComparisonPage() {
                 <li>✓ Gradient horizontal (lecture)</li>
                 <li>✓ Répartition équilibrée (50%)</li>
                 <li>✓ Format bannière (header)</li>
-                <li>⚠ Trop grand pour favicon</li>
+                <li>[!] Trop grand pour favicon</li>
               </ul>
             </div>
 
@@ -270,7 +270,7 @@ export default function LogoComparisonPage() {
                 <li>✓ Gradient horizontal (lecture)</li>
                 <li>✓ Plus de mauve (55%)</li>
                 <li>✓ Format bannière (header)</li>
-                <li>⚠ Trop grand pour favicon</li>
+                <li>[!] Trop grand pour favicon</li>
               </ul>
             </div>
           </div>
@@ -309,7 +309,7 @@ export default function LogoComparisonPage() {
         {/* Gradient technique */}
         <section className="mt-8 bg-white superellipse-2xl shadow-lg p-8">
           <h2 className="text-2xl font-bold mb-4 text-slate-900">
-            🔧 Spécifications techniques
+            Specifications techniques
           </h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>

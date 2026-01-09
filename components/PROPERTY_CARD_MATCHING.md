@@ -31,11 +31,11 @@ const searcherProfile: PropertySearcherProfile = {
 Le badge de matching s'affiche automatiquement quand `searcherProfile` est fourni :
 
 1. **Score fiable** : Badge coloré avec pourcentage
-   - 85-100% : Badge vert (Perfect Match 💚)
-   - 70-84% : Badge bleu (Excellent Match 💙)
-   - 55-69% : Badge jaune (Good Match 💛)
-   - 40-54% : Badge orange (Fair Match 🧡)
-   - 0-39% : Badge rouge (Low Match ❤️)
+   - 85-100% : Badge vert (Perfect Match)
+   - 70-84% : Badge bleu (Excellent Match)
+   - 55-69% : Badge jaune (Good Match)
+   - 40-54% : Badge orange (Fair Match)
+   - 0-39% : Badge rouge (Low Match)
 
 2. **Profil incomplet** : Badge "Complétez votre profil"
    - Affiché quand le profil du chercheur manque de données critiques

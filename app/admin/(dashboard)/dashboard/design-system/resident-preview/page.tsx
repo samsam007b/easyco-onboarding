@@ -105,7 +105,7 @@ export default function ResidentPreviewPage() {
               <Sparkles className="w-6 h-6 text-white" />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white mb-2">💡 Recommandation</h3>
+              <h3 className="text-lg font-bold text-white mb-2">Recommandation</h3>
               <p className="text-sm text-green-100 mb-3">
                 <strong>Version 1 (Gradient Complet 3 Couleurs)</strong> et <strong>Version 4 (Gradient 2 Couleurs)</strong> sont recommandées car elles utilisent le gradient signature extrait du logo IzzIco, créant une identité visuelle forte et cohérente.
               </p>

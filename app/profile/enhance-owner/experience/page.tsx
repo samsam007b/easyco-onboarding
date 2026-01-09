@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Award, Building, Heart } from 'lucide-react';
+import { Award, Building, Heart, DollarSign, Handshake, TrendingUp, Sparkles, type LucideIcon } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
@@ -161,22 +161,35 @@ export default function OwnerExperiencePage() {
             {t('enhanceOwner.experience.motivationLabel')}
           </label>
           <div className="grid grid-cols-2 gap-3">
-            {[
-              { value: 'income', key: 'income', emoji: '💰' },
-              { value: 'community', key: 'community', emoji: '🤝' },
-              { value: 'investment', key: 'investment', emoji: '📈' },
-              { value: 'other', key: 'other', emoji: '✨' },
-            ].map((option) => (
-              <EnhanceProfileSelectionCard
-                key={option.value}
-                role="owner"
-                selected={primaryMotivation === option.value}
-                onClick={() => setPrimaryMotivation(option.value)}
-              >
-                <div className="text-2xl mb-1">{option.emoji}</div>
-                <div className="text-sm font-semibold">{t(`enhanceOwner.experience.motivation.${option.key}`)}</div>
-              </EnhanceProfileSelectionCard>
-            ))}
+            {(() => {
+              const MOTIVATION_ICONS: Record<string, LucideIcon> = {
+                DollarSign,
+                Handshake,
+                TrendingUp,
+                Sparkles,
+              };
+              const motivationOptions = [
+                { value: 'income', key: 'income', iconName: 'DollarSign' },
+                { value: 'community', key: 'community', iconName: 'Handshake' },
+                { value: 'investment', key: 'investment', iconName: 'TrendingUp' },
+                { value: 'other', key: 'other', iconName: 'Sparkles' },
+              ];
+              return motivationOptions.map((option) => {
+                const MotivationIcon = MOTIVATION_ICONS[option.iconName] || Sparkles;
+                const isSelected = primaryMotivation === option.value;
+                return (
+                  <EnhanceProfileSelectionCard
+                    key={option.value}
+                    role="owner"
+                    selected={isSelected}
+                    onClick={() => setPrimaryMotivation(option.value)}
+                  >
+                    <MotivationIcon className={`w-6 h-6 mx-auto mb-1 ${isSelected ? 'text-purple-600' : 'text-gray-400'}`} />
+                    <div className="text-sm font-semibold">{t(`enhanceOwner.experience.motivation.${option.key}`)}</div>
+                  </EnhanceProfileSelectionCard>
+                );
+              });
+            })()}
           </div>
         </EnhanceProfileSection>
 

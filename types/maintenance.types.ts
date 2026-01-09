@@ -100,17 +100,17 @@ export interface MaintenanceStats {
 export const MAINTENANCE_CATEGORIES: Array<{
   value: MaintenanceCategory;
   label: string;
-  emoji: string;
+  iconName: string;
   color: string;
 }> = [
-  { value: 'plumbing', label: 'Plomberie', emoji: '🚰', color: 'bg-blue-100 text-blue-700' },
-  { value: 'electrical', label: 'Électricité', emoji: '⚡', color: 'bg-yellow-100 text-yellow-700' },
-  { value: 'heating', label: 'Chauffage', emoji: '🔥', color: 'bg-orange-100 text-orange-700' },
-  { value: 'appliances', label: 'Électroménager', emoji: '🔌', color: 'bg-purple-100 text-purple-700' },
-  { value: 'structural', label: 'Structure', emoji: '🏗️', color: 'bg-gray-100 text-gray-700' },
-  { value: 'cleaning', label: 'Nettoyage', emoji: '🧹', color: 'bg-green-100 text-green-700' },
-  { value: 'pest_control', label: 'Nuisibles', emoji: '🐛', color: 'bg-red-100 text-red-700' },
-  { value: 'other', label: 'Autre', emoji: '🔧', color: 'bg-indigo-100 text-indigo-700' },
+  { value: 'plumbing', label: 'Plomberie', iconName: 'Droplets', color: 'bg-blue-100 text-blue-700' },
+  { value: 'electrical', label: 'Électricité', iconName: 'Zap', color: 'bg-yellow-100 text-yellow-700' },
+  { value: 'heating', label: 'Chauffage', iconName: 'Flame', color: 'bg-orange-100 text-orange-700' },
+  { value: 'appliances', label: 'Électroménager', iconName: 'Plug', color: 'bg-purple-100 text-purple-700' },
+  { value: 'structural', label: 'Structure', iconName: 'Building2', color: 'bg-gray-100 text-gray-700' },
+  { value: 'cleaning', label: 'Nettoyage', iconName: 'Sparkles', color: 'bg-green-100 text-green-700' },
+  { value: 'pest_control', label: 'Nuisibles', iconName: 'Bug', color: 'bg-red-100 text-red-700' },
+  { value: 'other', label: 'Autre', iconName: 'Wrench', color: 'bg-indigo-100 text-indigo-700' },
 ];
 
 export const MAINTENANCE_PRIORITIES: Array<{
@@ -129,11 +129,11 @@ export const MAINTENANCE_STATUSES: Array<{
   value: MaintenanceStatus;
   label: string;
   color: string;
-  icon: string;
+  iconName: string;
 }> = [
-  { value: 'open', label: 'Ouvert', color: 'bg-yellow-100 text-yellow-700 border-yellow-300', icon: '🆕' },
-  { value: 'in_progress', label: 'En cours', color: 'bg-blue-100 text-blue-700 border-blue-300', icon: '⚙️' },
-  { value: 'resolved', label: 'Résolu', color: 'bg-green-100 text-green-700 border-green-300', icon: '✅' },
-  { value: 'closed', label: 'Fermé', color: 'bg-gray-100 text-gray-700 border-gray-300', icon: '🔒' },
-  { value: 'cancelled', label: 'Annulé', color: 'bg-red-100 text-red-700 border-red-300', icon: '❌' },
+  { value: 'open', label: 'Ouvert', color: 'bg-yellow-100 text-yellow-700 border-yellow-300', iconName: 'CirclePlus' },
+  { value: 'in_progress', label: 'En cours', color: 'bg-blue-100 text-blue-700 border-blue-300', iconName: 'Settings' },
+  { value: 'resolved', label: 'Résolu', color: 'bg-green-100 text-green-700 border-green-300', iconName: 'CheckCircle' },
+  { value: 'closed', label: 'Fermé', color: 'bg-gray-100 text-gray-700 border-gray-300', iconName: 'Lock' },
+  { value: 'cancelled', label: 'Annulé', color: 'bg-red-100 text-red-700 border-red-300', iconName: 'XCircle' },
 ];

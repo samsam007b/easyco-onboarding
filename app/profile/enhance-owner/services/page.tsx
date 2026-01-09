@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Wifi, Car, Dumbbell, Tv, Shirt, Coffee, Sparkles } from 'lucide-react';
+import { Wifi, Car, Dumbbell, Tv, Shirt, Coffee, Sparkles, Lightbulb, Wrench, Shield, type LucideIcon } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
@@ -95,11 +95,19 @@ export default function OwnerServicesPage() {
     { value: 'kitchen', key: 'kitchen', icon: Coffee },
   ];
 
+  // Icon mapping for services
+  const SERVICE_ICONS: Record<string, LucideIcon> = {
+    Lightbulb,
+    Sparkles,
+    Wrench,
+    Shield,
+  };
+
   const servicesList = [
-    { value: 'utilities', key: 'utilities', emoji: '💡' },
-    { value: 'cleaning', key: 'cleaning', emoji: '🧹' },
-    { value: 'maintenance', key: 'maintenance', emoji: '🔧' },
-    { value: 'insurance', key: 'insurance', emoji: '🛡️' },
+    { value: 'utilities', key: 'utilities', iconName: 'Lightbulb' },
+    { value: 'cleaning', key: 'cleaning', iconName: 'Sparkles' },
+    { value: 'maintenance', key: 'maintenance', iconName: 'Wrench' },
+    { value: 'insurance', key: 'insurance', iconName: 'Shield' },
   ];
 
   return (
@@ -150,6 +158,7 @@ export default function OwnerServicesPage() {
           <div className="space-y-2">
             {servicesList.map((service) => {
               const isSelected = includedServices.includes(service.value);
+              const ServiceIcon = SERVICE_ICONS[service.iconName] || Sparkles;
               return (
                 <EnhanceProfileSelectionCard
                   key={service.value}
@@ -158,7 +167,7 @@ export default function OwnerServicesPage() {
                   onClick={() => toggleService(service.value)}
                   className="flex items-center gap-3 text-left"
                 >
-                  <span className="text-2xl">{service.emoji}</span>
+                  <ServiceIcon className={`w-6 h-6 ${isSelected ? 'text-purple-600' : 'text-gray-400'}`} />
                   <span className="font-semibold flex-1">
                     {t(`enhanceOwner.services.servicesList.${service.key}`)}
                   </span>

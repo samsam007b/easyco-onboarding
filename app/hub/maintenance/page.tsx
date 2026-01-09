@@ -25,7 +25,38 @@ import {
   Camera,
   X,
   Sparkles,
+  Droplets,
+  Zap,
+  Flame,
+  Plug,
+  Building2,
+  Bug,
+  CirclePlus,
+  Settings,
+  Lock,
+  type LucideIcon,
 } from 'lucide-react';
+
+// Icon mapping for maintenance categories
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  Droplets,
+  Zap,
+  Flame,
+  Plug,
+  Building2,
+  Sparkles,
+  Bug,
+  Wrench,
+};
+
+// Icon mapping for maintenance statuses
+const STATUS_ICONS: Record<string, LucideIcon> = {
+  CirclePlus,
+  Settings,
+  CheckCircle,
+  Lock,
+  XCircle,
+};
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -149,7 +180,7 @@ export default function MaintenancePage() {
       });
 
       if (result.success) {
-        console.log('[Maintenance] ✅ Request created successfully');
+        console.log('[Maintenance] Request created successfully');
         setShowCreateModal(false);
         resetForm();
         await loadData();
@@ -169,7 +200,7 @@ export default function MaintenancePage() {
       const result = await maintenanceService.updateStatus(requestId, newStatus);
 
       if (result.success) {
-        console.log('[Maintenance] ✅ Status updated');
+        console.log('[Maintenance] Status updated');
         await loadData();
       } else {
         alert(result.error || (t?.errors?.updateError?.[language] || 'Error updating status'));
@@ -233,7 +264,7 @@ export default function MaintenancePage() {
           <div className="flex items-center justify-between mb-6">
             <div>
               <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                🔧 {t?.title?.[language] || 'Maintenance'}
+                {t?.title?.[language] || 'Maintenance'}
               </h1>
               <p className="text-gray-600">{t?.subtitle?.[language] || 'Report and track technical issues'}</p>
             </div>
@@ -438,7 +469,12 @@ export default function MaintenancePage() {
                   >
                     <div className="flex items-start gap-4">
                       {/* Category Icon */}
-                      <div className="text-4xl flex-shrink-0">{categoryInfo.emoji}</div>
+                      <div className="w-12 h-12 flex-shrink-0 flex items-center justify-center superellipse-xl bg-gray-100">
+                        {(() => {
+                          const IconComponent = CATEGORY_ICONS[categoryInfo.iconName];
+                          return IconComponent ? <IconComponent className="w-6 h-6 text-gray-700" /> : null;
+                        })()}
+                      </div>
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
@@ -501,7 +537,11 @@ export default function MaintenancePage() {
                         {/* Status Badge */}
                         <div className="flex items-center gap-2">
                           <Badge className={statusInfo.color}>
-                            {statusInfo.icon} {statusInfo.label}
+                            {(() => {
+                              const StatusIcon = STATUS_ICONS[statusInfo.iconName];
+                              return StatusIcon ? <StatusIcon className="w-3.5 h-3.5 mr-1" /> : null;
+                            })()}
+                            {statusInfo.label}
                           </Badge>
 
                           {/* Quick status actions */}
@@ -600,21 +640,26 @@ export default function MaintenancePage() {
               <div>
                 <Label>{t?.modal?.category?.[language] || 'Category'} *</Label>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2">
-                  {MAINTENANCE_CATEGORIES.map((cat) => (
-                    <button
-                      key={cat.value}
-                      onClick={() => setCreateForm({ ...createForm, category: cat.value })}
-                      className={cn(
-                        'p-3 superellipse-xl border-2 text-center transition-all',
-                        createForm.category === cat.value
-                          ? 'border-resident-500 bg-resident-50'
-                          : 'border-gray-200 hover:border-gray-300'
-                      )}
-                    >
-                      <div className="text-2xl mb-1">{cat.emoji}</div>
-                      <div className="text-xs font-medium text-gray-700">{cat.label}</div>
-                    </button>
-                  ))}
+                  {MAINTENANCE_CATEGORIES.map((cat) => {
+                    const CatIcon = CATEGORY_ICONS[cat.iconName];
+                    return (
+                      <button
+                        key={cat.value}
+                        onClick={() => setCreateForm({ ...createForm, category: cat.value })}
+                        className={cn(
+                          'p-3 superellipse-xl border-2 text-center transition-all',
+                          createForm.category === cat.value
+                            ? 'border-resident-500 bg-resident-50'
+                            : 'border-gray-200 hover:border-gray-300'
+                        )}
+                      >
+                        <div className="flex justify-center mb-1">
+                          {CatIcon && <CatIcon className="w-6 h-6 text-gray-700" />}
+                        </div>
+                        <div className="text-xs font-medium text-gray-700">{cat.label}</div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

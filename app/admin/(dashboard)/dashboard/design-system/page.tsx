@@ -668,7 +668,7 @@ function GradientSignatureEditor() {
           </p>
         </div>
         <div className="px-3 py-1.5 bg-green-500/20 border border-green-500/40 rounded-lg">
-          <span className="text-xs text-green-300 font-medium">✅ Version Officielle</span>
+          <span className="text-xs text-green-300 font-medium">[OK] Version Officielle</span>
         </div>
       </div>
 
@@ -1728,7 +1728,7 @@ function IconsSection() {
         <div className="flex items-center gap-3 mb-4">
           <Sparkles className="w-8 h-8 text-yellow-400" />
           <h3 className="text-2xl font-bold text-white">
-            🚀 NOUVEAU LOGO 2025 (En validation)
+            NOUVEAU LOGO 2025 (En validation)
           </h3>
           <Badge className="bg-yellow-500 text-black border-0 animate-pulse">
             GEMINI AI
@@ -1781,12 +1781,12 @@ function IconsSection() {
               Caractéristiques
             </h4>
             <ul className="text-sm text-slate-300 space-y-2">
-              <li>✅ Format SVG vectoriel optimisé</li>
-              <li>✅ 3 thèmes: dark, white, gradient</li>
-              <li>✅ 2 variants: icon (2048×2048) & trademark (5800×1880)</li>
-              <li>✅ Gradient signature v3: #9c5698 → #e05747 → #ffa000</li>
-              <li>✅ Fond transparent natif</li>
-              <li>✅ Vectorisé via Recraft AI</li>
+              <li>[OK] Format SVG vectoriel optimise</li>
+              <li>[OK] 3 themes: dark, white, gradient</li>
+              <li>[OK] 2 variants: icon (2048x2048) et trademark (5800x1880)</li>
+              <li>[OK] Gradient signature v3: #9c5698 - #e05747 - #ffa000</li>
+              <li>[OK] Fond transparent natif</li>
+              <li>[OK] Vectorise via Recraft AI</li>
             </ul>
           </div>
 
@@ -1812,19 +1812,19 @@ function IconsSection() {
 
         {/* Actions de validation */}
         <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/30 superellipse-xl">
-          <p className="text-yellow-400 font-semibold mb-2">⚠️ EN ATTENTE DE VALIDATION</p>
+          <p className="text-yellow-400 font-semibold mb-2">[!] EN ATTENTE DE VALIDATION</p>
           <p className="text-sm text-slate-300 mb-4">
             Ce logo est actuellement en test. Après validation, il remplacera l'ancien logo dans toute l'application.
           </p>
           <div className="flex gap-3">
             <Button variant="outline" className="border-green-500 text-green-400 hover:bg-green-500/10">
-              ✅ Valider et déployer
+              [OK] Valider et deployer
             </Button>
             <Button variant="outline" className="border-red-500 text-red-400 hover:bg-red-500/10">
-              ❌ Rejeter
+              [X] Rejeter
             </Button>
             <Button variant="outline" className="border-blue-500 text-blue-400 hover:bg-blue-500/10">
-              🔄 Comparer avec l'ancien
+              Comparer avec l'ancien
             </Button>
           </div>
         </div>
@@ -1873,9 +1873,9 @@ function IconsSection() {
             </div>
             <div className="text-xs text-slate-600 dark:text-slate-400 space-y-1">
               <p><strong>Couleurs :</strong></p>
-              <p>🟣 #9c5698 (Mauve Owner) → 0%</p>
-              <p>🟠 #FF5722 (Orange Resident) → 55%</p>
-              <p>🟡 #FFB10B (Jaune Searcher) → 100%</p>
+              <p>#9c5698 (Mauve Owner) - 0%</p>
+              <p>#FF5722 (Orange Resident) - 55%</p>
+              <p>#FFB10B (Jaune Searcher) - 100%</p>
             </div>
           </div>
         </div>
@@ -2047,7 +2047,7 @@ function IconsSection() {
               />
             </div>
             <p className="text-xs text-purple-200 mt-2">
-              ✨ Effets visuels modernes • Soft glow 2px • Letter-spacing -2px • Version officielle
+              Effets visuels modernes - Soft glow 2px - Letter-spacing -2px - Version officielle
             </p>
           </div>
         </div>
@@ -2670,7 +2670,7 @@ function ButtonsSection() {
 
         {/* ACTUEL - Pour référence */}
         <div className="mb-8 p-4 bg-red-500/10 border border-red-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-red-400 mb-4">❌ ACTUEL (à remplacer) - Effet arc-en-ciel</p>
+          <p className="text-sm font-semibold text-red-400 mb-4">[X] ACTUEL (a remplacer) - Effet arc-en-ciel</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
               className="group relative overflow-hidden text-white font-bold px-8 py-5 rounded-full shadow-2xl"
@@ -2699,7 +2699,7 @@ function ButtonsSection() {
 
         {/* PROPOSITION A - Couleurs solides */}
         <div className="mb-8 p-4 bg-green-500/10 border border-green-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-green-400 mb-2">✨ Proposition A - Couleurs solides</p>
+          <p className="text-sm font-semibold text-green-400 mb-2">Proposition A - Couleurs solides</p>
           <p className="text-xs text-slate-400 mb-4">Pas de dégradé du tout - couleurs primaires par rôle</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
@@ -2729,7 +2729,7 @@ function ButtonsSection() {
 
         {/* PROPOSITION B - Dégradé subtil même famille */}
         <div className="mb-8 p-4 bg-blue-500/10 border border-blue-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-blue-400 mb-2">✨ Proposition B - Dégradé subtil (même famille)</p>
+          <p className="text-sm font-semibold text-blue-400 mb-2">Proposition B - Degrade subtil (meme famille)</p>
           <p className="text-xs text-slate-400 mb-4">Dégradé dans la même teinte (clair → foncé) - pas d'arc-en-ciel</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
@@ -2759,7 +2759,7 @@ function ButtonsSection() {
 
         {/* PROPOSITION C - Outline avec couleur */}
         <div className="mb-8 p-4 bg-purple-500/10 border border-purple-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-purple-400 mb-2">✨ Proposition C - Style Outline</p>
+          <p className="text-sm font-semibold text-purple-400 mb-2">Proposition C - Style Outline</p>
           <p className="text-xs text-slate-400 mb-4">Bordure colorée + fond transparent/blanc - élégant et minimaliste</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
@@ -2789,7 +2789,7 @@ function ButtonsSection() {
 
         {/* PROPOSITION D - Glassmorphism léger */}
         <div className="mb-8 p-4 bg-cyan-500/10 border border-cyan-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-cyan-400 mb-2">✨ Proposition D - Glassmorphism + teinte</p>
+          <p className="text-sm font-semibold text-cyan-400 mb-2">Proposition D - Glassmorphism + teinte</p>
           <p className="text-xs text-slate-400 mb-4">Fond verre dépoli avec une légère teinte de la couleur du rôle</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
@@ -2819,7 +2819,7 @@ function ButtonsSection() {
 
         {/* PROPOSITION E - Blanc + icône colorée */}
         <div className="mb-8 p-4 bg-yellow-500/10 border border-yellow-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-yellow-400 mb-2">✨ Proposition E - Blanc + accent coloré</p>
+          <p className="text-sm font-semibold text-yellow-400 mb-2">Proposition E - Blanc + accent colore</p>
           <p className="text-xs text-slate-400 mb-4">Bouton blanc avec icône/bordure gauche colorée - style épuré Apple</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button className="group font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-white text-gray-800 border-l-4" style={{ borderLeftColor: '#9c5698' }}>
@@ -2843,7 +2843,7 @@ function ButtonsSection() {
 
         {/* PROPOSITION F - Pills modernes avec ombre colorée */}
         <div className="mb-8 p-4 bg-pink-500/10 border border-pink-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-pink-400 mb-2">✨ Proposition F - Ombre colorée diffuse</p>
+          <p className="text-sm font-semibold text-pink-400 mb-2">Proposition F - Ombre coloree diffuse</p>
           <p className="text-xs text-slate-400 mb-4">Fond solide + ombre diffuse de la couleur - effet moderne "glow"</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button
@@ -2873,7 +2873,7 @@ function ButtonsSection() {
 
         {/* PROPOSITION G - Noir/Blanc élégant */}
         <div className="mb-8 p-4 bg-slate-500/10 border border-slate-500/30 superellipse-xl">
-          <p className="text-sm font-semibold text-slate-300 mb-2">✨ Proposition G - Noir & Blanc premium</p>
+          <p className="text-sm font-semibold text-slate-300 mb-2">Proposition G - Noir et Blanc premium</p>
           <p className="text-xs text-slate-400 mb-4">Boutons noir/blanc avec icône colorée uniquement - très élégant, luxe</p>
           <div className="flex flex-wrap gap-4 items-center justify-center py-4" style={{ background: 'linear-gradient(135deg, rgba(110, 86, 207, 0.3) 0%, rgba(255, 111, 60, 0.3) 50%, rgba(255, 210, 73, 0.3) 100%)', borderRadius: '16px' }}>
             <button className="group text-white font-bold px-8 py-5 rounded-full shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-gray-900">
@@ -4990,7 +4990,7 @@ function DashboardVariantsSection() {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
             <div>
-              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <p className="font-semibold text-white mb-2">Avantages</p>
               <ul className="space-y-1 text-xs">
                 <li>• Très lisible</li>
                 <li>• Bordures nettes et modernes</li>
@@ -4999,7 +4999,7 @@ function DashboardVariantsSection() {
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <p className="font-semibold text-white mb-2">Inconvenients</p>
               <ul className="space-y-1 text-xs">
                 <li>• Peut sembler basique</li>
                 <li>• Jaune très présent</li>
@@ -5070,7 +5070,7 @@ function DashboardVariantsSection() {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
             <div>
-              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <p className="font-semibold text-white mb-2">Avantages</p>
               <ul className="space-y-1 text-xs">
                 <li>• Dégradé élégant</li>
                 <li>• Ombres légères</li>
@@ -5079,7 +5079,7 @@ function DashboardVariantsSection() {
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <p className="font-semibold text-white mb-2">Inconvenients</p>
               <ul className="space-y-1 text-xs">
                 <li>• Ombres subtiles</li>
               </ul>
@@ -5149,7 +5149,7 @@ function DashboardVariantsSection() {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
             <div>
-              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <p className="font-semibold text-white mb-2">Avantages</p>
               <ul className="space-y-1 text-xs">
                 <li>• Contraste maximum</li>
                 <li>• Très visible</li>
@@ -5158,7 +5158,7 @@ function DashboardVariantsSection() {
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <p className="font-semibold text-white mb-2">Inconvenients</p>
               <ul className="space-y-1 text-xs">
                 <li>• Très agressif visuellement</li>
                 <li>• Beaucoup de jaune vif</li>
@@ -5230,7 +5230,7 @@ function DashboardVariantsSection() {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
             <div>
-              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <p className="font-semibold text-white mb-2">Avantages</p>
               <ul className="space-y-1 text-xs">
                 <li>• Ultra minimaliste</li>
                 <li>• Très lisible</li>
@@ -5239,7 +5239,7 @@ function DashboardVariantsSection() {
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <p className="font-semibold text-white mb-2">Inconvenients</p>
               <ul className="space-y-1 text-xs">
                 <li>• Peut manquer de personnalité</li>
                 <li>• Couleur Searcher peu visible</li>
@@ -5316,7 +5316,7 @@ function DashboardVariantsSection() {
           </div>
           <div className="mt-4 grid grid-cols-2 gap-4 text-sm text-slate-300">
             <div>
-              <p className="font-semibold text-white mb-2">✅ Avantages</p>
+              <p className="font-semibold text-white mb-2">Avantages</p>
               <ul className="space-y-1 text-xs">
                 <li>• Séparation header claire</li>
                 <li>• Jaune bien dosé</li>
@@ -5325,7 +5325,7 @@ function DashboardVariantsSection() {
               </ul>
             </div>
             <div>
-              <p className="font-semibold text-white mb-2">⚠️ Inconvénients</p>
+              <p className="font-semibold text-white mb-2">Inconvenients</p>
               <ul className="space-y-1 text-xs">
                 <li>• Barre jaune imposante</li>
               </ul>
@@ -7313,13 +7313,13 @@ function SearcherDashboardSection() {
                   {/* Tags */}
                   <div className="space-y-2">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-xs font-semibold text-gray-600">🎨 Loisirs:</span>
+                      <span className="text-xs font-semibold text-gray-600">Loisirs:</span>
                       <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-full">Musique</span>
                       <span className="px-2 py-1 bg-purple-50 text-purple-700 text-xs rounded-full">Voyage</span>
                       <span className="px-2 py-1 bg-green-50 text-green-700 text-xs rounded-full">Cuisine</span>
                     </div>
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      <span className="text-xs font-semibold text-gray-600">❤️ Valeurs:</span>
+                      <span className="text-xs font-semibold text-gray-600">Valeurs:</span>
                       <span className="px-2 py-1 bg-pink-50 text-pink-700 text-xs rounded-full">Respect</span>
                       <span className="px-2 py-1 bg-orange-50 text-orange-700 text-xs rounded-full">Fun</span>
                     </div>
@@ -7339,7 +7339,7 @@ function SearcherDashboardSection() {
 
               {/* Completion dropdown (small) */}
               <div className="flex items-center justify-between px-4 py-2 bg-purple-50/50 superellipse-xl border border-purple-200">
-                <span className="text-xs text-gray-700">📊 5/7 sections complètes</span>
+                <span className="text-xs text-gray-700">5/7 sections completes</span>
                 <ChevronDown className="w-4 h-4 text-gray-400" />
               </div>
             </div>
@@ -7599,46 +7599,46 @@ function SearcherDashboardSection() {
             <div>
               <p className="font-bold text-yellow-400 mb-2">Option 1: Card Hero</p>
               <ul className="space-y-1 text-slate-400">
-                <li>✅ Impact visuel</li>
-                <li>✅ Mobile-first</li>
-                <li>✅ Preview claire</li>
-                <li>⚠️ Beaucoup de scroll</li>
+                <li>[+] Impact visuel</li>
+                <li>[+] Mobile-first</li>
+                <li>[+] Preview claire</li>
+                <li>[!] Beaucoup de scroll</li>
               </ul>
             </div>
             <div>
               <p className="font-bold text-blue-400 mb-2">Option 2: Side by Side</p>
               <ul className="space-y-1 text-slate-400">
-                <li>✅ Desktop optimal</li>
-                <li>✅ Sticky card</li>
-                <li>⚠️ Moins mobile-friendly</li>
-                <li>⚠️ Plus complexe</li>
+                <li>[+] Desktop optimal</li>
+                <li>[+] Sticky card</li>
+                <li>[!] Moins mobile-friendly</li>
+                <li>[!] Plus complexe</li>
               </ul>
             </div>
             <div>
               <p className="font-bold text-purple-400 mb-2">Option 3: Tabs</p>
               <ul className="space-y-1 text-slate-400">
-                <li>✅ Séparation claire</li>
-                <li>✅ Moins de scroll</li>
-                <li>✅ UX moderne</li>
-                <li>⚠️ Cache les sections</li>
+                <li>[+] Separation claire</li>
+                <li>[+] Moins de scroll</li>
+                <li>[+] UX moderne</li>
+                <li>[!] Cache les sections</li>
               </ul>
             </div>
             <div>
               <p className="font-bold text-green-400 mb-2">Option 4: Before/After</p>
               <ul className="space-y-1 text-slate-400">
-                <li>✅ Gamification</li>
-                <li>✅ Motivation</li>
-                <li>✅ Lien direct</li>
-                <li>⚠️ Peut être anxiogène</li>
+                <li>[+] Gamification</li>
+                <li>[+] Motivation</li>
+                <li>[+] Lien direct</li>
+                <li>[!] Peut etre anxiogene</li>
               </ul>
             </div>
             <div>
               <p className="font-bold text-orange-400 mb-2">Option 5: Compact Grid</p>
               <ul className="space-y-1 text-slate-400">
-                <li>✅ Vue d'ensemble</li>
-                <li>✅ Compact</li>
-                <li>✅ Grid moderne</li>
-                <li>⚠️ Card petite</li>
+                <li>[+] Vue d'ensemble</li>
+                <li>[+] Compact</li>
+                <li>[+] Grid moderne</li>
+                <li>[!] Card petite</li>
               </ul>
             </div>
           </div>
@@ -7761,7 +7761,7 @@ function InterfaceResidentSection() {
         </div>
 
         <div className="mt-6 p-4 bg-slate-900/80 rounded-lg border border-orange-500/30">
-          <p className="text-sm text-orange-300 font-medium mb-2">💡 Usage recommandé</p>
+          <p className="text-sm text-orange-300 font-medium mb-2">Usage recommande</p>
           <p className="text-xs text-slate-400">
             Utilisez ces 5 couleurs pour créer des variations dans vos boutons, badges, icônes et composants.
             Le gradient complet (3 couleurs) est réservé aux grandes surfaces comme les headers.
@@ -7877,7 +7877,7 @@ function InterfaceResidentSection() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-3">
               <X className="w-5 h-5 text-red-400" />
-              <h4 className="font-bold text-white">❌ Avant (Incohérent)</h4>
+              <h4 className="font-bold text-white">[X] Avant (Incoherent)</h4>
             </div>
 
             {/* Navigation avec gradient 3 couleurs (ancien - faux gradient) */}
@@ -7889,7 +7889,7 @@ function InterfaceResidentSection() {
                   <span className="font-medium bg-gradient-to-r from-[#D97B6F] via-[#E8865D] to-[#FF8C4B] bg-clip-text text-transparent">Résidents</span>
                 </div>
                 <code className="text-xs text-orange-300 block">from-[#D97B6F] via-[#E8865D] to-[#FF8C4B]</code>
-                <p className="text-xs text-yellow-400 mt-1">❌ Utilise le gradient 3 couleurs pour du texte</p>
+                <p className="text-xs text-yellow-400 mt-1">[X] Utilise le gradient 3 couleurs pour du texte</p>
               </div>
             </div>
 
@@ -7902,7 +7902,7 @@ function InterfaceResidentSection() {
                   <span className="text-sm font-medium" style={{ color: '#c23f21' }}>4 membres</span>
                 </div>
                 <code className="text-xs text-orange-300 block mt-2">color: #c23f21</code>
-                <p className="text-xs text-yellow-400 mt-1">❌ Utilise #c23f21 au lieu de #ee5736</p>
+                <p className="text-xs text-yellow-400 mt-1">[X] Utilise #c23f21 au lieu de #ee5736</p>
               </div>
             </div>
 
@@ -7914,7 +7914,7 @@ function InterfaceResidentSection() {
                   3
                 </div>
                 <code className="text-xs text-orange-300 block mt-2">var(--gradient-resident)</code>
-                <p className="text-xs text-yellow-400 mt-1">❌ Gradient 3 couleurs sur petit badge</p>
+                <p className="text-xs text-yellow-400 mt-1">[X] Gradient 3 couleurs sur petit badge</p>
               </div>
             </div>
           </div>
@@ -7923,7 +7923,7 @@ function InterfaceResidentSection() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-3">
               <Check className="w-5 h-5 text-green-400" />
-              <h4 className="font-bold text-white">✅ Après (Cohérent)</h4>
+              <h4 className="font-bold text-white">[OK] Apres (Coherent)</h4>
             </div>
 
             {/* Navigation avec couleur principale */}
@@ -7935,7 +7935,7 @@ function InterfaceResidentSection() {
                   <span className="font-semibold" style={{ color: '#ee5736' }}>Résidents</span>
                 </div>
                 <code className="text-xs text-green-300 block">color: #ee5736</code>
-                <p className="text-xs text-green-400 mt-1">✅ Couleur solide pour lisibilité</p>
+                <p className="text-xs text-green-400 mt-1">[OK] Couleur solide pour lisibilite</p>
               </div>
             </div>
 
@@ -7948,7 +7948,7 @@ function InterfaceResidentSection() {
                   <span className="text-sm font-medium" style={{ color: '#ee5736' }}>4 membres</span>
                 </div>
                 <code className="text-xs text-green-300 block mt-2">color: #ee5736</code>
-                <p className="text-xs text-green-400 mt-1">✅ Couleur principale cohérente</p>
+                <p className="text-xs text-green-400 mt-1">[OK] Couleur principale coherente</p>
               </div>
             </div>
 
@@ -7960,7 +7960,7 @@ function InterfaceResidentSection() {
                   3
                 </div>
                 <code className="text-xs text-green-300 block mt-2">to-br, #ee5736 → 80</code>
-                <p className="text-xs text-green-400 mt-1">✅ Gradient 2 couleurs plus subtil</p>
+                <p className="text-xs text-green-400 mt-1">[OK] Gradient 2 couleurs plus subtil</p>
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Shield, PawPrint, Cigarette, Calendar, Euro } from 'lucide-react';
+import { Shield, PawPrint, Cigarette, Calendar, Euro, Check, Ban } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
@@ -114,7 +114,7 @@ export default function OwnerPoliciesPage() {
               selected={petsAllowed === true}
               onClick={() => setPetsAllowed(true)}
             >
-              <div className="text-2xl mb-1">🐕</div>
+              <PawPrint className={`w-6 h-6 mx-auto mb-1 ${petsAllowed === true ? 'text-purple-600' : 'text-gray-400'}`} />
               <div className="text-sm font-semibold">{t('enhanceOwner.policies.pets.yes')}</div>
             </EnhanceProfileSelectionCard>
             <EnhanceProfileSelectionCard
@@ -122,7 +122,7 @@ export default function OwnerPoliciesPage() {
               selected={petsAllowed === false}
               onClick={() => setPetsAllowed(false)}
             >
-              <div className="text-2xl mb-1">🚫</div>
+              <Ban className={`w-6 h-6 mx-auto mb-1 ${petsAllowed === false ? 'text-purple-600' : 'text-gray-400'}`} />
               <div className="text-sm font-semibold">{t('enhanceOwner.policies.pets.no')}</div>
             </EnhanceProfileSelectionCard>
           </div>
@@ -142,7 +142,7 @@ export default function OwnerPoliciesPage() {
               selected={smokingAllowed === true}
               onClick={() => setSmokingAllowed(true)}
             >
-              <div className="text-2xl mb-1">✅</div>
+              <Check className={`w-6 h-6 mx-auto mb-1 ${smokingAllowed === true ? 'text-purple-600' : 'text-gray-400'}`} />
               <div className="text-sm font-semibold">{t('enhanceOwner.policies.smoking.yes')}</div>
             </EnhanceProfileSelectionCard>
             <EnhanceProfileSelectionCard
@@ -150,7 +150,7 @@ export default function OwnerPoliciesPage() {
               selected={smokingAllowed === false}
               onClick={() => setSmokingAllowed(false)}
             >
-              <div className="text-2xl mb-1">🚭</div>
+              <Ban className={`w-6 h-6 mx-auto mb-1 ${smokingAllowed === false ? 'text-purple-600' : 'text-gray-400'}`} />
               <div className="text-sm font-semibold">{t('enhanceOwner.policies.smoking.no')}</div>
             </EnhanceProfileSelectionCard>
           </div>

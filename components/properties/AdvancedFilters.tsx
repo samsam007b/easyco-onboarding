@@ -86,20 +86,20 @@ const PROPERTY_TYPES = [
 ];
 
 const AMENITIES = [
-  { id: 'wifi', label: 'WiFi', icon: '📶' },
-  { id: 'kitchen', label: 'Cuisine équipée', icon: '🍳' },
-  { id: 'dishwasher', label: 'Lave-vaisselle', icon: '🍽️' },
-  { id: 'washing_machine', label: 'Machine à laver', icon: '👕' },
-  { id: 'dryer', label: 'Sèche-linge', icon: '🌀' },
-  { id: 'tv', label: 'Télévision', icon: '📺' },
-  { id: 'air_conditioning', label: 'Climatisation', icon: '❄️' },
-  { id: 'heating', label: 'Chauffage central', icon: '🔥' },
-  { id: 'fireplace', label: 'Cheminée', icon: '🔥' },
-  { id: 'workspace', label: 'Espace de travail', icon: '💻' },
-  { id: 'gym', label: 'Salle de sport', icon: '🏋️' },
-  { id: 'pool', label: 'Piscine', icon: '🏊' },
-  { id: 'security', label: 'Sécurité 24/7', icon: '🔒' },
-  { id: 'concierge', label: 'Concierge', icon: '🛎️' },
+  { id: 'wifi', label: 'WiFi', icon: '' },
+  { id: 'kitchen', label: 'Cuisine équipée', icon: '' },
+  { id: 'dishwasher', label: 'Lave-vaisselle', icon: '' },
+  { id: 'washing_machine', label: 'Machine à laver', icon: '' },
+  { id: 'dryer', label: 'Sèche-linge', icon: '' },
+  { id: 'tv', label: 'Télévision', icon: '' },
+  { id: 'air_conditioning', label: 'Climatisation', icon: '' },
+  { id: 'heating', label: 'Chauffage central', icon: '' },
+  { id: 'fireplace', label: 'Cheminée', icon: '' },
+  { id: 'workspace', label: 'Espace de travail', icon: '' },
+  { id: 'gym', label: 'Salle de sport', icon: '' },
+  { id: 'pool', label: 'Piscine', icon: '' },
+  { id: 'security', label: 'Sécurité 24/7', icon: '' },
+  { id: 'concierge', label: 'Concierge', icon: '' },
 ];
 
 const FLOOR_OPTIONS = [
@@ -391,10 +391,10 @@ export function AdvancedFilters({
             <Label className="mb-3">Caractéristiques de l'immeuble</Label>
             <div className="space-y-3">
               {[
-                { key: 'hasElevator', label: 'Ascenseur', icon: '🛗' },
-                { key: 'hasParking', label: 'Parking', icon: '🚗' },
-                { key: 'hasBalcony', label: 'Balcon', icon: '🌿' },
-                { key: 'hasGarden', label: 'Jardin', icon: '🌳' },
+                { key: 'hasElevator', label: 'Ascenseur', icon: '' },
+                { key: 'hasParking', label: 'Parking', icon: '' },
+                { key: 'hasBalcony', label: 'Balcon', icon: '' },
+                { key: 'hasGarden', label: 'Jardin', icon: '' },
               ].map((feature) => (
                 <div key={feature.key} className="flex items-center justify-between">
                   <Label htmlFor={feature.key} className="flex items-center gap-2">
@@ -416,9 +416,9 @@ export function AdvancedFilters({
             <Label className="mb-3">Règles et préférences</Label>
             <div className="space-y-3">
               {[
-                { key: 'petsAllowed', label: 'Animaux acceptés', icon: '🐕' },
-                { key: 'smokingAllowed', label: 'Fumeur accepté', icon: '🚬' },
-                { key: 'accessibility', label: 'Accessible PMR', icon: '♿' },
+                { key: 'petsAllowed', label: 'Animaux acceptés', icon: '' },
+                { key: 'smokingAllowed', label: 'Fumeur accepté', icon: '' },
+                { key: 'accessibility', label: 'Accessible PMR', icon: '' },
               ].map((policy) => (
                 <div key={policy.key} className="flex items-center justify-between">
                   <Label htmlFor={policy.key} className="flex items-center gap-2">

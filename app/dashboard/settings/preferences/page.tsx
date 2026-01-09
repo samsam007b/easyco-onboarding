@@ -440,7 +440,7 @@ export default function PreferencesEditorPage() {
             {/* Tips Card */}
             <Card className="border-blue-200 bg-blue-50">
               <CardContent className="p-4">
-                <h4 className="font-semibold text-sm text-blue-900 mb-2">💡 Tips</h4>
+                <h4 className="font-semibold text-sm text-blue-900 mb-2">Tips</h4>
                 <ul className="text-xs text-blue-800 space-y-1">
                   <li>• Set realistic budget ranges</li>
                   <li>• Add multiple city options</li>

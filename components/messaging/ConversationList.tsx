@@ -23,26 +23,26 @@ interface ConversationListProps {
 
 const variantStyles = {
   searcher: {
-    selected: 'bg-gradient-to-r from-searcher-50 to-searcher-100/50 border-l-4 border-l-searcher-500',
+    selected: 'bg-searcher-50 border-l-4 border-l-searcher-500',
     badge: 'bg-searcher-500 text-white',
-    accent: 'bg-gradient-searcher',
-    avatarGradient: 'from-searcher-500 to-searcher-600',
+    accent: 'bg-searcher-500',
+    avatarGradient: 'bg-searcher-500',
     online: 'bg-green-500',
     searchFocus: 'focus:ring-searcher-200 focus:border-searcher-300',
   },
   owner: {
-    selected: 'bg-gradient-to-r from-owner-50 to-owner-100/50 border-l-4 border-l-owner-500',
+    selected: 'bg-owner-50 border-l-4 border-l-owner-500',
     badge: 'bg-owner-500 text-white',
-    accent: 'bg-gradient-to-br from-owner-500 to-owner-600',
-    avatarGradient: 'from-owner-500 to-owner-600',
+    accent: 'bg-owner-500',
+    avatarGradient: 'bg-owner-500',
     online: 'bg-green-500',
     searchFocus: 'focus:ring-owner-200 focus:border-owner-300',
   },
   hub: {
-    selected: 'bg-gradient-to-r from-resident-50 to-resident-100/50 border-l-4 border-l-resident-500',
+    selected: 'bg-resident-50 border-l-4 border-l-resident-500',
     badge: 'bg-resident-500 text-white',
-    accent: 'bg-gradient-to-br from-resident-500 to-resident-600',
-    avatarGradient: 'from-resident-500 to-resident-600',
+    accent: 'bg-resident-500',
+    avatarGradient: 'bg-resident-500',
     online: 'bg-green-500',
     searchFocus: 'focus:ring-resident-200 focus:border-resident-300',
   },
@@ -147,11 +147,11 @@ interface EmptyStateProps {
 function EmptyState({ showArchived, variant, styles, messaging }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center h-full text-center p-8">
-      <div className={cn('w-16 h-16 superellipse-2xl flex items-center justify-center mb-4 shadow-md', styles.accent)}>
+      <div className={cn('w-16 h-16 superellipse-2xl flex items-center justify-center mb-4 shadow-md text-white', styles.accent)}>
         {showArchived ? (
-          <Archive className="h-8 w-8 text-white" />
+          <Archive className="h-8 w-8" />
         ) : (
-          <MessageCircle className="h-8 w-8 text-white" />
+          <MessageCircle className="h-8 w-8" />
         )}
       </div>
       <h3 className="text-lg font-semibold text-gray-900 mb-2">
@@ -214,7 +214,7 @@ function ConversationItem({
         ) : (
           <div
             className={cn(
-              'w-13 h-13 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-sm bg-gradient-to-br',
+              'w-13 h-13 rounded-full flex items-center justify-center text-white font-semibold text-lg shadow-sm',
               styles.avatarGradient
             )}
             style={{ width: 52, height: 52 }}

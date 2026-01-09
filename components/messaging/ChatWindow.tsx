@@ -37,30 +37,30 @@ interface ChatWindowProps {
 
 const variantStyles = {
   searcher: {
-    header: 'bg-gradient-to-r from-searcher-50 to-searcher-100/50',
-    sendButton: 'bg-gradient-searcher hover:opacity-90',
-    senderBubble: 'bg-gradient-to-br from-searcher-500 to-searcher-600 text-white',
+    header: 'bg-searcher-50',
+    sendButton: 'bg-searcher-500 hover:bg-searcher-600',
+    senderBubble: 'bg-searcher-500 text-white',
     receiverBubble: 'bg-white border border-gray-100 text-gray-900',
     typing: 'text-searcher-600',
-    avatarGradient: 'from-searcher-500 to-searcher-600',
+    avatarGradient: 'bg-searcher-500',
     readIndicator: 'text-searcher-500',
   },
   owner: {
-    header: 'bg-gradient-to-r from-owner-50 to-owner-100/50',
-    sendButton: 'bg-gradient-to-br from-owner-500 to-owner-600 hover:opacity-90',
-    senderBubble: 'bg-gradient-to-br from-owner-500 to-owner-600 text-white',
+    header: 'bg-owner-50',
+    sendButton: 'bg-owner-500 hover:bg-owner-600',
+    senderBubble: 'bg-owner-500 text-white',
     receiverBubble: 'bg-white border border-gray-100 text-gray-900',
     typing: 'text-owner-600',
-    avatarGradient: 'from-owner-500 to-owner-600',
+    avatarGradient: 'bg-owner-500',
     readIndicator: 'text-owner-500',
   },
   hub: {
-    header: 'bg-gradient-to-r from-resident-50 to-resident-100/50',
-    sendButton: 'bg-gradient-to-br from-resident-500 to-resident-600 hover:opacity-90',
-    senderBubble: 'bg-gradient-to-br from-resident-500 to-resident-600 text-white',
+    header: 'bg-resident-50',
+    sendButton: 'bg-resident-500 hover:bg-resident-600',
+    senderBubble: 'bg-resident-500 text-white',
     receiverBubble: 'bg-white border border-gray-100 text-gray-900',
     typing: 'text-resident-600',
-    avatarGradient: 'from-resident-500 to-resident-600',
+    avatarGradient: 'bg-resident-500',
     readIndicator: 'text-resident-500',
   },
 };
@@ -122,7 +122,7 @@ export function ChatWindow({
   const handleSendMessage = async () => {
     if ((!messageInput.trim() && !selectedImage) || isSending) return;
 
-    const content = messageInput.trim() || (selectedImage ? '📷 Image' : '');
+    const content = messageInput.trim() || (selectedImage ? 'Image' : '');
     const imageData = selectedImage;
 
     setMessageInput('');
@@ -200,7 +200,7 @@ export function ChatWindow({
                 priority={false}
               />
             ) : (
-              <div className={cn('w-11 h-11 rounded-full flex items-center justify-center text-white font-semibold shadow-sm bg-gradient-to-br', styles.avatarGradient)}>
+              <div className={cn('w-11 h-11 rounded-full flex items-center justify-center text-white font-semibold shadow-sm', styles.avatarGradient)}>
                 {otherUserName.charAt(0).toUpperCase()}
               </div>
             )}
@@ -401,7 +401,7 @@ function MessageBubble({
                 priority={false}
               />
             ) : (
-              <div className={cn('w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shadow-sm bg-gradient-to-br', styles.avatarGradient)}>
+              <div className={cn('w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-semibold shadow-sm', styles.avatarGradient)}>
                 {otherUserName.charAt(0).toUpperCase()}
               </div>
             )}

@@ -19,7 +19,7 @@ const modalConfig = {
     icon: Heart,
     iconColor: 'text-red-500',
     iconBg: 'bg-red-50',
-    title: 'Sauvegarde tes coups de cœur ❤️',
+    title: 'Sauvegarde tes coups de cœur',
     description: 'Crée un compte gratuit pour sauvegarder tes propriétés préférées et les retrouver facilement.',
     benefits: [
       'Sauvegarde illimitée de propriétés',
@@ -34,7 +34,7 @@ const modalConfig = {
     icon: Home,
     iconColor: 'text-orange-600',
     iconBg: 'bg-orange-50',
-    title: 'Prêt à postuler ? 🏠',
+    title: 'Prêt à postuler ?',
     description: 'Crée ton compte en 2 minutes pour postuler et augmenter tes chances de trouver la coloc parfaite.',
     benefits: [
       'Postule en un clic avec ton profil',
@@ -49,7 +49,7 @@ const modalConfig = {
     icon: Sparkles,
     iconColor: 'text-orange-500',
     iconBg: 'bg-orange-50',
-    title: 'Attends ! Ne pars pas sans ton bonus 🎁',
+    title: 'Attends ! Ne pars pas sans ton bonus',
     description: 'Inscris-toi maintenant et reçois des recommandations personnalisées basées sur les propriétés que tu as consultées.',
     benefits: [
       '10 propriétés matchées à ton profil',
@@ -64,7 +64,7 @@ const modalConfig = {
     icon: Users,
     iconColor: 'text-blue-500',
     iconBg: 'bg-blue-50',
-    title: 'Tu cherches activement ? 👀',
+    title: 'Tu cherches activement ?',
     description: 'Tu as déjà vu plusieurs propriétés. Crée ton compte pour accéder à toutes nos fonctionnalités !',
     benefits: [
       'Swipe interface comme Tinder',

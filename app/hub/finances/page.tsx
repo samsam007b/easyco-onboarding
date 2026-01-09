@@ -466,7 +466,7 @@ export default function ModernFinancesPage() {
               {totalBalance >= 0 ? '+' : ''}€{Math.abs(totalBalance).toFixed(0)}
             </p>
             <p className={cn('text-xs font-medium mt-2', totalBalance >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]')}>
-              {totalBalance >= 0 ? `💰 ${hub.finances?.stats?.youAreOwed || 'You are owed'}` : `💸 ${hub.finances?.stats?.youOwe || 'You owe'}`}
+              {totalBalance >= 0 ? (hub.finances?.stats?.youAreOwed || 'You are owed') : (hub.finances?.stats?.youOwe || 'You owe')}
             </p>
           </motion.div>
         </motion.div>
@@ -604,7 +604,7 @@ export default function ModernFinancesPage() {
                   >
                     <Check className="w-7 h-7 text-white" />
                   </motion.div>
-                  <p className="text-base font-bold text-gray-900">{hub.finances?.emptyBalance?.title || 'All settled!'} 🎉</p>
+                  <p className="text-base font-bold text-gray-900">{hub.finances?.emptyBalance?.title || 'All settled!'}</p>
                   <p className="text-sm text-gray-500">{hub.finances?.emptyBalance?.description || 'No pending balances'}</p>
                 </motion.div>
               ) : (
@@ -637,7 +637,7 @@ export default function ModernFinancesPage() {
                         <div>
                           <p className="text-sm font-semibold text-gray-900">{balance.userName}</p>
                           <p className="text-xs text-gray-500">
-                            {balance.amount >= 0 ? `💰 ${hub.finances?.owesYou || 'Owes you'}` : `💸 ${hub.finances?.youOweThem || 'You owe them'}`}
+                            {balance.amount >= 0 ? (hub.finances?.owesYou || 'Owes you') : (hub.finances?.youOweThem || 'You owe them')}
                           </p>
                         </div>
                       </div>

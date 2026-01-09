@@ -23,7 +23,44 @@ import {
   Archive,
   X,
   Sparkles,
+  VolumeX,
+  Home,
+  UtensilsCrossed,
+  Droplets,
+  PawPrint,
+  Ban,
+  FileText,
+  Minus,
+  type LucideIcon,
 } from 'lucide-react';
+
+// Icon mappings for categories
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  Sparkles,
+  VolumeX,
+  Users,
+  Home,
+  UtensilsCrossed,
+  Droplets,
+  PawPrint,
+  Ban,
+  FileText,
+};
+
+// Icon mappings for statuses
+const STATUS_ICONS: Record<string, LucideIcon> = {
+  Vote,
+  CheckCircle,
+  XCircle,
+  Archive,
+};
+
+// Icon mappings for vote types
+const VOTE_ICONS: Record<string, LucideIcon> = {
+  ThumbsUp,
+  ThumbsDown,
+  Minus,
+};
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
@@ -140,7 +177,7 @@ export default function RulesPage() {
       const result = await rulesService.createRule(propertyId, userId, createForm);
 
       if (result.success) {
-        console.log('[Rules] ✅ Rule created successfully');
+        console.log('[Rules] Rule created successfully');
         setShowCreateModal(false);
         resetCreateForm();
         await loadData();
@@ -167,7 +204,7 @@ export default function RulesPage() {
       });
 
       if (result.success) {
-        console.log('[Rules] ✅ Vote cast successfully');
+        console.log('[Rules] Vote cast successfully');
         setShowVoteModal(false);
         resetVoteModal();
         await loadData();
@@ -189,7 +226,7 @@ export default function RulesPage() {
       const result = await rulesService.finalizeVoting(ruleId);
 
       if (result.success) {
-        console.log('[Rules] ✅ Voting finalized');
+        console.log('[Rules] Voting finalized');
         await loadData();
       } else {
         alert(result.error || (t?.errors?.finalizeError?.[language] || 'Error during finalization'));
@@ -464,7 +501,12 @@ export default function RulesPage() {
                   >
                     <div className="flex items-start gap-4">
                       {/* Category Icon */}
-                      <div className="text-4xl flex-shrink-0">{categoryInfo.emoji}</div>
+                      <div className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(224, 87, 71, 0.1)' }}>
+                        {(() => {
+                          const IconComponent = CATEGORY_ICONS[categoryInfo.iconName];
+                          return IconComponent ? <IconComponent className="w-6 h-6 text-gray-700" /> : null;
+                        })()}
+                      </div>
 
                       {/* Content */}
                       <div className="flex-1 min-w-0">
@@ -477,8 +519,12 @@ export default function RulesPage() {
                           </div>
 
                           <div className="flex flex-col gap-2 items-end flex-shrink-0">
-                            <Badge className={statusInfo.color}>
-                              {statusInfo.icon} {statusInfo.label}
+                            <Badge className={cn(statusInfo.color, 'flex items-center gap-1')}>
+                              {(() => {
+                                const IconComponent = STATUS_ICONS[statusInfo.iconName];
+                                return IconComponent ? <IconComponent className="w-3 h-3" /> : null;
+                              })()}
+                              {statusInfo.label}
                             </Badge>
                             <Badge className={categoryInfo.color}>{categoryInfo.label}</Badge>
                           </div>
@@ -576,8 +622,13 @@ export default function RulesPage() {
                           )}
 
                           {rule.user_vote && (
-                            <Badge className={getVoteTypeInfo(rule.user_vote).bgColor}>
-                              {getVoteTypeInfo(rule.user_vote).emoji} {t?.voting?.youVoted?.[language] || 'You voted'}{' '}
+                            <Badge className={cn(getVoteTypeInfo(rule.user_vote).bgColor, 'flex items-center gap-1')}>
+                              {(() => {
+                                const voteInfo = getVoteTypeInfo(rule.user_vote);
+                                const IconComponent = VOTE_ICONS[voteInfo.iconName];
+                                return IconComponent ? <IconComponent className="w-3 h-3" /> : null;
+                              })()}
+                              {t?.voting?.youVoted?.[language] || 'You voted'}{' '}
                               {getVoteTypeInfo(rule.user_vote).label.toLowerCase()}
                             </Badge>
                           )}
@@ -703,22 +754,27 @@ export default function RulesPage() {
                     {t?.createModal?.category?.[language] || 'Category'} *
                   </Label>
                   <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2">
-                    {RULE_CATEGORIES.map((cat) => (
-                      <button
-                        key={cat.value}
-                        onClick={() => setCreateForm({ ...createForm, category: cat.value })}
-                        className={cn(
-                          'p-3 superellipse-xl border-2 text-center transition-all',
-                          createForm.category === cat.value
-                            ? 'bg-orange-50'
-                            : 'border-gray-200 hover:border-gray-300'
-                        )}
-                        style={createForm.category === cat.value ? { borderColor: '#e05747' } : undefined}
-                      >
-                        <div className="text-2xl mb-1">{cat.emoji}</div>
-                        <div className="text-xs font-medium text-gray-700">{cat.label}</div>
-                      </button>
-                    ))}
+                    {RULE_CATEGORIES.map((cat) => {
+                      const CatIcon = CATEGORY_ICONS[cat.iconName];
+                      return (
+                        <button
+                          key={cat.value}
+                          onClick={() => setCreateForm({ ...createForm, category: cat.value })}
+                          className={cn(
+                            'p-3 superellipse-xl border-2 text-center transition-all',
+                            createForm.category === cat.value
+                              ? 'bg-orange-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                          )}
+                          style={createForm.category === cat.value ? { borderColor: '#e05747' } : undefined}
+                        >
+                          <div className="flex justify-center mb-1">
+                            {CatIcon && <CatIcon className="w-6 h-6 text-gray-700" />}
+                          </div>
+                          <div className="text-xs font-medium text-gray-700">{cat.label}</div>
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
@@ -825,23 +881,28 @@ export default function RulesPage() {
               <div>
                 <Label>{t?.voteModal?.yourVote?.[language] || 'Your vote'} *</Label>
                 <div className="grid grid-cols-3 gap-2 mt-2">
-                  {VOTE_TYPES.map((voteType) => (
-                    <button
-                      key={voteType.value}
-                      onClick={() => setSelectedVote(voteType.value)}
-                      className={cn(
-                        'p-4 superellipse-xl border-2 text-center transition-all',
-                        selectedVote === voteType.value
-                          ? voteType.borderColor + ' ' + voteType.bgColor
-                          : 'border-gray-200 hover:border-gray-300'
-                      )}
-                    >
-                      <div className="text-3xl mb-2">{voteType.emoji}</div>
-                      <div className={cn('text-sm font-bold', voteType.color)}>
-                        {voteType.label}
-                      </div>
-                    </button>
-                  ))}
+                  {VOTE_TYPES.map((voteType) => {
+                    const VoteIcon = VOTE_ICONS[voteType.iconName];
+                    return (
+                      <button
+                        key={voteType.value}
+                        onClick={() => setSelectedVote(voteType.value)}
+                        className={cn(
+                          'p-4 superellipse-xl border-2 text-center transition-all',
+                          selectedVote === voteType.value
+                            ? voteType.borderColor + ' ' + voteType.bgColor
+                            : 'border-gray-200 hover:border-gray-300'
+                        )}
+                      >
+                        <div className="flex justify-center mb-2">
+                          {VoteIcon && <VoteIcon className={cn('w-8 h-8', voteType.color)} />}
+                        </div>
+                        <div className={cn('text-sm font-bold', voteType.color)}>
+                          {voteType.label}
+                        </div>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 

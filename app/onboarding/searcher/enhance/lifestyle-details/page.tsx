@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Music, ChefHat, Apple, MessageCircle } from 'lucide-react';
+import { Music, ChefHat, Apple, MessageCircle, Lightbulb } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { getOnboardingData } from '@/lib/onboarding-helpers';
@@ -226,8 +226,9 @@ export default function OnboardingLifestyleDetailsPage() {
 
         {/* Info box */}
         <EnhanceProfileInfoBox role="searcher">
-          <p className="text-sm text-gray-600">
-            💡 {t('enhanceSearcher.lifestyleDetails.infoBox')}
+          <p className="text-sm text-gray-600 flex items-start gap-2">
+            <Lightbulb className="w-4 h-4 flex-shrink-0 mt-0.5 text-orange-500" />
+            <span>{t('enhanceSearcher.lifestyleDetails.infoBox')}</span>
           </p>
         </EnhanceProfileInfoBox>
       </div>

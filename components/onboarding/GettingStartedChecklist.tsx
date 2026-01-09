@@ -121,7 +121,7 @@ export default function GettingStartedChecklist({
             transition={{ delay: 0.3 }}
             className="text-2xl font-black text-gray-900 mb-2"
           >
-            Bravo, tu es prêt(e) ! 🎉
+            Bravo, tu es prêt(e) !
           </motion.h3>
 
           <motion.p
