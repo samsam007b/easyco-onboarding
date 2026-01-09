@@ -112,7 +112,7 @@ export default function PropertyCodesCard({
     <div className="space-y-6">
       {/* Header with creator badge */}
       {showCreatorBadge && isCreator && (
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-owner-100 to-owner-200 text-owner-700 font-medium">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-owner-100 text-owner-700 font-medium">
           <Shield className="w-4 h-4" />
           {t?.creatorBadge?.[language] || 'Vous êtes le créateur de cette résidence'}
         </div>
@@ -126,7 +126,7 @@ export default function PropertyCodesCard({
       >
         <Card className="p-6 bg-white/80 backdrop-blur-sm border-2 border-resident-200 hover:border-resident-300 transition-all">
           <div className="flex items-start gap-4">
-            <div className="w-14 h-14 superellipse-2xl bg-gradient-to-br from-resident-400 to-resident-500 flex items-center justify-center flex-shrink-0 shadow-lg">
+            <div className="w-14 h-14 superellipse-2xl bg-resident-500 flex items-center justify-center flex-shrink-0 shadow-lg">
               <Users className="w-7 h-7 text-white" />
             </div>
 
@@ -139,7 +139,7 @@ export default function PropertyCodesCard({
               </p>
 
               <div className="flex items-center gap-3">
-                <div className="flex-1 px-6 py-4 bg-gradient-to-r from-resident-50 to-resident-100 superellipse-xl border-2 border-resident-200">
+                <div className="flex-1 px-6 py-4 bg-resident-50 superellipse-xl border-2 border-resident-200">
                   <p className="text-3xl font-bold text-gray-900 tracking-wider text-center font-mono">
                     {invitationCode}
                   </p>
@@ -171,7 +171,7 @@ export default function PropertyCodesCard({
         >
           <Card className="p-6 bg-white/80 backdrop-blur-sm border-2 border-owner-200 hover:border-owner-300 transition-all">
             <div className="flex items-start gap-4">
-              <div className="w-14 h-14 superellipse-2xl bg-gradient-to-br from-owner-500 to-owner-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+              <div className="w-14 h-14 superellipse-2xl bg-owner-500 flex items-center justify-center flex-shrink-0 shadow-lg">
                 <UserCheck className="w-7 h-7 text-white" />
               </div>
 
@@ -189,7 +189,7 @@ export default function PropertyCodesCard({
                 </p>
 
                 <div className="flex items-center gap-3">
-                  <div className="flex-1 px-6 py-4 bg-gradient-to-r from-owner-50 to-owner-100 superellipse-xl border-2 border-owner-200">
+                  <div className="flex-1 px-6 py-4 bg-owner-50 superellipse-xl border-2 border-owner-200">
                     <p className="text-2xl font-bold text-gray-900 tracking-wider text-center font-mono">
                       {ownerCode}
                     </p>
@@ -213,7 +213,7 @@ export default function PropertyCodesCard({
                     <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                     <div>
                       <p className="font-semibold text-red-900 text-sm mb-1">
-                        {t?.ownerCode?.warning?.title?.[language] || '⚠️ Important - Sécurité'}
+                        {t?.ownerCode?.warning?.title?.[language] || 'Important - Sécurité'}
                       </p>
                       <p className="text-red-700 text-xs leading-relaxed">
                         {t?.ownerCode?.warning?.text?.[language] || 'Ne partagez ce code qu\'avec le propriétaire LÉGAL de la résidence. Ce code lui donnera accès à des fonctionnalités sensibles (documents, finances, etc.).'}

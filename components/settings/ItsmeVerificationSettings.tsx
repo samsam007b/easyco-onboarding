@@ -180,7 +180,7 @@ export default function ItsmeVerificationSettings({
         </div>
 
         {/* Coming Soon Content */}
-        <div className="bg-gradient-to-br from-owner-50 to-owner-100/50 superellipse-xl p-5">
+        <div className="bg-owner-50 superellipse-xl p-5">
           <div className="flex justify-center mb-4">
             <ItsmeLogo className="w-28 h-auto opacity-60" />
           </div>
@@ -256,7 +256,7 @@ export default function ItsmeVerificationSettings({
             className="space-y-4"
           >
             {/* ITSME Logo & Description */}
-            <div className="bg-gradient-to-br from-owner-50 to-owner-100/50 superellipse-xl p-6 text-center">
+            <div className="bg-owner-50 superellipse-xl p-6 text-center">
               <div className="flex justify-center mb-4">
                 <ItsmeLogo className="w-32 h-auto" />
               </div>

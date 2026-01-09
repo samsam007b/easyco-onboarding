@@ -325,7 +325,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
   return (
     <div className="bg-white/80 backdrop-blur-sm superellipse-2xl p-6 border border-gray-200 shadow-sm">
       <div className="flex items-center gap-3 mb-6">
-        <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-owner-100 to-owner-200 flex items-center justify-center">
+        <div className="w-12 h-12 superellipse-xl bg-owner-100 flex items-center justify-center">
           <Shield className="w-6 h-6 text-owner-700" />
         </div>
         <div>
@@ -397,7 +397,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
             <Button
               onClick={handleStartSetup}
               disabled={isSubmitting}
-              className="w-full superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:from-owner-600 hover:to-owner-700"
+              className="w-full superellipse-xl bg-owner-500 text-white hover:bg-owner-600"
             >
               {isSubmitting ? (
                 <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -478,7 +478,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               </Button>
               <Button
                 onClick={handleProceedToVerify}
-                className="flex-1 superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:from-owner-600 hover:to-owner-700"
+                className="flex-1 superellipse-xl bg-owner-500 text-white hover:bg-owner-600"
               >
                 {mfa?.continue || 'Continue'}
               </Button>
@@ -542,7 +542,7 @@ export default function MFASettings({ onStatusChange }: MFASettingsProps) {
               <Button
                 onClick={handleVerify}
                 disabled={isSubmitting || verificationCode.length !== 6}
-                className="flex-1 superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:from-owner-600 hover:to-owner-700"
+                className="flex-1 superellipse-xl bg-owner-500 text-white hover:bg-owner-600"
               >
                 {isSubmitting ? (
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
