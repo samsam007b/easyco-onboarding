@@ -142,7 +142,6 @@ export default function RoomPricingSelector({
                       )}
                       {room.has_balcony && (
                         <div className="flex items-center gap-1">
-                          <span>🌿</span>
                           <span>{roomSelector?.balcony || 'Balcon'}</span>
                         </div>
                       )}
@@ -182,7 +181,7 @@ export default function RoomPricingSelector({
                 e.stopPropagation();
                 setSelectedRoomForModal(room);
               }}
-              className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-searcher-500 to-searcher-600 hover:from-searcher-600 hover:to-searcher-700 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
+              className="mt-3 w-full flex items-center justify-center gap-2 px-4 py-2 bg-searcher-500 hover:bg-searcher-600 text-white rounded-lg transition-all shadow-sm hover:shadow-md"
             >
               <Eye className="w-4 h-4" />
               <span className="text-sm font-medium">{roomSelector?.viewAllDetails || 'Voir tous les détails'}</span>

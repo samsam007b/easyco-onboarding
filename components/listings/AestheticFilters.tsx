@@ -104,7 +104,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
   return (
     <div className="bg-white superellipse-xl shadow-sm border overflow-hidden">
       {/* Header */}
-      <div className="px-6 py-4 border-b bg-gradient-to-r from-searcher-50 to-searcher-50">
+      <div className="px-6 py-4 border-b bg-searcher-50">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sparkles className="w-5 h-5 text-searcher-600" />
@@ -212,12 +212,12 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
             {/* Visual indicators */}
             <div className="grid grid-cols-5 gap-2 mt-4">
               {[
-                { range: [1, 2], labelKey: 'dark' as const, emoji: '🌑' },
-                { range: [3, 4], labelKey: 'dim' as const, emoji: '🌘' },
-                { range: [5, 6], labelKey: 'moderate' as const, emoji: '🌗' },
-                { range: [7, 8], labelKey: 'bright' as const, emoji: '🌕' },
-                { range: [9, 10], labelKey: 'veryBright' as const, emoji: '☀️' },
-              ].map(({ range, labelKey, emoji }) => (
+                { range: [1, 2], labelKey: 'dark' as const, indicator: '○' },
+                { range: [3, 4], labelKey: 'dim' as const, indicator: '◔' },
+                { range: [5, 6], labelKey: 'moderate' as const, indicator: '◑' },
+                { range: [7, 8], labelKey: 'bright' as const, indicator: '◕' },
+                { range: [9, 10], labelKey: 'veryBright' as const, indicator: '●' },
+              ].map(({ range, labelKey, indicator }) => (
                 <button
                   key={labelKey}
                   onClick={() =>
@@ -234,7 +234,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
                       : 'bg-gray-50 hover:bg-gray-100'
                   }`}
                 >
-                  <div className="text-lg mb-1">{emoji}</div>
+                  <div className="text-lg mb-1">{indicator}</div>
                   <div className="font-medium">{t[labelKey]}</div>
                 </button>
               ))}
@@ -330,7 +330,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
       <div className="px-6 py-4 bg-gray-50 flex gap-3">
         <button
           onClick={onApply}
-          className="flex-1 bg-gradient-to-r from-searcher-600 to-searcher-700 text-white py-3 rounded-lg font-semibold hover:from-searcher-700 hover:to-searcher-800 transition-all shadow-md"
+          className="flex-1 bg-searcher-600 text-white py-3 rounded-lg font-semibold hover:bg-searcher-700 transition-all shadow-md"
         >
           {t.applyFilters}
         </button>

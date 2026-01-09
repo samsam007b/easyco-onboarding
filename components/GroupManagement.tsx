@@ -331,7 +331,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
   return (
     <div className="bg-white superellipse-3xl shadow-lg overflow-hidden">
       {/* Header */}
-      <div className="bg-gradient-to-br from-searcher-600 to-searcher-700 p-6 text-white">
+      <div className="bg-searcher-600 p-6 text-white">
         <div className="flex items-start justify-between mb-4">
           <div>
             <h3 className="text-2xl font-bold mb-2">{currentGroup.name}</h3>
@@ -356,7 +356,7 @@ export default function GroupManagement({ userId }: { userId: string }) {
             {activeMembers.map((member) => (
               <div key={member.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-searcher-500 to-searcher-600 rounded-full flex items-center justify-center text-white font-semibold">
+                  <div className="w-10 h-10 bg-searcher-500 rounded-full flex items-center justify-center text-white font-semibold">
                     {member.users.full_name.charAt(0).toUpperCase()}
                   </div>
                   <div>

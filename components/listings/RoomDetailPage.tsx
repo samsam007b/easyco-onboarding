@@ -191,7 +191,7 @@ export function RoomDetailPage({
                 {/* Aesthetic Score Badge */}
                 {aesthetics && (
                   <div className="text-center">
-                    <div className="inline-flex items-center gap-1 bg-gradient-to-r from-searcher-500 to-searcher-600 text-white px-4 py-2 rounded-full font-semibold">
+                    <div className="inline-flex items-center gap-1 bg-searcher-500 text-white px-4 py-2 rounded-full font-semibold">
                       <Sparkles className="w-5 h-5" />
                       <span className="text-lg">{aestheticScore}/10</span>
                     </div>
@@ -490,7 +490,7 @@ export function RoomDetailPage({
               <div className="space-y-3">
                 <button
                   onClick={onBookVisit}
-                  className="w-full bg-gradient-to-r from-searcher-500 to-searcher-600 text-white py-3 rounded-lg font-semibold hover:from-searcher-600 hover:to-searcher-700 transition-all shadow-md"
+                  className="w-full bg-searcher-500 text-white py-3 rounded-lg font-semibold hover:bg-searcher-600 transition-all shadow-md"
                 >
                   Book a Visit
                 </button>

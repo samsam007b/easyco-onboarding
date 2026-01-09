@@ -112,7 +112,7 @@ export default function VirtualTourViewer({
   if (!isPlaying) {
     return (
       <Card className="relative overflow-hidden group">
-        <div className="relative h-[400px] bg-gradient-to-br from-searcher-600 to-searcher-700 flex items-center justify-center">
+        <div className="relative h-[400px] bg-searcher-600 flex items-center justify-center">
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
             <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
@@ -207,7 +207,7 @@ export default function VirtualTourViewer({
         </div>
 
         {/* Tour Info Banner */}
-        <div className="bg-gradient-to-r from-searcher-600 to-searcher-700 text-white px-4 py-3">
+        <div className="bg-searcher-600 text-white px-4 py-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <Video className="w-5 h-5" />

@@ -72,7 +72,7 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Search Bar */}
-      <div className="bg-gradient-to-r from-searcher-600 via-searcher-500 to-searcher-600 text-white py-12">
+      <div className="bg-searcher-600 text-white py-12">
         <div className="max-w-7xl mx-auto px-4">
           <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
             <Sparkles className="w-10 h-10" />
@@ -119,7 +119,7 @@ export function AestheticRoomSearch({ onRoomClick }: AestheticRoomSearchProps) {
 
             <button
               onClick={handleSearch}
-              className="bg-gradient-to-r from-searcher-500 to-searcher-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-searcher-600 hover:to-searcher-700 transition-all shadow-md flex items-center gap-2"
+              className="bg-searcher-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-searcher-600 transition-all shadow-md flex items-center gap-2"
             >
               <Search className="w-5 h-5" />
               Search
@@ -299,7 +299,7 @@ function RoomCard({ room, onClick }: RoomCardProps) {
             <p className="text-xs text-gray-500">All costs included</p>
           </div>
 
-          <button className="px-4 py-2 bg-gradient-to-r from-searcher-500 to-searcher-600 text-white rounded-lg text-sm font-semibold hover:from-searcher-600 hover:to-searcher-700 transition-all shadow-md">
+          <button className="px-4 py-2 bg-searcher-500 text-white rounded-lg text-sm font-semibold hover:bg-searcher-600 transition-all shadow-md">
             View Details
           </button>
         </div>
