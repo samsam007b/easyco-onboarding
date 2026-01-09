@@ -22,7 +22,7 @@ import {
   calculateAestheticScore,
   getRatingLabel,
   DESIGN_STYLE_LABELS,
-  getDesignStyleIcon,
+  getDesignStyleIconName,
 } from '@/types/room-aesthetics.types';
 
 interface AestheticRoomSearchProps {
@@ -240,7 +240,7 @@ function RoomCard({ room, onClick }: RoomCardProps) {
         {/* Design Style Badge */}
         {room.design_style && (
           <div className="absolute top-3 left-3 bg-black/70 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-medium flex items-center gap-1">
-            <span>{getDesignStyleIcon(room.design_style)}</span>
+            <span>{getDesignStyleIconName(room.design_style)}</span>
             <span>{DESIGN_STYLE_LABELS[room.design_style]}</span>
           </div>
         )}

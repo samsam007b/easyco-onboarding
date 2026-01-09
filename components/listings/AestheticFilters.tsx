@@ -23,7 +23,7 @@ import {
   HEATING_TYPE_LABELS,
   FURNITURE_STYLE_LABELS,
   ROOM_ATMOSPHERE_LABELS,
-  getDesignStyleIcon,
+  getDesignStyleIconName,
 } from '@/types/room-aesthetics.types';
 import { useLanguage } from '@/lib/i18n/use-language';
 
@@ -148,7 +148,7 @@ export function AestheticFilters({ filters, onChange, onApply, onReset }: Aesthe
                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                 }`}
               >
-                <span className="mr-1">{getDesignStyleIcon(style)}</span>
+                <span className="mr-1">{getDesignStyleIconName(style)}</span>
                 {DESIGN_STYLE_LABELS[style]}
               </button>
             ))}

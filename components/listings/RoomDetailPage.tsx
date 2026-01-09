@@ -36,7 +36,7 @@ import {
   getRatingLabel,
   getNaturalLightDescription,
   formatSunHours,
-  getDesignStyleIcon,
+  getDesignStyleIconName,
 } from '@/types/room-aesthetics.types';
 
 interface RoomDetailPageProps {
@@ -272,7 +272,7 @@ export function RoomDetailPage({
                         )}
                       </div>
                       <p className="text-sm text-gray-600">
-                        {getDesignStyleIcon(aesthetics.design_style)}{' '}
+                        {getDesignStyleIconName(aesthetics.design_style)}{' '}
                         {DESIGN_STYLE_LABELS[aesthetics.design_style]}
                       </p>
                       {aesthetics.color_palette && aesthetics.color_palette.length > 0 && (

@@ -9,7 +9,7 @@ import {
   ROOM_ATMOSPHERE_LABELS,
   SUN_EXPOSURE_LABELS,
   getRatingLabel,
-  getDesignStyleIcon,
+  getDesignStyleIconName,
 } from '@/types/room-aesthetics.types';
 import { useLanguage } from '@/lib/i18n/use-language';
 

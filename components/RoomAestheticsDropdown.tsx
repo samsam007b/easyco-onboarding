@@ -11,7 +11,7 @@ import {
   ROOM_ATMOSPHERE_LABELS,
   SUN_EXPOSURE_LABELS,
   getRatingLabel,
-  getDesignStyleIcon,
+  getDesignStyleIconName,
 } from '@/types/room-aesthetics.types';
 import { useLanguage } from '@/lib/i18n/use-language';
 
@@ -117,7 +117,7 @@ export default function RoomAestheticsDropdown({
                   )}
                 </div>
                 <p className="text-gray-600">
-                  {getDesignStyleIcon(aesthetics.design_style)}{' '}
+                  {getDesignStyleIconName(aesthetics.design_style)}{' '}
                   {DESIGN_STYLE_LABELS[aesthetics.design_style]}
                 </p>
                 {aesthetics.color_palette && aesthetics.color_palette.length > 0 && (
