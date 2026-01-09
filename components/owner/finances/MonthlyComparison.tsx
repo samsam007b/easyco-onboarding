@@ -101,7 +101,7 @@ export function MonthlyComparison({ data, className }: MonthlyComparisonProps) {
       {/* Comparison Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {/* Current Month */}
-        <div className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-pink-50 superellipse-xl p-4 border border-purple-100">
+        <div className="relative overflow-hidden bg-gradient-to-br from-owner-50 to-owner-100 superellipse-xl p-4 border border-owner-100">
           <div className="absolute -top-4 -right-4 w-16 h-16 rounded-full opacity-20" style={{ background: ownerGradient }} />
 
           <div className="relative">

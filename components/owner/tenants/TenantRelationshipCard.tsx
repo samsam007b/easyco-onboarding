@@ -300,7 +300,7 @@ export function TenantRelationshipCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="rounded-lg h-8 w-8 p-0 hover:bg-purple-50"
+                  className="rounded-lg h-8 w-8 p-0 hover:bg-owner-50"
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push(`/dashboard/owner/leases?tenant=${tenant.id}`);
@@ -312,7 +312,7 @@ export function TenantRelationshipCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="rounded-lg h-8 w-8 p-0 hover:bg-purple-50"
+                  className="rounded-lg h-8 w-8 p-0 hover:bg-owner-50"
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push(`/dashboard/owner/messages?tenant=${tenant.id}`);
@@ -324,7 +324,7 @@ export function TenantRelationshipCard({
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="rounded-lg h-8 w-8 p-0 hover:bg-purple-50"
+                  className="rounded-lg h-8 w-8 p-0 hover:bg-owner-50"
                   onClick={(e) => {
                     e.stopPropagation();
                     router.push(`/dashboard/owner/finance?tenant=${tenant.id}`);
