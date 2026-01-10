@@ -286,7 +286,7 @@ export const MOCK_EVENTS: Event[] = [
     title: 'Running Session - Bois de la Cambre',
     description:
       "Rejoins-nous pour une session de running conviviale dans le magnifique Bois de la Cambre ! Tous les niveaux sont les bienvenus. On court ensemble pendant 45min à un rythme tranquille (6-7 min/km), avec des pauses hydratation. Parfait pour rencontrer d'autres runners et découvrir de jolis parcours. Stretching collectif après la course !",
-    short_description: 'Course conviviale pour tous niveaux 🏃',
+    short_description: 'Course conviviale pour tous niveaux',
     category_id: 'cat-3',
     category: MOCK_CATEGORIES[2],
     city: 'Bruxelles',

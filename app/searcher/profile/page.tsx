@@ -14,7 +14,7 @@ export default function SearcherProfileRedirect() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-searcher-50 via-white to-searcher-100">
+    <div className="min-h-screen flex items-center justify-center bg-searcher-50">
       <div className="text-center">
         <LoadingHouse size={60} />
         <p className="mt-4 text-gray-600 font-medium">Redirection vers votre profil...</p>
