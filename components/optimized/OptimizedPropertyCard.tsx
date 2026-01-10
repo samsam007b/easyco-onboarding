@@ -201,7 +201,7 @@ function OptimizedPropertyCard({
               {/* Price section with glassmorphism */}
               <div className="relative -mx-3 -mb-3 mt-3 px-3 py-2 rounded-b-xl overflow-hidden">
                 {/* Animated background lights */}
-                <div className="absolute inset-0 bg-gradient-to-br from-searcher-50 via-searcher-50 to-searcher-50">
+                <div className="absolute inset-0 bg-searcher-50">
                   <div className="absolute top-0 left-1/4 w-24 h-24 bg-searcher-300/60 rounded-full blur-xl"
                        style={{ animation: 'float 20s ease-in-out infinite' }} />
                   <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-searcher-300/50 rounded-full blur-2xl"
@@ -367,7 +367,7 @@ function OptimizedPropertyCard({
             {/* Footer: Price and CTA */}
             <div className="relative mt-4 -mx-4 sm:-mx-6 -mb-4 sm:-mb-6 px-4 sm:px-6 py-4 rounded-b-2xl overflow-hidden">
               {/* Animated background lights */}
-              <div className="absolute inset-0 bg-gradient-to-br from-searcher-50 via-searcher-50 to-searcher-50">
+              <div className="absolute inset-0 bg-searcher-50">
                 <div className="absolute top-0 left-1/4 w-32 h-32 bg-searcher-300/60 rounded-full blur-2xl"
                      style={{ animation: 'float 20s ease-in-out infinite' }} />
                 <div className="absolute bottom-0 right-1/3 w-40 h-40 bg-searcher-300/50 rounded-full blur-2xl"
