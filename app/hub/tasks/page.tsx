@@ -31,6 +31,12 @@ import {
   PenLine,
 } from 'lucide-react';
 
+// V3 Color System - Resident Palette from globals.css
+const RESIDENT_PRIMARY = 'var(--resident-primary)';
+const RESIDENT_GRADIENT = 'var(--gradient-resident-medium)';
+const CARD_BG_GRADIENT = 'var(--gradient-resident-subtle)';
+const RESIDENT_SHADOW = 'var(--resident-shadow)';
+
 // V2 Fun Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -247,8 +253,8 @@ export default function ModernTasksPage() {
               whileTap={{ scale: 0.95 }}
               className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                background: RESIDENT_GRADIENT,
+                boxShadow: `0 8px 24px ${RESIDENT_SHADOW}`,
               }}
             >
               <CheckCircle2 className="w-6 h-6 text-white" />
@@ -267,8 +273,8 @@ export default function ModernTasksPage() {
               size="sm"
               className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                background: RESIDENT_GRADIENT,
+                boxShadow: `0 4px 14px ${RESIDENT_SHADOW}`,
               }}
             >
               <Plus className="w-4 h-4 mr-2" />
@@ -284,24 +290,24 @@ export default function ModernTasksPage() {
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
-              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
+              background: CARD_BG_GRADIENT,
+              boxShadow: `0 8px 24px ${RESIDENT_SHADOW}`,
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+              style={{ background: RESIDENT_GRADIENT }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-orange-700">{hub.tasks?.stats?.myTasks || 'My tasks'}</span>
+              <span className="text-sm font-medium" style={{ color: RESIDENT_PRIMARY }}>{hub.tasks?.stats?.myTasks || 'My tasks'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+                style={{ background: RESIDENT_GRADIENT }}
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{myTasks.length}</p>
-            <p className="text-xs text-orange-600 font-medium mt-2">{hub.tasks?.stats?.toDo || 'to do'}</p>
+            <p className="text-xs font-medium mt-2" style={{ color: RESIDENT_PRIMARY }}>{hub.tasks?.stats?.toDo || 'to do'}</p>
           </motion.div>
 
           {/* Pending Card - Gris neutre (pas de couleur sémantique) */}
@@ -384,20 +390,20 @@ export default function ModernTasksPage() {
         <motion.div
           variants={itemVariants}
           whileHover={{ y: -4 }}
-          className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-orange-400"
+          className="bg-white superellipse-2xl shadow-lg overflow-hidden"
           style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
         >
           <div className="flex items-center gap-3 p-4 border-b border-gray-100">
             <div
               className="w-9 h-9 superellipse-xl flex items-center justify-center shadow-md"
-              style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+              style={{ background: RESIDENT_GRADIENT }}
             >
               <ClipboardList className="w-5 h-5 text-white" />
             </div>
             <h3 className="text-base font-bold text-gray-900">{hub.tasks?.allTasks || 'All tasks'}</h3>
             <Badge
               className="text-xs px-2 py-0.5 font-bold border-none"
-              style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)', color: 'white' }}
+              style={{ background: RESIDENT_GRADIENT, color: 'white' }}
             >
               {pendingTasks.length}
             </Badge>
@@ -413,14 +419,14 @@ export default function ModernTasksPage() {
               {pendingTasks.length === 0 ? (
                 <motion.div
                   variants={itemVariants}
-                  className="text-center py-12"
+                  className="text-center py-12 px-6"
                 >
                   <motion.div
                     whileHover={{ scale: 1.05, rotate: 5 }}
                     className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
                     style={{
-                      background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
-                      boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                      background: RESIDENT_GRADIENT,
+                      boxShadow: `0 8px 24px ${RESIDENT_SHADOW}`,
                     }}
                   >
                     <CheckCircle2 className="w-10 h-10 text-white" />
@@ -432,8 +438,36 @@ export default function ModernTasksPage() {
                       <Sparkles className="w-5 h-5 text-white" />
                     </motion.div>
                   </motion.div>
-                  <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'No pending tasks'}</p>
-                  <p className="text-sm text-gray-500">{hub.tasks?.emptyState?.description || 'All done!'}</p>
+                  <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'Aucune tâche en cours'}</p>
+                  <p className="text-sm text-gray-500 mb-6">{hub.tasks?.emptyState?.description || 'Bravo, tout est terminé !'}</p>
+
+                  {/* Explanatory notes for task rotation system */}
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.2 }}
+                    className="max-w-md mx-auto text-left space-y-3 p-4 superellipse-2xl"
+                    style={{ background: CARD_BG_GRADIENT }}
+                  >
+                    <h4 className="font-bold text-gray-900 text-sm flex items-center gap-2">
+                      <RotateCw className="w-4 h-4" style={{ color: RESIDENT_PRIMARY }} />
+                      Comment fonctionnent les tâches ?
+                    </h4>
+                    <ul className="space-y-2 text-xs text-gray-600">
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold" style={{ color: RESIDENT_PRIMARY }}>•</span>
+                        <span><strong>Tâches récurrentes :</strong> Les tâches avec rotation s'assignent automatiquement à un colocataire différent à chaque cycle</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold" style={{ color: RESIDENT_PRIMARY }}>•</span>
+                        <span><strong>Créer une tâche :</strong> Cliquez sur "Nouvelle tâche" pour ajouter une tâche ponctuelle ou récurrente</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold" style={{ color: RESIDENT_PRIMARY }}>•</span>
+                        <span><strong>Rotation manuelle :</strong> Utilisez le bouton de rotation pour passer la tâche au prochain colocataire</span>
+                      </li>
+                    </ul>
+                  </motion.div>
                 </motion.div>
               ) : (
                 pendingTasks.map((task) => {
@@ -450,12 +484,13 @@ export default function ModernTasksPage() {
                       className={cn(
                         'group flex items-center justify-between p-4 superellipse-2xl border-2 transition-all cursor-pointer',
                         isMyTask
-                          ? 'border-orange-200 hover:shadow-lg'
+                          ? 'hover:shadow-lg'
                           : 'bg-gray-50/50 border-gray-200 hover:border-gray-300'
                       )}
                       style={isMyTask ? {
-                        background: 'linear-gradient(135deg, rgba(255,245,243,1) 0%, rgba(255,255,255,1) 100%)',
-                        boxShadow: '0 4px 16px rgba(255, 101, 30, 0.1)',
+                        background: CARD_BG_GRADIENT,
+                        boxShadow: `0 4px 16px ${RESIDENT_SHADOW}`,
+                        borderColor: 'rgba(224, 87, 71, 0.2)',
                       } : undefined}
                     >
                       <div className="flex items-center gap-4 flex-1">
@@ -473,8 +508,8 @@ export default function ModernTasksPage() {
                               <Badge
                                 className="text-xs border-none text-white font-semibold shadow-sm"
                                 style={{
-                                  background: 'linear-gradient(135deg, #ff7b19 0%, #e05747 100%)',
-                                  boxShadow: '0 2px 8px rgba(255, 123, 25, 0.3)',
+                                  background: RESIDENT_GRADIENT,
+                                  boxShadow: `0 2px 8px ${RESIDENT_SHADOW}`,
                                 }}
                               >
                                 <RotateCw className="w-3 h-3 mr-1" />
@@ -497,12 +532,12 @@ export default function ModernTasksPage() {
 
                           <div className="flex items-center gap-4 text-sm text-gray-600">
                             <span className="flex items-center gap-1">
-                              <Users className="w-4 h-4" style={{ color: '#e05747' }} />
+                              <Users className="w-4 h-4" style={{ color: RESIDENT_PRIMARY }} />
                               {task.assigned_to_name}
                             </span>
                             {task.due_date && (
                               <span className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" style={{ color: '#e05747' }} />
+                                <Calendar className="w-4 h-4" style={{ color: RESIDENT_PRIMARY }} />
                                 {new Date(task.due_date).toLocaleDateString(language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-NL' : language === 'de' ? 'de-DE' : 'en-GB')}
                                 {task.days_until_due !== undefined && (
                                   <span className={cn(
@@ -545,7 +580,11 @@ export default function ModernTasksPage() {
                               onClick={() => handleRotateTask(task.id)}
                               size="sm"
                               variant="outline"
-                              className="rounded-full border-2 border-orange-200 text-[#ff7b19] hover:bg-orange-50"
+                              className="rounded-full border-2 hover:bg-orange-50/50"
+                              style={{
+                                borderColor: 'rgba(224, 87, 71, 0.3)',
+                                color: RESIDENT_PRIMARY,
+                              }}
                             >
                               <RotateCw className="w-4 h-4" />
                             </Button>
@@ -563,28 +602,28 @@ export default function ModernTasksPage() {
 
       {/* Create Task Modal - V3 Fun Design */}
       <Dialog open={showCreateModal} onOpenChange={setShowCreateModal}>
-        <DialogContent className="max-w-lg p-0 overflow-hidden superellipse-3xl border-2 border-orange-100" style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.25)' }}>
+        <DialogContent className="max-w-lg p-0 overflow-hidden superellipse-3xl border-2" style={{ boxShadow: `0 25px 80px ${RESIDENT_SHADOW}`, borderColor: 'rgba(224, 87, 71, 0.2)' }}>
           {/* Decorative gradient circles */}
           <div
             className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
+            style={{ background: RESIDENT_GRADIENT }}
           />
           <div
             className="absolute -left-12 -bottom-12 w-32 h-32 rounded-full opacity-15 pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
+            style={{ background: RESIDENT_GRADIENT }}
           />
 
           {/* Header */}
           <div
-            className="border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between"
-            style={{ background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)' }}
+            className="border-b-2 px-6 py-5 flex items-center justify-between"
+            style={{ background: CARD_BG_GRADIENT, borderColor: 'rgba(224, 87, 71, 0.2)' }}
           >
             <div className="flex items-center gap-4">
               <motion.div
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 2, repeat: Infinity }}
                 className="w-12 h-12 superellipse-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
+                style={{ background: RESIDENT_GRADIENT, boxShadow: `0 8px 24px ${RESIDENT_SHADOW}` }}
               >
                 <ClipboardList className="w-6 h-6 text-white" />
               </motion.div>
@@ -593,7 +632,7 @@ export default function ModernTasksPage() {
                   {hub.tasks?.modal?.newTask || 'New task'}
                 </h2>
                 <p className="text-sm text-gray-500 flex items-center gap-1">
-                  <Sparkles className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                  <Sparkles className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
                   {hub.tasks?.modal?.subtitle || 'Organize your coliving efficiently'}
                 </p>
               </div>
@@ -607,9 +646,9 @@ export default function ModernTasksPage() {
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                 <div
                   className="w-6 h-6 superellipse-lg flex items-center justify-center"
-                  style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                  style={{ background: `${RESIDENT_PRIMARY}20` }}
                 >
-                  <FileText className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                  <FileText className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
                 </div>
                 {hub.tasks?.modal?.titleLabel || 'Title'} *
               </label>
@@ -617,7 +656,18 @@ export default function ModernTasksPage() {
                 value={createForm.title}
                 onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
                 placeholder={hub.tasks?.modal?.titlePlaceholder || 'E.g.: Clean the kitchen'}
-                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 focus:outline-none transition-all"
+                style={{
+                  borderColor: 'var(--gray-200)',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = RESIDENT_PRIMARY;
+                  e.target.style.background = 'rgba(224, 87, 71, 0.03)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--gray-200)';
+                  e.target.style.background = 'white';
+                }}
               />
             </div>
 
@@ -626,9 +676,9 @@ export default function ModernTasksPage() {
               <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                 <div
                   className="w-6 h-6 superellipse-lg flex items-center justify-center"
-                  style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                  style={{ background: `${RESIDENT_PRIMARY}20` }}
                 >
-                  <PenLine className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                  <PenLine className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
                 </div>
                 {hub.tasks?.modal?.descriptionLabel || 'Description'}
               </label>
@@ -636,8 +686,16 @@ export default function ModernTasksPage() {
                 value={createForm.description}
                 onChange={(e) => setCreateForm({ ...createForm, description: e.target.value })}
                 placeholder={hub.tasks?.modal?.descriptionPlaceholder || 'Details (optional)'}
-                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 resize-none transition-all"
+                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 resize-none transition-all"
                 rows={3}
+                onFocus={(e) => {
+                  e.target.style.borderColor = RESIDENT_PRIMARY;
+                  e.target.style.background = 'rgba(224, 87, 71, 0.03)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--gray-200)';
+                  e.target.style.background = 'white';
+                }}
               />
             </div>
 
@@ -656,7 +714,13 @@ export default function ModernTasksPage() {
                 <select
                   value={createForm.category}
                   onChange={(e) => setCreateForm({ ...createForm, category: e.target.value as any })}
-                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
+                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 focus:outline-none transition-all bg-white"
+                  onFocus={(e) => {
+                    e.target.style.borderColor = RESIDENT_PRIMARY;
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'var(--gray-200)';
+                  }}
                 >
                   {CATEGORY_OPTIONS.map((cat) => (
                     <option key={cat.value} value={cat.value}>
@@ -679,7 +743,13 @@ export default function ModernTasksPage() {
                 <select
                   value={createForm.priority}
                   onChange={(e) => setCreateForm({ ...createForm, priority: e.target.value as any })}
-                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all bg-white"
+                  className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 focus:outline-none transition-all bg-white"
+                  onFocus={(e) => {
+                    e.target.style.borderColor = RESIDENT_PRIMARY;
+                  }}
+                  onBlur={(e) => {
+                    e.target.style.borderColor = 'var(--gray-200)';
+                  }}
                 >
                   {PRIORITY_OPTIONS.map((pri) => (
                     <option key={pri.value} value={pri.value}>
@@ -705,7 +775,13 @@ export default function ModernTasksPage() {
                 type="date"
                 value={createForm.due_date}
                 onChange={(e) => setCreateForm({ ...createForm, due_date: e.target.value })}
-                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:outline-none focus:border-orange-400 focus:bg-orange-50/30 transition-all"
+                className="w-full px-4 py-3.5 superellipse-2xl border-2 border-gray-200 focus:outline-none transition-all"
+                onFocus={(e) => {
+                  e.target.style.borderColor = RESIDENT_PRIMARY;
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--gray-200)';
+                }}
               />
             </div>
 
@@ -716,7 +792,7 @@ export default function ModernTasksPage() {
                   variant="outline"
                   onClick={() => setShowCreateModal(false)}
                   className="w-full superellipse-2xl py-6 font-semibold border-2 transition-all"
-                  style={{ borderColor: 'rgba(255, 101, 30, 0.3)', color: '#e05747' }}
+                  style={{ borderColor: `${RESIDENT_PRIMARY}40`, color: RESIDENT_PRIMARY }}
                 >
                   {hub.tasks?.modal?.cancel || 'Cancel'}
                 </Button>
@@ -727,8 +803,8 @@ export default function ModernTasksPage() {
                   disabled={isSubmitting || !createForm.title}
                   className="w-full superellipse-2xl py-6 font-bold text-white border-none"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
+                    background: RESIDENT_GRADIENT,
+                    boxShadow: `0 12px 32px ${RESIDENT_SHADOW}`,
                   }}
                 >
                   {isSubmitting ? (hub.tasks?.modal?.creating || 'Creating...') : (hub.tasks?.modal?.create || 'Create')}
@@ -780,7 +856,7 @@ export default function ModernTasksPage() {
 
               <div>
                 <Label className="font-semibold text-gray-700 flex items-center gap-2">
-                  <PenLine className="w-4 h-4" style={{ color: '#e05747' }} />
+                  <PenLine className="w-4 h-4" style={{ color: RESIDENT_PRIMARY }} />
                   {hub.tasks?.completeModal?.notesLabel || 'Completion notes'}
                 </Label>
                 <Textarea
