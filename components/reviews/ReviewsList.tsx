@@ -311,7 +311,7 @@ export default function ReviewsList({ propertyId, className }: ReviewsListProps)
             <CardContent className="pt-6">
               <div className="flex items-start gap-4">
                 {/* Avatar */}
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-searcher-400 to-searcher-600 flex items-center justify-center flex-shrink-0 text-white font-semibold">
+                <div className="w-12 h-12 rounded-full bg-searcher-500 flex items-center justify-center flex-shrink-0 text-white font-semibold">
                   {review.reviewer.profile_photo_url ? (
                     <img
                       src={review.reviewer.profile_photo_url}
