@@ -22,7 +22,8 @@ import {
   Key,
   Globe,
   Mail,
-  MapPin
+  MapPin,
+  Sparkles
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
@@ -115,6 +116,12 @@ const ModernResidentHeader = memo(function ModernResidentHeader({
       href: '/hub/calendar',
       label: header?.nav?.calendar || 'Calendrier',
       icon: Calendar,
+    },
+    {
+      id: 'events',
+      href: '/hub/events',
+      label: header?.nav?.events || 'Événements',
+      icon: Sparkles,
     },
     {
       id: 'messages',

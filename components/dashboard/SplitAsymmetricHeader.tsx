@@ -23,11 +23,11 @@ import { InvitePopup } from '@/components/referral';
 import { useLanguage } from '@/lib/i18n/use-language';
 
 // V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #E96A50 0%, #e05747 50%, #C04538 100%)'; // 400 → 500 → 600
 const RESIDENT_GRADIENT_SOFT = 'linear-gradient(135deg, #e0574720 0%, #e0574715 50%, #e0574710 100%)';
 const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
-const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.15)';
+const ACCENT_SHADOW = 'rgba(224, 87, 71, 0.15)';
 
 interface PropertyInfo {
   id: string;
@@ -163,7 +163,7 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
     if (memberCount >= 2) {
       percentage += 20;
     } else {
-      nextSteps.push(hub?.stepInviteRoommates || 'Inviter des colocataires');
+      nextSteps.push(hub?.stepInviteRoommates || 'Inviter des résidents');
     }
 
     if (hasPhoto) {
@@ -371,7 +371,7 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                 {resident?.welcomeBack || 'Bienvenue'}{userName ? `, ${userName}` : ''} !
               </h2>
               <p className="text-gray-500 font-medium">
-                {resident?.welcomeSubtitle || 'Voici un aperçu de ta coloc'}
+                {resident?.welcomeSubtitle || 'Voici un aperçu de ton co-living'}
               </p>
             </div>
           </div>

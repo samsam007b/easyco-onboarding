@@ -34,7 +34,7 @@ import { useLanguage } from '@/lib/i18n/use-language';
 
 // V3 Color System - Official Resident Palette
 // Source: brand-identity/izzico-color-system.html
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
+const RESIDENT_GRADIENT = 'linear-gradient(135deg, #E96A50 0%, #e05747 50%, #C04538 100%)'; // 400 → 500 → 600
 const RESIDENT_PRIMARY = '#e05747';
 const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FEF2EE 0%, #FDE8E4 100%)';
 const ACCENT_SHADOW = 'rgba(224, 87, 71, 0.15)';
@@ -156,7 +156,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       id: 'welcome',
       target: '[data-onboarding="kpi-cards"]',
       title: resident?.onboarding?.welcome?.title || 'Bienvenue dans ton Hub !',
-      description: resident?.onboarding?.welcome?.description || 'Ici tu retrouves un aperçu de ta coloc : loyer, dépenses partagées et solde avec tes colocs.',
+      description: resident?.onboarding?.welcome?.description || 'Ici tu retrouves un aperçu de ton co-living : loyer, dépenses partagées et solde avec tes colocs.',
       position: 'bottom',
     },
     {

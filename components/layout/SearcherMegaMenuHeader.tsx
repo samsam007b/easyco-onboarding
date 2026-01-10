@@ -176,6 +176,22 @@ const navigationDomains = {
         color: '#6366F1'
       }
     ]
+  },
+  vieLocale: {
+    id: 'vieLocale',
+    label: 'Vie locale',
+    icon: Sparkles,
+    description: 'Découvre ta ville',
+    items: [
+      {
+        id: 'events',
+        href: '/hub/events',
+        label: 'Événements',
+        icon: Sparkles,
+        description: 'Activités & sorties',
+        color: 'var(--searcher-500)'
+      }
+    ]
   }
 };
 
