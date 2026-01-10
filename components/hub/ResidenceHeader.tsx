@@ -10,11 +10,11 @@ import { Button } from '@/components/ui/button';
 import { InvitePopup } from '@/components/referral';
 import { useLanguage } from '@/lib/i18n/use-language';
 
-// Premium Soft Coral/Terracotta palette - warm but not aggressive
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #b87d6a 0%, #c9907d 50%, #daa390 100%)';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #fdf8f6 0%, #f8efe9 100%)';
-const ACCENT_SHADOW = 'rgba(184, 125, 106, 0.20)';
-const RESIDENT_PRIMARY = '#c9907d';
+// V3 Color System - Resident Palette from globals.css
+const RESIDENT_PRIMARY = 'var(--resident-primary)';
+const RESIDENT_GRADIENT = 'var(--gradient-resident-medium)';
+const CARD_BG_GRADIENT = 'var(--gradient-resident-subtle)';
+const RESIDENT_SHADOW = 'var(--resident-shadow)';
 
 interface PropertyInfo {
   id: string;
@@ -218,7 +218,7 @@ export default function ResidenceHeader() {
         className="relative overflow-hidden p-6 superellipse-3xl mb-6 mx-2 sm:mx-6 lg:mx-8 animate-pulse"
         style={{
           background: RESIDENT_GRADIENT,
-          boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+          boxShadow: `0 20px 60px ${RESIDENT_SHADOW}`,
         }}
       >
         <div className="h-20 bg-white/20 superellipse-2xl" />
@@ -244,7 +244,7 @@ export default function ResidenceHeader() {
         className="relative overflow-hidden p-6 superellipse-3xl mx-2 sm:mx-6 lg:mx-8 mb-6"
         style={{
           background: RESIDENT_GRADIENT,
-          boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+          boxShadow: `0 20px 60px ${RESIDENT_SHADOW}`,
         }}
       >
         {/* Decorative circles */}

@@ -301,7 +301,7 @@ export default function RulesPage() {
             <Button
               onClick={() => setShowCreateModal(true)}
               className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
+              style={{ background: 'var(--resident-primary)' }}
             >
               <Plus className="w-4 h-4 mr-2" />
               {t?.proposeRule?.[language] || 'Propose a rule'}
@@ -474,8 +474,8 @@ export default function RulesPage() {
                   onClick={() => setShowCreateModal(true)}
                   className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                    background: 'var(--resident-primary)',
+                    boxShadow: '0 4px 14px var(--resident-shadow)',
                   }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -599,7 +599,7 @@ export default function RulesPage() {
                                   'rounded-full text-xs',
                                   !rule.has_voted && 'text-white border-none'
                                 )}
-                                style={!rule.has_voted ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
+                                style={!rule.has_voted ? { background: 'var(--resident-primary)' } : undefined}
                                 onClick={() => openVoteModal(rule)}
                               >
                                 <Vote className="w-3 h-3 mr-1" />
@@ -826,8 +826,8 @@ export default function RulesPage() {
                       disabled={isCreating || !createForm.title || !createForm.description}
                       className="w-full superellipse-2xl py-6 font-bold text-white border-none"
                       style={{
-                        background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                        boxShadow: '0 12px 32px rgba(255, 101, 30, 0.25)',
+                        background: 'var(--resident-primary)',
+                        boxShadow: '0 12px 32px var(--resident-shadow)',
                       }}
                     >
                       {isCreating ? (
@@ -938,7 +938,7 @@ export default function RulesPage() {
                 onClick={handleVote}
                 disabled={isVoting || !selectedVote}
                 className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
+                style={{ background: 'var(--resident-primary)' }}
               >
                 {isVoting ? (
                   <>

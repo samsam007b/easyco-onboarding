@@ -324,7 +324,7 @@ const EventCard = memo(function EventCard({
                   )}
                   style={
                     isInterested
-                      ? { background: roleColors.gradient }
+                      ? { background: roleColors.primary }
                       : { borderColor: roleColors.primary, color: roleColors.primary }
                   }
                 >
@@ -341,7 +341,7 @@ const EventCard = memo(function EventCard({
                   className={cn('flex-1 font-heading', isGoing && 'text-white')}
                   style={
                     isGoing
-                      ? { background: roleColors.gradient }
+                      ? { background: roleColors.primary }
                       : { borderColor: roleColors.primary, color: roleColors.primary }
                   }
                 >

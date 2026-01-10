@@ -552,7 +552,7 @@ export default function HubMembersPage() {
                         }}
                         className="w-full h-9 superellipse-xl text-white font-semibold text-sm shadow-md"
                         style={{
-                          background: cardGradient.gradient,
+                          background: cardGradient.accent,
                           boxShadow: `0 4px 12px ${cardGradient.shadow}`,
                         }}
                       >

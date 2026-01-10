@@ -156,7 +156,7 @@ export default function MatchingPreviewSection({
                       <Button
                         onClick={() => router.push('/hub/departure')}
                         className="rounded-full px-6 py-5 font-semibold text-white border-none shadow-lg hover:shadow-xl transition-all"
-                        style={{ background: 'var(--gradient-resident-medium)' }}
+                        style={{ background: RESIDENT_PRIMARY }}
                       >
                         <UserPlus className="w-4 h-4 mr-2" />
                         Signaler un départ
@@ -194,11 +194,11 @@ export default function MatchingPreviewSection({
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 className="flex items-center gap-3 px-5 py-3 superellipse-2xl bg-white cursor-default"
-                style={{ boxShadow: `0 8px 24px rgba(239, 68, 68, 0.15)` }}
+                style={{ boxShadow: `0 8px 24px ${RESIDENT_SHADOW}` }}
               >
                 <div
                   className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, #ef4444 0%, #f97316 100%)' }}
+                  style={{ background: RESIDENT_GRADIENT }}
                 >
                   <Heart className="w-5 h-5 text-white" />
                 </div>

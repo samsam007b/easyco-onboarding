@@ -1041,8 +1041,8 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   onClick={handleReviewNext}
                   className="w-full superellipse-2xl text-white border-none py-6 font-semibold transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 8px 20px rgba(255, 101, 30, 0.35)',
+                    background: 'var(--resident-primary)',
+                    boxShadow: '0 8px 20px var(--resident-shadow)',
                   }}
                 >
                   {scanner?.next?.[language] || 'Next'}
@@ -1163,8 +1163,8 @@ const ExpenseScanner = memo(function ExpenseScanner({ onComplete, onCancel }: Ex
                   onClick={() => setCurrentStep('confirm')}
                   className="w-full superellipse-2xl text-white border-none py-6 font-semibold transition-all"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 8px 20px rgba(255, 101, 30, 0.35)',
+                    background: 'var(--resident-primary)',
+                    boxShadow: '0 8px 20px var(--resident-shadow)',
                   }}
                 >
                   {scanner?.next?.[language] || 'Next'}
