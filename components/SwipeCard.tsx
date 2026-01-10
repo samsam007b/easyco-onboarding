@@ -124,7 +124,7 @@ export default function SwipeCard({ property, onSwipe, onSuperLike }: SwipeCardP
 
           {/* Compatibility Score Badge */}
           {property.compatibilityScore && (
-            <div className="absolute top-4 right-4 bg-gradient-to-r from-searcher-400 to-searcher-500 text-white px-4 py-2 rounded-full shadow-lg">
+            <div className="absolute top-4 right-4 bg-searcher-500 text-white px-4 py-2 rounded-full shadow-lg">
               <span className="font-bold text-lg">{property.compatibilityScore}%</span>
               <span className="text-sm ml-1">Match</span>
             </div>
