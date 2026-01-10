@@ -62,7 +62,7 @@ export default function InvitationsPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-resident-50/30 via-white to-resident-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-resident-50/30">
         <div className="text-center">
           <LoadingHouse size={80} />
           <p className="text-gray-600 font-medium mt-4">{t?.loading?.[language] || 'Loading...'}</p>
@@ -72,7 +72,7 @@ export default function InvitationsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-resident-50/30 via-white to-resident-50/30">
+    <div className="min-h-screen bg-resident-50/30">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <motion.div
@@ -181,7 +181,7 @@ export default function InvitationsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.15 }}
-            className="mb-6 p-4 bg-gradient-to-r from-searcher-50 to-searcher-50 border-2 border-searcher-200 superellipse-xl"
+            className="mb-6 p-4 bg-searcher-50 border-2 border-searcher-200 superellipse-xl"
           >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-full bg-searcher-100 flex items-center justify-center">
