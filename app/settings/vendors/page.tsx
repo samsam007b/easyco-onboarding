@@ -125,7 +125,7 @@ export default function VendorsSettingsPage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-16"
           >
-            <div className="w-20 h-20 mx-auto mb-6 superellipse-2xl bg-gradient-to-br from-searcher-100 to-searcher-200 flex items-center justify-center">
+            <div className="w-20 h-20 mx-auto mb-6 superellipse-2xl bg-searcher-100 flex items-center justify-center">
               <Users className="w-10 h-10 text-searcher-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
