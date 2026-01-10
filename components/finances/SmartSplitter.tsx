@@ -184,7 +184,7 @@ export default function SmartSplitter({
               className={cn(
                 'relative overflow-hidden superellipse-2xl p-6 text-left transition-all border-2',
                 method === m.value
-                  ? 'border-resident-500 bg-gradient-to-br from-resident-50 to-resident-100 shadow-lg'
+                  ? 'border-resident-500 bg-resident-50 shadow-lg'
                   : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
               )}
             >
@@ -218,7 +218,7 @@ export default function SmartSplitter({
           >
             {/* User Avatar */}
             <div className="flex-shrink-0">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-resident-500 to-resident-700 flex items-center justify-center text-white font-bold text-lg shadow-md">
+              <div className="w-12 h-12 rounded-full bg-resident-500 flex items-center justify-center text-white font-bold text-lg shadow-md">
                 {allocation.user_name.charAt(0)}
               </div>
             </div>
