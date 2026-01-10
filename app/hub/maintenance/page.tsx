@@ -296,7 +296,7 @@ export default function MaintenancePage() {
                     {stats?.total_requests || 0}
                   </p>
                 </div>
-                <div className="w-12 h-12 superellipse-xl bg-gradient-to-br from-resident-100 to-resident-200 flex items-center justify-center">
+                <div className="w-12 h-12 superellipse-xl bg-resident-100 flex items-center justify-center">
                   <Wrench className="w-6 h-6 text-resident-700" />
                 </div>
               </div>
