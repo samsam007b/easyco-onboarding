@@ -582,7 +582,7 @@ export default function BookVisitModal({ property, ownerId, isOpen, onClose }: B
             <Button
               onClick={handleBookVisit}
               disabled={booking || !selectedSlot || !visitorPhone.trim()}
-              className="flex-1 bg-gradient-to-r from-searcher-600 to-searcher-700 hover:from-searcher-700 hover:to-searcher-800 text-white superellipse-xl shadow-lg"
+              className="flex-1 bg-searcher-600 hover:bg-searcher-700 text-white superellipse-xl shadow-lg"
             >
               {booking ? t.buttons.booking[lang] : t.buttons.confirm[lang]}
             </Button>
