@@ -133,7 +133,7 @@ export function ReferralCodeCard({
 
   if (variant === 'compact') {
     return (
-      <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-owner-50 to-owner-50 superellipse-xl border border-owner-200">
+      <div className="flex items-center gap-3 p-4 bg-owner-50 superellipse-xl border border-owner-200">
         <div className="p-2 bg-owner-100 superellipse-lg">
           <Gift className="w-5 h-5 text-owner-600" />
         </div>
@@ -164,7 +164,7 @@ export function ReferralCodeCard({
       className="bg-white superellipse-2xl shadow-lg border border-gray-100 overflow-hidden"
     >
       {/* Header */}
-      <div className="bg-gradient-to-r from-owner-600 to-owner-600 p-6 text-white">
+      <div className="bg-owner-600 p-6 text-white">
         <div className="flex items-center gap-3 mb-2">
           <div className="p-2 bg-white/20 superellipse-lg">
             <Gift className="w-6 h-6" />
