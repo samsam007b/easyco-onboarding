@@ -32,19 +32,19 @@ export const iconRoleColors: Record<IconRole, {
     primary: 'text-owner-500',
     light: 'text-owner-300',
     dark: 'text-owner-700',
-    gradient: 'bg-gradient-to-br from-owner-400 to-owner-600',
+    gradient: 'bg-owner-500',
   },
   resident: {
     primary: 'text-resident-500',
     light: 'text-resident-300',
     dark: 'text-resident-700',
-    gradient: 'bg-gradient-to-br from-resident-400 to-resident-600',
+    gradient: 'bg-resident-500',
   },
   searcher: {
     primary: 'text-searcher-500',
     light: 'text-searcher-300',
     dark: 'text-searcher-700',
-    gradient: 'bg-gradient-to-br from-searcher-400 to-searcher-600',
+    gradient: 'bg-searcher-500',
   },
   neutral: {
     primary: 'text-gray-600 dark:text-gray-400',
