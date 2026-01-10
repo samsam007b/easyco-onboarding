@@ -780,22 +780,22 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                       </div>
 
                       {/* Quick Stats */}
-                      <div className="px-4 py-3 bg-gradient-to-br from-searcher-50/50 to-searcher-100/50 border-b border-searcher-200/50">
+                      <div className="px-4 py-3 bg-searcher-50/50 border-b border-searcher-200/50">
                         <div className="grid grid-cols-3 gap-2">
                           <div className="text-center">
-                            <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
+                            <div className="text-lg font-bold text-searcher-700">
                               {favoritesCount}
                             </div>
                             <div className="text-xs text-gray-600">Favoris</div>
                           </div>
                           <div className="text-center border-x border-searcher-200/50">
-                            <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
+                            <div className="text-lg font-bold text-searcher-700">
                               {matchesCount}
                             </div>
                             <div className="text-xs text-gray-600">Matches</div>
                           </div>
                           <div className="text-center">
-                            <div className="text-lg font-bold bg-gradient-to-r from-[#FFA040] to-[#FFB85C] bg-clip-text text-transparent">
+                            <div className="text-lg font-bold text-searcher-700">
                               {pendingApplications}
                             </div>
                             <div className="text-xs text-gray-600">Candidat.</div>
@@ -807,10 +807,10 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
                       <div className="py-2">
                         <Link
                           href="/profile"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
-                          <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-searcher-100 to-searcher-200 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="w-9 h-9 superellipse-xl bg-searcher-100 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <User className="w-4 h-4 text-searcher-700" />
                           </div>
                           <div className="flex-1">
@@ -822,7 +822,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
 
                         <Link
                           href="/dashboard/searcher/saved-searches"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-blue-100 to-cyan-100 flex items-center justify-center group-hover:scale-110 transition-transform">
@@ -837,7 +837,7 @@ const ModernSearcherHeaderV3 = memo(function ModernSearcherHeaderV3({
 
                         <Link
                           href="/settings"
-                          className="group flex items-center gap-3 px-4 py-3 hover:bg-gradient-to-r hover:from-searcher-50 hover:to-searcher-100/50 transition-all"
+                          className="group flex items-center gap-3 px-4 py-3 hover:bg-searcher-50 transition-all"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-9 h-9 superellipse-xl bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center group-hover:scale-110 transition-transform">
