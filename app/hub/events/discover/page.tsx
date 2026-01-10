@@ -29,23 +29,27 @@ import { fr } from 'date-fns/locale/fr';
 
 // ============================================================================
 // ROLE COLORS (V3 Color System)
+// Source: brand-identity/izzico-color-system.html
 // ============================================================================
+
+// Signature Gradient: The official Izzico brand gradient (3 role primaries)
+const SIGNATURE_GRADIENT = 'linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)';
 
 const ROLE_COLORS = {
   resident: {
-    gradient: 'linear-gradient(135deg, #e05747 0%, #ff7c10 50%, #ffa000 100%)',
+    gradient: SIGNATURE_GRADIENT, // Use brand gradient for consistency
     primary: '#e05747',
     bg: 'from-orange-50 to-red-50',
     cardBg: 'linear-gradient(135deg, #FEF2EE 0%, #FDE8E4 100%)',
   },
   searcher: {
-    gradient: 'linear-gradient(135deg, #ffa000 0%, #ffb933 50%, #ffd966 100%)',
+    gradient: SIGNATURE_GRADIENT, // Use brand gradient for consistency
     primary: '#ffa000',
     bg: 'from-yellow-50 to-orange-50',
     cardBg: 'linear-gradient(135deg, #FFF9E6 0%, #FFF4D4 100%)',
   },
   owner: {
-    gradient: 'linear-gradient(135deg, #9c5698 0%, #c85570 50%, #d15659 100%)',
+    gradient: SIGNATURE_GRADIENT, // Use brand gradient for consistency
     primary: '#9c5698',
     bg: 'from-purple-50 to-pink-50',
     cardBg: 'linear-gradient(135deg, #F8F0F7 0%, #F3E6F1 100%)',
@@ -206,7 +210,16 @@ export default function EventsDiscoverPage() {
               placeholder="Rechercher un événement, une activité..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange-400 focus:outline-none font-sans"
+              className="w-full pl-10 pr-4 py-3 rounded-2xl border-2 border-gray-200 focus:outline-none font-sans transition-colors"
+              style={{
+                outlineColor: roleColors.primary,
+              }}
+              onFocus={(e) => {
+                e.target.style.borderColor = roleColors.primary;
+              }}
+              onBlur={(e) => {
+                e.target.style.borderColor = '';
+              }}
             />
           </div>
 
@@ -221,7 +234,10 @@ export default function EventsDiscoverPage() {
               <Filter className="w-4 h-4 mr-1" />
               Filtres
               {hasActiveFilters && (
-                <Badge className="ml-2 bg-orange-500 text-white px-1.5 py-0.5 text-xs">
+                <Badge
+                  className="ml-2 text-white px-1.5 py-0.5 text-xs"
+                  style={{ background: roleColors.primary }}
+                >
                   {selectedCategories.length +
                     (priceFilter !== 'all' ? 1 : 0) +
                     (dateFilter !== 'all' ? 1 : 0)}
@@ -485,6 +501,8 @@ function TimelineView({
   userAttendance: Record<string, AttendeeStatus>;
   onAttendanceChange: (eventId: string, status: AttendeeStatus) => void;
 }) {
+  const { activeRole } = useRole();
+  const roleColors = ROLE_COLORS[activeRole || 'resident'];
   // Group events by date
   const eventsByDate = useMemo(() => {
     const groups: Record<string, Event[]> = {};
@@ -513,7 +531,10 @@ function TimelineView({
         >
           {/* Date Header */}
           <div className="flex items-center gap-4 mb-4">
-            <div className="bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-xl p-3 min-w-[80px] text-center">
+            <div
+              className="text-white rounded-xl p-3 min-w-[80px] text-center"
+              style={{ background: roleColors.gradient }}
+            >
               <div className="font-heading text-2xl font-bold">
                 {format(parseISO(date), 'd')}
               </div>

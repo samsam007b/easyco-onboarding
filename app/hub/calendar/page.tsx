@@ -400,29 +400,29 @@ export default function HubCalendarPage() {
             <p className="text-xs font-medium mt-2" style={{ color: '#7C5DB0' }}>{events.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')}</p>
           </motion.div>
 
-          {/* Upcoming Card - Green Gradient */}
+          {/* Upcoming Card - Sage Gradient (UI Accent) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
-              boxShadow: '0 8px 24px rgba(34, 197, 94, 0.15)',
+              background: 'linear-gradient(135deg, #f0f9f5 0%, #e5f5ed 100%)',
+              boxShadow: '0 8px 24px rgba(124, 184, 155, 0.15)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+              style={{ background: '#7CB89B' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-green-700">{t?.upcoming?.[language] || 'Upcoming'}</span>
+              <span className="text-sm font-medium" style={{ color: '#5A9278' }}>{t?.upcoming?.[language] || 'Upcoming'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #22c55e, #4ade80)' }}
+                style={{ background: 'linear-gradient(135deg, #7CB89B, #9DCDB4)' }}
               >
                 <Clock className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{upcomingEvents.length}</p>
-            <p className="text-xs text-green-600 font-medium mt-2">{upcomingEvents.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')}</p>
+            <p className="text-xs font-medium mt-2" style={{ color: '#5A9278' }}>{upcomingEvents.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')}</p>
           </motion.div>
         </motion.div>
 
@@ -568,7 +568,7 @@ export default function HubCalendarPage() {
                           <Badge
                             className="text-xs border-none text-white font-semibold"
                             style={{
-                              background: 'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+                              background: 'linear-gradient(135deg, #9B7BD9 0%, #B89EE6 100%)',
                             }}
                           >
                             +{dayEvents.length - 2}
@@ -587,8 +587,8 @@ export default function HubCalendarPage() {
         <motion.div
           variants={itemVariants}
           whileHover={{ y: -4 }}
-          className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-purple-400"
-          style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
+          className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4"
+          style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)', borderColor: '#9B7BD9' }}
         >
           <div className="flex items-center gap-3 p-4 border-b border-gray-100">
             <div
@@ -676,12 +676,12 @@ export default function HubCalendarPage() {
                             month: 'short',
                           })}
                         </Badge>
-                        <Badge className="bg-purple-100 text-purple-700 font-semibold border-none">
+                        <Badge className="font-semibold border-none" style={{ backgroundColor: '#f5f0ff', color: '#7C5DB0' }}>
                           <Clock className="w-3 h-3 mr-1" />
                           {event.time}
                         </Badge>
                         {event.location && (
-                          <Badge className="bg-blue-100 text-blue-700 font-semibold border-none">
+                          <Badge className="font-semibold border-none" style={{ backgroundColor: '#e8f2fb', color: '#3A6BAD' }}>
                             <MapPin className="w-3 h-3 mr-1" />
                             {event.location}
                           </Badge>
@@ -700,7 +700,10 @@ export default function HubCalendarPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="rounded-full hover:bg-blue-100 text-blue-600"
+                          className="rounded-full"
+                          style={{ color: '#5B8BD9' }}
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e8f2fb'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                           onClick={() => handleEditEvent(event)}
                         >
                           <Edit className="w-4 h-4" />

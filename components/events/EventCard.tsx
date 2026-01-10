@@ -27,23 +27,27 @@ import { fr } from 'date-fns/locale/fr';
 // Source: brand-identity/izzico-color-system.html
 // ============================================================================
 
+// Signature Gradient: The official Izzico brand gradient (3 role primaries)
+// Source: brand-identity/izzico-color-system.html
+const SIGNATURE_GRADIENT = 'linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)';
+
 const ROLE_COLORS = {
   resident: {
-    gradient: 'linear-gradient(135deg, #e05747 0%, #ff7c10 50%, #ffa000 100%)',
+    gradient: SIGNATURE_GRADIENT, // Use brand gradient for consistency
     primary: '#e05747',
     cardBg: 'linear-gradient(135deg, #FEF2EE 0%, #FDE8E4 100%)',
     shadow: 'rgba(224, 87, 71, 0.15)',
     hoverShadow: 'rgba(224, 87, 71, 0.25)',
   },
   searcher: {
-    gradient: 'linear-gradient(135deg, #ffa000 0%, #ffb933 50%, #ffd966 100%)',
+    gradient: SIGNATURE_GRADIENT, // Use brand gradient for consistency
     primary: '#ffa000',
     cardBg: 'linear-gradient(135deg, #FFF9E6 0%, #FFF4D4 100%)',
     shadow: 'rgba(255, 160, 0, 0.15)',
     hoverShadow: 'rgba(255, 160, 0, 0.25)',
   },
   owner: {
-    gradient: 'linear-gradient(135deg, #9c5698 0%, #c85570 50%, #d15659 100%)',
+    gradient: SIGNATURE_GRADIENT, // Use brand gradient for consistency
     primary: '#9c5698',
     cardBg: 'linear-gradient(135deg, #F8F0F7 0%, #F3E6F1 100%)',
     shadow: 'rgba(156, 86, 152, 0.15)',
