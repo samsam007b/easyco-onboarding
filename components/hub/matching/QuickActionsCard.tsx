@@ -75,7 +75,7 @@ export default function QuickActionsCard({
             onClick={() => router.push('/hub/matching')}
             className="w-full superellipse-2xl text-white font-bold py-6 text-base border-none"
             style={{
-              background: RESIDENT_GRADIENT,
+              background: RESIDENT_PRIMARY,
               boxShadow: `0 12px 32px ${RESIDENT_SHADOW}`,
             }}
           >

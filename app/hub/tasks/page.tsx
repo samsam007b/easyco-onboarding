@@ -273,7 +273,7 @@ export default function ModernTasksPage() {
               size="sm"
               className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
               style={{
-                background: RESIDENT_GRADIENT,
+                background: RESIDENT_PRIMARY,
                 boxShadow: `0 4px 14px ${RESIDENT_SHADOW}`,
               }}
             >
@@ -803,7 +803,7 @@ export default function ModernTasksPage() {
                   disabled={isSubmitting || !createForm.title}
                   className="w-full superellipse-2xl py-6 font-bold text-white border-none"
                   style={{
-                    background: RESIDENT_GRADIENT,
+                    background: RESIDENT_PRIMARY,
                     boxShadow: `0 12px 32px ${RESIDENT_SHADOW}`,
                   }}
                 >

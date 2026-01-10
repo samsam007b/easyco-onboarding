@@ -242,7 +242,7 @@ export default function MockCardStack() {
           whileTap={{ scale: 0.95 }}
           className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl"
           style={{
-            background: RESIDENT_GRADIENT,
+            background: RESIDENT_PRIMARY,
             boxShadow: `0 8px 24px ${RESIDENT_SHADOW}`,
           }}
         >

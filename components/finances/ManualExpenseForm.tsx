@@ -389,7 +389,7 @@ export default function ManualExpenseForm({ onComplete, onCancel }: ManualExpens
               type="submit"
               className="w-full superellipse-2xl py-6 font-bold text-white border-none"
               style={{
-                background: RESIDENT_GRADIENT,
+                background: RESIDENT_PRIMARY,
                 boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,
               }}
             >

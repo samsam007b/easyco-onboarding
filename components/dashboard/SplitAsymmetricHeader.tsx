@@ -397,7 +397,7 @@ export default function SplitAsymmetricHeader({ userName }: SplitAsymmetricHeade
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                       }
                     `}
-                    style={action.primary ? { background: RESIDENT_GRADIENT } : undefined}
+                    style={action.primary ? { background: RESIDENT_PRIMARY } : undefined}
                   >
                     <Icon className="w-4 h-4" />
                     <span>{action.label}</span>

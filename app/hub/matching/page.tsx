@@ -282,7 +282,7 @@ export default function MatchingComingSoonPage() {
               onClick={() => router.push('/hub')}
               className="superellipse-2xl px-8 py-6 font-bold text-white border-none"
               style={{
-                background: RESIDENT_GRADIENT,
+                background: RESIDENT_PRIMARY,
                 boxShadow: `0 12px 32px ${RESIDENT_SHADOW}`,
               }}
             >
