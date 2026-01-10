@@ -98,7 +98,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
       };
     }
     return {
-      bg: status.user_type === 'owner' ? 'from-owner-50 to-owner-100' : 'from-resident-50 to-resident-100',
+      bg: status.user_type === 'owner' ? 'bg-owner-50' : 'bg-resident-50',
       border: status.user_type === 'owner' ? 'border-owner-200' : 'border-resident-200',
       text: 'text-gray-800',
       accent: status.user_type === 'owner' ? 'text-owner-700' : 'text-resident-700',
@@ -127,7 +127,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
-          className={`relative superellipse-lg border-2 ${colors.border} bg-gradient-to-r ${colors.bg} p-4 shadow-sm mb-4`}
+          className={`relative superellipse-lg border-2 ${colors.border} ${colors.bg} p-4 shadow-sm mb-4`}
         >
           <button
             onClick={() => setDismissed(true)}
@@ -170,7 +170,7 @@ export default function SubscriptionBanner({ userId, compact = false }: Subscrip
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         transition={{ duration: 0.3 }}
-        className={`relative superellipse-2xl border-2 ${colors.border} bg-gradient-to-r ${colors.bg} p-6 shadow-lg mb-6`}
+        className={`relative superellipse-2xl border-2 ${colors.border} ${colors.bg} p-6 shadow-lg mb-6`}
       >
         <button
           onClick={() => setDismissed(true)}
