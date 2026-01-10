@@ -54,10 +54,10 @@ interface MessagesLayoutProps {
 // V3 Role-based color themes - exported for use in conversation list
 export const messageVariantStyles = {
   searcher: {
-    gradient: 'from-searcher-50/30 via-white to-searcher-50/30',
+    gradient: 'bg-searcher-50/30',
     accent: 'bg-gradient-searcher',
     accentGradient: 'linear-gradient(135deg, #f59e0b 0%, #eab308 100%)',
-    accentLight: 'from-searcher-50 to-searcher-100',
+    accentLight: 'bg-searcher-50',
     border: 'border-searcher-200',
     text: 'text-searcher-600',
     shadow: 'rgba(245, 158, 11, 0.35)',
@@ -86,10 +86,10 @@ export const messageVariantStyles = {
   },
   hub: {
     // Resident v3 theme
-    gradient: 'from-resident-50/30 via-white to-resident-50/30',
+    gradient: 'bg-resident-50/30',
     accent: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
     accentGradient: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-    accentLight: 'from-resident-50 to-resident-100',
+    accentLight: 'bg-resident-50',
     border: 'border-resident-200',
     text: 'text-resident-600',
     shadow: 'rgba(224, 87, 71, 0.35)',
