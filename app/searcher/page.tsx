@@ -321,7 +321,7 @@ const SearcherHub = memo(function SearcherHub() {
       {/* Glassmorphism background - V3 Searcher Amber */}
       <div className="fixed inset-0 -z-10">
         {/* Base gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-searcher-500/8 via-searcher-400/5 to-searcher-300/3" />
+        <div className="absolute inset-0 bg-searcher-500/5" />
 
         {/* Animated gradient blobs */}
         <div className="absolute top-0 -left-4 w-96 h-96 bg-searcher-400/15 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
