@@ -18,7 +18,7 @@ export function ProTipCard({ message, ctaText, onCtaClick, progress }: ProTipCar
   const t = getSection('components')?.proTipCard;
 
   return (
-    <Card className="superellipse-2xl shadow-lg bg-gradient-to-br from-searcher-400 to-searcher-500 border-0">
+    <Card className="superellipse-2xl shadow-lg bg-searcher-500 border-0">
       <CardContent className="p-6">
         <div className="flex items-start gap-4">
           <div className="p-3 bg-white/20 superellipse-xl">
