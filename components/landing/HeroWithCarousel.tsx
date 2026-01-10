@@ -25,7 +25,7 @@ export function HeroWithCarousel() {
             <FadeIn direction="up" delay={0.3}>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 leading-tight">
                 Trouve ton{' '}
-                <span className="bg-gradient-to-r from-owner-600 to-resident-600 bg-clip-text text-transparent">
+                <span className="text-owner-600">
                   coloc idéal
                 </span>
               </h1>
@@ -92,7 +92,7 @@ export function HeroWithCarousel() {
               {/* Floating Badge */}
               <div className="absolute -bottom-6 -left-6 z-20">
                 <div className="bg-white superellipse-2xl shadow-xl p-4 flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-owner-600 to-resident-600 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-owner-600 flex items-center justify-center">
                     <Home className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -104,7 +104,7 @@ export function HeroWithCarousel() {
 
               {/* Floating Badge 2 */}
               <div className="absolute -top-6 -right-6 z-20">
-                <div className="bg-gradient-to-br from-owner-600 to-resident-600 superellipse-2xl shadow-xl p-4 text-white">
+                <div className="bg-owner-600 superellipse-2xl shadow-xl p-4 text-white">
                   <div className="flex items-center gap-2 mb-1">
                     <Users className="w-4 h-4" />
                     <span className="text-sm font-medium">Match instantané</span>
