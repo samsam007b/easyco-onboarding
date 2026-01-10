@@ -52,7 +52,7 @@ export default function RoomDetailsModal({ isOpen, onClose, room }: RoomDetailsM
       <div className="flex items-center gap-2">
         <div className="w-24 h-2 bg-gray-200 rounded-full overflow-hidden">
           <div
-            className="h-full bg-gradient-to-r from-searcher-400 to-searcher-600 rounded-full transition-all"
+            className="h-full bg-searcher-500 rounded-full transition-all"
             style={{ width: `${(rating / 10) * 100}%` }}
           />
         </div>
