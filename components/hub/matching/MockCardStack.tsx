@@ -5,11 +5,12 @@ import { Sparkles, MapPin, Briefcase, Star, Heart, X } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
 
-// V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
-const RESIDENT_PRIMARY = '#e05747';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
-const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.25)';
+// V3 Color System - Resident Palette from globals.css
+// CRITICAL: Use CSS variables instead of hardcoded hex values for consistent colors
+const RESIDENT_PRIMARY = 'var(--resident-primary)';
+const RESIDENT_GRADIENT = 'var(--gradient-resident-medium)';
+const CARD_BG_GRADIENT = 'var(--gradient-resident-subtle)';
+const RESIDENT_SHADOW = 'var(--resident-shadow)';
 
 // Mock profiles data
 const MOCK_PROFILES = [
@@ -68,7 +69,7 @@ export default function MockCardStack() {
             className="absolute w-[260px] superellipse-3xl overflow-hidden bg-white cursor-pointer"
             style={{
               zIndex,
-              boxShadow: index === 0 ? `0 20px 50px ${ACCENT_SHADOW}` : '0 8px 24px rgba(0,0,0,0.1)',
+              boxShadow: index === 0 ? `0 20px 50px ${RESIDENT_SHADOW}` : '0 8px 24px rgba(0,0,0,0.1)',
             }}
             initial={{ y: stackOffset, rotate: fanRotation, x: 0 }}
             animate={{
@@ -204,7 +205,7 @@ export default function MockCardStack() {
                     className="px-5 py-2.5 rounded-full shadow-xl"
                     style={{
                       background: 'white',
-                      boxShadow: `0 8px 24px ${ACCENT_SHADOW}`,
+                      boxShadow: `0 8px 24px ${RESIDENT_SHADOW}`,
                     }}
                   >
                     <p className="text-sm font-bold" style={{ color: RESIDENT_PRIMARY }}>
@@ -242,7 +243,7 @@ export default function MockCardStack() {
           className="w-14 h-14 rounded-full flex items-center justify-center shadow-xl"
           style={{
             background: RESIDENT_GRADIENT,
-            boxShadow: `0 8px 24px ${ACCENT_SHADOW}`,
+            boxShadow: `0 8px 24px ${RESIDENT_SHADOW}`,
           }}
         >
           <Heart className="w-7 h-7 text-white" fill="white" />
@@ -258,7 +259,7 @@ export default function MockCardStack() {
       >
         <div
           className="px-5 py-2.5 rounded-full shadow-xl bg-white"
-          style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+          style={{ boxShadow: `0 8px 24px ${RESIDENT_SHADOW}` }}
         >
           <p className="text-sm font-bold flex items-center gap-2" style={{ color: RESIDENT_PRIMARY }}>
             <span>Swipe pour découvrir</span>
