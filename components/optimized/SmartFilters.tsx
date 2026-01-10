@@ -148,13 +148,13 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
   const getCategoryColor = (category: string) => {
     switch (category) {
       case 'popular':
-        return 'from-searcher-50 to-searcher-100 border-searcher-200 hover:border-searcher-300';
+        return 'bg-searcher-50 border-searcher-200 hover:border-searcher-300';
       case 'recent':
         return 'from-blue-50 to-blue-100 border-blue-200 hover:border-blue-300';
       case 'trending':
-        return 'from-searcher-50 to-searcher-100 border-searcher-200 hover:border-searcher-300';
+        return 'bg-searcher-50 border-searcher-200 hover:border-searcher-300';
       case 'personalized':
-        return 'from-searcher-50 to-searcher-100 border-searcher-200 hover:border-searcher-300';
+        return 'bg-searcher-50 border-searcher-200 hover:border-searcher-300';
       default:
         return 'from-gray-50 to-gray-100 border-gray-200 hover:border-gray-300';
     }
@@ -295,7 +295,7 @@ export default function SmartFilters({ onFilterApply, currentFilters }: SmartFil
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="bg-gradient-to-r from-searcher-50 to-searcher-50 border border-searcher-200 superellipse-xl p-4"
+        className="bg-searcher-50 border border-searcher-200 superellipse-xl p-4"
       >
         <div className="flex items-start gap-3">
           <Sparkles className="w-5 h-5 text-searcher-600 flex-shrink-0 mt-0.5" />
