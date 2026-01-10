@@ -9,11 +9,11 @@ import MockCardStack from './MockCardStack';
 import QuickActionsCard from './QuickActionsCard';
 import { shouldShowDemoData } from '@/lib/utils/admin-demo';
 
-// V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
-const RESIDENT_PRIMARY = '#e05747';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
-const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.2)';
+// V3 Color System - Resident Palette from globals.css
+const RESIDENT_PRIMARY = 'var(--resident-primary)';
+const RESIDENT_GRADIENT = 'var(--gradient-resident-medium)';
+const CARD_BG_GRADIENT = 'var(--gradient-resident-subtle)';
+const RESIDENT_SHADOW = 'var(--resident-shadow)';
 
 interface MatchingPreviewSectionProps {
   matchCount?: number;
@@ -57,7 +57,7 @@ export default function MatchingPreviewSection({
         />
         <div
           className="absolute bottom-20 right-10 w-80 h-80 rounded-full opacity-15 blur-3xl"
-          style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
+          style={{ background: RESIDENT_PRIMARY }}
         />
       </div>
 
@@ -76,7 +76,7 @@ export default function MatchingPreviewSection({
             className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full mb-6 cursor-default"
             style={{
               background: CARD_BG_GRADIENT,
-              boxShadow: `0 8px 24px ${ACCENT_SHADOW}`,
+              boxShadow: `0 8px 24px ${RESIDENT_SHADOW}`,
             }}
           >
             <div
@@ -116,7 +116,7 @@ export default function MatchingPreviewSection({
               className="relative superellipse-3xl p-6 overflow-hidden"
               style={{
                 background: CARD_BG_GRADIENT,
-                boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+                boxShadow: `0 20px 60px ${RESIDENT_SHADOW}`,
               }}
             >
               {/* Decorative circle */}
@@ -126,7 +126,7 @@ export default function MatchingPreviewSection({
               />
               <div
                 className="absolute -left-10 -bottom-10 w-32 h-32 rounded-full opacity-20"
-                style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
+                style={{ background: RESIDENT_PRIMARY }}
               />
 
               {/* Card Stack or Empty State */}
@@ -139,13 +139,13 @@ export default function MatchingPreviewSection({
                     <motion.div
                       whileHover={{ scale: 1.02, y: -4 }}
                       className="w-[300px] superellipse-3xl shadow-2xl overflow-hidden bg-white p-8 text-center"
-                      style={{ boxShadow: `0 16px 48px ${ACCENT_SHADOW}` }}
+                      style={{ boxShadow: `0 16px 48px ${RESIDENT_SHADOW}` }}
                     >
                       <motion.div
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ duration: 2, repeat: Infinity }}
                         className="w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-6"
-                        style={{ background: CARD_BG_GRADIENT }}
+                        style={{ background: 'var(--gradient-resident-subtle)' }}
                       >
                         <UserPlus className="w-10 h-10" style={{ color: RESIDENT_PRIMARY }} />
                       </motion.div>
@@ -156,7 +156,7 @@ export default function MatchingPreviewSection({
                       <Button
                         onClick={() => router.push('/hub/departure')}
                         className="rounded-full px-6 py-5 font-semibold text-white border-none shadow-lg hover:shadow-xl transition-all"
-                        style={{ background: RESIDENT_GRADIENT }}
+                        style={{ background: 'var(--gradient-resident-medium)' }}
                       >
                         <UserPlus className="w-4 h-4 mr-2" />
                         Signaler un départ
@@ -176,11 +176,11 @@ export default function MatchingPreviewSection({
               <motion.div
                 whileHover={{ scale: 1.05, y: -2 }}
                 className="flex items-center gap-3 px-5 py-3 superellipse-2xl bg-white cursor-default"
-                style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+                style={{ boxShadow: `0 8px 24px ${RESIDENT_SHADOW}` }}
               >
                 <div
                   className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                  style={{ background: RESIDENT_GRADIENT }}
+                  style={{ background: 'var(--gradient-resident-medium)' }}
                 >
                   <Users className="w-5 h-5 text-white" />
                 </div>
@@ -231,8 +231,9 @@ export default function MatchingPreviewSection({
               icon: Zap,
               title: 'Matching intelligent',
               description: 'Algorithme qui analyse 50+ critères pour trouver le match parfait',
-              gradient: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
-              bgColor: 'rgba(245, 158, 11, 0.1)',
+              gradient: 'var(--gradient-searcher-medium)',
+              bgColor: 'rgba(255, 160, 0, 0.1)',
+              iconColor: 'var(--searcher-primary)',
             },
             {
               icon: MessageCircle,
@@ -240,6 +241,7 @@ export default function MatchingPreviewSection({
               description: 'Discute directement avec tes matchs avant de les rencontrer',
               gradient: 'linear-gradient(135deg, #3b82f6 0%, #6366f1 100%)',
               bgColor: 'rgba(59, 130, 246, 0.1)',
+              iconColor: '#3b82f6',
             },
             {
               icon: Shield,
@@ -247,6 +249,7 @@ export default function MatchingPreviewSection({
               description: 'Tous les candidats sont vérifiés pour ta sécurité',
               gradient: 'linear-gradient(135deg, #10b981 0%, #14b8a6 100%)',
               bgColor: 'rgba(16, 185, 129, 0.1)',
+              iconColor: '#10b981',
             },
           ].map((feature, index) => {
             const Icon = feature.icon;
@@ -272,7 +275,7 @@ export default function MatchingPreviewSection({
                     className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: feature.bgColor }}
                   >
-                    <Icon className="w-6 h-6" style={{ color: feature.gradient.includes('#f59e0b') ? '#f59e0b' : feature.gradient.includes('#3b82f6') ? '#3b82f6' : '#10b981' }} />
+                    <Icon className="w-6 h-6" style={{ color: feature.iconColor }} />
                   </motion.div>
                   <div>
                     <h3 className="font-bold text-gray-900 mb-1 text-base">{feature.title}</h3>

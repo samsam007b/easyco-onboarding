@@ -6,11 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useRouter } from 'next/navigation';
 
-// V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
-const RESIDENT_PRIMARY = '#e05747';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
-const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.2)';
+// V3 Color System - Resident Palette from globals.css
+const RESIDENT_PRIMARY = 'var(--resident-primary)';
+const RESIDENT_GRADIENT = 'var(--gradient-resident-medium)';
+const CARD_BG_GRADIENT = 'var(--gradient-resident-subtle)';
+const RESIDENT_SHADOW = 'var(--resident-shadow)';
 
 interface QuickActionsCardProps {
   matchCount?: number;
@@ -36,17 +36,17 @@ export default function QuickActionsCard({
       whileHover={{ scale: 1.01 }}
       className="relative superellipse-3xl overflow-hidden bg-white p-8 space-y-6"
       style={{
-        boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+        boxShadow: `0 20px 60px ${RESIDENT_SHADOW}`,
       }}
     >
       {/* Decorative circles */}
       <div
         className="absolute -right-12 -top-12 w-40 h-40 rounded-full opacity-20"
-        style={{ background: RESIDENT_GRADIENT }}
+        style={{ background: 'var(--gradient-resident-medium)' }}
       />
       <div
         className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-15"
-        style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
+        style={{ background: 'var(--resident-primary)' }}
       />
 
       {/* Content */}
@@ -57,9 +57,9 @@ export default function QuickActionsCard({
             animate={{ scale: [1, 1.05, 1] }}
             transition={{ duration: 2, repeat: Infinity }}
             className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
-            style={{ background: CARD_BG_GRADIENT }}
+            style={{ background: 'var(--gradient-resident-subtle)' }}
           >
-            <Zap className="w-8 h-8" style={{ color: RESIDENT_PRIMARY }} />
+            <Zap className="w-8 h-8" style={{ color: 'var(--resident-primary)' }} />
           </motion.div>
           <h3 className="text-2xl font-black text-gray-900 mb-2">
             Prêt à matcher ?
@@ -76,7 +76,7 @@ export default function QuickActionsCard({
             className="w-full superellipse-2xl text-white font-bold py-6 text-base border-none"
             style={{
               background: RESIDENT_GRADIENT,
-              boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,
+              boxShadow: `0 12px 32px ${RESIDENT_SHADOW}`,
             }}
           >
             <ArrowRight className="w-5 h-5 mr-2" />
@@ -93,17 +93,17 @@ export default function QuickActionsCard({
               variant="outline"
               className="w-full superellipse-2xl border-2 py-5 font-semibold transition-all"
               style={{
-                borderColor: `${RESIDENT_PRIMARY}30`,
-                color: RESIDENT_PRIMARY,
+                borderColor: 'rgba(224, 87, 71, 0.2)',
+                color: 'var(--resident-primary)',
                 background: 'transparent',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = CARD_BG_GRADIENT;
-                e.currentTarget.style.borderColor = RESIDENT_PRIMARY;
+                e.currentTarget.style.background = 'var(--gradient-resident-subtle)';
+                e.currentTarget.style.borderColor = 'var(--resident-primary)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.borderColor = `${RESIDENT_PRIMARY}30`;
+                e.currentTarget.style.borderColor = 'rgba(224, 87, 71, 0.2)';
               }}
             >
               <Heart className="w-4 h-4 mr-2" />
@@ -139,8 +139,8 @@ export default function QuickActionsCard({
                 transition={{ duration: 1.5, repeat: Infinity }}
                 className="absolute -top-2 -right-2 w-7 h-7 rounded-full flex items-center justify-center text-white text-xs font-bold"
                 style={{
-                  background: RESIDENT_GRADIENT,
-                  boxShadow: `0 4px 12px ${ACCENT_SHADOW}`,
+                  background: 'var(--gradient-resident-medium)',
+                  boxShadow: `0 4px 12px ${RESIDENT_SHADOW}`,
                 }}
               >
                 {displayInvitationCount}
@@ -155,14 +155,14 @@ export default function QuickActionsCard({
         {/* Feature List */}
         <div className="space-y-3">
           <p className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-4 flex items-center gap-2">
-            <Sparkles className="w-3.5 h-3.5" style={{ color: RESIDENT_PRIMARY }} />
+            <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
             Fonctionnalités incluses
           </p>
           {[
-            { label: 'Matching basé sur compatibilité', color: '#e05747' },
-            { label: 'Chat intégré après match', color: '#f8572b' },
-            { label: 'Invitation à visiter la coloc', color: '#e05747' },
-            { label: 'Profils vérifiés', color: '#ff7b19' },
+            { label: 'Matching basé sur compatibilité', color: 'var(--resident-primary)' },
+            { label: 'Chat intégré après match', color: 'var(--resident-accent)' },
+            { label: 'Invitation à visiter la coloc', color: 'var(--resident-primary)' },
+            { label: 'Profils vérifiés', color: 'var(--resident-accent)' },
           ].map((feature, index) => (
             <motion.div
               key={index}
@@ -184,9 +184,9 @@ export default function QuickActionsCard({
         <motion.div
           whileHover={{ scale: 1.02 }}
           className="mt-6 p-4 superellipse-2xl text-center"
-          style={{ background: CARD_BG_GRADIENT }}
+          style={{ background: 'var(--gradient-resident-subtle)' }}
         >
-          <p className="text-xs font-semibold" style={{ color: RESIDENT_PRIMARY }}>
+          <p className="text-xs font-semibold" style={{ color: 'var(--resident-primary)' }}>
             Algorithme qui analyse 50+ critères de compatibilité
           </p>
         </motion.div>

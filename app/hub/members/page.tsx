@@ -231,7 +231,12 @@ export default function HubMembersPage() {
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-4 rounded-full hover:bg-gradient-to-r hover:from-[#e05747]/10 hover:to-[#e05747]/10 font-semibold"
+            className="mb-4 rounded-full font-semibold"
+            style={{
+              '--hover-bg': 'rgba(224, 87, 71, 0.1)',
+            } as React.CSSProperties}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
             ← {hub.members?.backToHub || 'Back to hub'}
           </Button>
@@ -243,8 +248,8 @@ export default function HubMembersPage() {
                 whileTap={{ scale: 0.95 }}
                 className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                  boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 8px 24px var(--resident-shadow)',
                 }}
               >
                 <Users className="w-6 h-6 text-white" />
@@ -264,8 +269,8 @@ export default function HubMembersPage() {
                 onClick={() => setShowInvitePopup(true)}
                 className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                  boxShadow: '0 4px 16px rgba(255, 101, 30, 0.4)',
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 4px 16px var(--resident-shadow)',
                 }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
@@ -288,24 +293,24 @@ export default function HubMembersPage() {
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
-              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
+              background: 'var(--gradient-resident-subtle)',
+              boxShadow: '0 8px 24px var(--resident-shadow)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
+              style={{ background: 'var(--resident-primary)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#e05747]">{hub.members?.stats?.total || 'Total'}</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>{hub.members?.stats?.total || 'Total'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
+                style={{ background: 'var(--resident-primary)' }}
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{members.length}</p>
-            <p className="text-xs text-[#e05747] font-medium mt-1">
+            <p className="text-xs font-medium mt-1" style={{ color: 'var(--resident-primary)' }}>
               {members.length !== 1 ? (hub.members?.stats?.activeMembersPlural || 'active members') : (hub.members?.stats?.activeMemberSingular || 'active member')}
             </p>
           </motion.div>
@@ -316,63 +321,63 @@ export default function HubMembersPage() {
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
-              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
+              background: 'var(--gradient-resident-subtle)',
+              boxShadow: '0 8px 24px var(--resident-shadow)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #f8572b, #ff7b19)' }}
+              style={{ background: 'var(--gradient-resident-medium)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#f8572b]">{hub.members?.stats?.residents || 'Residents'}</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>{hub.members?.stats?.residents || 'Residents'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #f8572b, #ff7b19)' }}
+                style={{ background: 'var(--gradient-resident-medium)' }}
               >
                 <Home className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{residentsCount}</p>
             <div className="flex items-center gap-2 mt-1">
-              <div className="flex-1 h-1.5 bg-orange-100 rounded-full overflow-hidden">
+              <div className="flex-1 h-1.5 rounded-full overflow-hidden" style={{ background: 'var(--resident-100)' }}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${members.length > 0 ? (residentsCount / members.length) * 100 : 0}%` }}
                   transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
                   className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #f8572b, #ff7b19)' }}
+                  style={{ background: 'var(--gradient-resident-medium)' }}
                 />
               </div>
-              <span className="text-xs text-[#e05747] font-bold">
+              <span className="text-xs font-bold" style={{ color: 'var(--resident-primary)' }}>
                 {members.length > 0 ? Math.round((residentsCount / members.length) * 100) : 0}%
               </span>
             </div>
           </motion.div>
 
-          {/* Owners Card - Amber Gradient */}
+          {/* Owners Card - Owner Mauve Gradient */}
           <motion.div
             variants={itemVariants}
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
-              boxShadow: '0 8px 24px rgba(245, 158, 11, 0.15)',
+              background: 'var(--gradient-owner-subtle)',
+              boxShadow: '0 8px 24px var(--owner-shadow)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
+              style={{ background: 'var(--gradient-owner-medium)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-amber-700">{hub.members?.stats?.owners || 'Owners'}</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--owner-primary)' }}>{hub.members?.stats?.owners || 'Owners'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #f59e0b, #fbbf24)' }}
+                style={{ background: 'var(--gradient-owner-medium)' }}
               >
                 <Crown className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{ownersCount}</p>
-            <p className="text-xs text-amber-600 font-medium mt-1">
+            <p className="text-xs font-medium mt-1" style={{ color: 'var(--owner-primary)' }}>
               {ownersCount > 0 ? (hub.members?.stats?.activeManagement || 'active management') : (hub.members?.stats?.noOwner || 'no owner')}
             </p>
           </motion.div>
@@ -387,10 +392,10 @@ export default function HubMembersPage() {
         >
           {members.map((member) => {
             const isOwner = member.role === 'owner';
-            // V3 Option C: Orange for residents, amber for owners (semantic role distinction)
+            // V3 Color System: Owner mauve vs Resident orange (semantic role distinction)
             const cardGradient = isOwner
-              ? { bg: '#fffbeb', bgEnd: '#fef3c7', accent: '#f59e0b', accentEnd: '#fbbf24', shadow: 'rgba(245, 158, 11, 0.2)' }
-              : { bg: '#FFF5F0', bgEnd: '#FFEDE5', accent: '#e05747', accentEnd: '#e05747', shadow: 'rgba(255, 101, 30, 0.2)' };
+              ? { bg: 'var(--owner-50)', bgEnd: 'var(--owner-100)', accent: 'var(--owner-primary)', gradient: 'var(--gradient-owner-medium)', shadow: 'var(--owner-shadow)' }
+              : { bg: 'var(--resident-50)', bgEnd: 'var(--resident-100)', accent: 'var(--resident-primary)', gradient: 'var(--gradient-resident-medium)', shadow: 'var(--resident-shadow)' };
 
             return (
               <motion.div
@@ -400,14 +405,14 @@ export default function HubMembersPage() {
                 whileTap={{ scale: 0.98 }}
                 className="relative overflow-hidden superellipse-2xl cursor-pointer"
                 style={{
-                  background: `linear-gradient(135deg, ${cardGradient.bg} 0%, ${cardGradient.bgEnd} 100%)`,
+                  background: `linear-gradient(135deg, ${cardGradient.bg}, ${cardGradient.bgEnd})`,
                   boxShadow: `0 12px 32px ${cardGradient.shadow}`,
                 }}
               >
                 {/* Decorative circle */}
                 <div
                   className="absolute -right-8 -top-8 w-32 h-32 rounded-full opacity-20"
-                  style={{ background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})` }}
+                  style={{ background: cardGradient.gradient }}
                 />
 
                 {/* Card Content */}
@@ -427,7 +432,7 @@ export default function HubMembersPage() {
                         <div
                           className="w-14 h-14 superellipse-xl flex items-center justify-center text-xl font-bold text-white shadow-lg"
                           style={{
-                            background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
+                            background: cardGradient.gradient,
                             boxShadow: `0 4px 12px ${cardGradient.shadow}`,
                           }}
                         >
@@ -445,7 +450,7 @@ export default function HubMembersPage() {
                         className="mt-1 text-xs font-semibold border-none w-fit"
                         icon={isOwner ? <Crown className="w-3 h-3" /> : <Home className="w-3 h-3" />}
                         style={{
-                          background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
+                          background: cardGradient.gradient,
                           color: 'white',
                         }}
                       >
@@ -491,7 +496,7 @@ export default function HubMembersPage() {
                           className="w-7 h-7 superellipse-lg flex items-center justify-center"
                           style={{ background: 'rgba(255, 101, 30, 0.1)' }}
                         >
-                          <Briefcase className="w-3.5 h-3.5 text-[#e05747]" />
+                          <Briefcase className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                         </div>
                         <span className="text-gray-700 font-medium text-sm">{member.occupation}</span>
                       </div>
@@ -547,7 +552,7 @@ export default function HubMembersPage() {
                         }}
                         className="w-full h-9 superellipse-xl text-white font-semibold text-sm shadow-md"
                         style={{
-                          background: `linear-gradient(135deg, ${cardGradient.accent}, ${cardGradient.accentEnd})`,
+                          background: cardGradient.gradient,
                           boxShadow: `0 4px 12px ${cardGradient.shadow}`,
                         }}
                       >
@@ -584,8 +589,8 @@ export default function HubMembersPage() {
               whileHover={{ scale: 1.05, rotate: 5 }}
               className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                background: 'var(--resident-primary)',
+                boxShadow: '0 8px 24px var(--resident-shadow)',
               }}
             >
               <Users className="w-10 h-10 text-white" />
@@ -594,7 +599,7 @@ export default function HubMembersPage() {
                 animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
                 transition={{ repeat: Infinity, duration: 2 }}
               >
-                <Sparkles className="w-5 h-5 text-amber-400" />
+                <Sparkles className="w-5 h-5" style={{ color: 'var(--searcher-primary)' }} />
               </motion.div>
             </motion.div>
             <h3 className="text-xl font-bold text-gray-900 mb-2">
@@ -608,8 +613,8 @@ export default function HubMembersPage() {
                 onClick={() => setShowInvitePopup(true)}
                 className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                  boxShadow: '0 4px 16px rgba(255, 101, 30, 0.4)',
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 4px 16px var(--resident-shadow)',
                 }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />

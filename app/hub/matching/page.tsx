@@ -20,11 +20,11 @@ import {
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
-// V3 Option C - Official Resident Palette
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)';
-const RESIDENT_PRIMARY = '#e05747';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)';
-const ACCENT_SHADOW = 'rgba(255, 101, 30, 0.2)';
+// V3 Color System - Resident Palette from globals.css
+const RESIDENT_PRIMARY = 'var(--resident-primary)';
+const RESIDENT_GRADIENT = 'var(--gradient-resident-medium)';
+const CARD_BG_GRADIENT = 'var(--gradient-resident-subtle)';
+const RESIDENT_SHADOW = 'var(--resident-shadow)';
 
 export default function MatchingComingSoonPage() {
   const router = useRouter();
@@ -34,13 +34,13 @@ export default function MatchingComingSoonPage() {
       icon: Zap,
       title: 'Matching intelligent',
       description: 'Notre algorithme analyse 50+ critères pour te proposer les candidats les plus compatibles avec ta coloc',
-      gradient: 'linear-gradient(135deg, #f59e0b 0%, #f97316 100%)',
+      gradient: 'var(--gradient-searcher-medium)',
     },
     {
       icon: Users,
       title: 'Swipe & Living Match',
       description: 'Parcours les profils des chercheurs et like ceux qui te plaisent. Si c\'est réciproque, c\'est un Living Match !',
-      gradient: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)',
+      gradient: 'var(--gradient-resident-medium)',
     },
     {
       icon: MessageCircle,
@@ -84,10 +84,10 @@ export default function MatchingComingSoonPage() {
             </Button>
             <Badge
               className="px-4 py-1.5 rounded-full font-semibold border-0 text-white"
-              style={{ background: RESIDENT_GRADIENT }}
+              style={{ background: 'var(--gradient-resident-medium)' }}
             >
               <Sparkles className="w-3.5 h-3.5 mr-1.5" />
-              Bientot disponible
+              Bientôt disponible
             </Badge>
           </div>
         </div>
@@ -112,7 +112,7 @@ export default function MatchingComingSoonPage() {
             className="w-24 h-24 superellipse-3xl flex items-center justify-center mx-auto mb-8"
             style={{
               background: RESIDENT_GRADIENT,
-              boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+              boxShadow: `0 20px 60px ${RESIDENT_SHADOW}`,
             }}
           >
             <Heart className="w-12 h-12 text-white" />
@@ -124,13 +124,13 @@ export default function MatchingComingSoonPage() {
               className="bg-clip-text text-transparent"
               style={{ backgroundImage: RESIDENT_GRADIENT }}
             >
-              arrive bientot
+              arrive bientôt
             </span>
           </h1>
 
           <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Une nouvelle facon de trouver le colocataire ideal pour ta residence.
-            Nous preparons quelque chose d'exceptionnel pour toi !
+            Une nouvelle façon de trouver le colocataire idéal pour ta résidence.
+            Nous préparons quelque chose d'exceptionnel pour toi !
           </p>
 
           {/* Coming Soon Card */}
@@ -141,40 +141,40 @@ export default function MatchingComingSoonPage() {
             className="relative max-w-lg mx-auto superellipse-3xl p-8 overflow-hidden"
             style={{
               background: CARD_BG_GRADIENT,
-              boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+              boxShadow: `0 20px 60px ${RESIDENT_SHADOW}`,
             }}
           >
             {/* Decorative circles */}
             <div
               className="absolute -right-12 -top-12 w-32 h-32 rounded-full opacity-30"
-              style={{ background: RESIDENT_GRADIENT }}
+              style={{ background: 'var(--gradient-resident-medium)' }}
             />
             <div
               className="absolute -left-8 -bottom-8 w-24 h-24 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
+              style={{ background: 'var(--resident-primary)' }}
             />
 
             <div className="relative z-10">
               <div className="flex items-center justify-center gap-2 mb-4">
                 <UserPlus className="w-6 h-6" style={{ color: RESIDENT_PRIMARY }} />
                 <span className="text-lg font-bold text-gray-900">
-                  Chercheurs en cours d'inscription
+                  Searchers en cours d'inscription
                 </span>
               </div>
 
               <p className="text-gray-600 mb-6 leading-relaxed">
-                Nous sommes en train de constituer une base de candidats verifies et motives
-                pour rejoindre des colocations comme la tienne. Des que les premiers profils
-                seront disponibles, tu pourras commencer a matcher !
+                Nous sommes en train de constituer une base de candidats vérifiés et motivés
+                pour rejoindre des co-livings comme le tien. Dès que les premiers profils
+                seront disponibles, tu pourras commencer à matcher !
               </p>
 
               {/* What's coming */}
               <div className="space-y-3 text-left">
                 {[
-                  'Profils de chercheurs verifies',
-                  'Algorithme de compatibilite avance',
-                  'Systeme de Living Match reciproque',
-                  'Chat integre apres Living Match',
+                  'Profils de searchers vérifiés',
+                  'Algorithme de compatibilité avancé',
+                  'Système de Living Match réciproque',
+                  'Chat intégré après Living Match',
                 ].map((item, index) => (
                   <motion.div
                     key={index}
@@ -257,7 +257,7 @@ export default function MatchingComingSoonPage() {
             whileHover={{ scale: 1.02 }}
             className="inline-flex flex-col items-center gap-4 p-8 superellipse-3xl bg-white"
             style={{
-              boxShadow: `0 20px 60px ${ACCENT_SHADOW}`,
+              boxShadow: `0 20px 60px ${RESIDENT_SHADOW}`,
             }}
           >
             <motion.div
@@ -271,10 +271,10 @@ export default function MatchingComingSoonPage() {
 
             <div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">
-                Tu seras notifie(e) au lancement !
+                Tu seras notifié(e) au lancement !
               </h3>
               <p className="text-gray-600 mb-4">
-                Des que le matching sera disponible, tu recevras une notification.
+                Dès que le matching sera disponible, tu recevras une notification.
               </p>
             </div>
 
@@ -283,7 +283,7 @@ export default function MatchingComingSoonPage() {
               className="superellipse-2xl px-8 py-6 font-bold text-white border-none"
               style={{
                 background: RESIDENT_GRADIENT,
-                boxShadow: `0 12px 32px ${ACCENT_SHADOW}`,
+                boxShadow: `0 12px 32px ${RESIDENT_SHADOW}`,
               }}
             >
               <Home className="w-5 h-5 mr-2" />
@@ -292,7 +292,7 @@ export default function MatchingComingSoonPage() {
 
             {/* Additional link */}
             <p className="text-sm text-gray-500">
-              En attendant, prepare ton profil pour avoir les meilleurs Living Matchs !
+              En attendant, prépare ton profil pour avoir les meilleurs Living Matchs !
             </p>
           </motion.div>
         </motion.div>
