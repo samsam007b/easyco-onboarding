@@ -20,6 +20,8 @@ export const enhanceThemes = {
     textPrimary: 'text-searcher-600',
     bgLight: 'bg-searcher-50',
     borderLight: 'border-searcher-200',
+    gradient: 'from-searcher-500 via-searcher-400 to-searcher-600',
+    gradientBg: 'from-searcher-50 via-white to-searcher-100',
   },
   owner: {
     primary: 'hsl(var(--owner-500))',
@@ -33,6 +35,8 @@ export const enhanceThemes = {
     textPrimary: 'text-owner-600',
     bgLight: 'bg-owner-50',
     borderLight: 'border-owner-200',
+    gradient: 'from-owner-500 via-owner-400 to-owner-600',
+    gradientBg: 'from-owner-50 via-white to-owner-100',
   },
   resident: {
     primary: 'hsl(var(--resident-500))',
@@ -46,6 +50,8 @@ export const enhanceThemes = {
     textPrimary: 'text-resident-600',
     bgLight: 'bg-resident-50',
     borderLight: 'border-resident-200',
+    gradient: 'from-resident-500 via-resident-400 to-resident-600',
+    gradientBg: 'from-resident-50 via-white to-resident-100',
   },
 };
 

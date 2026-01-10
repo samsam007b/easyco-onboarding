@@ -39,16 +39,16 @@ const severityColors: Record<string, string> = {
   low: '#6B7280', // Gray
 };
 
-// Severity emojis
-const severityEmojis: Record<string, string> = {
-  critical: '🚨',
-  high: '⚠️',
-  medium: '📢',
-  low: 'ℹ️',
+// Severity indicators (text-based for brand consistency)
+const severityIndicators: Record<string, string> = {
+  critical: '[CRITICAL]',
+  high: '[HIGH]',
+  medium: '[MEDIUM]',
+  low: '[INFO]',
 };
 
 async function sendSlackNotification(alert: SecurityAlert, webhookUrl: string) {
-  const emoji = severityEmojis[alert.severity] || '📢';
+  const indicator = severityIndicators[alert.severity] || '[ALERT]';
   const color = severityColors[alert.severity] || '#6B7280';
 
   const payload = {
@@ -60,8 +60,8 @@ async function sendSlackNotification(alert: SecurityAlert, webhookUrl: string) {
             type: 'header',
             text: {
               type: 'plain_text',
-              text: `${emoji} Security Alert: ${alert.type.replace(/_/g, ' ').toUpperCase()}`,
-              emoji: true,
+              text: `${indicator} Security Alert: ${alert.type.replace(/_/g, ' ').toUpperCase()}`,
+              emoji: false,
             },
           },
           {
@@ -121,7 +121,7 @@ async function sendEmailNotification(
     <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
       <div style="background: ${severityColors[alert.severity]}; color: white; padding: 16px; border-radius: 8px 8px 0 0;">
         <h1 style="margin: 0; font-size: 20px;">
-          ${severityEmojis[alert.severity]} Security Alert
+          ${severityIndicators[alert.severity]} Security Alert
         </h1>
       </div>
       <div style="padding: 24px; background: #f9fafb; border: 1px solid #e5e7eb; border-top: none; border-radius: 0 0 8px 8px;">

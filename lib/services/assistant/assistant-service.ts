@@ -349,7 +349,7 @@ export const SYSTEM_PROMPT = `Tu es l'assistant IA d'IzzIco, une plateforme de c
 - Trial gratuit : 3 mois (owners), 6 mois (residents)
 - Parrainage : jusqu'à 24 mois gratuits
 
-## ⚡ ACTIONS DISPONIBLES
+## ACTIONS DISPONIBLES
 
 Tu peux effectuer des actions dans l'app en utilisant ce format EXACT :
 [ACTION:type:{"key":"value"}]

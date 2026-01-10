@@ -804,7 +804,7 @@ export function generateDailyDigestHTML(data: DailyDigestData): string {
                 <tr>
                   <td>
                     <h3 style="color: #1f2937; font-size: 16px; margin: 0 0 15px 0; padding-bottom: 10px; border-bottom: 2px solid #9c5698;">
-                      ⚡ Alertes & Actions requises
+                      Alertes & Actions requises
                     </h3>
                     <table width="100%" cellpadding="0" cellspacing="0" style="background: #fafafa; border-radius: 12px;">
                       ${alertsHTML}

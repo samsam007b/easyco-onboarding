@@ -89,7 +89,7 @@ export default function ResidentReviewPage() {
       const { error: userUpdateError } = await supabase
         .from('users')
         .update({
-          user_type: 'resident',  // ⚡ CRITICAL: Set user_type so middleware can check it
+          user_type: 'resident',  // CRITICAL: Set user_type so middleware can check it
           onboarding_completed: true,
           updated_at: new Date().toISOString()
         })
@@ -100,10 +100,10 @@ export default function ResidentReviewPage() {
         throw new Error('Failed to complete onboarding');
       }
 
-      // ⚡ CRITICAL: Force refresh auth session to update cached user data
+      // CRITICAL: Force refresh auth session to update cached user data
       await supabase.auth.refreshSession();
 
-      // ⚡ Verify the update was successful before proceeding
+      // Verify the update was successful before proceeding
       const { data: verifyUser } = await supabase
         .from('users')
         .select('onboarding_completed')

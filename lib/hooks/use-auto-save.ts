@@ -116,7 +116,7 @@ export function useAutoSave(options: AutoSaveOptions) {
           });
       }
 
-      // console.log(`✅ Auto-saved ${key} to Supabase`);
+      // console.log(`[OK] Auto-saved ${key} to Supabase`);
     } catch (error) {
       // FIXME: Use logger.error - 'Error auto-saving to Supabase:', error);
       // Don't show error toast to user, silent failure is fine for auto-save
@@ -177,7 +177,7 @@ export async function loadSavedData(key: string): Promise<any | null> {
         .single();
 
       if (profile?.profile_data?.[key]) {
-        // console.log(`✅ Loaded ${key} from Supabase`);
+        // console.log(`[OK] Loaded ${key} from Supabase`);
         return profile.profile_data[key];
       }
     }
@@ -190,7 +190,7 @@ export async function loadSavedData(key: string): Promise<any | null> {
     if (typeof window !== 'undefined') {
       const raw = localStorage.getItem(key);
       if (raw) {
-        // console.log(`✅ Loaded ${key} from localStorage`);
+        // console.log(`[OK] Loaded ${key} from localStorage`);
         return JSON.parse(raw);
       }
     }
