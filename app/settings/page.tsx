@@ -108,8 +108,8 @@ export default function SettingsPage() {
   // Role-specific colors - V3 palette
   const getRoleColors = () => {
     if (userType === 'owner') return {
-      gradient: 'from-owner-50/30 via-white to-owner-100/30',
-      light: 'from-owner-50/30 via-white to-owner-100/20',
+      gradient: 'bg-owner-50/30',
+      light: 'bg-owner-50/20',
       accent: 'owner',
       cardHover: 'hover:border-[#D4B5D1]',
       // Inline style values
@@ -126,8 +126,8 @@ export default function SettingsPage() {
       buttonBg: 'linear-gradient(135deg, #FDF5F9 0%, #F8F0F7 100%)',
     };
     if (userType === 'resident') return {
-      gradient: 'from-resident-50/30 via-white to-resident-100/20',
-      light: 'from-resident-50/30 via-white to-resident-100/20',
+      gradient: 'bg-resident-50/30',
+      light: 'bg-resident-50/20',
       accent: 'resident',
       cardHover: 'hover:border-[#FFDAC9]',
       gradientStyle: residentGradient,
@@ -143,8 +143,8 @@ export default function SettingsPage() {
       buttonBg: 'linear-gradient(135deg, #FFF5F3 0%, #FFE8E0 100%)',
     };
     return {
-      gradient: 'from-searcher-50/30 via-white to-searcher-100/30',
-      light: 'from-searcher-50/30 via-white to-searcher-100/30',
+      gradient: 'bg-searcher-50/30',
+      light: 'bg-searcher-50/30',
       accent: 'searcher',
       cardHover: 'hover:border-orange-300',
       gradientStyle: searcherGradient,
@@ -351,7 +351,7 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className={`min-h-screen bg-gradient-to-br ${colors.gradient}`}>
+    <div className={`min-h-screen ${colors.gradient}`}>
       {/* V3 Fun Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/30" />
