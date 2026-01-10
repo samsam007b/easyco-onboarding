@@ -167,7 +167,7 @@ function PropertyCard({
                   {residents.slice(0, 3).map((resident, index) => (
                     <div
                       key={resident.id}
-                      className="w-8 h-8 rounded-full bg-gradient-to-br from-resident-400 to-resident-600 border-2 border-white shadow-md flex items-center justify-center"
+                      className="w-8 h-8 rounded-full bg-resident-500 border-2 border-white shadow-md flex items-center justify-center"
                       style={{ zIndex: 10 - index }}
                     >
                       {resident.profile_photo_url ? (
@@ -287,7 +287,7 @@ function PropertyCard({
                 {residents.slice(0, 3).map((resident, index) => (
                   <div
                     key={resident.id}
-                    className="w-12 h-12 rounded-full bg-gradient-to-br from-resident-400 to-resident-600 border-3 border-white shadow-xl flex items-center justify-center transition-transform hover:scale-110 hover:z-50"
+                    className="w-12 h-12 rounded-full bg-resident-500 border-3 border-white shadow-xl flex items-center justify-center transition-transform hover:scale-110 hover:z-50"
                     style={{ zIndex: 10 - index }}
                     title={resident.first_name}
                   >
@@ -396,7 +396,7 @@ function PropertyCard({
                 {residents.slice(0, 3).map((resident, index) => (
                   <div
                     key={resident.id}
-                    className="w-8 h-8 rounded-full bg-gradient-to-br from-resident-400 to-resident-500 border-2 border-white shadow-sm flex items-center justify-center"
+                    className="w-8 h-8 rounded-full bg-resident-400 border-2 border-white shadow-sm flex items-center justify-center"
                     style={{ zIndex: 10 - index }}
                   >
                     {resident.profile_photo_url ? (
