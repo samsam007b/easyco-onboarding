@@ -72,7 +72,7 @@ const VISIT_COLORS = {
     badge: 'bg-emerald-100 text-emerald-700',
   },
   pending: {
-    bg: 'bg-gradient-to-r from-searcher-500 to-searcher-400',
+    bg: 'bg-searcher-500',
     text: 'text-white',
     badge: 'bg-searcher-100 text-searcher-700',
   },
@@ -475,7 +475,7 @@ export default function SearcherCalendarPage() {
                   <span className="text-xs text-gray-600">Confirmée</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gradient-to-r from-searcher-500 to-searcher-400" />
+                  <div className="w-3 h-3 rounded-full bg-searcher-500" />
                   <span className="text-xs text-gray-600">En attente</span>
                 </div>
                 <div className="flex items-center gap-2">
