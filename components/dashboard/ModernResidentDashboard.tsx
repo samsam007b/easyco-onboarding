@@ -32,13 +32,14 @@ import {
 } from '@/components/onboarding';
 import { useLanguage } from '@/lib/i18n/use-language';
 
-// V3 Color System - Official Resident Palette
-// Source: brand-identity/izzico-color-system.html
-const RESIDENT_GRADIENT = 'linear-gradient(135deg, #E96A50 0%, #e05747 50%, #C04538 100%)'; // 400 → 500 → 600
-const RESIDENT_PRIMARY = '#e05747';
-const CARD_BG_GRADIENT = 'linear-gradient(135deg, #FEF2EE 0%, #FDE8E4 100%)';
-const ACCENT_SHADOW = 'rgba(224, 87, 71, 0.15)';
-// Semantic Pastel Colors (Option C)
+// V3 Color System - Resident Palette from globals.css
+// CRITICAL: Use CSS variables instead of hardcoded hex values for consistent colors
+const RESIDENT_PRIMARY = 'var(--resident-primary)';
+const RESIDENT_GRADIENT = 'var(--gradient-resident-medium)';
+const CARD_BG_GRADIENT = 'var(--gradient-resident-subtle)';
+const RESIDENT_SHADOW = 'var(--resident-shadow)';
+
+// Semantic Pastel Colors (from globals.css)
 const SEMANTIC_SUCCESS = '#7CB89B';
 const SEMANTIC_SUCCESS_BG = 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)';
 const SEMANTIC_ERROR = '#D08080';
@@ -133,7 +134,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
     {
       id: '2',
       icon: MessageCircle,
-      iconBgColor: 'rgba(255, 101, 30, 0.1)', // Orange brand
+      iconBgColor: 'rgba(224, 87, 71, 0.1)', // Resident primary at 10% opacity
       iconColor: RESIDENT_PRIMARY,
       title: 'Nouveau message de Marc',
       subtitle: 'Groupe "Ma Coloc"',
@@ -307,7 +308,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       icon: Home,
       iconGradient: RESIDENT_GRADIENT,
       bgGradient: CARD_BG_GRADIENT,
-      shadowColor: ACCENT_SHADOW,
+      shadowColor: RESIDENT_SHADOW,
       progress: rentPercentage,
       onboardingId: undefined,
     },
@@ -318,7 +319,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       icon: DollarSign,
       iconGradient: RESIDENT_GRADIENT,
       bgGradient: CARD_BG_GRADIENT,
-      shadowColor: ACCENT_SHADOW,
+      shadowColor: RESIDENT_SHADOW,
       action: () => router.push('/hub/finances'),
       onboardingId: 'finances-card',
     },
@@ -342,7 +343,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       icon: Users,
       iconGradient: RESIDENT_GRADIENT,  // Orange brand, not purple
       bgGradient: CARD_BG_GRADIENT,
-      shadowColor: ACCENT_SHADOW,
+      shadowColor: RESIDENT_SHADOW,
       action: () => router.push('/hub/members'),
       onboardingId: 'members-card',
     },
@@ -378,15 +379,27 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
       {/* Stripe Upgrade Notification */}
       <UpgradeNotification />
 
-      {/* Glassmorphism background with resident orange gradient - V3 Official Palette */}
+      {/* Glassmorphism background with resident orange gradient - V3 Color System */}
       <div className="fixed inset-0 -z-10">
         {/* Base gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#e05747]/10 via-[#e05747]/8 to-[#e05747]/5" />
+        <div
+          className="absolute inset-0 bg-gradient-to-br opacity-10"
+          style={{ background: 'linear-gradient(to bottom right, var(--resident-primary), var(--resident-400))' }}
+        />
 
-        {/* Animated gradient blobs */}
-        <div className="absolute top-0 -left-4 w-96 h-96 bg-[#e05747]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob" />
-        <div className="absolute top-0 -right-4 w-96 h-96 bg-[#e05747]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000" />
-        <div className="absolute -bottom-8 left-20 w-96 h-96 bg-[#e05747]/20 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000" />
+        {/* Animated gradient blobs using CSS variables */}
+        <div
+          className="absolute top-0 -left-4 w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob"
+          style={{ background: 'var(--resident-primary)', opacity: 0.2 }}
+        />
+        <div
+          className="absolute top-0 -right-4 w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-2000"
+          style={{ background: 'var(--resident-primary)', opacity: 0.2 }}
+        />
+        <div
+          className="absolute -bottom-8 left-20 w-96 h-96 rounded-full mix-blend-multiply filter blur-3xl opacity-60 animate-blob animation-delay-4000"
+          style={{ background: 'var(--resident-primary)', opacity: 0.2 }}
+        />
 
         {/* Glass effect overlay */}
         <div className="absolute inset-0 backdrop-blur-3xl bg-white/50" />
@@ -491,7 +504,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
             variants={itemVariants}
             data-onboarding="tasks-section"
             className="relative overflow-hidden bg-white p-5 superellipse-2xl"
-            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+            style={{ boxShadow: `0 8px 24px ${RESIDENT_SHADOW}` }}
           >
             {/* Decorative circle */}
             <div
@@ -530,7 +543,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.06 }}
-                    whileHover={{ x: 3, backgroundColor: 'rgba(255, 101, 30, 0.04)' }}
+                    whileHover={{ x: 3, backgroundColor: 'rgba(224, 87, 71, 0.04)' }}
                     className="flex items-center justify-between p-3 bg-gray-50 superellipse-xl transition-all cursor-pointer"
                   >
                     <div className="flex items-center gap-2.5">
@@ -543,7 +556,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                         <Clock className={cn(
                           "w-4 h-4",
                           task.priority === 'high' && "text-[#D08080]",
-                          task.priority === 'medium' && "text-[#ff7b19]",
+                          task.priority === 'medium' && "text-[#e05747]",
                           task.priority === 'low' && "text-gray-500"
                         )} />
                       </div>
@@ -560,8 +573,8 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
                     <Badge
                       className="border-none font-medium text-xs px-2 py-0.5"
                       style={{
-                        background: task.priority === 'high' ? 'rgba(208, 128, 128, 0.15)' : task.priority === 'medium' ? 'rgba(255, 123, 25, 0.1)' : 'rgba(156, 163, 175, 0.15)',
-                        color: task.priority === 'high' ? '#D08080' : task.priority === 'medium' ? '#ff7b19' : '#6B7280',
+                        background: task.priority === 'high' ? 'rgba(208, 128, 128, 0.15)' : task.priority === 'medium' ? 'rgba(224, 87, 71, 0.1)' : 'rgba(156, 163, 175, 0.15)',
+                        color: task.priority === 'high' ? '#D08080' : task.priority === 'medium' ? '#e05747' : '#6B7280',
                       }}
                     >
                       {task.priority === 'high' ? (resident?.priorityUrgent || 'Urgent') : task.priority === 'medium' ? (resident?.priorityMedium || 'Moyen') : (resident?.priorityLow || 'Bas')}
@@ -595,7 +608,7 @@ const ModernResidentDashboard = memo(function ModernResidentDashboard() {
           <motion.div
             variants={itemVariants}
             className="relative overflow-hidden bg-white p-5 superellipse-2xl"
-            style={{ boxShadow: `0 8px 24px ${ACCENT_SHADOW}` }}
+            style={{ boxShadow: `0 8px 24px ${RESIDENT_SHADOW}` }}
           >
             {/* Decorative circle - V3 Orange */}
             <div
