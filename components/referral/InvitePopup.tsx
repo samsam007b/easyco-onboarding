@@ -276,7 +276,7 @@ export function InvitePopup({
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
-          <div className="p-6 text-white bg-gradient-to-r from-resident-600 via-resident-500 to-resident-400">
+          <div className="p-6 text-white bg-resident-500">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-3">
                 <div className="w-12 h-12 superellipse-xl bg-white/20 backdrop-blur flex items-center justify-center">
@@ -344,14 +344,14 @@ export function InvitePopup({
                   </div>
 
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="flex-1 bg-gradient-to-r from-resident-50 to-resident-100 superellipse-xl px-4 py-3 border-2 border-resident-200">
+                    <div className="flex-1 bg-resident-50 superellipse-xl px-4 py-3 border-2 border-resident-200">
                       <p className="font-mono text-lg font-bold text-resident-700 break-all text-center">
                         {residenceData.invitationCode}
                       </p>
                     </div>
                     <button
                       onClick={() => copyToClipboard(residenceData.invitationCode!, 'residence')}
-                      className="p-3 superellipse-xl bg-gradient-to-r from-resident-500 to-resident-600 text-white hover:shadow-lg transition-all"
+                      className="p-3 superellipse-xl bg-resident-500 hover:bg-resident-600 text-white hover:shadow-lg transition-all"
                     >
                       {copiedCode === 'residence' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>
@@ -391,14 +391,14 @@ export function InvitePopup({
                   </div>
 
                   <div className="flex items-center gap-2">
-                    <div className="flex-1 bg-gradient-to-r from-owner-50 to-owner-100 superellipse-xl px-4 py-3 border-2 border-owner-200">
+                    <div className="flex-1 bg-owner-50 superellipse-xl px-4 py-3 border-2 border-owner-200">
                       <p className="font-mono text-lg font-bold text-owner-700 break-all text-center">
                         {residenceData.ownerCode}
                       </p>
                     </div>
                     <button
                       onClick={() => copyToClipboard(residenceData.ownerCode!, 'owner')}
-                      className="p-3 superellipse-xl bg-gradient-to-r from-owner-500 to-owner-600 text-white hover:shadow-lg transition-all"
+                      className="p-3 superellipse-xl bg-owner-500 hover:bg-owner-600 text-white hover:shadow-lg transition-all"
                     >
                       {copiedCode === 'owner' ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
                     </button>
