@@ -75,7 +75,7 @@ export default function UnifiedMessagesRedirectPage() {
 
   if (hasError) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-resident-50/30 via-white to-resident-50/30">
+      <div className="min-h-screen flex items-center justify-center bg-resident-50/30">
         <div className="text-center">
           <p className="text-red-600 mb-4">{t.redirectError[lang]}</p>
           <button
@@ -90,7 +90,7 @@ export default function UnifiedMessagesRedirectPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-resident-50/30 via-white to-resident-50/30">
+    <div className="min-h-screen flex items-center justify-center bg-resident-50/30">
       <div className="text-center">
         <div className="flex justify-center mb-6">
           <LoadingHouse size={80} />
