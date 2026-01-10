@@ -69,7 +69,7 @@ export default function ResidentProfileCard({
           )}
         >
           <div className="relative">
-            <div className="w-28 h-28 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center shadow-lg ring-4 ring-white">
+            <div className="w-28 h-28 rounded-full bg-resident-500 flex items-center justify-center shadow-lg ring-4 ring-white">
               {resident.profile_photo_url ? (
                 <img
                   src={resident.profile_photo_url}
@@ -81,7 +81,7 @@ export default function ResidentProfileCard({
               )}
             </div>
             {resident.age && (
-              <div className="absolute -bottom-1 -right-1 bg-gradient-to-br from-resident-500 to-resident-600 text-white text-sm font-bold rounded-full w-9 h-9 flex items-center justify-center shadow-md ring-2 ring-white">
+              <div className="absolute -bottom-1 -right-1 bg-resident-500 text-white text-sm font-bold rounded-full w-9 h-9 flex items-center justify-center shadow-md ring-2 ring-white">
                 {resident.age}
               </div>
             )}
@@ -112,7 +112,7 @@ export default function ResidentProfileCard({
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-4">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center shadow-xl ring-4 ring-resident-50">
+                <div className="w-24 h-24 rounded-full bg-resident-500 flex items-center justify-center shadow-xl ring-4 ring-resident-50">
                   {resident.profile_photo_url ? (
                     <img
                       src={resident.profile_photo_url}
@@ -271,7 +271,7 @@ export default function ResidentProfileCard({
     <Card className={cn("p-6", className)}>
       <div className="flex items-start gap-4">
         <div className="relative">
-          <div className="w-20 h-20 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center">
+          <div className="w-20 h-20 rounded-full bg-resident-500 flex items-center justify-center">
             {resident.profile_photo_url ? (
               <img
                 src={resident.profile_photo_url}
@@ -315,7 +315,7 @@ export default function ResidentProfileCard({
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-3">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-resident-500 to-resident-400 flex items-center justify-center">
+              <div className="w-16 h-16 rounded-full bg-resident-500 flex items-center justify-center">
                 {resident.profile_photo_url ? (
                   <img
                     src={resident.profile_photo_url}
