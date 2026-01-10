@@ -19,6 +19,8 @@ export const roleThemes = {
     selectedBorder: 'border-searcher-500',
     selectedBg: 'bg-searcher-50',
     accent: 'accent-searcher-500',
+    gradient: 'from-searcher-500 via-searcher-400 to-searcher-600',
+    gradientBg: 'from-searcher-50 via-white to-searcher-100',
     logoColors: {
       easy: 'text-[#FF8C42]',
       co: 'text-[#FFB85C]',
@@ -33,6 +35,8 @@ export const roleThemes = {
     selectedBorder: 'border-owner-500',
     selectedBg: 'bg-owner-50',
     accent: 'accent-owner-500',
+    gradient: 'from-owner-500 via-owner-400 to-owner-600',
+    gradientBg: 'from-owner-50 via-white to-owner-100',
     logoColors: {
       easy: 'text-[#9c5698]',
       co: 'text-[#FFD600]',
@@ -47,6 +51,8 @@ export const roleThemes = {
     selectedBorder: 'border-resident-500',
     selectedBg: 'bg-resident-50',
     accent: 'accent-resident-500',
+    gradient: 'from-resident-500 via-resident-400 to-resident-600',
+    gradientBg: 'from-resident-50 via-white to-resident-100',
     logoColors: {
       easy: 'text-[#e05747]',
       co: 'text-[#e05747]',
