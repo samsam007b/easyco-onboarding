@@ -1,6 +1,6 @@
 /**
  * Shared Calendar Page - V2 Fun Design
- * Plan and coordinate colocation events with style
+ * Plan and coordinate co-living events with style
  */
 'use client';
 
@@ -94,8 +94,8 @@ export default function HubCalendarPage() {
   const t = getSection('hub')?.calendar;
 
   // Get translated months and days arrays
-  const MONTHS = t?.months?.[language] || MONTHS_FALLBACK;
-  const DAYS = t?.days?.[language] || DAYS_FALLBACK;
+  const MONTHS = t?.months ? Object.values(t.months).map((m: any) => m[language]) : MONTHS_FALLBACK;
+  const DAYS = t?.days ? Object.values(t.days).map((d: any) => d[language]) : DAYS_FALLBACK;
 
   const [isLoading, setIsLoading] = useState(true);
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -259,7 +259,7 @@ export default function HubCalendarPage() {
   };
 
   const handleDeleteEvent = async (eventId: string) => {
-    if (!confirm(t?.deleteConfirm?.[language] || 'Are you sure you want to delete this event?')) {
+    if (!confirm(t?.confirmDelete?.[language] || 'Are you sure you want to delete this event?')) {
       return;
     }
 
@@ -327,7 +327,7 @@ export default function HubCalendarPage() {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">{t?.title?.[language] || 'Calendar'}</h1>
               <p className="text-sm text-gray-500">
-                {events.length} {events.length !== 1 ? (t?.events?.[language] || 'events') : (t?.event?.[language] || 'event')} • {MONTHS[currentDate.getMonth()]}
+                {events.length} {events.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')} • {MONTHS[currentDate.getMonth()]}
               </p>
             </div>
           </div>
@@ -372,32 +372,32 @@ export default function HubCalendarPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{todayEvents.length}</p>
-            <p className="text-xs text-orange-600 font-medium mt-2">{todayEvents.length !== 1 ? (t?.events?.[language] || 'events') : (t?.event?.[language] || 'event')}</p>
+            <p className="text-xs text-orange-600 font-medium mt-2">{todayEvents.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')}</p>
           </motion.div>
 
-          {/* This Month Card - Purple Gradient */}
+          {/* This Month Card - Lavender Gradient (UI Accent) */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
-              boxShadow: '0 8px 24px rgba(139, 92, 246, 0.15)',
+              background: 'linear-gradient(135deg, #f5f0ff 0%, #ede5fe 100%)',
+              boxShadow: '0 8px 24px rgba(155, 123, 217, 0.15)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
+              style={{ background: '#9B7BD9' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-purple-700">{t?.thisMonth?.[language] || 'This month'}</span>
+              <span className="text-sm font-medium" style={{ color: '#7C5DB0' }}>{t?.thisMonth?.[language] || 'This month'}</span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
+                style={{ background: 'linear-gradient(135deg, #9B7BD9, #B89EE6)' }}
               >
                 <PartyPopper className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{events.length}</p>
-            <p className="text-xs text-purple-600 font-medium mt-2">{events.length !== 1 ? (t?.events?.[language] || 'events') : (t?.event?.[language] || 'event')}</p>
+            <p className="text-xs font-medium mt-2" style={{ color: '#7C5DB0' }}>{events.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')}</p>
           </motion.div>
 
           {/* Upcoming Card - Green Gradient */}
@@ -422,7 +422,7 @@ export default function HubCalendarPage() {
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">{upcomingEvents.length}</p>
-            <p className="text-xs text-green-600 font-medium mt-2">{upcomingEvents.length !== 1 ? (t?.events?.[language] || 'events') : (t?.event?.[language] || 'event')}</p>
+            <p className="text-xs text-green-600 font-medium mt-2">{upcomingEvents.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')}</p>
           </motion.div>
         </motion.div>
 
@@ -440,7 +440,7 @@ export default function HubCalendarPage() {
                 className="text-xs border-none text-white font-bold ml-2"
                 style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
               >
-                {events.length} {events.length !== 1 ? (t?.events?.[language] || 'events') : (t?.event?.[language] || 'event')}
+                {events.length} {events.length !== 1 ? (t?.eventPlural?.[language] || 'events') : (t?.eventSingular?.[language] || 'event')}
               </Badge>
             </h2>
 
@@ -632,8 +632,8 @@ export default function HubCalendarPage() {
                     <Sparkles className="w-5 h-5 text-amber-400" />
                   </motion.div>
                 </motion.div>
-                <p className="font-bold text-gray-900 mb-2 text-lg">{t?.noEventsPlanned?.[language] || 'No events planned'}</p>
-                <p className="text-sm text-gray-500">{t?.createFirstEvent?.[language] || 'Create your first event!'}</p>
+                <p className="font-bold text-gray-900 mb-2 text-lg">{t?.noEvents?.[language] || 'No events planned'}</p>
+                <p className="text-sm text-gray-500">{t?.createFirst?.[language] || 'Create your first event!'}</p>
               </motion.div>
             ) : (
               events
@@ -690,7 +690,7 @@ export default function HubCalendarPage() {
                           <Users className="w-3 h-3" style={{ color: '#e05747' }} />
                           {event.attendeeNames && event.attendeeNames.length > 0
                             ? event.attendeeNames.join(', ')
-                            : (t?.noParticipant?.[language] || 'No participants')}
+                            : (t?.noParticipants?.[language] || 'No participants')}
                         </span>
                       </div>
                     </div>

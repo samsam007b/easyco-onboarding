@@ -174,7 +174,7 @@ const EventCard = memo(function EventCard({
                   }}
                 >
                   <Sparkles className="w-3 h-3 mr-1" />
-                  Featured
+                  Recommandé
                 </Badge>
               </div>
             )}
