@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { ArrowRight, Calendar, Clock } from 'lucide-react';
+import { ArrowRight, Calendar, Clock, Zap, CalendarCheck, Handshake } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
 import { safeLocalStorage } from '@/lib/browser';
@@ -152,25 +152,25 @@ export default function QuickAvailabilityPage() {
     id: MoveInFlexibility;
     labelKey: string;
     descKey: string;
-    icon: string;
+    Icon: React.ComponentType<{ className?: string }>;
   }> = [
     {
       id: 'asap',
       labelKey: 'asap',
       descKey: 'asapDesc',
-      icon: '🏃',
+      Icon: Zap,
     },
     {
       id: 'exact',
       labelKey: 'exact',
       descKey: 'exactDesc',
-      icon: '📅',
+      Icon: CalendarCheck,
     },
     {
       id: 'flexible',
       labelKey: 'flexible',
       descKey: 'flexibleDesc',
-      icon: '🤝',
+      Icon: Handshake,
     },
   ];
 
@@ -215,7 +215,9 @@ export default function QuickAvailabilityPage() {
                 onClick={() => setMoveInFlexibility(option.id)}
               >
                 <div className="text-center">
-                  <div className="text-3xl mb-2">{option.icon}</div>
+                  <div className="flex justify-center mb-2">
+                    <option.Icon className="w-8 h-8 text-searcher-500" />
+                  </div>
                   <p className="font-semibold text-gray-900 mb-1 text-sm">{t(`quickOnboarding.availability.flexibility.${option.labelKey}`)}</p>
                   <p className="text-xs text-gray-600">{t(`quickOnboarding.availability.flexibility.${option.descKey}`)}</p>
                 </div>
