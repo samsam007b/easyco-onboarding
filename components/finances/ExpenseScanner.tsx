@@ -99,9 +99,9 @@ const CATEGORY_OPTIONS: Array<{
     value: 'internet',
     label: 'Internet',
     icon: Wifi,
-    color: 'from-owner-500 to-owner-600',
-    gradient: 'linear-gradient(135deg, #9c5698 0%, #8b4d87 100%)',
-    shadow: 'rgba(156, 86, 152, 0.4)',
+    color: 'from-purple-500 to-indigo-600',
+    gradient: 'linear-gradient(135deg, #a855f7 0%, #6366f1 100%)',
+    shadow: 'rgba(168, 85, 247, 0.4)',
   },
   {
     value: 'maintenance',
@@ -115,9 +115,9 @@ const CATEGORY_OPTIONS: Array<{
     value: 'other',
     label: 'Autre',
     icon: Package,
-    color: 'from-resident-500 to-resident-600',
-    gradient: 'linear-gradient(135deg, #e05747 0%, #d94839 100%)',
-    shadow: 'rgba(224, 87, 71, 0.4)',
+    color: 'from-pink-500 to-rose-600',
+    gradient: 'linear-gradient(135deg, #ec4899 0%, #e11d48 100%)',
+    shadow: 'rgba(236, 72, 153, 0.4)',
   },
 ];
 
