@@ -62,15 +62,15 @@ export default function ReferralsSettingsPage() {
   // Role-specific colors
   const getRoleColors = () => {
     if (userType === 'owner') return {
-      light: 'from-owner-50/30 via-white to-owner-100/20',
+      light: 'bg-owner-50/30',
       accent: 'owner',
     };
     if (userType === 'resident') return {
-      light: 'from-resident-50/30 via-white to-resident-100/20',
+      light: 'bg-resident-50/30',
       accent: 'resident',
     };
     return {
-      light: 'from-searcher-50 via-white to-searcher-100/30',
+      light: 'bg-searcher-50/30',
       accent: 'searcher',
     };
   };
@@ -89,7 +89,7 @@ export default function ReferralsSettingsPage() {
   }
 
   return (
-    <div className={cn("min-h-screen bg-gradient-to-br", colors.light)}>
+    <div className={cn("min-h-screen", colors.light)}>
       {/* Header */}
       <div className="relative">
         <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-white/30" />
