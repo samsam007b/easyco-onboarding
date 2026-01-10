@@ -173,8 +173,8 @@ export function InvitationCard({
           ) : (
             <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg ${
               isOwner
-                ? 'bg-gradient-to-br from-owner-500 to-owner-600'
-                : 'bg-gradient-to-br from-resident-400 to-resident-600'
+                ? 'bg-owner-500'
+                : 'bg-resident-500'
             }`}>
               {inviterName.charAt(0).toUpperCase()}
             </div>
@@ -245,8 +245,8 @@ export function InvitationCard({
             disabled={isLoading}
             className={`flex-1 superellipse-xl text-white ${
               isOwner
-                ? 'bg-gradient-to-r from-owner-500 to-owner-600 hover:from-owner-600 hover:to-owner-700'
-                : 'bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] hover:opacity-90'
+                ? 'bg-owner-500 hover:bg-owner-600'
+                : 'bg-resident-500 hover:bg-resident-600'
             }`}
           >
             <Check className="w-4 h-4 mr-2" />
