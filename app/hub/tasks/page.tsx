@@ -435,11 +435,11 @@ export default function ModernTasksPage() {
                       animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                     >
-                      <Sparkles className="w-5 h-5 text-white" />
+                      <Sparkles className="w-5 h-5 text-amber-400" />
                     </motion.div>
                   </motion.div>
-                  <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'Aucune tâche en cours'}</p>
-                  <p className="text-sm text-gray-500 mb-6">{hub.tasks?.emptyState?.description || 'Bravo, tout est terminé !'}</p>
+                  <p className="font-bold text-gray-900 mb-2 text-lg">{hub.tasks?.emptyState?.title || 'Aucune tâche en attente'}</p>
+                  <p className="text-sm text-gray-500 mb-6">{hub.tasks?.emptyState?.description || 'Tout est fait !'}</p>
 
                   {/* Explanatory notes for task rotation system */}
                   <motion.div
@@ -868,25 +868,29 @@ export default function ModernTasksPage() {
               </div>
 
               <div className="flex gap-3 pt-2">
-                <Button
-                  variant="outline"
-                  onClick={() => setShowCompleteModal(false)}
-                  className="flex-1 rounded-full border-2 border-gray-200 hover:border-gray-300 font-semibold"
-                >
-                  {hub.tasks?.modal?.cancel || 'Cancel'}
-                </Button>
-                <Button
-                  onClick={handleCompleteTask}
-                  disabled={isSubmitting}
-                  className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all font-semibold"
-                  style={{
-                    background: 'linear-gradient(135deg, #7CB89B 0%, #6BA888 100%)',
-                    boxShadow: '0 4px 16px rgba(124, 184, 155, 0.4)',
-                  }}
-                >
-                  <Check className="w-4 h-4 mr-2" />
-                  {isSubmitting ? (hub.tasks?.completeModal?.completing || 'Completing...') : (hub.tasks?.complete || 'Complete')}
-                </Button>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                  <Button
+                    variant="outline"
+                    onClick={() => setShowCompleteModal(false)}
+                    className="w-full superellipse-xl py-6 border-2 border-gray-200 hover:border-gray-300 font-semibold"
+                  >
+                    {hub.tasks?.modal?.cancel || 'Cancel'}
+                  </Button>
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                  <Button
+                    onClick={handleCompleteTask}
+                    disabled={isSubmitting}
+                    className="w-full superellipse-xl py-6 text-white border-none shadow-lg hover:shadow-xl transition-all font-semibold"
+                    style={{
+                      background: 'linear-gradient(135deg, #7CB89B 0%, #6BA888 100%)',
+                      boxShadow: '0 4px 16px rgba(124, 184, 155, 0.4)',
+                    }}
+                  >
+                    <Check className="w-4 h-4 mr-2" />
+                    {isSubmitting ? (hub.tasks?.completeModal?.completing || 'Completing...') : (hub.tasks?.complete || 'Complete')}
+                  </Button>
+                </motion.div>
               </div>
             </div>
           )}
