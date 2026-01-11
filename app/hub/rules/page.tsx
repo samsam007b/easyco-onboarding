@@ -275,11 +275,13 @@ export default function RulesPage() {
         {/* Header */}
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
           <Button
-            variant="outline"
+            variant="ghost"
             onClick={() => router.push('/hub')}
-            className="mb-4 rounded-full border-gray-200 hover:border-transparent"
-            style={{ color: '#e05747' }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+            className="mb-4 rounded-full font-semibold"
+            style={{
+              '--hover-bg': 'rgba(224, 87, 71, 0.1)',
+            } as React.CSSProperties}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
             ← {t?.backToHub?.[language] || 'Back to hub'}
@@ -287,127 +289,159 @@ export default function RulesPage() {
 
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 superellipse-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}>
-                <Vote className="w-7 h-7 text-white" />
-              </div>
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 superellipse-2xl flex items-center justify-center flex-shrink-0 shadow-lg"
+                style={{
+                  background: 'var(--gradient-resident-medium)',
+                  boxShadow: '0 8px 24px var(--resident-shadow)',
+                }}
+              >
+                <Vote className="w-6 h-6 text-white" />
+              </motion.div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h1 className="text-2xl font-bold text-gray-900">
                   {t?.title?.[language] || 'House rules'}
                 </h1>
-                <p className="text-gray-600">{t?.subtitle?.[language] || 'Create and vote on shared living rules'}</p>
+                <p className="text-sm text-gray-500">{t?.subtitle?.[language] || 'Create and vote on shared living rules'}</p>
               </div>
             </div>
 
-            <Button
-              onClick={() => setShowCreateModal(true)}
-              className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-              style={{ background: 'var(--resident-primary)' }}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              {t?.proposeRule?.[language] || 'Propose a rule'}
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={() => setShowCreateModal(true)}
+                size="sm"
+                className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
+                style={{
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 4px 14px var(--resident-shadow)',
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                {t?.proposeRule?.[language] || 'Propose a rule'}
+              </Button>
+            </motion.div>
           </div>
 
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {/* All Rules - Orange Gradient */}
             <motion.button
               onClick={() => setFilter('all')}
-              className="bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: filter === 'all' ? 'var(--gradient-resident-subtle)' : 'white',
+                boxShadow: filter === 'all' ? '0 8px 24px var(--resident-shadow)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.all?.[language] || 'All'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {(stats?.total_active || 0) +
-                      (stats?.total_voting || 0) +
-                      (stats?.total_rejected || 0)}
-                  </p>
-                </div>
-                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}>
-                  <Vote className="w-6 h-6 text-white" />
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'var(--gradient-resident-medium)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.all?.[language] || 'All'}</span>
+                <div
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'var(--gradient-resident-medium)' }}
+                >
+                  <Vote className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">
+                {(stats?.total_active || 0) +
+                  (stats?.total_voting || 0) +
+                  (stats?.total_rejected || 0)}
+              </p>
+              <p className="text-xs font-medium mt-2" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.rulesLabel?.[language] || 'rules'}</p>
             </motion.button>
 
+            {/* Voting - Lavender (UI Accent) */}
             <motion.button
               onClick={() => setFilter('voting')}
-              className="bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: filter === 'voting' ? 'linear-gradient(135deg, #f5f0ff 0%, #ede5fe 100%)' : 'white',
+                boxShadow: filter === 'voting' ? '0 8px 24px rgba(155, 123, 217, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.voting?.[language] || 'Voting'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.total_voting || 0}
-                  </p>
-                </div>
-                <div className="w-12 h-12 superellipse-xl flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}>
-                  <Clock className="w-6 h-6 text-white" />
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'linear-gradient(135deg, #9B7BD9, #B89EE6)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium" style={{ color: '#7C5DB0' }}>{t?.stats?.voting?.[language] || 'Voting'}</span>
+                <div
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #9B7BD9, #B89EE6)' }}
+                >
+                  <Clock className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats?.total_voting || 0}
+              </p>
+              <p className="text-xs font-medium mt-2" style={{ color: '#7C5DB0' }}>{t?.stats?.inVoting?.[language] || 'in voting'}</p>
             </motion.button>
 
-            {/* Active - V3 Green Pastel */}
+            {/* Active - Sage Green (UI Accent) */}
             <motion.button
               onClick={() => setFilter('active')}
               className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               style={{
-                background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)',
+                background: filter === 'active' ? 'linear-gradient(135deg, #f0f9f5 0%, #e5f5ed 100%)' : 'white',
                 boxShadow: filter === 'active' ? '0 8px 24px rgba(124, 184, 155, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
               }}
-              whileHover={{ scale: 1.02, y: -2 }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-20"
-                style={{ background: 'linear-gradient(135deg, #7CB89B, #9FCFB5)' }}
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'linear-gradient(135deg, #7CB89B, #9DCDB4)' }}
               />
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-[#5A9A7A]">{t?.stats?.active?.[language] || 'Active'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.total_active || 0}
-                  </p>
-                </div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium" style={{ color: '#5A9278' }}>{t?.stats?.active?.[language] || 'Active'}</span>
                 <div
-                  className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #7CB89B 0%, #9FCFB5 100%)' }}
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #7CB89B, #9DCDB4)' }}
                 >
-                  <CheckCircle className="w-6 h-6 text-white" />
+                  <CheckCircle className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats?.total_active || 0}
+              </p>
+              <p className="text-xs font-medium mt-2" style={{ color: '#5A9278' }}>{t?.stats?.activeLabel?.[language] || 'in effect'}</p>
             </motion.button>
 
-            {/* Rejected - V3 Red Pastel */}
+            {/* Rejected - Dusty Rose (UI Accent) */}
             <motion.button
               onClick={() => setFilter('rejected')}
               className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
               style={{
-                background: 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)',
+                background: filter === 'rejected' ? 'linear-gradient(135deg, #FDF5F5 0%, #FAE8E8 100%)' : 'white',
                 boxShadow: filter === 'rejected' ? '0 8px 24px rgba(208, 128, 128, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
               }}
-              whileHover={{ scale: 1.02, y: -2 }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-20"
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
                 style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
               />
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-[#B06060]">{t?.stats?.rejected?.[language] || 'Rejected'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.total_rejected || 0}
-                  </p>
-                </div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium" style={{ color: '#B06060' }}>{t?.stats?.rejected?.[language] || 'Rejected'}</span>
                 <div
-                  className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #D08080 0%, #E0A0A0 100%)' }}
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #D08080, #E0A0A0)' }}
                 >
-                  <XCircle className="w-6 h-6 text-white" />
+                  <XCircle className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">
+                {stats?.total_rejected || 0}
+              </p>
+              <p className="text-xs font-medium mt-2" style={{ color: '#B06060' }}>{t?.stats?.rejectedLabel?.[language] || 'declined'}</p>
             </motion.button>
           </div>
         </motion.div>
@@ -423,42 +457,21 @@ export default function RulesPage() {
             >
               {/* V3 Fun Icon with Glow */}
               <motion.div
-                whileHover={{ scale: 1.05, rotate: 3 }}
-                className="relative w-24 h-24 mx-auto mb-6"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-6"
+                style={{
+                  background: 'var(--gradient-resident-medium)',
+                  boxShadow: '0 8px 24px var(--resident-shadow)',
+                }}
               >
-                {/* Glow effect */}
-                <motion.div
-                  className="absolute inset-0 superellipse-2xl opacity-30"
-                  style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    filter: 'blur(20px)',
-                  }}
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-                />
-                {/* Main icon container */}
-                <div
-                  className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
-                  style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
-                  }}
-                >
-                  <Vote className="w-12 h-12 text-white" />
-                  {/* Shine effect */}
-                  <motion.div
-                    className="absolute inset-0 superellipse-2xl bg-white/20"
-                    animate={{ opacity: [0, 0.3, 0] }}
-                    transition={{ repeat: Infinity, duration: 2.5 }}
-                  />
-                </div>
+                <Vote className="w-10 h-10 text-white" />
                 {/* Floating sparkle */}
                 <motion.div
-                  className="absolute -top-2 -right-2"
-                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+                  className="absolute -top-1 -right-1"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
                 >
-                  <Sparkles className="w-6 h-6 text-amber-400" />
+                  <Sparkles className="w-5 h-5 text-amber-400" />
                 </motion.div>
               </motion.div>
 
@@ -649,32 +662,41 @@ export default function RulesPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative border-2 border-orange-100"
-            style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
+            className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative"
+            style={{
+              boxShadow: '0 25px 80px var(--resident-shadow)',
+              border: '2px solid rgba(224, 87, 71, 0.2)',
+            }}
           >
             {/* Decorative gradient circles */}
             <div
-              className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)', transform: 'translate(30%, -30%)' }}
+              className="absolute -right-16 -top-16 w-48 h-48 rounded-full opacity-20 pointer-events-none"
+              style={{ background: 'var(--gradient-resident-medium)' }}
             />
             <div
-              className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-8 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)', transform: 'translate(-30%, 30%)' }}
+              className="absolute -left-12 -bottom-12 w-32 h-32 rounded-full opacity-15 pointer-events-none"
+              style={{ background: 'var(--gradient-resident-medium)' }}
             />
 
             {/* Scrollable content */}
             <div className="max-h-[90vh] overflow-y-auto">
               {/* Header - V3 Fun gradient */}
               <div
-                className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 flex items-center justify-between z-30"
-                style={{ background: '#FFF5F0' }}
+                className="sticky top-0 px-6 py-5 flex items-center justify-between z-30"
+                style={{
+                  background: 'var(--gradient-resident-subtle)',
+                  borderBottom: '2px solid rgba(224, 87, 71, 0.2)',
+                }}
               >
                 <div className="flex items-center gap-4">
                   <motion.div
                     animate={{ scale: [1, 1.05, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                     className="w-12 h-12 superellipse-xl flex items-center justify-center"
-                    style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)', boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)' }}
+                    style={{
+                      background: 'var(--gradient-resident-medium)',
+                      boxShadow: '0 8px 24px var(--resident-shadow)',
+                    }}
                   >
                     <Vote className="w-6 h-6 text-white" />
                   </motion.div>
@@ -683,22 +705,22 @@ export default function RulesPage() {
                       {t?.createModal?.title?.[language] || 'Propose a rule'}
                     </h2>
                     <p className="text-sm text-gray-500 flex items-center gap-1">
-                      <Sparkles className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                      <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                       {t?.createModal?.subtitle?.[language] || 'Create a rule for your coliving'}
                     </p>
                   </div>
                 </div>
                 <motion.button
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => {
                     setShowCreateModal(false);
                     resetCreateForm();
                   }}
                   className="p-2.5 superellipse-xl transition-colors"
-                  style={{ background: 'rgba(255, 101, 30, 0.1)' }}
+                  style={{ background: 'rgba(224, 87, 71, 0.1)' }}
                 >
-                  <X className="w-5 h-5" style={{ color: '#e05747' }} />
+                  <X className="w-5 h-5" style={{ color: 'var(--resident-primary)' }} />
                 </motion.button>
               </div>
 
@@ -709,9 +731,9 @@ export default function RulesPage() {
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
                     <div
                       className="w-6 h-6 superellipse-lg flex items-center justify-center"
-                      style={{ background: 'rgba(255, 101, 30, 0.15)' }}
+                      style={{ background: 'rgba(224, 87, 71, 0.15)' }}
                     >
-                      <MessageSquare className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                      <MessageSquare className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                     </div>
                     {t?.createModal?.ruleTitle?.[language] || 'Title'} *
                   </Label>
@@ -920,38 +942,43 @@ export default function RulesPage() {
 
             {/* Actions */}
             <div className="flex gap-3 mt-6">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowVoteModal(false);
-                  resetVoteModal();
-                }}
-                className="flex-1 rounded-full border-gray-200 hover:border-transparent"
-                style={{ color: '#e05747' }}
-                onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
-                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
-                disabled={isVoting}
-              >
-                {t?.voteModal?.cancel?.[language] || 'Cancel'}
-              </Button>
-              <Button
-                onClick={handleVote}
-                disabled={isVoting || !selectedVote}
-                className="flex-1 rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-                style={{ background: 'var(--resident-primary)' }}
-              >
-                {isVoting ? (
-                  <>
-                    <LoadingHouse size={20} className="mr-2" />
-                    {t?.voteModal?.voting?.[language] || 'Voting...'}
-                  </>
-                ) : (
-                  <>
-                    <Vote className="w-4 h-4 mr-2" />
-                    {t?.voteModal?.confirm?.[language] || 'Confirm my vote'}
-                  </>
-                )}
-              </Button>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowVoteModal(false);
+                    resetVoteModal();
+                  }}
+                  className="w-full superellipse-2xl py-6 font-semibold border-2 transition-all"
+                  style={{ borderColor: 'rgba(224, 87, 71, 0.3)', color: 'var(--resident-primary)' }}
+                  disabled={isVoting}
+                >
+                  {t?.voteModal?.cancel?.[language] || 'Cancel'}
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  onClick={handleVote}
+                  disabled={isVoting || !selectedVote}
+                  className="w-full superellipse-2xl py-6 font-bold text-white border-none"
+                  style={{
+                    background: 'var(--resident-primary)',
+                    boxShadow: '0 12px 32px var(--resident-shadow)',
+                  }}
+                >
+                  {isVoting ? (
+                    <>
+                      <LoadingHouse size={20} className="mr-2" />
+                      {t?.voteModal?.voting?.[language] || 'Voting...'}
+                    </>
+                  ) : (
+                    <>
+                      <Vote className="w-4 h-4 mr-2" />
+                      {t?.voteModal?.confirm?.[language] || 'Confirm my vote'}
+                    </>
+                  )}
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         </div>

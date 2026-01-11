@@ -263,92 +263,112 @@ export default function DocumentsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+        {/* Header - V3 Fun Design */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+          className="mb-8"
+        >
           <Button
-            variant="outline"
             onClick={() => router.push('/hub')}
-            className="mb-4 rounded-full border-gray-200 hover:border-transparent"
-            style={{ color: '#e05747' }}
-            onMouseEnter={(e) => e.currentTarget.style.background = 'linear-gradient(135deg, rgba(217, 87, 79, 0.08) 0%, rgba(255, 128, 23, 0.08) 100%)'}
+            variant="ghost"
+            className="mb-4 rounded-full font-semibold"
+            style={{
+              '--hover-bg': 'rgba(224, 87, 71, 0.1)',
+            } as React.CSSProperties}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
             onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
             ← {t?.backToHub?.[language] || 'Back to hub'}
           </Button>
 
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-14 h-14 superellipse-2xl flex items-center justify-center flex-shrink-0" style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}>
-                <FolderOpen className="w-7 h-7 text-white" />
-              </div>
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
+                style={{
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 8px 24px var(--resident-shadow)',
+                }}
+              >
+                <FolderOpen className="w-6 h-6 text-white" />
+              </motion.div>
               <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+                <h1 className="text-2xl font-bold text-gray-900">
                   {t?.title?.[language] || 'Document vault'}
                 </h1>
-                <p className="text-gray-600">{t?.subtitle?.[language] || 'Store and share your important documents'}</p>
+                <p className="text-sm text-gray-500">{t?.subtitle?.[language] || 'Store and share your important documents'}</p>
               </div>
             </div>
 
-            <Button
-              onClick={() => setShowUploadModal(true)}
-              className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              {t?.uploadDocument?.[language] || 'Upload document'}
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={() => setShowUploadModal(true)}
+                className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
+                style={{
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 4px 16px var(--resident-shadow)',
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                {t?.uploadDocument?.[language] || 'Upload document'}
+              </Button>
+            </motion.div>
           </div>
 
-          {/* Stats Cards - V3 Option C Fun Design */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {/* Total Documents - Orange Gradient */}
+          {/* Stats Cards - V3 Fun Design with CSS Variables */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+            {/* Total Documents - Resident Orange */}
             <motion.div
               whileHover={{ scale: 1.03, y: -4 }}
               className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #fff5f3 0%, #ffe8e0 100%)',
-                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
+                background: 'var(--gradient-resident-subtle)',
+                boxShadow: '0 8px 24px var(--resident-shadow)',
               }}
             >
               <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-                style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+                style={{ background: 'var(--resident-primary)' }}
               />
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-orange-700">{t?.stats?.totalDocuments?.[language] || 'Total Documents'}</span>
+                <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.totalDocuments?.[language] || 'Total Documents'}</span>
                 <div
-                  className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'var(--resident-primary)' }}
                 >
-                  <FileText className="w-5 h-5 text-white" />
+                  <FileText className="w-4 h-4 text-white" />
                 </div>
               </div>
               <p className="text-2xl font-bold text-gray-900">{stats?.total_documents || 0}</p>
-              <p className="text-xs text-orange-600 font-medium mt-2">{t?.stats?.documentsLabel?.[language] || 'documents'}</p>
+              <p className="text-xs font-medium mt-1" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.documentsLabel?.[language] || 'documents'}</p>
             </motion.div>
 
-            {/* Storage Used - Orange Gradient Variant */}
+            {/* Storage Used - Resident Orange Variant */}
             <motion.div
               whileHover={{ scale: 1.03, y: -4 }}
               className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #fff5f3 0%, #ffede5 100%)',
-                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.12)',
+                background: 'var(--gradient-resident-subtle)',
+                boxShadow: '0 8px 24px var(--resident-shadow)',
               }}
             >
-              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-15"
-                style={{ background: 'linear-gradient(135deg, #e05747, #e05747)' }}
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'var(--gradient-resident-medium)' }}
               />
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-medium text-orange-600">{t?.stats?.storageUsed?.[language] || 'Storage used'}</span>
+                <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.storageUsed?.[language] || 'Storage used'}</span>
                 <div
-                  className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'var(--gradient-resident-medium)' }}
                 >
-                  <FolderOpen className="w-5 h-5 text-white" />
+                  <FolderOpen className="w-4 h-4 text-white" />
                 </div>
               </div>
               <p className="text-2xl font-bold text-gray-900">{formatFileSize(stats?.total_size_bytes)}</p>
-              <p className="text-xs text-orange-500 font-medium mt-2">{t?.stats?.usedLabel?.[language] || 'used'}</p>
+              <p className="text-xs font-medium mt-1" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.usedLabel?.[language] || 'used'}</p>
             </motion.div>
 
             {/* Expiring Soon - Amber Pastel (Semantic Warning) */}
@@ -410,7 +430,7 @@ export default function DocumentsPage() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder={t?.searchPlaceholder?.[language] || 'Search for a document...'}
-                className="pl-10 rounded-full"
+                className="pl-10 superellipse-xl"
               />
             </div>
 
@@ -419,8 +439,8 @@ export default function DocumentsPage() {
                 size="sm"
                 variant={filterCategory === 'all' ? 'default' : 'outline'}
                 onClick={() => setFilterCategory('all')}
-                className="rounded-full flex-shrink-0 text-white border-none"
-                style={filterCategory === 'all' ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
+                className="superellipse-xl flex-shrink-0 text-white border-none"
+                style={filterCategory === 'all' ? { background: 'var(--resident-primary)' } : undefined}
               >
                 {t?.filters?.all?.[language] || 'All'}
               </Button>
@@ -432,8 +452,8 @@ export default function DocumentsPage() {
                     size="sm"
                     variant={filterCategory === cat.value ? 'default' : 'outline'}
                     onClick={() => setFilterCategory(cat.value)}
-                    className="rounded-full flex-shrink-0 text-white border-none"
-                    style={filterCategory === cat.value ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
+                    className="superellipse-xl flex-shrink-0 text-white border-none"
+                    style={filterCategory === cat.value ? { background: 'var(--resident-primary)' } : undefined}
                   >
                     <Icon className="w-4 h-4 mr-1" />
                     {cat.label}
@@ -455,42 +475,20 @@ export default function DocumentsPage() {
             >
               {/* V3 Fun Icon with Glow */}
               <motion.div
-                whileHover={{ scale: 1.05, rotate: 3 }}
-                className="relative w-24 h-24 mx-auto mb-6"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
+                style={{
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 8px 24px var(--resident-shadow)',
+                }}
               >
-                {/* Glow effect */}
+                <FileText className="w-10 h-10 text-white" />
                 <motion.div
-                  className="absolute inset-0 superellipse-2xl opacity-30"
-                  style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    filter: 'blur(20px)',
-                  }}
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-                />
-                {/* Main icon container */}
-                <div
-                  className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
-                  style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
-                  }}
+                  className="absolute -top-1 -right-1"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
                 >
-                  <FileText className="w-12 h-12 text-white" />
-                  {/* Shine effect */}
-                  <motion.div
-                    className="absolute inset-0 superellipse-2xl bg-white/20"
-                    animate={{ opacity: [0, 0.3, 0] }}
-                    transition={{ repeat: Infinity, duration: 2.5 }}
-                  />
-                </div>
-                {/* Floating sparkle */}
-                <motion.div
-                  className="absolute -top-2 -right-2"
-                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                >
-                  <Sparkles className="w-6 h-6 text-amber-400" />
+                  <Sparkles className="w-5 h-5" style={{ color: 'var(--searcher-primary)' }} />
                 </motion.div>
               </motion.div>
 
@@ -500,10 +498,10 @@ export default function DocumentsPage() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => setShowUploadModal(true)}
-                  className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                  className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                    background: 'var(--resident-primary)',
+                    boxShadow: '0 4px 16px var(--resident-shadow)',
                   }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -597,26 +595,25 @@ export default function DocumentsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative border-2 border-orange-100"
-            style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
+            className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative"
+            style={{ boxShadow: '0 25px 80px var(--resident-shadow)' }}
           >
             {/* Decorative gradient circles */}
             <div className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)', transform: 'translate(30%, -30%)' }} />
+              style={{ background: 'var(--gradient-resident-medium)', transform: 'translate(30%, -30%)' }} />
             <div className="absolute left-0 bottom-0 w-24 h-24 rounded-full opacity-10 pointer-events-none"
-              style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)', transform: 'translate(-30%, 30%)' }} />
+              style={{ background: 'var(--gradient-resident-medium)', transform: 'translate(-30%, 30%)' }} />
 
             {/* Scrollable content wrapper */}
             <div className="max-h-[90vh] overflow-y-auto">
               {/* Header - V3 Fun gradient */}
-              <div className="sticky top-0 border-b-2 border-orange-100 px-6 py-5 z-30" style={{ background: '#FFF5F0' }}>
+              <div className="sticky top-0 border-b px-6 py-5 z-30" style={{ background: 'var(--resident-50)', borderColor: 'var(--resident-100)' }}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
                     <motion.div
-                      animate={{ scale: [1, 1.05, 1] }}
-                      transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                      className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-lg"
-                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
+                      whileHover={{ scale: 1.1, rotate: 5 }}
+                      className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
+                      style={{ background: 'var(--resident-primary)', boxShadow: '0 8px 24px var(--resident-shadow)' }}
                     >
                       <Upload className="w-6 h-6 text-white" />
                     </motion.div>
@@ -625,7 +622,7 @@ export default function DocumentsPage() {
                         {t?.uploadModal?.title?.[language] || 'Upload a document'}
                       </h2>
                       <p className="text-sm text-gray-500 flex items-center gap-1">
-                        <Sparkles className="w-3 h-3" style={{ color: '#e05747' }} />
+                        <Sparkles className="w-3 h-3" style={{ color: 'var(--resident-primary)' }} />
                         {t?.uploadModal?.subtitle?.[language] || 'Add a new file'}
                       </p>
                     </div>
@@ -635,7 +632,10 @@ export default function DocumentsPage() {
                       setShowUploadModal(false);
                       resetUploadForm();
                     }}
-                    className="w-10 h-10 superellipse-xl flex items-center justify-center hover:bg-orange-100 transition-colors"
+                    className="w-10 h-10 superellipse-xl flex items-center justify-center transition-colors"
+                    style={{ '--hover-bg': 'var(--resident-100)' } as React.CSSProperties}
+                    onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
+                    onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                   >
                     <X className="w-5 h-5 text-gray-500" />
                   </button>
@@ -647,8 +647,8 @@ export default function DocumentsPage() {
                 {/* File Upload Zone */}
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <FileText className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(224, 87, 71, 0.1)' }}>
+                      <FileText className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                     </div>
                     {t?.uploadModal?.file?.[language] || 'File'} *
                   </Label>
@@ -659,7 +659,7 @@ export default function DocumentsPage() {
                     onDrop={handleDrop}
                     className={cn(
                       'border-2 border-dashed superellipse-2xl p-8 text-center transition-all cursor-pointer',
-                      dragActive ? 'bg-orange-50 border-orange-300' : 'border-gray-200 hover:border-orange-200'
+                      dragActive ? 'bg-[var(--resident-50)] border-[var(--resident-300)]' : 'border-gray-200 hover:border-[var(--resident-200)]'
                     )}
                   >
                     {selectedFile ? (
@@ -674,7 +674,7 @@ export default function DocumentsPage() {
                             e.stopPropagation();
                             setSelectedFile(null);
                           }}
-                          className="rounded-full border-2 border-orange-200 hover:border-orange-400"
+                          className="rounded-full border-2 border-[var(--resident-200)] hover:border-[var(--resident-400)]"
                         >
                           {t?.uploadModal?.changeFile?.[language] || 'Change file'}
                         </Button>
@@ -682,7 +682,7 @@ export default function DocumentsPage() {
                     ) : (
                       <label className="cursor-pointer">
                         <div className="w-16 h-16 mx-auto mb-3 superellipse-2xl flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.1)' }}>
-                          <Upload className="w-8 h-8" style={{ color: '#e05747' }} />
+                          <Upload className="w-8 h-8" style={{ color: 'var(--resident-primary)' }} />
                         </div>
                         <p className="text-gray-600 mb-1 font-medium">
                           {t?.uploadModal?.dragDropText?.[language] || 'Drag a file here or click to select'}
@@ -702,8 +702,8 @@ export default function DocumentsPage() {
                 {/* Title */}
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <ScrollText className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(224, 87, 71, 0.1)' }}>
+                      <ScrollText className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                     </div>
                     {t?.uploadModal?.docTitle?.[language] || 'Title'} *
                   </Label>
@@ -711,15 +711,15 @@ export default function DocumentsPage() {
                     value={uploadForm.title}
                     onChange={(e) => setUploadForm({ ...uploadForm, title: e.target.value })}
                     placeholder={t?.uploadModal?.titlePlaceholder?.[language] || 'E.g.: Lease agreement 2024'}
-                    className="superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors"
+                    className="superellipse-2xl border-2 border-gray-200 hover:border-[var(--resident-200)] focus:border-[var(--resident-400)] transition-colors"
                   />
                 </div>
 
                 {/* Description */}
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <FileSignature className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(224, 87, 71, 0.1)' }}>
+                      <FileSignature className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                     </div>
                     {t?.uploadModal?.description?.[language] || 'Description (optional)'}
                   </Label>
@@ -727,15 +727,15 @@ export default function DocumentsPage() {
                     value={uploadForm.description}
                     onChange={(e) => setUploadForm({ ...uploadForm, description: e.target.value })}
                     placeholder={t?.uploadModal?.descriptionPlaceholder?.[language] || 'Add details about this document...'}
-                    className="superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors min-h-[80px]"
+                    className="superellipse-2xl border-2 border-gray-200 hover:border-[var(--resident-200)] focus:border-[var(--resident-400)] transition-colors min-h-[80px]"
                   />
                 </div>
 
                 {/* Category */}
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <FolderOpen className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(224, 87, 71, 0.1)' }}>
+                      <FolderOpen className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                     </div>
                     {t?.uploadModal?.category?.[language] || 'Category'} *
                   </Label>
@@ -749,12 +749,12 @@ export default function DocumentsPage() {
                           className={cn(
                             'p-3 superellipse-2xl border-2 text-center transition-all',
                             uploadForm.category === cat.value
-                              ? 'bg-orange-50 border-orange-400'
-                              : 'border-gray-200 hover:border-orange-200'
+                              ? 'bg-[var(--resident-50)] border-[var(--resident-400)]'
+                              : 'border-gray-200 hover:border-[var(--resident-200)]'
                           )}
                         >
                           <div className="mb-1 flex items-center justify-center">
-                            <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[#e05747]" : "text-gray-500")} />
+                            <Icon className={cn("w-6 h-6", uploadForm.category === cat.value ? "text-[var(--resident-primary)]" : "text-gray-500")} />
                           </div>
                           <div className="text-xs font-medium text-gray-700">{cat.label}</div>
                         </button>
@@ -766,8 +766,8 @@ export default function DocumentsPage() {
                 {/* Expiration Date */}
                 <div>
                   <Label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                      <Calendar className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                    <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(224, 87, 71, 0.1)' }}>
+                      <Calendar className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                     </div>
                     {t?.uploadModal?.expirationDate?.[language] || 'Expiration date (optional)'}
                   </Label>
@@ -775,14 +775,14 @@ export default function DocumentsPage() {
                     type="date"
                     value={uploadForm.expires_at || ''}
                     onChange={(e) => setUploadForm({ ...uploadForm, expires_at: e.target.value })}
-                    className="superellipse-2xl border-2 border-gray-200 hover:border-orange-200 focus:border-orange-400 transition-colors"
+                    className="superellipse-2xl border-2 border-gray-200 hover:border-[var(--resident-200)] focus:border-[var(--resident-400)] transition-colors"
                   />
                 </div>
 
                 {/* Private Toggle */}
                 <div className="flex items-center gap-3 p-4 superellipse-2xl bg-gray-50 border-2 border-gray-100">
-                  <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(255, 101, 30, 0.15)' }}>
-                    <Shield className="w-3.5 h-3.5" style={{ color: '#e05747' }} />
+                  <div className="w-6 h-6 superellipse-lg flex items-center justify-center" style={{ background: 'rgba(224, 87, 71, 0.1)' }}>
+                    <Shield className="w-3.5 h-3.5" style={{ color: 'var(--resident-primary)' }} />
                   </div>
                   <div className="flex-1">
                     <Label htmlFor="is_private" className="cursor-pointer font-semibold text-gray-700">
@@ -799,14 +799,14 @@ export default function DocumentsPage() {
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all"
-                      style={uploadForm.is_private ? { background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' } : undefined}
+                      style={uploadForm.is_private ? { background: 'var(--resident-primary)' } : undefined}
                     ></div>
                   </label>
                 </div>
               </div>
 
               {/* Actions - Sticky Footer */}
-              <div className="sticky bottom-0 border-t-2 border-orange-100 px-6 py-4 bg-white">
+              <div className="sticky bottom-0 border-t px-6 py-4 bg-white" style={{ borderColor: 'var(--resident-100)' }}>
                 <div className="flex gap-3">
                   <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                     <Button
@@ -815,7 +815,7 @@ export default function DocumentsPage() {
                         setShowUploadModal(false);
                         resetUploadForm();
                       }}
-                      className="w-full superellipse-2xl py-6 font-bold border-2 border-gray-200 hover:border-orange-200"
+                      className="w-full superellipse-xl py-6 font-semibold border-2 border-gray-200 hover:border-[var(--resident-200)]"
                       disabled={isUploading}
                     >
                       {t?.uploadModal?.cancel?.[language] || 'Cancel'}
@@ -825,8 +825,8 @@ export default function DocumentsPage() {
                     <Button
                       onClick={handleUpload}
                       disabled={isUploading || !selectedFile || !uploadForm.title}
-                      className="w-full superellipse-2xl py-6 font-bold text-white border-none shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
-                      style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
+                      className="w-full superellipse-xl py-6 font-semibold text-white border-none shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                      style={{ background: 'var(--resident-primary)' }}
                     >
                       {isUploading ? (
                         <>
@@ -854,18 +854,22 @@ export default function DocumentsPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white superellipse-3xl shadow-2xl max-w-2xl w-full p-6"
+            className="bg-white superellipse-3xl max-w-2xl w-full p-6"
+            style={{ boxShadow: '0 25px 80px var(--resident-shadow)' }}
           >
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t?.viewModal?.title?.[language] || 'Document details'}</h2>
+              <h2 className="text-xl font-bold text-gray-900">{t?.viewModal?.title?.[language] || 'Document details'}</h2>
               <button
                 onClick={() => {
                   setShowViewModal(false);
                   setSelectedDocument(null);
                 }}
-                className="text-gray-400 hover:text-gray-600"
+                className="w-10 h-10 superellipse-xl flex items-center justify-center transition-colors"
+                style={{ '--hover-bg': 'var(--resident-100)' } as React.CSSProperties}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5 text-gray-500" />
               </button>
             </div>
 
@@ -937,22 +941,27 @@ export default function DocumentsPage() {
 
             {/* Actions */}
             <div className="flex gap-3 mt-6">
-              <Button
-                onClick={() => window.open(selectedDocument.file_url, '_blank')}
-                className="flex-1 rounded-full"
-                variant="outline"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                {t?.viewModal?.download?.[language] || 'Download'}
-              </Button>
-              {selectedDocument.uploaded_by === userId && (
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
                 <Button
-                  onClick={() => handleDelete(selectedDocument.id)}
-                  className="flex-1 rounded-full bg-red-500 hover:bg-red-600 text-white"
+                  onClick={() => window.open(selectedDocument.file_url, '_blank')}
+                  className="w-full superellipse-xl font-semibold"
+                  variant="outline"
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
-                  {t?.viewModal?.delete?.[language] || 'Delete'}
+                  <Download className="w-4 h-4 mr-2" />
+                  {t?.viewModal?.download?.[language] || 'Download'}
                 </Button>
+              </motion.div>
+              {selectedDocument.uploaded_by === userId && (
+                <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                  <Button
+                    onClick={() => handleDelete(selectedDocument.id)}
+                    className="w-full superellipse-xl font-semibold text-white"
+                    style={{ background: '#D08080' }}
+                  >
+                    <Trash2 className="w-4 h-4 mr-2" />
+                    {t?.viewModal?.delete?.[language] || 'Delete'}
+                  </Button>
+                </motion.div>
               )}
             </div>
           </motion.div>

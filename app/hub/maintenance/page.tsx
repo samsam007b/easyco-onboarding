@@ -247,62 +247,92 @@ export default function MaintenancePage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-orange-50/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Header */}
+        {/* Header - V3 Fun Design */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ type: 'spring', stiffness: 300, damping: 25 }}
           className="mb-8"
         >
           <Button
             onClick={() => router.back()}
             variant="ghost"
-            className="mb-4 rounded-full"
+            className="mb-4 rounded-full font-semibold"
+            style={{
+              '--hover-bg': 'rgba(224, 87, 71, 0.1)',
+            } as React.CSSProperties}
+            onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
+            onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
           >
             ← {t?.backToHub?.[language] || 'Back to hub'}
           </Button>
 
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-                {t?.title?.[language] || 'Maintenance'}
-              </h1>
-              <p className="text-gray-600">{t?.subtitle?.[language] || 'Report and track technical issues'}</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <motion.div
+                whileHover={{ scale: 1.1, rotate: 5 }}
+                whileTap={{ scale: 0.95 }}
+                className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
+                style={{
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 8px 24px var(--resident-shadow)',
+                }}
+              >
+                <Wrench className="w-6 h-6 text-white" />
+              </motion.div>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">
+                  {t?.title?.[language] || 'Maintenance'}
+                </h1>
+                <p className="text-sm text-gray-500">{t?.subtitle?.[language] || 'Report and track technical issues'}</p>
+              </div>
             </div>
 
-            <Button
-              onClick={() => setShowCreateModal(true)}
-              className="rounded-full bg-gradient-to-r from-[#e05747] via-[#e05747] to-[#e05747] hover:opacity-90"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              {t?.newTicket?.[language] || 'New ticket'}
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button
+                onClick={() => setShowCreateModal(true)}
+                className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
+                style={{
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 4px 16px var(--resident-shadow)',
+                }}
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                {t?.newTicket?.[language] || 'New ticket'}
+              </Button>
+            </motion.div>
           </div>
 
-          {/* Stats Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {/* Stats Cards - V3 Fun Design */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mt-6">
+            {/* Total - Resident Orange */}
             <motion.button
               onClick={() => setFilter('all')}
-              className={cn(
-                'bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'all' && 'ring-2 ring-resident-500'
-              )}
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: filter === 'all' ? 'var(--gradient-resident-subtle)' : 'white',
+                boxShadow: filter === 'all' ? '0 8px 24px var(--resident-shadow)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.total?.[language] || 'Total'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.total_requests || 0}
-                  </p>
-                </div>
-                <div className="w-12 h-12 superellipse-xl bg-resident-100 flex items-center justify-center">
-                  <Wrench className="w-6 h-6 text-resident-700" />
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'var(--resident-primary)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.total?.[language] || 'Total'}</span>
+                <div
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'var(--resident-primary)' }}
+                >
+                  <Wrench className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stats?.total_requests || 0}</p>
+              <p className="text-xs font-medium mt-1" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.tickets?.[language] || 'tickets'}</p>
             </motion.button>
 
-            {/* Open - V3 Amber Pastel */}
+            {/* Open - Amber Pastel (Semantic Warning) */}
             <motion.button
               onClick={() => setFilter('open')}
               className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
@@ -310,70 +340,77 @@ export default function MaintenancePage() {
                 background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
                 boxShadow: filter === 'open' ? '0 8px 24px rgba(217, 119, 6, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
               }}
-              whileHover={{ scale: 1.02, y: -2 }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="absolute -right-4 -top-4 w-16 h-16 rounded-full opacity-20"
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
                 style={{ background: 'linear-gradient(135deg, #D97706, #F59E0B)' }}
               />
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-amber-700">{t?.stats?.open?.[language] || 'Open'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.open_count || 0}
-                  </p>
-                </div>
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-amber-700">{t?.stats?.open?.[language] || 'Open'}</span>
                 <div
-                  className="w-12 h-12 superellipse-xl flex items-center justify-center shadow-md"
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
                   style={{ background: 'linear-gradient(135deg, #D97706 0%, #F59E0B 100%)' }}
                 >
-                  <AlertCircle className="w-6 h-6 text-white" />
+                  <AlertCircle className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stats?.open_count || 0}</p>
+              <p className="text-xs font-medium text-amber-600 mt-1">{t?.stats?.awaitingAction?.[language] || 'awaiting action'}</p>
             </motion.button>
 
+            {/* In Progress - Resident Orange */}
             <motion.button
               onClick={() => setFilter('in_progress')}
-              className={cn(
-                'bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'in_progress' && 'ring-2 ring-[#e05747]'
-              )}
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: filter === 'in_progress' ? 'var(--gradient-resident-subtle)' : 'white',
+                boxShadow: filter === 'in_progress' ? '0 8px 24px var(--resident-shadow)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.inProgress?.[language] || 'In progress'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.in_progress_count || 0}
-                  </p>
-                </div>
-                <div className="w-12 h-12 superellipse-xl bg-[#FFF5F0] flex items-center justify-center">
-                  <Clock className="w-6 h-6 text-[#e05747]" />
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'var(--gradient-resident-medium)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.inProgress?.[language] || 'In progress'}</span>
+                <div
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'var(--gradient-resident-medium)' }}
+                >
+                  <Clock className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stats?.in_progress_count || 0}</p>
+              <p className="text-xs font-medium mt-1" style={{ color: 'var(--resident-primary)' }}>{t?.stats?.beingFixed?.[language] || 'being fixed'}</p>
             </motion.button>
 
+            {/* Resolved - Green Pastel (Semantic Success) */}
             <motion.button
               onClick={() => setFilter('resolved')}
-              className={cn(
-                'bg-white superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left',
-                filter === 'resolved' && 'ring-2 ring-[#7CB89B]'
-              )}
-              whileHover={{ scale: 1.02 }}
+              className="relative overflow-hidden superellipse-2xl p-4 shadow-lg hover:shadow-xl transition-all text-left"
+              style={{
+                background: 'linear-gradient(135deg, #F0F7F4 0%, #E8F5EE 100%)',
+                boxShadow: filter === 'resolved' ? '0 8px 24px rgba(124, 184, 155, 0.25)' : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              }}
+              whileHover={{ scale: 1.03, y: -4 }}
               whileTap={{ scale: 0.98 }}
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{t?.stats?.resolved?.[language] || 'Resolved'}</p>
-                  <p className="text-3xl font-bold text-gray-900 mt-1">
-                    {stats?.resolved_count || 0}
-                  </p>
-                </div>
-                <div className="w-12 h-12 superellipse-xl bg-[#E8F5EE] flex items-center justify-center">
-                  <CheckCircle className="w-6 h-6 text-[#7CB89B]" />
+              <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
+                style={{ background: 'linear-gradient(135deg, #7CB89B, #9ECDB5)' }}
+              />
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm font-medium text-[#5A9A7C]">{t?.stats?.resolved?.[language] || 'Resolved'}</span>
+                <div
+                  className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
+                  style={{ background: 'linear-gradient(135deg, #7CB89B 0%, #9ECDB5 100%)' }}
+                >
+                  <CheckCircle className="w-4 h-4 text-white" />
                 </div>
               </div>
+              <p className="text-2xl font-bold text-gray-900">{stats?.resolved_count || 0}</p>
+              <p className="text-xs font-medium text-[#5A9A7C] mt-1">{t?.stats?.completed?.[language] || 'completed'}</p>
             </motion.button>
           </div>
         </motion.div>
@@ -385,46 +422,24 @@ export default function MaintenancePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               className="bg-white superellipse-3xl shadow-lg p-12 text-center"
-              style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
+              style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.08)' }}
             >
-              {/* V3 Fun Icon with Glow */}
+              {/* V3 Fun Icon */}
               <motion.div
-                whileHover={{ scale: 1.05, rotate: 3 }}
-                className="relative w-24 h-24 mx-auto mb-6"
+                whileHover={{ scale: 1.05, rotate: 5 }}
+                className="relative w-20 h-20 superellipse-2xl flex items-center justify-center mx-auto mb-4"
+                style={{
+                  background: 'var(--resident-primary)',
+                  boxShadow: '0 8px 24px var(--resident-shadow)',
+                }}
               >
-                {/* Glow effect */}
+                <Wrench className="w-10 h-10 text-white" />
                 <motion.div
-                  className="absolute inset-0 superellipse-2xl opacity-30"
-                  style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    filter: 'blur(20px)',
-                  }}
-                  animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
-                  transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
-                />
-                {/* Main icon container */}
-                <div
-                  className="relative w-24 h-24 superellipse-2xl flex items-center justify-center shadow-lg"
-                  style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
-                  }}
+                  className="absolute -top-1 -right-1"
+                  animate={{ y: [-2, 2, -2], rotate: [0, 15, 0] }}
+                  transition={{ repeat: Infinity, duration: 2 }}
                 >
-                  <Wrench className="w-12 h-12 text-white" />
-                  {/* Shine effect */}
-                  <motion.div
-                    className="absolute inset-0 superellipse-2xl bg-white/20"
-                    animate={{ opacity: [0, 0.3, 0] }}
-                    transition={{ repeat: Infinity, duration: 2.5 }}
-                  />
-                </div>
-                {/* Floating sparkle */}
-                <motion.div
-                  className="absolute -top-2 -right-2"
-                  animate={{ y: [-2, 2, -2], rotate: [0, 10, 0] }}
-                  transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
-                >
-                  <Sparkles className="w-6 h-6 text-amber-400" />
+                  <Sparkles className="w-5 h-5" style={{ color: 'var(--searcher-primary)' }} />
                 </motion.div>
               </motion.div>
 
@@ -440,10 +455,10 @@ export default function MaintenancePage() {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Button
                   onClick={() => setShowCreateModal(true)}
-                  className="rounded-full text-white border-none shadow-lg hover:shadow-xl transition-all"
+                  className="rounded-full text-white font-semibold hover:shadow-xl transition-all border-none"
                   style={{
-                    background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                    boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                    background: 'var(--resident-primary)',
+                    boxShadow: '0 4px 16px var(--resident-shadow)',
                   }}
                 >
                   <Plus className="w-4 h-4 mr-2" />
@@ -590,26 +605,45 @@ export default function MaintenancePage() {
         </div>
       </div>
 
-      {/* Create Modal */}
+      {/* Create Modal - V3 Fun Design */}
       {showCreateModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="bg-white superellipse-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6"
+            className="bg-white superellipse-3xl max-w-2xl w-full max-h-[90vh] overflow-hidden relative"
+            style={{ boxShadow: '0 25px 80px var(--resident-shadow)' }}
           >
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900">{t?.modal?.title?.[language] || 'New request'}</h2>
-              <button
-                onClick={() => {
-                  setShowCreateModal(false);
-                  resetForm();
-                }}
-                className="text-gray-400 hover:text-gray-600"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
+            {/* Decorative gradient circles */}
+            <div className="absolute right-0 top-0 w-32 h-32 rounded-full opacity-10 pointer-events-none"
+              style={{ background: 'var(--gradient-resident-medium)', transform: 'translate(30%, -30%)' }} />
+
+            {/* Scrollable content */}
+            <div className="max-h-[90vh] overflow-y-auto p-6">
+              <div className="flex items-center justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <motion.div
+                    whileHover={{ scale: 1.1, rotate: 5 }}
+                    className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
+                    style={{ background: 'var(--resident-primary)', boxShadow: '0 8px 24px var(--resident-shadow)' }}
+                  >
+                    <Plus className="w-6 h-6 text-white" />
+                  </motion.div>
+                  <h2 className="text-xl font-bold text-gray-900">{t?.modal?.title?.[language] || 'New request'}</h2>
+                </div>
+                <button
+                  onClick={() => {
+                    setShowCreateModal(false);
+                    resetForm();
+                  }}
+                  className="w-10 h-10 superellipse-xl flex items-center justify-center transition-colors"
+                  style={{ '--hover-bg': 'var(--resident-100)' } as React.CSSProperties}
+                  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--hover-bg)'}
+                  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
 
             <div className="space-y-4">
               {/* Title */}
@@ -649,12 +683,12 @@ export default function MaintenancePage() {
                         className={cn(
                           'p-3 superellipse-xl border-2 text-center transition-all',
                           createForm.category === cat.value
-                            ? 'border-resident-500 bg-resident-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'bg-[var(--resident-50)] border-[var(--resident-400)]'
+                            : 'border-gray-200 hover:border-[var(--resident-200)]'
                         )}
                       >
                         <div className="flex justify-center mb-1">
-                          {CatIcon && <CatIcon className="w-6 h-6 text-gray-700" />}
+                          {CatIcon && <CatIcon className={cn("w-6 h-6", createForm.category === cat.value ? "text-[var(--resident-primary)]" : "text-gray-700")} />}
                         </div>
                         <div className="text-xs font-medium text-gray-700">{cat.label}</div>
                       </button>
@@ -717,7 +751,7 @@ export default function MaintenancePage() {
               <div>
                 <Label>{t?.modal?.photos?.[language] || 'Photos'} (max 5)</Label>
                 <div className="mt-2">
-                  <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 superellipse-xl hover:border-resident-500 cursor-pointer transition-colors">
+                  <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 superellipse-xl hover:border-[var(--resident-400)] cursor-pointer transition-colors">
                     <Camera className="w-5 h-5 text-gray-400" />
                     <span className="text-sm text-gray-600">
                       {t?.modal?.addPhotos?.[language] || 'Click to add photos'}
@@ -756,35 +790,41 @@ export default function MaintenancePage() {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-3 mt-6">
-              <Button
-                variant="outline"
-                onClick={() => {
-                  setShowCreateModal(false);
-                  resetForm();
-                }}
-                className="flex-1 rounded-full"
-                disabled={isCreating}
-              >
-                {t?.modal?.cancel?.[language] || 'Cancel'}
-              </Button>
-              <Button
-                onClick={handleCreateRequest}
-                disabled={isCreating || !createForm.title || !createForm.description}
-                className="flex-1 rounded-full cta-resident"
-              >
-                {isCreating ? (
-                  <>
-                    <LoadingHouse size={20} className="mr-2" />
-                    {t?.modal?.creating?.[language] || 'Creating...'}
-                  </>
-                ) : (
-                  <>
-                    <Plus className="w-4 h-4 mr-2" />
-                    {t?.modal?.submit?.[language] || 'Create request'}
-                  </>
-                )}
-              </Button>
+            <div className="flex gap-3 mt-6 pt-4 border-t border-gray-100">
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setShowCreateModal(false);
+                    resetForm();
+                  }}
+                  className="w-full superellipse-xl font-semibold border-2 border-gray-200 hover:border-[var(--resident-200)]"
+                  disabled={isCreating}
+                >
+                  {t?.modal?.cancel?.[language] || 'Cancel'}
+                </Button>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1">
+                <Button
+                  onClick={handleCreateRequest}
+                  disabled={isCreating || !createForm.title || !createForm.description}
+                  className="w-full superellipse-xl font-semibold text-white border-none shadow-lg hover:shadow-xl transition-all disabled:opacity-50"
+                  style={{ background: 'var(--resident-primary)' }}
+                >
+                  {isCreating ? (
+                    <>
+                      <LoadingHouse size={20} className="mr-2" />
+                      {t?.modal?.creating?.[language] || 'Creating...'}
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="w-4 h-4 mr-2" />
+                      {t?.modal?.submit?.[language] || 'Create request'}
+                    </>
+                  )}
+                </Button>
+              </motion.div>
+            </div>
             </div>
           </motion.div>
         </div>
