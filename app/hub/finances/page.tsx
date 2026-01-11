@@ -18,27 +18,20 @@ import ManualExpenseForm from '@/components/finances/ManualExpenseForm';
 import ExpenseDetailModal from '@/components/finances/ExpenseDetailModal';
 import ExpenseHistoryModal from '@/components/finances/ExpenseHistoryModal';
 import CompactExpenseList from '@/components/finances/CompactExpenseList';
-import { ExpenseProgressChart, CategoryBreakdownChart, MiniSparkline } from '@/components/finances/ExpenseCharts';
-import ResidenceFinanceOverview from '@/components/finances/ResidenceFinanceOverview';
 import SettleDebtModal from '@/components/finances/SettleDebtModal';
 import {
   DollarSign,
   TrendingUp,
   TrendingDown,
   Users,
-  Calendar,
   Check,
-  Download,
   Scan,
   Sparkles,
   ChevronRight,
-  BarChart3,
-  PieChart,
   Receipt,
   Wallet,
   CreditCard,
   Banknote,
-  Plus,
   PenLine,
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -288,8 +281,8 @@ export default function ModernFinancesPage() {
               whileTap={{ scale: 0.95 }}
               className="w-12 h-12 superellipse-2xl flex items-center justify-center shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                boxShadow: '0 8px 24px rgba(255, 101, 30, 0.35)',
+                background: 'var(--gradient-resident-medium)',
+                boxShadow: 'var(--resident-shadow)',
               }}
             >
               <Wallet className="w-6 h-6 text-white" />
@@ -305,35 +298,13 @@ export default function ModernFinancesPage() {
           <div className="flex items-center gap-2">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
-                onClick={() => openHistoryModal('calendar')}
-                variant="outline"
-                size="sm"
-                className="h-9 text-sm superellipse-xl border-2 border-orange-200 text-[#ff7b19] hover:bg-orange-50 hover:border-orange-300 font-medium shadow-sm"
-              >
-                <Calendar className="w-4 h-4 mr-2" />
-                {hub.finances?.calendar || 'Calendar'}
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
-                onClick={handleExport}
-                variant="outline"
-                size="sm"
-                className="h-9 text-sm superellipse-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 hover:border-gray-300 font-medium shadow-sm"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                PDF
-              </Button>
-            </motion.div>
-            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Button
                 onClick={() => setCreateMode('manual')}
                 variant="outline"
                 size="sm"
                 className="h-9 text-sm superellipse-xl border-2 border-orange-200 text-[#e05747] hover:bg-orange-50 hover:border-orange-300 font-semibold shadow-sm"
               >
                 <PenLine className="w-4 h-4 mr-2" />
-                {hub.finances?.addManual || 'Add'}
+                {hub.finances?.addManual || 'Ajouter'}
               </Button>
             </motion.div>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
@@ -342,87 +313,79 @@ export default function ModernFinancesPage() {
                 size="sm"
                 className="h-9 text-sm superellipse-xl text-white font-semibold shadow-lg"
                 style={{
-                  background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)',
-                  boxShadow: '0 4px 14px rgba(255, 101, 30, 0.4)',
+                  background: 'var(--gradient-resident-medium)',
+                  boxShadow: 'var(--resident-shadow)',
                 }}
               >
                 <Scan className="w-4 h-4 mr-2" />
-                {hub.finances?.scan || 'Scan'}
-                <Sparkles className="w-3.5 h-3.5 ml-1.5 text-white/80" />
+                {hub.finances?.scan || 'Scanner'}
+                <Sparkles className="w-3.5 h-3.5 ml-1.5 text-amber-400" />
               </Button>
             </motion.div>
           </div>
         </motion.div>
 
-        {/* Colorful Stats Cards */}
+        {/* Stats Cards - Simplifiées */}
         <motion.div variants={itemVariants} className="grid grid-cols-3 gap-4">
-          {/* Total Card - Orange Gradient (palette officielle) */}
+          {/* Total Card */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #FFF5F0 0%, #FFEDE5 100%)',
-              boxShadow: '0 8px 24px rgba(255, 101, 30, 0.15)',
+              background: 'var(--gradient-resident-subtle)',
+              boxShadow: 'var(--resident-shadow-light)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+              style={{ background: 'var(--gradient-resident-medium)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#e05747]">{hub.finances?.stats?.total || 'Total'}</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>
+                {hub.finances?.stats?.total || 'Total ce mois'}
+              </span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+                style={{ background: 'var(--gradient-resident-medium)' }}
               >
                 <DollarSign className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">€{totalExpenses.toFixed(0)}</p>
-            <div className="flex items-center gap-2 mt-2">
-              <MiniSparkline expenses={expenses} days={7} />
-              <span className="text-xs text-[#e05747] font-medium">{hub.finances?.stats?.lastDays || 'Last 7 days'}</span>
-            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              {expenses.length} {expenses.length !== 1 ? 'dépenses' : 'dépense'}
+            </p>
           </motion.div>
 
-          {/* Your Share Card - Orange (cohérence Resident) */}
+          {/* Your Share Card */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
             style={{
-              background: 'linear-gradient(135deg, #FFEDE5 0%, #FFD9C7 100%)',
-              boxShadow: '0 8px 24px rgba(255, 123, 25, 0.15)',
+              background: 'var(--gradient-resident-subtle)',
+              boxShadow: 'var(--resident-shadow-light)',
             }}
           >
             <div className="absolute -right-4 -top-4 w-20 h-20 rounded-full opacity-20"
-              style={{ background: 'linear-gradient(135deg, #ff7b19, #e05747)' }}
+              style={{ background: 'var(--gradient-resident-medium)' }}
             />
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-[#f8572b]">{hub.finances?.stats?.yourShare || 'Your share'}</span>
+              <span className="text-sm font-medium" style={{ color: 'var(--resident-primary)' }}>
+                {hub.finances?.stats?.yourShare || 'Ta part'}
+              </span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
-                style={{ background: 'linear-gradient(135deg, #ff7b19, #e05747)' }}
+                style={{ background: 'var(--gradient-resident-medium)' }}
               >
                 <Users className="w-4 h-4 text-white" />
               </div>
             </div>
             <p className="text-2xl font-bold text-gray-900">€{yourShare.toFixed(0)}</p>
-            <div className="flex items-center gap-2 mt-2">
-              <div className="flex-1 h-2 bg-orange-100 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${totalExpenses > 0 ? (yourShare / totalExpenses) * 100 : 0}%` }}
-                  transition={{ delay: 0.5, duration: 0.8, ease: 'easeOut' }}
-                  className="h-full rounded-full"
-                  style={{ background: 'linear-gradient(90deg, #ff7b19, #e05747)' }}
-                />
-              </div>
-              <span className="text-xs text-[#ff7b19] font-bold">
-                {totalExpenses > 0 ? Math.round((yourShare / totalExpenses) * 100) : 0}%
-              </span>
-            </div>
+            <p className="text-xs text-gray-500 mt-1">
+              {totalExpenses > 0 ? Math.round((yourShare / totalExpenses) * 100) : 0}% du total
+            </p>
           </motion.div>
 
-          {/* Balance Card - Vert/Rouge pastel (sémantique muted) */}
+          {/* Balance Card - Vert/Rouge sémantique */}
           <motion.div
             whileHover={{ scale: 1.03, y: -4 }}
             className="relative overflow-hidden superellipse-2xl p-4 shadow-lg"
@@ -445,7 +408,7 @@ export default function ModernFinancesPage() {
             />
             <div className="flex items-center justify-between mb-2">
               <span className={cn('text-sm font-medium', totalBalance >= 0 ? 'text-[#5A9B7A]' : 'text-[#B06060]')}>
-                {hub.finances?.stats?.balance || 'Balance'}
+                {hub.finances?.stats?.balance || 'Solde'}
               </span>
               <div
                 className="w-8 h-8 superellipse-xl flex items-center justify-center shadow-md"
@@ -465,76 +428,22 @@ export default function ModernFinancesPage() {
             <p className={cn('text-2xl font-bold', totalBalance >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]')}>
               {totalBalance >= 0 ? '+' : ''}€{Math.abs(totalBalance).toFixed(0)}
             </p>
-            <p className={cn('text-xs font-medium mt-2', totalBalance >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]')}>
-              {totalBalance >= 0 ? (hub.finances?.stats?.youAreOwed || 'You are owed') : (hub.finances?.stats?.youOwe || 'You owe')}
+            <p className={cn('text-xs font-medium mt-1', totalBalance >= 0 ? 'text-[#6BA888]' : 'text-[#C07070]')}>
+              {totalBalance >= 0 ? 'On te doit' : 'Tu dois'}
             </p>
           </motion.div>
         </motion.div>
 
-        {/* Charts Section with Shadows - Tous en orange */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <motion.div
-            whileHover={{ y: -4 }}
-            className="bg-white superellipse-2xl p-5 shadow-lg border-2 border-orange-100"
-            style={{ boxShadow: '0 12px 32px rgba(255, 101, 30, 0.08)' }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-9 h-9 superellipse-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
-              >
-                <BarChart3 className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-base font-bold text-gray-900">{hub.finances?.charts?.progression || 'Progress'}</h3>
-            </div>
-            <ExpenseProgressChart expenses={expenses} period="month" />
-          </motion.div>
-
-          <motion.div
-            whileHover={{ y: -4 }}
-            className="bg-white superellipse-2xl p-5 shadow-lg border-2 border-orange-100"
-            style={{ boxShadow: '0 12px 32px rgba(255, 123, 25, 0.08)' }}
-          >
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-9 h-9 superellipse-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #ff7b19, #e05747)' }}
-              >
-                <PieChart className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-base font-bold text-gray-900">{hub.finances?.charts?.byCategory || 'By category'}</h3>
-            </div>
-            <CategoryBreakdownChart expenses={expenses} />
-          </motion.div>
-        </motion.div>
-
-        {/* Residence Overview with Fun Border */}
-        <motion.div
-          variants={itemVariants}
-          whileHover={{ y: -2 }}
-          className="superellipse-2xl shadow-lg overflow-hidden"
-          style={{
-            background: 'linear-gradient(135deg, #fef3c7 0%, #fef9c3 50%, #ecfccb 100%)',
-            boxShadow: '0 12px 32px rgba(234, 179, 8, 0.12)',
-          }}
-        >
-          <div className="bg-white/80 backdrop-blur-sm m-0.5 rounded-[14px]">
-            <ResidenceFinanceOverview
-              expenses={expenses}
-              balances={balances}
-              currentUserId={currentUserId || ''}
-              roommates={roommates}
-            />
-          </div>
-        </motion.div>
-
-        {/* Two Column Layout with Fun Accents */}
+        {/* Two Column Layout - Dépenses récentes + Soldes */}
         <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           {/* Recent Expenses */}
           <motion.div
             whileHover={{ y: -4 }}
-            className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-[#e05747]"
-            style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
+            className="bg-white superellipse-2xl shadow-lg overflow-hidden"
+            style={{
+              boxShadow: 'var(--resident-shadow-light)',
+              borderLeft: '4px solid var(--resident-primary)',
+            }}
           >
             <button
               onClick={() => openHistoryModal('list')}
@@ -543,23 +452,23 @@ export default function ModernFinancesPage() {
               <div className="flex items-center gap-3">
                 <div
                   className="w-9 h-9 superellipse-xl flex items-center justify-center shadow-md"
-                  style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)' }}
+                  style={{ background: 'var(--gradient-resident-medium)' }}
                 >
                   <Receipt className="w-5 h-5 text-white" />
                 </div>
-                <h3 className="text-base font-bold text-gray-900">{hub.finances?.recentExpenses || 'Recent expenses'}</h3>
+                <h3 className="text-base font-bold text-gray-900">{hub.finances?.recentExpenses || 'Dépenses récentes'}</h3>
                 <Badge
                   className="text-xs px-2 py-0.5 font-bold border-none"
-                  style={{ background: 'linear-gradient(135deg, #e05747, #e05747, #e05747)', color: 'white' }}
+                  style={{ background: 'var(--gradient-resident-medium)', color: 'white' }}
                 >
                   {expenses.length}
                 </Badge>
               </div>
               <motion.div
-                className="flex items-center gap-1 text-sm text-gray-400 group-hover:text-[#e05747] transition-colors"
+                className="flex items-center gap-1 text-sm text-gray-400 group-hover:text-[var(--resident-primary)] transition-colors"
                 whileHover={{ x: 4 }}
               >
-                <span className="font-medium">{hub.finances?.viewAll || 'View all'}</span>
+                <span className="font-medium">{hub.finances?.viewAll || 'Tout voir'}</span>
                 <ChevronRight className="w-4 h-4" />
               </motion.div>
             </button>
@@ -573,11 +482,11 @@ export default function ModernFinancesPage() {
             </div>
           </motion.div>
 
-          {/* Balances - Vert pastel (sémantique muted) */}
+          {/* Balances - Vert pastel (sémantique) */}
           <motion.div
             whileHover={{ y: -4 }}
             className="bg-white superellipse-2xl shadow-lg overflow-hidden border-l-4 border-[#7CB89B]"
-            style={{ boxShadow: '0 12px 32px rgba(0, 0, 0, 0.08)' }}
+            style={{ boxShadow: 'var(--resident-shadow-light)' }}
           >
             <div className="flex items-center gap-3 p-4 border-b border-gray-100">
               <div
@@ -586,7 +495,7 @@ export default function ModernFinancesPage() {
               >
                 <CreditCard className="w-5 h-5 text-white" />
               </div>
-              <h3 className="text-base font-bold text-gray-900">{hub.finances?.balancesBetweenRoommates || 'Balances between roommates'}</h3>
+              <h3 className="text-base font-bold text-gray-900">{hub.finances?.balancesBetweenRoommates || 'Soldes entre colocs'}</h3>
             </div>
 
             <div className="p-3">
@@ -604,8 +513,8 @@ export default function ModernFinancesPage() {
                   >
                     <Check className="w-7 h-7 text-white" />
                   </motion.div>
-                  <p className="text-base font-bold text-gray-900">{hub.finances?.emptyBalance?.title || 'All settled!'}</p>
-                  <p className="text-sm text-gray-500">{hub.finances?.emptyBalance?.description || 'No pending balances'}</p>
+                  <p className="text-base font-bold text-gray-900">{hub.finances?.emptyBalance?.title || 'Tout est réglé !'}</p>
+                  <p className="text-sm text-gray-500">{hub.finances?.emptyBalance?.description || 'Aucun solde en attente'}</p>
                 </motion.div>
               ) : (
                 <div className="space-y-2">
@@ -637,7 +546,7 @@ export default function ModernFinancesPage() {
                         <div>
                           <p className="text-sm font-semibold text-gray-900">{balance.userName}</p>
                           <p className="text-xs text-gray-500">
-                            {balance.amount >= 0 ? (hub.finances?.owesYou || 'Owes you') : (hub.finances?.youOweThem || 'You owe them')}
+                            {balance.amount >= 0 ? (hub.finances?.owesYou || 'Te doit') : (hub.finances?.youOweThem || 'Tu lui dois')}
                           </p>
                         </div>
                       </div>
@@ -650,7 +559,7 @@ export default function ModernFinancesPage() {
                         >
                           {balance.amount >= 0 ? '+' : ''}€{Math.abs(balance.amount).toFixed(2)}
                         </p>
-                        {/* Show "Régler" button only for debts (negative balance = you owe them) */}
+                        {/* Bouton "Régler" pour les dettes */}
                         {balance.amount < 0 && (
                           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                             <Button
@@ -663,7 +572,7 @@ export default function ModernFinancesPage() {
                               style={{ background: 'linear-gradient(135deg, #7CB89B, #6BA888)' }}
                             >
                               <Banknote className="w-3.5 h-3.5 mr-1" />
-                              {hub.finances?.settle || 'Settle'}
+                              {hub.finances?.settle || 'Régler'}
                             </Button>
                           </motion.div>
                         )}
@@ -677,23 +586,23 @@ export default function ModernFinancesPage() {
         </motion.div>
       </motion.div>
 
-      {/* Animated Floating Action Button - Palette officielle */}
+      {/* Floating Action Button - Mobile */}
       <motion.button
         onClick={() => setCreateMode('scanner')}
         whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
         animate={{
           boxShadow: [
-            '0 4px 20px rgba(255, 101, 30, 0.4)',
-            '0 8px 30px rgba(255, 101, 30, 0.6)',
-            '0 4px 20px rgba(255, 101, 30, 0.4)',
+            'var(--resident-shadow)',
+            '0 8px 30px rgba(224, 87, 71, 0.6)',
+            'var(--resident-shadow)',
           ],
         }}
         transition={{
           boxShadow: { repeat: Infinity, duration: 2 },
         }}
         className="lg:hidden fixed bottom-6 right-6 w-16 h-16 superellipse-2xl flex items-center justify-center text-white z-40"
-        style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
+        style={{ background: 'var(--gradient-resident-medium)' }}
       >
         <Scan className="w-7 h-7" />
       </motion.button>
@@ -702,24 +611,24 @@ export default function ModernFinancesPage() {
       <Dialog open={createMode !== null} onOpenChange={() => setCreateMode(null)}>
         <DialogContent
           className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 superellipse-3xl border-2 border-orange-100"
-          style={{ boxShadow: '0 25px 80px rgba(255, 101, 30, 0.2)' }}
+          style={{ boxShadow: '0 25px 80px rgba(224, 87, 71, 0.2)' }}
         >
           {/* Decorative gradient circles */}
           <div
             className="absolute -right-20 -top-20 w-56 h-56 rounded-full opacity-15 pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 50%, #e05747 100%)' }}
+            style={{ background: 'var(--gradient-resident-medium)' }}
           />
           <div
             className="absolute -left-16 -bottom-16 w-40 h-40 rounded-full opacity-10 pointer-events-none"
-            style={{ background: 'linear-gradient(135deg, #e05747 0%, #e05747 100%)' }}
+            style={{ background: 'var(--gradient-resident-medium)' }}
           />
 
           <DialogTitle className="sr-only">
             {createMode === 'scanner'
-              ? (hub.finances?.modal?.scanTitle || 'Scan a receipt')
+              ? (hub.finances?.modal?.scanTitle || 'Scanner un reçu')
               : createMode === 'manual'
-              ? (hub.finances?.modal?.manualTitle || 'Add an expense')
-              : (hub.finances?.modal?.splitTitle || 'Split the expense')}
+              ? (hub.finances?.modal?.manualTitle || 'Ajouter une dépense')
+              : (hub.finances?.modal?.splitTitle || 'Répartir la dépense')}
           </DialogTitle>
 
           {/* Content wrapper with padding and z-index */}
