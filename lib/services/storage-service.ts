@@ -1,117 +1,11 @@
 import { createClient } from '@/lib/auth/supabase-client';
-import sharp from 'sharp';
 
 export class StorageService {
   private supabase = createClient();
 
-  /**
-   * Optimise une image avant upload
-   * - Conversion WebP (meilleur ratio compression)
-   * - Redimensionnement adaptatif
-   * - Qualité 85 (imperceptible vs 100, -50% taille)
-   *
-   * @param file Image file à optimiser
-   * @param options Type et dimensions max
-   * @returns File optimisé + statistiques de compression
-   */
-  private async optimizeImage(
-    file: File,
-    options: {
-      type: 'avatar' | 'property' | 'document';
-      maxWidth?: number;
-      maxHeight?: number;
-      quality?: number;
-    }
-  ): Promise<{ file: File; originalSize: number; optimizedSize: number; reduction: number }> {
-    const originalSize = file.size;
-
-    // Skip si pas une image
-    if (!file.type.startsWith('image/')) {
-      return {
-        file,
-        originalSize,
-        optimizedSize: originalSize,
-        reduction: 0,
-      };
-    }
-
-    try {
-      const buffer = Buffer.from(await file.arrayBuffer());
-      let optimized: Buffer;
-
-      switch (options.type) {
-        case 'avatar':
-          // Avatar : carré 512×512, WebP qualité 85
-          optimized = await sharp(buffer)
-            .resize(512, 512, {
-              fit: 'cover',
-              position: 'center',
-            })
-            .webp({ quality: options.quality || 85 })
-            .toBuffer();
-          break;
-
-        case 'property':
-          // Propriété : max 2048px largeur, conserve ratio, WebP 85
-          optimized = await sharp(buffer)
-            .resize(options.maxWidth || 2048, options.maxHeight || null, {
-              fit: 'inside',
-              withoutEnlargement: true,
-            })
-            .webp({ quality: options.quality || 85 })
-            .toBuffer();
-          break;
-
-        case 'document':
-          // Documents : pas de compression (PDF, etc.)
-          return {
-            file,
-            originalSize,
-            optimizedSize: originalSize,
-            reduction: 0,
-          };
-
-        default:
-          return {
-            file,
-            originalSize,
-            optimizedSize: originalSize,
-            reduction: 0,
-          };
-      }
-
-      const optimizedSize = optimized.length;
-      const reduction = ((originalSize - optimizedSize) / originalSize) * 100;
-
-      // Créer nouveau File avec buffer optimisé
-      const blob = new Blob([optimized], { type: 'image/webp' });
-      const optimizedFile = new File([blob], file.name.replace(/\.\w+$/, '.webp'), {
-        type: 'image/webp',
-      });
-
-      console.log(
-        `[Storage] Image optimized: ${(originalSize / 1024).toFixed(0)} KB → ${(
-          optimizedSize / 1024
-        ).toFixed(0)} KB (-${reduction.toFixed(1)}%)`
-      );
-
-      return {
-        file: optimizedFile,
-        originalSize,
-        optimizedSize,
-        reduction,
-      };
-    } catch (error) {
-      console.error('[Storage] Error optimizing image:', error);
-      // En cas d'erreur, retourner le fichier original
-      return {
-        file,
-        originalSize,
-        optimizedSize: originalSize,
-        reduction: 0,
-      };
-    }
-  }
+  // NOTE: Image compression with Sharp moved to API routes (server-side only)
+  // See: app/api/storage/upload-image/route.ts
+  // Reason: Sharp requires Node.js APIs not available in browser
 
   /**
    * Upload a file to Supabase Storage
@@ -217,60 +111,25 @@ export class StorageService {
   }
 
   /**
-   * Upload property image (avec compression automatique)
-   * Optimise automatiquement : max 2048px, WebP quality 85
-   * Réduction attendue : 5 MB → 500 KB (90%)
+   * Upload property image
+   * TODO: Add server-side compression via API route
    */
   async uploadPropertyImage(
     file: File,
     propertyId: string
-  ): Promise<{ success: boolean; url?: string; error?: string; stats?: any }> {
-    // Optimiser l'image avant upload
-    const { file: optimizedFile, originalSize, optimizedSize, reduction } =
-      await this.optimizeImage(file, {
-        type: 'property',
-        maxWidth: 2048,
-        quality: 85,
-      });
-
-    const result = await this.uploadFile(optimizedFile, 'property-images', propertyId);
-
-    return {
-      ...result,
-      stats: {
-        originalSize,
-        optimizedSize,
-        reduction,
-      },
-    };
+  ): Promise<{ success: boolean; url?: string; error?: string }> {
+    return this.uploadFile(file, 'property-images', propertyId);
   }
 
   /**
-   * Upload profile photo (avec compression automatique)
-   * Optimise automatiquement : 512×512px carré, WebP quality 85
-   * Réduction attendue : 2 MB → 100 KB (95%)
+   * Upload profile photo
+   * TODO: Add server-side compression via API route
    */
   async uploadProfilePhoto(
     file: File,
     userId: string
-  ): Promise<{ success: boolean; url?: string; error?: string; stats?: any }> {
-    // Optimiser l'image avant upload
-    const { file: optimizedFile, originalSize, optimizedSize, reduction } =
-      await this.optimizeImage(file, {
-        type: 'avatar',
-        quality: 85,
-      });
-
-    const result = await this.uploadFile(optimizedFile, 'profile-photos', userId);
-
-    return {
-      ...result,
-      stats: {
-        originalSize,
-        optimizedSize,
-        reduction,
-      },
-    };
+  ): Promise<{ success: boolean; url?: string; error?: string }> {
+    return this.uploadFile(file, 'profile-photos', userId);
   }
 
   /**
