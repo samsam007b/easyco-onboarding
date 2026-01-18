@@ -218,7 +218,7 @@ CREATE OR REPLACE FUNCTION public.get_metrics_trend(
   p_days INT DEFAULT 7
 )
 RETURNS TABLE(
-  timestamp TIMESTAMPTZ,
+  recorded_at TIMESTAMPTZ,
   active_connections INT,
   storage_used_bytes BIGINT,
   api_latency_p95 INT,
@@ -227,7 +227,7 @@ RETURNS TABLE(
 BEGIN
   RETURN QUERY
   SELECT
-    mh.timestamp,
+    mh.timestamp AS recorded_at,
     mh.active_connections,
     mh.storage_used_bytes,
     mh.api_latency_p95,

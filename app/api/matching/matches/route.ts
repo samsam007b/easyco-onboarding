@@ -4,6 +4,7 @@ import { findMatchesForSearcher, getMatchStatistics } from '@/lib/services/enhan
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 import { paginationSchema, matchingScoreSchema } from '@/lib/validation/query-params';
 import { z } from 'zod';
+import { rateLimitMiddleware } from '@/lib/middleware/rate-limit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -27,6 +28,12 @@ export async function GET(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
+    }
+
+    // RATE LIMITING: 20 requests per minute (matching endpoints)
+    const rateLimitResponse = await rateLimitMiddleware(request, 'matching', user.id);
+    if (rateLimitResponse) {
+      return rateLimitResponse; // 429 Too Many Requests
     }
 
     // SECURITY VULN-005 FIX: Validate query params with Zod

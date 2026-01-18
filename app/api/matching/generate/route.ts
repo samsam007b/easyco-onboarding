@@ -2,6 +2,7 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { NextRequest, NextResponse } from 'next/server';
 import { generateMatchesForSearcher } from '@/lib/services/enhanced-matching-service';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { rateLimitMiddleware } from '@/lib/middleware/rate-limit';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -36,6 +37,12 @@ export async function POST(request: NextRequest) {
 
     if (authError || !user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // RATE LIMITING: 20 requests per minute (matching endpoints)
+    const rateLimitResponse = await rateLimitMiddleware(request, 'matching', user.id);
+    if (rateLimitResponse) {
+      return rateLimitResponse; // 429 Too Many Requests
     }
 
     // Get user profile to check type

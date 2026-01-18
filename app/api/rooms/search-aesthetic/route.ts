@@ -2,12 +2,30 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { NextRequest, NextResponse } from 'next/server';
 import { AestheticSearchFilters } from '@/types/room-aesthetics.types';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { rateLimitMiddleware } from '@/lib/middleware/rate-limit';
 
 export async function POST(request: NextRequest) {
   const lang = getApiLanguage(request);
 
   try {
     const supabase = await createClient();
+
+    // Authentication check (endpoint should be protected)
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
+    }
+
+    // RATE LIMITING: 5 requests per minute (expensive OCR/search operations)
+    const rateLimitResponse = await rateLimitMiddleware(request, 'expensive', user.id);
+    if (rateLimitResponse) {
+      return rateLimitResponse; // 429 Too Many Requests
+    }
+
     const filters: AestheticSearchFilters = await request.json();
 
     // Call the Supabase function for aesthetic search

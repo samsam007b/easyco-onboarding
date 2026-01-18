@@ -3,7 +3,7 @@
 import { LanguageProvider } from '@/lib/i18n/use-language';
 import { RoleProvider } from '@/lib/role/role-context';
 import { NotificationProvider } from '@/contexts/NotificationContext';
-import { MessagesProvider } from '@/contexts/MessagesContext';
+import { MessagesProviderV2 } from '@/contexts/MessagesContextV2'; // OPTIMIZED VERSION
 import { PaymentProvider } from '@/contexts/PaymentContext';
 import { FavoritesProvider } from '@/contexts/FavoritesContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
@@ -33,13 +33,13 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           <LanguageProvider>
             <RoleProvider>
               <NotificationProvider>
-                <MessagesProvider>
+                <MessagesProviderV2>
                   <PaymentProvider>
                     <FavoritesProvider>
                       {children}
                     </FavoritesProvider>
                   </PaymentProvider>
-                </MessagesProvider>
+                </MessagesProviderV2>
               </NotificationProvider>
             </RoleProvider>
           </LanguageProvider>
