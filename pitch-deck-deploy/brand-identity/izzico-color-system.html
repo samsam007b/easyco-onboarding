@@ -1,0 +1,2884 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Izzico - Systeme Colorimetrique v3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* ============================================
+         BRAND COLORS - SOURCE DE VERITE
+         Couleurs primaires validees par Brand Guidelines
+         ============================================ */
+
+      /* Owner (Mauve) - Progression L* : 95 - 25 */
+      --owner-50: #F8F0F7;
+      --owner-100: #F0E0EE;
+      --owner-200: #E0C0DC;
+      --owner-300: #C990C2;
+      --owner-400: #B070A8;
+      --owner-500: #9c5698;
+      --owner-600: #7E4580;
+      --owner-700: #633668;
+      --owner-800: #482850;
+      --owner-900: #2E1A38;
+
+      /* Resident (Coral/Orange) - Progression L* : 96 - 22 */
+      --resident-50: #FEF2EE;
+      --resident-100: #FDE0D6;
+      --resident-200: #F9B8A0;
+      --resident-300: #F28B6A;
+      --resident-400: #E96A50;
+      --resident-500: #e05747;
+      --resident-600: #C04538;
+      --resident-700: #9A362C;
+      --resident-800: #742920;
+      --resident-900: #4E1C16;
+
+      /* Searcher (Gold/Amber) - Progression L* : 97 - 28 */
+      --searcher-50: #FFFBEB;
+      --searcher-100: #FEF3C7;
+      --searcher-200: #FDE68A;
+      --searcher-300: #FCD34D;
+      --searcher-400: #FBBF24;
+      --searcher-500: #ffa000;
+      --searcher-600: #D98400;
+      --searcher-700: #A16300;
+      --searcher-800: #764800;
+      --searcher-900: #4D3000;
+
+      /* Text variants for accessibility */
+      --owner-text: #633668;
+      --resident-text: #9A362C;
+      --searcher-text: #A16300;
+
+      /* Gradient stops */
+      --gradient-owner: #9c5698;
+      --gradient-resident: #e05747;
+      --gradient-searcher-end: #ffa000;
+
+      /* Neutrals - Zinc */
+      --white: #FFFFFF;
+      --background: #FAFAFA;
+      --gray-50: #FAFAFA;
+      --gray-100: #F4F4F5;
+      --gray-200: #E4E4E7;
+      --gray-300: #D4D4D8;
+      --gray-400: #A1A1AA;
+      --gray-500: #71717A;
+      --gray-600: #52525B;
+      --gray-700: #3F3F46;
+      --gray-800: #27272A;
+      --gray-900: #18181B;
+      --black: #18181B;
+
+      /* Semantic Colors */
+      --success: #10B981;
+      --success-light: #ECFDF5;
+      --error: #EF4444;
+      --error-light: #FEF2F2;
+      --warning: #D97706;
+      --warning-light: #FFFBEB;
+      --info: #3B82F6;
+      --info-light: #EFF6FF;
+
+      /* UI Accents */
+      --sage: #7CB89B;
+      --terracotta: #C87060;
+      --dusty-rose: #D08090;
+      --lavender: #9B7BD9;
+      --sky: #5B8BD9;
+      --amber: #D9A870;
+      --teal: #70B0C0;
+      --blush: #E07BAD;
+
+      /* Dark Mode */
+      --dark-bg: #121015;
+      --dark-surface: #1A171E;
+      --dark-elevated: #242027;
+      --dark-hover: #2A262F;
+      --dark-border: #2E2A33;
+      --dark-border-subtle: rgba(255, 255, 255, 0.06);
+      --dark-text: #F5F5F7;
+      --dark-text-secondary: #A8A4AC;
+      --dark-muted: #8A868E;
+    }
+
+    /* ============================================
+       PRINT STYLES - A4 FORMAT
+       ============================================ */
+    @page {
+      size: A4;
+      margin: 20mm 18mm 25mm 18mm;
+    }
+
+    @media print {
+      body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .page-break {
+        page-break-after: always;
+      }
+
+      .avoid-break {
+        page-break-inside: avoid;
+      }
+
+      .page-number::after {
+        content: counter(page);
+      }
+    }
+
+    /* Page counter */
+    body {
+      counter-reset: page-counter;
+    }
+
+    .page {
+      counter-increment: page-counter;
+      position: relative;
+      min-height: 257mm;
+      box-sizing: border-box;
+    }
+
+    .page-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 10px;
+      color: var(--gray-400);
+      padding: 10px 0;
+      border-top: 1px solid var(--gray-200);
+    }
+
+    .page-footer .page-num::after {
+      content: counter(page-counter);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--white);
+      color: var(--gray-900);
+      line-height: 1.5;
+      font-size: 11px;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Nunito', sans-serif;
+    }
+
+    .brand-text {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* ============================================
+       PAGE 1 - COVER
+       ============================================ */
+    .cover-page {
+      min-height: 257mm;
+      display: flex;
+      flex-direction: column;
+      padding: 0;
+    }
+
+    .cover-header {
+      background: linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%);
+      padding: 50px 40px;
+      color: white;
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .cover-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    .cover-header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cover-header h1 {
+      font-size: 36px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .cover-header p {
+      font-size: 16px;
+      opacity: 0.9;
+    }
+
+    .cover-header .version {
+      margin-top: 16px;
+      font-size: 12px;
+      opacity: 0.8;
+    }
+
+    .cover-header .badges {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cover-header .badge {
+      background: rgba(255,255,255,0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    .cover-body {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cover-intro {
+      margin-bottom: 30px;
+    }
+
+    .cover-intro h2 {
+      font-size: 18px;
+      margin-bottom: 12px;
+      color: var(--gray-800);
+    }
+
+    .cover-intro p {
+      font-size: 12px;
+      color: var(--gray-600);
+      line-height: 1.7;
+    }
+
+    .cover-highlights {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .highlight-card {
+      padding: 16px;
+      border-radius: 10px;
+      background: var(--gray-50);
+    }
+
+    .highlight-card h4 {
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--gray-800);
+    }
+
+    .highlight-card p {
+      font-size: 10px;
+      color: var(--gray-600);
+    }
+
+    .cover-preview {
+      margin-top: auto;
+      display: flex;
+      gap: 8px;
+    }
+
+    .preview-swatch {
+      flex: 1;
+      height: 40px;
+      border-radius: 8px;
+    }
+
+    /* ============================================
+       PAGE 2 - SOMMAIRE
+       ============================================ */
+    .toc-page {
+      padding: 40px;
+      min-height: 257mm;
+    }
+
+    .toc-page h2 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 30px;
+      color: var(--gray-900);
+      border-bottom: 3px solid;
+      border-image: linear-gradient(90deg, #9c5698, #e05747, #ffa000) 1;
+      padding-bottom: 12px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-item {
+      display: flex;
+      align-items: baseline;
+      padding: 12px 0;
+      border-bottom: 1px dashed var(--gray-200);
+    }
+
+    .toc-item:last-child {
+      border-bottom: none;
+    }
+
+    .toc-number {
+      width: 30px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-500);
+    }
+
+    .toc-title {
+      flex: 1;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-800);
+    }
+
+    .toc-subtitle {
+      font-size: 11px;
+      font-weight: 400;
+      color: var(--gray-500);
+      margin-left: 8px;
+    }
+
+    .toc-dots {
+      flex: 1;
+      border-bottom: 1px dotted var(--gray-300);
+      margin: 0 10px;
+      min-width: 40px;
+    }
+
+    .toc-page-num {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-700);
+      min-width: 24px;
+      text-align: right;
+    }
+
+    .toc-section {
+      margin-top: 24px;
+    }
+
+    .toc-section-title {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--gray-400);
+      margin-bottom: 8px;
+    }
+
+    /* ============================================
+       CONTENT PAGES
+       ============================================ */
+    .content-page {
+      padding: 35px 40px 50px 40px;
+      min-height: 257mm;
+      position: relative;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--gray-200);
+    }
+
+    .page-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+
+    .page-header p {
+      font-size: 11px;
+      color: var(--gray-500);
+      margin-top: 4px;
+    }
+
+    .section-block {
+      margin-bottom: 24px;
+    }
+
+    .section-block h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gray-800);
+      margin-bottom: 12px;
+    }
+
+    .section-block h4 {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 8px;
+    }
+
+    .section-block p {
+      font-size: 11px;
+      color: var(--gray-600);
+      line-height: 1.6;
+    }
+
+    /* Analysis Cards */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .analysis-card {
+      background: var(--gray-50);
+      border-radius: 8px;
+      padding: 14px;
+      border-left: 3px solid var(--gray-300);
+    }
+
+    .analysis-card.success { border-left-color: var(--success); }
+    .analysis-card.warning { border-left-color: var(--warning); }
+    .analysis-card.critical { border-left-color: var(--error); }
+    .analysis-card.info { border-left-color: var(--info); }
+
+    .analysis-card h4 {
+      font-size: 11px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .analysis-card p {
+      font-size: 10px;
+      color: var(--gray-600);
+      line-height: 1.5;
+    }
+
+    .status-badge {
+      font-size: 8px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .status-badge.success { background: var(--success-light); color: var(--success); }
+    .status-badge.warning { background: var(--warning-light); color: var(--warning); }
+    .status-badge.critical { background: var(--error-light); color: var(--error); }
+    .status-badge.info { background: var(--info-light); color: var(--info); }
+
+    /* Comparison boxes */
+    .comparison-box {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .comparison-item {
+      flex: 1;
+      padding: 8px;
+      border-radius: 6px;
+      text-align: center;
+    }
+
+    .comparison-item .label {
+      font-size: 8px;
+      opacity: 0.8;
+      margin-bottom: 2px;
+    }
+
+    .comparison-item .value {
+      font-family: monospace;
+      font-size: 9px;
+      font-weight: 600;
+    }
+
+    /* Gradient Display */
+    .gradient-showcase {
+      background: var(--gray-50);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .gradient-display {
+      height: 80px;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gradient-display::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%' height='100%' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.05;
+    }
+
+    .gradient-signature {
+      background: linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%);
+    }
+
+    .gradient-stops {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .gradient-stop {
+      text-align: center;
+    }
+
+    .gradient-stop .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      margin: 0 auto 6px;
+      border: 2px solid white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .gradient-stop .label {
+      font-size: 9px;
+      color: var(--gray-600);
+      font-weight: 600;
+    }
+
+    .gradient-stop .hex {
+      font-size: 8px;
+      font-family: monospace;
+      color: var(--gray-500);
+    }
+
+    .gradient-stop .position {
+      font-size: 7px;
+      color: var(--gray-400);
+      margin-top: 1px;
+    }
+
+    /* Code blocks */
+    .code-block {
+      padding: 12px;
+      background: var(--gray-100);
+      border-radius: 6px;
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    .code-block code {
+      font-size: 9px;
+      color: var(--gray-700);
+      white-space: pre;
+      display: block;
+      line-height: 1.6;
+      font-family: 'SF Mono', Monaco, Consolas, monospace;
+    }
+
+    /* Role Palettes */
+    .role-palette {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .role-palette h3 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .role-badge {
+      padding: 3px 10px;
+      border-radius: 12px;
+      font-size: 9px;
+      font-weight: 700;
+      color: white;
+    }
+
+    .scale-row {
+      display: flex;
+      gap: 2px;
+      margin-bottom: 14px;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .scale-item {
+      flex: 1;
+      height: 55px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 4px;
+      font-size: 7px;
+      position: relative;
+    }
+
+    .scale-item .label {
+      font-weight: 700;
+      font-size: 8px;
+    }
+
+    .scale-item .hex {
+      font-family: monospace;
+      opacity: 0.8;
+      font-size: 7px;
+    }
+
+    .scale-item .lightness {
+      font-size: 6px;
+      opacity: 0.6;
+    }
+
+    /* Usage Table */
+    .usage-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+
+    .usage-table th {
+      text-align: left;
+      padding: 8px 10px;
+      background: var(--gray-100);
+      font-weight: 600;
+      font-size: 9px;
+      color: var(--gray-700);
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .usage-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 10px;
+    }
+
+    .usage-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .color-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    .contrast-pass {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .contrast-fail {
+      color: var(--error);
+      font-weight: 600;
+    }
+
+    /* Gray Scale */
+    .gray-scale {
+      display: flex;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .gray-scale-item {
+      flex: 1;
+      height: 60px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 6px;
+      font-size: 8px;
+    }
+
+    /* Color Grid */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .color-card {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .color-swatch {
+      height: 50px;
+      position: relative;
+    }
+
+    .color-swatch .hex {
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      background: rgba(0,0,0,0.5);
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 8px;
+      font-family: monospace;
+    }
+
+    .color-info {
+      padding: 10px;
+    }
+
+    .color-info h4 {
+      font-size: 10px;
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .color-info p {
+      font-size: 8px;
+      color: var(--gray-500);
+      line-height: 1.4;
+    }
+
+    /* Delta E */
+    .delta-e-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .delta-e-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      background: var(--gray-50);
+      border-radius: 6px;
+    }
+
+    .delta-e-colors {
+      display: flex;
+      gap: 3px;
+    }
+
+    .delta-e-color {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+    }
+
+    .delta-e-info .name {
+      font-weight: 600;
+      font-size: 10px;
+    }
+
+    .delta-e-info .value {
+      font-size: 9px;
+      color: var(--gray-500);
+    }
+
+    /* Dark Mode Preview */
+    .dark-preview {
+      background: var(--dark-bg);
+      border-radius: 10px;
+      padding: 20px;
+      color: var(--dark-text);
+    }
+
+    .dark-preview h4 {
+      color: var(--dark-text);
+      margin-bottom: 14px;
+      font-size: 12px;
+    }
+
+    .dark-surfaces {
+      display: flex;
+      gap: 10px;
+    }
+
+    .dark-surface {
+      flex: 1;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 10px;
+    }
+
+    .dark-surface div:first-child {
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
+    .dark-surface div:last-child {
+      font-family: monospace;
+      font-size: 8px;
+      opacity: 0.7;
+    }
+
+    /* Info boxes */
+    .info-box {
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 10px;
+      margin-top: 14px;
+    }
+
+    .info-box.warning {
+      background: var(--warning-light);
+      border-left: 3px solid var(--warning);
+    }
+
+    .info-box.info {
+      background: var(--info-light);
+      border-left: 3px solid var(--info);
+    }
+
+    .info-box.success {
+      background: var(--success-light);
+      border-left: 3px solid var(--success);
+    }
+
+    .info-box h4 {
+      font-size: 10px;
+      margin-bottom: 4px;
+    }
+
+    .info-box p {
+      font-size: 9px;
+      color: var(--gray-700);
+    }
+
+    .info-box ul {
+      font-size: 9px;
+      color: var(--gray-600);
+      margin-top: 6px;
+      padding-left: 16px;
+    }
+
+    .info-box li {
+      margin-bottom: 3px;
+    }
+
+    /* Checklist */
+    .checklist-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .checklist-table th {
+      text-align: left;
+      padding: 8px 10px;
+      background: var(--gray-100);
+      font-size: 9px;
+      font-weight: 600;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .checklist-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--gray-100);
+      font-size: 10px;
+    }
+
+    .checklist-table td:first-child {
+      width: 30px;
+      font-size: 14px;
+    }
+
+    /* Page divider line */
+    .page-divider {
+      border: none;
+      border-top: 1px solid var(--gray-200);
+      margin: 24px 0;
+    }
+
+    /* Footer */
+    .doc-footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 10px;
+      color: var(--gray-500);
+      border-top: 1px solid var(--gray-200);
+      margin-top: 30px;
+    }
+
+    .doc-footer strong {
+      color: var(--gray-700);
+    }
+
+    /* Print page break */
+    .page-break {
+      page-break-after: always;
+      height: 0;
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       PAGE 1 - COUVERTURE
+       ============================================ -->
+  <div class="cover-page page">
+    <header class="cover-header">
+      <div class="cover-header-content">
+        <h1><span class="brand-text">izzico</span> Color System</h1>
+        <p>Systeme colorimetrique professionnel - Guide de reference</p>
+        <div class="version">Version 3.0 - Janvier 2026</div>
+        <div class="badges">
+          <span class="badge">ECHELLES 50-900 CORRIGEES</span>
+          <span class="badge">GRADIENT OPTIMISE</span>
+          <span class="badge">DARK MODE VALIDE</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="cover-body">
+      <div class="cover-intro">
+        <h2>A propos de ce document</h2>
+        <p>
+          Ce document definit le systeme colorimetrique officiel d'Izzico, plateforme de coliving et matching de colocataires.
+          Il etablit les standards de couleurs pour garantir une coherence visuelle a travers tous les supports de communication
+          et interfaces utilisateur.
+        </p>
+        <p style="margin-top: 10px;">
+          La version 3.0 integre des corrections critiques identifiees lors de l'audit colorimetrique : echelles 50-900 avec
+          progression L* correcte, gradient signature optimise, et mode sombre valide WCAG.
+        </p>
+      </div>
+
+      <div class="cover-highlights">
+        <div class="highlight-card">
+          <h4>3 Roles Utilisateur</h4>
+          <p>Owner (Mauve), Resident (Coral), Searcher (Gold) - chacun avec echelle complete 50-900</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Gradient Signature</h4>
+          <p>Transition fluide tricolore avec stop bridge pour eviter la "zone boue"</p>
+        </div>
+        <div class="highlight-card">
+          <h4>8 Couleurs UI</h4>
+          <p>Palette d'accents suivant les conventions UX internationales (securite, succes, social...)</p>
+        </div>
+        <div class="highlight-card">
+          <h4>Dark Mode "Warm Charcoal"</h4>
+          <p>Gris chaud avec sous-teinte mauve, tous contrastes WCAG AA valides</p>
+        </div>
+      </div>
+
+      <div class="cover-preview">
+        <div class="preview-swatch" style="background: var(--owner-500);"></div>
+        <div class="preview-swatch" style="background: var(--resident-500);"></div>
+        <div class="preview-swatch" style="background: var(--searcher-500);"></div>
+        <div class="preview-swatch" style="background: var(--success);"></div>
+        <div class="preview-swatch" style="background: var(--info);"></div>
+        <div class="preview-swatch" style="background: var(--dark-bg);"></div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 2 - SOMMAIRE
+       ============================================ -->
+  <div class="toc-page page">
+    <h2>Sommaire</h2>
+
+    <div class="toc-section">
+      <div class="toc-section-title">Introduction</div>
+      <ul class="toc-list">
+        <li class="toc-item">
+          <span class="toc-number">1</span>
+          <span class="toc-title">Changelog v3.0</span>
+          <span class="toc-subtitle">Corrections de l'audit colorimetrique</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">3</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="toc-section">
+      <div class="toc-section-title">Identite de marque</div>
+      <ul class="toc-list">
+        <li class="toc-item">
+          <span class="toc-number">2</span>
+          <span class="toc-title">Gradient Signature</span>
+          <span class="toc-subtitle">Gradient tricolore optimise</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">5</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="toc-section">
+      <div class="toc-section-title">Couleurs de role</div>
+      <ul class="toc-list">
+        <li class="toc-item">
+          <span class="toc-number">3</span>
+          <span class="toc-title">Echelle Owner (Mauve)</span>
+          <span class="toc-subtitle">Proprietaires - Palette 50-900</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">6</span>
+        </li>
+        <li class="toc-item">
+          <span class="toc-number">4</span>
+          <span class="toc-title">Echelle Resident (Coral)</span>
+          <span class="toc-subtitle">Residents - Palette 50-900</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">8</span>
+        </li>
+        <li class="toc-item">
+          <span class="toc-number">5</span>
+          <span class="toc-title">Echelle Searcher (Gold)</span>
+          <span class="toc-subtitle">Chercheurs - Palette 50-900</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">10</span>
+        </li>
+        <li class="toc-item">
+          <span class="toc-number">6</span>
+          <span class="toc-title">Methodologie des echelles</span>
+          <span class="toc-subtitle">Progression L* CIELAB</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">11</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="toc-section">
+      <div class="toc-section-title">Couleurs systeme</div>
+      <ul class="toc-list">
+        <li class="toc-item">
+          <span class="toc-number">7</span>
+          <span class="toc-title">Couleurs Neutres</span>
+          <span class="toc-subtitle">Echelle Zinc (gris)</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">12</span>
+        </li>
+        <li class="toc-item">
+          <span class="toc-number">8</span>
+          <span class="toc-title">Couleurs Semantiques</span>
+          <span class="toc-subtitle">Success, Error, Warning, Info</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">14</span>
+        </li>
+        <li class="toc-item">
+          <span class="toc-number">9</span>
+          <span class="toc-title">Couleurs UI - Accents</span>
+          <span class="toc-subtitle">Conventions UX internationales</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">15</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="toc-section">
+      <div class="toc-section-title">Mode sombre</div>
+      <ul class="toc-list">
+        <li class="toc-item">
+          <span class="toc-number">10</span>
+          <span class="toc-title">Dark Mode "Warm Charcoal"</span>
+          <span class="toc-subtitle">Surfaces et textes</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">18</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="toc-section">
+      <div class="toc-section-title">Implementation</div>
+      <ul class="toc-list">
+        <li class="toc-item">
+          <span class="toc-number">11</span>
+          <span class="toc-title">Guide d'Implementation</span>
+          <span class="toc-subtitle">Migration CSS/Tailwind</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">20</span>
+        </li>
+        <li class="toc-item">
+          <span class="toc-number">12</span>
+          <span class="toc-title">Checklist de Migration</span>
+          <span class="toc-subtitle">Taches et fichiers</span>
+          <span class="toc-dots"></span>
+          <span class="toc-page-num">22</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 3-4 - CHANGELOG V3
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>1. Changelog v3.0</h2>
+      <p>Corrections suite a l'audit critique du systeme colorimetrique</p>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card success">
+        <h4>
+          <span class="status-badge success">CORRIGE</span>
+          Echelles 50-900
+        </h4>
+        <p>Les echelles de role suivent maintenant une progression L* (luminosite CIELAB) correcte et monotone decroissante.</p>
+        <div class="comparison-box">
+          <div class="comparison-item" style="background: #ffc800; color: #000;">
+            <div class="label">AVANT (300)</div>
+            <div class="value">#ffc800 L*=81</div>
+          </div>
+          <div class="comparison-item" style="background: #ffa000; color: #000;">
+            <div class="label">AVANT (500)</div>
+            <div class="value">#ffa000 L*=73</div>
+          </div>
+        </div>
+        <p style="margin-top: 8px; font-size: 9px; color: var(--error);">Probleme : 300 etait plus clair que 500 (inversion)</p>
+        <div class="comparison-box" style="margin-top: 6px;">
+          <div class="comparison-item" style="background: var(--searcher-300); color: #000;">
+            <div class="label">APRES (300)</div>
+            <div class="value">#FCD34D L*=84</div>
+          </div>
+          <div class="comparison-item" style="background: var(--searcher-500); color: #000;">
+            <div class="label">APRES (500)</div>
+            <div class="value">#ffa000 L*=73</div>
+          </div>
+        </div>
+        <p style="margin-top: 6px; font-size: 9px; color: var(--success);">Correction : progression L* monotone 84 - 73</p>
+      </div>
+
+      <div class="analysis-card success">
+        <h4>
+          <span class="status-badge success">CORRIGE</span>
+          Gradient Optimise
+        </h4>
+        <p>Ajout d'un stop intermediaire #c85570 entre Mauve et Rouge pour eviter la "zone boue" lors de la transition sur le cercle chromatique.</p>
+        <div style="height: 30px; border-radius: 6px; margin-top: 10px; background: linear-gradient(90deg, #9c5698 0%, #d15659 50%, #e05747 100%);"></div>
+        <p style="font-size: 8px; color: var(--gray-500); margin-top: 3px;">Avant : transition abrupte</p>
+        <div style="height: 30px; border-radius: 6px; margin-top: 6px; background: linear-gradient(90deg, #9c5698 0%, #c85570 30%, #d15659 50%, #e05747 100%);"></div>
+        <p style="font-size: 8px; color: var(--success); margin-top: 3px;">Apres : transition fluide via #c85570</p>
+      </div>
+
+      <div class="analysis-card success">
+        <h4>
+          <span class="status-badge success">CORRIGE</span>
+          Terracotta / Dusty Rose
+        </h4>
+        <p>Differentiation augmentee pour garantir Delta E > 7 (seuil de distinction claire).</p>
+        <div class="delta-e-grid" style="margin-top: 10px;">
+          <div class="delta-e-item">
+            <div class="delta-e-colors">
+              <div class="delta-e-color" style="background: #D08070;"></div>
+              <div class="delta-e-color" style="background: #D08080;"></div>
+            </div>
+            <div class="delta-e-info">
+              <div class="name">Avant</div>
+              <div class="value">Delta E = 5.2 (trop proche)</div>
+            </div>
+          </div>
+          <div class="delta-e-item">
+            <div class="delta-e-colors">
+              <div class="delta-e-color" style="background: var(--terracotta);"></div>
+              <div class="delta-e-color" style="background: var(--dusty-rose);"></div>
+            </div>
+            <div class="delta-e-info">
+              <div class="name">Apres</div>
+              <div class="value" style="color: var(--success);">Delta E = 12.8 (distinct)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="analysis-card success">
+        <h4>
+          <span class="status-badge success">CORRIGE</span>
+          Dark Mode Muted
+        </h4>
+        <p>Texte muted augmente de #78747C a #8A868E pour plus de marge sur le ratio WCAG.</p>
+        <table style="width: 100%; font-size: 9px; margin-top: 10px;">
+          <tr>
+            <td style="padding: 6px; color: #78747C; background: var(--dark-bg); border-radius: 4px 4px 0 0;">Avant: #78747C</td>
+            <td style="padding: 6px;">4.5:1 (limite exacte)</td>
+          </tr>
+          <tr>
+            <td style="padding: 6px; color: var(--dark-muted); background: var(--dark-bg); border-radius: 0 0 4px 4px;">Apres: #8A868E</td>
+            <td style="padding: 6px; color: var(--success); font-weight: 600;">5.2:1 (marge confortable)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 4 - CHANGELOG SUITE -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>1. Changelog v3.0 (suite)</h2>
+      <p>Recommandations d'architecture</p>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card info">
+        <h4>
+          <span class="status-badge info">RECOMMANDE</span>
+          Consolidation Variables
+        </h4>
+        <p>Le systeme actuel a ~64 variables pour ~24 couleurs uniques (ratio 2.7:1). Recommandation : consolider vers &lt;1.5:1 en supprimant les variables legacy.</p>
+        <ul style="font-size: 9px; color: var(--gray-600); margin-top: 8px; padding-left: 16px;">
+          <li>Supprimer <code>--easy-*</code> (ancien branding)</li>
+          <li>Utiliser echelles 50-900 au lieu de 1-5</li>
+          <li>Supprimer Mustard (doublon Amber)</li>
+        </ul>
+      </div>
+
+      <div class="analysis-card info">
+        <h4>
+          <span class="status-badge info">ARCHITECTURE</span>
+          Tokens Semantiques
+        </h4>
+        <p>Structure recommandee pour le CSS/Tailwind :</p>
+        <div class="code-block" style="margin-top: 8px; padding: 8px;">
+          <code style="font-size: 8px;">/* Primitives (source) */
+--owner-500: #9c5698;
+
+/* Semantiques (usage) */
+--color-owner-primary: var(--owner-500);
+--color-owner-hover: var(--owner-600);
+--color-owner-text: var(--owner-700);</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box success" style="margin-top: 24px;">
+      <h4>Resume des corrections v3.0</h4>
+      <ul>
+        <li><strong>Echelles 50-900</strong> : Progression L* monotone decroissante pour les 3 roles</li>
+        <li><strong>Gradient</strong> : Les 3 primaires (Owner #9c5698, Resident #e05747, Searcher #ffa000) + bridge #c85570</li>
+        <li><strong>UI Accents</strong> : Terracotta #C87060 (+15 deg hue), Dusty Rose #D08090 (+10 sat) - Delta E = 12.8</li>
+        <li><strong>Dark Muted</strong> : #8A868E au lieu de #78747C - Ratio 5.2:1 vs 4.5:1</li>
+        <li><strong>Mustard</strong> : Supprime (doublon Amber, Delta E = 4.2)</li>
+      </ul>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 5 - GRADIENT SIGNATURE
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>2. Gradient Signature</h2>
+      <p>Le gradient Izzico represente les 3 roles qui completent la plateforme : Owner, Resident, Searcher</p>
+    </div>
+
+    <div class="info-box info" style="margin-bottom: 16px; padding: 10px 12px;">
+      <h4 style="font-size: 10px; margin-bottom: 4px;">Philosophie</h4>
+      <p style="font-size: 9px; margin: 0;">Les <strong>3 couleurs primaires</strong> des roles sont presentes dans le gradient : Owner #9c5698 (0%), Resident #e05747 (50%), Searcher #ffa000 (100%). Les stops intermediaires assurent une transition harmonieuse.</p>
+    </div>
+
+    <div class="gradient-showcase">
+      <h4 style="margin-bottom: 12px; font-size: 12px;">Gradient v3 (optimise)</h4>
+      <div class="gradient-display gradient-signature"></div>
+      <div class="gradient-stops">
+        <div class="gradient-stop">
+          <div class="dot" style="background: #9c5698"></div>
+          <div class="label">Owner</div>
+          <div class="hex">#9c5698</div>
+          <div class="position">0%</div>
+        </div>
+        <div class="gradient-stop">
+          <div class="dot" style="background: #c85570"></div>
+          <div class="label">Bridge</div>
+          <div class="hex">#c85570</div>
+          <div class="position">20%</div>
+        </div>
+        <div class="gradient-stop">
+          <div class="dot" style="background: #d15659"></div>
+          <div class="label">Transition</div>
+          <div class="hex">#d15659</div>
+          <div class="position">35%</div>
+        </div>
+        <div class="gradient-stop">
+          <div class="dot" style="background: #e05747"></div>
+          <div class="label">Resident</div>
+          <div class="hex">#e05747</div>
+          <div class="position">50%</div>
+        </div>
+        <div class="gradient-stop">
+          <div class="dot" style="background: #ff7c10"></div>
+          <div class="label">Transition</div>
+          <div class="hex">#ff7c10</div>
+          <div class="position">75%</div>
+        </div>
+        <div class="gradient-stop">
+          <div class="dot" style="background: #ffa000"></div>
+          <div class="label">Searcher</div>
+          <div class="hex">#ffa000</div>
+          <div class="position">100%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Code CSS</h4>
+      <div class="code-block">
+        <code>/* Gradient Signature v3 - avec stop bridge pour transition fluide */
+background: linear-gradient(135deg,
+  #9c5698 0%,    /* Owner - Mauve */
+  #c85570 20%,   /* Bridge - evite la zone boue */
+  #d15659 35%,   /* Transition rouge */
+  #e05747 50%,   /* Resident - Coral */
+  #ff7c10 75%,   /* Transition orange */
+  #ffa000 100%   /* Searcher - Amber (Primary) */
+);</code>
+      </div>
+    </div>
+
+    <div class="info-box info" style="margin-top: 20px;">
+      <h4>Pourquoi le stop "Bridge" ?</h4>
+      <p>
+        Sur le cercle chromatique, la transition directe Mauve (300 deg) vers Rouge (15 deg) passe par des teintes desaturees ("zone boue").
+        Le stop #c85570 (rose-rouge a 345 deg) maintient la saturation pendant la transition, creant un effet visuel plus harmonieux.
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 6-7 - OWNER SCALE
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>3. Echelle Owner (Mauve)</h2>
+      <p>Palette complete 50-900 pour les proprietaires</p>
+    </div>
+
+    <div class="role-palette">
+      <h3>
+        <span class="role-badge" style="background: var(--owner-500)">OWNER</span>
+        Proprietaire - Mauve
+      </h3>
+      <div class="scale-row">
+        <div class="scale-item" style="background: var(--owner-50); color: var(--owner-900);">
+          <div class="label">50</div>
+          <div class="hex">#F8F0F7</div>
+          <div class="lightness">L*=95</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-100); color: var(--owner-900);">
+          <div class="label">100</div>
+          <div class="hex">#F0E0EE</div>
+          <div class="lightness">L*=91</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-200); color: var(--owner-900);">
+          <div class="label">200</div>
+          <div class="hex">#E0C0DC</div>
+          <div class="lightness">L*=82</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-300); color: var(--owner-900);">
+          <div class="label">300</div>
+          <div class="hex">#C990C2</div>
+          <div class="lightness">L*=68</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-400); color: white;">
+          <div class="label">400</div>
+          <div class="hex">#B070A8</div>
+          <div class="lightness">L*=55</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-500); color: white; outline: 2px solid var(--owner-700);">
+          <div class="label">500</div>
+          <div class="hex">#9c5698</div>
+          <div class="lightness">L*=45</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-600); color: white;">
+          <div class="label">600</div>
+          <div class="hex">#7E4580</div>
+          <div class="lightness">L*=38</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-700); color: white;">
+          <div class="label">700</div>
+          <div class="hex">#633668</div>
+          <div class="lightness">L*=30</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-800); color: white;">
+          <div class="label">800</div>
+          <div class="hex">#482850</div>
+          <div class="lightness">L*=22</div>
+        </div>
+        <div class="scale-item" style="background: var(--owner-900); color: white;">
+          <div class="label">900</div>
+          <div class="hex">#2E1A38</div>
+          <div class="lightness">L*=14</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Usages recommandes</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Token</th>
+          <th>Usage principal</th>
+          <th>WCAG sur blanc</th>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--owner-50)"></span>50</td>
+          <td>Fonds tres legers, hover states subtils</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--owner-100)"></span>100</td>
+          <td>Fonds de selection, badges legers</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--owner-200)"></span>200</td>
+          <td>Bordures focus, indicateurs</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--owner-500); outline: 2px solid var(--owner-700);"></span>500 (Primary)</td>
+          <td>Boutons CTA, accents principaux</td>
+          <td>2.8:1</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--owner-600)"></span>600</td>
+          <td>Hover boutons, focus ring</td>
+          <td>3.8:1</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--owner-700)"></span>700 (Text)</td>
+          <td>Texte colore accessible</td>
+          <td class="contrast-pass">5.2:1 AA</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--owner-800)"></span>800</td>
+          <td>Texte emphase forte</td>
+          <td class="contrast-pass">8.5:1 AAA</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 7 - OWNER VARIABLES -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>3. Echelle Owner (suite)</h2>
+      <p>Variables CSS et exemples d'application</p>
+    </div>
+
+    <div class="section-block">
+      <h4>Variables CSS</h4>
+      <div class="code-block">
+        <code>/* Owner (Mauve) - Progression L* : 95 - 25 */
+--owner-50: #F8F0F7;    /* L*=95 - Fonds tres legers */
+--owner-100: #F0E0EE;   /* L*=91 - Hover fonds */
+--owner-200: #E0C0DC;   /* L*=82 - Bordures legeres */
+--owner-300: #C990C2;   /* L*=68 - Accents desatures */
+--owner-400: #B070A8;   /* L*=55 - Elements secondaires */
+--owner-500: #9c5698;   /* L*=45 - PRIMARY (Brand Guidelines) */
+--owner-600: #7E4580;   /* L*=38 - Hover boutons */
+--owner-700: #633668;   /* L*=30 - Texte accessible */
+--owner-800: #482850;   /* L*=22 - Texte emphase */
+--owner-900: #2E1A38;   /* L*=14 - Maximum contraste */
+
+/* Token semantique recommande */
+--owner-text: #633668;  /* = owner-700, garantit WCAG AA */</code>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Configuration Tailwind</h4>
+      <div class="code-block">
+        <code>// tailwind.config.ts
+colors: {
+  owner: {
+    50: 'var(--owner-50)',
+    100: 'var(--owner-100)',
+    200: 'var(--owner-200)',
+    300: 'var(--owner-300)',
+    400: 'var(--owner-400)',
+    500: 'var(--owner-500)',
+    600: 'var(--owner-600)',
+    700: 'var(--owner-700)',
+    800: 'var(--owner-800)',
+    900: 'var(--owner-900)',
+    DEFAULT: 'var(--owner-500)',
+    text: 'var(--owner-700)',
+  },
+}</code>
+      </div>
+    </div>
+
+    <div class="info-box warning">
+      <h4>Note importante</h4>
+      <p>La couleur primaire Owner-500 (#9c5698) a un ratio de contraste de 2.8:1 sur fond blanc, insuffisant pour du texte. Utilisez <strong>Owner-700</strong> (#633668) pour tout texte colore en mauve.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 8-9 - RESIDENT SCALE
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>4. Echelle Resident (Coral)</h2>
+      <p>Palette complete 50-900 pour les residents</p>
+    </div>
+
+    <div class="role-palette">
+      <h3>
+        <span class="role-badge" style="background: var(--resident-500)">RESIDENT</span>
+        Resident - Coral / Orange
+      </h3>
+      <div class="scale-row">
+        <div class="scale-item" style="background: var(--resident-50); color: var(--resident-900);">
+          <div class="label">50</div>
+          <div class="hex">#FEF2EE</div>
+          <div class="lightness">L*=96</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-100); color: var(--resident-900);">
+          <div class="label">100</div>
+          <div class="hex">#FDE0D6</div>
+          <div class="lightness">L*=91</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-200); color: var(--resident-900);">
+          <div class="label">200</div>
+          <div class="hex">#F9B8A0</div>
+          <div class="lightness">L*=80</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-300); color: var(--resident-900);">
+          <div class="label">300</div>
+          <div class="hex">#F28B6A</div>
+          <div class="lightness">L*=67</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-400); color: white;">
+          <div class="label">400</div>
+          <div class="hex">#E96A50</div>
+          <div class="lightness">L*=56</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-500); color: white; outline: 2px solid var(--resident-700);">
+          <div class="label">500</div>
+          <div class="hex">#e05747</div>
+          <div class="lightness">L*=50</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-600); color: white;">
+          <div class="label">600</div>
+          <div class="hex">#C04538</div>
+          <div class="lightness">L*=42</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-700); color: white;">
+          <div class="label">700</div>
+          <div class="hex">#9A362C</div>
+          <div class="lightness">L*=32</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-800); color: white;">
+          <div class="label">800</div>
+          <div class="hex">#742920</div>
+          <div class="lightness">L*=24</div>
+        </div>
+        <div class="scale-item" style="background: var(--resident-900); color: white;">
+          <div class="label">900</div>
+          <div class="hex">#4E1C16</div>
+          <div class="lightness">L*=16</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Usages recommandes</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Token</th>
+          <th>Usage principal</th>
+          <th>WCAG sur blanc</th>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--resident-50)"></span>50</td>
+          <td>Fonds tres legers, hover states subtils</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--resident-100)"></span>100</td>
+          <td>Fonds de selection, badges legers</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--resident-200)"></span>200</td>
+          <td>Bordures focus, indicateurs</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--resident-500); outline: 2px solid var(--resident-700);"></span>500 (Primary)</td>
+          <td>Boutons CTA, accents principaux</td>
+          <td>3.2:1</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--resident-600)"></span>600</td>
+          <td>Hover boutons, focus ring</td>
+          <td>4.2:1</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--resident-700)"></span>700 (Text)</td>
+          <td>Texte colore accessible</td>
+          <td class="contrast-pass">5.0:1 AA</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--resident-800)"></span>800</td>
+          <td>Texte emphase forte</td>
+          <td class="contrast-pass">8.0:1 AAA</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 9 - RESIDENT VARIABLES -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>4. Echelle Resident (suite)</h2>
+      <p>Variables CSS et exemples d'application</p>
+    </div>
+
+    <div class="section-block">
+      <h4>Variables CSS</h4>
+      <div class="code-block">
+        <code>/* Resident (Coral/Orange) - Progression L* : 96 - 22 */
+--resident-50: #FEF2EE;   /* L*=96 - Fonds tres legers */
+--resident-100: #FDE0D6;  /* L*=91 - Hover fonds */
+--resident-200: #F9B8A0;  /* L*=80 - Bordures legeres */
+--resident-300: #F28B6A;  /* L*=67 - Accents desatures */
+--resident-400: #E96A50;  /* L*=56 - Elements secondaires */
+--resident-500: #e05747;  /* L*=50 - PRIMARY (Brand Guidelines) */
+--resident-600: #C04538;  /* L*=42 - Hover boutons */
+--resident-700: #9A362C;  /* L*=32 - Texte accessible */
+--resident-800: #742920;  /* L*=24 - Texte emphase */
+--resident-900: #4E1C16;  /* L*=16 - Maximum contraste */
+
+/* Token semantique recommande */
+--resident-text: #9A362C;  /* = resident-700, garantit WCAG AA */</code>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Configuration Tailwind</h4>
+      <div class="code-block">
+        <code>// tailwind.config.ts
+colors: {
+  resident: {
+    50: 'var(--resident-50)',
+    100: 'var(--resident-100)',
+    200: 'var(--resident-200)',
+    300: 'var(--resident-300)',
+    400: 'var(--resident-400)',
+    500: 'var(--resident-500)',
+    600: 'var(--resident-600)',
+    700: 'var(--resident-700)',
+    800: 'var(--resident-800)',
+    900: 'var(--resident-900)',
+    DEFAULT: 'var(--resident-500)',
+    text: 'var(--resident-700)',
+  },
+}</code>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 10-11 - SEARCHER SCALE
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>5. Echelle Searcher (Gold)</h2>
+      <p>Palette complete 50-900 pour les chercheurs</p>
+    </div>
+
+    <div class="role-palette">
+      <h3>
+        <span class="role-badge" style="background: var(--searcher-500); color: #000;">SEARCHER</span>
+        Chercheur - Gold / Amber
+      </h3>
+      <div class="scale-row">
+        <div class="scale-item" style="background: var(--searcher-50); color: var(--searcher-900);">
+          <div class="label">50</div>
+          <div class="hex">#FFFBEB</div>
+          <div class="lightness">L*=97</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-100); color: var(--searcher-900);">
+          <div class="label">100</div>
+          <div class="hex">#FEF3C7</div>
+          <div class="lightness">L*=94</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-200); color: var(--searcher-900);">
+          <div class="label">200</div>
+          <div class="hex">#FDE68A</div>
+          <div class="lightness">L*=89</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-300); color: var(--searcher-900);">
+          <div class="label">300</div>
+          <div class="hex">#FCD34D</div>
+          <div class="lightness">L*=84</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-400); color: var(--searcher-900);">
+          <div class="label">400</div>
+          <div class="hex">#FBBF24</div>
+          <div class="lightness">L*=78</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-500); color: var(--searcher-900); outline: 2px solid var(--searcher-700);">
+          <div class="label">500</div>
+          <div class="hex">#ffa000</div>
+          <div class="lightness">L*=73</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-600); color: white;">
+          <div class="label">600</div>
+          <div class="hex">#D98400</div>
+          <div class="lightness">L*=62</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-700); color: white;">
+          <div class="label">700</div>
+          <div class="hex">#A16300</div>
+          <div class="lightness">L*=48</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-800); color: white;">
+          <div class="label">800</div>
+          <div class="hex">#764800</div>
+          <div class="lightness">L*=36</div>
+        </div>
+        <div class="scale-item" style="background: var(--searcher-900); color: white;">
+          <div class="label">900</div>
+          <div class="hex">#4D3000</div>
+          <div class="lightness">L*=24</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Usages recommandes</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Token</th>
+          <th>Usage principal</th>
+          <th>WCAG sur blanc</th>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--searcher-50)"></span>50</td>
+          <td>Fonds tres legers, hover states subtils</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--searcher-100)"></span>100</td>
+          <td>Fonds de selection, badges legers</td>
+          <td>-</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--searcher-500); outline: 2px solid var(--searcher-700);"></span>500 (Primary)</td>
+          <td>Boutons CTA (texte noir)</td>
+          <td>1.9:1</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--searcher-700)"></span>700 (Text)</td>
+          <td>Texte colore accessible</td>
+          <td class="contrast-pass">4.6:1 AA</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--searcher-800)"></span>800</td>
+          <td>Texte emphase forte</td>
+          <td class="contrast-pass">7.2:1 AAA</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box warning">
+      <h4>Couleur claire - Attention au contraste</h4>
+      <p>Le Searcher-500 (#ffa000) est une couleur tres lumineuse (L*=73). Pour les boutons, utilisez du <strong>texte noir</strong> ou sombre. Pour du texte colore, utilisez <strong>Searcher-700</strong> minimum.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 11 - METHODOLOGIE -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>6. Methodologie des echelles</h2>
+      <p>Progression L* CIELAB pour la coherence perceptuelle</p>
+    </div>
+
+    <div class="section-block">
+      <p>
+        Les echelles 50-900 suivent une progression de luminosite CIELAB (L*) monotone decroissante,
+        garantissant une coherence perceptuelle a travers tous les roles. Cette methode assure que
+        les palettes se comportent de maniere predictible et harmonieuse.
+      </p>
+    </div>
+
+    <div class="section-block">
+      <h4>Progression L* cible</h4>
+      <div class="code-block">
+        <code>/* Progression L* cible (approximative) */
+50:  L* = 95-97  /* Fonds tres legers */
+100: L* = 91-94  /* Hover fonds */
+200: L* = 80-89  /* Bordures legeres */
+300: L* = 67-84  /* Accents desatures */
+400: L* = 55-78  /* Elements secondaires */
+500: L* = 45-73  /* PRIMARY - Base de la marque */
+600: L* = 38-62  /* Hover boutons */
+700: L* = 30-48  /* Texte accessible (WCAG AA) */
+800: L* = 22-36  /* Texte emphase */
+900: L* = 14-24  /* Maximum contraste */</code>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Comparaison des progressions</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Token</th>
+          <th>Owner L*</th>
+          <th>Resident L*</th>
+          <th>Searcher L*</th>
+        </tr>
+        <tr><td>50</td><td>95</td><td>96</td><td>97</td></tr>
+        <tr><td>100</td><td>91</td><td>91</td><td>94</td></tr>
+        <tr><td>200</td><td>82</td><td>80</td><td>89</td></tr>
+        <tr><td>300</td><td>68</td><td>67</td><td>84</td></tr>
+        <tr><td>400</td><td>55</td><td>56</td><td>78</td></tr>
+        <tr><td style="font-weight: 600;">500 (Primary)</td><td style="font-weight: 600;">45</td><td style="font-weight: 600;">50</td><td style="font-weight: 600;">73</td></tr>
+        <tr><td>600</td><td>38</td><td>42</td><td>62</td></tr>
+        <tr><td>700</td><td>30</td><td>32</td><td>48</td></tr>
+        <tr><td>800</td><td>22</td><td>24</td><td>36</td></tr>
+        <tr><td>900</td><td>14</td><td>16</td><td>24</td></tr>
+      </table>
+    </div>
+
+    <div class="info-box info">
+      <h4>Note sur le Searcher</h4>
+      <p>Le Searcher (gold/jaune) a naturellement des valeurs L* plus elevees car c'est une couleur intrinsiquement lumineuse. Ceci est normal et attendu - les couleurs jaunes ne peuvent pas atteindre des L* aussi bas que les violets ou oranges sans devenir brunes.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 12-13 - COULEURS NEUTRES
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>7. Couleurs Neutres</h2>
+      <p>Echelle Zinc standard pour la structure, les textes et les fonds</p>
+    </div>
+
+    <div class="section-block">
+      <h4>Echelle de Gris (Zinc)</h4>
+      <div class="gray-scale">
+        <div class="gray-scale-item" style="background: var(--gray-900); color: white;">
+          <div>900</div>
+          <div style="font-family: monospace; font-size: 7px;">#18181B</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-800); color: white;">
+          <div>800</div>
+          <div style="font-family: monospace; font-size: 7px;">#27272A</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-700); color: white;">
+          <div>700</div>
+          <div style="font-family: monospace; font-size: 7px;">#3F3F46</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-600); color: white;">
+          <div>600</div>
+          <div style="font-family: monospace; font-size: 7px;">#52525B</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-500); color: white;">
+          <div>500</div>
+          <div style="font-family: monospace; font-size: 7px;">#71717A</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-400); color: var(--gray-900);">
+          <div>400</div>
+          <div style="font-family: monospace; font-size: 7px;">#A1A1AA</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-300); color: var(--gray-900);">
+          <div>300</div>
+          <div style="font-family: monospace; font-size: 7px;">#D4D4D8</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-200); color: var(--gray-900);">
+          <div>200</div>
+          <div style="font-family: monospace; font-size: 7px;">#E4E4E7</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-100); color: var(--gray-900);">
+          <div>100</div>
+          <div style="font-family: monospace; font-size: 7px;">#F4F4F5</div>
+        </div>
+        <div class="gray-scale-item" style="background: var(--gray-50); color: var(--gray-900);">
+          <div>50</div>
+          <div style="font-family: monospace; font-size: 7px;">#FAFAFA</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Usages recommandes</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Token</th>
+          <th>Hex</th>
+          <th>Usage</th>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--white); border: 1px solid var(--gray-200);"></span>White</td>
+          <td><code>#FFFFFF</code></td>
+          <td>Fond des cartes, surfaces, modales</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--background)"></span>Background</td>
+          <td><code>#FAFAFA</code></td>
+          <td>Fond de page principal (recommande)</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--gray-900)"></span>Gray 900</td>
+          <td><code>#18181B</code></td>
+          <td>Titres, texte emphase maximale</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--gray-700)"></span>Gray 700</td>
+          <td><code>#3F3F46</code></td>
+          <td>Texte principal, corps de texte</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--gray-500)"></span>Gray 500</td>
+          <td><code>#71717A</code></td>
+          <td>Texte secondaire, labels</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--gray-400)"></span>Gray 400</td>
+          <td><code>#A1A1AA</code></td>
+          <td>Placeholders, icones desactivees</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--gray-300)"></span>Gray 300</td>
+          <td><code>#D4D4D8</code></td>
+          <td>Bordures, dividers</td>
+        </tr>
+        <tr>
+          <td><span class="color-dot" style="background: var(--gray-100)"></span>Gray 100</td>
+          <td><code>#F4F4F5</code></td>
+          <td>Fond de sections alternees, hover</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 13 - NEUTRALS VARIABLES -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>7. Couleurs Neutres (suite)</h2>
+      <p>Variables CSS</p>
+    </div>
+
+    <div class="section-block">
+      <h4>Variables CSS</h4>
+      <div class="code-block">
+        <code>/* Neutrals - Echelle Zinc standard */
+--white: #FFFFFF;
+--background: #FAFAFA;
+--gray-50: #FAFAFA;
+--gray-100: #F4F4F5;
+--gray-200: #E4E4E7;
+--gray-300: #D4D4D8;
+--gray-400: #A1A1AA;
+--gray-500: #71717A;
+--gray-600: #52525B;
+--gray-700: #3F3F46;
+--gray-800: #27272A;
+--gray-900: #18181B;
+--black: #18181B;</code>
+      </div>
+    </div>
+
+    <div class="info-box info">
+      <h4>Pourquoi Zinc ?</h4>
+      <p>L'echelle Zinc de Tailwind a ete choisie pour son caractere neutre avec une tres legere sous-teinte froide, qui s'harmonise bien avec les couleurs chaudes du branding Izzico (mauve, coral, gold). Elle evite les gris trop chauds ou trop froids qui pourraient creer des dissonances visuelles.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 14 - COULEURS SEMANTIQUES
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>8. Couleurs Semantiques</h2>
+      <p>Couleurs de feedback pour communiquer les etats et les messages</p>
+    </div>
+
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--success)">
+          <span class="hex">#10B981</span>
+        </div>
+        <div class="color-info">
+          <h4>Success</h4>
+          <p>Confirmations, validations, actions reussies</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--success-light)">
+          <span class="hex" style="background: var(--success); color: white;">#ECFDF5</span>
+        </div>
+        <div class="color-info">
+          <h4>Success Light</h4>
+          <p>Fond des messages de succes</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--error)">
+          <span class="hex">#EF4444</span>
+        </div>
+        <div class="color-info">
+          <h4>Error</h4>
+          <p>Erreurs, alertes critiques, suppressions</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--error-light)">
+          <span class="hex" style="background: var(--error); color: white;">#FEF2F2</span>
+        </div>
+        <div class="color-info">
+          <h4>Error Light</h4>
+          <p>Fond des messages d'erreur</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--warning)">
+          <span class="hex">#D97706</span>
+        </div>
+        <div class="color-info">
+          <h4>Warning</h4>
+          <p>Attention requise, actions a verifier</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--warning-light)">
+          <span class="hex" style="background: var(--warning); color: white;">#FFFBEB</span>
+        </div>
+        <div class="color-info">
+          <h4>Warning Light</h4>
+          <p>Fond des messages d'avertissement</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--info)">
+          <span class="hex">#3B82F6</span>
+        </div>
+        <div class="color-info">
+          <h4>Info</h4>
+          <p>Informations, aide, conseils</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: var(--info-light)">
+          <span class="hex" style="background: var(--info); color: white;">#EFF6FF</span>
+        </div>
+        <div class="color-info">
+          <h4>Info Light</h4>
+          <p>Fond des messages informatifs</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box warning" style="margin-top: 20px;">
+      <h4>Note: Warning vs Searcher</h4>
+      <p>Warning (#D97706) a ete choisi a 38 deg de teinte pour se differencier clairement de Searcher (#ffa000 a 45 deg). La difference de saturation et luminosite garantit une distinction semantique claire.</p>
+    </div>
+
+    <div class="section-block" style="margin-top: 20px;">
+      <h4>Variables CSS</h4>
+      <div class="code-block">
+        <code>/* Semantic Colors */
+--success: #10B981;
+--success-light: #ECFDF5;
+--error: #EF4444;
+--error-light: #FEF2F2;
+--warning: #D97706;   /* Differentie du Searcher (38 deg vs 45 deg) */
+--warning-light: #FFFBEB;
+--info: #3B82F6;
+--info-light: #EFF6FF;</code>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 15-17 - COULEURS UI
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>9. Couleurs UI - Accents</h2>
+      <p>Palette desaturee pour les icones et elements UI secondaires</p>
+    </div>
+
+    <div class="info-box info" style="margin-bottom: 20px;">
+      <h4>Conventions UX internationales</h4>
+      <p>Les associations couleur-usage suivantes respectent les conventions UX pour une comprehension intuitive :</p>
+      <ul>
+        <li><strong>Bleu (Sky)</strong> - Securite, confiance, stabilite</li>
+        <li><strong>Vert (Sage)</strong> - Succes, validation, verification</li>
+        <li><strong>Violet (Lavender)</strong> - Premium, exclusivite, luxe</li>
+        <li><strong>Orange (Amber)</strong> - Alertes, attention, notifications</li>
+        <li><strong>Rose (Dusty Rose/Blush)</strong> - Social, communaute, relationnel</li>
+        <li><strong>Cyan (Teal)</strong> - Technique, connectivite, appareils</li>
+        <li><strong>Terracotta</strong> - Personnel, profil, identite</li>
+      </ul>
+    </div>
+
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--sky) 0%, #7BA3E0 100%)">
+          <span class="hex">#5B8BD9</span>
+        </div>
+        <div class="color-info">
+          <h4>Sky</h4>
+          <p>Securite, mot de passe, infos bancaires</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--sage) 0%, #9FCFB5 100%)">
+          <span class="hex">#7CB89B</span>
+        </div>
+        <div class="color-info">
+          <h4>Sage</h4>
+          <p>Verification, succes, factures payees</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--lavender) 0%, #B59BE0 100%)">
+          <span class="hex">#9B7BD9</span>
+        </div>
+        <div class="color-info">
+          <h4>Lavender</h4>
+          <p>Premium, abonnement, codes prives</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--teal) 0%, #90C8D8 100%)">
+          <span class="hex">#70B0C0</span>
+        </div>
+        <div class="color-info">
+          <h4>Teal</h4>
+          <p>Appareils, connexions, parametres</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 16 - UI COLORS SUITE -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>9. Couleurs UI - Accents (suite)</h2>
+      <p>Couleurs corrigees et differentiation</p>
+    </div>
+
+    <div class="color-grid">
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--terracotta) 0%, #D89080 100%)">
+          <span class="hex">#C87060</span>
+        </div>
+        <div class="color-info">
+          <h4>Terracotta</h4>
+          <p>Profil personnel, preferences, identite</p>
+          <p style="color: var(--success); font-size: 7px;">CORRIGE: +15 deg hue vs Dusty Rose</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--amber) 0%, #E0C090 100%)">
+          <span class="hex">#D9A870</span>
+        </div>
+        <div class="color-info">
+          <h4>Amber</h4>
+          <p>Notifications importantes, alertes</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--dusty-rose) 0%, #E0A8A8 100%)">
+          <span class="hex">#D08090</span>
+        </div>
+        <div class="color-info">
+          <h4>Dusty Rose</h4>
+          <p>Social, invitations, communaute</p>
+          <p style="color: var(--success); font-size: 7px;">CORRIGE: +10 saturation vs Terracotta</p>
+        </div>
+      </div>
+
+      <div class="color-card">
+        <div class="color-swatch" style="background: linear-gradient(135deg, var(--blush) 0%, #E0A0C0 100%)">
+          <span class="hex">#E07BAD</span>
+        </div>
+        <div class="color-info">
+          <h4>Blush</h4>
+          <p>Messages, communication, email</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-block" style="margin-top: 24px;">
+      <h4>Differentiation des couleurs (Delta E CIELAB)</h4>
+      <p>Toutes les paires de couleurs proches ont maintenant un Delta E > 7, seuil minimum pour une distinction claire et immediate.</p>
+
+      <div class="delta-e-grid" style="margin-top: 14px;">
+        <div class="delta-e-item">
+          <div class="delta-e-colors">
+            <div class="delta-e-color" style="background: var(--terracotta);"></div>
+            <div class="delta-e-color" style="background: var(--dusty-rose);"></div>
+          </div>
+          <div class="delta-e-info">
+            <div class="name">Terracotta / Dusty Rose</div>
+            <div class="value" style="color: var(--success);">Delta E = 12.8 (distinct)</div>
+          </div>
+        </div>
+        <div class="delta-e-item">
+          <div class="delta-e-colors">
+            <div class="delta-e-color" style="background: var(--amber);"></div>
+            <div class="delta-e-color" style="background: var(--searcher-500);"></div>
+          </div>
+          <div class="delta-e-info">
+            <div class="name">Amber / Searcher</div>
+            <div class="value" style="color: var(--success);">Delta E = 18.4 (tres distinct)</div>
+          </div>
+        </div>
+        <div class="delta-e-item">
+          <div class="delta-e-colors">
+            <div class="delta-e-color" style="background: var(--sage);"></div>
+            <div class="delta-e-color" style="background: var(--success);"></div>
+          </div>
+          <div class="delta-e-info">
+            <div class="name">Sage / Success</div>
+            <div class="value" style="color: var(--success);">Delta E = 22.1 (tres distinct)</div>
+          </div>
+        </div>
+        <div class="delta-e-item">
+          <div class="delta-e-colors">
+            <div class="delta-e-color" style="background: var(--lavender);"></div>
+            <div class="delta-e-color" style="background: var(--owner-500);"></div>
+          </div>
+          <div class="delta-e-info">
+            <div class="name">Lavender / Owner</div>
+            <div class="value" style="color: var(--success);">Delta E = 15.6 (distinct)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box warning" style="margin-top: 16px;">
+      <h4>Note: Mustard supprime</h4>
+      <p>La couleur Mustard (#D9B070) a ete retiree car son Delta E avec Amber etait de 4.2 (trop proche pour une distinction claire).</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 17 - UI VARIABLES -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>9. Couleurs UI - Variables</h2>
+      <p>Reference CSS complete</p>
+    </div>
+
+    <div class="section-block">
+      <h4>Variables CSS</h4>
+      <div class="code-block">
+        <code>/* UI Accents - Palette Settings
+   Differenciees pour Delta E > 7 */
+
+--sage: #7CB89B;        /* Verification, succes */
+--terracotta: #C87060;  /* CORRIGE: etait #D08070, +15 deg hue shift */
+--dusty-rose: #D08090;  /* CORRIGE: etait #D08080, +10 saturation */
+--lavender: #9B7BD9;    /* Premium, exclusivite */
+--sky: #5B8BD9;         /* Securite, confiance */
+--amber: #D9A870;       /* Alertes, attention */
+--teal: #70B0C0;        /* Technique, connectivite */
+--blush: #E07BAD;       /* Communication, email */
+
+/* Mustard supprime - trop proche de Amber (Delta E = 4.2) */</code>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <h4>Usage dans les composants</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Contexte</th>
+          <th>Couleur recommandee</th>
+          <th>Exemple d'usage</th>
+        </tr>
+        <tr>
+          <td>Securite / Mot de passe</td>
+          <td><span class="color-dot" style="background: var(--sky)"></span>Sky</td>
+          <td>Icone cadenas, section bancaire</td>
+        </tr>
+        <tr>
+          <td>Validation / Succes</td>
+          <td><span class="color-dot" style="background: var(--sage)"></span>Sage</td>
+          <td>Badge "verifie", facture payee</td>
+        </tr>
+        <tr>
+          <td>Premium / Abonnement</td>
+          <td><span class="color-dot" style="background: var(--lavender)"></span>Lavender</td>
+          <td>Badge premium, codes prives</td>
+        </tr>
+        <tr>
+          <td>Alertes / Notifications</td>
+          <td><span class="color-dot" style="background: var(--amber)"></span>Amber</td>
+          <td>Badge notification, rappel</td>
+        </tr>
+        <tr>
+          <td>Social / Communaute</td>
+          <td><span class="color-dot" style="background: var(--dusty-rose)"></span>Dusty Rose</td>
+          <td>Invitations, matching</td>
+        </tr>
+        <tr>
+          <td>Technique / Appareils</td>
+          <td><span class="color-dot" style="background: var(--teal)"></span>Teal</td>
+          <td>Icone appareil, connexion</td>
+        </tr>
+        <tr>
+          <td>Profil / Identite</td>
+          <td><span class="color-dot" style="background: var(--terracotta)"></span>Terracotta</td>
+          <td>Icone profil, preferences</td>
+        </tr>
+        <tr>
+          <td>Communication / Email</td>
+          <td><span class="color-dot" style="background: var(--blush)"></span>Blush</td>
+          <td>Icone message, notification email</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 18-19 - DARK MODE
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>10. Mode Sombre - "Warm Charcoal"</h2>
+      <p>Gris chaud avec sous-teinte mauve pour harmoniser les 3 roles</p>
+    </div>
+
+    <div class="info-box success" style="margin-bottom: 20px;">
+      <h4>Choix du Warm Charcoal</h4>
+      <p>Le gris chaud avec sous-teinte mauve (#121015) a ete choisi car :</p>
+      <ul>
+        <li>Harmonise les 3 couleurs de role (Owner mauve, Resident orange, Searcher or)</li>
+        <li>Evite la vibration visuelle du noir pur avec les couleurs vives</li>
+        <li>Temperature chaude coherente avec l'identite "fun" de Izzico</li>
+        <li>Meilleur confort visuel pour les sessions prolongees</li>
+      </ul>
+    </div>
+
+    <div class="dark-preview">
+      <h4>Surfaces Dark Mode</h4>
+      <div class="dark-surfaces">
+        <div class="dark-surface" style="background: var(--dark-bg);">
+          <div>Background</div>
+          <div>#121015</div>
+        </div>
+        <div class="dark-surface" style="background: var(--dark-surface);">
+          <div>Surface</div>
+          <div>#1A171E</div>
+        </div>
+        <div class="dark-surface" style="background: var(--dark-elevated);">
+          <div>Elevated</div>
+          <div>#242027</div>
+        </div>
+        <div class="dark-surface" style="background: var(--dark-hover);">
+          <div>Hover</div>
+          <div>#2A262F</div>
+        </div>
+        <div class="dark-surface" style="background: var(--dark-border);">
+          <div>Border</div>
+          <div>#2E2A33</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <h4 style="margin-bottom: 12px; font-size: 11px;">Textes Dark Mode</h4>
+        <div style="display: flex; gap: 20px;">
+          <div>
+            <div style="color: var(--dark-text); font-size: 14px; font-weight: 600;">Texte Principal</div>
+            <div style="font-family: monospace; font-size: 9px; color: var(--dark-muted);">#F5F5F7</div>
+          </div>
+          <div>
+            <div style="color: var(--dark-text-secondary); font-size: 14px;">Texte Secondaire</div>
+            <div style="font-family: monospace; font-size: 9px; color: var(--dark-muted);">#A8A4AC</div>
+          </div>
+          <div>
+            <div style="color: var(--dark-muted); font-size: 14px;">Texte Muted</div>
+            <div style="font-family: monospace; font-size: 9px; color: var(--dark-muted);">#8A868E</div>
+            <div style="font-size: 8px; color: var(--success); margin-top: 2px;">CORRIGE: 5.2:1</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 19 - DARK MODE SUITE -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>10. Mode Sombre (suite)</h2>
+      <p>Ratios de contraste et variables CSS</p>
+    </div>
+
+    <div class="section-block">
+      <h4>Ratios de contraste WCAG</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Element</th>
+          <th>Couleur</th>
+          <th>Ratio sur #121015</th>
+          <th>Niveau</th>
+        </tr>
+        <tr>
+          <td>Texte principal</td>
+          <td><code>#F5F5F7</code></td>
+          <td>15.8:1</td>
+          <td class="contrast-pass">AAA</td>
+        </tr>
+        <tr>
+          <td>Texte secondaire</td>
+          <td><code>#A8A4AC</code></td>
+          <td>7.2:1</td>
+          <td class="contrast-pass">AAA</td>
+        </tr>
+        <tr>
+          <td>Texte muted</td>
+          <td><code>#8A868E</code></td>
+          <td>5.2:1</td>
+          <td class="contrast-pass">AA</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section-block">
+      <h4>Variables CSS - Reference v3</h4>
+      <div class="code-block">
+        <code>/* Dark Mode - "Warm Charcoal"
+   Gris chaud avec sous-teinte mauve
+   Valide le 4 janvier 2026 */
+
+--dark-bg: #121015;              /* Fond principal */
+--dark-surface: #1A171E;         /* Cards, sidebars */
+--dark-elevated: #242027;        /* Elements sureleves */
+--dark-hover: #2A262F;           /* Hover states */
+--dark-border: #2E2A33;          /* Bordures */
+--dark-border-subtle: rgba(255, 255, 255, 0.06);
+
+--dark-text: #F5F5F7;            /* Texte principal - 15.8:1 */
+--dark-text-secondary: #A8A4AC;  /* Texte secondaire - 7.2:1 */
+--dark-muted: #8A868E;           /* Texte attenue - 5.2:1 (CORRIGE) */</code>
+      </div>
+    </div>
+
+    <div class="info-box info">
+      <h4>Correction du texte muted</h4>
+      <p>La valeur precedente (#78747C) avait un ratio de 4.5:1, pile a la limite WCAG AA. La nouvelle valeur (#8A868E) offre un ratio de 5.2:1, garantissant une marge confortable pour l'accessibilite.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 20-21 - IMPLEMENTATION
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>11. Guide d'Implementation</h2>
+      <p>Instructions pour appliquer le systeme colorimetrique v3 au code</p>
+    </div>
+
+    <div class="analysis-grid">
+      <div class="analysis-card">
+        <h4>1. Migration des echelles</h4>
+        <p>Remplacer les anciennes variables 1-5 par les nouvelles 50-900 :</p>
+        <div class="code-block" style="margin-top: 8px; padding: 8px;">
+          <code style="font-size: 8px;">/* AVANT */
+--owner-1: #9c5698;  /* Primary */
+--owner-5: #c2566b;  /* Light */
+
+/* APRES */
+--owner-500: #9c5698;  /* Primary */
+--owner-50: #F8F0F7;   /* Light */
+--owner-700: #633668;  /* Text */</code>
+        </div>
+      </div>
+
+      <div class="analysis-card">
+        <h4>2. Tailwind Config</h4>
+        <p>Mettre a jour tailwind.config.ts :</p>
+        <div class="code-block" style="margin-top: 8px; padding: 8px;">
+          <code style="font-size: 8px;">colors: {
+  owner: {
+    50: 'var(--owner-50)',
+    // ... 100-400
+    500: 'var(--owner-500)',
+    // ... 600-900
+    DEFAULT: 'var(--owner-500)',
+    text: 'var(--owner-700)',
+  },
+}</code>
+        </div>
+      </div>
+
+      <div class="analysis-card">
+        <h4>3. Gradient Signature</h4>
+        <p>Utiliser le nouveau gradient avec stop bridge :</p>
+        <div class="code-block" style="margin-top: 8px; padding: 8px;">
+          <code style="font-size: 8px;">.gradient-signature {
+  background: linear-gradient(
+    135deg,
+    #9c5698 0%,
+    #c85570 20%,  /* Bridge */
+    #d15659 35%,
+    #e05747 50%,
+    #ff7c10 75%,
+    #ffa000 100%  /* Searcher Primary */
+  );
+}</code>
+        </div>
+      </div>
+
+      <div class="analysis-card">
+        <h4>4. Variables a supprimer</h4>
+        <p>Nettoyer les variables legacy :</p>
+        <ul style="font-size: 9px; color: var(--gray-600); margin-top: 8px; padding-left: 14px;">
+          <li><code>--easy-*</code> (ancien branding)</li>
+          <li><code>--owner-1</code> a <code>--owner-5</code></li>
+          <li><code>--mustard</code> (doublon amber)</li>
+          <li>Variables dupliquees non semantiques</li>
+        </ul>
+      </div>
+
+      <div class="analysis-card">
+        <h4>5. Dark Mode Muted</h4>
+        <p>Mettre a jour la variable dark-muted :</p>
+        <div class="code-block" style="margin-top: 8px; padding: 8px;">
+          <code style="font-size: 8px;">/* globals.css */
+.dark {
+  /* AVANT */
+  --text-muted: #78747C;
+
+  /* APRES */
+  --text-muted: #8A868E;
+}</code>
+        </div>
+      </div>
+
+      <div class="analysis-card">
+        <h4>6. UI Accents</h4>
+        <p>Mettre a jour Terracotta et Dusty Rose :</p>
+        <div class="code-block" style="margin-top: 8px; padding: 8px;">
+          <code style="font-size: 8px;">/* AVANT */
+--terracotta: #D08070;
+--dusty-rose: #D08080;
+
+/* APRES */
+--terracotta: #C87060;
+--dusty-rose: #D08090;</code>
+        </div>
+      </div>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- PAGE 21 - IMPLEMENTATION SUITE -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>11. Guide d'Implementation (suite)</h2>
+      <p>Fichiers concernes et workflow</p>
+    </div>
+
+    <div class="section-block">
+      <h4>Fichiers a modifier</h4>
+      <table class="usage-table">
+        <tr>
+          <th>Fichier</th>
+          <th>Modifications</th>
+        </tr>
+        <tr>
+          <td><code>app/globals.css</code></td>
+          <td>Variables CSS principales, echelles 50-900, dark mode</td>
+        </tr>
+        <tr>
+          <td><code>tailwind.config.ts</code></td>
+          <td>Configuration des couleurs Tailwind</td>
+        </tr>
+        <tr>
+          <td><code>components/*.tsx</code></td>
+          <td>Mise a jour des classes de couleur</td>
+        </tr>
+        <tr>
+          <td><code>app/**/*.tsx</code></td>
+          <td>Pages utilisant les anciennes variables</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section-block">
+      <h4>Workflow de migration recommande</h4>
+      <ol style="font-size: 10px; color: var(--gray-600); padding-left: 20px; line-height: 1.8;">
+        <li>Ajouter les nouvelles variables dans globals.css (sans supprimer les anciennes)</li>
+        <li>Mettre a jour tailwind.config.ts avec les nouvelles echelles</li>
+        <li>Migrer les composants un par un vers les nouvelles classes</li>
+        <li>Tester visuellement chaque composant migre</li>
+        <li>Une fois tous les composants migres, supprimer les anciennes variables</li>
+        <li>Effectuer un audit WCAG final</li>
+      </ol>
+    </div>
+
+    <div class="info-box warning">
+      <h4>Attention</h4>
+      <p>Ne supprimez pas les anciennes variables avant d'avoir migre tous les composants. Gardez les deux systemes en parallele pendant la migration pour eviter les regressions visuelles.</p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ============================================
+       PAGE 22 - CHECKLIST
+       ============================================ -->
+  <div class="content-page page">
+    <div class="page-header">
+      <h2>12. Checklist de Migration</h2>
+      <p>Taches et fichiers concernes</p>
+    </div>
+
+    <div class="section-block">
+      <table class="checklist-table">
+        <tr>
+          <th></th>
+          <th>Tache</th>
+          <th>Fichiers concernes</th>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Remplacer echelles 1-5 par 50-900</td>
+          <td><code>globals.css</code>, <code>tailwind.config.ts</code></td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Mettre a jour le gradient signature</td>
+          <td><code>globals.css</code>, composants hero/landing</td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Corriger Terracotta/Dusty Rose</td>
+          <td><code>globals.css</code></td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Augmenter dark-muted</td>
+          <td><code>globals.css</code></td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Supprimer variables legacy</td>
+          <td><code>globals.css</code></td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Mettre a jour les references Tailwind</td>
+          <td>Tous les composants TSX/JSX</td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Tester les contrastes WCAG</td>
+          <td>Audit accessibilite</td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Verifier le rendu dark mode</td>
+          <td>Toutes les pages</td>
+        </tr>
+        <tr>
+          <td style="font-size: 16px;">&#9744;</td>
+          <td>Mettre a jour la documentation</td>
+          <td>Ce document, CLAUDE.md</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="section-block" style="margin-top: 30px;">
+      <h4>Outils de verification</h4>
+      <ul style="font-size: 10px; color: var(--gray-600); padding-left: 20px; line-height: 1.8;">
+        <li><strong>Contrast Checker</strong> : WebAIM Contrast Checker (https://webaim.org/resources/contrastchecker/)</li>
+        <li><strong>Delta E Calculator</strong> : ColorMine Delta E (http://colormine.org/delta-e-calculator/)</li>
+        <li><strong>L* Calculator</strong> : Colorizer LAB tool (http://colorizer.org/)</li>
+        <li><strong>Lighthouse</strong> : Audit accessibilite integre a Chrome DevTools</li>
+      </ul>
+    </div>
+
+    <div class="doc-footer" style="margin-top: 40px;">
+      <p><strong class="brand-text">izzico</strong> Color System v3.0</p>
+      <p style="margin-top: 6px;">Document de reference - Janvier 2026</p>
+      <p style="margin-top: 12px; font-size: 9px; opacity: 0.7;">
+        Echelles 50-900 corrigees | Gradient optimise | Terracotta/Dusty Rose differencies | Dark mode muted ameliore
+      </p>
+    </div>
+
+    <div class="page-footer">
+      <span class="brand-text">izzico</span> Color System v3.0 - Page <span class="page-num"></span>
+    </div>
+  </div>
+
+</body>
+</html>

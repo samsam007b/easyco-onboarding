@@ -13,6 +13,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getUsageStats } from '@/lib/services/assistant';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { validateAdminRequest } from '@/lib/security/admin-auth';
 
 export const dynamic = 'force-dynamic';
 
@@ -71,25 +72,18 @@ export async function GET(request: NextRequest) {
   const lang = getApiLanguage(request);
 
   try {
+    // SECURITY: Validate admin access (Auth + Admin check + IP allowlist)
+    const adminCheck = await validateAdminRequest(request);
+
+    if (!adminCheck.allowed) {
+      return adminCheck.response!; // Returns 401 or 403 with appropriate error
+    }
+
+    const { supabase, user } = adminCheck;
+
     // Parse URL for query params
     const { searchParams } = new URL(request.url);
     const section = searchParams.get('section') || 'all';
-
-    // Verify admin access using RPC (same as layout)
-    const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
-    }
-
-    // Use is_admin RPC function (bypasses RLS)
-    const { data: isAdmin, error: adminError } = await supabase
-      .rpc('is_admin', { user_email: user.email });
-
-    if (adminError || !isAdmin) {
-      return NextResponse.json({ error: apiT('admin.forbidden', lang) }, { status: 403 });
-    }
 
     // Build response based on requested section
     const response: Record<string, unknown> = {};

@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Izzico - Pitch StartLab Build I</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons via CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ============================================
+       IZZICO BRAND COLORS - SOURCE DE VÉRITÉ
+       Source: app/globals.css
+       ============================================ */
+    :root {
+      /* Gradient Signature v3 */
+      --owner-primary: #9c5698;
+      --gradient-bridge: #c85570;
+      --resident-primary: #e05747;
+      --searcher-primary: #ffa000;
+
+      /* Resident Scale (Coral/Orange) */
+      --resident-50: #FEF2EE;
+      --resident-100: #FDE0D6;
+      --resident-200: #F9B8A0;
+      --resident-300: #F28B6A;
+      --resident-400: #E96A50;
+      --resident-500: #e05747;
+      --resident-600: #C04538;
+      --resident-700: #9A362C;
+      --resident-shadow: rgba(224, 87, 71, 0.2);
+
+      /* Owner Scale (Mauve) */
+      --owner-50: #F8F0F7;
+      --owner-100: #F0E0EE;
+      --owner-400: #B070A8;
+      --owner-500: #9c5698;
+      --owner-600: #7E4580;
+      --owner-700: #633668;
+      --owner-shadow: rgba(156, 86, 152, 0.2);
+
+      /* Searcher Scale (Gold) */
+      --searcher-50: #FFFBEB;
+      --searcher-100: #FEF3C7;
+      --searcher-400: #FBBF24;
+      --searcher-500: #ffa000;
+      --searcher-600: #D98400;
+      --searcher-700: #A16300;
+      --searcher-shadow: rgba(255, 160, 0, 0.2);
+
+      /* Neutrals */
+      --white: #FFFFFF;
+      --gray-900: #1A1A1A;
+      --gray-800: #2D2D2D;
+      --gray-700: #404040;
+      --gray-600: #666666;
+      --gray-500: #8C8C8C;
+      --gray-400: #BFBFBF;
+      --gray-300: #D9D9D9;
+      --gray-200: #E5E5E5;
+      --gray-100: #F2F2F2;
+      --gray-50: #F9F9F9;
+
+      /* Semantic (muted) */
+      --success-muted: #7CB89B;
+      --success-bg: #F0F7F4;
+      --error-muted: #D08080;
+      --warning-muted: #D9A870;
+
+      /* Gradients */
+      --gradient-signature: linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%);
+      --gradient-resident-subtle: linear-gradient(135deg, #FEF2EE 0%, #FDE0D6 100%);
+      --gradient-resident-medium: linear-gradient(135deg, #E96A50 0%, #F28B6A 100%);
+      --gradient-owner-subtle: linear-gradient(135deg, #F8F0F7 0%, #F0E0EE 100%);
+      --gradient-searcher-subtle: linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%);
+
+      /* Radius */
+      --radius-xl: 1rem;
+      --radius-2xl: 1.5rem;
+      --radius-3xl: 1.75rem;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      overflow: hidden;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+    }
+
+    .brand-text {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+    }
+
+    /* ============================================
+       SUPERELLIPSE (Fredoka-style corners)
+       Source: app/globals.css lignes 683-730
+       ============================================ */
+    .superellipse-xl {
+      border-radius: var(--radius-xl);
+      corner-shape: squircle;
+    }
+
+    .superellipse-2xl {
+      border-radius: var(--radius-2xl);
+      corner-shape: squircle;
+    }
+
+    .superellipse-3xl {
+      border-radius: var(--radius-3xl);
+      corner-shape: squircle;
+    }
+
+    /* ============================================
+       SLIDE CONTAINER
+       ============================================ */
+    #slides-container {
+      width: 100vw;
+      height: 100vh;
+      position: relative;
+    }
+
+    .slide {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 4rem 6rem;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+                  transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+      z-index: 10;
+    }
+
+    /* ============================================
+       ANIMATED BLOBS BACKGROUND
+       Source: ModernResidentDashboard.tsx lignes 382-406
+       ============================================ */
+    @keyframes blob {
+      0% { transform: translate(0px, 0px) scale(1); }
+      33% { transform: translate(30px, -50px) scale(1.1); }
+      66% { transform: translate(-20px, 20px) scale(0.9); }
+      100% { transform: translate(0px, 0px) scale(1); }
+    }
+
+    .animate-blob {
+      animation: blob 7s infinite;
+    }
+
+    .animation-delay-2s {
+      animation-delay: 2s;
+    }
+
+    .animation-delay-4s {
+      animation-delay: 4s;
+    }
+
+    /* ============================================
+       SLIDE 1: TITRE avec GRADIENT SIGNATURE
+       ============================================ */
+    .slide-1 {
+      background: var(--gradient-signature);
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grain texture */
+    .slide-1::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    .slide-1 .logo-svg {
+      width: 600px;
+      height: auto;
+      filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+      margin-bottom: 3rem;
+    }
+
+    .slide-1 .tagline {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: white;
+      margin-bottom: 3rem;
+      line-height: 1.3;
+    }
+
+    .slide-1 .metadata {
+      font-size: 2rem;
+      color: white;
+      opacity: 0.95;
+      font-weight: 600;
+    }
+
+    .slide-1 .subtitle {
+      font-size: 2.2rem;
+      font-style: italic;
+      color: white;
+      opacity: 0.95;
+      margin-top: 2rem;
+      font-weight: 500;
+    }
+
+    /* ============================================
+       CONTENT SLIDES (2-10) - GLASSMORPHISM BG
+       ============================================ */
+    .slide-content {
+      background: white;
+      position: relative;
+    }
+
+    /* Blobs background (adapté pour chaque slide selon rôle) */
+    .slide-bg-blobs {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .slide-bg-blobs .blob {
+      position: absolute;
+      border-radius: 50%;
+      mix-blend-mode: multiply;
+      filter: blur(64px);
+      opacity: 0.12;
+    }
+
+    .slide-bg-blobs .blob-1 {
+      top: -8rem;
+      left: -8rem;
+      width: 28rem;
+      height: 28rem;
+      background: var(--resident-primary);
+    }
+
+    .slide-bg-blobs .blob-2 {
+      top: -8rem;
+      right: -8rem;
+      width: 28rem;
+      height: 28rem;
+      background: var(--owner-primary);
+    }
+
+    .slide-bg-blobs .blob-3 {
+      bottom: -12rem;
+      left: 25%;
+      width: 28rem;
+      height: 28rem;
+      background: var(--searcher-primary);
+    }
+
+    /* ============================================
+       SLIDE HEADER avec GRADIENT BORDER
+       ============================================ */
+    .slide-header {
+      width: 100%;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 4px solid transparent;
+      border-image: var(--gradient-signature) 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .slide-header h2 {
+      font-size: 3rem;
+      color: var(--gray-900);
+      line-height: 1.2;
+    }
+
+    /* ============================================
+       SLIDE BODY
+       ============================================ */
+    .slide-body {
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      position: relative;
+      z-index: 1;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    /* ============================================
+       CARDS - Style v3-fun EXACT
+       Source: ModernResidentDashboard.tsx
+       ============================================ */
+    .card {
+      background: white;
+      padding: 2rem 2.5rem;
+      border: 2px solid var(--gray-200);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card.superellipse-2xl {
+      border-radius: var(--radius-2xl);
+      corner-shape: squircle;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Decorative circle (top right) */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -1.5rem;
+      right: -1.5rem;
+      width: 5rem;
+      height: 5rem;
+      border-radius: 50%;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .card.success::before { background: var(--success-muted); }
+    .card.warning::before { background: var(--warning-muted); }
+    .card.owner::before { background: var(--owner-primary); }
+    .card.resident::before { background: var(--resident-primary); }
+    .card.searcher::before { background: var(--searcher-primary); }
+
+    /* Gradient background subtil */
+    .card.success {
+      background: linear-gradient(135deg, #F0F7F4 0%, white 100%);
+      border-color: rgba(124, 184, 155, 0.3);
+    }
+    .card.warning {
+      background: linear-gradient(135deg, #FFFBEB 0%, white 100%);
+      border-color: rgba(217, 168, 112, 0.3);
+    }
+    .card.owner {
+      background: var(--gradient-owner-subtle);
+      border-color: rgba(156, 86, 152, 0.2);
+      box-shadow: 0 8px 24px var(--owner-shadow);
+    }
+    .card.resident {
+      background: var(--gradient-resident-subtle);
+      border-color: rgba(224, 87, 71, 0.2);
+      box-shadow: 0 8px 24px var(--resident-shadow);
+    }
+    .card.searcher {
+      background: var(--gradient-searcher-subtle);
+      border-color: rgba(255, 160, 0, 0.2);
+      box-shadow: 0 8px 24px var(--searcher-shadow);
+    }
+
+    .card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: var(--gray-900);
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card p {
+      font-size: 1.2rem;
+      color: var(--gray-700);
+      line-height: 1.8;
+      margin-bottom: 0.6rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card p strong {
+      color: var(--gray-900);
+      font-weight: 700;
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card ul li {
+      font-size: 1.15rem;
+      color: var(--gray-700);
+      margin-bottom: 0.6rem;
+      padding-left: 1.8rem;
+      position: relative;
+    }
+
+    .card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.6rem;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gray-500);
+    }
+
+    /* Icon container (comme dans SearcherKPICard.tsx) */
+    .card-icon {
+      width: 3rem;
+      height: 3rem;
+      border-radius: var(--radius-xl);
+      corner-shape: squircle;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: white;
+    }
+
+    .card-icon.success { background: linear-gradient(135deg, #7CB89B 0%, #A8D5C4 100%); }
+    .card-icon.warning { background: linear-gradient(135deg, #D9A870 0%, #E8C49A 100%); }
+    .card-icon.owner { background: linear-gradient(135deg, var(--owner-500) 0%, var(--owner-400) 100%); }
+    .card-icon.resident { background: linear-gradient(135deg, var(--resident-500) 0%, var(--resident-400) 100%); }
+    .card-icon.searcher { background: linear-gradient(135deg, var(--searcher-500) 0%, var(--searcher-400) 100%); }
+
+    /* ============================================
+       PERSONAS GRID (Slide 3)
+       ============================================ */
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      width: 100%;
+      margin: 1.5rem 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .persona-card {
+      background: white;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      border-top: 6px solid;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .persona-card.superellipse-2xl {
+      border-radius: var(--radius-2xl);
+      corner-shape: squircle;
+    }
+
+    .persona-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    .persona-card.searcher {
+      border-top-color: var(--searcher-primary);
+      background: linear-gradient(180deg, var(--searcher-50) 0%, white 30%);
+    }
+    .persona-card.owner {
+      border-top-color: var(--owner-primary);
+      background: linear-gradient(180deg, var(--owner-50) 0%, white 30%);
+    }
+    .persona-card.resident {
+      border-top-color: var(--resident-primary);
+      background: linear-gradient(180deg, var(--resident-50) 0%, white 30%);
+    }
+
+    /* Icon container in persona */
+    .persona-card .icon-container {
+      width: 5rem;
+      height: 5rem;
+      margin: 0 auto 1.5rem;
+      border-radius: var(--radius-2xl);
+      corner-shape: squircle;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .persona-card.searcher .icon-container {
+      background: linear-gradient(135deg, var(--searcher-500) 0%, var(--searcher-400) 100%);
+    }
+    .persona-card.owner .icon-container {
+      background: linear-gradient(135deg, var(--owner-500) 0%, var(--owner-400) 100%);
+    }
+    .persona-card.resident .icon-container {
+      background: linear-gradient(135deg, var(--resident-500) 0%, var(--resident-400) 100%);
+    }
+
+    .persona-card h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: var(--gray-900);
+    }
+
+    .persona-card .problem {
+      font-size: 1.15rem;
+      color: var(--gray-700);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+      min-height: 4rem;
+    }
+
+    .persona-card .volume {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      padding: 0.6rem 1.2rem;
+      background: var(--gray-100);
+      border-radius: 1.5rem;
+      display: inline-block;
+    }
+
+    /* ============================================
+       HIGHLIGHT BOX
+       ============================================ */
+    .highlight-box {
+      padding: 2rem 3rem;
+      text-align: center;
+      margin: 1.5rem auto 0;
+      max-width: 90%;
+      position: relative;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .highlight-box.superellipse-2xl {
+      border-radius: var(--radius-2xl);
+      corner-shape: squircle;
+    }
+
+    .highlight-box.owner {
+      background: var(--owner-primary);
+      color: white;
+      box-shadow: 0 12px 32px var(--owner-shadow);
+    }
+    .highlight-box.resident {
+      background: var(--resident-primary);
+      color: white;
+      box-shadow: 0 12px 32px var(--resident-shadow);
+    }
+    .highlight-box.searcher {
+      background: var(--searcher-primary);
+      color: white;
+      box-shadow: 0 12px 32px var(--searcher-shadow);
+    }
+    .highlight-box.success {
+      background: var(--success-muted);
+      color: white;
+      box-shadow: 0 12px 32px rgba(124, 184, 155, 0.3);
+    }
+
+    .highlight-box p {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    .highlight-box h3 {
+      font-size: 1.8rem;
+      margin-bottom: 0.8rem;
+      color: inherit;
+    }
+
+    /* ============================================
+       TABLES
+       ============================================ */
+    .table-container {
+      width: 100%;
+      margin: 1.5rem 0;
+      border-radius: var(--radius-2xl);
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      position: relative;
+      z-index: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    thead {
+      background: linear-gradient(135deg,
+        rgba(156, 86, 152, 0.08) 0%,
+        rgba(224, 87, 71, 0.08) 50%,
+        rgba(255, 160, 0, 0.08) 100%
+      );
+    }
+
+    th, td {
+      padding: 1.4rem 1.6rem;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    th {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--gray-900);
+      font-family: 'Nunito', sans-serif;
+    }
+
+    td {
+      font-size: 1.15rem;
+      color: var(--gray-700);
+    }
+
+    td strong {
+      color: var(--gray-900);
+      font-weight: 700;
+    }
+
+    tbody tr {
+      transition: background 0.2s ease;
+    }
+
+    tbody tr:hover {
+      background: var(--gray-50);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ============================================
+       TWO-COLUMN LAYOUT
+       ============================================ */
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+
+    .full-width {
+      grid-column: 1 / -1;
+    }
+
+    /* ============================================
+       NAVIGATION UI
+       ============================================ */
+    .slide-number {
+      position: fixed;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .navigation-hint {
+      position: fixed;
+      bottom: 2.5rem;
+      left: 2.5rem;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(10px);
+      color: white;
+      padding: 0.8rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 1rem;
+      z-index: 100;
+      opacity: 0.8;
+      transition: opacity 1s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInScale {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Animation classes */
+    .animate-in {
+      animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+    .animate-delay-1 { animation-delay: 0.15s; }
+    .animate-delay-2 { animation-delay: 0.35s; }
+    .animate-delay-3 { animation-delay: 0.55s; }
+    .animate-delay-4 { animation-delay: 0.75s; }
+
+    /* ============================================
+       PRINT STYLES
+       ============================================ */
+    @media print {
+      @page { size: 1920px 1080px; margin: 0; }
+      body { background: white; }
+      .slide {
+        page-break-after: always;
+        position: relative !important;
+        opacity: 1 !important;
+        transform: none !important;
+        height: 1080px;
+      }
+      .slide-number, .navigation-hint, .slide-bg-blobs { display: none !important; }
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="slides-container">
+
+  <!-- ============================================
+       SLIDE 1: TITRE avec GRADIENT SIGNATURE
+       ============================================ -->
+  <div class="slide slide-1 active">
+    <!-- Logo Izzico (Lockup Option D) -->
+    <svg class="logo-svg" viewBox="0 0 2460.94674556213 1000" xmlns="http://www.w3.org/2000/svg">
+      <svg x="0" y="0" width="1000" height="1000" viewBox="0 0 2048 2048">
+        <defs>
+          <linearGradient id="logo-g" x1="400" y1="420" x2="1600" y2="1680">
+            <stop offset="0%" stop-color="#9c5698"/>
+            <stop offset="20%" stop-color="#9c5698"/>
+            <stop offset="35%" stop-color="#d15659"/>
+            <stop offset="50%" stop-color="#e05747"/>
+            <stop offset="65%" stop-color="#ff7c10"/>
+            <stop offset="90%" stop-color="#ffc800"/>
+            <stop offset="100%" stop-color="#ffc800"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#logo-g)" d="M1002.64 420.432C1010.39 419.464 1031.72 419.81 1039.84 420.124C1110.9 422.944 1179.92 444.646 1239.81 482.998C1330.42 541.324 1393.7 633.707 1415.36 739.271C1438.27 849.509 1413.57 953.495 1352.49 1046.55C1370.25 1063.1 1389.73 1083.49 1407.07 1100.83L1507.6 1201.34L1564.47 1258.17C1604.84 1298.5 1642.91 1328.61 1590.86 1381.84C1537.34 1436.58 1509.71 1406.42 1467.21 1363.84L1417.39 1313.89L1251.26 1147.66C1219.48 1169.64 1184.69 1186.91 1147.96 1198.94C1042.02 1233.64 935.318 1221.88 836.704 1171.94C821.784 1164.15 810.53 1157.08 796.737 1147.66C770.286 1175.27 740.585 1203.95 713.394 1231.15C728.309 1245.96 743.575 1260.91 758.382 1275.96C775.604 1293.46 786.486 1307 767.674 1328.59C745.931 1353.54 729.649 1350.33 708.017 1327.47C693.472 1312.74 677.482 1296.85 662.638 1281.91L643.882 1300.66L678.595 1335.2C697.808 1354.35 721.856 1372.39 697.56 1398.79C674.288 1424.09 660.317 1419.04 637.773 1396.26C623.053 1381.39 607.823 1366.21 593.126 1351.42C549.144 1395.59 515.779 1442.89 457.763 1382.59C406.724 1329.54 439.922 1301.85 480.759 1260.97L533.549 1208.15C586.707 1154.98 641.516 1098.55 695.508 1046.55C654.879 985.546 630.238 920.141 625.436 846.497C618.223 740.64 653.441 636.266 723.313 556.418C796.096 473.492 893.019 427.434 1002.64 420.432ZM1034 1011C1140 1008 1204 974 1214 861C1227 711 1183 621 1018 627C1017 627 1016 627 1015 627C870 631 829 695 832 833C835 972 904 1013 1034 1011Z"/>
+        <path fill="url(#logo-g)" d="M1014.97 1382.45C1017.89 1382.41 1020.81 1382.39 1023.73 1382.38C1185.12 1382.2 1341.07 1459.59 1461.33 1565.49C1500.83 1600.28 1479.91 1639.72 1448.28 1670.17C1418.31 1699.01 1389.64 1692 1360.07 1667.11C1267.23 1590.35 1157.96 1529.51 1034.65 1525.94C938.955 1524.3 855.652 1553.88 774.819 1604.11C756.708 1615.43 739.051 1627.47 721.892 1640.19C683.945 1668.14 647.874 1715.12 600.798 1671.14C557.774 1630.94 549.656 1591.89 600.28 1553.31C618.434 1539.48 636.896 1523.78 656.088 1510.91C764.881 1433.54 880.77 1386.83 1014.97 1382.45Z"/>
+      </svg>
+      <svg x="1023" y="269" width="1438" height="462" viewBox="180 620 2430 780">
+        <defs>
+          <linearGradient id="text-g" x1="180" y1="0" x2="2610" y2="2000">
+            <stop offset="0%" stop-color="#9c5698"/>
+            <stop offset="25%" stop-color="#9c5698"/>
+            <stop offset="40%" stop-color="#d15659"/>
+            <stop offset="55%" stop-color="#e05747"/>
+            <stop offset="70%" stop-color="#ff7c10"/>
+            <stop offset="90%" stop-color="#ffc800"/>
+            <stop offset="100%" stop-color="#ffc800"/>
+          </linearGradient>
+        </defs>
+        <path fill="url(#text-g)" d="M208.3 670.014C220.645 629.654 286.78 633.206 318.929 641.055C332.397 644.343 347.614 656.702 351.678 670.159C359.551 694.525 359.669 737.646 351.252 761.902C336.412 806.713 217.025 803.291 209.435 759.855C202.877 735.201 200.302 694.252 208.3 670.014Z"/>
+        <path fill="url(#text-g)" d="M211.326 895.532C223.915 878.6 236.015 872.87 257.106 869.996C288.47 865.724 340.811 866.524 351.274 904.797C357.275 940.342 355.754 973.712 355.88 1009.77L355.767 1155.83L355.613 1262.01C355.429 1290.28 359.625 1338.85 338.932 1359.51C318.102 1380.62 265.255 1379.68 239.546 1370.59C238.804 1369.81 234.144 1367.77 232.925 1367.14C224.797 1362.93 216.32 1356.5 212.263 1348.11C207.49 1338.24 205.31 1316.77 204.942 1306.08C204.162 1283.38 204.49 1260.08 204.49 1237.4L204.514 1115.3L204.179 994.493C204.238 961.585 202.221 927.337 211.326 895.532Z"/>
+        <path fill="url(#text-g)" d="M458.657 901.495C467.047 879.904 488.833 873.185 510.189 872.861C545.255 872.329 580.42 872.79 615.503 872.82L826.103 872.966L1062.96 872.774C1103.77 872.736 1145.17 872.532 1186.02 872.883C1193.24 872.945 1209.19 874.865 1215.87 877.801C1255.25 895.134 1265.69 952.514 1236.97 983.655C1219.97 1002.08 1202.26 1019.57 1184.76 1037.41L1041.41 1185.05C1029.35 1197.69 995.658 1230.88 986.946 1242.45C1064.92 1244.59 1143.95 1240.18 1221.83 1244C1262.42 1246 1267.37 1285.83 1266.35 1317.98C1264.77 1379.77 1229.88 1376.4 1182.03 1376.45L1116.79 1376.43L916.499 1376.43L639.475 1376.59L548.75 1376.63C513.953 1376.64 471.322 1382.8 446.742 1354.48C439.805 1346.48 432.775 1333 431.713 1322.49C430.483 1309.8 430.324 1300.05 434.353 1287.91C441.707 1266.39 466.326 1246.16 482.549 1229.98L539.367 1172.58C592.884 1118.34 648.886 1059.35 703.732 1006.67C687.561 1005.58 667.245 1006.14 650.617 1006.13L559.846 1006.09C532.884 1006.07 510.301 1007.9 484.105 1001.51C474.83 997.16 466.487 992.033 461.574 982.634C449.765 960.036 452.538 925.078 458.657 901.495ZM644.243 1242.25C660.739 1242.59 811.132 1243.53 814.585 1240.94C830.296 1226.65 845.516 1210.07 860.563 1194.97C923.154 1132.16 984.793 1068.64 1048.08 1006.52C998.064 1005.19 947.529 1006.8 897.47 1006.14C889.52 1006.03 881.286 1006.02 873.354 1006.25C867.318 1008.32 848.23 1030.5 842.449 1036.44C818.666 1060.62 795.064 1084.97 771.643 1109.5L684.445 1199.78C671.686 1213.12 656.095 1228.44 644.243 1242.25Z"/>
+        <path fill="url(#text-g)" d="M1362.65 650.3C1396.23 639.004 1474.88 634.108 1488.88 672.509C1491.92 681.001 1494.37 688.154 1494.74 697.07C1495.63 718.785 1497.16 756.767 1475.15 771.906C1455.53 785.405 1416.65 784.214 1393.26 782.645C1329.89 778.392 1335.29 718.857 1340.02 679.158C1341.10 670.214 1349.55 658.094 1358.46 653.355C1360.83 652.091 1360.82 652.183 1362.65 650.3Z"/>
+        <path fill="url(#text-g)" d="M1483.82 1350.33C1468.21 1381.25 1412.74 1378.28 1381.07 1373.47C1370.60 1371.88 1347.24 1360.1 1345.67 1351.74C1337.90 1310.68 1341.26 1265.25 1341.72 1223.54L1342.12 1107.1C1342.24 1077.45 1342.12 1047.8 1341.72 1018.15C1341.10 982.56 1337.61 934.783 1345.65 899.228C1349.67 890.227 1362.83 881.13 1372.67 878.643C1406.51 870.095 1468.58 866.305 1483.91 901.686C1490.60 915.181 1489.67 949.569 1490.09 965.402C1493.04 1078.58 1489.96 1191.83 1491.88 1305.04C1492.06 1315.01 1488.52 1342.45 1483.82 1350.33Z"/>
+        <path fill="url(#text-g)" d="M2014.43 1289.09C2012.99 1290.79 2012.67 1292.38 2011.66 1294.28C1992.17 1330.76 1943.56 1354.45 1905.67 1367.39C1779.45 1410.47 1624.33 1336.45 1583.27 1208.31C1564.03 1148.26 1567.1 1064.42 1595.99 1008.43C1657.92 888.385 1815.29 831.558 1937.01 895.126C1960.6 907.455 2005.17 940.488 2013.7 966.793C2022.59 994.25 1981.44 1042.61 1955.51 1049.77C1934.08 1055.6 1902.25 1029.09 1883.03 1018.81C1821.52 985.903 1752.38 1007.06 1718.22 1067.66C1702.56 1106.27 1701.4 1142.55 1718.21 1181.34C1722.16 1188.06 1725.64 1195.54 1730.64 1201.64C1768.36 1247.7 1837.54 1257.76 1888.74 1229.22C1909.33 1217.75 1929.81 1191.52 1955.74 1198.13C1976.73 1203.47 2006.01 1237.45 2012.26 1256.79C2016.45 1267.78 2017.12 1277.54 2014.43 1289.09Z"/>
+        <path fill="url(#text-g)" fill-rule="evenodd" d="M2590.49 1169.34C2586.63 1184.96 2583.85 1203.38 2577.43 1218.48C2548.83 1285.22 2504.09 1332.59 2437.33 1362.35C2280.22 1432.38 2090.78 1317.8 2078.78 1146.46C2076.14 1108.65 2080.79 1066.14 2095.05 1030.31C2121.67 964.455 2173.12 911.708 2238.3 883.458C2297.45 858.224 2372.3 857.752 2431.88 882.076C2492.55 906.882 2541.86 953.317 2570.25 1012.39C2574.44 1021.15 2577.7 1029.24 2580.45 1038.54C2581.86 1043.33 2583.21 1049.51 2585.23 1053.91C2593.87 1081.44 2597.14 1140.78 2590.49 1169.34ZM2345 1254 C2417 1251 2461 1228 2468 1151 C2477 1048 2447 986 2333 991 C2333 991 2333 991 2333 991 C2232 993 2204 1037 2206 1132 C2208 1227 2255 1255 2345 1254 Z"/>
+      </svg>
+    </svg>
+
+    <div class="tagline">
+      Le co-living réinventé par la compatibilité humaine
+    </div>
+
+    <div class="metadata">
+      Samuel Baudon | StartLab Build I - Décembre 2025
+    </div>
+
+    <div class="subtitle">
+      "Matcher les bonnes personnes, pas juste les bons logements"
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 2: LE PROBLÈME
+       ============================================ -->
+  <div class="slide slide-content">
+    <!-- Blobs background -->
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>Le Problème : Un Marché en Explosion... Mais Non Structuré</h2>
+    </div>
+    <div class="slide-body">
+      <div class="card success superellipse-2xl animate-in animate-delay-1">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon success">
+            <i data-lucide="trending-up" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Explosion du Marché</h3>
+            <p><strong>+360% de colocataires entre 2021-2024 (CBRE)</strong></p>
+            <p>725,000 colocataires en Belgique aujourd'hui<br>
+            Croissance structurelle : crise immobilière + coûts énergétiques</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card warning superellipse-2xl animate-in animate-delay-2">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon warning">
+            <i data-lucide="alert-triangle" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Recherche Inefficace</h3>
+            <p><strong>Les gens signent dans l'urgence sans connaître leurs futurs colocs</strong></p>
+            <p>Pas de matching sur la personnalité, juste le logement<br>
+            Résultat : tensions fréquentes dès les premiers mois</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card owner superellipse-2xl animate-in animate-delay-3">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon owner">
+            <i data-lucide="database" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Absence Totale de Données</h3>
+            <p><strong>Marché non mesuré, non structuré</strong></p>
+            <p>Aucune statistique officielle sur les échecs de colocation en Belgique<br>
+            <strong>= Opportunité stratégique unique pour Izzico</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 3: LES SEGMENTS
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>3 Personas, 1 Besoin Commun : La Compatibilité</h2>
+    </div>
+    <div class="slide-body">
+      <div class="personas-grid">
+        <div class="persona-card searcher superellipse-2xl animate-in animate-delay-1">
+          <div class="icon-container">
+            <i data-lucide="search" style="width: 36px; height: 36px;"></i>
+          </div>
+          <h3>Searchers</h3>
+          <p class="problem">Trouvent un logement mais pas les bonnes personnes</p>
+          <p class="volume">290K chercheurs/an</p>
+        </div>
+
+        <div class="persona-card owner superellipse-2xl animate-in animate-delay-2">
+          <div class="icon-container">
+            <i data-lucide="home" style="width: 36px; height: 36px;"></i>
+          </div>
+          <h3>Owners</h3>
+          <p class="problem">Difficile de constituer des groupes stables</p>
+          <p class="volume">290K biens</p>
+        </div>
+
+        <div class="persona-card resident superellipse-2xl animate-in animate-delay-3">
+          <div class="icon-container">
+            <i data-lucide="users" style="width: 36px; height: 36px;"></i>
+          </div>
+          <h3>Residents</h3>
+          <p class="problem">Veulent remplacer un coloc compatible avec le groupe existant</p>
+          <p class="volume">725K résidents</p>
+        </div>
+      </div>
+
+      <div class="highlight-box superellipse-2xl animate-in animate-delay-4" style="background: var(--gray-100); color: var(--gray-900);">
+        <p>"Tous cherchent la même chose : ne pas vivre avec des inconnus incompatibles"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 4: NOTRE SOLUTION
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>Izzico = Tinder meets Airbnb pour le co-living</h2>
+    </div>
+    <div class="slide-body">
+      <div class="card superellipse-2xl animate-in animate-delay-1">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon resident">
+            <i data-lucide="brain" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Matching Intelligent</h3>
+            <ul>
+              <li>Algorithme 46+ critères (rythme, propreté, convivialité, budget...)</li>
+              <li>Profils vérifiés (KYC) + scoring de fiabilité</li>
+              <li>Score de compatibilité visuel</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card superellipse-2xl animate-in animate-delay-2">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon owner">
+            <i data-lucide="layout-dashboard" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Gestion Quotidienne</h3>
+            <ul>
+              <li>Partage de frais automatisé (OCR factures)</li>
+              <li>Gestion tâches ménagères</li>
+              <li>Calendrier partagé + coffre-fort docs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card superellipse-2xl animate-in animate-delay-3">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon searcher">
+            <i data-lucide="shield-check" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Prévention des Conflits</h3>
+            <ul>
+              <li>Alertes préventives basées sur données comportementales</li>
+              <li>Médiation intégrée</li>
+              <li>Historique transparent</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box success superellipse-2xl animate-in animate-delay-4">
+        <p>Réduire les frictions, augmenter la satisfaction, stabiliser les colocations</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 5: TAILLE DU MARCHÉ
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>Un Marché de €3.1 Milliards en Belgique</h2>
+    </div>
+    <div class="slide-body">
+      <div class="table-container animate-in">
+        <table>
+          <thead>
+            <tr>
+              <th>Marché</th>
+              <th>Valeur</th>
+              <th>Détail</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>TAM</strong></td>
+              <td><strong style="color: var(--owner-primary); font-size: 1.5rem;">€3.1 Mds/an</strong></td>
+              <td>290,000 biens × 725,000 colocataires</td>
+            </tr>
+            <tr>
+              <td><strong>SAM</strong></td>
+              <td><strong style="color: var(--resident-primary); font-size: 1.5rem;">€1.3 Md/an</strong></td>
+              <td>Segment urbain digitalisable (42% du TAM)</td>
+            </tr>
+            <tr>
+              <td><strong>SOM (3 ans)</strong></td>
+              <td><strong style="color: var(--searcher-primary); font-size: 1.5rem;">€850K - €1M</strong></td>
+              <td>5% pénétration SAM (6,000 biens, 15,000 users)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card superellipse-2xl animate-in animate-delay-2">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon success">
+            <i data-lucide="rocket" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Drivers de Croissance</h3>
+            <ul>
+              <li><strong>75% des locataires</strong> voudraient acheter mais ne peuvent pas (CBRE 2024)</li>
+              <li><strong>Hausse des loyers</strong> +4-5%/an</li>
+              <li><strong>Urbanisation</strong> + démographie étudiante (251K étudiants FWB)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 6: COMPÉTITION
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>Seule Plateforme avec Matching Comportemental + Écosystème Complet</h2>
+    </div>
+    <div class="slide-body">
+      <div class="table-container animate-in">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th style="color: var(--owner-primary);">Izzico</th>
+              <th>Appartager</th>
+              <th>Roomlala</th>
+              <th>Immoweb</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Matching algorithmique</td>
+              <td><strong>46+ critères</strong></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>3 rôles (O/R/S)</td>
+              <td><strong>Oui</strong></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Suite de gestion</td>
+              <td><strong>Complète</strong></td>
+              <td>—</td>
+              <td>Limitée</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Assistant IA</td>
+              <td><strong>&lt;€3/mois</strong></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>Data propriétaire</td>
+              <td><strong>Seuls à mesurer</strong></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="highlight-box owner superellipse-2xl animate-in animate-delay-2">
+        <p>Première plateforme scientifique du co-living en Belgique</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 7: LE PRODUIT
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>MVP ~75% Fonctionnel, Prêt pour Beta-Test</h2>
+    </div>
+    <div class="slide-body">
+      <div class="card superellipse-2xl animate-in animate-delay-1">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon resident">
+            <i data-lucide="code-2" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Stack Technique</h3>
+            <ul>
+              <li><strong>Web App</strong> : Next.js 14 + React (production-ready)</li>
+              <li><strong>App iOS</strong> : SwiftUI native (TestFlight ready)</li>
+              <li><strong>Backend</strong> : Supabase (PostgreSQL 15, 102+ tables)</li>
+              <li><strong>IA</strong> : Assistant &lt;€3/mois pour 5K conversations</li>
+              <li><strong>Paiements</strong> : Stripe intégré</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box success superellipse-2xl animate-in animate-delay-2">
+        <h3>Coût de développement : quasi-nul</h3>
+        <p style="font-size: 1.35rem; margin-top: 0.5rem;">
+          Développé en autonomie avec Claude Code (IA)<br>
+          <strong>Pas besoin de lever €200K pour payer des devs</strong>
+        </p>
+      </div>
+
+      <div class="card superellipse-2xl animate-in animate-delay-3" style="background: linear-gradient(135deg, #E0ECFA 0%, white 100%); border-color: rgba(91, 139, 217, 0.3);">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon" style="background: linear-gradient(135deg, #5B8BD9 0%, #7BA5E3 100%);">
+            <i data-lucide="package-check" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Livrables Prêts</h3>
+            <ul>
+              <li>264,652 lignes de code auditées</li>
+              <li>461 composants React</li>
+              <li>102+ tables PostgreSQL avec Row Level Security</li>
+              <li>Application iOS native (365 fichiers Swift)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 8: BUSINESS MODEL
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>Freemium Multi-Sided : Matching Gratuit</h2>
+    </div>
+    <div class="slide-body">
+      <div class="highlight-box success superellipse-2xl animate-in animate-delay-1">
+        <p style="font-size: 1.7rem;">Le matching est GRATUIT - On ne touche pas au loyer</p>
+      </div>
+
+      <div class="table-container animate-in animate-delay-2">
+        <table>
+          <thead>
+            <tr>
+              <th>Segment</th>
+              <th>Gratuit</th>
+              <th>Premium</th>
+              <th>Prix</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: rgba(224, 87, 71, 0.04);">
+              <td><strong>Residents</strong></td>
+              <td>Chercher remplaçant</td>
+              <td>Priorité matchs + analytics</td>
+              <td><strong style="color: var(--resident-primary); font-size: 1.4rem;">€3.99/mois</strong></td>
+            </tr>
+            <tr style="background: rgba(255, 160, 0, 0.04);">
+              <td><strong>Searchers</strong></td>
+              <td>Matchs limités</td>
+              <td>Matchs illimités + boost profil</td>
+              <td><strong style="color: var(--searcher-primary); font-size: 1.4rem;">€29.99/mois</strong></td>
+            </tr>
+            <tr style="background: rgba(156, 86, 152, 0.04);">
+              <td><strong>Owners</strong></td>
+              <td>1 propriété</td>
+              <td>Multi-propriétés + analytics avancés</td>
+              <td><strong style="color: var(--owner-primary); font-size: 1.4rem;">€23.99/mois</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card superellipse-2xl animate-in animate-delay-3">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon searcher">
+            <i data-lucide="coins" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Revenus Additionnels Futurs</h3>
+            <ul>
+              <li>Commission P2P (transferts loyers)</li>
+              <li>Services premium (vérifications, assurances)</li>
+              <li>Partenariats B2B (résidences étudiantes)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box searcher superellipse-2xl animate-in animate-delay-4">
+        <p>Objectif Année 3 : €950K - €1.1M ARR</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 9: ROADMAP & NEXT STEPS
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>Validation Marché Bruxelles en 12 Mois - Phase Build II</h2>
+    </div>
+    <div class="slide-body">
+      <div class="two-col">
+        <div class="card superellipse-2xl animate-in animate-delay-1">
+          <div style="display: flex; align-items: start; gap: 1.5rem;">
+            <div class="card-icon resident">
+              <i data-lucide="target" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <h3>Objectifs Q1-Q2 2026 (6 mois)</h3>
+              <ul>
+                <li>100-200 biens actifs</li>
+                <li>500 utilisateurs inscrits</li>
+                <li>50 matchings réussis</li>
+                <li>€500 MRR</li>
+                <li>NPS &gt;30</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="card superellipse-2xl animate-in animate-delay-2">
+          <div style="display: flex; align-items: start; gap: 1.5rem;">
+            <div class="card-icon owner">
+              <i data-lucide="sparkles" style="width: 24px; height: 24px;"></i>
+            </div>
+            <div>
+              <h3>Objectifs Q3-Q4 2026 (12 mois)</h3>
+              <ul>
+                <li>500 biens actifs</li>
+                <li>1,500 utilisateurs</li>
+                <li>200 matchings réussis</li>
+                <li>€2K MRR</li>
+                <li>NPS &gt;40</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card warning superellipse-2xl full-width animate-in animate-delay-3">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon warning">
+            <i data-lucide="clipboard-list" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Ce qu'il reste à clarifier (Mom Test en cours)</h3>
+            <ul>
+              <li>Affiner pricing Owners (interviews avec 10+ propriétaires multi-biens)</li>
+              <li>Valider willingness-to-pay Searchers (tests A/B landing page)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box resident superellipse-2xl full-width animate-in animate-delay-4">
+        <p>Budget Recherché : €20K pour Marketing + Charte Graphique Pro</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       SLIDE 10: TEAM + CTA
+       ============================================ -->
+  <div class="slide slide-content">
+    <div class="slide-bg-blobs">
+      <div class="blob blob-1 animate-blob"></div>
+      <div class="blob blob-2 animate-blob animation-delay-2s"></div>
+      <div class="blob blob-3 animate-blob animation-delay-4s"></div>
+    </div>
+
+    <div class="slide-header">
+      <h2>Samuel Baudon - Fondateur</h2>
+    </div>
+    <div class="slide-body">
+      <div class="card superellipse-2xl animate-in animate-delay-1">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon searcher">
+            <i data-lucide="graduation-cap" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Background</h3>
+            <ul>
+              <li>Master Relations Publiques IHECS (2024-2026)</li>
+              <li>Co-fondateur Ears & Eyes (événementiel art+musique, 2023-2025)</li>
+              <li>Consultant stratégique Agoria (analyse marché PME tech, 2024-2025)</li>
+              <li>Assistant événementiel MIMA Museum (2021-2024)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="card superellipse-2xl animate-in animate-delay-2">
+        <div style="display: flex; align-items: start; gap: 1.5rem;">
+          <div class="card-icon resident">
+            <i data-lucide="user-check" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div>
+            <h3>Pourquoi Moi ?</h3>
+            <ul>
+              <li><strong>Community building</strong> : Création de communautés engagées (Ears & Eyes)</li>
+              <li><strong>Stakeholder mapping</strong> : Comprendre les besoins utilisateurs (Agoria)</li>
+              <li><strong>Storytelling</strong> : Créer une marque qui résonne (18-30 ans)</li>
+              <li><strong>Autodidacte tech</strong> : MVP fonctionnel développé seul avec Claude Code</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="highlight-box owner superellipse-2xl animate-in animate-delay-3">
+        <h3>"Rejoignez-nous dans Build II pour transformer le co-living en Belgique"</h3>
+        <p style="font-size: 1.5rem; margin-top: 1rem;">
+          contact@izzico.be | www.izzico.be
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation UI -->
+<div class="slide-number">
+  <span id="current-slide">1</span> / <span id="total-slides">10</span>
+</div>
+
+<div class="navigation-hint">
+  Flèches : Naviguer | Espace : Suivant | F11 : Plein écran | P : PDF
+</div>
+
+<!-- ============================================
+     JAVASCRIPT - Navigation
+     ============================================ -->
+<script>
+  let currentSlide = 0;
+  const slides = document.querySelectorAll('.slide');
+  const totalSlides = slides.length;
+
+  document.getElementById('total-slides').textContent = totalSlides;
+
+  function showSlide(index) {
+    if (index < 0) index = 0;
+    if (index >= totalSlides) index = totalSlides - 1;
+
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active', 'prev');
+      if (i === index) {
+        slide.classList.add('active');
+      } else if (i < index) {
+        slide.classList.add('prev');
+      }
+    });
+
+    currentSlide = index;
+    document.getElementById('current-slide').textContent = currentSlide + 1;
+  }
+
+  function nextSlide() { showSlide(currentSlide + 1); }
+  function prevSlide() { showSlide(currentSlide - 1); }
+
+  // Keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+    else if (e.key === 'Home') { e.preventDefault(); showSlide(0); }
+    else if (e.key === 'End') { e.preventDefault(); showSlide(totalSlides - 1); }
+    else if (e.key.toLowerCase() === 'p') { e.preventDefault(); window.print(); }
+  });
+
+  // Click navigation
+  document.addEventListener('click', (e) => {
+    const clickX = e.clientX;
+    const screenWidth = window.innerWidth;
+    if (clickX < screenWidth / 3) prevSlide();
+    else if (clickX > screenWidth * 2/3) nextSlide();
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', (e) => {
+    touchStartX = e.changedTouches[0].screenX;
+  });
+  document.addEventListener('touchend', (e) => {
+    const touchEndX = e.changedTouches[0].screenX;
+    if (touchEndX < touchStartX - 50) nextSlide();
+    else if (touchEndX > touchStartX + 50) prevSlide();
+  });
+
+  // Hide hint after 5s
+  setTimeout(() => {
+    const hint = document.querySelector('.navigation-hint');
+    hint.style.opacity = '0';
+    setTimeout(() => hint.style.display = 'none', 1000);
+  }, 5000);
+
+  // Init Lucide icons
+  showSlide(0);
+
+  // Initialize Lucide icons on slide change
+  const observer = new MutationObserver(() => {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  });
+
+  slides.forEach(slide => {
+    observer.observe(slide, { attributes: true, attributeFilter: ['class'] });
+  });
+
+  // Initial icon render
+  window.addEventListener('load', () => {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+      console.log('✅ Lucide icons loaded');
+    }
+  });
+</script>
+
+</body>
+</html>

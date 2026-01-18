@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Izzico - Comparaison des Bibliothèques d'Icônes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+
+  <!-- Icon Libraries CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/@phosphor-icons/web@2.0.3"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/iconoir-icons/iconoir@main/css/iconoir.css">
+  <script src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.40.0/icons-react/dist/index.umd.min.js"></script>
+
+  <style>
+    :root {
+      /* Couleurs Izzico */
+      --owner-500: #9c5698;
+      --resident-500: #e05747;
+      --searcher-500: #ffa000;
+
+      --gray-50: #FAFAFA;
+      --gray-100: #F4F4F5;
+      --gray-200: #E4E4E7;
+      --gray-600: #52525B;
+      --gray-800: #27272A;
+      --gray-900: #18181B;
+
+      --font-body: 'Inter', sans-serif;
+      --font-heading: 'Nunito', sans-serif;
+      --font-brand: 'Fredoka', cursive;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+      color: var(--gray-900);
+      padding: 2rem;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--owner-500) 0%, var(--resident-500) 50%, var(--searcher-500) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .brand {
+      font-family: var(--font-brand);
+      font-weight: 600;
+    }
+
+    .subtitle {
+      color: var(--gray-600);
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .legend {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1.5rem;
+      padding: 1rem;
+      background: var(--gray-50);
+      border-radius: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .color-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+
+    .owner-dot { background: var(--owner-500); }
+    .resident-dot { background: var(--resident-500); }
+    .searcher-dot { background: var(--searcher-500); }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .library-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .library-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .library-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--gray-100);
+    }
+
+    .library-name {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .library-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-current {
+      background: #fee;
+      color: #c00;
+    }
+
+    .badge-recommended {
+      background: #efe;
+      color: #060;
+    }
+
+    .badge-alternative {
+      background: #eef;
+      color: #006;
+    }
+
+    .library-info {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      font-size: 0.875rem;
+      color: var(--gray-600);
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .pros-cons {
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: var(--gray-50);
+      border-radius: 16px;
+      font-size: 0.875rem;
+    }
+
+    .pros-cons h4 {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--gray-800);
+    }
+
+    .pros-cons ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .pros-cons li {
+      padding: 0.25rem 0;
+      padding-left: 1.5rem;
+      position: relative;
+    }
+
+    .pros-cons li::before {
+      position: absolute;
+      left: 0;
+    }
+
+    .pros li::before {
+      content: "✓";
+      color: #10B981;
+    }
+
+    .cons li::before {
+      content: "✗";
+      color: #EF4444;
+    }
+
+    .icon-showcase {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+
+    .icon-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      border-radius: 16px;
+      transition: background 0.2s ease;
+    }
+
+    .icon-group:hover {
+      background: var(--gray-50);
+    }
+
+    .icon-container {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .icon-wrapper {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      transition: transform 0.2s ease;
+    }
+
+    .icon-wrapper:hover {
+      transform: scale(1.1);
+    }
+
+    .icon-wrapper.owner {
+      background: rgba(156, 86, 152, 0.1);
+    }
+
+    .icon-wrapper.resident {
+      background: rgba(224, 87, 71, 0.1);
+    }
+
+    .icon-wrapper.searcher {
+      background: rgba(255, 160, 0, 0.1);
+    }
+
+    .icon-label {
+      font-size: 0.75rem;
+      color: var(--gray-600);
+      text-align: center;
+    }
+
+    /* Icon colors */
+    .owner-color { color: var(--owner-500); }
+    .resident-color { color: var(--resident-500); }
+    .searcher-color { color: var(--searcher-500); }
+
+    /* Specific library styles */
+    .phosphor-icon {
+      font-size: 28px;
+    }
+
+    .iconoir-icon {
+      font-size: 28px;
+    }
+
+    .tabler-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .lucide-icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .size-comparison {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .size-comparison h2 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .size-row {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    .size-label {
+      width: 100px;
+      font-weight: 600;
+      color: var(--gray-600);
+    }
+
+    .size-examples {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .style-variants {
+      margin-top: 2rem;
+      padding: 2rem;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    .style-variants h2 {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .variant-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+    }
+
+    .variant-card {
+      text-align: center;
+      padding: 1.5rem;
+      background: var(--gray-50);
+      border-radius: 16px;
+    }
+
+    .variant-card h3 {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      color: var(--gray-800);
+    }
+
+    .variant-examples {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    @media (max-width: 768px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .icon-showcase {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .legend {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Comparaison des Bibliothèques d'Icônes pour <span class="brand">Izzico</span></h1>
+      <p class="subtitle">Évaluation visuelle pour choisir l'icon system le plus adapté à l'identité Izzico</p>
+      <div class="legend">
+        <div class="legend-item">
+          <div class="color-dot owner-dot"></div>
+          <span>Owner (Mauve)</span>
+        </div>
+        <div class="legend-item">
+          <div class="color-dot resident-dot"></div>
+          <span>Resident (Coral)</span>
+        </div>
+        <div class="legend-item">
+          <div class="color-dot searcher-dot"></div>
+          <span>Searcher (Gold)</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="comparison-grid">
+      <!-- Lucide (Current) -->
+      <div class="library-card">
+        <div class="library-header">
+          <div class="library-name">Lucide</div>
+          <div class="library-badge badge-current">Actuel</div>
+        </div>
+
+        <div class="library-info">
+          <div class="info-item">📦 1400+ icons</div>
+          <div class="info-item">⚡ Léger</div>
+          <div class="info-item">🆓 MIT</div>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>✓ Points forts</h4>
+            <ul>
+              <li>Déjà implémenté</li>
+              <li>Léger et performant</li>
+              <li>Bonne couverture</li>
+            </ul>
+          </div>
+          <div class="cons" style="margin-top: 1rem;">
+            <h4>✗ Points faibles</h4>
+            <ul>
+              <li>Ultra mainstream</li>
+              <li>Style stroke générique</li>
+              <li>Zéro différenciation</li>
+              <li>Angles vifs (pas rounded)</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="icon-showcase">
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i data-lucide="home" class="lucide-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Home</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i data-lucide="search" class="lucide-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Search</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i data-lucide="heart" class="lucide-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Heart</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i data-lucide="user" class="lucide-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">User</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i data-lucide="message-circle" class="lucide-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Message</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i data-lucide="bell" class="lucide-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Bell</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i data-lucide="settings" class="lucide-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Settings</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i data-lucide="star" class="lucide-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Star</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i data-lucide="map-pin" class="lucide-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Location</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i data-lucide="building-2" class="lucide-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Building</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i data-lucide="key" class="lucide-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Key</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i data-lucide="calendar" class="lucide-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Calendar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phosphor Icons -->
+      <div class="library-card">
+        <div class="library-header">
+          <div class="library-name">Phosphor</div>
+          <div class="library-badge badge-recommended">Recommandé</div>
+        </div>
+
+        <div class="library-info">
+          <div class="info-item">📦 9000+ icons</div>
+          <div class="info-item">🎨 6 weights</div>
+          <div class="info-item">🆓 MIT</div>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>✓ Points forts</h4>
+            <ul>
+              <li>Très complet (9000+)</li>
+              <li>6 weights (thin → bold)</li>
+              <li>Option rounded corners</li>
+              <li>Personnalité unique</li>
+              <li>Meilleur que Lucide</li>
+            </ul>
+          </div>
+          <div class="cons" style="margin-top: 1rem;">
+            <h4>✗ Points faibles</h4>
+            <ul>
+              <li>Migration nécessaire</li>
+              <li>Bundle légèrement plus lourd</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="icon-showcase">
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="ph ph-house phosphor-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Home</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="ph ph-magnifying-glass phosphor-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Search</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="ph ph-heart phosphor-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Heart</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="ph ph-user phosphor-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">User</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="ph ph-chat-circle phosphor-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Message</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="ph ph-bell phosphor-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Bell</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="ph ph-gear phosphor-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Settings</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="ph ph-star phosphor-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Star</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="ph ph-map-pin phosphor-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Location</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="ph ph-buildings phosphor-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Building</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="ph ph-key phosphor-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Key</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="ph ph-calendar phosphor-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Calendar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Iconoir -->
+      <div class="library-card">
+        <div class="library-header">
+          <div class="library-name">Iconoir</div>
+          <div class="library-badge badge-alternative">Alternative</div>
+        </div>
+
+        <div class="library-info">
+          <div class="info-item">📦 1500+ icons</div>
+          <div class="info-item">✨ Clean</div>
+          <div class="info-item">🆓 MIT</div>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>✓ Points forts</h4>
+            <ul>
+              <li>Style moderne et élégant</li>
+              <li>Très cohérent</li>
+              <li>Léger</li>
+            </ul>
+          </div>
+          <div class="cons" style="margin-top: 1rem;">
+            <h4>✗ Points faibles</h4>
+            <ul>
+              <li>Set limité (1500)</li>
+              <li>Moins de variants</li>
+              <li>Style minimaliste strict</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="icon-showcase">
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="iconoir-home iconoir-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Home</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="iconoir-search iconoir-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Search</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="iconoir-heart iconoir-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Heart</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="iconoir-user iconoir-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">User</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="iconoir-chat-bubble iconoir-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Message</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="iconoir-bell iconoir-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Bell</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="iconoir-settings iconoir-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Settings</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="iconoir-star iconoir-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Star</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="iconoir-pin-alt iconoir-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Location</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <i class="iconoir-building iconoir-icon owner-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Building</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <i class="iconoir-key iconoir-icon resident-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Key</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <i class="iconoir-calendar iconoir-icon searcher-color"></i>
+              </div>
+            </div>
+            <div class="icon-label">Calendar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabler Icons -->
+      <div class="library-card">
+        <div class="library-header">
+          <div class="library-name">Tabler</div>
+          <div class="library-badge badge-alternative">Alternative</div>
+        </div>
+
+        <div class="library-info">
+          <div class="info-item">📦 5000+ icons</div>
+          <div class="info-item">📐 Stroke uniforme</div>
+          <div class="info-item">🆓 MIT</div>
+        </div>
+
+        <div class="pros-cons">
+          <div class="pros">
+            <h4>✓ Points forts</h4>
+            <ul>
+              <li>Très complet (5000+)</li>
+              <li>Style cohérent</li>
+              <li>Bonne documentation</li>
+            </ul>
+          </div>
+          <div class="cons" style="margin-top: 1rem;">
+            <h4>✗ Points faibles</h4>
+            <ul>
+              <li>Style stroke standard</li>
+              <li>Moins de personnalité</li>
+              <li>Similaire à Lucide</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="icon-showcase" id="tabler-showcase">
+          <!-- Icons will be added by JavaScript -->
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <svg class="tabler-icon owner-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21l18 0"></path>
+                  <path d="M3 10l18 0"></path>
+                  <path d="M5 6l7 -3l7 3"></path>
+                  <path d="M4 10l0 11"></path>
+                  <path d="M20 10l0 11"></path>
+                  <path d="M8 14l0 3"></path>
+                  <path d="M12 14l0 3"></path>
+                  <path d="M16 14l0 3"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Home</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <svg class="tabler-icon resident-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+                  <path d="M21 21l-6 -6"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Search</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <svg class="tabler-icon searcher-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Heart</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <svg class="tabler-icon owner-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
+                  <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">User</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <svg class="tabler-icon resident-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 20l1.3 -3.9c-2.324 -3.437 -1.426 -7.872 2.1 -10.374c3.526 -2.501 8.59 -2.296 11.845 .48c3.255 2.777 3.695 7.266 1.029 10.501c-2.666 3.235 -7.615 4.215 -11.574 2.293l-4.7 1"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Message</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <svg class="tabler-icon searcher-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"></path>
+                  <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Bell</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <svg class="tabler-icon owner-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path>
+                  <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Settings</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <svg class="tabler-icon resident-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Star</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <svg class="tabler-icon searcher-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                  <path d="M17.657 16.657l-4.243 4.243a2 2 0 0 1 -2.827 0l-4.244 -4.243a8 8 0 1 1 11.314 0z"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Location</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper owner">
+                <svg class="tabler-icon owner-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21l18 0"></path>
+                  <path d="M9 8l1 0c0 2.75 .5 4 2 4s2 -1.25 2 -4l1 0"></path>
+                  <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Building</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper resident">
+                <svg class="tabler-icon resident-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16.555 3.843l3.602 3.602a2.877 2.877 0 0 1 0 4.069l-2.643 2.643a2.877 2.877 0 0 1 -4.069 0l-.301 -.301l-6.558 6.558a2 2 0 0 1 -1.239 .578l-.175 .008h-1.172a1 1 0 0 1 -.993 -.883l-.007 -.117v-1.172a2 2 0 0 1 .467 -1.284l.119 -.13l.414 -.414h2v-2h2v-2l2.144 -2.144l-.301 -.301a2.877 2.877 0 0 1 0 -4.069l2.643 -2.643a2.877 2.877 0 0 1 4.069 0z"></path>
+                  <path d="M15 9h.01"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Key</div>
+          </div>
+
+          <div class="icon-group">
+            <div class="icon-container">
+              <div class="icon-wrapper searcher">
+                <svg class="tabler-icon searcher-color" xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path>
+                  <path d="M16 3v4"></path>
+                  <path d="M8 3v4"></path>
+                  <path d="M4 11h16"></path>
+                </svg>
+              </div>
+            </div>
+            <div class="icon-label">Calendar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Size Comparison -->
+    <div class="size-comparison">
+      <h2>Comparaison des Tailles (Phosphor weights)</h2>
+      <div class="size-row">
+        <div class="size-label">Thin</div>
+        <div class="size-examples">
+          <i class="ph-thin ph-house" style="font-size: 32px; color: var(--owner-500);"></i>
+          <i class="ph-thin ph-heart" style="font-size: 32px; color: var(--resident-500);"></i>
+          <i class="ph-thin ph-star" style="font-size: 32px; color: var(--searcher-500);"></i>
+        </div>
+      </div>
+      <div class="size-row">
+        <div class="size-label">Light</div>
+        <div class="size-examples">
+          <i class="ph-light ph-house" style="font-size: 32px; color: var(--owner-500);"></i>
+          <i class="ph-light ph-heart" style="font-size: 32px; color: var(--resident-500);"></i>
+          <i class="ph-light ph-star" style="font-size: 32px; color: var(--searcher-500);"></i>
+        </div>
+      </div>
+      <div class="size-row">
+        <div class="size-label">Regular</div>
+        <div class="size-examples">
+          <i class="ph ph-house" style="font-size: 32px; color: var(--owner-500);"></i>
+          <i class="ph ph-heart" style="font-size: 32px; color: var(--resident-500);"></i>
+          <i class="ph ph-star" style="font-size: 32px; color: var(--searcher-500);"></i>
+        </div>
+      </div>
+      <div class="size-row">
+        <div class="size-label">Bold</div>
+        <div class="size-examples">
+          <i class="ph-bold ph-house" style="font-size: 32px; color: var(--owner-500);"></i>
+          <i class="ph-bold ph-heart" style="font-size: 32px; color: var(--resident-500);"></i>
+          <i class="ph-bold ph-star" style="font-size: 32px; color: var(--searcher-500);"></i>
+        </div>
+      </div>
+      <div class="size-row">
+        <div class="size-label">Fill</div>
+        <div class="size-examples">
+          <i class="ph-fill ph-house" style="font-size: 32px; color: var(--owner-500);"></i>
+          <i class="ph-fill ph-heart" style="font-size: 32px; color: var(--resident-500);"></i>
+          <i class="ph-fill ph-star" style="font-size: 32px; color: var(--searcher-500);"></i>
+        </div>
+      </div>
+      <div class="size-row">
+        <div class="size-label">Duotone</div>
+        <div class="size-examples">
+          <i class="ph-duotone ph-house" style="font-size: 32px; color: var(--owner-500);"></i>
+          <i class="ph-duotone ph-heart" style="font-size: 32px; color: var(--resident-500);"></i>
+          <i class="ph-duotone ph-star" style="font-size: 32px; color: var(--searcher-500);"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Style Variants -->
+    <div class="style-variants">
+      <h2>Variants de Style (Exemples avec Gradient Izzico)</h2>
+      <div class="variant-grid">
+        <div class="variant-card">
+          <h3>Phosphor Duotone</h3>
+          <div class="variant-examples">
+            <i class="ph-duotone ph-house" style="font-size: 48px; background: linear-gradient(135deg, var(--owner-500) 0%, var(--resident-500) 50%, var(--searcher-500) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            <i class="ph-duotone ph-heart" style="font-size: 48px; background: linear-gradient(135deg, var(--owner-500) 0%, var(--resident-500) 50%, var(--searcher-500) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+          </div>
+        </div>
+
+        <div class="variant-card">
+          <h3>Phosphor Fill</h3>
+          <div class="variant-examples">
+            <i class="ph-fill ph-house" style="font-size: 48px; background: linear-gradient(135deg, var(--owner-500) 0%, var(--resident-500) 50%, var(--searcher-500) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+            <i class="ph-fill ph-star" style="font-size: 48px; background: linear-gradient(135deg, var(--owner-500) 0%, var(--resident-500) 50%, var(--searcher-500) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;"></i>
+          </div>
+        </div>
+
+        <div class="variant-card">
+          <h3>Lucide (Actuel)</h3>
+          <div class="variant-examples">
+            <i data-lucide="home" style="width: 48px; height: 48px; color: var(--owner-500);"></i>
+            <i data-lucide="heart" style="width: 48px; height: 48px; color: var(--resident-500);"></i>
+          </div>
+        </div>
+
+        <div class="variant-card">
+          <h3>Iconoir</h3>
+          <div class="variant-examples">
+            <i class="iconoir-home" style="font-size: 48px; color: var(--owner-500);"></i>
+            <i class="iconoir-star" style="font-size: 48px; color: var(--searcher-500);"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide icons
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+  </script>
+</body>
+</html>

@@ -35,6 +35,7 @@ import { cn } from '@/lib/utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
+import NotificationBell from '@/components/notifications/NotificationBell';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { getHookTranslation } from '@/lib/i18n/get-language';
 import { createClient } from '@/lib/auth/supabase-client';
@@ -446,96 +447,8 @@ const ModernOwnerHeader = memo(function ModernOwnerHeader({
               </motion.div>
             </Link>
 
-            {/* Notifications */}
-            <div className="relative">
-              <button
-                onClick={() => setShowNotifications(!showNotifications)}
-                className="relative p-2 superellipse-xl hover:bg-gray-100 transition-all"
-                aria-label={ariaLabels?.notifications?.[language] || 'Notifications'}
-              >
-                <Bell className="w-5 h-5 text-gray-700" />
-                {(pendingApplications > 0 || unreadMessages > 0) && (
-                  <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full border-2 border-white" style={{ background: '#c2566b' }} />
-                )}
-              </button>
-
-              <AnimatePresence>
-                {showNotifications && (
-                  <>
-                    <div className="fixed inset-0 z-10" onClick={() => setShowNotifications(false)} />
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="absolute right-0 mt-2 w-[calc(100vw-2rem)] sm:w-80 bg-white/95 backdrop-blur-xl superellipse-2xl shadow-xl border border-gray-200/50 overflow-hidden z-20"
-                    >
-                      <div className="px-4 py-3 border-b border-gray-100" style={{ background: 'linear-gradient(135deg, #F8F0F7 0%, #FDF5F9 100%)' }}>
-                        <h3 className="font-semibold text-gray-900">{notifications?.title || 'Notifications'}</h3>
-                      </div>
-                      <div className="max-h-80 overflow-y-auto">
-                        {pendingApplications > 0 && (
-                          <Link
-                            href="/dashboard/owner/applications"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-owner-50 transition"
-                            onClick={() => setShowNotifications(false)}
-                          >
-                            <div className="w-10 h-10 superellipse-xl bg-owner-100 flex items-center justify-center">
-                              <UserCheck className="w-5 h-5 text-owner-600" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                {pendingApplications} pending application{pendingApplications > 1 ? 's' : ''}
-                              </p>
-                              <p className="text-xs text-gray-500">Click to view</p>
-                            </div>
-                          </Link>
-                        )}
-                        {unreadMessages > 0 && (
-                          <Link
-                            href="/dashboard/owner/messages"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-owner-50 transition"
-                            onClick={() => setShowNotifications(false)}
-                          >
-                            <div className="w-10 h-10 superellipse-xl bg-blue-100 flex items-center justify-center">
-                              <MessageCircle className="w-5 h-5 text-blue-600" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                {unreadMessages} unread message{unreadMessages > 1 ? 's' : ''}
-                              </p>
-                              <p className="text-xs text-gray-500">Click to view</p>
-                            </div>
-                          </Link>
-                        )}
-                        {openMaintenance > 0 && (
-                          <Link
-                            href="/dashboard/owner/maintenance"
-                            className="flex items-center gap-3 px-4 py-3 hover:bg-owner-50 transition"
-                            onClick={() => setShowNotifications(false)}
-                          >
-                            <div className="w-10 h-10 superellipse-xl bg-owner-100 flex items-center justify-center">
-                              <Wrench className="w-5 h-5 text-owner-600" />
-                            </div>
-                            <div className="flex-1">
-                              <p className="text-sm font-medium text-gray-900">
-                                {openMaintenance} open ticket{openMaintenance > 1 ? 's' : ''}
-                              </p>
-                              <p className="text-xs text-gray-500">Click to view</p>
-                            </div>
-                          </Link>
-                        )}
-                        {pendingApplications === 0 && unreadMessages === 0 && openMaintenance === 0 && (
-                          <div className="px-4 py-8 text-center text-gray-500">
-                            <Bell className="w-8 h-8 mx-auto mb-2 text-gray-300" />
-                            <p className="text-sm">{notifications?.none || 'No notifications'}</p>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  </>
-                )}
-              </AnimatePresence>
-            </div>
+            {/* Notifications - Using unified NotificationBell Component */}
+            <NotificationBell />
 
             {/* Language Switcher */}
             <div className="hidden md:block">

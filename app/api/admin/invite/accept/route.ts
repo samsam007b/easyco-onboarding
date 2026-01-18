@@ -7,6 +7,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { validateAdminRequest } from '@/lib/security/admin-auth';
 
 export const dynamic = 'force-dynamic';
 

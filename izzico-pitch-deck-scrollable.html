@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Izzico - Pitch StartLab Build I</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@600;700;800;900&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- QRCode.js pour générer le QR code transparent -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    /* ============================================
+       IZZICO BRAND COLORS
+       ============================================ */
+    :root {
+      --owner: #9c5698;
+      --owner-light: #F8F0F7;
+      --owner-hover: #B070A8;
+
+      --resident: #e05747;
+      --resident-light: #FEF2EE;
+      --resident-hover: #E96A50;
+
+      --searcher: #ffa000;
+      --searcher-light: #FFFBEB;
+      --searcher-hover: #FBBF24;
+
+      --gray-900: #1A1A1A;
+      --gray-800: #2D2D2D;
+      --gray-700: #404040;
+      --gray-600: #666666;
+      --gray-200: #E5E5E5;
+      --gray-100: #F2F2F2;
+      --gray-50: #F9F9F9;
+      --white: #FFFFFF;
+
+      --success: #7CB89B;
+      --success-light: #F0F7F4;
+      --warning: #D9A870;
+
+      --gradient-signature: linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-900);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+    }
+
+    .brand-text {
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    /* ============================================
+       SLIDE = PAGE (16:9 ratio)
+       ============================================ */
+    .slide {
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto 4rem;
+      aspect-ratio: 16 / 9;
+      padding: 3rem 4rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+      page-break-after: always;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .superellipse {
+      border-radius: 2rem;
+      corner-shape: squircle;
+    }
+
+    /* ============================================
+       SLIDE 1: TITRE avec GRADIENT SIGNATURE
+       ============================================ */
+    .slide-1 {
+      background: var(--gradient-signature);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .slide-1 .logo {
+      width: auto;
+      height: 180px;
+      margin-bottom: 2rem;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.2));
+    }
+
+    .slide-1 h1 {
+      font-size: 3.5rem;
+      margin-bottom: 2rem;
+      line-height: 1.3;
+    }
+
+    .slide-1 .meta {
+      font-size: 2rem;
+      opacity: 0.95;
+      margin-bottom: 1.5rem;
+    }
+
+    .slide-1 .subtitle {
+      font-size: 2.2rem;
+      font-style: italic;
+      opacity: 0.95;
+    }
+
+    /* ============================================
+       CONTENT SLIDES - Plus colorées !
+       ============================================ */
+    .slide-header {
+      margin-bottom: 1.8rem;
+      padding-bottom: 1rem;
+      border-bottom: 5px solid;
+      border-image: var(--gradient-signature) 1;
+      flex-shrink: 0;
+    }
+
+    .slide-header h2 {
+      font-size: 2.5rem;
+      line-height: 1.1;
+    }
+
+    .slide-body {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Footer logo Izzico trademark gradient - bas de chaque slide */
+    .slide-footer-logo {
+      position: absolute;
+      bottom: 0.8rem;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 20px;
+      width: auto;
+      opacity: 1;
+      z-index: 100;
+    }
+
+    /* ============================================
+       CARDS - v3-fun COLORÉ
+       ============================================ */
+    .card {
+      background: white;
+      padding: 1.5rem 1.8rem;
+      border-radius: 1.5rem;
+      border: 3px solid;
+      display: flex;
+      align-items: flex-start;
+      gap: 1.2rem;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+    }
+
+    /* Decorative blob dans la card */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -2rem;
+      right: -2rem;
+      width: 7rem;
+      height: 7rem;
+      border-radius: 50%;
+      opacity: 0.15;
+    }
+
+    .card.success {
+      border-color: var(--success);
+      background: linear-gradient(135deg, var(--success-light) 0%, white 100%);
+    }
+    .card.success::before { background: var(--success); }
+
+    .card.warning {
+      border-color: var(--warning);
+      background: linear-gradient(135deg, #FFFBEB 0%, white 100%);
+    }
+    .card.warning::before { background: var(--warning); }
+
+    .card.owner {
+      border-color: var(--owner);
+      background: linear-gradient(135deg, var(--owner-light) 0%, white 100%);
+    }
+    .card.owner::before { background: var(--owner); }
+
+    .card.resident {
+      border-color: var(--resident);
+      background: linear-gradient(135deg, var(--resident-light) 0%, white 100%);
+    }
+    .card.resident::before { background: var(--resident); }
+
+    .card.searcher {
+      border-color: var(--searcher);
+      background: linear-gradient(135deg, var(--searcher-light) 0%, white 100%);
+    }
+    .card.searcher::before { background: var(--searcher); }
+
+    .card-icon {
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: white;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+
+    .card-icon.success { background: linear-gradient(135deg, var(--success) 0%, #A8D5C4 100%); }
+    .card-icon.warning { background: linear-gradient(135deg, var(--warning) 0%, #E8C49A 100%); }
+    .card-icon.owner { background: linear-gradient(135deg, var(--owner) 0%, var(--owner-hover) 100%); }
+    .card-icon.resident { background: linear-gradient(135deg, var(--resident) 0%, var(--resident-hover) 100%); }
+    .card-icon.searcher { background: linear-gradient(135deg, var(--searcher) 0%, var(--searcher-hover) 100%); }
+
+    .card-content {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card h3 {
+      font-size: 1.6rem;
+      margin-bottom: 0.6rem;
+      color: var(--gray-900);
+    }
+
+    .card p {
+      font-size: 1.05rem;
+      color: var(--gray-700);
+      line-height: 1.5;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p strong {
+      color: var(--gray-900);
+    }
+
+    .card ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .card ul li {
+      font-size: 1rem;
+      color: var(--gray-700);
+      margin-bottom: 0.4rem;
+      padding-left: 1.5rem;
+      position: relative;
+      line-height: 1.4;
+    }
+
+    .card ul li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.6rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       PERSONAS - Plus coloré !
+       ============================================ */
+    .personas-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .persona-card {
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border-radius: 1.5rem;
+      border-top: 6px solid;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .persona-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+
+    /* Decorative gradient background */
+    .persona-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .persona-card.searcher {
+      border-top-color: var(--searcher);
+    }
+    .persona-card.searcher::before {
+      background: linear-gradient(180deg, var(--searcher-light) 0%, transparent 60%);
+    }
+
+    .persona-card.owner {
+      border-top-color: var(--owner);
+    }
+    .persona-card.owner::before {
+      background: linear-gradient(180deg, var(--owner-light) 0%, transparent 60%);
+    }
+
+    .persona-card.resident {
+      border-top-color: var(--resident);
+    }
+    .persona-card.resident::before {
+      background: linear-gradient(180deg, var(--resident-light) 0%, transparent 60%);
+    }
+
+    .persona-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .persona-icon {
+      width: 5rem;
+      height: 5rem;
+      margin: 0 auto 1.2rem;
+      border-radius: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+
+    .persona-card.searcher .persona-icon {
+      background: linear-gradient(135deg, var(--searcher) 0%, var(--searcher-hover) 100%);
+    }
+    .persona-card.owner .persona-icon {
+      background: linear-gradient(135deg, var(--owner) 0%, var(--owner-hover) 100%);
+    }
+    .persona-card.resident .persona-icon {
+      background: linear-gradient(135deg, var(--resident) 0%, var(--resident-hover) 100%);
+    }
+
+    .persona-card h3 {
+      font-size: 1.9rem;
+      margin-bottom: 0.8rem;
+    }
+
+    .persona-card .problem {
+      font-size: 1.05rem;
+      color: var(--gray-700);
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+      min-height: 3.5rem;
+    }
+
+    .persona-card .volume {
+      font-size: 1.3rem;
+      font-weight: 800;
+      padding: 0.6rem 1.2rem;
+      border-radius: 1.5rem;
+      display: inline-block;
+      color: white;
+    }
+
+    .persona-card.searcher .volume { background: var(--searcher); }
+    .persona-card.owner .volume { background: var(--owner); }
+    .persona-card.resident .volume { background: var(--resident); }
+
+    /* ============================================
+       HIGHLIGHT BOX - Plus visible !
+       ============================================ */
+    .highlight-box {
+      padding: 1.2rem 2rem;
+      border-radius: 1.5rem;
+      text-align: center;
+      margin: 0.8rem 0;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
+      position: relative;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .highlight-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.1;
+      background: radial-gradient(circle at top right, white 0%, transparent 70%);
+    }
+
+    .highlight-box p {
+      font-size: 1.3rem;
+      font-weight: 800;
+      line-height: 1.3;
+      position: relative;
+      z-index: 1;
+    }
+
+    .highlight-box.neutral {
+      background: linear-gradient(135deg, var(--gray-100) 0%, var(--gray-50) 100%);
+      color: var(--gray-900);
+    }
+
+    .highlight-box.owner {
+      background: linear-gradient(135deg, var(--owner) 0%, var(--owner-hover) 100%);
+      color: white;
+    }
+
+    .highlight-box.resident {
+      background: linear-gradient(135deg, var(--resident) 0%, var(--resident-hover) 100%);
+      color: white;
+    }
+
+    .highlight-box.searcher {
+      background: linear-gradient(135deg, var(--searcher) 0%, var(--searcher-hover) 100%);
+      color: white;
+    }
+
+    .highlight-box.success {
+      background: linear-gradient(135deg, var(--success) 0%, #A8D5C4 100%);
+      color: white;
+    }
+
+    /* ============================================
+       TABLES - Plus de couleur !
+       ============================================ */
+    .table-container {
+      margin: 1rem 0;
+      border-radius: 1.5rem;
+      overflow: hidden;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    thead {
+      background: var(--gradient-signature);
+      color: white;
+    }
+
+    th {
+      padding: 0.9rem 1rem;
+      font-size: 1.1rem;
+      font-weight: 800;
+      text-align: left;
+    }
+
+    td {
+      padding: 0.8rem 1rem;
+      font-size: 1rem;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    td strong {
+      font-weight: 800;
+    }
+
+    tbody tr:hover {
+      background: linear-gradient(90deg, rgba(156,86,152,0.05) 0%, rgba(224,87,71,0.05) 50%, rgba(255,160,0,0.05) 100%);
+    }
+
+    tbody tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ============================================
+       STATS NUMBERS - Gros chiffres colorés
+       ============================================ */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      border-top: 6px solid;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+
+    .stat-card.owner { border-top-color: var(--owner); }
+    .stat-card.resident { border-top-color: var(--resident); }
+    .stat-card.searcher { border-top-color: var(--searcher); }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 0.4rem;
+      background: var(--gradient-signature);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 1.1rem;
+      color: var(--gray-600);
+      font-weight: 600;
+    }
+
+    /* ============================================
+       TWO-COL GRID
+       ============================================ */
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    /* ============================================
+       BACKGROUNDS COLORÉS par slide
+       ============================================ */
+    .slide-2 { background: linear-gradient(135deg, #FEF2EE 0%, white 100%); }
+    .slide-3 { background: linear-gradient(135deg, #FFFBEB 0%, white 100%); }
+    .slide-4 { background: linear-gradient(135deg, #F8F0F7 0%, white 100%); }
+    .slide-5 { background: linear-gradient(135deg, white 0%, #FEF2EE 100%); }
+    .slide-6 { background: linear-gradient(135deg, white 0%, #FFFBEB 100%); }
+    .slide-7 { background: linear-gradient(135deg, white 0%, #F8F0F7 100%); }
+    .slide-8 { background: linear-gradient(135deg, #F0F7F4 0%, white 100%); }
+    /* Nouvelles slides par rôle */
+    .slide-9 { background: linear-gradient(135deg, #FFFBEB 0%, white 100%); } /* Searchers - jaune */
+    .slide-10 { background: linear-gradient(135deg, #FEF2EE 0%, white 100%); } /* Residents - orange */
+    .slide-11 { background: linear-gradient(135deg, #F8F0F7 0%, white 100%); } /* Owners - mauve */
+    .slide-12 { background: linear-gradient(135deg, #F0F7F4 0%, white 100%); } /* Roadmap - vert */
+    /* Slide 13 (Screenshot + QR) sans background pour laisser voir le screenshot */
+    .slide-13 { background: var(--gray-100); }
+    /* Slide 14 (Team + CTA) avec gradient signature */
+    .slide-14 { background: var(--gradient-signature); color: white; }
+
+    .slide-14 .slide-header {
+      border-bottom-color: white;
+    }
+
+    .slide-14 h2,
+    .slide-14 h3,
+    .slide-14 p {
+      color: white;
+    }
+
+    .slide-14 .card {
+      background: rgba(255,255,255,0.95);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    .slide-14 .card h3,
+    .slide-14 .card p,
+    .slide-14 .card li {
+      color: var(--gray-900);
+    }
+
+    /* ============================================
+       PRINT & EXPORT (PDF/PowerPoint)
+       ============================================ */
+    @media print {
+      @page {
+        size: 1920px 1080px;
+        margin: 0;
+      }
+
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      body {
+        background: white;
+        margin: 0;
+        padding: 0;
+      }
+
+      .slide {
+        margin: 0;
+        box-shadow: none !important;
+        page-break-after: always;
+        page-break-inside: avoid;
+        width: 1920px !important;
+        height: 1080px !important;
+      }
+
+      /* Force gradients et backgrounds à s'afficher */
+      .slide,
+      .card,
+      .highlight-box,
+      .persona-card,
+      .slide-header,
+      thead {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      /* Force images et SVG à s'afficher */
+      img, svg {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ============================================
+     SLIDE 1: TITRE
+     ============================================ -->
+<div class="slide slide-1 superellipse">
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/blanc/izzico-lockup-optionD-squircle-epais-blanc-4096px.svg" alt="Izzico" class="logo">
+  <h1>Le co-living réinventé par la compatibilité humaine</h1>
+  <div class="meta">Samuel Baudon | StartLab Build I - Décembre 2025</div>
+  <div class="subtitle">"Matcher les bonnes personnes, pas juste les bons logements"</div>
+</div>
+
+<!-- ============================================
+     SLIDE 2: LE PROBLÈME
+     ============================================ -->
+<div class="slide slide-2 superellipse">
+  <div class="slide-header">
+    <h2>Le Problème : Un Marché en Explosion... Mais Non Structuré</h2>
+  </div>
+  <div class="slide-body">
+    <div class="card success">
+      <div class="card-icon success">
+        <i data-lucide="trending-up"></i>
+      </div>
+      <div class="card-content">
+        <h3>Explosion du Marché</h3>
+        <p><strong>+360% de colocataires entre 2021-2024 (CBRE)</strong></p>
+        <p>725,000 colocataires en Belgique aujourd'hui · Croissance structurelle : crise immobilière + coûts énergétiques</p>
+      </div>
+    </div>
+
+    <div class="card warning">
+      <div class="card-icon warning">
+        <i data-lucide="alert-triangle"></i>
+      </div>
+      <div class="card-content">
+        <h3>Recherche Inefficace</h3>
+        <p><strong>Les gens signent dans l'urgence sans connaître leurs futurs colocs</strong></p>
+        <p>Pas de matching sur la personnalité, juste le logement · Résultat : tensions fréquentes dès les premiers mois</p>
+      </div>
+    </div>
+
+    <div class="card owner">
+      <div class="card-icon owner">
+        <i data-lucide="database"></i>
+      </div>
+      <div class="card-content">
+        <h3>Absence Totale de Données</h3>
+        <p><strong>Marché non mesuré, non structuré</strong></p>
+        <p>Aucune statistique officielle en Belgique · <strong>= Opportunité stratégique unique pour Izzico</strong></p>
+      </div>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 3: LES SEGMENTS
+     ============================================ -->
+<div class="slide slide-3 superellipse">
+  <div class="slide-header">
+    <h2>3 Personas, 1 Besoin Commun : La Compatibilité</h2>
+  </div>
+  <div class="slide-body">
+    <div class="personas-grid">
+      <div class="persona-card searcher">
+        <div class="persona-icon">
+          <i data-lucide="search" style="width: 48px; height: 48px;"></i>
+        </div>
+        <h3>Searchers</h3>
+        <p class="problem">Trouvent un logement mais pas les bonnes personnes</p>
+        <p class="volume">Volume = turnover (?)</p>
+      </div>
+
+      <div class="persona-card owner">
+        <div class="persona-icon">
+          <i data-lucide="home" style="width: 48px; height: 48px;"></i>
+        </div>
+        <h3>Owners</h3>
+        <p class="problem">Difficile de constituer des groupes stables</p>
+        <p class="volume">290K biens</p>
+      </div>
+
+      <div class="persona-card resident">
+        <div class="persona-icon">
+          <i data-lucide="users" style="width: 48px; height: 48px;"></i>
+        </div>
+        <h3>Residents</h3>
+        <p class="problem">Veulent remplacer un coloc compatible</p>
+        <p class="volume">725K résidents</p>
+      </div>
+    </div>
+
+    <div class="highlight-box neutral">
+      <p>"Tous cherchent la même chose : ne pas vivre avec des inconnus incompatibles"</p>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 4: SOLUTION
+     ============================================ -->
+<div class="slide slide-4 superellipse" style="padding: 2.5rem;">
+  <div class="slide-header">
+    <h2>Izzico = Tinder meets Airbnb pour le co-living</h2>
+  </div>
+  <div class="slide-body" style="gap: 0.8rem;">
+    <div class="card resident" style="padding: 1.2rem 1.5rem;">
+      <div class="card-icon resident">
+        <i data-lucide="brain"></i>
+      </div>
+      <div class="card-content">
+        <h3 style="font-size: 1.5rem; margin-bottom: 0.6rem;">Matching Intelligent</h3>
+        <ul style="font-size: 0.95rem; gap: 0.4rem;">
+          <li>Algorithme 46+ critères (rythme, propreté, convivialité, budget...)</li>
+          <li>Profils vérifiés (KYC) + scoring de fiabilité</li>
+          <li>Score de compatibilité visuel</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card owner" style="padding: 1.2rem 1.5rem;">
+      <div class="card-icon owner">
+        <i data-lucide="layout-dashboard"></i>
+      </div>
+      <div class="card-content">
+        <h3 style="font-size: 1.5rem; margin-bottom: 0.6rem;">Gestion Quotidienne</h3>
+        <ul style="font-size: 0.95rem; gap: 0.4rem;">
+          <li>Partage de frais automatisé (OCR factures)</li>
+          <li>Gestion tâches ménagères</li>
+          <li>Calendrier partagé + coffre-fort docs</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card searcher" style="padding: 1.2rem 1.5rem;">
+      <div class="card-icon searcher">
+        <i data-lucide="shield-check"></i>
+      </div>
+      <div class="card-content">
+        <h3 style="font-size: 1.5rem; margin-bottom: 0.6rem;">Prévention des Conflits</h3>
+        <ul style="font-size: 0.95rem; gap: 0.4rem;">
+          <li>Alertes préventives basées sur données comportementales</li>
+          <li>Médiation intégrée</li>
+          <li>Historique transparent</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box success" style="padding: 0.9rem 2rem; margin: 0.5rem 0;">
+      <p style="font-size: 1.15rem;">Réduire les frictions, augmenter la satisfaction, stabiliser les colocations</p>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 5: MARCHÉ
+     ============================================ -->
+<div class="slide slide-5 superellipse">
+  <div class="slide-header">
+    <h2>Un Marché de €3.1 Milliards en Belgique</h2>
+  </div>
+  <div class="slide-body">
+    <div class="stats-grid">
+      <div class="stat-card owner">
+        <div class="stat-number">€3.1 Mds</div>
+        <div class="stat-label">TAM - Marché Total</div>
+        <p style="margin-top: 0.8rem; font-size: 0.95rem; color: var(--gray-600);">290K biens × 725K colocataires</p>
+      </div>
+
+      <div class="stat-card resident">
+        <div class="stat-number">€1.3 Md</div>
+        <div class="stat-label">SAM - Digitalisable</div>
+        <p style="margin-top: 0.8rem; font-size: 0.95rem; color: var(--gray-600);">Zones urbaines (42% TAM)</p>
+      </div>
+
+      <div class="stat-card searcher">
+        <div class="stat-number">€1M</div>
+        <div class="stat-label">SOM - Objectif 3 ans</div>
+        <p style="margin-top: 0.8rem; font-size: 0.95rem; color: var(--gray-600);">5% pénétration SAM</p>
+      </div>
+    </div>
+
+    <div class="card success">
+      <div class="card-icon success">
+        <i data-lucide="rocket"></i>
+      </div>
+      <div class="card-content">
+        <h3>Drivers de Croissance</h3>
+        <ul>
+          <li><strong>75% des locataires</strong> voudraient acheter mais ne peuvent pas (CBRE 2024)</li>
+          <li><strong>Hausse des loyers</strong> +4-5%/an</li>
+          <li><strong>Urbanisation</strong> + démographie étudiante (251K étudiants FWB)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 6: COMPÉTITION
+     ============================================ -->
+<div class="slide slide-6 superellipse">
+  <div class="slide-header">
+    <h2>Seule Plateforme avec Matching + Écosystème Complet</h2>
+  </div>
+  <div class="slide-body">
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Izzico</th>
+            <th>Appartager</th>
+            <th>Roomlala</th>
+            <th>Immoweb</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Matching algorithmique</td>
+            <td><strong style="color: var(--owner);">46+ critères</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td>3 rôles (O/R/S)</td>
+            <td><strong style="color: var(--resident);">Oui</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td>Suite de gestion</td>
+            <td><strong style="color: var(--searcher);">Complète</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">Limitée</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td>Assistant IA</td>
+            <td><strong style="color: var(--owner);">&lt;€3/mois</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+          <tr>
+            <td>Data propriétaire</td>
+            <td><strong style="color: var(--resident);">Seuls</strong></td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+            <td style="text-align: center;">—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="highlight-box owner">
+      <p>Première plateforme de rencontre du co-living en Belgique</p>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 7: PRODUIT
+     ============================================ -->
+<div class="slide slide-7 superellipse" style="padding: 2.2rem;">
+  <div class="slide-header">
+    <h2>MVP ~75% Fonctionnel, Prêt pour Beta-Test</h2>
+  </div>
+  <div class="slide-body" style="gap: 0.6rem;">
+    <div class="card resident" style="padding: 1.2rem;">
+      <div class="card-icon resident">
+        <i data-lucide="code-2"></i>
+      </div>
+      <div class="card-content">
+        <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Stack Technique</h3>
+        <ul style="font-size: 0.9rem;">
+          <li><strong>Web</strong> : Next.js 14 + React (production-ready)</li>
+          <li><strong>iOS</strong> : SwiftUI native (TestFlight ready)</li>
+          <li><strong>Backend</strong> : Supabase (PostgreSQL 15, 102+ tables)</li>
+          <li><strong>IA</strong> : Assistant &lt;€3/mois pour 5K conversations</li>
+          <li><strong>Paiements</strong> : Stripe intégré</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box success" style="padding: 0.6rem 1.2rem; margin: 0.3rem 0;">
+      <h3 style="margin-bottom: 0.3rem; font-size: 1.1rem;">Coût de développement : quasi-nul</h3>
+      <p style="font-size: 0.85rem; font-weight: 600; line-height: 1.2;">
+        Développé en autonomie avec Claude Code (IA)<br>
+        Pas besoin de lever €200K pour payer des devs
+      </p>
+    </div>
+
+    <div class="card searcher" style="padding: 1.2rem;">
+      <div class="card-icon searcher">
+        <i data-lucide="package-check"></i>
+      </div>
+      <div class="card-content">
+        <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Livrables Prêts</h3>
+        <ul style="font-size: 0.9rem;">
+          <li>264,652 lignes de code auditées</li>
+          <li>461 composants React</li>
+          <li>102+ tables PostgreSQL avec RLS</li>
+          <li>App iOS native (365 fichiers Swift)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 8: BUSINESS MODEL
+     ============================================ -->
+<div class="slide slide-8 superellipse" style="padding: 2.5rem;">
+  <div class="slide-header">
+    <h2>Modèle Premium : Matching Gratuit</h2>
+  </div>
+  <div class="slide-body" style="gap: 0.7rem;">
+    <div class="highlight-box success" style="padding: 0.9rem 2rem; margin: 0.5rem 0;">
+      <p style="font-size: 1.2rem;">Le matching est GRATUIT - Mois offerts au lancement pour adoption</p>
+    </div>
+
+    <div class="table-container" style="margin: 0.5rem 0;">
+      <table>
+        <thead>
+          <tr>
+            <th>Segment</th>
+            <th>Accès Limité</th>
+            <th>Abonnement Premium</th>
+            <th>Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Residents</strong></td>
+            <td style="opacity: 0.5;">—</td>
+            <td>Chercher remplaçant + priorité matchs + analytics</td>
+            <td><strong style="color: var(--resident); font-size: 1.3rem;">€3.99/mois</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Searchers</strong></td>
+            <td>Voir annonces (lecture seule)</td>
+            <td>Matchs illimités + interactions + boost</td>
+            <td><strong style="color: var(--searcher); font-size: 1.3rem;">€19.99/mois</strong><br><span style="font-size: 0.75rem; opacity: 0.8;">(projection)</span></td>
+          </tr>
+          <tr>
+            <td><strong>Owners</strong></td>
+            <td style="opacity: 0.5;">—</td>
+            <td>Multi-propriétés + matchs assistés + analytics</td>
+            <td><strong style="color: var(--owner); font-size: 1.3rem;">€23.99/mois</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="two-col" style="margin-top: 0.5rem; gap: 1rem;">
+      <div class="card owner" style="padding: 1.2rem;">
+        <div class="card-icon owner">
+          <i data-lucide="coins"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.6rem;">Revenus Futurs</h3>
+          <ul style="font-size: 0.95rem; gap: 0.4rem;">
+            <li>Commission P2P</li>
+            <li>Services premium</li>
+            <li>Partenariats B2B</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="highlight-box searcher" style="margin: 0; padding: 1rem 1.5rem;">
+        <p style="font-size: 1.15rem; line-height: 1.4;">Objectif Année 3<br><strong style="font-size: 1.45rem;">€950K - €1.1M ARR</strong></p>
+      </div>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 9: SEARCHERS - POURQUOI €19.99/MOIS ?
+     ============================================ -->
+<div class="slide slide-9 superellipse" style="padding: 2.5rem; border: 4px solid var(--searcher);">
+  <div class="slide-header">
+    <h2 style="color: var(--searcher);">Searchers : Trouve ton chez-toi idéal - <span style="font-size: 2.8rem;">€19.99/mois</span></h2>
+  </div>
+  <div class="slide-body" style="gap: 0.7rem;">
+
+    <div class="two-col" style="gap: 1rem;">
+      <div class="card searcher" style="padding: 1.2rem;">
+        <div class="card-icon searcher">
+          <i data-lucide="sparkles"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Matching Algorithmique (IA)</h3>
+          <p style="font-size: 0.95rem;">Propositions personnalisées basées sur ton Living Persona (46+ critères) → <strong>Gain de 10h+ de recherche</strong></p>
+        </div>
+      </div>
+
+      <div class="card searcher" style="padding: 1.2rem;">
+        <div class="card-icon searcher">
+          <i data-lucide="users"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Search en Groupe</h3>
+          <p style="font-size: 0.95rem;">Cherche avec tes amis en synchronisé, plus de chaos WhatsApp</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col" style="gap: 1rem;">
+      <div class="card searcher" style="padding: 1.2rem;">
+        <div class="card-icon searcher">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Profils Vérifiés (KYC)</h3>
+          <p style="font-size: 0.95rem;">Badges vérifiés (email, téléphone, ID) → <strong>Évite les arnaques</strong></p>
+        </div>
+      </div>
+
+      <div class="card searcher" style="padding: 1.2rem;">
+        <div class="card-icon searcher">
+          <i data-lucide="heart"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Living Match (Swipe)</h3>
+          <p style="font-size: 0.95rem;">Explore activement le marché des résidents via interface Tinder ludique → <strong>Match mutuel = conversation</strong></p>
+        </div>
+      </div>
+
+      <div class="card searcher" style="padding: 1.2rem;">
+        <div class="card-icon searcher">
+          <i data-lucide="bell"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Alertes Intelligentes</h3>
+          <p style="font-size: 0.95rem;">Reçois une notif dès qu'une annonce match tes critères exacts</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box searcher" style="padding: 1rem 2rem; margin: 0.5rem 0;">
+      <p style="font-size: 1.2rem;"><strong>Killer Benefit</strong> : Recherche ciblée + compatibilité → <strong>Économie de temps et moins de frustration</strong></p>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 10: RESIDENTS - POURQUOI €3.99/MOIS ?
+     ============================================ -->
+<div class="slide slide-10 superellipse" style="padding: 2.5rem; border: 4px solid var(--resident);">
+  <div class="slide-header">
+    <h2 style="color: var(--resident);">Residents : Vivre ensemble sans frictions - <span style="font-size: 2.8rem;">€3.99/mois</span></h2>
+  </div>
+  <div class="slide-body" style="gap: 0.7rem;">
+
+    <div class="two-col" style="gap: 1rem;">
+      <div class="card resident" style="padding: 1.2rem;">
+        <div class="card-icon resident">
+          <i data-lucide="coins"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Split Automatique des Frais</h3>
+          <p style="font-size: 0.95rem;">Upload facture (OCR) → Split égal calculé automatiquement → <strong>Fini les "qui doit combien ?"</strong></p>
+        </div>
+      </div>
+
+      <div class="card resident" style="padding: 1.2rem;">
+        <div class="card-icon resident">
+          <i data-lucide="list-checks"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Gestion Tâches Équitable</h3>
+          <p style="font-size: 0.95rem;">Planning corvées récurrentes avec assignation → Plus de "pourquoi c'est toujours moi ?"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col" style="gap: 1rem;">
+      <div class="card resident" style="padding: 1.2rem;">
+        <div class="card-icon resident">
+          <i data-lucide="vote"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Votes Démocratiques</h3>
+          <p style="font-size: 0.95rem;">Propose et vote sur les règles (bruit, invités, ménage) → <strong>Gouvernance transparente</strong></p>
+        </div>
+      </div>
+
+      <div class="card resident" style="padding: 1.2rem;">
+        <div class="card-icon resident">
+          <i data-lucide="wrench"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Maintenance Directe avec Proprio</h3>
+          <p style="font-size: 0.95rem;">Déclare et suit les réparations dans l'app, plus besoin de WhatsApp → <strong>Historique tracé, suivi garanti</strong></p>
+        </div>
+      </div>
+
+      <div class="card resident" style="padding: 1.2rem;">
+        <div class="card-icon resident">
+          <i data-lucide="user-check"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Matching Remplaçants</h3>
+          <p style="font-size: 0.95rem;">Quelqu'un part ? L'algorithme (IA) propose des remplaçants compatibles avec le groupe existant</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box resident" style="padding: 1rem 2rem; margin: 0.5rem 0;">
+      <p style="font-size: 1.2rem;"><strong>Killer Benefit</strong> : Disputes financières = cause #1 de conflits → <strong>Outils pour les éviter dès le départ</strong></p>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 11: OWNERS - POURQUOI €23.99/MOIS ?
+     ============================================ -->
+<div class="slide slide-11 superellipse" style="padding: 2.5rem; border: 4px solid var(--owner);">
+  <div class="slide-header">
+    <h2 style="color: var(--owner);">Owners : Gère ton portfolio comme un pro - <span style="font-size: 2.8rem;">€23.99/mois</span></h2>
+  </div>
+  <div class="slide-body" style="gap: 0.7rem;">
+
+    <div class="two-col" style="gap: 1rem;">
+      <div class="card owner" style="padding: 1.2rem;">
+        <div class="card-icon owner">
+          <i data-lucide="layout-dashboard"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Dashboard Multi-Propriétés</h3>
+          <p style="font-size: 0.95rem;">Tout gérer depuis un seul endroit → <strong>Remplace 5 outils (Excel, email, calendrier...)</strong></p>
+        </div>
+      </div>
+
+      <div class="card owner" style="padding: 1.2rem;">
+        <div class="card-icon owner">
+          <i data-lucide="trending-up"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">ROI & KPIs Automatiques</h3>
+          <p style="font-size: 0.95rem;">Revenue mensuel, taux d'occupation, ROI calculés en temps réel</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="two-col" style="gap: 1rem;">
+      <div class="card owner" style="padding: 1.2rem;">
+        <div class="card-icon owner">
+          <i data-lucide="user-search"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Screening Algorithmique (IA)</h3>
+          <p style="font-size: 0.95rem;">Les meilleurs candidats (compatibilité + vérification) triés en haut automatiquement</p>
+        </div>
+      </div>
+
+      <div class="card owner" style="padding: 1.2rem;">
+        <div class="card-icon owner">
+          <i data-lucide="wrench"></i>
+        </div>
+        <div class="card-content">
+          <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Maintenance Trackée</h3>
+          <p style="font-size: 0.95rem;">Toutes les requêtes logées avec photos, coûts, statut → Plus de requêtes perdues</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box owner" style="padding: 1rem 2rem; margin: 0.5rem 0;">
+      <p style="font-size: 1.2rem;"><strong>Killer Benefit</strong> : 1 jour vacant coûte ~€50-70 → <strong>Trouver le bon candidat rapidement est crucial</strong></p>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 12: ROADMAP
+     ============================================ -->
+<div class="slide slide-12 superellipse">
+  <div class="slide-header">
+    <h2>Validation Marché Bruxelles - Phase Build II</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="card resident">
+        <div class="card-icon resident">
+          <i data-lucide="target"></i>
+        </div>
+        <div class="card-content">
+          <h3>Objectifs 6 mois</h3>
+          <ul>
+            <li>100-200 biens actifs</li>
+            <li>500 utilisateurs</li>
+            <li>50 matchings réussis</li>
+            <li>€500 MRR · NPS &gt;30</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card owner">
+        <div class="card-icon owner">
+          <i data-lucide="sparkles"></i>
+        </div>
+        <div class="card-content">
+          <h3>Objectifs 12 mois</h3>
+          <ul>
+            <li>500 biens actifs</li>
+            <li>1,500 utilisateurs</li>
+            <li>200 matchings réussis</li>
+            <li>€2K MRR · NPS &gt;40</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="card warning">
+      <div class="card-icon warning">
+        <i data-lucide="clipboard-list"></i>
+      </div>
+      <div class="card-content">
+        <h3>À Clarifier (Mom Test en cours)</h3>
+        <ul>
+          <li>Affiner pricing Owners (interviews 10+ propriétaires)</li>
+          <li>Valider willingness-to-pay Searchers (A/B tests)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box resident">
+      <p>Budget : €20K pour Marketing + Charte Pro</p>
+    </div>
+  </div>
+  <img src="brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-trademark-squircle-epais-gradient.svg" alt="Izzico" class="slide-footer-logo">
+</div>
+
+<!-- ============================================
+     SLIDE 13: SCREENSHOT + QR CODE
+     ============================================ -->
+<div class="slide slide-13 superellipse" style="padding: 0; position: relative; overflow: hidden;">
+  <!-- Screenshot plein écran -->
+  <img src="izzico-homepage-screenshot.png" alt="Izzico Homepage" style="width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; z-index: 1;">
+
+  <!-- Overlay pour QR code + URL -->
+  <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; z-index: 10;">
+    <!-- QR Code glassmorphism -->
+    <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); padding: 2rem; border-radius: 2rem; box-shadow: 0 20px 60px rgba(0,0,0,0.3); margin-bottom: 2rem;">
+      <div id="qrcode" style="width: 300px; height: 300px; display: flex; align-items: center; justify-content: center;"></div>
+    </div>
+    <!-- URL glassmorphism -->
+    <div style="background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.3); color: white; padding: 1.5rem 3rem; border-radius: 1.5rem; font-size: 3rem; font-weight: 800; text-shadow: 0 2px 10px rgba(0,0,0,0.3);">
+      izzico.be
+    </div>
+  </div>
+</div>
+
+<!-- ============================================
+     SLIDE 14: TEAM + CTA
+     ============================================ -->
+<div class="slide slide-14 superellipse">
+  <div class="slide-header">
+    <h2>Samuel Baudon - Fondateur</h2>
+  </div>
+  <div class="slide-body">
+    <div class="two-col">
+      <div class="card">
+        <div class="card-icon searcher">
+          <i data-lucide="graduation-cap"></i>
+        </div>
+        <div class="card-content">
+          <h3>Background</h3>
+          <ul>
+            <li>Master Relations Publiques IHECS</li>
+            <li>Co-fondateur Ears & Eyes (événementiel)</li>
+            <li>Consultant Agoria (académique)</li>
+            <li>Assistant MIMA Museum</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-icon resident">
+          <i data-lucide="lightbulb"></i>
+        </div>
+        <div class="card-content">
+          <h3>Pourquoi Izzico ?</h3>
+          <ul>
+            <li><strong>18-30 ans</strong> : Je suis dans la cible</li>
+            <li><strong>Claude Code</strong> : Outil qui a permis de créer Izzico</li>
+            <li><strong>Agoria</strong> : 1 an à apprendre le professionnalisme (grosse campagne)</li>
+            <li><strong>Ears & Eyes</strong> : Vision app de rencontre + communauté</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="background: rgba(255,255,255,0.25); color: white; border: 3px solid white; margin-top: 2rem;">
+      <h3 style="color: white; margin-bottom: 1rem; font-size: 2rem;">"Rejoignez-nous pour transformer le co-living"</h3>
+      <p style="font-size: 1.6rem; font-weight: 700;">
+        hello@izzico.be | www.izzico.be
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Initialize Lucide icons
+  window.addEventListener('load', () => {
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+
+    // Generate QR Code with transparent background
+    if (typeof QRCode !== 'undefined') {
+      const qrcodeContainer = document.getElementById('qrcode');
+      new QRCode(qrcodeContainer, {
+        text: 'https://izzico.be',
+        width: 300,
+        height: 300,
+        colorDark: '#000000',
+        colorLight: 'rgba(0,0,0,0)', // ✨ Force transparent with rgba!
+        correctLevel: QRCode.CorrectLevel.H
+      });
+
+      // Force canvas transparency (hack for webkit PDF rendering)
+      setTimeout(() => {
+        const canvas = qrcodeContainer.querySelector('canvas');
+        if (canvas) {
+          const ctx = canvas.getContext('2d');
+          const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+          // Make all white pixels transparent
+          for (let i = 0; i < imgData.data.length; i += 4) {
+            const r = imgData.data[i];
+            const g = imgData.data[i + 1];
+            const b = imgData.data[i + 2];
+
+            // If pixel is white (or near-white), make it transparent
+            if (r > 250 && g > 250 && b > 250) {
+              imgData.data[i + 3] = 0; // Set alpha to 0
+            }
+          }
+
+          ctx.putImageData(imgData, 0, 0);
+          console.log('✅ QR code transparency forced');
+        }
+      }, 100);
+    }
+  });
+
+  // Smooth scroll to slide on click
+  document.querySelectorAll('.slide').forEach((slide, index) => {
+    slide.style.cursor = 'pointer';
+    slide.addEventListener('click', () => {
+      const nextSlide = document.querySelectorAll('.slide')[index + 1];
+      if (nextSlide) {
+        nextSlide.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,2620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dossier de Stage Entrepreneurial - Izzico</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@600;700;800&family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== VARIABLES IZZICO ==================== */
+        :root {
+            /* Role Colors - Owner (Mauve) */
+            --owner-50: #f5f0f4;
+            --owner-100: #ead5e7;
+            --owner-200: #d5abd0;
+            --owner-300: #bf81b8;
+            --owner-400: #aa57a0;
+            --owner-500: #9c5698;  /* Primary */
+            --owner-600: #7d4579;
+            --owner-700: #5e345a;
+            --owner-800: #3f233c;
+            --owner-900: #20111e;
+
+            /* Role Colors - Resident (Orange) */
+            --resident-50: #fff3e6;
+            --resident-100: #ffe0b3;
+            --resident-200: #ffcc80;
+            --resident-300: #ffb84d;
+            --resident-400: #ffa41a;
+            --resident-500: #e05747;  /* Primary */
+            --resident-600: #cc3d00;
+            --resident-700: #992e00;
+            --resident-800: #661f00;
+            --resident-900: #330f00;
+
+            /* Role Colors - Searcher (Yellow) */
+            --searcher-50: #fff8e6;
+            --searcher-100: #ffecb3;
+            --searcher-200: #ffe080;
+            --searcher-300: #ffd44d;
+            --searcher-400: #ffc81a;
+            --searcher-500: #ffa000;  /* Primary */
+            --searcher-600: #cc8000;
+            --searcher-700: #996000;
+            --searcher-800: #664000;
+            --searcher-900: #332000;
+
+            /* Gradient Signature */
+            --gradient-signature: linear-gradient(135deg,
+                #9c5698 0%,    /* Owner Primary */
+                #c85570 20%,
+                #d15659 35%,
+                #e05747 50%,   /* Resident Primary */
+                #ff7c10 75%,
+                #ffa000 100%   /* Searcher Primary */
+            );
+
+            /* Neutrals */
+            --neutral-50: #fafafa;
+            --neutral-100: #f5f5f5;
+            --neutral-200: #e5e5e5;
+            --neutral-300: #d4d4d4;
+            --neutral-400: #a3a3a3;
+            --neutral-500: #737373;
+            --neutral-600: #525252;
+            --neutral-700: #404040;
+            --neutral-800: #262626;
+            --neutral-900: #171717;
+
+            /* Fonts */
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-heading: 'Nunito', sans-serif;
+            --font-brand: 'Fredoka', sans-serif;
+        }
+
+        /* ==================== BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-size: 9pt;
+            line-height: 1.5;
+            color: var(--neutral-900);
+            background: #d4d4d4; /* Gris pour voir les pages */
+            margin: 0;
+            padding: 20px 0;
+        }
+
+        /* ==================== PAGE A4 ==================== */
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            background: white;
+            margin: 0 auto 20px auto;
+            padding: 12mm 15mm;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+            position: relative;
+            page-break-after: always;
+        }
+
+        .page-footer {
+            position: absolute;
+            bottom: 8mm;
+            right: 15mm;
+            font-size: 8pt;
+            color: var(--neutral-500);
+            font-family: var(--font-body);
+        }
+
+        /* ==================== TYPOGRAPHY ==================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5em;
+        }
+
+        h1 {
+            font-size: 20pt;
+            color: var(--neutral-900);
+            margin-bottom: 0.3em;
+        }
+
+        h2 {
+            font-size: 15pt;
+            color: var(--neutral-800);
+            margin-top: 1em;
+            margin-bottom: 0.6em;
+            padding-bottom: 0.3em;
+            border-bottom: 2px solid var(--neutral-200);
+        }
+
+        h3 {
+            font-size: 12pt;
+            color: var(--neutral-700);
+            margin-top: 0.8em;
+            margin-bottom: 0.4em;
+        }
+
+        h4 {
+            font-size: 10pt;
+            color: var(--neutral-700);
+            margin-top: 0.6em;
+            margin-bottom: 0.4em;
+            font-weight: 600;
+        }
+
+        p {
+            margin-bottom: 0.8em;
+        }
+
+        strong {
+            font-weight: 600;
+            color: var(--neutral-900);
+        }
+
+        /* ==================== HEADER ==================== */
+        .header {
+            text-align: center;
+            margin-bottom: 12px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid transparent;
+            border-image: var(--gradient-signature) 1;
+        }
+
+        .logo {
+            width: 140px;
+            height: auto;
+            margin-bottom: 12px;
+        }
+
+        .header h1 {
+            font-family: var(--font-heading);
+            font-size: 22pt;
+            margin-bottom: 6px;
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 11pt;
+            color: var(--neutral-600);
+            font-weight: 500;
+        }
+
+        .meta-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            margin: 10px 0;
+            padding: 12px;
+            background: var(--neutral-50);
+            border-radius: 10px;
+        }
+
+        .meta-item {
+            font-size: 8.5pt;
+        }
+
+        .meta-item strong {
+            display: block;
+            font-size: 7.5pt;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--neutral-500);
+            margin-bottom: 2px;
+        }
+
+        /* ==================== TABLES ==================== */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+            font-size: 8.5pt;
+        }
+
+        thead {
+            background: var(--gradient-signature);
+        }
+
+        thead th {
+            color: white;
+            font-weight: 600;
+            text-align: left;
+            padding: 6px 8px;
+            font-size: 8.5pt;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--neutral-50);
+        }
+
+        td, th {
+            padding: 5px 8px;
+            border: 1px solid var(--neutral-200);
+        }
+
+        td {
+            color: var(--neutral-700);
+        }
+
+        /* ==================== CARDS & BOXES ==================== */
+        .card {
+            background: white;
+            border: 1px solid var(--neutral-200);
+            border-radius: 12px;
+            padding: 10px;
+            margin: 10px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e6 0%, #fff3e6 100%);
+            border-left: 4px solid var(--searcher-500);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .phase-card {
+            margin: 12px 0;
+            padding: 12px;
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-signature);
+        }
+
+        .phase-card h3 {
+            margin-top: 0;
+            color: var(--neutral-900);
+        }
+
+        /* Phase Colors */
+        .phase-1 { border: 2px solid var(--searcher-200); background: var(--searcher-50); }
+        .phase-2 { border: 2px solid var(--resident-200); background: var(--resident-50); }
+        .phase-3 { border: 2px solid var(--owner-200); background: var(--owner-50); }
+        .phase-4 { border: 2px solid var(--neutral-300); background: var(--neutral-100); }
+
+        /* ==================== LISTS ==================== */
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        li {
+            margin-bottom: 5px;
+            padding-left: 5px;
+        }
+
+        .checklist {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .checklist li::before {
+            content: '✓';
+            color: var(--searcher-500);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        /* ==================== BADGES ==================== */
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: 600;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .badge-searcher {
+            background: var(--searcher-100);
+            color: var(--searcher-800);
+        }
+
+        .badge-owner {
+            background: var(--owner-100);
+            color: var(--owner-800);
+        }
+
+        .badge-resident {
+            background: var(--resident-100);
+            color: var(--resident-800);
+        }
+
+        .badge-success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        /* ==================== STATS ==================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 10px;
+            border-radius: 12px;
+            background: white;
+            border: 2px solid var(--neutral-200);
+        }
+
+        .stat-value {
+            font-size: 24pt;
+            font-weight: 700;
+            font-family: var(--font-heading);
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 9pt;
+            color: var(--neutral-600);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==================== FOOTER ==================== */
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid var(--neutral-200);
+            text-align: center;
+            font-size: 9pt;
+            color: var(--neutral-500);
+        }
+
+        .signatures {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 30px 0;
+        }
+
+        .signature-box {
+            border: 1px solid var(--neutral-300);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .signature-box strong {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 10pt;
+        }
+
+        .signature-line {
+            border-top: 1px solid var(--neutral-400);
+            margin-top: 40px;
+            padding-top: 5px;
+            font-size: 9pt;
+            color: var(--neutral-600);
+        }
+
+        /* ==================== PRINT STYLES ==================== */
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 12mm 15mm;
+            }
+
+            body {
+                background: white !important; /* Pas de gris en print */
+                padding: 0;
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .page {
+                width: 100%;
+                min-height: auto !important; /* Pas de min-height forcée */
+                margin: 0 !important;
+                padding: 0 !important;
+                box-shadow: none !important;
+                page-break-after: auto;
+                background: white !important;
+            }
+
+            .page-footer {
+                position: fixed;
+                bottom: 8mm;
+                right: 15mm;
+            }
+
+            .page-break {
+                page-break-before: always;
+                break-before: always;
+            }
+
+            .phase-card, .card, .highlight-box {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            table {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            thead {
+                display: table-header-group;
+            }
+
+            tbody {
+                display: table-row-group;
+            }
+
+            tr {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            h2 {
+                page-break-after: avoid;
+                break-after: avoid;
+                page-break-before: auto;
+            }
+
+            h3, h4 {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            /* Ensure logo and header stay together */
+            .header {
+                page-break-after: avoid;
+                break-after: avoid;
+            }
+
+            .logo {
+                max-width: 160px;
+            }
+
+            /* Ensure signatures stay together */
+            .signatures {
+                page-break-inside: avoid;
+                break-inside: avoid;
+            }
+
+            /* Add shadows in print for visual hierarchy */
+            .phase-card, .card {
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+            }
+
+            /* Ensure gradient renders in print */
+            thead {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color-adjust: exact;
+            }
+
+            .badge, .stat-card, .highlight-box, .phase-card {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                color-adjust: exact;
+            }
+        }
+
+        /* ==================== UTILITIES ==================== */
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .mt-20 { margin-top: 12px; }
+        .mb-20 { margin-bottom: 12px; }
+        .font-brand { font-family: var(--font-brand); }
+
+        .gradient-text {
+            background: var(--gradient-signature);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Confidential notice */
+        .confidential-notice {
+            background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%);
+            border: 2px solid var(--resident-500);
+            border-radius: 12px;
+            padding: 15px 20px;
+            margin: 12px 0;
+            text-align: center;
+        }
+
+        .confidential-notice h3 {
+            color: var(--resident-700);
+            margin: 0 0 10px 0;
+            font-size: 12pt;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .confidential-notice p {
+            margin: 5px 0;
+            font-size: 10pt;
+            color: var(--neutral-700);
+        }
+    
+        /* ==================== PAGE FOOTER ==================== */
+        .page-footer {
+            position: absolute;
+            bottom: 8mm;
+            right: 15mm;
+            font-size: 8pt;
+            color: var(--neutral-500);
+        }
+    </style>
+</head>
+<body>
+
+<!-- ==================== PAGE 1 ==================== -->
+<div class="page" data-page-number="1">
+<!-- ==================== HEADER ==================== -->
+    <div class="header">
+        <img src="../../brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/gradient signature/izzico-lockup-optionD-squircle-epais-gradient.svg"
+             alt="Izzico Logo"
+             class="logo">
+        <h1>Dossier de Stage Entrepreneurial</h1>
+        <p class="subtitle">Plateforme de Co-living par Compatibilité Humaine</p>
+    </div>
+
+    <!-- ==================== META INFO ==================== -->
+    <div class="meta-info">
+        <div class="meta-item">
+            <strong>Étudiant</strong>
+            Samuel BAUDON<br>
+            Master 1 RP & Affaires Publiques (IHECS)
+        </div>
+        <div class="meta-item">
+            <strong>Tuteur</strong>
+            Alain WIRTZ<br>
+            Ancien CEO Zetes, Investisseur
+        </div>
+        <div class="meta-item">
+            <strong>Période</strong>
+            3 février - 30 mai 2025<br>
+            17 semaines (4 mois)
+        </div>
+        <div class="meta-item">
+            <strong>Volume horaire</strong>
+            646 heures totales<br>
+            <small>Recommandé IHECS : 420h</small>
+        </div>
+    </div>
+
+    <!-- ==================== CONFIDENTIALITÉ ==================== -->
+    <div class="confidential-notice">
+        <h3>Document Confidentiel</h3>
+        <p><strong>Ce dossier contient des informations stratégiques et commerciales confidentielles.</strong></p>
+        <p>Il est destiné exclusivement à l'usage de la Directrice de Section de l'IHECS dans le cadre de l'évaluation de la demande de stage entrepreneurial.</p>
+        <p>La marque <strong>Izzico</strong> n'est pas encore publiquement lancée. La stratégie d'implémentation de marché, les analyses concurrentielles, et les détails opérationnels contenus dans ce document sont <strong>confidentiels et propriétaires</strong>.</p>
+        <p style="margin-top: 10px; font-weight: 600;">Merci de traiter ce document avec la discrétion appropriée et de ne pas le diffuser sans autorisation préalable.</p>
+    </div>
+
+    <!-- ==================== TABLE DES MATIÈRES ==================== -->
+    <div class="card" style="background: var(--neutral-50); margin-bottom: 25px;">
+        <h2 style="margin-top: 0; border-bottom: none; font-size: 16pt;">Table des Matières</h2>
+        <ol style="line-height: 2; font-size: 10pt;">
+            <li><strong>Résumé Exécutif</strong> <span style="float: right;">p. 2</span></li>
+            <li><strong>Alignement Pédagogique Master RP</strong> <span style="float: right;">p. 3</span></li>
+            <li><strong>Travail de Communication & Design</strong> <span style="float: right;">p. 4-8</span></li>
+            <li><strong>Stratégie d'Implémentation de Marché</strong> <span style="float: right;">p. 9-10</span></li>
+            <li><strong>Planning Détaillé (17 semaines)</strong> <span style="float: right;">p. 11-12</span></li>
+            <li><strong>Double Track B2C + B2B</strong> <span style="float: right;">p. 13</span></li>
+            <li><strong>Partenariats Institutionnels</strong> <span style="float: right;">p. 14</span></li>
+            <li><strong>Création & Officialisation SRL</strong> <span style="float: right;">p. 15</span></li>
+            <li><strong>Volume Horaire & Charge de Travail</strong> <span style="float: right;">p. 16</span></li>
+            <li><strong>Encadrement & Suivi</strong> <span style="float: right;">p. 17</span></li>
+            <li><strong>Résultats Attendus</strong> <span style="float: right;">p. 18</span></li>
+            <li><strong>Conclusion</strong> <span style="float: right;">p. 19</span></li>
+        </ol>
+    </div>
+
+    <!-- ==================== RÉSUMÉ EXÉCUTIF ==================== -->
+    <div class="page-footer">Page 1</div>
+</div>
+<!-- ==================== PAGE 2 ==================== -->
+<div class="page" data-page-number="2">
+<h2>1. Résumé Exécutif</h2>
+
+    <div class="highlight-box">
+        <p><strong>Izzico</strong> est une plateforme PropTech qui propose une approche structurée du co-living en Belgique grâce à un algorithme de compatibilité basé sur <strong>46+ critères</strong>.</p>
+        <p><strong>Positionnement :</strong> Une plateforme de mise en relation pour le co-living basée sur la compatibilité humaine.</p>
+    </div>
+
+    <h3>État Actuel (Janvier 2025)</h3>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <span class="stat-value">95%</span>
+            <span class="stat-label">Complétion MVP</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">461</span>
+            <span class="stat-label">Composants React</span>
+        </div>
+        <div class="stat-card">
+            <span class="stat-value">102+</span>
+            <span class="stat-label">Tables PostgreSQL</span>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Métrique</th>
+                <th>Statut</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background: var(--searcher-50);">
+                <td><strong>Travail de développement effectué (Oct-Déc 2024)</strong></td>
+                <td><strong>280-320 heures</strong> sur 45 jours actifs | 1,470 commits</td>
+            </tr>
+            <tr>
+                <td><strong>MVP Web</strong></td>
+                <td><span class="badge badge-success">95% complet</span> Production-ready début février</td>
+            </tr>
+            <tr>
+                <td><strong>App iOS</strong></td>
+                <td>En finalisation</td>
+            </tr>
+            <tr>
+                <td><strong>Business plan</strong></td>
+                <td><span class="badge badge-success">Finalisé</span> avec validation externe</td>
+            </tr>
+            <tr>
+                <td><strong>Financement</strong></td>
+                <td><span class="badge badge-success">Obtenu</span> Financement initial : €15-20K</td>
+            </tr>
+            <tr>
+                <td><strong>Incubateur</strong></td>
+                <td><span class="badge badge-success">Accepté</span> StartLab Build I</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Contexte de Marché</h3>
+    <ul>
+        <li><strong>Marché belge du co-living :</strong> €3,1 milliards (Total Addressable Market)</li>
+        <li><strong>Population cible :</strong> 725 000 colocataires en Belgique</li>
+        <li><strong>Croissance observée :</strong> +360% entre 2021 et 2024</li>
+    </ul>
+
+    <h3>Conformité Exigences IHECS</h3>
+    <div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Exigence IHECS</th>
+                    <th>Requis</th>
+                    <th>Stage Izzico</th>
+                    <th>Statut</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Volume horaire minimum</td>
+                    <td>320h</td>
+                    <td><strong>646h</strong></td>
+                    <td><span class="badge badge-success">+102%</span></td>
+                </tr>
+                <tr>
+                    <td>Volume horaire recommandé</td>
+                    <td>420h</td>
+                    <td><strong>646h</strong></td>
+                    <td><span class="badge badge-success">+54%</span></td>
+                </tr>
+                <tr>
+                    <td>Période</td>
+                    <td>Février - mai 2025</td>
+                    <td>3 fév - 30 mai 2025</td>
+                    <td><span class="badge badge-success">Conforme</span></td>
+                </tr>
+                <tr>
+                    <td>Lieu de stage</td>
+                    <td>Libre choix</td>
+                    <td>Izzico (projet entrepreneurial)</td>
+                    <td><span class="badge badge-success">Conforme</span></td>
+                </tr>
+                <tr>
+                    <td>Aval de la section</td>
+                    <td>Requis avant convention</td>
+                    <td>Objet de cette réunion</td>
+                    <td><span class="badge">En cours</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== ALIGNEMENT PÉDAGOGIQUE ==================== -->
+    <div class="page-footer">Page 2</div>
+</div>
+<!-- ==================== PAGE 3 ==================== -->
+<div class="page" data-page-number="3">
+<h2>2. Alignement Pédagogique Master RP</h2>
+
+    <h3>Couverture du Référentiel de Compétences</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Compétence Master RP</th>
+                <th>Application Izzico</th>
+                <th style="text-align: center;">Intensité</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Stratégie de communication</strong></td>
+                <td>Campagne de lancement multi-segments (B2C Searchers + B2B Owners)</td>
+                <td style="text-align: center;"><span class="badge badge-success">Intensif</span></td>
+            </tr>
+            <tr>
+                <td><strong>Stakeholder Management</strong></td>
+                <td>7 catégories : Searchers, Owners, Résidents, Investisseurs, Partenaires (ULB, Coabs), Médias, Institutions</td>
+                <td style="text-align: center;"><span class="badge badge-success">Intensif</span></td>
+            </tr>
+            <tr>
+                <td><strong>Affaires Publiques</strong></td>
+                <td>Veille réglementaire logement, compliance RGPD, relations universités</td>
+                <td style="text-align: center;"><span class="badge badge-success">Intensif</span></td>
+            </tr>
+            <tr>
+                <td><strong>Community Management</strong></td>
+                <td>Animation Instagram, gestion communauté early adopters</td>
+                <td style="text-align: center;"><span class="badge badge-success">Intensif</span></td>
+            </tr>
+            <tr>
+                <td><strong>Relations Presse</strong></td>
+                <td>Dossiers presse, articles secteur immobilier/tech, storytelling</td>
+                <td style="text-align: center;"><span class="badge">Modéré</span></td>
+            </tr>
+            <tr>
+                <td><strong>Gestion de crise</strong></td>
+                <td>Médiation litiges, réputation plateforme</td>
+                <td style="text-align: center;"><span class="badge">Modéré</span></td>
+            </tr>
+            <tr>
+                <td><strong>Business Development</strong></td>
+                <td>Prospection propriétaires, négociation partenariats</td>
+                <td style="text-align: center;"><span class="badge badge-success">Intensif</span></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Livrables Académiques</h3>
+    <ul class="checklist">
+        <li><strong>5 rapports bi-mensuels</strong> avec KPIs détaillés</li>
+        <li><strong>Rapport de stage final</strong> (30-40 pages)</li>
+        <li><strong>Portfolio de réalisations</strong> (campagnes, contenus, KPIs)</li>
+        <li><strong>Présentation orale</strong> devant jury IHECS</li>
+    </ul>
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== TRAVAIL COMMUNICATION & DESIGN ==================== -->
+    <div class="page-footer">Page 3</div>
+</div>
+<!-- ==================== PAGE 4 ==================== -->
+<div class="page" data-page-number="4">
+<h2>3. Travail de Communication & Design (Compétences IHECS)</h2>
+
+    <div class="highlight-box">
+        <p><strong>Au-delà de la dimension technique</strong>, le projet Izzico repose sur un travail approfondi de <strong>communication stratégique, de design et de production média</strong>, correspondant aux compétences centrales du référentiel Master RP IHECS.</p>
+        <p>Cette section documente les fondations stratégiques du projet : une identité de marque construite méthodiquement, des analyses sectorielles structurées et une approche de communication académiquement rigoureuse.</p>
+    </div>
+
+    
+<h3>3.1 Design & Brand Identity (En Production)</h3>
+<div class="card">
+        <h4>Charte Graphique Izzico - Travail Déjà Effectué</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Élément</th>
+                    <th>Statut</th>
+                    <th>Détails</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Logo System</strong></td>
+                    <td><span class="badge badge-success">Finalisé</span></td>
+                    <td>
+                        • Icône (clé + loupe, squircle épais)<br>
+                        • Trademark (wordmark "Izzico" typographié)<br>
+                        • Lockup Option D (icône + trademark, ratio 2.17:1)<br>
+                        • 3 variantes : Gradient signature, Noir, Blanc<br>
+                        • Exports multi-formats (SVG, PNG 2048px, 4096px)
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Color System</strong></td>
+                    <td><span class="badge badge-success">Finalisé</span></td>
+                    <td>
+                        • 3 palettes rôles (Owner Mauve, Resident Orange, Searcher Yellow)<br>
+                        • Scales 50-900 avec progression L* monotone<br>
+                        • Gradient signature (3 primaires à 0%, 50%, 100%)<br>
+                        • Respect ΔE > 7 (perception humaine)<br>
+                        • Conformité WCAG AA (contraste 4.5:1 minimum)<br>
+                        • Analyse scientifique des couleurs appliquée
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Typography System</strong></td>
+                    <td><span class="badge badge-success">Finalisé</span></td>
+                    <td>
+                        • Inter (body text, UI)<br>
+                        • Nunito (headings, section titles)<br>
+                        • Fredoka (brand wordmark "Izzico")<br>
+                        • Hiérarchie typographique définie
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Tone of Voice Guidelines</strong></td>
+                    <td><span class="badge badge-success">Finalisé</span></td>
+                    <td>
+                        • 4 dimensions par segment (Formalité, Humour, Irrévérence, Énergie)<br>
+                        • Terminologie imposée (co-living, pas "coloc")<br>
+                        • Signature words (Living Persona, Living Match)<br>
+                        • Banned words (corporate speak, real estate froid)<br>
+                        • Salutations par rôle (Tu/Bonjour selon segment)
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Brand Dossier</strong></td>
+                    <td><span class="badge badge-success">Finalisé</span></td>
+                    <td>Document complet d'identité de marque (visuel + verbal)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Pourquoi c'est important pour l'IHECS :</strong></p>
+        <ul>
+            <li>Démontre une <strong>réflexion stratégique</strong> de communication (pas juste "choisir des couleurs")</li>
+            <li>Application de <strong>principes scientifiques</strong> (perception couleur, accessibilité WCAG)</li>
+            <li>Création d'une <strong>identité cohérente</strong> multi-supports (web, mobile, print)</li>
+            <li>Travail de <strong>copywriting stratégique</strong> (tone of voice adapté aux personas)</li>
+        </ul>
+    </div>
+<h3>3.2 Analyses Stratégiques (En Production - À Finaliser Pendant Stage)</h3>
+<div class="card">
+        <h4>Travail Analytique de Communication</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Analyse</th>
+                    <th>Statut</th>
+                    <th>Actions Pendant Stage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>SWOT</strong><br><small>Forces, Faiblesses, Opportunités, Menaces</small></td>
+                    <td><span class="badge">Ébauche</span></td>
+                    <td>
+                        • Finalisation avec feedback utilisateurs réels (S3-4)<br>
+                        • Ajustement Forces basé sur early adopters<br>
+                        • Mise à jour Menaces basée sur concurrence actuelle<br>
+                        • Intégration dans rapport de stage
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>PESTEL</strong><br><small>Politique, Économique, Social, Techno, Légal</small></td>
+                    <td><span class="badge">Ébauche</span></td>
+                    <td>
+                        • Finalisation analyse environnement macro (S2-3)<br>
+                        • Focus réglementation logement Belgique<br>
+                        • Veille RGPD et compliance<br>
+                        • Documentation pour data room investisseurs
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Analyse Concurrentielle</strong><br><small>Mapping positionnement marché</small></td>
+                    <td><span class="badge">Ébauche</span></td>
+                    <td>
+                        • Benchmark approfondi concurrents (Immoweb, Facebook Groups, etc.)<br>
+                        • Matrice de positionnement (S4)<br>
+                        • Identification avantages différenciants<br>
+                        • Stratégie de différenciation documentée
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Personas Détaillées</strong><br><small>Searchers, Owners, Résidents</small></td>
+                    <td><span class="badge">Ébauche</span></td>
+                    <td>
+                        • Affinage avec interviews utilisateurs (S4-9)<br>
+                        • 10 interviews résidents + 10 interviews owners<br>
+                        • Fiches persona complètes (motivations, frustrations, comportements)<br>
+                        • Adaptation messages par persona
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Méthodologie :</strong> Ces analyses seront <strong>dynamiques</strong> et ajustées tout au long du stage grâce aux retours d'expérience des premiers utilisateurs, puis intégrées dans le rapport de stage final comme démonstration de la démarche stratégique et itérative.</p>
+    </div>
+    <div class="page-footer">Page 4</div>
+</div>
+<!-- ==================== PAGE 5 ==================== -->
+<div class="page" data-page-number="5">
+<h3>3.3 Production de Contenus & Communication (À Produire Pendant Stage)</h3>
+<div class="card">
+        <h4>Livrables de Communication à Créer</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30%;">Livrable</th>
+                    <th style="width: 15%;">Timeline</th>
+                    <th style="width: 55%;">Description & Objectif</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: var(--neutral-50);">
+                    <td><strong>Charte Éditoriale</strong></td>
+                    <td>S3</td>
+                    <td>
+                        • Document 10-15 pages définissant style éditorial<br>
+                        • Règles d'écriture par canal (Instagram, email, blog)<br>
+                        • Do's & Don'ts de communication<br>
+                        • Templates de contenus types
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Calendrier Éditorial</strong></td>
+                    <td>S3</td>
+                    <td>
+                        • Planning 3 mois (février-mai)<br>
+                        • Thématiques hebdomadaires<br>
+                        • Mix de contenus (éducatif, inspirationnel, produit)<br>
+                        • Alignement avec phases du stage
+                    </td>
+                </tr>
+                <tr style="background: var(--neutral-50);">
+                    <td><strong>Stratégie de Contenu</strong></td>
+                    <td>S2-3</td>
+                    <td>
+                        • Document stratégique : objectifs, audiences, messages-clés<br>
+                        • Mapping contenu par segment (Résidents vs Owners)<br>
+                        • KPIs contenu (engagement, reach, conversion)<br>
+                        • Stratégie SEO local (mots-clés, landing pages)
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Kit Presse / Media Kit</strong></td>
+                    <td>S4-5</td>
+                    <td>
+                        • Dossier de presse professionnel<br>
+                        • Communiqués de presse (lancement, partenariats, SRL)<br>
+                        • Visuels haute résolution<br>
+                        • Fact sheet Izzico (chiffres-clés, citations fondateur)
+                    </td>
+                </tr>
+                <tr style="background: var(--neutral-50);">
+                    <td><strong>Contenus Instagram</strong></td>
+                    <td>S4-17</td>
+                    <td>
+                        • 50+ posts créés (Coloc Stories, tips, témoignages)<br>
+                        • Stories quotidiennes (behind the scenes, Q&A)<br>
+                        • Reels (format court, viral)<br>
+                        • Ligne éditoriale cohérente avec tone of voice
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Case Studies</strong></td>
+                    <td>S12-15</td>
+                    <td>
+                        • 5 témoignages vidéo (résidents + owners)<br>
+                        • Success stories écrites (matchs réussis)<br>
+                        • Utilisation pour acquisition + crédibilité
+                    </td>
+                </tr>
+                <tr style="background: var(--neutral-50);">
+                    <td><strong>Pitch Deck Partenaires</strong></td>
+                    <td>S5-6</td>
+                    <td>
+                        • Version adaptée pour ULB, Coabs, universités<br>
+                        • Proposition de valeur claire par partenaire<br>
+                        • Design professionnel aligné charte Izzico
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>Email Campaigns</strong></td>
+                    <td>S6-17</td>
+                    <td>
+                        • Séquences onboarding automatisées<br>
+                        • Newsletters bi-mensuelles<br>
+                        • Campagnes cold emailing owners (B2B)<br>
+                        • A/B testing subject lines et messages
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<h3>3.4 Développement Technique (Contexte - Majoritairement Finalisé)</h3>
+<div class="card" style="border-left: 4px solid var(--neutral-400);">
+        <p><strong>Note :</strong> Le stack technique n'est pas le focus du stage IHECS (compétences RP > compétences tech), mais il est important de contextualiser le travail déjà accompli et l'état actuel du produit.</p>
+
+        <h4>Travail de Développement Pré-Stage (Octobre-Décembre 2024)</h4>
+        <table style="margin-bottom: 12px;">
+            <thead>
+                <tr>
+                    <th>Métrique</th>
+                    <th>Valeur</th>
+                    <th>Interprétation</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Période de développement</strong></td>
+                    <td>14 oct - 15 déc 2024 (62 jours)</td>
+                    <td>2 mois calendaires</td>
+                </tr>
+                <tr>
+                    <td><strong>Jours actifs de travail</strong></td>
+                    <td>~45 jours</td>
+                    <td>Intensité soutenue (73% du temps)</td>
+                </tr>
+                <tr style="background: var(--searcher-50);">
+                    <td><strong>Heures de travail effectives</strong></td>
+                    <td><strong>280-320 heures</strong></td>
+                    <td>Moyenne 6-7h par jour actif</td>
+                </tr>
+                <tr>
+                    <td><strong>Commits effectués</strong></td>
+                    <td>1,470 commits</td>
+                    <td>~33 commits/jour actif</td>
+                </tr>
+                <tr>
+                    <td><strong>Résultat produit</strong></td>
+                    <td>265,654 lignes de code</td>
+                    <td>MVP 95% fonctionnel</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px; margin-bottom: 12px;"><strong>Contexte académique :</strong> Ces indicateurs quantitatifs témoignent d'une capacité de travail soutenue (280-320h sur 2 mois) et d'une rigueur dans l'exécution (45 jours actifs sur 62). Le développement assisté par IA a permis une accélération du processus technique, mais le pilotage, les décisions architecturales et la gestion de projet sont restés entièrement sous la responsabilité du candidat.</p>
+
+        <h4>État Actuel des Composants (Janvier 2025)</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th>Composant</th>
+                    <th>État</th>
+                    <th>Travail Restant (Stage)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>MVP Web</strong></td>
+                    <td><span class="badge badge-success">95% complet</span></td>
+                    <td>Sprint final S1-2 : bugs, QA, optimisation UX</td>
+                </tr>
+                <tr>
+                    <td><strong>App iOS</strong></td>
+                    <td><span class="badge">En finalisation</span></td>
+                    <td>Finalisation S1-3, tests, mise en production App Store</td>
+                </tr>
+                <tr>
+                    <td><strong>Algorithme Matching</strong></td>
+                    <td><span class="badge badge-success">Fonctionnel</span></td>
+                    <td>Optimisation basée sur feedback résidents (S8-12)</td>
+                </tr>
+                <tr>
+                    <td><strong>Base de données</strong></td>
+                    <td><span class="badge badge-success">102+ tables</span></td>
+                    <td>Ajustements mineurs selon évolution features</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Pendant le stage :</strong> Le travail technique sera <strong>minimal</strong> (maintenance, bugs, optimisations) pour se concentrer sur les <strong>compétences IHECS</strong> : communication, design, stakeholders, contenu, partenariats.</p>
+    </div>
+    <div class="page-footer">Page 5</div>
+</div>
+<!-- ==================== PAGE 6 ==================== -->
+<div class="page" data-page-number="6">
+<h3>3.5 Production Média & Contenus (À Produire Pendant Stage)</h3>
+<div class="card">
+        <h4>Plan de Production - 17 Semaines</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Type de Contenu</th>
+                    <th>Volume</th>
+                    <th>Timing</th>
+                    <th>Objectif Com</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Posts Instagram</td>
+                    <td>50+ posts</td>
+                    <td>S4-17</td>
+                    <td>Notoriété, engagement, acquisition</td>
+                </tr>
+                <tr>
+                    <td>Stories Instagram</td>
+                    <td>100+ stories</td>
+                    <td>S4-17</td>
+                    <td>Animation communauté, behind the scenes</td>
+                </tr>
+                <tr>
+                    <td>Témoignages vidéo</td>
+                    <td>5 vidéos (3 min)</td>
+                    <td>S12-15</td>
+                    <td>Crédibilité, social proof, acquisition</td>
+                </tr>
+                <tr>
+                    <td>Guest posts / Articles</td>
+                    <td>3-5 articles</td>
+                    <td>S8-12</td>
+                    <td>SEO, autorité, backlinks</td>
+                </tr>
+                <tr>
+                    <td>Communiqués de presse</td>
+                    <td>3 CP</td>
+                    <td>S5, S10, S14</td>
+                    <td>Relations presse, visibilité média</td>
+                </tr>
+                <tr>
+                    <td>Email newsletters</td>
+                    <td>8 newsletters</td>
+                    <td>Bi-mensuel</td>
+                    <td>Engagement, rétention, upsell premium</td>
+                </tr>
+                <tr>
+                    <td>Landing pages</td>
+                    <td>3 pages</td>
+                    <td>S6-8</td>
+                    <td>SEO, acquisition organique (mots-clés locaux)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Total production :</strong> <strong>170+ pièces de contenu</strong> créées pendant le stage, toutes alignées sur la stratégie de communication et le tone of voice Izzico.</p>
+    </div>
+<h3>3.6 Stratégie d'Influence & Campagnes Réseaux Sociaux (À Développer Pendant Stage)</h3>
+<div class="card">
+        <h4>Mise en Place d'une Stratégie d'Influence Marketing</h4>
+
+        <p><strong>Contexte :</strong> Disposant d'un budget marketing défini, la stratégie privilégie les <strong>micro-influenceurs</strong> pour optimiser le retour sur investissement. Cette approche nécessite une <strong>sélection rigoureuse</strong> et une <strong>mesure précise</strong> pour justifier chaque allocation.</p>
+
+        <table style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th style="width: 20%;">Phase</th>
+                    <th style="width: 15%;">Timing</th>
+                    <th style="width: 65%;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>1. Recherche & Identification</strong></td>
+                    <td>S5-6</td>
+                    <td>
+                        • Mapping micro-influenceurs co-living/lifestyle Brussels (5K-20K followers)<br>
+                        • Analyse engagement rate (> 3% minimum) et authenticité audience<br>
+                        • Sélection 10-15 profils alignés valeurs Izzico<br>
+                        • Création grille d'évaluation multi-critères (audience, tone, qualité, ROI potentiel)
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>2. Outreach & Négociation</strong></td>
+                    <td>S7-8</td>
+                    <td>
+                        • Prise de contact personnalisée (DM + email pitch deck)<br>
+                        • Proposition de valeur : accès produit + compensation<br>
+                        • Négociation packages optimisés (1 post + 3 stories)<br>
+                        • Signature contrats micro-influenceurs (5 minimum)<br>
+                        • Objectif : Maximiser reach tout en optimisant coût par impression
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>3. Création de Contenus</strong></td>
+                    <td>S8-12</td>
+                    <td>
+                        • Briefings créatifs alignés brand guidelines Izzico<br>
+                        • Validation contenus avant publication (respect tone of voice)<br>
+                        • 5 micro-influenceurs × (1 post + 3 stories) = 20 contenus brand<br>
+                        • Coordination timing publications (vagues pour amplification)<br>
+                        • Suivi création avec ajustements en temps réel
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>4. Diffusion & Amplification</strong></td>
+                    <td>S9-13</td>
+                    <td>
+                        • Publications échelonnées (1 influenceur/semaine pour maintenir l'attention)<br>
+                        • Republication sur compte officiel @izzico.be avec promotion croisée<br>
+                        • Amplification stratégique via publicités ciblées sur contenus performants (tests A/B)<br>
+                        • Collaboration partenaires (ULB, Coabs) pour amplification organique<br>
+                        • Mesure du retour sur investissement en temps réel et ajustements
+                    </td>
+                </tr>
+                <tr style="background: var(--neutral-100); font-weight: 600;">
+                    <td><strong>TOTAL</strong></td>
+                    <td>S5-13 (9 semaines)</td>
+                    <td><strong>5 micro-influenceurs, 20 contenus, allocation budgétaire optimisée</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Approche budgétaire :</strong> Le budget marketing disponible nécessite une <strong>allocation stratégique des ressources</strong> et une <strong>justification rigoureuse</strong> de chaque dépense. L'approche privilégie les micro-influenceurs (retour sur investissement optimal) et les leviers organiques (contenu, référencement naturel, partenariats).</p>
+        <p><strong>Compétence développée :</strong> Gestion budgétaire marketing, négociation, allocation stratégique des ressources - compétences clés en RP.</p>
+    </div>
+    <div class="page-footer">Page 6</div>
+</div>
+<!-- ==================== PAGE 7 ==================== -->
+<div class="page" data-page-number="7">
+<div class="card">
+        <h4>Campagnes Réseaux Sociaux Originales</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 25%;">Campagne</th>
+                    <th style="width: 15%;">Timing</th>
+                    <th style="width: 35%;">Concept</th>
+                    <th style="width: 25%;">KPIs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: var(--resident-50);">
+                    <td><strong>"Coloc Stories"</strong></td>
+                    <td>S4-9</td>
+                    <td>
+                        Série de témoignages résidents racontant leur pire/meilleure expérience de coloc. Format : carrousel Instagram + Reels courts (30s).
+                    </td>
+                    <td>
+                        • 10K impressions<br>
+                        • 500 likes<br>
+                        • 50 partages
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>"Find Your Coloc Twin"</strong></td>
+                    <td>S8-10</td>
+                    <td>
+                        Campagne interactive : quiz "Quel type de coloc es-tu ?" menant à l'inscription Izzico. Collaboration micro-influenceurs.
+                    </td>
+                    <td>
+                        • 500 quiz complétés<br>
+                        • 100 inscriptions<br>
+                        • Taux conversion 20%
+                    </td>
+                </tr>
+                <tr style="background: var(--owner-50);">
+                    <td><strong>"Owners Secrets"</strong></td>
+                    <td>S10-12</td>
+                    <td>
+                        Série B2B : propriétaires partagent tips gestion colocation. Crédibilité + acquisition owners. Format LinkedIn + Instagram.
+                    </td>
+                    <td>
+                        • 5K impressions<br>
+                        • 20 owners contacts<br>
+                        • 5 onboardings
+                    </td>
+                </tr>
+                <tr>
+                    <td><strong>"Izzico Challenge"</strong></td>
+                    <td>S13-15</td>
+                    <td>
+                        Défi viral : "Présente ton/ta coloc en 15 secondes". Meilleure vidéo = 3 mois premium gratuit. User-generated content.
+                    </td>
+                    <td>
+                        • 50 participations<br>
+                        • 15K vues totales<br>
+                        • Viralité organique
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+<div class="card">
+        <h4>KPIs Réseaux Sociaux & Influence - Tracking & Mesure</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Métrique</th>
+                    <th>Outil de Mesure</th>
+                    <th>Objectif S17</th>
+                    <th>Fréquence Suivi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Followers Instagram</strong></td>
+                    <td>Instagram Insights</td>
+                    <td>2500</td>
+                    <td>Hebdomadaire</td>
+                </tr>
+                <tr>
+                    <td><strong>Engagement Rate</strong></td>
+                    <td>Instagram Insights</td>
+                    <td>> 4%</td>
+                    <td>Par post</td>
+                </tr>
+                <tr>
+                    <td><strong>Reach Influenceurs</strong></td>
+                    <td>Reports influenceurs</td>
+                    <td>50K impressions cumulées</td>
+                    <td>Par campagne</td>
+                </tr>
+                <tr>
+                    <td><strong>Traffic Website (via social)</strong></td>
+                    <td>Google Analytics / Vercel</td>
+                    <td>1000 visites/mois</td>
+                    <td>Hebdomadaire</td>
+                </tr>
+                <tr>
+                    <td><strong>Conversions Social → Inscription</strong></td>
+                    <td>UTM tracking + Mixpanel</td>
+                    <td>15% taux de conversion</td>
+                    <td>Quotidien</td>
+                </tr>
+                <tr>
+                    <td><strong>Coût par Acquisition (CPA)</strong></td>
+                    <td>Budget / Inscriptions</td>
+                    <td>< €5/utilisateur</td>
+                    <td>Bi-mensuel</td>
+                </tr>
+                <tr>
+                    <td><strong>User-Generated Content</strong></td>
+                    <td>Hashtag tracking #IzzicoStories</td>
+                    <td>30 posts UGC</td>
+                    <td>Mensuel</td>
+                </tr>
+                <tr>
+                    <td><strong>Mentions / Brand Awareness</strong></td>
+                    <td>Google Alerts, Mention.com</td>
+                    <td>20 mentions organiques</td>
+                    <td>Mensuel</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Dashboard Analytics :</strong> Création d'un tableau de bord consolidé (Notion ou Google Data Studio) pour tracking en temps réel de tous les KPIs campagnes et social media.</p>
+    </div>
+<div class="card">
+        <h4>Critères de Sélection Micro-Influenceurs</h4>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Critère</th>
+                    <th>Seuil Minimum</th>
+                    <th>Pourquoi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Nombre de followers</td>
+                    <td>5K - 20K</td>
+                    <td>Équilibre optimal entre engagement élevé et coût raisonnable</td>
+                </tr>
+                <tr>
+                    <td>Engagement rate</td>
+                    <td>> 3%</td>
+                    <td>Audience réellement engagée (pas de followers achetés)</td>
+                </tr>
+                <tr>
+                    <td>Localisation</td>
+                    <td>Bruxelles / Belgique</td>
+                    <td>Audience locale = cible Izzico</td>
+                </tr>
+                <tr>
+                    <td>Thématiques</td>
+                    <td>Lifestyle, co-living, student life, Brussels life</td>
+                    <td>Alignement avec personas Izzico</td>
+                </tr>
+                <tr>
+                    <td>Ton / Valeurs</td>
+                    <td>Authentique, positif, inclusif</td>
+                    <td>Cohérence avec brand Izzico</td>
+                </tr>
+                <tr>
+                    <td>Qualité contenu</td>
+                    <td>Visuels soignés, captions engageantes</td>
+                    <td>Reflet sur la marque Izzico</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Méthodologie de sélection :</strong> Grille de scoring (1-5) sur chaque critère, seuil minimum 20/30 pour collaboration. Priorité aux micro-influenceurs avec audience étudiante/jeunes actifs Brussels.</p>
+    </div>
+    <div class="page-footer">Page 7</div>
+</div>
+<!-- ==================== PAGE 8 ==================== -->
+<div class="page" data-page-number="8">
+<h3>3.7 Design System & Iconographie (À Développer Pendant Stage)</h3>
+<div class="card">
+        <p><strong>État actuel :</strong> Fondations design finalisées (logos, couleurs, typo). Beaucoup de travail de production graphique reste à faire.</p>
+
+        <h4>À Produire</h4>
+        <ul>
+            <li><strong>Bibliothèque d'icônes custom Izzico</strong> (20-30 icônes)</li>
+            <li><strong>Illustrations brand</strong> pour landing pages et contenus</li>
+            <li><strong>Templates réseaux sociaux</strong> (Instagram, LinkedIn) dans Figma</li>
+            <li><strong>Guide d'utilisation du logo</strong> (spacing, tailles minimum, usages interdits)</li>
+            <li><strong>Templates email</strong> (newsletters, transactionnels)</li>
+            <li><strong>Assets marketing</strong> (bannières, flyers digitaux pour partenariats)</li>
+            <li><strong>Brand guidelines complet</strong> (consolidation de tous les éléments)</li>
+        </ul>
+
+        <p style="margin-top: 10px;"><strong>Timeline :</strong> Production graphique étalée sur S3-10, en parallèle de la création de contenus. Utilisation d'outils no-code/low-code (Canva Pro, Figma) pour limiter les coûts.</p>
+    </div>
+<h3>3.8 Synthèse : Compétences IHECS vs Compétences Techniques</h3>
+<div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Catégorie</th>
+                    <th>% Temps Stage</th>
+                    <th>Compétences Développées</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: var(--searcher-50);">
+                    <td><strong>Communication & Marketing</strong></td>
+                    <td><strong>40%</strong></td>
+                    <td>Stratégie, contenus, campagnes, SEO, PR, copywriting</td>
+                </tr>
+                <tr style="background: var(--owner-50);">
+                    <td><strong>Stakeholders & Partnerships</strong></td>
+                    <td><strong>25%</strong></td>
+                    <td>Prospection, négociation, relations, community management</td>
+                </tr>
+                <tr style="background: var(--resident-50);">
+                    <td><strong>Design & Production Média</strong></td>
+                    <td><strong>15%</strong></td>
+                    <td>Design system, contenus visuels, vidéos, brand guidelines</td>
+                </tr>
+                <tr>
+                    <td><strong>Développement Technique</strong></td>
+                    <td><strong>10%</strong></td>
+                    <td>Maintenance MVP, optimisations UX (secondaire)</td>
+                </tr>
+                <tr>
+                    <td><strong>Admin & Création Entreprise</strong></td>
+                    <td><strong>10%</strong></td>
+                    <td>SRL, comptabilité, compliance, affaires publiques</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px; text-align: center;">
+            <strong class="gradient-text">75% du stage = Compétences IHECS pures (Com, Design, Stakeholders)</strong><br>
+            <small>vs 10% seulement pour le développement technique (déjà largement avancé)</small>
+        </p>
+    </div>
+
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== STRATÉGIE D'IMPLÉMENTATION ==================== -->
+    <div class="page-footer">Page 8</div>
+</div>
+<!-- ==================== PAGE 9 ==================== -->
+<div class="page" data-page-number="9">
+<h2>4. Stratégie d'Implémentation de Marché</h2>
+
+    <div class="highlight-box">
+        <p><strong>Résolution du problème "Chicken & Egg" des plateformes bifaces :</strong></p>
+        <p>Izzico n'ouvrira pas immédiatement aux Searchers. La stratégie se déploie en <strong>3 vagues séquentielles</strong> pour construire une plateforme solide avec une offre qualifiée avant d'ouvrir l'accès à la demande.</p>
+    </div>
+
+    
+<h3>Vague 1 : Résidents (Circuit Fermé) - Semaines 1-9</h3>
+<div class="card" style="border-left: 4px solid var(--resident-500);">
+        <h4>Objectif : Adoption Massive dans les Colocations Existantes</h4>
+
+        <p><strong>Cible prioritaire :</strong> Jeunes et étudiants déjà en colocation</p>
+
+        <p><strong>Pourquoi commencer par les Résidents ?</strong></p>
+        <ul>
+            <li><strong>Réduction du risque :</strong> Ils sont déjà en colocation, donc convaincus du concept</li>
+            <li><strong>Feedback immédiat :</strong> Ils peuvent tester les features de matching et de gestion</li>
+            <li><strong>Ambassadeurs naturels :</strong> Ils connaissent leur propriétaire et peuvent faire le lien</li>
+            <li><strong>Base d'early adopters :</strong> Création d'une communauté engagée et active</li>
+        </ul>
+
+        <p><strong>Actions concrètes :</strong></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Action</th>
+                    <th>Canal</th>
+                    <th>Objectif</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Activation réseau personnel IHECS/ULB</td>
+                    <td>Bouche-à-oreille, WhatsApp</td>
+                    <td>50 résidents S1-5</td>
+                </tr>
+                <tr>
+                    <td>Partenariat résidences étudiantes (Coabs)</td>
+                    <td>Cross-promo, events</td>
+                    <td>100 résidents S6-10</td>
+                </tr>
+                <tr>
+                    <td>Campagne Instagram "Coloc Stories"</td>
+                    <td>Témoignages, viral content</td>
+                    <td>Notoriété + acquisition</td>
+                </tr>
+                <tr>
+                    <td>Programme ambassadeurs</td>
+                    <td>Referral (parraine un coloc = premium gratuit)</td>
+                    <td>Viralité organique</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>KPIs Vague 1 :</strong></p>
+        <p>
+            <span class="badge badge-resident">150 résidents inscrits</span>
+            <span class="badge badge-success">80% taux de complétion profil</span>
+            <span class="badge">2000 followers Instagram</span>
+            <span class="badge">NPS > 50</span>
+        </p>
+    </div>
+<h3>Vague 2 : Owners (Campagne Double Face) - Semaines 6-13</h3>
+<div class="card" style="border-left: 4px solid var(--owner-500);">
+        <h4>Objectif : Convaincre les Propriétaires avec Double Approche</h4>
+
+        <p><strong>Approche 1 : Bottom-Up (Résidents → Owners)</strong></p>
+        <ul>
+            <li>Les résidents déjà convaincus présentent Izzico à leur propriétaire</li>
+            <li>Argumentaire : "Cela simplifie notre colocation et facilite l'identification de remplaçants compatibles"</li>
+            <li>Les résidents deviennent des <strong>ambassadeurs naturels</strong> de la plateforme</li>
+        </ul>
+
+        <p><strong>Approche 2 : Top-Down (Campagne B2B Directe)</strong></p>
+        <ul>
+            <li>Prospection agences immobilières et property managers</li>
+            <li>Proposition de valeur B2B claire : <em>"Izzico = votre outil de gestion de co-living"</em></li>
+            <li>Dashboard propriétaire comme argument de vente principal</li>
+        </ul>
+
+        <p><strong>Proposition de Valeur Owners :</strong></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Pain Point</th>
+                    <th>Solution Izzico</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Turnover élevé (recherche constante de nouveaux locataires)</td>
+                    <td>Algorithme matching = locataires compatibles = moins de turnover</td>
+                </tr>
+                <tr>
+                    <td>Mauvais matchs = conflits = départs précipités</td>
+                    <td>46 critères de compatibilité = colocations harmonieuses</td>
+                </tr>
+                <tr>
+                    <td>Gestion chronophage (candidatures, visites, contrats)</td>
+                    <td>Dashboard centralisé : gestion candidatures, messagerie, analytics</td>
+                </tr>
+                <tr>
+                    <td>Difficulté à évaluer les candidats</td>
+                    <td>Profils vérifiés, score de compatibilité, historique</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Actions concrètes :</strong></p>
+        <ul>
+            <li><strong>S6-7 :</strong> Prospection agences (20 contacts), cold emailing propriétaires privés (50 contacts)</li>
+            <li><strong>S8-9 :</strong> Rencontres physiques propriétaires recommandés par résidents</li>
+            <li><strong>S10-12 :</strong> Sessions feedback dashboard avec 10 owners (1h chacun)</li>
+            <li><strong>S13 :</strong> Amélioration dashboard v2 basée sur feedbacks</li>
+        </ul>
+
+        <p><strong>KPIs Vague 2 :</strong></p>
+        <p>
+            <span class="badge badge-owner">80 propriétés listées</span>
+            <span class="badge badge-success">30 via résidents (bottom-up)</span>
+            <span class="badge badge-success">50 via prospection (top-down)</span>
+            <span class="badge">Dashboard utilisé activement par 60+ owners</span>
+        </p>
+    </div>
+    <div class="page-footer">Page 9</div>
+</div>
+<!-- ==================== PAGE 10 ==================== -->
+<div class="page" data-page-number="10">
+    <h3>Vague 3 : Searchers (Ouverture Marché) - Post-Stage ou S14+</h3>
+    <div class="card" style="border-left: 4px solid var(--searcher-500);">
+        <h4>Objectif : Ouvrir la Plateforme aux Chercheurs de Colocation</h4>
+
+        <p><strong>Conditions de lancement Searchers :</strong></p>
+        <ul class="checklist">
+            <li><strong>Minimum 80-100 propriétés actives</strong> sur la plateforme</li>
+            <li><strong>Feedbacks Résidents et Owners intégrés</strong> (produit mature)</li>
+            <li><strong>Dashboard owners stable</strong> et apprécié (NPS > 50)</li>
+            <li><strong>Algorithme matching validé</strong> par les résidents actuels</li>
+            <li><strong>Processus d'onboarding optimisé</strong> (taux de complétion > 70%)</li>
+        </ul>
+
+        <p><strong>Pourquoi attendre pour les Searchers ?</strong></p>
+        <ul>
+            <li><strong>Éviter la frustration :</strong> Pas de searchers si peu d'offres disponibles</li>
+            <li><strong>Garantir la qualité :</strong> Offre qualifiée = meilleure expérience = bon WOM</li>
+            <li><strong>Construire la demande :</strong> Instagram + communauté résidents = pipeline naturel</li>
+            <li><strong>Effet réseau :</strong> Quand on ouvrira, on aura une masse critique côté offre</li>
+        </ul>
+
+        <p><strong>Timeline réaliste :</strong></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Scénario</th>
+                    <th>Timing</th>
+                    <th>Condition</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Optimiste</strong></td>
+                    <td>Semaine 14-17 (fin stage)</td>
+                    <td>100+ propriétés, produit très stable</td>
+                </tr>
+                <tr>
+                    <td><strong>Réaliste</strong></td>
+                    <td>Juillet-Août 2025 (post-stage)</td>
+                    <td>80+ propriétés, feedbacks intégrés</td>
+                </tr>
+                <tr>
+                    <td><strong>Prudent</strong></td>
+                    <td>Septembre 2025 (rentrée)</td>
+                    <td>120+ propriétés, timing optimal (rentrée scolaire)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Si ouverture pendant le stage (S14-17) :</strong></p>
+        <ul>
+            <li>Soft launch : Liste d'attente + accès progressif (50 searchers/semaine)</li>
+            <li>Focus qualité > quantité</li>
+            <li>Monitoring strict : support réactif, fixing rapide bugs</li>
+        </ul>
+
+        <p><strong>KPIs Vague 3 (si atteinte) :</strong></p>
+        <p>
+            <span class="badge badge-searcher">200 searchers inscrits</span>
+            <span class="badge badge-success">20 matchs réussis</span>
+            <span class="badge">NPS searchers > 45</span>
+        </p>
+    </div>
+<h3>Synthèse de la Stratégie</h3>
+<div class="card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Vague</th>
+                    <th>Timing</th>
+                    <th>Segment</th>
+                    <th>Objectif</th>
+                    <th>Raison</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: var(--resident-50);">
+                    <td><strong>1</strong></td>
+                    <td>S1-9</td>
+                    <td><span class="badge badge-resident">Résidents</span></td>
+                    <td>150 inscrits</td>
+                    <td>Base early adopters + ambassadeurs + feedback produit</td>
+                </tr>
+                <tr style="background: var(--owner-50);">
+                    <td><strong>2</strong></td>
+                    <td>S6-13</td>
+                    <td><span class="badge badge-owner">Owners</span></td>
+                    <td>80 propriétés</td>
+                    <td>Construire l'offre (supply) avant d'ouvrir la demande</td>
+                </tr>
+                <tr style="background: var(--searcher-50);">
+                    <td><strong>3</strong></td>
+                    <td>S14+ / Post-stage</td>
+                    <td><span class="badge badge-searcher">Searchers</span></td>
+                    <td>200+ inscrits</td>
+                    <td>Ouverture marché quand offre qualifiée + produit mature</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Avantages de cette approche méthodologique :</strong></p>
+        <ul>
+            <li><strong>Éviter une plateforme vide</strong> (prévention de la frustration des premiers utilisateurs)</li>
+            <li><strong>Produit affiné</strong> grâce aux retours d'expérience des résidents et propriétaires</li>
+            <li><strong>Communauté engagée</strong> dès le départ (résidents comme ambassadeurs)</li>
+            <li><strong>Crédibilité B2B</strong> (propriétaires convaincus par des résidents satisfaits)</li>
+            <li><strong>Effet de réseau</strong> (plateforme déjà active à l'arrivée des searchers)</li>
+        </ul>
+    </div>
+
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== PLANNING DÉTAILLÉ ==================== -->
+    <div class="page-footer">Page 10</div>
+</div>
+<!-- ==================== PAGE 11 ==================== -->
+<div class="page" data-page-number="11">
+<h2>5. Planning Détaillé - 17 Semaines</h2>
+
+    
+<h3>Calendrier Global</h3>
+<table>
+        <thead>
+            <tr>
+                <th>Phase</th>
+                <th>Semaines</th>
+                <th>Dates</th>
+                <th>Focus Principal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="badge badge-searcher">Phase 1</span></td>
+                <td>S1-S5</td>
+                <td>3 fév - 9 mars</td>
+                <td>Lancement & Validation</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-resident">Phase 2</span></td>
+                <td>S6-S9</td>
+                <td>10 mars - 6 avril</td>
+                <td>Acquisition & Croissance</td>
+            </tr>
+            <tr>
+                <td><span class="badge badge-owner">Phase 3</span></td>
+                <td>S10-S13</td>
+                <td>7 avril - 4 mai</td>
+                <td>Optimisation & Monétisation</td>
+            </tr>
+            <tr>
+                <td><span class="badge">Phase 4</span></td>
+                <td>S14-S17</td>
+                <td>5 mai - 30 mai</td>
+                <td>Scale & Pérennisation</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <!-- ==================== PHASE 1 ==================== -->
+    
+<div class="phase-card phase-1">
+        <h3>Phase 1 : Lancement & Validation</h3>
+        <p><strong>Semaines 1-5</strong> (3 février - 9 mars)</p>
+
+        <h4>Objectifs SMART</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 60%;">Objectif</th>
+                    <th style="width: 40%;">Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Finaliser le MVP Web à 100% (0 bugs critiques)</td>
+                    <td>14 février</td>
+                </tr>
+                <tr>
+                    <td>Lancer la stratégie de communication (3 canaux actifs)</td>
+                    <td>21 février</td>
+                </tr>
+                <tr>
+                    <td>Créer et animer Instagram Izzico (500 followers + 20 posts)</td>
+                    <td>9 mars</td>
+                </tr>
+                <tr>
+                    <td><strong>VAGUE 1 :</strong> Recruter 50 Résidents (circuit fermé)</td>
+                    <td>9 mars</td>
+                </tr>
+                <tr>
+                    <td>Onboarder 10 propriétés test (via résidents)</td>
+                    <td>9 mars</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Actions Clés - Focus Résidents (Vague 1)</h4>
+        <ul>
+            <li><strong>S1-2 :</strong> Sprint final MVP, tests utilisateurs (5 Résidents en coloc active), finalisation app iOS</li>
+            <li><strong>S3 :</strong> Rédaction stratégie de communication (10 pages), création charte éditoriale, design campagne "Coloc Stories"</li>
+            <li><strong>S4-5 :</strong> Lancement Instagram (@izzico.be), activation réseau IHECS/ULB (résidents en coloc), interviews feedback (5 résidents)</li>
+        </ul>
+
+        <h4>KPIs Phase 1 - Circuit Fermé Résidents</h4>
+        <p>
+            <span class="badge badge-success">MVP production-ready : 100%</span>
+            <span class="badge badge-resident">50 résidents inscrits</span>
+            <span class="badge badge-owner">10 propriétés (via intro résidents)</span>
+            <span class="badge">500 followers Instagram</span>
+        </p>
+    </div>
+
+
+    <!-- ==================== PHASE 2 ==================== -->
+    
+<div class="phase-card phase-2">
+        <h3>Phase 2 : Acquisition & Croissance</h3>
+        <p><strong>Semaines 6-9</strong> (10 mars - 6 avril)</p>
+
+        <h4>Objectifs SMART</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 60%;">Objectif</th>
+                    <th style="width: 40%;">Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>VAGUE 1 :</strong> Atteindre 150 Résidents inscrits</td>
+                    <td>6 avril</td>
+                </tr>
+                <tr>
+                    <td><strong>VAGUE 2 :</strong> Lancer acquisition Owners (30 propriétés supplémentaires)</td>
+                    <td>6 avril</td>
+                </tr>
+                <tr>
+                    <td>Établir 3 partenariats stratégiques (ULB, Coabs, autre)</td>
+                    <td>30 mars</td>
+                </tr>
+                <tr>
+                    <td>Générer 10 matchs internes (résidents entre eux)</td>
+                    <td>6 avril</td>
+                </tr>
+                <tr>
+                    <td>Croissance Instagram (2000 followers)</td>
+                    <td>6 avril</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Actions Clés - Résidents + Début Owners (Vague 1 & 2)</h4>
+        <ul>
+            <li><strong>S6-7 :</strong> Partenariats institutionnels (ULB, Coabs, UCLouvain/VUB) - acquisition résidents massifiée</li>
+            <li><strong>S8 :</strong> Scale acquisition résidents (campagne ads optimisée, "Coloc Stories" Instagram, events résidences)</li>
+            <li><strong>S9 :</strong> <strong>Lancement Vague 2 Owners</strong> - prospection agences (20), cold emailing owners via résidents (30)</li>
+        </ul>
+
+        <h4>KPIs Phase 2 - Résidents Scalés + Owners Lancés</h4>
+        <p>
+            <span class="badge badge-resident">150 résidents</span>
+            <span class="badge badge-owner">40 propriétés (30 via bottom-up)</span>
+            <span class="badge badge-success">3 partenariats (ULB, Coabs)</span>
+            <span class="badge">10 matchs internes</span>
+        </p>
+    </div>
+    <div class="page-footer">Page 11</div>
+</div>
+<!-- ==================== PAGE 12 ==================== -->
+<div class="page" data-page-number="12">
+
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== PHASE 3 ==================== -->
+    
+<div class="phase-card phase-3">
+        <h3>Phase 3 : Optimisation & Monétisation</h3>
+        <p><strong>Semaines 10-13</strong> (7 avril - 4 mai)</p>
+
+        <h4>Objectifs SMART</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 60%;">Objectif</th>
+                    <th style="width: 40%;">Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>VAGUE 2 :</strong> Atteindre 80 propriétés Owners actives</td>
+                    <td>4 mai</td>
+                </tr>
+                <tr>
+                    <td>Consolider base résidents (200 résidents totaux)</td>
+                    <td>4 mai</td>
+                </tr>
+                <tr>
+                    <td>Lancer le modèle freemium (Stripe intégré)</td>
+                    <td>18 avril</td>
+                </tr>
+                <tr>
+                    <td>Générer premiers revenus (€500 MRR - Owners premium)</td>
+                    <td>4 mai</td>
+                </tr>
+                <tr>
+                    <td><strong>Optimiser dashboard Owners (feedback 10 owners)</strong></td>
+                    <td>27 avril</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Actions Clés - Focus Owners (Vague 2)</h4>
+        <ul>
+            <li><strong>S10-11 :</strong> Monétisation (intégration Stripe, offres premium Owners €19,99/mois, A/B testing pricing)</li>
+            <li><strong>S12 :</strong> <strong>Optimisation Dashboard Owners</strong> - Sessions feedback 1h avec 10 owners, amélioration UX/UI (stats candidatures, filtres, messagerie, multi-propriétés)</li>
+            <li><strong>S13 :</strong> Community building résidents (programme ambassadeurs, event meetup Brussels, 5 témoignages vidéo), prospection owners intensifiée</li>
+        </ul>
+
+        <h4>KPIs Phase 3 - Vague 2 Owners en Plein Essor</h4>
+        <p>
+            <span class="badge badge-resident">200 résidents</span>
+            <span class="badge badge-owner">80 propriétés</span>
+            <span class="badge badge-success">€500 MRR (owners premium)</span>
+            <span class="badge">Dashboard v2 déployé</span>
+        </p>
+    </div>
+
+
+    <!-- ==================== PHASE 4 ==================== -->
+    
+<div class="phase-card phase-4">
+        <h3>Phase 4 : Scale & Pérennisation</h3>
+        <p><strong>Semaines 14-17</strong> (5 mai - 30 mai)</p>
+
+        <h4>Objectifs SMART</h4>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 60%;">Objectif</th>
+                    <th style="width: 40%;">Deadline</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Consolider Owners (120 propriétés totales)</td>
+                    <td>30 mai</td>
+                </tr>
+                <tr>
+                    <td>Consolider Résidents (300 résidents totaux)</td>
+                    <td>30 mai</td>
+                </tr>
+                <tr>
+                    <td><strong>Structurer juridiquement (SRL déposée à BCE)</strong></td>
+                    <td>18 mai</td>
+                </tr>
+                <tr>
+                    <td>Générer €1500 MRR (premium Owners + Résidents)</td>
+                    <td>30 mai</td>
+                </tr>
+                <tr>
+                    <td><strong>VAGUE 3 :</strong> Préparer ouverture Searchers (soft launch ou post-stage)</td>
+                    <td>30 mai</td>
+                </tr>
+                <tr>
+                    <td>Documenter l'expérience (rapport de stage complet)</td>
+                    <td>30 mai</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h4>Actions Clés - Scale Owners + Préparation Searchers (Vague 3)</h4>
+        <ul>
+            <li><strong>S14 :</strong> <strong>Création entreprise</strong> - Rédaction statuts SRL, dépôt BCE, compte bancaire pro, setup comptabilité</li>
+            <li><strong>S15-16 :</strong> Scale owners (prospection agences intensifiée, conversion premium), automatisation plateforme, PR (communiqué création SRL + résultats), data room investisseurs</li>
+            <li><strong>S17 :</strong> <strong>Décision Vague 3 Searchers</strong> - Si 100+ propriétés : soft launch liste d'attente | Sinon : préparation post-stage (roadmap rentrée septembre). Clôture : rapport de stage 30-40 pages, soutenance</li>
+        </ul>
+
+        <h4>KPIs Phase 4 - Scale & Préparation Ouverture Marché</h4>
+        <p>
+            <span class="badge badge-resident">300 résidents</span>
+            <span class="badge badge-owner">120 propriétés</span>
+            <span class="badge badge-success">€1500 MRR</span>
+            <span class="badge badge-success">SRL créée</span>
+            <span class="badge badge-searcher">Vague 3 : décision go/no-go</span>
+        </p>
+    </div>
+
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== DOUBLE TRACK ==================== -->
+    <div class="page-footer">Page 12</div>
+</div>
+<!-- ==================== PAGE 13 ==================== -->
+<div class="page" data-page-number="13">
+<h2>6. Double Track : B2C (Résidents) + B2B (Owners)</h2>
+
+    <div class="card">
+        <h3>Track 1 : Résidents (B2C) - Vague 1 Prioritaire</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Semaine</th>
+                    <th>Action</th>
+                    <th>Volume</th>
+                    <th>Outil</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: var(--resident-50);">
+                    <td><strong>S1-5</strong></td>
+                    <td>Beta-testeurs Résidents + Interviews</td>
+                    <td>50 résidents + 5 interviews</td>
+                    <td>Activation réseau IHECS/ULB</td>
+                </tr>
+                <tr style="background: var(--resident-50);">
+                    <td><strong>S6-9</strong></td>
+                    <td>Partenariats résidences (ULB, Coabs)</td>
+                    <td>100 résidents supplémentaires</td>
+                    <td>Events, cross-promo, Instagram</td>
+                </tr>
+                <tr>
+                    <td><strong>S10-13</strong></td>
+                    <td>Consolidation + Community building</td>
+                    <td>50 résidents supplémentaires</td>
+                    <td>Ambassadeurs, referral, meetups</td>
+                </tr>
+                <tr>
+                    <td><strong>S14-17</strong></td>
+                    <td>Scale résidents + préparation Searchers</td>
+                    <td>100 résidents + soft launch Searchers</td>
+                    <td>PR, liste d'attente Searchers</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Méthodologie Résidents :</strong> Interviews qualitatifs 1h (motivations, expérience coloc actuelle), tests A/B onboarding, NPS tracking, feedback loops produit, programme ambassadeurs (parrainage)</p>
+    </div>
+
+    <div class="card">
+        <h3>Track 2 : Owners (B2B)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Semaine</th>
+                    <th>Action</th>
+                    <th>Volume</th>
+                    <th>Outil</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>S1-5</strong></td>
+                    <td>Approche bottom-up (via résidents)</td>
+                    <td>10 owners</td>
+                    <td>Intro résidents, LinkedIn</td>
+                </tr>
+                <tr style="background: var(--owner-50);">
+                    <td><strong>S6-9</strong></td>
+                    <td><strong>VAGUE 2 lancée :</strong> Prospection agences + top-down</td>
+                    <td>30 owners</td>
+                    <td>Cold calling, email, partnerships</td>
+                </tr>
+                <tr style="background: var(--owner-50);">
+                    <td><strong>S10-13</strong></td>
+                    <td><strong>Dashboard optimization (Focus Phase 3)</strong></td>
+                    <td>40 owners + <strong>10 interviews 1h</strong></td>
+                    <td><strong>Feedback sessions approfondies</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>S14-17</strong></td>
+                    <td>Scale Owners + Premium conversion</td>
+                    <td>40 owners supplémentaires</td>
+                    <td>Dashboard v2, Premium €19,99/mois</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p><strong>Méthodologie Owners :</strong> Sessions feedback dashboard 1h (UX, features manquantes, pain points), analyse usage (quelles features utilisées/abandonnées), case studies (propriétaires avec succès), programme "Early Bird Premium"</p>
+    </div>
+
+    <!-- ==================== PARTENARIATS ==================== -->
+    <div class="page-footer">Page 13</div>
+</div>
+<!-- ==================== PAGE 14 ==================== -->
+<div class="page" data-page-number="14">
+<h2>7. Partenariats Institutionnels & Stratégiques</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Partenaire</th>
+                <th>Type</th>
+                <th>Objectif</th>
+                <th>Timing</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>ULB</strong></td>
+                <td>Université</td>
+                <td>Accès 30K étudiants - Partenariat officiel logement étudiant</td>
+                <td>S6-7</td>
+            </tr>
+            <tr>
+                <td><strong>Coabs</strong></td>
+                <td>Coliving Brussels</td>
+                <td>Crédibilité + listings - Cross-promo sur plateforme</td>
+                <td>S6-7</td>
+            </tr>
+            <tr>
+                <td><strong>UCLouvain</strong></td>
+                <td>Université</td>
+                <td>Expansion Wallonie - Partenariat services étudiants</td>
+                <td>S8-10</td>
+            </tr>
+            <tr>
+                <td><strong>VUB</strong></td>
+                <td>Université</td>
+                <td>Expansion Flandre - Partenariat services étudiants</td>
+                <td>S8-10</td>
+            </tr>
+            <tr>
+                <td><strong>StartLab</strong></td>
+                <td>Incubateur</td>
+                <td>Réseau + mentorat - Programme Build I</td>
+                <td>Continu</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><strong>Livrables :</strong> 3 accords signés, 5 apparitions events/workshops, 2 articles de presse co-signés, 1 event co-organisé</p>
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== CRÉATION SRL ==================== -->
+    <div class="page-footer">Page 14</div>
+</div>
+<!-- ==================== PAGE 15 ==================== -->
+<div class="page" data-page-number="15">
+<h2>8. Création & Officialisation de l'Entreprise</h2>
+
+    <div class="highlight-box">
+        <h3>Checklist Création SRL (Semaine 16 - 19 mai)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Étape</th>
+                    <th>Action</th>
+                    <th>Coût</th>
+                    <th>Délai</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1.</td>
+                    <td>Rédaction statuts (notaire/comptable)</td>
+                    <td>€200-500</td>
+                    <td>3 jours</td>
+                </tr>
+                <tr>
+                    <td>2.</td>
+                    <td>Choix siège social</td>
+                    <td>Gratuit (domicile)</td>
+                    <td>Immédiat</td>
+                </tr>
+                <tr>
+                    <td>3.</td>
+                    <td>Dépôt capital social</td>
+                    <td>€1 minimum</td>
+                    <td>1 jour</td>
+                </tr>
+                <tr>
+                    <td>4.</td>
+                    <td>Acte constitutif (notaire)</td>
+                    <td>€800-1200</td>
+                    <td>1 semaine</td>
+                </tr>
+                <tr>
+                    <td>5.</td>
+                    <td>Publication Moniteur Belge</td>
+                    <td>€200</td>
+                    <td>Automatique</td>
+                </tr>
+                <tr>
+                    <td>6.</td>
+                    <td>Inscription BCE</td>
+                    <td>Inclus</td>
+                    <td>2-3 jours</td>
+                </tr>
+                <tr>
+                    <td>7.</td>
+                    <td>Ouverture compte pro</td>
+                    <td>Gratuit (Qonto/Shine)</td>
+                    <td>2 jours</td>
+                </tr>
+                <tr>
+                    <td>8.</td>
+                    <td>TVA (si applicable)</td>
+                    <td>Gratuit</td>
+                    <td>1 jour</td>
+                </tr>
+                <tr>
+                    <td>9.</td>
+                    <td>Assurances (RC Pro)</td>
+                    <td>€300/an</td>
+                    <td>1 jour</td>
+                </tr>
+                <tr style="background: var(--searcher-100); font-weight: 600;">
+                    <td colspan="2"><strong>TOTAL</strong></td>
+                    <td><strong>€1500-2000</strong></td>
+                    <td><strong>2 semaines</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Régularisation & Compliance</h3>
+    <ul class="checklist">
+        <li><strong>RGPD</strong> : Politique de confidentialité, CGU, consentement cookies</li>
+        <li><strong>Conditions d'utilisation</strong> : CGV Searchers + CGV Owners</li>
+        <li><strong>Droit immobilier</strong> : Vérification conformité baux, non-discrimination</li>
+        <li><strong>Propriété intellectuelle</strong> : Dépôt marque "Izzico" (BOIP)</li>
+        <li><strong>Contrats</strong> : Templates propriétaire et premium</li>
+    </ul>
+
+    <!-- ==================== VOLUME HORAIRE ==================== -->
+    <div class="page-footer">Page 15</div>
+</div>
+<!-- ==================== PAGE 16 ==================== -->
+<div class="page" data-page-number="16">
+<h2>9. Volume Horaire & Charge de Travail</h2>
+
+    <h3>Répartition Hebdomadaire (38h minimum)</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Activité</th>
+                <th>Heures/semaine</th>
+                <th>% Temps</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Développement & Produit</td>
+                <td>8h</td>
+                <td>21%</td>
+            </tr>
+            <tr>
+                <td>Marketing & Communication</td>
+                <td>10h</td>
+                <td>26%</td>
+            </tr>
+            <tr>
+                <td>Business Development (Owners)</td>
+                <td>8h</td>
+                <td>21%</td>
+            </tr>
+            <tr>
+                <td>Partenariats & Networking</td>
+                <td>4h</td>
+                <td>11%</td>
+            </tr>
+            <tr>
+                <td>Interviews & Feedback Users</td>
+                <td>4h</td>
+                <td>11%</td>
+            </tr>
+            <tr>
+                <td>Admin & Création Entreprise</td>
+                <td>2h</td>
+                <td>5%</td>
+            </tr>
+            <tr>
+                <td>Reporting & Documentation</td>
+                <td>2h</td>
+                <td>5%</td>
+            </tr>
+            <tr style="background: var(--neutral-100); font-weight: 600;">
+                <td><strong>TOTAL</strong></td>
+                <td><strong>38h</strong></td>
+                <td><strong>100%</strong></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h4>Charge de Travail Totale</h4>
+        <table style="margin-top: 10px;">
+            <thead>
+                <tr>
+                    <th>Métrique</th>
+                    <th>Valeur</th>
+                    <th>Comparaison IHECS</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Volume stage Izzico</td>
+                    <td><strong>17 semaines × 38h = 646h</strong></td>
+                    <td>-</td>
+                </tr>
+                <tr style="background: var(--neutral-100);">
+                    <td>Recommandé IHECS</td>
+                    <td>420h</td>
+                    <td><span class="badge badge-success">+54% au-dessus</span></td>
+                </tr>
+                <tr style="background: var(--neutral-100);">
+                    <td>Minimum IHECS</td>
+                    <td>320h</td>
+                    <td><span class="badge badge-success">+102% au-dessus</span></td>
+                </tr>
+                <tr>
+                    <td>Estimation réaliste (avec pics)</td>
+                    <td>650-700h</td>
+                    <td><span class="badge badge-success">+64% au-dessus recommandé</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p style="margin-top: 10px;"><strong>Rythme de travail :</strong> Lun-Ven 9h-18h, Sam 4-5h selon besoins. Flexibilité adaptée aux events, rencontres, deadlines.</p>
+        <p><strong>Engagement :</strong> Volume supérieur aux exigences (646h vs 420h recommandé), démontrant un investissement professionnel significatif.</p>
+    </div>
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== ENCADREMENT ==================== -->
+    <div class="page-footer">Page 16</div>
+</div>
+<!-- ==================== PAGE 17 ==================== -->
+<div class="page" data-page-number="17">
+<h2>10. Encadrement & Suivi</h2>
+
+    <h3>Points de Contrôle Réguliers</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Fréquence</th>
+                <th>Format</th>
+                <th>Participants</th>
+                <th>Livrable</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Hebdomadaire</strong></td>
+                <td>Visio/Présentiel 1h</td>
+                <td>Samuel + Alain WIRTZ</td>
+                <td>Update KPIs, décisions</td>
+            </tr>
+            <tr>
+                <td><strong>Bi-mensuel</strong></td>
+                <td>Rapport écrit</td>
+                <td>Samuel → Alain + IHECS</td>
+                <td>Rapport 5 pages + metrics</td>
+            </tr>
+            <tr>
+                <td><strong>Fin de phase</strong></td>
+                <td>Bilan complet</td>
+                <td>Samuel + Alain + IHECS</td>
+                <td>Présentation + analyse</td>
+            </tr>
+            <tr>
+                <td><strong>Final</strong></td>
+                <td>Soutenance</td>
+                <td>Samuel + Jury IHECS</td>
+                <td>Rapport 30-40 pages</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h3>Tuteur : Alain WIRTZ</h3>
+
+        <p><strong>Profil :</strong></p>
+        <ul>
+            <li>Ancien CEO de Zetes (1993-2022), apportant 30 ans d'expérience opérationnelle</li>
+            <li>Expérience d'acquisition réussie : vente de Zetes à <strong>Panasonic Corporation</strong> (2017)</li>
+            <li>Distinction <strong>"ICT Personality of the Year"</strong> (2009)</li>
+            <li>Managing Director AW SA (depuis 2010)</li>
+            <li><strong>Investisseur dans Izzico</strong> (€15-20K)</li>
+        </ul>
+
+        <p><strong>Engagement :</strong></p>
+        <ul class="checklist">
+            <li>Points hebdomadaires stratégiques</li>
+            <li>Conseil sur décisions majeures</li>
+            <li>Mise en réseau écosystème tech belge</li>
+            <li>Validation livrables et rapports</li>
+            <li>Participation évaluation finale</li>
+        </ul>
+    </div>
+
+    <!-- ==================== RÉSULTATS ATTENDUS ==================== -->
+    <div class="page-footer">Page 17</div>
+</div>
+<!-- ==================== PAGE 18 ==================== -->
+<div class="page" data-page-number="18">
+<h2>11. Résultats Attendus (30 mai 2025)</h2>
+
+    <h3>Métriques Produit</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>KPI</th>
+                <th>Objectif</th>
+                <th>Réaliste</th>
+                <th>Ambitieux</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr style="background: var(--resident-50);">
+                <td><strong>Résidents inscrits</strong></td>
+                <td>300</td>
+                <td>250</td>
+                <td>400</td>
+            </tr>
+            <tr style="background: var(--owner-50);">
+                <td><strong>Propriétés Owners listées</strong></td>
+                <td>120</td>
+                <td>100</td>
+                <td>150</td>
+            </tr>
+            <tr style="background: var(--searcher-50);">
+                <td><strong>Searchers (soft launch ou liste d'attente)</strong></td>
+                <td>100</td>
+                <td>0 (post-stage)</td>
+                <td>200</td>
+            </tr>
+            <tr>
+                <td>Matchs réussis (résidents-owners)</td>
+                <td>50</td>
+                <td>40</td>
+                <td>70</td>
+            </tr>
+            <tr>
+                <td>MRR (Owners + Résidents premium)</td>
+                <td>€1500</td>
+                <td>€1000</td>
+                <td>€2000</td>
+            </tr>
+            <tr>
+                <td>Taux de rétention M4 (Résidents)</td>
+                <td>65%</td>
+                <td>60%</td>
+                <td>70%</td>
+            </tr>
+            <tr>
+                <td>NPS global (Résidents + Owners)</td>
+                <td>50</td>
+                <td>45</td>
+                <td>60</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="card">
+        <h4>Note sur les Searchers (Vague 3)</h4>
+        <p>L'ouverture aux Searchers est <strong>conditionnelle</strong> et dépend de l'atteinte des objectifs Vague 1 (Résidents) et Vague 2 (Owners) :</p>
+        <ul>
+            <li><strong>Scénario optimiste :</strong> Si 100+ propriétés à S14-17 (fin stage) → Soft launch Searchers (100-200 inscrits)</li>
+            <li><strong>Scénario réaliste :</strong> Searchers lancés post-stage (juillet-septembre 2025, rentrée scolaire optimale)</li>
+        </ul>
+        <p>Cette approche prudente garantit une marketplace de qualité et évite la frustration des utilisateurs.</p>
+    </div>
+
+    <h3>Livrables Entrepreneuriaux</h3>
+    <ul class="checklist">
+        <li><strong>SRL Izzico</strong> créée et opérationnelle (BCE, compte pro, comptabilité)</li>
+        <li><strong>Plateforme</strong> en production avec vrais utilisateurs actifs</li>
+        <li><strong>Business model</strong> validé avec premiers revenus récurrents</li>
+        <li><strong>Partenariats</strong> institutionnels actifs (ULB, Coabs minimum)</li>
+        <li><strong>Data room</strong> complète et prête pour levée de fonds</li>
+        <li><strong>Roadmap 6 mois</strong> post-stage définie (dont ouverture Searchers)</li>
+    </ul>
+
+    <!-- ==================== PAGE BREAK ==================== -->
+
+    <!-- ==================== CONCLUSION ==================== -->
+    <div class="page-footer">Page 18</div>
+</div>
+<!-- ==================== PAGE 19 ==================== -->
+<div class="page" data-page-number="19">
+<h2>12. Conclusion</h2>
+
+    <div class="highlight-box">
+        <p>Ce stage entrepreneurial permet de :</p>
+        <ul>
+            <li><strong>Couvrir l'intégralité</strong> du référentiel Master RP en conditions réelles</li>
+            <li><strong>Développer</strong> des compétences entrepreneuriales (création SRL, fundraising, growth)</li>
+            <li><strong>Gérer</strong> 7 catégories de stakeholders (vs 1-2 en stage classique)</li>
+            <li><strong>Produire</strong> des résultats mesurables et vérifiables (KPIs précis)</li>
+            <li><strong>Bénéficier</strong> d'un encadrement professionnel de haut niveau (ancien CEO avec expérience d'exit)</li>
+            <li><strong>Créer</strong> un impact concret (vraie entreprise, vrais utilisateurs, vrais revenus)</li>
+        </ul>
+        <p style="text-align: center; font-size: 14pt; margin-top: 12px;">
+            <strong class="gradient-text">Cette expérience articule formation académique et pratique entrepreneuriale dans un cadre authentique de création d'entreprise.</strong>
+        </p>
+    </div>
+
+    <!-- ==================== CONFIDENTIALITÉ RAPPEL ==================== -->
+    <div class="card" style="border-left: 4px solid var(--resident-500); background: var(--neutral-50); margin-top: 25px;">
+        <h4>Rappel de Confidentialité</h4>
+        <p>Les informations contenues dans ce dossier (stratégie d'implémentation, analyses de marché, détails opérationnels, KPIs prévisionnels) sont <strong>confidentielles</strong> et ne doivent pas être partagées en dehors du cadre de l'évaluation académique de cette demande de stage.</p>
+        <p>La marque Izzico est en phase de pré-lancement. Sa divulgation prématurée pourrait nuire à l'avantage concurrentiel du projet.</p>
+    </div>
+
+    <!-- ==================== SIGNATURES ==================== -->
+    <div class="signatures">
+        <div class="signature-box">
+            <strong>Pour l'École (IHECS)</strong>
+            <div style="height: 60px;"></div>
+            <div class="signature-line">
+                Nom : _________________________<br>
+                Fonction : Directrice de Section<br>
+                Date : _____________
+            </div>
+        </div>
+
+        <div class="signature-box">
+            <strong>Le Stagiaire</strong>
+            <div style="height: 60px;"></div>
+            <div class="signature-line">
+                Nom : Samuel BAUDON<br>
+                Master 1 RP & Affaires Publiques<br>
+                Date : _____________
+            </div>
+        </div>
+
+        <div class="signature-box">
+            <strong>Le Tuteur</strong>
+            <div style="height: 60px;"></div>
+            <div class="signature-line">
+                Nom : Alain WIRTZ<br>
+                Mentor & Investisseur<br>
+                Date : _____________
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== FOOTER ==================== -->
+    <div class="footer">
+        <p><em>Document préparé pour la réunion avec la Directrice de Section - IHECS</em></p>
+        <p><strong>Samuel Baudon</strong> - Janvier 2025</p>
+        <p style="margin-top: 10px;">
+            <span class="font-brand gradient-text" style="font-size: 12pt;">Izzico</span> - Plateforme de co-living basée sur la compatibilité humaine
+        </p>
+    </div>
+    <div class="page-footer">Page 19</div>
+</div>
+
+</body>
+</html>

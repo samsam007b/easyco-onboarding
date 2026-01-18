@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IzzIco - Fredoka Style Icon Workbench</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0a0a12;
+            --bg-panel: #12121a;
+            --bg-control: #1a1a24;
+            --border: #2a2a3a;
+            --text: #e8e8f0;
+            --text-muted: #8888a0;
+            --accent: #6366f1;
+            --searcher: #FFB10B;
+            --owner: #9B59B6;
+            --resident: #E67E22;
+            --success: #22c55e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        .app-layout {
+            display: grid;
+            grid-template-columns: 200px 1fr 400px;
+            min-height: 100vh;
+        }
+
+        /* === Panneau Fredoka Reference (gauche) === */
+        .fredoka-panel {
+            background: var(--bg-panel);
+            border-right: 1px solid var(--border);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .fredoka-panel h2 {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .fredoka-reference {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .fredoka-i {
+            font-family: 'Fredoka', sans-serif;
+            font-weight: 600;
+            font-size: 120px;
+            color: #ffffff;
+            line-height: 1;
+            text-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
+        }
+
+        .fredoka-specs {
+            background: var(--bg-control);
+            border-radius: 12px;
+            padding: 1rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            width: 100%;
+        }
+
+        .fredoka-specs h3 {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--accent);
+        }
+
+        .fredoka-specs ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .fredoka-specs li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .fredoka-specs li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        .stroke-demo {
+            margin-top: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stroke-demo svg {
+            width: 100px;
+            height: 40px;
+        }
+
+        .stroke-demo .label {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+        }
+
+        /* === Zone Canvas (centre) === */
+        .canvas-area {
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+        }
+
+        .canvas-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .canvas-header h1 { font-size: 1.25rem; font-weight: 500; }
+
+        .canvas-actions { display: flex; gap: 0.5rem; }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg-control);
+            color: var(--text);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn:hover { background: var(--border); }
+        .btn.primary { background: var(--accent); border-color: var(--accent); }
+        .btn.success { background: var(--success); border-color: var(--success); }
+
+        .canvas-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-panel);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+        }
+
+        .canvas {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            background-color: #1a1a2e;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .canvas.show-guides::before,
+        .canvas.show-guides::after {
+            content: '';
+            position: absolute;
+            background: rgba(99, 102, 241, 0.2);
+        }
+
+        .canvas.show-guides::before { width: 1px; height: 100%; left: 50%; }
+        .canvas.show-guides::after { width: 100%; height: 1px; top: 50%; }
+
+        #icon-svg {
+            width: 300px;
+            height: 300px;
+        }
+
+        .symmetry-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .symmetry-badge.valid {
+            background: rgba(34, 197, 94, 0.2);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .preview-row {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 1rem;
+            background: var(--bg-control);
+            border-radius: 12px;
+            margin-top: 1rem;
+        }
+
+        .preview-item { text-align: center; }
+
+        .preview-box {
+            border-radius: 22%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .preview-label { font-size: 0.65rem; color: var(--text-muted); }
+
+        /* === Panneau Controles (droite) === */
+        .controls-panel {
+            background: var(--bg-panel);
+            border-left: 1px solid var(--border);
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .panel-section {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-title .color-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .section-title .lock-icon {
+            margin-left: auto;
+            font-size: 0.9rem;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: 100px 1fr 50px;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.6rem;
+        }
+
+        .control-label { font-size: 0.75rem; color: var(--text-muted); }
+
+        .control-value {
+            font-size: 0.75rem;
+            font-family: monospace;
+            color: var(--accent);
+            text-align: right;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 4px;
+            border-radius: 2px;
+            background: var(--border);
+            appearance: none;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--accent);
+        }
+
+        input[type="color"] {
+            width: 100%;
+            height: 28px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: transparent;
+        }
+
+        .hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(99, 102, 241, 0.1);
+            border-radius: 6px;
+        }
+
+        .hint.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+        }
+
+        .export-info {
+            background: var(--bg-control);
+            border-radius: 8px;
+            padding: 0.75rem;
+            font-size: 0.7rem;
+            font-family: monospace;
+            color: var(--text-muted);
+            white-space: pre-wrap;
+        }
+
+        .preset-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 0.75rem;
+        }
+
+        @media (max-width: 1100px) {
+            .app-layout { grid-template-columns: 1fr; }
+            .fredoka-panel { display: none; }
+            .canvas { width: 350px; height: 350px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Panneau Fredoka Reference -->
+        <div class="fredoka-panel">
+            <h2>Reference Fredoka</h2>
+            <div class="fredoka-reference">
+                <div class="fredoka-i">i</div>
+
+                <div class="fredoka-specs">
+                    <h3>Caracteristiques</h3>
+                    <ul>
+                        <li>Terminaisons squircle</li>
+                        <li>Traits epais</li>
+                        <li>Coins arrondis</li>
+                        <li>Equilibre optique</li>
+                    </ul>
+                </div>
+
+                <div class="stroke-demo">
+                    <svg viewBox="0 0 100 80" style="height: 80px;">
+                        <!-- Ligne avec stroke-linecap: round (cercle) -->
+                        <line x1="10" y1="20" x2="90" y2="20" stroke="#ffffff" stroke-width="10" stroke-linecap="round"/>
+                        <text x="50" y="35" fill="#888" font-size="6" text-anchor="middle">round (cercle)</text>
+
+                        <!-- Ligne avec squircle (factor 0.38) - sera mise a jour dynamiquement -->
+                        <path id="squircle-demo" d="" fill="#FFB10B"/>
+                        <text x="50" y="75" fill="#FFB10B" font-size="6" text-anchor="middle">squircle Fredoka</text>
+                    </svg>
+                    <span class="label">Comparaison terminaisons</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Zone Canvas -->
+        <div class="canvas-area">
+            <div class="canvas-header">
+                <h1>IzzIco - Style Fredoka</h1>
+                <div class="canvas-actions">
+                    <button class="btn" id="toggle-guides">Grille</button>
+                    <button class="btn active" id="toggle-angles" style="background: var(--accent);">Angles</button>
+                    <button class="btn" id="reset-all">Reset</button>
+                    <button class="btn primary" id="export-svg">SVG</button>
+                    <button class="btn success" id="export-png">PNG 2048px</button>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <div class="canvas show-guides" id="canvas">
+                    <svg id="icon-svg" viewBox="0 0 100 100" fill="none"></svg>
+                    <div class="symmetry-badge valid" id="symmetry-badge">
+                        <span>&#10003;</span> Symetrique
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-row" id="preview-row"></div>
+        </div>
+
+        <!-- Panneau Controles -->
+        <div class="controls-panel">
+            <!-- Terminaisons Squircle -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: var(--searcher);"></span>
+                    Terminaisons Squircle
+                </div>
+                <div class="hint">Style Fredoka: terminaisons arrondies mais plus carrees qu'un cercle</div>
+                <div class="control-row" style="margin-top: 1rem;">
+                    <span class="control-label">Courbure</span>
+                    <input type="range" id="squircle-factor" min="0.55" max="0.85" step="0.01" value="0.72">
+                    <span class="control-value" id="squircle-factor-val">0.72</span>
+                </div>
+                <div class="hint" style="font-size: 0.65rem; margin-top: 0.5rem;">
+                    0.55 = cercle | 0.72 = Fredoka | 0.85 = plus carre
+                </div>
+            </div>
+
+            <!-- Tiges Symetriques (UNIFIE) -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: linear-gradient(135deg, var(--searcher), var(--owner));"></span>
+                    Tiges (Loupe + Cle)
+                    <span class="lock-icon">&#128279;</span>
+                </div>
+                <div class="hint success">Controles unifies pour garantir la symetrie parfaite</div>
+                <div class="control-row" style="margin-top: 1rem;">
+                    <span class="control-label">Longueur</span>
+                    <input type="range" id="stem-length" min="15" max="35" value="22">
+                    <span class="control-value" id="stem-length-val">22</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Angle</span>
+                    <input type="range" id="stem-angle" min="30" max="60" value="45">
+                    <span class="control-value" id="stem-angle-val">45°</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Epaisseur</span>
+                    <input type="range" id="stem-stroke" min="4" max="12" step="0.5" value="7">
+                    <span class="control-value" id="stem-stroke-val">7</span>
+                </div>
+                <div class="hint">Loupe: 180°-angle | Cle: angle (miroir parfait)</div>
+            </div>
+
+            <!-- Cercle central -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: white;"></span>
+                    Cercle central
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Position Y</span>
+                    <input type="range" id="circle-cy" min="30" max="55" value="40">
+                    <span class="control-value" id="circle-cy-val">40</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Rayon</span>
+                    <input type="range" id="circle-r" min="12" max="28" value="18">
+                    <span class="control-value" id="circle-r-val">18</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Epaisseur</span>
+                    <input type="range" id="circle-stroke" min="3" max="10" step="0.5" value="6">
+                    <span class="control-value" id="circle-stroke-val">6</span>
+                </div>
+            </div>
+
+            <!-- Dents de cle -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: var(--owner);"></span>
+                    Dents de Cle
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Nombre</span>
+                    <input type="range" id="key-teeth" min="1" max="3" value="2">
+                    <span class="control-value" id="key-teeth-val">2</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Taille</span>
+                    <input type="range" id="key-teeth-size" min="3" max="12" value="6">
+                    <span class="control-value" id="key-teeth-size-val">6</span>
+                </div>
+            </div>
+
+            <!-- Buste -->
+            <div class="panel-section">
+                <div class="section-title">
+                    <span class="color-dot" style="background: var(--resident);"></span>
+                    Buste Personne
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Ecart cercle</span>
+                    <input type="range" id="bust-gap" min="3" max="15" value="6">
+                    <span class="control-value" id="bust-gap-val">6</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Largeur</span>
+                    <input type="range" id="bust-width" min="20" max="50" value="32">
+                    <span class="control-value" id="bust-width-val">32</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Hauteur</span>
+                    <input type="range" id="bust-height" min="10" max="30" value="16">
+                    <span class="control-value" id="bust-height-val">16</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Epaisseur</span>
+                    <input type="range" id="bust-stroke" min="3" max="10" step="0.5" value="6">
+                    <span class="control-value" id="bust-stroke-val">6</span>
+                </div>
+            </div>
+
+            <!-- Couleur -->
+            <div class="panel-section">
+                <div class="section-title">Couleur & Fond</div>
+                <div class="control-row">
+                    <span class="control-label">Couleur icone</span>
+                    <input type="color" id="icon-color" value="#ffffff">
+                    <span class="control-value" id="icon-color-val">#fff</span>
+                </div>
+                <div class="control-row">
+                    <span class="control-label">Fond</span>
+                    <input type="color" id="bg-color" value="#1a1a2e">
+                    <span class="control-value" id="bg-color-val">#1a1a2e</span>
+                </div>
+                <div class="preset-buttons">
+                    <button class="btn" data-bg="#ffffff" data-fg="#1a1a2e">Blanc</button>
+                    <button class="btn" data-bg="#1a1a2e" data-fg="#ffffff">Sombre</button>
+                    <button class="btn" data-bg="gradient" data-fg="#ffffff">Gradient</button>
+                </div>
+            </div>
+
+            <!-- Specs -->
+            <div class="panel-section">
+                <div class="section-title">Specifications</div>
+                <div class="export-info" id="specs-display"></div>
+            </div>
+
+            <!-- Comparaison des 3 variantes -->
+            <div class="panel-section" style="border-bottom: none;">
+                <div class="section-title" style="color: var(--success);">
+                    Intérieur du Cercle
+                </div>
+                <div class="hint success">Cliquez pour sélectionner une variante</div>
+                <div id="variants-comparison" style="display: flex; gap: 0.5rem; margin-top: 1rem; justify-content: center;">
+                    <!-- Filled by JS -->
+                </div>
+                <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; justify-content: center; font-size: 0.65rem; color: var(--text-muted);">
+                    <span style="width: 60px; text-align: center;">Squircle</span>
+                    <span style="width: 60px; text-align: center;">Cercle</span>
+                    <span style="width: 60px; text-align: center;">Losange</span>
+                </div>
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--border);">
+                    <div style="font-size: 0.7rem; color: var(--text-muted); margin-bottom: 0.5rem; text-align: center;">
+                        Export haute définition (2048px)
+                    </div>
+
+                    <!-- Sélection couleur -->
+                    <div style="margin-bottom: 0.75rem;">
+                        <div style="font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.4rem; text-align: center;">
+                            Couleur de l'icône
+                        </div>
+                        <div id="color-mode-selector" style="display: flex; gap: 0.4rem; justify-content: center;">
+                            <button class="btn color-mode-btn active" data-color="white" style="font-size: 0.65rem; padding: 0.3rem 0.5rem; background: #333; color: #fff;">
+                                ⚪ Blanc
+                            </button>
+                            <button class="btn color-mode-btn" data-color="black" style="font-size: 0.65rem; padding: 0.3rem 0.5rem;">
+                                ⚫ Noir
+                            </button>
+                            <button class="btn color-mode-btn" data-color="gradient" style="font-size: 0.65rem; padding: 0.3rem 0.5rem; background: linear-gradient(135deg, #9c5698, #e05747, #ffc800); color: white; border: none;">
+                                🎨 Dégradé
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Export par variante -->
+                    <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+                        <button class="btn" id="export-variant-squircle" style="font-size: 0.7rem; padding: 0.4rem 0.6rem;">
+                            PNG Squircle
+                        </button>
+                        <button class="btn" id="export-variant-cercle" style="font-size: 0.7rem; padding: 0.4rem 0.6rem;">
+                            PNG Cercle
+                        </button>
+                        <button class="btn" id="export-variant-losange" style="font-size: 0.7rem; padding: 0.4rem 0.6rem;">
+                            PNG Losange
+                        </button>
+                    </div>
+
+                    <!-- Export groupés -->
+                    <button class="btn" id="export-current-color-all" style="width: 100%; margin-top: 0.5rem; font-size: 0.7rem;">
+                        Exporter 3 variantes (couleur sélectionnée)
+                    </button>
+                    <button class="btn success" id="export-all-9-variants" style="width: 100%; margin-top: 0.5rem; font-size: 0.75rem;">
+                        🚀 Exporter les 9 PNG (3×3)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State avec valeurs Fredoka (traits plus epais)
+        // === SPECS LOCKEES v2 (optimisees mathematiquement 2026-01-04) ===
+        // Ratios harmonises: tous les strokes = 7, gap = stroke, teethSize = stroke
+        const state = {
+            circle: { cy: 40, r: 16, stroke: 7 },
+            stem: { length: 16, angle: 45, stroke: 7 }, // UNIFIE pour loupe et cle
+            key: { teeth: 2, teethSize: 7 },  // 7 = stroke (ratio 1:1)
+            bust: { gap: 7, width: 38, height: 16, stroke: 7 },  // gap = stroke (uniformite)
+            iconColor: '#ffffff',
+            bgColor: '#1a1a2e',
+            bgGradient: false
+        };
+        // === FIN SPECS LOCKEES v2 ===
+
+        const canvas = document.getElementById('canvas');
+        const svg = document.getElementById('icon-svg');
+
+        // SVG helper
+        function createSVG(tag, attrs) {
+            const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+            Object.keys(attrs).forEach(k => el.setAttribute(k, attrs[k]));
+            return el;
+        }
+
+        // Helper pour dessiner un arc SVG
+        function polarToCartesian(cx, cy, r, angleDeg) {
+            const rad = (angleDeg * Math.PI) / 180;
+            return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+        }
+
+        function describeArc(cx, cy, r, startAngle, endAngle) {
+            const start = polarToCartesian(cx, cy, r, endAngle);
+            const end = polarToCartesian(cx, cy, r, startAngle);
+            const largeArc = Math.abs(endAngle - startAngle) > 180 ? 1 : 0;
+            return `M ${start.x} ${start.y} A ${r} ${r} 0 ${largeArc} 0 ${end.x} ${end.y}`;
+        }
+
+        /**
+         * SQUIRCLE CAPSULE - EXACTEMENT COMME LE POINT DU "i" FREDOKA
+         * Dessine une forme "stadium" avec des DEMI-SQUIRCLES aux extremites
+         * (pas des coins coupes, mais des courbes continues comme le haut du point du "i")
+         *
+         * squircleFactor controle la forme:
+         * - 0.5523 = demi-cercles parfaits
+         * - 0.72 = squircle Fredoka (plus gonfle, comme iOS)
+         *
+         * @param x1, y1 - Point de depart (centre de l'extremite)
+         * @param x2, y2 - Point d'arrivee (centre de l'extremite)
+         * @param strokeWidth - Epaisseur
+         * @param squircleFactor - Factor de courbure (0.72 = Fredoka)
+         */
+        function drawSquircleCapsule(x1, y1, x2, y2, strokeWidth, squircleFactor = 0.72) {
+            const r = strokeWidth / 2;
+
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const len = Math.sqrt(dx * dx + dy * dy);
+
+            // u = direction de la ligne, v = perpendiculaire
+            const ux = dx / len;
+            const uy = dy / len;
+            const vx = -uy;
+            const vy = ux;
+
+            // Points sur les cotes (haut et bas de la capsule)
+            const start_top = { x: x1 + vx * r, y: y1 + vy * r };
+            const start_bottom = { x: x1 - vx * r, y: y1 - vy * r };
+            const end_top = { x: x2 + vx * r, y: y2 + vy * r };
+            const end_bottom = { x: x2 - vx * r, y: y2 - vy * r };
+
+            // Points les plus exterieurs (milieu des demi-squircles)
+            const start_ext = { x: x1 - ux * r, y: y1 - uy * r };
+            const end_ext = { x: x2 + ux * r, y: y2 + uy * r };
+
+            // Distance des control points Bezier
+            // Pour cercle: k = r * 0.5523
+            // Pour squircle Fredoka: k = r * 0.72
+            const k = r * squircleFactor;
+
+            // Construction du path
+            let d = `M ${start_top.x} ${start_top.y}`;
+
+            // Cote long vers end_top
+            d += ` L ${end_top.x} ${end_top.y}`;
+
+            // Demi-squircle a l'extremite END (2 courbes Bezier)
+            // De end_top vers end_ext (quart superieur)
+            d += ` C ${end_top.x + ux * k} ${end_top.y + uy * k}`;
+            d += ` ${end_ext.x + vx * k} ${end_ext.y + vy * k}`;
+            d += ` ${end_ext.x} ${end_ext.y}`;
+            // De end_ext vers end_bottom (quart inferieur)
+            d += ` C ${end_ext.x - vx * k} ${end_ext.y - vy * k}`;
+            d += ` ${end_bottom.x + ux * k} ${end_bottom.y + uy * k}`;
+            d += ` ${end_bottom.x} ${end_bottom.y}`;
+
+            // Cote long vers start_bottom
+            d += ` L ${start_bottom.x} ${start_bottom.y}`;
+
+            // Demi-squircle a l'extremite START (2 courbes Bezier)
+            // De start_bottom vers start_ext (quart inferieur)
+            d += ` C ${start_bottom.x - ux * k} ${start_bottom.y - uy * k}`;
+            d += ` ${start_ext.x - vx * k} ${start_ext.y - vy * k}`;
+            d += ` ${start_ext.x} ${start_ext.y}`;
+            // De start_ext vers start_top (quart superieur)
+            d += ` C ${start_ext.x + vx * k} ${start_ext.y + vy * k}`;
+            d += ` ${start_top.x - ux * k} ${start_top.y - uy * k}`;
+            d += ` ${start_top.x} ${start_top.y}`;
+
+            d += ` Z`;
+
+            return d;
+        }
+
+        /**
+         * DEMI-SQUIRCLE END CAP - COMME LE POINT DU "i" FREDOKA
+         * Dessine un demi-squircle complet (pas des coins coupes)
+         * Pour les extremites de courbes (comme le buste)
+         *
+         * @param x, y - Point central de la base
+         * @param ux, uy - Direction vers l'exterieur
+         * @param radius - Rayon (demi-epaisseur)
+         * @param squircleFactor - Factor de courbure (0.72 = Fredoka)
+         */
+        function drawSquircleEndCap(x, y, ux, uy, radius, squircleFactor = 0.72) {
+            const r = radius;
+            const k = r * squircleFactor;
+
+            // Perpendiculaire
+            const vx = -uy;
+            const vy = ux;
+
+            // Points de base (sur la ligne de la courbe)
+            const left = { x: x + vx * r, y: y + vy * r };
+            const right = { x: x - vx * r, y: y - vy * r };
+
+            // Point le plus exterieur (milieu du demi-squircle)
+            const ext = { x: x + ux * r, y: y + uy * r };
+
+            // Demi-squircle avec 2 courbes Bezier
+            let d = `M ${left.x} ${left.y}`;
+
+            // De left vers ext (quart)
+            d += ` C ${left.x + ux * k} ${left.y + uy * k}`;
+            d += ` ${ext.x + vx * k} ${ext.y + vy * k}`;
+            d += ` ${ext.x} ${ext.y}`;
+
+            // De ext vers right (quart)
+            d += ` C ${ext.x - vx * k} ${ext.y - vy * k}`;
+            d += ` ${right.x + ux * k} ${right.y + uy * k}`;
+            d += ` ${right.x} ${right.y}`;
+
+            d += ` Z`;
+
+            return d;
+        }
+
+        /**
+         * SQUIRCLE COMPLET - Forme fermee pour le trou interieur du cercle
+         * Dessine un squircle centre sur (cx, cy) avec un "rayon" r
+         *
+         * @param cx, cy - Centre du squircle
+         * @param r - "Rayon" (distance du centre au milieu des cotes)
+         * @param squircleFactor - Factor de courbure (0.72 = Fredoka)
+         * @param clockwise - Direction (true = horaire, false = anti-horaire pour trou)
+         */
+        function drawFullSquircle(cx, cy, r, squircleFactor = 0.72, clockwise = true) {
+            const k = r * squircleFactor;
+
+            // 4 points cardinaux du squircle
+            const top = { x: cx, y: cy - r };
+            const right = { x: cx + r, y: cy };
+            const bottom = { x: cx, y: cy + r };
+            const left = { x: cx - r, y: cy };
+
+            let d;
+            if (clockwise) {
+                // Sens horaire (forme pleine)
+                d = `M ${top.x} ${top.y}`;
+                // Top vers Right
+                d += ` C ${top.x + k} ${top.y}, ${right.x} ${right.y - k}, ${right.x} ${right.y}`;
+                // Right vers Bottom
+                d += ` C ${right.x} ${right.y + k}, ${bottom.x + k} ${bottom.y}, ${bottom.x} ${bottom.y}`;
+                // Bottom vers Left
+                d += ` C ${bottom.x - k} ${bottom.y}, ${left.x} ${left.y + k}, ${left.x} ${left.y}`;
+                // Left vers Top
+                d += ` C ${left.x} ${left.y - k}, ${top.x - k} ${top.y}, ${top.x} ${top.y}`;
+            } else {
+                // Sens anti-horaire (pour creer un trou avec fill-rule: evenodd)
+                d = `M ${top.x} ${top.y}`;
+                // Top vers Left
+                d += ` C ${top.x - k} ${top.y}, ${left.x} ${left.y - k}, ${left.x} ${left.y}`;
+                // Left vers Bottom
+                d += ` C ${left.x} ${left.y + k}, ${bottom.x - k} ${bottom.y}, ${bottom.x} ${bottom.y}`;
+                // Bottom vers Right
+                d += ` C ${bottom.x + k} ${bottom.y}, ${right.x} ${right.y + k}, ${right.x} ${right.y}`;
+                // Right vers Top
+                d += ` C ${right.x} ${right.y - k}, ${top.x + k} ${top.y}, ${top.x} ${top.y}`;
+            }
+            d += ` Z`;
+            return d;
+        }
+
+        /**
+         * SQUIRCLE PIVOTE (LOSANGE) - Squircle tourne de 45 degres
+         * Meme forme que le squircle normal, mais pivotee de 45°
+         *
+         * @param cx, cy - Centre du squircle
+         * @param r - "Rayon" (distance du centre aux cotes)
+         * @param squircleFactor - Factor de courbure (0.72 = Fredoka)
+         * @param clockwise - Direction
+         */
+        function drawFullSquircleDiamond(cx, cy, r, squircleFactor = 0.72, clockwise = true) {
+            const k = r * squircleFactor;
+
+            // Fonction pour pivoter un point de 45° autour du centre
+            const cos45 = Math.SQRT1_2;  // cos(45°) = sin(45°) = √2/2
+            const sin45 = Math.SQRT1_2;
+
+            function rotate45(x, y) {
+                // Rotation de 45° autour de (cx, cy)
+                const dx = x - cx;
+                const dy = y - cy;
+                return {
+                    x: cx + dx * cos45 - dy * sin45,
+                    y: cy + dx * sin45 + dy * cos45
+                };
+            }
+
+            // Points cardinaux du squircle AVANT rotation
+            const top_orig = { x: cx, y: cy - r };
+            const right_orig = { x: cx + r, y: cy };
+            const bottom_orig = { x: cx, y: cy + r };
+            const left_orig = { x: cx - r, y: cy };
+
+            // Points cardinaux APRES rotation de 45°
+            const top = rotate45(top_orig.x, top_orig.y);
+            const right = rotate45(right_orig.x, right_orig.y);
+            const bottom = rotate45(bottom_orig.x, bottom_orig.y);
+            const left = rotate45(left_orig.x, left_orig.y);
+
+            // Control points originaux (non pivotes)
+            // Pour top->right: cp1 = (cx + k, cy - r), cp2 = (cx + r, cy - k)
+            const cp_tr1 = rotate45(cx + k, cy - r);
+            const cp_tr2 = rotate45(cx + r, cy - k);
+            // Pour right->bottom: cp1 = (cx + r, cy + k), cp2 = (cx + k, cy + r)
+            const cp_rb1 = rotate45(cx + r, cy + k);
+            const cp_rb2 = rotate45(cx + k, cy + r);
+            // Pour bottom->left: cp1 = (cx - k, cy + r), cp2 = (cx - r, cy + k)
+            const cp_bl1 = rotate45(cx - k, cy + r);
+            const cp_bl2 = rotate45(cx - r, cy + k);
+            // Pour left->top: cp1 = (cx - r, cy - k), cp2 = (cx - k, cy - r)
+            const cp_lt1 = rotate45(cx - r, cy - k);
+            const cp_lt2 = rotate45(cx - k, cy - r);
+
+            let d;
+            if (clockwise) {
+                d = `M ${top.x} ${top.y}`;
+                d += ` C ${cp_tr1.x} ${cp_tr1.y}, ${cp_tr2.x} ${cp_tr2.y}, ${right.x} ${right.y}`;
+                d += ` C ${cp_rb1.x} ${cp_rb1.y}, ${cp_rb2.x} ${cp_rb2.y}, ${bottom.x} ${bottom.y}`;
+                d += ` C ${cp_bl1.x} ${cp_bl1.y}, ${cp_bl2.x} ${cp_bl2.y}, ${left.x} ${left.y}`;
+                d += ` C ${cp_lt1.x} ${cp_lt1.y}, ${cp_lt2.x} ${cp_lt2.y}, ${top.x} ${top.y}`;
+            } else {
+                // Sens anti-horaire (pour trou)
+                d = `M ${top.x} ${top.y}`;
+                d += ` C ${cp_lt2.x} ${cp_lt2.y}, ${cp_lt1.x} ${cp_lt1.y}, ${left.x} ${left.y}`;
+                d += ` C ${cp_bl2.x} ${cp_bl2.y}, ${cp_bl1.x} ${cp_bl1.y}, ${bottom.x} ${bottom.y}`;
+                d += ` C ${cp_rb2.x} ${cp_rb2.y}, ${cp_rb1.x} ${cp_rb1.y}, ${right.x} ${right.y}`;
+                d += ` C ${cp_tr2.x} ${cp_tr2.y}, ${cp_tr1.x} ${cp_tr1.y}, ${top.x} ${top.y}`;
+            }
+            d += ` Z`;
+            return d;
+        }
+
+        /**
+         * CERCLE-SQUIRCLE HYBRIDE - Cercle exterieur, Squircle interieur
+         * Pour l'anneau central de l'icone
+         *
+         * @param cx, cy - Centre
+         * @param r - Rayon moyen (centre du stroke)
+         * @param strokeWidth - Epaisseur
+         * @param squircleFactor - Factor pour le squircle interieur
+         */
+        function drawCircleSquircleRing(cx, cy, r, strokeWidth, squircleFactor = 0.72) {
+            const outerR = r + strokeWidth / 2;
+            const innerR = r - strokeWidth / 2;
+
+            // Cercle exterieur (sens horaire) - cercle parfait avec Bezier
+            // k = 0.5523 pour cercle parfait
+            const kCircle = outerR * 0.5523;
+            const outerTop = { x: cx, y: cy - outerR };
+            const outerRight = { x: cx + outerR, y: cy };
+            const outerBottom = { x: cx, y: cy + outerR };
+            const outerLeft = { x: cx - outerR, y: cy };
+
+            let d = `M ${outerTop.x} ${outerTop.y}`;
+            d += ` C ${outerTop.x + kCircle} ${outerTop.y}, ${outerRight.x} ${outerRight.y - kCircle}, ${outerRight.x} ${outerRight.y}`;
+            d += ` C ${outerRight.x} ${outerRight.y + kCircle}, ${outerBottom.x + kCircle} ${outerBottom.y}, ${outerBottom.x} ${outerBottom.y}`;
+            d += ` C ${outerBottom.x - kCircle} ${outerBottom.y}, ${outerLeft.x} ${outerLeft.y + kCircle}, ${outerLeft.x} ${outerLeft.y}`;
+            d += ` C ${outerLeft.x} ${outerLeft.y - kCircle}, ${outerTop.x - kCircle} ${outerTop.y}, ${outerTop.x} ${outerTop.y}`;
+            d += ` Z`;
+
+            // Squircle interieur (sens anti-horaire pour creer le trou)
+            d += ` ` + drawFullSquircle(cx, cy, innerR, squircleFactor, false);
+
+            return d;
+        }
+
+        /**
+         * CERCLE-CERCLE CLASSIQUE - Cercle exterieur ET interieur
+         * Version classique avec interieur parfaitement rond
+         */
+        function drawCircleCircleRing(cx, cy, r, strokeWidth) {
+            const outerR = r + strokeWidth / 2;
+            const innerR = r - strokeWidth / 2;
+            const kOuter = outerR * 0.5523;
+            const kInner = innerR * 0.5523;
+
+            // Cercle exterieur (horaire)
+            const outerTop = { x: cx, y: cy - outerR };
+            const outerRight = { x: cx + outerR, y: cy };
+            const outerBottom = { x: cx, y: cy + outerR };
+            const outerLeft = { x: cx - outerR, y: cy };
+
+            let d = `M ${outerTop.x} ${outerTop.y}`;
+            d += ` C ${outerTop.x + kOuter} ${outerTop.y}, ${outerRight.x} ${outerRight.y - kOuter}, ${outerRight.x} ${outerRight.y}`;
+            d += ` C ${outerRight.x} ${outerRight.y + kOuter}, ${outerBottom.x + kOuter} ${outerBottom.y}, ${outerBottom.x} ${outerBottom.y}`;
+            d += ` C ${outerBottom.x - kOuter} ${outerBottom.y}, ${outerLeft.x} ${outerLeft.y + kOuter}, ${outerLeft.x} ${outerLeft.y}`;
+            d += ` C ${outerLeft.x} ${outerLeft.y - kOuter}, ${outerTop.x - kOuter} ${outerTop.y}, ${outerTop.x} ${outerTop.y}`;
+            d += ` Z`;
+
+            // Cercle interieur (anti-horaire pour trou)
+            const innerTop = { x: cx, y: cy - innerR };
+            const innerRight = { x: cx + innerR, y: cy };
+            const innerBottom = { x: cx, y: cy + innerR };
+            const innerLeft = { x: cx - innerR, y: cy };
+
+            d += ` M ${innerTop.x} ${innerTop.y}`;
+            d += ` C ${innerTop.x - kInner} ${innerTop.y}, ${innerLeft.x} ${innerLeft.y - kInner}, ${innerLeft.x} ${innerLeft.y}`;
+            d += ` C ${innerLeft.x} ${innerLeft.y + kInner}, ${innerBottom.x - kInner} ${innerBottom.y}, ${innerBottom.x} ${innerBottom.y}`;
+            d += ` C ${innerBottom.x + kInner} ${innerBottom.y}, ${innerRight.x} ${innerRight.y + kInner}, ${innerRight.x} ${innerRight.y}`;
+            d += ` C ${innerRight.x} ${innerRight.y - kInner}, ${innerTop.x + kInner} ${innerTop.y}, ${innerTop.x} ${innerTop.y}`;
+            d += ` Z`;
+
+            return d;
+        }
+
+        /**
+         * CERCLE-LOSANGE HYBRIDE - Cercle exterieur, Squircle losange interieur
+         * Squircle pivote de 45° (forme losange)
+         */
+        function drawCircleDiamondRing(cx, cy, r, strokeWidth, squircleFactor = 0.72) {
+            const outerR = r + strokeWidth / 2;
+            const innerR = r - strokeWidth / 2;
+            const kCircle = outerR * 0.5523;
+
+            // Cercle exterieur (horaire)
+            const outerTop = { x: cx, y: cy - outerR };
+            const outerRight = { x: cx + outerR, y: cy };
+            const outerBottom = { x: cx, y: cy + outerR };
+            const outerLeft = { x: cx - outerR, y: cy };
+
+            let d = `M ${outerTop.x} ${outerTop.y}`;
+            d += ` C ${outerTop.x + kCircle} ${outerTop.y}, ${outerRight.x} ${outerRight.y - kCircle}, ${outerRight.x} ${outerRight.y}`;
+            d += ` C ${outerRight.x} ${outerRight.y + kCircle}, ${outerBottom.x + kCircle} ${outerBottom.y}, ${outerBottom.x} ${outerBottom.y}`;
+            d += ` C ${outerBottom.x - kCircle} ${outerBottom.y}, ${outerLeft.x} ${outerLeft.y + kCircle}, ${outerLeft.x} ${outerLeft.y}`;
+            d += ` C ${outerLeft.x} ${outerLeft.y - kCircle}, ${outerTop.x - kCircle} ${outerTop.y}, ${outerTop.x} ${outerTop.y}`;
+            d += ` Z`;
+
+            // Squircle losange interieur (anti-horaire)
+            d += ` ` + drawFullSquircleDiamond(cx, cy, innerR, squircleFactor, false);
+
+            return d;
+        }
+
+        // Squircle factor: 0.72 pour Fredoka (comme iOS), 0.5523 pour cercle parfait
+        // === LOCKE: capOverlap = 0.5 pour eliminer gap anti-aliasing sur buste ===
+        let squircleFactor = 0.72;
+        let showAngleGuides = true;
+        // === Mode interieur du cercle: 'squircle' | 'cercle' | 'losange' ===
+        let circleInteriorMode = 'squircle';
+        // === Mode couleur pour export: 'white' | 'black' | 'gradient' ===
+        let exportColorMode = 'white';
+
+        // Draw the unified icon with PERFECT SYMMETRY
+        function drawIcon() {
+            svg.textContent = '';
+
+            const cx = 50;
+            const cy = state.circle.cy;
+            const r = state.circle.r;
+            const color = state.iconColor;
+
+            // === GUIDES VISUELS (si actives) ===
+            if (showAngleGuides) {
+                // Ligne verticale centrale (reference)
+                svg.appendChild(createSVG('line', {
+                    x1: cx,
+                    y1: 5,
+                    x2: cx,
+                    y2: 95,
+                    stroke: '#6366f1',
+                    'stroke-width': 0.5,
+                    'stroke-dasharray': '2,2',
+                    opacity: 0.6
+                }));
+
+                // Arc d'angle pour la loupe (gauche)
+                const loupeAngleFromVertical = 90 - state.stem.angle; // angle depuis la verticale vers le bas
+                const arcRadius = r + 8;
+                // Arc de 90° (vertical) a l'angle de la loupe
+                const loupeArcPath = describeArc(cx, cy, arcRadius, 90, 180 - state.stem.angle);
+                svg.appendChild(createSVG('path', {
+                    d: loupeArcPath,
+                    fill: 'none',
+                    stroke: '#FFB10B',
+                    'stroke-width': 1.5,
+                    opacity: 0.8
+                }));
+
+                // Arc d'angle pour la cle (droite)
+                const keyArcPath = describeArc(cx, cy, arcRadius, state.stem.angle, 90);
+                svg.appendChild(createSVG('path', {
+                    d: keyArcPath,
+                    fill: 'none',
+                    stroke: '#9B59B6',
+                    'stroke-width': 1.5,
+                    opacity: 0.8
+                }));
+
+                // Labels d'angle
+                const labelRadius = arcRadius + 6;
+                const loupeLabelAngle = (90 + (180 - state.stem.angle)) / 2;
+                const loupeLabelRad = (loupeLabelAngle * Math.PI) / 180;
+                const loupeLabelX = cx + labelRadius * Math.cos(loupeLabelRad);
+                const loupeLabelY = cy + labelRadius * Math.sin(loupeLabelRad);
+
+                const keyLabelAngle = (state.stem.angle + 90) / 2;
+                const keyLabelRad = (keyLabelAngle * Math.PI) / 180;
+                const keyLabelX = cx + labelRadius * Math.cos(keyLabelRad);
+                const keyLabelY = cy + labelRadius * Math.sin(keyLabelRad);
+
+                // Angle loupe label
+                const loupeLabel = createSVG('text', {
+                    x: loupeLabelX,
+                    y: loupeLabelY,
+                    fill: '#FFB10B',
+                    'font-size': '4',
+                    'font-weight': 'bold',
+                    'text-anchor': 'middle',
+                    'dominant-baseline': 'middle'
+                });
+                loupeLabel.textContent = (90 - state.stem.angle) + '°';
+                svg.appendChild(loupeLabel);
+
+                // Angle cle label
+                const keyLabel = createSVG('text', {
+                    x: keyLabelX,
+                    y: keyLabelY,
+                    fill: '#9B59B6',
+                    'font-size': '4',
+                    'font-weight': 'bold',
+                    'text-anchor': 'middle',
+                    'dominant-baseline': 'middle'
+                });
+                keyLabel.textContent = (90 - state.stem.angle) + '°';
+                svg.appendChild(keyLabel);
+            }
+
+            // 1. Cercle central avec interieur variable selon circleInteriorMode
+            // === LOCKE: Cercle exterieur parfait + Interieur selon mode ===
+            let circleRingPath;
+            switch (circleInteriorMode) {
+                case 'cercle':
+                    circleRingPath = drawCircleCircleRing(cx, cy, r, state.circle.stroke);
+                    break;
+                case 'losange':
+                    circleRingPath = drawCircleDiamondRing(cx, cy, r, state.circle.stroke, squircleFactor);
+                    break;
+                case 'squircle':
+                default:
+                    circleRingPath = drawCircleSquircleRing(cx, cy, r, state.circle.stroke, squircleFactor);
+                    break;
+            }
+            svg.appendChild(createSVG('path', {
+                d: circleRingPath,
+                fill: color,
+                stroke: 'none',
+                'fill-rule': 'evenodd'
+            }));
+
+            // 2. Tige cle (GAUCHE) - angle = 180 - stem.angle
+            // SQUIRCLE CAPSULE au lieu de line avec stroke-linecap: round
+            const keyAngle = 180 - state.stem.angle;
+            const keyAngleRad = (keyAngle * Math.PI) / 180;
+            // Offset pour que le demi-squircle se termine au centre du stroke du cercle
+            const stemInset = state.stem.stroke / 2;
+            const keyStartX = cx + (r + stemInset) * Math.cos(keyAngleRad);
+            const keyStartY = cy + (r + stemInset) * Math.sin(keyAngleRad);
+            const keyEndX = keyStartX + state.stem.length * Math.cos(keyAngleRad);
+            const keyEndY = keyStartY + state.stem.length * Math.sin(keyAngleRad);
+
+            svg.appendChild(createSVG('path', {
+                d: drawSquircleCapsule(keyStartX, keyStartY, keyEndX, keyEndY, state.stem.stroke, squircleFactor),
+                fill: color,
+                stroke: 'none'
+            }));
+
+            // 3. Manche loupe (DROITE) - angle = stem.angle
+            // SQUIRCLE CAPSULE au lieu de line avec stroke-linecap: round
+            const loupeAngleRad = (state.stem.angle * Math.PI) / 180;
+            const loupeStartX = cx + (r + stemInset) * Math.cos(loupeAngleRad);
+            const loupeStartY = cy + (r + stemInset) * Math.sin(loupeAngleRad);
+            const loupeEndX = loupeStartX + state.stem.length * Math.cos(loupeAngleRad);
+            const loupeEndY = loupeStartY + state.stem.length * Math.sin(loupeAngleRad);
+
+            svg.appendChild(createSVG('path', {
+                d: drawSquircleCapsule(loupeStartX, loupeStartY, loupeEndX, loupeEndY, state.stem.stroke, squircleFactor),
+                fill: color,
+                stroke: 'none'
+            }));
+
+            // Dents de cle (perpendiculaires sur la tige GAUCHE, vers le BAS) - SQUIRCLE CAPSULES
+            const teethAngle = keyAngleRad - Math.PI / 2;
+            const teethCount = state.key.teeth;
+            const teethSize = state.key.teethSize;
+            const teethStroke = state.stem.stroke * 0.5;
+
+            for (let i = 0; i < teethCount; i++) {
+                const t = 0.45 + (i * 0.3);
+                const toothX = keyStartX + (keyEndX - keyStartX) * t;
+                const toothY = keyStartY + (keyEndY - keyStartY) * t;
+                const toothEndX = toothX + teethSize * Math.cos(teethAngle);
+                const toothEndY = toothY + teethSize * Math.sin(teethAngle);
+
+                svg.appendChild(createSVG('path', {
+                    d: drawSquircleCapsule(toothX, toothY, toothEndX, toothEndY, teethStroke, squircleFactor),
+                    fill: color,
+                    stroke: 'none'
+                }));
+            }
+
+            // 4. Buste personne (arc en bas) - AVEC TERMINAISONS SQUIRCLE
+            const bustTop = cy + r + state.bust.gap;
+            const bustWidth = state.bust.width;
+            const bustHeight = state.bust.height;
+            const bustHalfStroke = state.bust.stroke / 2;
+
+            // Points de depart et fin du buste
+            const bustStartX = cx - bustWidth/2;
+            const bustStartY = bustTop + bustHeight;
+            const bustEndX = cx + bustWidth/2;
+            const bustEndY = bustTop + bustHeight;
+
+            // Direction tangente aux extremites pour les caps squircle
+            // Pour une courbe Q, la tangente au point de depart pointe vers le point de controle
+            const bustControlX = cx;
+            const bustControlY = bustTop;
+
+            // Tangente au depart (normalise)
+            const startTangentX = bustControlX - bustStartX;
+            const startTangentY = bustControlY - bustStartY;
+            const startTangentLen = Math.sqrt(startTangentX * startTangentX + startTangentY * startTangentY);
+            const startTnx = startTangentX / startTangentLen;
+            const startTny = startTangentY / startTangentLen;
+
+            // Tangente a la fin (normalise, inverse)
+            const endTangentX = bustControlX - bustEndX;
+            const endTangentY = bustControlY - bustEndY;
+            const endTangentLen = Math.sqrt(endTangentX * endTangentX + endTangentY * endTangentY);
+            const endTnx = endTangentX / endTangentLen;
+            const endTny = endTangentY / endTangentLen;
+
+            // Chemin du buste avec stroke-linecap: butt (terminaisons plates)
+            const bustPath = `M ${bustStartX} ${bustStartY} Q ${bustControlX} ${bustControlY} ${bustEndX} ${bustEndY}`;
+
+            svg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': state.bust.stroke,
+                'stroke-linecap': 'butt'
+            }));
+
+            // Ajouter des caps squircle aux extremites du buste
+            // Offset de chevauchement pour eliminer le gap anti-aliasing
+            const capOverlap = 0.5;
+
+            // Cap gauche (depart) - direction inverse de la tangente
+            // Position decalee vers l'interieur du stroke pour chevauchement
+            const startCapPath = drawSquircleEndCap(
+                bustStartX + startTnx * capOverlap,
+                bustStartY + startTny * capOverlap,
+                -startTnx, -startTny,  // Direction opposee a la tangente
+                bustHalfStroke,
+                squircleFactor
+            );
+            svg.appendChild(createSVG('path', {
+                d: startCapPath,
+                fill: color,
+                stroke: 'none'
+            }));
+
+            // Cap droite (fin) - direction dans le sens de la tangente sortante
+            // Position decalee vers l'interieur du stroke pour chevauchement
+            const endCapPath = drawSquircleEndCap(
+                bustEndX + endTnx * capOverlap,
+                bustEndY + endTny * capOverlap,
+                -endTnx, -endTny,  // Direction opposee (sortant de la courbe)
+                bustHalfStroke,
+                squircleFactor
+            );
+            svg.appendChild(createSVG('path', {
+                d: endCapPath,
+                fill: color,
+                stroke: 'none'
+            }));
+
+            updateSpecs();
+            updatePreviews();
+            updateSquircleDemo();
+            updateVariantsComparison();
+        }
+
+        // Update squircle demo in Fredoka panel
+        function updateSquircleDemo() {
+            const squircleDemo = document.getElementById('squircle-demo');
+            if (squircleDemo) {
+                // Dessiner une ligne horizontale avec terminaisons squircle
+                const demoPath = drawSquircleCapsule(10, 55, 90, 55, 10, squircleFactor);
+                squircleDemo.setAttribute('d', demoPath);
+            }
+        }
+
+        // Update specs display
+        function updateSpecs() {
+            const specs = document.getElementById('specs-display');
+            const loupeAngleAbs = 180 - state.stem.angle; // angle absolu
+            const angleFromVertical = 90 - state.stem.angle; // angle depuis verticale
+
+            const squircleType = squircleFactor >= 0.68 && squircleFactor <= 0.76 ? 'Fredoka' : (squircleFactor < 0.58 ? 'Cercle' : 'Personnalisé');
+            const interiorLabels = { squircle: 'Squircle Fredoka', cercle: 'Cercle classique', losange: 'Losange 45°' };
+            specs.textContent = `/* VERIFICATION SYMETRIE */
+
+LONGUEURS:
+  Loupe: ${state.stem.length} unites
+  Cle:   ${state.stem.length} unites
+  ✓ Identiques
+
+ANGLES (depuis verticale):
+  Loupe: ${angleFromVertical}° (vers gauche)
+  Cle:   ${angleFromVertical}° (vers droite)
+  ✓ Identiques (miroir parfait)
+
+EPAISSEURS:
+  Tiges: ${state.stem.stroke}
+  Cercle: ${state.circle.stroke}
+  Buste: ${state.bust.stroke}
+
+TERMINAISONS:
+  Squircle factor: ${squircleFactor.toFixed(2)}
+  Type: ${squircleType}
+  (0.55 = cercle, 0.72 = Fredoka)
+
+INTERIEUR CERCLE:
+  Mode: ${interiorLabels[circleInteriorMode]}
+  ✓ Selectionnable en bas`;
+        }
+
+        // Update 3 variants comparison (circle interior shapes)
+        function updateVariantsComparison() {
+            const container = document.getElementById('variants-comparison');
+            if (!container) return;
+            container.textContent = '';
+
+            const cx = 50;
+            const cy = state.circle.cy;
+            const r = state.circle.r;
+            const color = state.iconColor;
+            const bg = state.bgGradient ? '#2d2d4a' : state.bgColor;
+
+            const variants = [
+                { mode: 'squircle', drawFn: () => drawCircleSquircleRing(cx, cy, r, state.circle.stroke, squircleFactor) },
+                { mode: 'cercle', drawFn: () => drawCircleCircleRing(cx, cy, r, state.circle.stroke) },
+                { mode: 'losange', drawFn: () => drawCircleDiamondRing(cx, cy, r, state.circle.stroke, squircleFactor) }
+            ];
+
+            variants.forEach(variant => {
+                // Create mini SVG for this variant
+                const miniSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                miniSvg.setAttribute('viewBox', '0 0 100 100');
+                miniSvg.setAttribute('width', '60');
+                miniSvg.setAttribute('height', '60');
+                miniSvg.style.background = bg;
+                miniSvg.style.borderRadius = '8px';
+                miniSvg.style.cursor = 'pointer';
+                miniSvg.style.transition = 'all 0.15s ease';
+
+                // Style selon selection active
+                if (variant.mode === circleInteriorMode) {
+                    miniSvg.style.border = '2px solid var(--success)';
+                    miniSvg.style.boxShadow = '0 0 8px rgba(34, 197, 94, 0.4)';
+                } else {
+                    miniSvg.style.border = '1px solid var(--border)';
+                    miniSvg.style.opacity = '0.7';
+                }
+
+                // Hover effect
+                miniSvg.addEventListener('mouseenter', () => {
+                    if (variant.mode !== circleInteriorMode) {
+                        miniSvg.style.opacity = '1';
+                        miniSvg.style.borderColor = 'var(--accent)';
+                    }
+                });
+                miniSvg.addEventListener('mouseleave', () => {
+                    if (variant.mode !== circleInteriorMode) {
+                        miniSvg.style.opacity = '0.7';
+                        miniSvg.style.borderColor = 'var(--border)';
+                    }
+                });
+
+                // Click to select variant
+                miniSvg.addEventListener('click', () => {
+                    circleInteriorMode = variant.mode;
+                    drawIcon();  // Re-render with new mode
+                });
+
+                // Draw only the circle ring with this variant
+                const ringPath = createSVG('path', {
+                    d: variant.drawFn(),
+                    fill: color,
+                    stroke: 'none',
+                    'fill-rule': 'evenodd'
+                });
+                miniSvg.appendChild(ringPath);
+
+                container.appendChild(miniSvg);
+            });
+        }
+
+        // Update previews
+        function updatePreviews() {
+            const container = document.getElementById('preview-row');
+            container.textContent = '';
+
+            const sizes = [48, 96, 180];
+            const bg = state.bgGradient ? 'linear-gradient(135deg, #9c5698, #e05747, #ffc800)' : state.bgColor;
+
+            sizes.forEach(size => {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+
+                const box = document.createElement('div');
+                box.className = 'preview-box';
+                box.style.width = size + 'px';
+                box.style.height = size + 'px';
+                box.style.background = bg;
+
+                const svgClone = svg.cloneNode(true);
+                svgClone.style.width = (size * 0.7) + 'px';
+                svgClone.style.height = (size * 0.7) + 'px';
+                box.appendChild(svgClone);
+
+                const label = document.createElement('div');
+                label.className = 'preview-label';
+                label.textContent = size + 'px';
+
+                item.appendChild(box);
+                item.appendChild(label);
+                container.appendChild(item);
+            });
+        }
+
+        // Bind controls
+        function bindControls() {
+            // Squircle factor
+            const squircleInput = document.getElementById('squircle-factor');
+            const squircleDisplay = document.getElementById('squircle-factor-val');
+            squircleInput.addEventListener('input', e => {
+                squircleFactor = parseFloat(e.target.value);
+                squircleDisplay.textContent = squircleFactor.toFixed(2);
+                drawIcon();
+                updateSquircleDemo();
+            });
+
+            // Stem (UNIFIED)
+            bindRange('stem-length', v => { state.stem.length = v; });
+            bindRange('stem-angle', v => { state.stem.angle = v; }, '°');
+            bindRange('stem-stroke', v => { state.stem.stroke = v; });
+
+            // Circle
+            bindRange('circle-cy', v => { state.circle.cy = v; });
+            bindRange('circle-r', v => { state.circle.r = v; });
+            bindRange('circle-stroke', v => { state.circle.stroke = v; });
+
+            // Key teeth
+            bindRange('key-teeth', v => { state.key.teeth = v; });
+            bindRange('key-teeth-size', v => { state.key.teethSize = v; });
+
+            // Bust
+            bindRange('bust-gap', v => { state.bust.gap = v; });
+            bindRange('bust-width', v => { state.bust.width = v; });
+            bindRange('bust-height', v => { state.bust.height = v; });
+            bindRange('bust-stroke', v => { state.bust.stroke = v; });
+
+            // Colors
+            document.getElementById('icon-color').addEventListener('input', e => {
+                state.iconColor = e.target.value;
+                document.getElementById('icon-color-val').textContent = e.target.value;
+                drawIcon();
+            });
+
+            document.getElementById('bg-color').addEventListener('input', e => {
+                state.bgColor = e.target.value;
+                state.bgGradient = false;
+                canvas.style.background = '';
+                canvas.style.backgroundColor = e.target.value;
+                document.getElementById('bg-color-val').textContent = e.target.value;
+                updatePreviews();
+            });
+
+            // Presets
+            document.querySelectorAll('[data-bg]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const bg = btn.dataset.bg;
+                    const fg = btn.dataset.fg;
+
+                    state.iconColor = fg;
+                    document.getElementById('icon-color').value = fg;
+                    document.getElementById('icon-color-val').textContent = fg;
+
+                    if (bg === 'gradient') {
+                        state.bgGradient = true;
+                        canvas.style.backgroundColor = '';
+                        canvas.style.background = 'linear-gradient(135deg, #9c5698, #e05747, #ffc800)';
+                        document.getElementById('bg-color-val').textContent = 'gradient';
+                    } else {
+                        state.bgGradient = false;
+                        state.bgColor = bg;
+                        canvas.style.background = '';
+                        canvas.style.backgroundColor = bg;
+                        document.getElementById('bg-color').value = bg;
+                        document.getElementById('bg-color-val').textContent = bg;
+                    }
+
+                    drawIcon();
+                });
+            });
+        }
+
+        function bindRange(id, setter, suffix = '') {
+            const input = document.getElementById(id);
+            const display = document.getElementById(id + '-val');
+
+            input.addEventListener('input', e => {
+                const v = parseFloat(e.target.value);
+                setter(v);
+                display.textContent = v + suffix;
+                drawIcon();
+            });
+        }
+
+        // Toggle grille
+        document.getElementById('toggle-guides').addEventListener('click', () => {
+            canvas.classList.toggle('show-guides');
+        });
+
+        // Toggle angle guides
+        document.getElementById('toggle-angles').addEventListener('click', (e) => {
+            showAngleGuides = !showAngleGuides;
+            e.target.style.background = showAngleGuides ? 'var(--accent)' : 'var(--bg-control)';
+            drawIcon();
+        });
+
+        // Reset
+        // === RESET AUX SPECS LOCKEES v2 (optimisees mathematiquement 2026-01-04) ===
+        document.getElementById('reset-all').addEventListener('click', () => {
+            // Valeurs lockees v2 - NE PAS MODIFIER
+            state.circle = { cy: 40, r: 16, stroke: 7 };
+            state.stem = { length: 16, angle: 45, stroke: 7 };
+            state.key = { teeth: 2, teethSize: 7 };  // 7 = stroke (ratio 1:1)
+            state.bust = { gap: 7, width: 38, height: 16, stroke: 7 };  // gap = stroke
+            state.iconColor = '#ffffff';
+            state.bgColor = '#1a1a2e';
+            state.bgGradient = false;
+            squircleFactor = 0.72;
+            circleInteriorMode = 'squircle';  // Mode par defaut
+
+            // Reset inputs aux valeurs lockees
+            document.getElementById('squircle-factor').value = 0.72;
+            document.getElementById('squircle-factor-val').textContent = '0.72';
+            document.getElementById('stem-length').value = 16;
+            document.getElementById('stem-angle').value = 45;
+            document.getElementById('stem-stroke').value = 7;
+            document.getElementById('circle-cy').value = 40;
+            document.getElementById('circle-r').value = 16;
+            document.getElementById('circle-stroke').value = 7;
+            document.getElementById('key-teeth').value = 2;
+            document.getElementById('key-teeth-size').value = 7;  // ratio 1:1 avec stroke
+            document.getElementById('bust-gap').value = 7;  // uniformite avec strokes
+            document.getElementById('bust-width').value = 38;
+            document.getElementById('bust-height').value = 16;
+            document.getElementById('bust-stroke').value = 7;
+            document.getElementById('icon-color').value = '#ffffff';
+            document.getElementById('bg-color').value = '#1a1a2e';
+
+            document.querySelectorAll('.control-value').forEach(el => {
+                const id = el.id.replace('-val', '');
+                const input = document.getElementById(id);
+                if (input) {
+                    el.textContent = input.value + (id.includes('angle') ? '°' : '');
+                }
+            });
+
+            canvas.style.background = '';
+            canvas.style.backgroundColor = '#1a1a2e';
+
+            drawIcon();
+        });
+
+        // Export SVG
+        document.getElementById('export-svg').addEventListener('click', () => {
+            const exportSvg = createSVG('svg', {
+                xmlns: 'http://www.w3.org/2000/svg',
+                viewBox: '0 0 100 100',
+                width: '1024',
+                height: '1024'
+            });
+
+            if (state.bgGradient) {
+                const defs = createSVG('defs', {});
+                const grad = createSVG('linearGradient', { id: 'bg', x1: '0%', y1: '0%', x2: '100%', y2: '100%' });
+                // Signature gradient
+                grad.appendChild(createSVG('stop', { offset: '0%', 'stop-color': '#9c5698' }));
+                grad.appendChild(createSVG('stop', { offset: '30%', 'stop-color': '#d15659' }));
+                grad.appendChild(createSVG('stop', { offset: '50%', 'stop-color': '#e05747' }));
+                grad.appendChild(createSVG('stop', { offset: '70%', 'stop-color': '#ff7c10' }));
+                grad.appendChild(createSVG('stop', { offset: '100%', 'stop-color': '#ffc800' }));
+                defs.appendChild(grad);
+                exportSvg.appendChild(defs);
+                exportSvg.appendChild(createSVG('rect', { width: '100', height: '100', rx: '22', fill: 'url(#bg)' }));
+            } else {
+                exportSvg.appendChild(createSVG('rect', { width: '100', height: '100', rx: '22', fill: state.bgColor }));
+            }
+
+            Array.from(svg.children).forEach(child => {
+                exportSvg.appendChild(child.cloneNode(true));
+            });
+
+            const serializer = new XMLSerializer();
+            const svgString = serializer.serializeToString(exportSvg);
+            const blob = new Blob([svgString], { type: 'image/svg+xml' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'izzico-fredoka-style.svg';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        // Export PNG 2048px (pour Recraft)
+        document.getElementById('export-png').addEventListener('click', () => {
+            const size = 2048;
+            const canvasEl = document.createElement('canvas');
+            canvasEl.width = size;
+            canvasEl.height = size;
+            const ctx = canvasEl.getContext('2d');
+
+            // Background
+            if (state.bgGradient) {
+                const grad = ctx.createLinearGradient(0, 0, size, size);
+                // Signature gradient
+                grad.addColorStop(0, '#9c5698');
+                grad.addColorStop(0.3, '#d15659');
+                grad.addColorStop(0.5, '#e05747');
+                grad.addColorStop(0.7, '#ff7c10');
+                grad.addColorStop(1, '#ffc800');
+                ctx.fillStyle = grad;
+            } else {
+                ctx.fillStyle = state.bgColor;
+            }
+
+            // Rounded rect
+            const radius = size * 0.22;
+            ctx.beginPath();
+            ctx.roundRect(0, 0, size, size, radius);
+            ctx.fill();
+
+            // Draw SVG on canvas
+            const svgData = new XMLSerializer().serializeToString(svg);
+            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const svgUrl = URL.createObjectURL(svgBlob);
+            const img = new Image();
+
+            img.onload = () => {
+                const iconSize = size * 0.7;
+                const offset = (size - iconSize) / 2;
+                ctx.drawImage(img, offset, offset, iconSize, iconSize);
+                URL.revokeObjectURL(svgUrl);
+
+                // Download
+                canvasEl.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'izzico-fredoka-2048px.png';
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+
+            img.src = svgUrl;
+        });
+
+        // === EXPORT VARIANTS FUNCTIONS ===
+
+        /**
+         * Genere un SVG complet de l'icone avec une variante specifique
+         * @param mode - 'squircle' | 'cercle' | 'losange'
+         * @param colorMode - 'white' | 'black' | 'gradient'
+         */
+        function generateVariantSVG(mode, colorMode = 'white') {
+            const tempSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+            tempSvg.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+            tempSvg.setAttribute('viewBox', '0 0 100 100');
+            tempSvg.setAttribute('width', '2048');
+            tempSvg.setAttribute('height', '2048');
+
+            const cx = 50;
+            const cy = state.circle.cy;
+            const r = state.circle.r;
+
+            // Determine color based on colorMode
+            let color;
+            if (colorMode === 'gradient') {
+                // Add gradient definition
+                const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+                const gradient = document.createElementNS('http://www.w3.org/2000/svg', 'linearGradient');
+                gradient.setAttribute('id', 'iconGradient');
+                gradient.setAttribute('x1', '0%');
+                gradient.setAttribute('y1', '0%');
+                gradient.setAttribute('x2', '100%');
+                gradient.setAttribute('y2', '100%');
+
+                // Signature gradient: Violet → Red → Orange-Red → Orange → Gold
+                const stops = [
+                    { offset: '0%', color: '#9c5698' },    // Mauve/Violet
+                    { offset: '30%', color: '#d15659' },   // Red
+                    { offset: '50%', color: '#e05747' },   // Orange-Red
+                    { offset: '70%', color: '#ff7c10' },   // Orange
+                    { offset: '100%', color: '#ffc800' }   // Gold/Yellow
+                ];
+                stops.forEach(s => {
+                    const stop = document.createElementNS('http://www.w3.org/2000/svg', 'stop');
+                    stop.setAttribute('offset', s.offset);
+                    stop.setAttribute('stop-color', s.color);
+                    gradient.appendChild(stop);
+                });
+
+                defs.appendChild(gradient);
+                tempSvg.appendChild(defs);
+                color = 'url(#iconGradient)';
+            } else if (colorMode === 'black') {
+                color = '#1a1a2e';
+            } else {
+                color = '#ffffff';
+            }
+
+            // 1. Cercle central avec la variante specifiee
+            let circleRingPath;
+            switch (mode) {
+                case 'cercle':
+                    circleRingPath = drawCircleCircleRing(cx, cy, r, state.circle.stroke);
+                    break;
+                case 'losange':
+                    circleRingPath = drawCircleDiamondRing(cx, cy, r, state.circle.stroke, squircleFactor);
+                    break;
+                case 'squircle':
+                default:
+                    circleRingPath = drawCircleSquircleRing(cx, cy, r, state.circle.stroke, squircleFactor);
+                    break;
+            }
+            tempSvg.appendChild(createSVG('path', {
+                d: circleRingPath,
+                fill: color,
+                stroke: 'none',
+                'fill-rule': 'evenodd'
+            }));
+
+            // 2. Tige cle (GAUCHE) - angle = 180 - stem.angle
+            const keyAngle = 180 - state.stem.angle;
+            const keyAngleRad = (keyAngle * Math.PI) / 180;
+            const stemInset = state.stem.stroke / 2;
+            const keyStartX = cx + (r + stemInset) * Math.cos(keyAngleRad);
+            const keyStartY = cy + (r + stemInset) * Math.sin(keyAngleRad);
+            const keyEndX = keyStartX + state.stem.length * Math.cos(keyAngleRad);
+            const keyEndY = keyStartY + state.stem.length * Math.sin(keyAngleRad);
+
+            tempSvg.appendChild(createSVG('path', {
+                d: drawSquircleCapsule(keyStartX, keyStartY, keyEndX, keyEndY, state.stem.stroke, squircleFactor),
+                fill: color,
+                stroke: 'none'
+            }));
+
+            // 3. Manche loupe (DROITE) - angle = stem.angle
+            const loupeAngleRad = (state.stem.angle * Math.PI) / 180;
+            const loupeStartX = cx + (r + stemInset) * Math.cos(loupeAngleRad);
+            const loupeStartY = cy + (r + stemInset) * Math.sin(loupeAngleRad);
+            const loupeEndX = loupeStartX + state.stem.length * Math.cos(loupeAngleRad);
+            const loupeEndY = loupeStartY + state.stem.length * Math.sin(loupeAngleRad);
+
+            tempSvg.appendChild(createSVG('path', {
+                d: drawSquircleCapsule(loupeStartX, loupeStartY, loupeEndX, loupeEndY, state.stem.stroke, squircleFactor),
+                fill: color,
+                stroke: 'none'
+            }));
+
+            // Dents de cle (sur la tige GAUCHE, vers le BAS)
+            const teethAngle = keyAngleRad - Math.PI / 2;
+            const teethCount = state.key.teeth;
+            const teethSize = state.key.teethSize;
+            const teethStroke = state.stem.stroke * 0.5;
+
+            for (let i = 0; i < teethCount; i++) {
+                const t = 0.45 + (i * 0.3);
+                const toothX = keyStartX + (keyEndX - keyStartX) * t;
+                const toothY = keyStartY + (keyEndY - keyStartY) * t;
+                const toothEndX = toothX + teethSize * Math.cos(teethAngle);
+                const toothEndY = toothY + teethSize * Math.sin(teethAngle);
+
+                tempSvg.appendChild(createSVG('path', {
+                    d: drawSquircleCapsule(toothX, toothY, toothEndX, toothEndY, teethStroke, squircleFactor),
+                    fill: color,
+                    stroke: 'none'
+                }));
+            }
+
+            // 4. Buste personne
+            const bustTop = cy + r + state.bust.gap;
+            const bustWidth = state.bust.width;
+            const bustHeight = state.bust.height;
+            const bustHalfStroke = state.bust.stroke / 2;
+
+            const bustStartX = cx - bustWidth/2;
+            const bustStartY = bustTop + bustHeight;
+            const bustEndX = cx + bustWidth/2;
+            const bustEndY = bustTop + bustHeight;
+            const bustControlX = cx;
+            const bustControlY = bustTop;
+
+            const startTangentX = bustControlX - bustStartX;
+            const startTangentY = bustControlY - bustStartY;
+            const startTangentLen = Math.sqrt(startTangentX * startTangentX + startTangentY * startTangentY);
+            const startTnx = startTangentX / startTangentLen;
+            const startTny = startTangentY / startTangentLen;
+
+            const endTangentX = bustControlX - bustEndX;
+            const endTangentY = bustControlY - bustEndY;
+            const endTangentLen = Math.sqrt(endTangentX * endTangentX + endTangentY * endTangentY);
+            const endTnx = endTangentX / endTangentLen;
+            const endTny = endTangentY / endTangentLen;
+
+            const bustPath = `M ${bustStartX} ${bustStartY} Q ${bustControlX} ${bustControlY} ${bustEndX} ${bustEndY}`;
+
+            tempSvg.appendChild(createSVG('path', {
+                d: bustPath,
+                fill: 'none',
+                stroke: color,
+                'stroke-width': state.bust.stroke,
+                'stroke-linecap': 'butt'
+            }));
+
+            const capOverlap = 0.5;
+
+            const startCapPath = drawSquircleEndCap(
+                bustStartX + startTnx * capOverlap,
+                bustStartY + startTny * capOverlap,
+                -startTnx, -startTny,
+                bustHalfStroke,
+                squircleFactor
+            );
+            tempSvg.appendChild(createSVG('path', {
+                d: startCapPath,
+                fill: color,
+                stroke: 'none'
+            }));
+
+            const endCapPath = drawSquircleEndCap(
+                bustEndX + endTnx * capOverlap,
+                bustEndY + endTny * capOverlap,
+                -endTnx, -endTny,
+                bustHalfStroke,
+                squircleFactor
+            );
+            tempSvg.appendChild(createSVG('path', {
+                d: endCapPath,
+                fill: color,
+                stroke: 'none'
+            }));
+
+            return tempSvg;
+        }
+
+        /**
+         * Exporte une variante en PNG 2048px avec fond TRANSPARENT
+         * @param mode - 'squircle' | 'cercle' | 'losange'
+         * @param colorMode - 'white' | 'black' | 'gradient'
+         */
+        function exportVariantPNG(mode, colorMode = 'white') {
+            const size = 2048;
+            const canvasEl = document.createElement('canvas');
+            canvasEl.width = size;
+            canvasEl.height = size;
+            const ctx = canvasEl.getContext('2d');
+
+            // PAS de background - fond transparent!
+            // Le canvas est transparent par defaut
+
+            // Generate SVG for this variant avec le mode couleur
+            const variantSvg = generateVariantSVG(mode, colorMode);
+            const svgData = new XMLSerializer().serializeToString(variantSvg);
+            const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+            const svgUrl = URL.createObjectURL(svgBlob);
+            const img = new Image();
+
+            // Generer le nom de fichier
+            const colorLabels = { white: 'blanc', black: 'noir', gradient: 'degrade' };
+            const filename = `izzico-icon-${mode}-${colorLabels[colorMode]}-2048px.png`;
+
+            img.onload = () => {
+                // Dessiner l'icone centree sur le canvas
+                ctx.drawImage(img, 0, 0, size, size);
+                URL.revokeObjectURL(svgUrl);
+
+                canvasEl.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = filename;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                }, 'image/png');
+            };
+
+            img.src = svgUrl;
+        }
+
+        // === COLOR MODE SELECTOR ===
+        document.querySelectorAll('.color-mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Update active state
+                document.querySelectorAll('.color-mode-btn').forEach(b => {
+                    b.classList.remove('active');
+                    b.style.outline = 'none';
+                });
+                btn.classList.add('active');
+                btn.style.outline = '2px solid var(--success)';
+
+                // Update exportColorMode
+                exportColorMode = btn.dataset.color;
+            });
+        });
+
+        // Export individual variants (avec couleur selectionnee)
+        document.getElementById('export-variant-squircle').addEventListener('click', () => {
+            exportVariantPNG('squircle', exportColorMode);
+        });
+
+        document.getElementById('export-variant-cercle').addEventListener('click', () => {
+            exportVariantPNG('cercle', exportColorMode);
+        });
+
+        document.getElementById('export-variant-losange').addEventListener('click', () => {
+            exportVariantPNG('losange', exportColorMode);
+        });
+
+        // Export 3 variantes avec la couleur selectionnee
+        document.getElementById('export-current-color-all').addEventListener('click', () => {
+            exportVariantPNG('squircle', exportColorMode);
+            setTimeout(() => exportVariantPNG('cercle', exportColorMode), 500);
+            setTimeout(() => exportVariantPNG('losange', exportColorMode), 1000);
+        });
+
+        // Export TOUS les 9 PNG (3 interieurs x 3 couleurs)
+        document.getElementById('export-all-9-variants').addEventListener('click', () => {
+            const modes = ['squircle', 'cercle', 'losange'];
+            const colors = ['white', 'black', 'gradient'];
+            let delay = 0;
+
+            modes.forEach(mode => {
+                colors.forEach(color => {
+                    setTimeout(() => exportVariantPNG(mode, color), delay);
+                    delay += 400;
+                });
+            });
+        });
+
+        // Init
+        bindControls();
+        drawIcon();
+    </script>
+</body>
+</html>

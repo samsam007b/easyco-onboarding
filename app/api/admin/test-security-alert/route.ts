@@ -10,6 +10,7 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { sendSecurityNotification } from '@/lib/services/security-notifications';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { validateAdminRequest } from '@/lib/security/admin-auth';
 
 export async function POST(request: NextRequest) {
   const lang = getApiLanguage(request);

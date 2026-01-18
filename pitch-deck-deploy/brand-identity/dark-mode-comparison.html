@@ -1,0 +1,1199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Izzico Dark Mode - Comparaison des 4 Options</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Izzico Brand Colors (Brand Guidelines) */
+      --searcher-primary: #ffa000;
+      --searcher-hover: #ffaa00;
+      --searcher-accent: #ffb400;
+      --searcher-light: #ffc800;
+
+      --owner-primary: #9c5698;
+      --owner-hover: #a5568d;
+      --owner-accent: #af5682;
+      --owner-light: #c2566b;
+
+      --resident-primary: #e05747;
+      --resident-hover: #f25a35;
+      --resident-accent: #ff6524;
+      --resident-light: #ff7c10;
+
+      /* Gradient Brand */
+      --gradient-brand: linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%);
+      --gradient-resident: linear-gradient(135deg, #e05747 0%, #ff6524 50%, #ff7c10 100%);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #f5f5f5;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Nunito', system-ui, sans-serif;
+    }
+
+    /* ============================================
+       HEADER
+       ============================================ */
+    .header {
+      background: white;
+      padding: 2rem;
+      border-bottom: 1px solid #e5e5e5;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2rem;
+      background: var(--gradient-brand);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .header p {
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       NAVIGATION TABS
+       ============================================ */
+    .nav-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1.5rem;
+      background: white;
+      border-bottom: 1px solid #e5e5e5;
+      flex-wrap: wrap;
+    }
+
+    .nav-tab {
+      padding: 0.75rem 1.5rem;
+      border: 2px solid #e5e5e5;
+      border-radius: 12px;
+      background: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.2s;
+      font-size: 0.9rem;
+    }
+
+    .nav-tab:hover {
+      border-color: var(--resident-primary);
+      background: #fff5f0;
+    }
+
+    .nav-tab.active {
+      background: var(--resident-primary);
+      border-color: var(--resident-primary);
+      color: white;
+    }
+
+    .nav-tab.recommended {
+      position: relative;
+    }
+
+    .nav-tab.recommended::after {
+      content: "Recommandé";
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      background: #10B981;
+      color: white;
+      font-size: 0.65rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 700;
+    }
+
+    /* ============================================
+       COMPARISON GRID
+       ============================================ */
+    .comparison-section {
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1200px) {
+      .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       DARK MODE OPTIONS
+       ============================================ */
+
+    /* Option A: Deep Mauve */
+    .option-mauve {
+      --bg-primary: #14101A;
+      --bg-secondary: #1C1625;
+      --bg-elevated: #262032;
+      --bg-card: rgba(28, 22, 37, 0.9);
+      --border: #352A42;
+      --text-primary: #F5F5F7;
+      --text-secondary: #B8A8C8;
+      --text-muted: #8A7A9A;
+    }
+
+    /* Option B: Deep Blue */
+    .option-blue {
+      --bg-primary: #0D1117;
+      --bg-secondary: #161B22;
+      --bg-elevated: #21262D;
+      --bg-card: rgba(22, 27, 34, 0.9);
+      --border: #30363D;
+      --text-primary: #F0F6FC;
+      --text-secondary: #8B949E;
+      --text-muted: #6E7681;
+    }
+
+    /* Option C: Warm Charcoal (Recommended) */
+    .option-charcoal {
+      --bg-primary: #121015;
+      --bg-secondary: #1A171E;
+      --bg-elevated: #242027;
+      --bg-card: rgba(26, 23, 30, 0.9);
+      --border: #2E2A33;
+      --text-primary: #F5F5F7;
+      --text-secondary: #A8A4AC;
+      --text-muted: #78747C;
+    }
+
+    /* Option D: Warm Brown */
+    .option-brown {
+      --bg-primary: #141210;
+      --bg-secondary: #1E1A17;
+      --bg-elevated: #28241F;
+      --bg-card: rgba(30, 26, 23, 0.9);
+      --border: #3A342C;
+      --text-primary: #F5F3F0;
+      --text-secondary: #B8B0A8;
+      --text-muted: #8A827A;
+    }
+
+    /* ============================================
+       MOCKUP CARD
+       ============================================ */
+    .mockup-card {
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    }
+
+    .mockup-header {
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .mockup-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .mockup-badge {
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+    }
+
+    .mockup-content {
+      padding: 1.5rem;
+    }
+
+    /* Apply theme colors */
+    .mockup-card {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+    }
+
+    .mockup-header {
+      background: var(--bg-secondary);
+    }
+
+    /* ============================================
+       RESIDENT HUB MOCKUP
+       ============================================ */
+    .hub-welcome {
+      margin-bottom: 1.5rem;
+    }
+
+    .hub-welcome h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .hub-welcome p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
+
+    .hub-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--resident-primary);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .hub-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 0.875rem 1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .action-btn.primary {
+      background: var(--gradient-resident);
+      color: white;
+    }
+
+    .action-btn.secondary {
+      background: var(--bg-elevated);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .hub-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem;
+      backdrop-filter: blur(10px);
+    }
+
+    .hub-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .hub-card-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--gradient-resident);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .hub-card-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .hub-card-subtitle {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .hub-progress {
+      height: 6px;
+      background: var(--bg-elevated);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .hub-progress-bar {
+      height: 100%;
+      background: var(--gradient-resident);
+      border-radius: 3px;
+      width: 65%;
+    }
+
+    /* ============================================
+       ANALYSIS SECTION
+       ============================================ */
+    .analysis-section {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .analysis-card {
+      background: white;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .analysis-card h2 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .analysis-card h3 {
+      font-size: 1rem;
+      margin: 1.5rem 0 0.75rem;
+      color: #444;
+    }
+
+    .analysis-card p {
+      color: #555;
+      margin-bottom: 0.75rem;
+    }
+
+    .analysis-card ul {
+      margin-left: 1.5rem;
+      color: #555;
+    }
+
+    .analysis-card li {
+      margin-bottom: 0.5rem;
+    }
+
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .pros, .cons {
+      padding: 1rem;
+      border-radius: 12px;
+    }
+
+    .pros {
+      background: #D1FAE5;
+    }
+
+    .cons {
+      background: #FEE2E2;
+    }
+
+    .pros h4, .cons h4 {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .pros h4 { color: #065F46; }
+    .cons h4 { color: #991B1B; }
+
+    .pros ul, .cons ul {
+      margin-left: 1rem;
+      font-size: 0.85rem;
+    }
+
+    .pros li { color: #047857; }
+    .cons li { color: #B91C1C; }
+
+    /* Color science box */
+    .science-box {
+      background: linear-gradient(135deg, #EEF2FF 0%, #E0E7FF 100%);
+      border-left: 4px solid #6366F1;
+      padding: 1.25rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1rem 0;
+    }
+
+    .science-box h4 {
+      color: #4338CA;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .science-box p {
+      color: #4338CA;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    /* Warning box */
+    .warning-box {
+      background: #FEF3C7;
+      border-left: 4px solid #D97706;
+      padding: 1.25rem;
+      border-radius: 0 12px 12px 0;
+      margin: 1rem 0;
+    }
+
+    .warning-box h4 {
+      color: #92400E;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .warning-box p {
+      color: #92400E;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    /* Recommendation box */
+    .recommendation-box {
+      background: linear-gradient(135deg, #ECFDF5 0%, #D1FAE5 100%);
+      border: 2px solid #10B981;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+    }
+
+    .recommendation-box h4 {
+      color: #065F46;
+      font-size: 1rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .recommendation-box p {
+      color: #047857;
+      margin: 0;
+    }
+
+    /* Color swatches */
+    .color-swatches {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0;
+      flex-wrap: wrap;
+    }
+
+    .swatch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .swatch-color {
+      width: 50px;
+      height: 50px;
+      border-radius: 8px;
+      border: 2px solid white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .swatch-label {
+      font-size: 0.7rem;
+      color: #666;
+      font-family: monospace;
+    }
+
+    /* Temperature scale */
+    .temp-scale {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 1rem 0;
+      padding: 1rem;
+      background: #f5f5f5;
+      border-radius: 12px;
+    }
+
+    .temp-bar {
+      flex: 1;
+      height: 20px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #3B82F6 0%, #8B8B8B 50%, #F59E0B 100%);
+    }
+
+    .temp-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #666;
+    }
+
+    /* Footer */
+    .footer {
+      text-align: center;
+      padding: 2rem;
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    /* Hidden panels */
+    .option-panel {
+      display: none;
+    }
+
+    .option-panel.active {
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="header">
+    <h1>Izzico Dark Mode</h1>
+    <p>Comparaison des 4 options de thème sombre pour harmoniser les couleurs vives de la marque</p>
+  </header>
+
+  <!-- NAVIGATION -->
+  <nav class="nav-tabs">
+    <button class="nav-tab" data-option="mauve">A. Deep Mauve</button>
+    <button class="nav-tab" data-option="blue">B. Bleu Nuit</button>
+    <button class="nav-tab active recommended" data-option="charcoal">C. Warm Charcoal</button>
+    <button class="nav-tab" data-option="brown">D. Brun Chaud</button>
+    <button class="nav-tab" data-option="all">Voir les 4</button>
+  </nav>
+
+  <!-- SINGLE VIEW PANELS -->
+  <section class="comparison-section">
+    <!-- Option A: Deep Mauve -->
+    <div class="option-panel" data-panel="mauve">
+      <div class="mockup-card option-mauve">
+        <div class="mockup-header">
+          <span class="mockup-title">Option A: Deep Mauve</span>
+          <span class="mockup-badge" style="background: var(--owner-primary); color: white;">Mauve profond</span>
+        </div>
+        <div class="mockup-content">
+          <div class="hub-welcome">
+            <h2>Bonjour Marie !</h2>
+            <p>Votre coliving au 15 rue des Lilas</p>
+          </div>
+          <div class="hub-stats">
+            <div class="stat-card">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Colocataires</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Messages</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">15</div>
+              <div class="stat-label">Jours restants</div>
+            </div>
+          </div>
+          <div class="hub-actions">
+            <button class="action-btn primary">Payer mon loyer</button>
+            <button class="action-btn secondary">Signaler</button>
+          </div>
+          <div class="hub-card">
+            <div class="hub-card-header">
+              <div class="hub-card-icon">🏠</div>
+              <div>
+                <div class="hub-card-title">Profil complété</div>
+                <div class="hub-card-subtitle">Continuez pour plus de visibilité</div>
+              </div>
+            </div>
+            <div class="hub-progress">
+              <div class="hub-progress-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="color-swatches" style="margin-top: 1rem;">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #14101A;"></div>
+          <span class="swatch-label">#14101A</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #1C1625;"></div>
+          <span class="swatch-label">#1C1625</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #262032;"></div>
+          <span class="swatch-label">#262032</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option B: Deep Blue -->
+    <div class="option-panel" data-panel="blue">
+      <div class="mockup-card option-blue">
+        <div class="mockup-header">
+          <span class="mockup-title">Option B: Bleu Nuit</span>
+          <span class="mockup-badge" style="background: #3B82F6; color: white;">GitHub style</span>
+        </div>
+        <div class="mockup-content">
+          <div class="hub-welcome">
+            <h2>Bonjour Marie !</h2>
+            <p>Votre coliving au 15 rue des Lilas</p>
+          </div>
+          <div class="hub-stats">
+            <div class="stat-card">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Colocataires</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Messages</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">15</div>
+              <div class="stat-label">Jours restants</div>
+            </div>
+          </div>
+          <div class="hub-actions">
+            <button class="action-btn primary">Payer mon loyer</button>
+            <button class="action-btn secondary">Signaler</button>
+          </div>
+          <div class="hub-card">
+            <div class="hub-card-header">
+              <div class="hub-card-icon">🏠</div>
+              <div>
+                <div class="hub-card-title">Profil complété</div>
+                <div class="hub-card-subtitle">Continuez pour plus de visibilité</div>
+              </div>
+            </div>
+            <div class="hub-progress">
+              <div class="hub-progress-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="color-swatches" style="margin-top: 1rem;">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #0D1117;"></div>
+          <span class="swatch-label">#0D1117</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #161B22;"></div>
+          <span class="swatch-label">#161B22</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #21262D;"></div>
+          <span class="swatch-label">#21262D</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option C: Warm Charcoal (Recommended) -->
+    <div class="option-panel active" data-panel="charcoal">
+      <div class="mockup-card option-charcoal">
+        <div class="mockup-header">
+          <span class="mockup-title">Option C: Warm Charcoal</span>
+          <span class="mockup-badge" style="background: #10B981; color: white;">Recommandé</span>
+        </div>
+        <div class="mockup-content">
+          <div class="hub-welcome">
+            <h2>Bonjour Marie !</h2>
+            <p>Votre coliving au 15 rue des Lilas</p>
+          </div>
+          <div class="hub-stats">
+            <div class="stat-card">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Colocataires</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Messages</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">15</div>
+              <div class="stat-label">Jours restants</div>
+            </div>
+          </div>
+          <div class="hub-actions">
+            <button class="action-btn primary">Payer mon loyer</button>
+            <button class="action-btn secondary">Signaler</button>
+          </div>
+          <div class="hub-card">
+            <div class="hub-card-header">
+              <div class="hub-card-icon">🏠</div>
+              <div>
+                <div class="hub-card-title">Profil complété</div>
+                <div class="hub-card-subtitle">Continuez pour plus de visibilité</div>
+              </div>
+            </div>
+            <div class="hub-progress">
+              <div class="hub-progress-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="color-swatches" style="margin-top: 1rem;">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #121015;"></div>
+          <span class="swatch-label">#121015</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #1A171E;"></div>
+          <span class="swatch-label">#1A171E</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #242027;"></div>
+          <span class="swatch-label">#242027</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Option D: Warm Brown -->
+    <div class="option-panel" data-panel="brown">
+      <div class="mockup-card option-brown">
+        <div class="mockup-header">
+          <span class="mockup-title">Option D: Brun Chaud</span>
+          <span class="mockup-badge" style="background: #92400E; color: white;">Expérimental</span>
+        </div>
+        <div class="mockup-content">
+          <div class="hub-welcome">
+            <h2>Bonjour Marie !</h2>
+            <p>Votre coliving au 15 rue des Lilas</p>
+          </div>
+          <div class="hub-stats">
+            <div class="stat-card">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Colocataires</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Messages</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">15</div>
+              <div class="stat-label">Jours restants</div>
+            </div>
+          </div>
+          <div class="hub-actions">
+            <button class="action-btn primary">Payer mon loyer</button>
+            <button class="action-btn secondary">Signaler</button>
+          </div>
+          <div class="hub-card">
+            <div class="hub-card-header">
+              <div class="hub-card-icon">🏠</div>
+              <div>
+                <div class="hub-card-title">Profil complété</div>
+                <div class="hub-card-subtitle">Continuez pour plus de visibilité</div>
+              </div>
+            </div>
+            <div class="hub-progress">
+              <div class="hub-progress-bar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="color-swatches" style="margin-top: 1rem;">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #141210;"></div>
+          <span class="swatch-label">#141210</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #1E1A17;"></div>
+          <span class="swatch-label">#1E1A17</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #28241F;"></div>
+          <span class="swatch-label">#28241F</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- All 4 Options -->
+    <div class="option-panel" data-panel="all">
+      <div class="comparison-grid">
+        <!-- Mauve -->
+        <div class="mockup-card option-mauve">
+          <div class="mockup-header">
+            <span class="mockup-title">A. Deep Mauve</span>
+          </div>
+          <div class="mockup-content">
+            <div class="hub-welcome">
+              <h2>Bonjour Marie !</h2>
+              <p>Votre coliving au 15 rue des Lilas</p>
+            </div>
+            <div class="hub-stats">
+              <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Colocataires</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Messages</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Jours</div>
+              </div>
+            </div>
+            <div class="hub-actions">
+              <button class="action-btn primary">Payer</button>
+              <button class="action-btn secondary">Signaler</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Blue -->
+        <div class="mockup-card option-blue">
+          <div class="mockup-header">
+            <span class="mockup-title">B. Bleu Nuit</span>
+          </div>
+          <div class="mockup-content">
+            <div class="hub-welcome">
+              <h2>Bonjour Marie !</h2>
+              <p>Votre coliving au 15 rue des Lilas</p>
+            </div>
+            <div class="hub-stats">
+              <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Colocataires</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Messages</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Jours</div>
+              </div>
+            </div>
+            <div class="hub-actions">
+              <button class="action-btn primary">Payer</button>
+              <button class="action-btn secondary">Signaler</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charcoal -->
+        <div class="mockup-card option-charcoal">
+          <div class="mockup-header">
+            <span class="mockup-title">C. Warm Charcoal</span>
+            <span class="mockup-badge" style="background: #10B981; color: white; font-size: 0.6rem;">OK</span>
+          </div>
+          <div class="mockup-content">
+            <div class="hub-welcome">
+              <h2>Bonjour Marie !</h2>
+              <p>Votre coliving au 15 rue des Lilas</p>
+            </div>
+            <div class="hub-stats">
+              <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Colocataires</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Messages</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Jours</div>
+              </div>
+            </div>
+            <div class="hub-actions">
+              <button class="action-btn primary">Payer</button>
+              <button class="action-btn secondary">Signaler</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Brown -->
+        <div class="mockup-card option-brown">
+          <div class="mockup-header">
+            <span class="mockup-title">D. Brun Chaud</span>
+          </div>
+          <div class="mockup-content">
+            <div class="hub-welcome">
+              <h2>Bonjour Marie !</h2>
+              <p>Votre coliving au 15 rue des Lilas</p>
+            </div>
+            <div class="hub-stats">
+              <div class="stat-card">
+                <div class="stat-value">3</div>
+                <div class="stat-label">Colocataires</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">2</div>
+                <div class="stat-label">Messages</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value">15</div>
+                <div class="stat-label">Jours</div>
+              </div>
+            </div>
+            <div class="hub-actions">
+              <button class="action-btn primary">Payer</button>
+              <button class="action-btn secondary">Signaler</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ANALYSIS SECTION -->
+  <section class="analysis-section">
+    <div class="analysis-card">
+      <h2>🔬 Analyse Scientifique : Pourquoi le Brun ?</h2>
+
+      <h3>Théorie des couleurs et température</h3>
+      <p>
+        Les couleurs de votre marque IzzIco sont <strong>majoritairement chaudes</strong> :
+      </p>
+      <ul>
+        <li><strong>Searcher (Jaune #ffa000)</strong> : Couleur chaude par excellence</li>
+        <li><strong>Resident (Orange #e05747)</strong> : Mélange rouge-orange, très chaud</li>
+        <li><strong>Owner (Mauve #9c5698)</strong> : Violet tirant vers le rose/magenta = "chaud-froid"</li>
+      </ul>
+
+      <div class="temp-scale">
+        <span class="temp-label">Froid</span>
+        <div class="temp-bar"></div>
+        <span class="temp-label">Chaud</span>
+      </div>
+
+      <div class="science-box">
+        <h4>Principe d'harmonie par température</h4>
+        <p>
+          Un fond sombre avec une <strong>sous-teinte de même température</strong> que les couleurs d'accent
+          crée une harmonie naturelle. Le brun (orange désaturé) partage l'ADN chromatique du jaune et de l'orange.
+        </p>
+      </div>
+
+      <h3>Le Brun : Avantages et Risques</h3>
+
+      <div class="pros-cons">
+        <div class="pros">
+          <h4>Avantages</h4>
+          <ul>
+            <li>Harmonie parfaite avec jaune/orange</li>
+            <li>Sensation "cocon", chaleureux</li>
+            <li>Original, peu utilisé en UI</li>
+            <li>Évoque le bois, le foyer (cohérent avec coliving)</li>
+          </ul>
+        </div>
+        <div class="cons">
+          <h4>Risques</h4>
+          <ul>
+            <li>Peut paraître "daté" ou "vintage"</li>
+            <li>Le mauve (Owner) peut sembler discordant</li>
+            <li>Connotation "café" ou "chocolat"</li>
+            <li>Moins "tech" que bleu/gris</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="warning-box">
+        <h4>Point d'attention : Le Mauve</h4>
+        <p>
+          Le mauve (#9c5698) est la seule couleur "froide-chaude" de votre palette.
+          Sur un fond brun, il peut créer une légère tension visuelle.
+          C'est pourquoi l'option <strong>Warm Charcoal</strong> (avec une sous-teinte mauve subtile)
+          offre un meilleur équilibre pour les 3 rôles.
+        </p>
+      </div>
+    </div>
+
+    <div class="analysis-card">
+      <h2>📊 Comparatif des 4 Options</h2>
+
+      <table style="width: 100%; border-collapse: collapse; margin: 1rem 0;">
+        <thead>
+          <tr style="border-bottom: 2px solid #e5e5e5;">
+            <th style="text-align: left; padding: 0.75rem;">Critère</th>
+            <th style="text-align: center; padding: 0.75rem;">A. Mauve</th>
+            <th style="text-align: center; padding: 0.75rem;">B. Bleu</th>
+            <th style="text-align: center; padding: 0.75rem;">C. Charcoal</th>
+            <th style="text-align: center; padding: 0.75rem;">D. Brun</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 0.75rem;">Harmonie Searcher (jaune)</td>
+            <td style="text-align: center;">⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 0.75rem;">Harmonie Resident (orange)</td>
+            <td style="text-align: center;">⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 0.75rem;">Harmonie Owner (mauve)</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 0.75rem;">Neutralité (pas de favoritisme)</td>
+            <td style="text-align: center;">⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 0.75rem;">Originalité</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 0.75rem;">Aspect "moderne/tech"</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #e5e5e5;">
+            <td style="padding: 0.75rem;">Confort visuel prolongé</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐⭐</td>
+            <td style="text-align: center;">⭐⭐⭐⭐</td>
+          </tr>
+          <tr style="font-weight: bold; background: #f5f5f5;">
+            <td style="padding: 0.75rem;">SCORE TOTAL</td>
+            <td style="text-align: center;">25/35</td>
+            <td style="text-align: center;">27/35</td>
+            <td style="text-align: center; color: #10B981;">31/35</td>
+            <td style="text-align: center;">28/35</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="recommendation-box">
+        <h4>Recommandation finale</h4>
+        <p>
+          <strong>Option C (Warm Charcoal)</strong> offre le meilleur équilibre global.
+          Elle harmonise les 3 couleurs de rôle sans en favoriser aucune,
+          tout en conservant un aspect moderne. La sous-teinte mauve-chaud
+          est suffisamment subtile pour ne pas être perceptible consciemment,
+          mais assez présente pour créer une cohésion visuelle.
+        </p>
+        <p style="margin-top: 0.75rem;">
+          <strong>Option D (Brun)</strong> est viable si vous souhaitez accentuer
+          l'aspect "foyer/maison" de votre marque, mais attention à la cohérence
+          avec les pages Owner qui utilisent beaucoup de mauve.
+        </p>
+      </div>
+    </div>
+
+    <div class="analysis-card">
+      <h2>🎨 Valeurs CSS Finales</h2>
+
+      <h3>Option C : Warm Charcoal (Recommandé)</h3>
+      <pre style="background: #1a1a1a; color: #f5f5f5; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem;">
+.dark {
+  /* Backgrounds - Warm Charcoal avec sous-teinte mauve */
+  --dark-bg-primary: #121015;     /* Le plus sombre */
+  --dark-bg-secondary: #1A171E;   /* Cards, sidebars */
+  --dark-bg-elevated: #242027;    /* Éléments surélevés */
+  --dark-bg-card: rgba(26, 23, 30, 0.9);
+
+  /* Borders */
+  --dark-border: #2E2A33;
+  --dark-border-subtle: rgba(255, 255, 255, 0.06);
+  --dark-border-accent: rgba(255, 255, 255, 0.12);
+
+  /* Text */
+  --dark-text-primary: #F5F5F7;
+  --dark-text-secondary: #A8A4AC;
+  --dark-text-muted: #78747C;
+}</pre>
+
+      <h3 style="margin-top: 1.5rem;">Option D : Brun Chaud (Alternative)</h3>
+      <pre style="background: #1a1a1a; color: #f5f5f5; padding: 1rem; border-radius: 8px; overflow-x: auto; font-size: 0.85rem;">
+.dark {
+  /* Backgrounds - Warm Brown avec sous-teinte terre */
+  --dark-bg-primary: #141210;     /* Le plus sombre */
+  --dark-bg-secondary: #1E1A17;   /* Cards, sidebars */
+  --dark-bg-elevated: #28241F;    /* Éléments surélevés */
+  --dark-bg-card: rgba(30, 26, 23, 0.9);
+
+  /* Borders */
+  --dark-border: #3A342C;
+  --dark-border-subtle: rgba(255, 255, 255, 0.06);
+  --dark-border-accent: rgba(255, 255, 255, 0.12);
+
+  /* Text - légèrement plus chaud */
+  --dark-text-primary: #F5F3F0;
+  --dark-text-secondary: #B8B0A8;
+  --dark-text-muted: #8A827A;
+}</pre>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <p>Izzico Design System - Dark Mode Comparison - Janvier 2025</p>
+  </footer>
+
+  <script>
+    // Tab navigation
+    const tabs = document.querySelectorAll('.nav-tab');
+    const panels = document.querySelectorAll('.option-panel');
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const option = tab.dataset.option;
+
+        // Update active tab
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        // Update active panel
+        panels.forEach(p => {
+          p.classList.remove('active');
+          if (p.dataset.panel === option) {
+            p.classList.add('active');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

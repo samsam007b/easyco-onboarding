@@ -9,6 +9,7 @@ cache:
   # Pages principales
   pages:
     hub_projet: "2cd98c38-d2a6-80c6-91b4-e5bac9ebd221"
+    ralph_loop: "2ec98c38-d2a6-819c-9ed6-c1501a261d65"
     dashboard: "2d798c38-d2a6-81d7-992d-c2eec2a0466c"
     vision: "2d798c38-d2a6-816b-b9b3-da5322e3ec95"
     roadmap: "2d798c38-d2a6-8193-8707-ee59aa9a47bb"

@@ -2,6 +2,8 @@ import { createClient } from '@/lib/auth/supabase-server';
 import { NextRequest, NextResponse } from 'next/server';
 import { findMatchesForSearcher, getMatchStatistics } from '@/lib/services/enhanced-matching-service';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { paginationSchema, matchingScoreSchema } from '@/lib/validation/query-params';
+import { z } from 'zod';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -27,11 +29,20 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: apiT('common.unauthorized', lang) }, { status: 401 });
     }
 
-    // Parse query params
-    const limit = parseInt(searchParams.get('limit') || '20');
-    const minScore = parseInt(searchParams.get('minScore') || '60');
-    const status = searchParams.get('status')?.split(',') || ['active', 'viewed'];
-    const includeStats = searchParams.get('includeStats') === 'true';
+    // SECURITY VULN-005 FIX: Validate query params with Zod
+    const querySchema = z.object({
+      limit: z.coerce.number().int().min(1).max(100).default(20),
+      minScore: z.coerce.number().int().min(0).max(100).default(60),
+      status: z.string().default('active,viewed').transform(s => s.split(',')),
+      includeStats: z.coerce.boolean().default(false),
+    });
+
+    const { limit, minScore, status, includeStats } = querySchema.parse({
+      limit: searchParams.get('limit'),
+      minScore: searchParams.get('minScore'),
+      status: searchParams.get('status'),
+      includeStats: searchParams.get('includeStats'),
+    });
 
     // Get matches
     const matches = await findMatchesForSearcher(user.id, {

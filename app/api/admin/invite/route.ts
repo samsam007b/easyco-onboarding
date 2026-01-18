@@ -11,6 +11,7 @@ import { getAdminClient } from '@/lib/auth/supabase-admin';
 import { sendAdminInvitationEmail } from '@/lib/emails/admin-invitation';
 import { logger } from '@/lib/security/logger';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { validateAdminRequest } from '@/lib/security/admin-auth';
 
 export const dynamic = 'force-dynamic';
 
