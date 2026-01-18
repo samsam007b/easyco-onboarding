@@ -17,7 +17,7 @@ import {
 export async function GET(request: NextRequest) {
   try {
     // 1. Vérifier auth
-    const supabase = createClient();
+    const supabase = await createClient();
     const {
       data: { session },
     } = await supabase.auth.getSession();

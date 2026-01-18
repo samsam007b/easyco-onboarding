@@ -54,7 +54,7 @@ export interface Alert {
  * Récupère les métriques actuelles de Supabase
  */
 export async function getSupabaseMetrics(): Promise<SupabaseMetrics> {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   // 1. Connexions DB actives
   const { data: connections } = await supabase.rpc('get_active_connections');
@@ -287,7 +287,7 @@ async function measureApiLatency(): Promise<{
 }> {
   // Mesurer latence en faisant 100 requêtes test
   const samples: number[] = [];
-  const supabase = createClient();
+  const supabase = await createClient();
 
   for (let i = 0; i < 100; i++) {
     const start = Date.now();
