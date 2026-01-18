@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { memo } from 'react';
 import {
   MessageSquare,
   Users,
@@ -37,7 +38,8 @@ interface ConversationTypeSectionProps {
   iconColor?: string;
 }
 
-export default function ConversationTypeSection({
+// Memoized component pour éviter re-renders inutiles
+const ConversationTypeSection = memo(function ConversationTypeSection({
   title,
   icon,
   conversations,
@@ -182,4 +184,28 @@ export default function ConversationTypeSection({
       </div>
     </div>
   );
-}
+}, (prevProps, nextProps) => {
+  // Custom comparator : ne re-render que si conversations changent réellement
+  if (prevProps.conversations.length !== nextProps.conversations.length) {
+    return false; // Re-render (props ont changé)
+  }
+
+  // Vérifier si les IDs ou unread_count ont changé
+  for (let i = 0; i < prevProps.conversations.length; i++) {
+    const prev = prevProps.conversations[i];
+    const next = nextProps.conversations[i];
+
+    if (
+      prev.id !== next.id ||
+      prev.unread_count !== next.unread_count ||
+      prev.last_message?.created_at !== next.last_message?.created_at
+    ) {
+      return false; // Re-render (conversation a changé)
+    }
+  }
+
+  // Tous les props identiques → pas de re-render
+  return true;
+});
+
+export default ConversationTypeSection;

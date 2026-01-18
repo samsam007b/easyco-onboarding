@@ -10,7 +10,7 @@
  * - Déconnexions real-time : >10%
  */
 
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '@/lib/auth/supabase-server';
 
 export interface SupabaseMetrics {
   // Database

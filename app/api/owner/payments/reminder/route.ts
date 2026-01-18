@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { sendPaymentReminder, type PaymentReminderData } from '@/lib/services/email-service';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
+import { rateLimitMiddleware, getRateLimitIdentifier } from '@/lib/middleware/rate-limit';
 
 // Create admin client for server-side operations
 const supabaseAdmin = createClient(
@@ -13,6 +14,14 @@ export async function POST(request: NextRequest) {
   const lang = getApiLanguage(request);
 
   try {
+    // RATE LIMITING: 5 requests per minute (expensive email operations)
+    // Uses IP-based limiting since this endpoint uses service role key
+    const identifier = getRateLimitIdentifier(request);
+    const rateLimitResponse = await rateLimitMiddleware(request, 'expensive', identifier);
+    if (rateLimitResponse) {
+      return rateLimitResponse; // 429 Too Many Requests
+    }
+
     const body = await request.json();
     const { paymentId } = body;
 

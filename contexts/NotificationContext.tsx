@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { Notification, NotificationStats } from '@/types/notification.types';
 
@@ -26,6 +26,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
   });
   const [isLoading, setIsLoading] = useState(true);
   const [userId, setUserId] = useState<string | null>(null);
+
+  // Debounce timer pour real-time updates (évite reload en rafale)
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const loadNotifications = useCallback(async (uid: string) => {
     try {
@@ -83,7 +86,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         setUserId(user.id);
         await loadNotifications(user.id);
 
-        // Subscribe to realtime changes
+        // Subscribe to realtime changes (avec debouncing)
         const channel = supabase
           .channel('notifications')
           .on(
@@ -95,12 +98,23 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
               filter: `user_id=eq.${user.id}`
             },
             () => {
-              loadNotifications(user.id);
+              // Debounce : attendre 500ms avant de recharger
+              // Évite 100 reloads/sec si notifications en rafale
+              if (debounceTimerRef.current) {
+                clearTimeout(debounceTimerRef.current);
+              }
+
+              debounceTimerRef.current = setTimeout(() => {
+                loadNotifications(user.id);
+              }, 500);
             }
           )
           .subscribe();
 
         return () => {
+          if (debounceTimerRef.current) {
+            clearTimeout(debounceTimerRef.current);
+          }
           supabase.removeChannel(channel);
         };
       }
@@ -109,14 +123,14 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     initNotifications();
   }, [supabase, loadNotifications]);
 
-  const markAsRead = async (notificationId: string) => {
+  const markAsRead = useCallback(async (notificationId: string) => {
     try {
       await supabase
         .from('notifications')
         .update({ is_read: true })
         .eq('id', notificationId);
 
-      setNotifications(notifications.map(notif =>
+      setNotifications(prev => prev.map(notif =>
         notif.id === notificationId ? { ...notif, isRead: true } : notif
       ));
 
@@ -127,9 +141,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     } catch (error) {
       console.error('Error marking notification as read:', error);
     }
-  };
+  }, [supabase]);
 
-  const markAllAsRead = async () => {
+  const markAllAsRead = useCallback(async () => {
     if (!userId) return;
 
     try {
@@ -139,51 +153,59 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
         .eq('user_id', userId)
         .eq('is_read', false);
 
-      setNotifications(notifications.map(notif => ({ ...notif, isRead: true })));
+      setNotifications(prev => prev.map(notif => ({ ...notif, isRead: true })));
       setStats(prev => ({ ...prev, unreadCount: 0 }));
     } catch (error) {
       console.error('Error marking all as read:', error);
     }
-  };
+  }, [userId, supabase]);
 
-  const deleteNotification = async (notificationId: string) => {
+  const deleteNotification = useCallback(async (notificationId: string) => {
     try {
       await supabase
         .from('notifications')
         .delete()
         .eq('id', notificationId);
 
-      const deletedNotif = notifications.find(n => n.id === notificationId);
-      setNotifications(notifications.filter(n => n.id !== notificationId));
+      setNotifications(prev => {
+        const deletedNotif = prev.find(n => n.id === notificationId);
+        const newNotifications = prev.filter(n => n.id !== notificationId);
 
-      setStats(prev => ({
-        ...prev,
-        unreadCount: deletedNotif && !deletedNotif.isRead ? prev.unreadCount - 1 : prev.unreadCount,
-        totalCount: prev.totalCount - 1
-      }));
+        setStats(prevStats => ({
+          ...prevStats,
+          unreadCount: deletedNotif && !deletedNotif.isRead ? prevStats.unreadCount - 1 : prevStats.unreadCount,
+          totalCount: prevStats.totalCount - 1
+        }));
+
+        return newNotifications;
+      });
     } catch (error) {
       console.error('Error deleting notification:', error);
     }
-  };
+  }, [supabase]);
 
-  const refreshNotifications = async () => {
+  const refreshNotifications = useCallback(async () => {
     if (userId) {
       await loadNotifications(userId);
     }
-  };
+  }, [userId, loadNotifications]);
+
+  // Mémoriser le context value pour éviter re-renders inutiles
+  const value = useMemo(
+    () => ({
+      notifications,
+      stats,
+      isLoading,
+      markAsRead,
+      markAllAsRead,
+      deleteNotification,
+      refreshNotifications,
+    }),
+    [notifications, stats, isLoading, markAsRead, markAllAsRead, deleteNotification, refreshNotifications]
+  );
 
   return (
-    <NotificationContext.Provider
-      value={{
-        notifications,
-        stats,
-        isLoading,
-        markAsRead,
-        markAllAsRead,
-        deleteNotification,
-        refreshNotifications
-      }}
-    >
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );
