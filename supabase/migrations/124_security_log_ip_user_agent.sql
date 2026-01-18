@@ -14,6 +14,9 @@
 -- STEP 1: Update update_bank_info_secure to accept IP + UA parameters
 -- ============================================================================
 
+-- Drop old function signature to avoid conflicts
+DROP FUNCTION IF EXISTS update_bank_info_secure(TEXT, TEXT, TEXT, TEXT, BOOLEAN, TEXT, TIMESTAMPTZ);
+
 CREATE OR REPLACE FUNCTION update_bank_info_secure(
   p_iban TEXT DEFAULT NULL,
   p_bank_name TEXT DEFAULT NULL,
@@ -166,6 +169,9 @@ GRANT EXECUTE ON FUNCTION update_bank_info_secure(
 -- ============================================================================
 -- STEP 3: Update store_iban_encrypted to also accept IP + UA
 -- ============================================================================
+
+-- Drop old function signature
+DROP FUNCTION IF EXISTS store_iban_encrypted(UUID, TEXT);
 
 CREATE OR REPLACE FUNCTION store_iban_encrypted(
   p_user_id UUID,
