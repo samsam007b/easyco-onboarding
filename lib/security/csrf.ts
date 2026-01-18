@@ -67,7 +67,7 @@ function getCSRFToken(request: NextRequest): {
   headerToken: string | undefined;
 } {
   const cookieToken = request.cookies.get(CSRF_TOKEN_COOKIE)?.value;
-  const headerToken = request.headers.get(CSRF_HEADER) || request.headers.get('X-XSRF-Token');
+  const headerToken = request.headers.get(CSRF_HEADER) || request.headers.get('X-XSRF-Token') || undefined;
 
   return { cookieToken, headerToken };
 }

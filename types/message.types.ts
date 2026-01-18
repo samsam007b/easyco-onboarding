@@ -75,6 +75,8 @@ export interface CreateConversationParams {
   subject?: string;
   property_id?: string;
   initial_message?: string;
+  type?: 'direct' | 'group' | 'property';
+  description?: string;
 }
 
 export interface SendMessageParams {

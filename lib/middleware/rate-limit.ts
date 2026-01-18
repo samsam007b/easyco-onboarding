@@ -83,7 +83,7 @@ const limiterConfigs = {
     requests: 10,
     window: '1 m',
   },
-};
+} as const;
 
 // Créer les limiters si Redis est configuré
 const limiters: Record<keyof typeof limiterConfigs, Ratelimit | null> = {

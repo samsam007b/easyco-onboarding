@@ -172,7 +172,7 @@ function ReauthContent() {
               className="w-full h-12 rounded-xl bg-gradient-to-r from-owner-500 to-resident-500 hover:from-owner-600 hover:to-resident-600 text-white font-semibold"
             >
               {isLoading ? (
-                <LoadingHouse size="sm" />
+                <LoadingHouse size={24} />
               ) : (
                 t('auth.verifyIdentity')
               )}
@@ -185,7 +185,7 @@ function ReauthContent() {
           {/* Logout Option */}
           <div className="text-center">
             <p className="text-sm text-slate-500 mb-2">
-              {t('auth.notYou', 'Ce n\'est pas toi ?')}
+              {t('auth.notYou')}
             </p>
             <button
               onClick={handleLogout}
@@ -198,10 +198,7 @@ function ReauthContent() {
 
         {/* Security Notice */}
         <p className="text-center text-xs text-slate-400 mt-6 px-4">
-          {t(
-            'auth.securityNotice',
-            'Pour ta sécurité, nous demandons une vérification après 30 minutes d\'inactivité sur les pages sensibles.'
-          )}
+          {t('auth.securityNotice')}
         </p>
       </div>
     </div>

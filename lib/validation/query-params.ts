@@ -102,13 +102,18 @@ export function createSortSchema(allowedFields: string[]) {
 // ============================================================================
 
 /**
- * Search/query parameter
+ * Search/query parameter base (for merging with other schemas)
  * q: string with max length 200
  */
-export const searchSchema = z.object({
+export const searchSchemaBase = z.object({
   q: z.string().min(1).max(200).optional(),
   query: z.string().min(1).max(200).optional(),
-}).transform(data => data.q || data.query || '');
+});
+
+/**
+ * Search schema with transform (returns string directly)
+ */
+export const searchSchema = searchSchemaBase.transform(data => data.q || data.query || '');
 
 export type SearchParams = string; // Returns the query string
 
@@ -133,7 +138,7 @@ export type MatchingScoreParams = z.infer<typeof matchingScoreSchema>;
 /**
  * Pagination + Search combined (common pattern)
  */
-export const paginatedSearchSchema = paginationSchema.merge(searchSchema);
+export const paginatedSearchSchema = paginationSchema.merge(searchSchemaBase);
 
 /**
  * Pagination + Sorting combined
