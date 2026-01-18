@@ -2,15 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/auth/supabase-server';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 import type { ValidateInvitationResponse } from '@/types/invitation.types';
-import { createRateLimiter } from '@/lib/security/rate-limiter';
+import { checkRateLimit, getClientIdentifier } from '@/lib/security/rate-limiter';
 import { z } from 'zod';
-
-// SECURITY: Rate limiting to prevent token brute-force
-const rateLimiter = createRateLimiter({
-  requests: 10, // 10 attempts
-  window: '15 m', // per 15 minutes
-  prefix: 'invitation-validate',
-});
 
 export async function GET(
   request: NextRequest,
@@ -33,8 +26,13 @@ export async function GET(
     }
 
     // SECURITY: Rate limiting (prevent brute-force)
-    const clientIP = request.headers.get('x-forwarded-for') || 'unknown';
-    const rateLimitResult = await rateLimiter.check(`${clientIP}:${token}`);
+    const clientIP = getClientIdentifier(request);
+    const rateLimitResult = await checkRateLimit(
+      `invitation-validate:${clientIP}:${token}`,
+      'invitation-validate',
+      10, // 10 attempts
+      900 // 15 minutes (900 seconds)
+    );
 
     if (!rateLimitResult.success) {
       return NextResponse.json(
