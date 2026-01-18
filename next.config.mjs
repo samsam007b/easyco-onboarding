@@ -102,6 +102,8 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
+              // Note: unsafe-inline/unsafe-eval needed for Next.js + Tailwind CSS
+              // TODO: Move to nonce-based CSP when migrating to strict mode
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://maps.googleapis.com https://cdn.jsdelivr.net https://js.stripe.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "img-src 'self' data: https: blob:",
@@ -115,6 +117,23 @@ const nextConfig = {
               "object-src 'none'",
               "upgrade-insecure-requests",
             ].join('; '),
+          },
+          // Modern isolation headers (2026 best practice)
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin',
+          },
+          {
+            key: 'Cross-Origin-Embedder-Policy',
+            value: 'credentialless', // Less strict than require-corp, compatible with third-party
+          },
+          {
+            key: 'Cross-Origin-Resource-Policy',
+            value: 'same-site',
+          },
+          {
+            key: 'X-Permitted-Cross-Domain-Policies',
+            value: 'none',
           },
         ],
       },
