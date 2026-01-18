@@ -81,6 +81,11 @@ export async function GET(request: NextRequest) {
 
     const { supabase, user } = adminCheck;
 
+    // TypeScript guard: supabase should always be defined after admin check
+    if (!supabase) {
+      return NextResponse.json({ error: 'Database client not available' }, { status: 500 });
+    }
+
     // Parse URL for query params
     const { searchParams } = new URL(request.url);
     const section = searchParams.get('section') || 'all';
