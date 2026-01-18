@@ -62,12 +62,12 @@ function ReauthContent() {
     e.preventDefault();
 
     if (!password) {
-      toast.error(t('errors.passwordRequired', 'Mot de passe requis'));
+      toast.error(t('errors.passwordRequired'));
       return;
     }
 
     if (!userEmail) {
-      toast.error(t('errors.noSession', 'Session expirée'));
+      toast.error(t('errors.noSession'));
       router.push('/auth');
       return;
     }
@@ -82,18 +82,18 @@ function ReauthContent() {
       });
 
       if (error) {
-        toast.error(t('errors.invalidPassword', 'Mot de passe incorrect'));
+        toast.error(t('errors.invalidPassword'));
         setPassword('');
         setIsLoading(false);
         return;
       }
 
       // Success - redirect to original destination
-      toast.success(t('auth.reauthSuccess', 'Identité vérifiée'));
+      toast.success(t('auth.reauthSuccess'));
       router.push(redirectPath);
     } catch (err) {
       console.error('Reauth error:', err);
-      toast.error(t('errors.unexpected', 'Une erreur est survenue'));
+      toast.error(t('errors.unexpected'));
       setIsLoading(false);
     }
   };
@@ -118,20 +118,20 @@ function ReauthContent() {
           {/* Header */}
           <div className="text-center mb-8">
             <h1 className="text-2xl font-heading font-bold text-slate-800 mb-2">
-              {t('auth.sessionTimeout', 'Session expirée')}
+              {t('auth.sessionTimeout')}
             </h1>
             <p className="text-slate-500 text-sm flex items-center justify-center gap-2">
               <Clock className="w-4 h-4" />
               {timeoutReason === 'session_timeout'
-                ? t('auth.inactivityMessage', 'Vérifie ton identité pour accéder aux données sensibles')
-                : t('auth.reauthRequired', 'Reconnexion requise pour continuer')}
+                ? t('auth.inactivityMessage')
+                : t('auth.reauthRequired')}
             </p>
           </div>
 
           {/* User Info */}
           {userEmail && (
             <div className="bg-slate-50 rounded-xl p-4 mb-6 text-center">
-              <p className="text-sm text-slate-500">{t('auth.connectedAs', 'Connecté en tant que')}</p>
+              <p className="text-sm text-slate-500">{t('auth.connectedAs')}</p>
               <p className="font-medium text-slate-800">{userEmail}</p>
             </div>
           )}
@@ -141,7 +141,7 @@ function ReauthContent() {
             {/* Password Input */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-slate-700 mb-2">
-                {t('auth.password', 'Mot de passe')}
+                {t('auth.password')}
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
@@ -150,7 +150,7 @@ function ReauthContent() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder={t('auth.enterPassword', 'Entre ton mot de passe')}
+                  placeholder={t('auth.enterPassword')}
                   className="pl-10 pr-10 h-12 rounded-xl"
                   autoComplete="current-password"
                   autoFocus
@@ -174,7 +174,7 @@ function ReauthContent() {
               {isLoading ? (
                 <LoadingHouse size="sm" />
               ) : (
-                t('auth.verifyIdentity', 'Vérifier mon identité')
+                t('auth.verifyIdentity')
               )}
             </Button>
           </form>
@@ -191,7 +191,7 @@ function ReauthContent() {
               onClick={handleLogout}
               className="text-sm text-owner-600 hover:text-owner-700 font-medium"
             >
-              {t('auth.logoutAndSwitch', 'Se déconnecter et changer de compte')}
+              {t('auth.logoutAndSwitch')}
             </button>
           </div>
         </div>
