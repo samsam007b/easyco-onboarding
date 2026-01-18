@@ -46,6 +46,15 @@ PATTERNS=(
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+"
     "service_role\s*[:=]\s*['\"]eyJ[^'\"]+['\"]"
 
+    # Upstash Redis (CRITICAL - Added 2026-01-19)
+    "https://[a-z0-9-]+\.upstash\.io"
+    "UPSTASH_REDIS_REST_URL\s*[:=]\s*https://[a-z0-9-]+\.upstash\.io"
+    "AW[A-Za-z0-9]{40,}"
+    "UPSTASH_REDIS_REST_TOKEN\s*[:=]\s*AW[A-Za-z0-9]{40,}"
+
+    # Cron Secrets
+    "CRON_SECRET\s*[:=]\s*[A-Za-z0-9+/=]{32,}"
+
     # Google
     "AIza[0-9A-Za-z_-]{35}"
 
