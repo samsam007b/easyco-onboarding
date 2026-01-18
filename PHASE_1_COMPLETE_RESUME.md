@@ -340,10 +340,12 @@ Ton app **Izzico** peut maintenant gérer :
 ### Variables Vercel à Ajouter (si pas encore fait)
 
 ```
-UPSTASH_REDIS_REST_URL=https://fresh-quail-26327.upstash.io
-UPSTASH_REDIS_REST_TOKEN=AWbXAAIncDFmMWUyMDNlNDZhMzU0NjFiOGIyZjU1NjIwZjQ4OWM4ZnAxMjYzMjc
-CRON_SECRET=5ASc1kiC6vgTncfXN2XOCccfqjBgi2y7CXZzUROdn3I=
+UPSTASH_REDIS_REST_URL=https://[YOUR-DATABASE].upstash.io
+UPSTASH_REDIS_REST_TOKEN=[YOUR-TOKEN-FROM-UPSTASH-DASHBOARD]
+CRON_SECRET=[GENERATE-WITH-openssl-rand-base64-32]
 ```
+
+**IMPORTANT** : Utilise tes propres valeurs depuis Upstash Dashboard, ne copie JAMAIS de vraies credentials ici.
 
 **Sans ça** : Rate limiting ne fonctionne pas en prod.
 
