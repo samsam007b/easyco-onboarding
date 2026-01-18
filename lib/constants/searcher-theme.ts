@@ -1,64 +1,73 @@
 // V3 Searcher Theme Constants
 // Centralized design tokens for the Searcher dashboard
-// Palette: Yellow/Gold/Orange (based on logo gradient)
+// Palette: Yellow/Gold/Amber (#ffa000 = official primary from brand guidelines)
+//
+// ⚠️ SOURCE DE VÉRITÉ: app/globals.css (CSS variables)
+// Ce fichier DOIT être synchronisé manuellement avec globals.css
+// Toute modification de couleur doit être faite dans globals.css D'ABORD,
+// puis propagée ici pour les composants JS/TS.
+//
+// Référence: brand-identity/izzico-charte-graphique-complete.html
 
-// Primary Searcher Gradient (Gold to Orange - from logo)
-export const searcherGradient = 'linear-gradient(135deg, #FFA040 0%, #FFB85C 25%, #FFD080 50%, #FFE5A0 75%, #FFF0C0 100%)';
-export const searcherGradientSimple = 'linear-gradient(135deg, #FFA040 0%, #FFD080 100%)';
-export const searcherGradientVibrant = 'linear-gradient(135deg, #FF8C20 0%, #FFA040 50%, #FFB85C 100%)';
+// Primary Searcher Gradient (Gold/Amber - aligned with brand guidelines)
+export const searcherGradient = 'linear-gradient(135deg, #ffa000 0%, #FBBF24 25%, #FDE68A 50%, #FEF3C7 75%, #FFFBEB 100%)';
+export const searcherGradientSimple = 'linear-gradient(135deg, #ffa000 0%, #FDE68A 100%)';
+export const searcherGradientVibrant = 'linear-gradient(135deg, #D98400 0%, #ffa000 50%, #FBBF24 100%)';
 export const searcherGradientLight = 'linear-gradient(135deg, #FFF9E6 0%, #FFFBEA 100%)';
 export const searcherPageBackground = 'linear-gradient(135deg, #FFF9E6 0%, #FFFFFF 50%, #FFFBEA 100%)';
 
-// Individual Searcher Colors (5-color palette from gradient)
+// Individual Searcher Colors (aligned with official v3 scale)
+// Source: brand-identity/izzico-charte-graphique-complete.html
 export const searcherColors = {
-  primary: '#FFA040',    // Orange doré - couleur principale
-  secondary: '#FFB85C',  // Or clair
-  tertiary: '#FFD080',   // Jaune doux
-  quaternary: '#FFE5A0', // Crème doré
-  accent: '#FF8C20',     // Orange vif (pour les CTAs)
+  primary: '#ffa000',    // 500 - Gold primary (official)
+  secondary: '#FBBF24',  // 400 - Light gold
+  tertiary: '#FDE68A',   // 200 - Soft yellow
+  quaternary: '#FEF3C7', // 100 - Cream
+  accent: '#D98400',     // 600 - Vibrant gold (for CTAs)
 } as const;
 
 // Extended Searcher Palette with light/bg variants for each color
+// Aligned with v3 scale (50-900) from brand guidelines
 export const searcherPalette = {
   primary: {
-    main: '#FFA040',
-    light: '#FFF9E6',
-    bg: 'linear-gradient(135deg, #FFF9E6 0%, #FFF5DC 100%)',
-    text: '#C67A30',
-    border: '#FFD49A',
-    shadow: 'rgba(255, 160, 64, 0.15)',
+    main: '#ffa000',        // 500
+    light: '#FFFBEB',       // 50
+    bg: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', // 50→100
+    text: '#A16300',        // 700 (WCAG AA compliant)
+    border: '#FDE68A',      // 200
+    shadow: 'rgba(255, 160, 0, 0.15)',
   },
   secondary: {
-    main: '#FFB85C',
-    light: '#FFFBEA',
-    bg: 'linear-gradient(135deg, #FFFBEA 0%, #FFF8E0 100%)',
-    text: '#D49040',
-    border: '#FFE0A8',
-    shadow: 'rgba(255, 184, 92, 0.15)',
+    main: '#FBBF24',        // 400
+    light: '#FEF3C7',       // 100
+    bg: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)', // 100→200
+    text: '#A16300',        // 700
+    border: '#FCD34D',      // 300
+    shadow: 'rgba(251, 191, 36, 0.15)',
   },
   tertiary: {
-    main: '#FFD080',
-    light: '#FFFCF0',
-    bg: 'linear-gradient(135deg, #FFFCF0 0%, #FFF9E6 100%)',
-    text: '#B88A40',
-    border: '#FFE8B8',
-    shadow: 'rgba(255, 208, 128, 0.15)',
+    main: '#FDE68A',        // 200
+    light: '#FFFBEB',       // 50
+    bg: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', // 50→100
+    text: '#A16300',        // 700
+    border: '#FCD34D',      // 300
+    shadow: 'rgba(253, 230, 138, 0.15)',
   },
   quaternary: {
-    main: '#FFE5A0',
-    light: '#FFFDF5',
-    bg: 'linear-gradient(135deg, #FFFDF5 0%, #FFFBEA 100%)',
-    text: '#A08050',
-    border: '#FFEFC0',
-    shadow: 'rgba(255, 229, 160, 0.15)',
+    main: '#FEF3C7',        // 100
+    light: '#FFFBEB',       // 50
+    bg: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)', // 50→100
+    text: '#A16300',        // 700
+    border: '#FDE68A',      // 200
+    shadow: 'rgba(254, 243, 199, 0.15)',
   },
   accent: {
-    main: '#FF8C20',
-    light: '#FFF5E6',
-    bg: 'linear-gradient(135deg, #FFF5E6 0%, #FFF0DC 100%)',
-    text: '#B86010',
-    border: '#FFCB90',
-    shadow: 'rgba(255, 140, 32, 0.15)',
+    main: '#D98400',        // 600 (vibrant)
+    light: '#FEF3C7',       // 100
+    bg: 'linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%)', // 100→200
+    text: '#764800',        // 800 (darker for contrast)
+    border: '#FCD34D',      // 300
+    shadow: 'rgba(217, 132, 0, 0.15)',
   },
 } as const;
 
@@ -192,12 +201,12 @@ export function getMatchScoreCategory(score: number): keyof typeof matchScoreCol
   return 'low';
 }
 
-// Shadows
+// Shadows (aligned with #ffa000 = rgba(255, 160, 0))
 export const searcherShadows = {
-  card: '0 4px 14px rgba(255, 160, 64, 0.1)',
-  cardHover: '0 8px 24px rgba(255, 160, 64, 0.15)',
-  button: '0 4px 14px rgba(255, 140, 32, 0.3)',
-  glow: '0 0 40px rgba(255, 160, 64, 0.3)',
+  card: '0 4px 14px rgba(255, 160, 0, 0.1)',
+  cardHover: '0 8px 24px rgba(255, 160, 0, 0.15)',
+  button: '0 4px 14px rgba(217, 132, 0, 0.3)',        // Using 600 for buttons
+  glow: '0 0 40px rgba(255, 160, 0, 0.3)',
 } as const;
 
 // Animation Variants (for Framer Motion)

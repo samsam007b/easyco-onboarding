@@ -1,6 +1,13 @@
 // V3 Owner Theme Constants
 // Centralized design tokens for the Owner dashboard
-// Source: brand-identity/izzico-color-system.html
+// Palette: Mauve/Purple (#9c5698 = official primary from brand guidelines)
+//
+// ⚠️ SOURCE DE VÉRITÉ: app/globals.css (CSS variables)
+// Ce fichier DOIT être synchronisé manuellement avec globals.css
+// Toute modification de couleur doit être faite dans globals.css D'ABORD,
+// puis propagée ici pour les composants JS/TS.
+//
+// Référence: brand-identity/izzico-charte-graphique-complete.html
 
 // Primary Owner Gradient (V3 Solid Color)
 export const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #9c5698 50%, #9c5698 100%)';

@@ -65,6 +65,9 @@ const nextConfig = {
   // ============================================================================
 
   async headers() {
+    // Déterminer si on est en production
+    const isProduction = process.env.NODE_ENV === 'production'
+
     return [
       {
         // Headers de sécurité sur toutes les routes
@@ -74,10 +77,12 @@ const nextConfig = {
             key: 'X-DNS-Prefetch-Control',
             value: 'on',
           },
-          {
+          // ⚠️ HSTS désactivé en développement (cause erreurs SSL localhost)
+          // Activé uniquement en production pour forcer HTTPS
+          ...(isProduction ? [{
             key: 'Strict-Transport-Security',
             value: 'max-age=63072000; includeSubDomains; preload',
-          },
+          }] : []),
           {
             key: 'X-Frame-Options',
             value: 'DENY',
@@ -115,8 +120,10 @@ const nextConfig = {
               "base-uri 'self'",
               "form-action 'self'",
               "object-src 'none'",
-              "upgrade-insecure-requests",
-            ].join('; '),
+              // ⚠️ upgrade-insecure-requests désactivé en dev (force HTTPS sur localhost)
+              // Activé uniquement en production
+              ...(isProduction ? ["upgrade-insecure-requests"] : []),
+            ].filter(Boolean).join('; '),
           },
           // Modern isolation headers (2026 best practice)
           {

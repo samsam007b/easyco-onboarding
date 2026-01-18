@@ -1,0 +1,2495 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Izzico - Charte Graphique et Design System v3</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&family=Fredoka:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Signature gradient colors */
+      --owner-primary: #9c5698;
+      --resident-primary: #e05747;
+      --searcher-primary: #ffa000;
+      --gradient-bridge: #c85570;
+
+      /* Typography */
+      --font-body: 'Inter', sans-serif;
+      --font-heading: 'Nunito', sans-serif;
+      --font-brand: 'Fredoka', sans-serif;
+
+      /* UI Colors */
+      --gray-50: #FAFAFA;
+      --gray-100: #F4F4F5;
+      --gray-200: #E4E4E7;
+      --gray-300: #D4D4D8;
+      --gray-700: #3F3F46;
+      --gray-800: #27272A;
+      --gray-900: #18181B;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--gray-900);
+      line-height: 1.6;
+      background: #fff;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: var(--font-heading);
+      line-height: 1.2;
+    }
+
+    .brand-text {
+      font-family: var(--font-brand);
+      font-weight: 600;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(135deg,
+        var(--owner-primary) 0%,
+        var(--gradient-bridge) 20%,
+        #d15659 35%,
+        var(--resident-primary) 50%,
+        #ff7c10 75%,
+        var(--searcher-primary) 100%
+      );
+      color: white;
+      padding: 60px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .header h1 {
+      font-size: 48px;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+
+    .header p {
+      font-size: 18px;
+      opacity: 0.95;
+      margin-bottom: 8px;
+    }
+
+    .header .meta {
+      font-size: 14px;
+      opacity: 0.8;
+      margin-top: 20px;
+    }
+
+    /* Navigation */
+    .nav {
+      position: sticky;
+      top: 0;
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .nav-content {
+      display: flex;
+      gap: 32px;
+      padding: 20px 0;
+      overflow-x: auto;
+    }
+
+    .nav a {
+      color: var(--gray-700);
+      text-decoration: none;
+      font-weight: 500;
+      white-space: nowrap;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav a:hover {
+      color: var(--owner-primary);
+    }
+
+    /* Content */
+    .content {
+      padding: 60px 0;
+    }
+
+    .section {
+      margin-bottom: 80px;
+    }
+
+    .section-header {
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 3px solid var(--gray-200);
+    }
+
+    .section-header h2 {
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .section-header p {
+      color: var(--gray-700);
+      font-size: 16px;
+    }
+
+    .subsection {
+      margin-bottom: 48px;
+    }
+
+    .subsection h3 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: var(--gray-800);
+    }
+
+    .subsection h4 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      margin-top: 24px;
+      color: var(--gray-700);
+    }
+
+    .text {
+      color: var(--gray-700);
+      margin-bottom: 16px;
+    }
+
+    /* Color Swatches */
+    .color-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .color-swatch {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .color-swatch:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .color-preview {
+      height: 100px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px;
+      background: white;
+    }
+
+    .color-name {
+      font-weight: 600;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .color-code {
+      font-family: 'Monaco', monospace;
+      font-size: 11px;
+      color: var(--gray-700);
+    }
+
+    /* Gradient Display */
+    .gradient-display {
+      height: 120px;
+      border-radius: 16px;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--gray-200);
+    }
+
+    .gradient-info {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      right: 16px;
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(10px);
+      padding: 12px;
+      border-radius: 8px;
+    }
+
+    .gradient-name {
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .gradient-code {
+      font-family: 'Monaco', monospace;
+      font-size: 11px;
+      color: var(--gray-700);
+    }
+
+    /* Typography Examples */
+    .type-example {
+      margin: 24px 0;
+      padding: 24px;
+      background: var(--gray-50);
+      border-radius: 12px;
+    }
+
+    .type-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-700);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Code Blocks */
+    .code-block {
+      background: var(--gray-900);
+      color: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 16px 0;
+      overflow-x: auto;
+      font-family: 'Monaco', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .code-block .comment {
+      color: #6B7280;
+    }
+
+    .code-block .property {
+      color: #60A5FA;
+    }
+
+    .code-block .value {
+      color: #34D399;
+    }
+
+    .code-block .tag {
+      color: #F472B6;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+      font-size: 14px;
+    }
+
+    th {
+      text-align: left;
+      padding: 12px;
+      background: var(--gray-100);
+      font-weight: 600;
+      border-bottom: 2px solid var(--gray-300);
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    tr:hover {
+      background: var(--gray-50);
+    }
+
+    /* Warning Box */
+    .warning {
+      background: #FEF3C7;
+      border-left: 4px solid #F59E0B;
+      padding: 16px 20px;
+      border-radius: 8px;
+      margin: 24px 0;
+    }
+
+    .warning-title {
+      font-weight: 700;
+      color: #92400E;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .warning-text {
+      color: #78350F;
+      font-size: 14px;
+    }
+
+    /* Logo Grid */
+    .logo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin: 24px 0;
+    }
+
+    .logo-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .logo-preview {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      background: var(--gray-50);
+      border-radius: 8px;
+    }
+
+    .logo-name {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .logo-details {
+      font-size: 13px;
+      color: var(--gray-700);
+    }
+
+    /* Animation Examples */
+    .animation-demo {
+      height: 200px;
+      background: var(--gray-50);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 24px 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Component Examples */
+    .component-example {
+      padding: 32px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 12px;
+      margin: 24px 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      gap: 8px;
+    }
+
+    .btn-primary {
+      background: var(--owner-primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(156, 86, 152, 0.3);
+    }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.2s;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* Spacing */
+    .spacing-grid {
+      display: grid;
+      gap: 16px;
+      margin: 24px 0;
+    }
+
+    .spacing-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .spacing-visual {
+      background: var(--owner-primary);
+      height: 32px;
+      border-radius: 4px;
+    }
+
+    .spacing-label {
+      font-weight: 600;
+      min-width: 100px;
+    }
+
+    /* Copy button */
+    .copy-btn {
+      background: white;
+      border: 1px solid var(--gray-300);
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--gray-100);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--gray-900);
+      color: white;
+      padding: 40px 0;
+      margin-top: 80px;
+    }
+
+    .footer-content {
+      text-align: center;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 20px;
+      }
+
+      .header h1 {
+        font-size: 32px;
+      }
+
+      .section-header h2 {
+        font-size: 28px;
+      }
+
+      .color-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+
+      .nav-content {
+        gap: 16px;
+      }
+    }
+
+    /* Print styles */
+    @media print {
+      .nav,
+      .copy-btn {
+        display: none;
+      }
+
+      .section {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-content">
+      <h1 class="brand-text">Izzico</h1>
+      <p>Charte Graphique et Design System v3</p>
+      <p>Document de référence complet pour développeurs et designers</p>
+      <div class="meta">
+        Version 3.1.0 • Dernière mise à jour : 18 janvier 2026
+      </div>
+    </div>
+  </header>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <div class="container">
+      <div class="nav-content">
+        <a href="#introduction">Introduction</a>
+        <a href="#couleurs">Couleurs</a>
+        <a href="#typographie">Typographie</a>
+        <a href="#logos">Logos</a>
+        <a href="#spacing">Spacing</a>
+        <a href="#shapes">Shapes</a>
+        <a href="#shadows">Shadows</a>
+        <a href="#animations">Animations</a>
+        <a href="#composants">Composants</a>
+        <a href="#voice">Tone of Voice</a>
+        <a href="#divergences">Divergences</a>
+        <a href="#code">Code</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content -->
+  <main class="content">
+    <div class="container">
+
+      <!-- 1. INTRODUCTION -->
+      <section id="introduction" class="section">
+        <div class="section-header">
+          <h2>1. Introduction</h2>
+          <p>Vue d'ensemble du design system Izzico v3</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Résumé Exécutif</h3>
+          <p class="text">
+            Ce document constitue la <strong>source unique de vérité</strong> pour le design system Izzico v3.
+            Il unifie les documents brand-identity existants avec l'implémentation réelle du code pour garantir
+            une cohérence totale entre design et développement.
+          </p>
+          <p class="text">
+            Izzico est une plateforme de co-living avec trois rôles utilisateurs distincts :
+            <strong>Owner</strong> (propriétaires), <strong>Resident</strong> (résidents),
+            et <strong>Searcher</strong> (chercheurs de logement). Chaque rôle possède sa propre identité colorimétrique.
+          </p>
+        </div>
+
+        <div class="subsection">
+          <h3>Principes Fondamentaux</h3>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>Gradient Signature</strong> : Les 3 couleurs primaires (Owner, Resident, Searcher) forment l'ADN de la marque</li>
+            <li><strong>Superellipse</strong> : Coins arrondis style iOS (85% corner-shape: squircle) inspirés de Fredoka</li>
+            <li><strong>Glassmorphism</strong> : backdrop-blur-sm + bg-white/80 pour des effets modernes</li>
+            <li><strong>Accessibilité</strong> : WCAG AA minimum (4.5:1), ΔE > 7 entre couleurs distinctes</li>
+            <li><strong>Progression L*</strong> : Échelles de couleurs monotones décroissantes (50 → 900)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 2. SYSTÈME COLORIMÉTRIQUE -->
+      <section id="couleurs" class="section">
+        <div class="section-header">
+          <h2>2. Système Colorimétrique</h2>
+          <p>Couleurs primaires, gradients signature, et palettes par rôle</p>
+        </div>
+
+        <!-- Gradient Signature -->
+        <div class="subsection">
+          <h3>🔒 Gradient Signature (VERROUILLÉ)</h3>
+          <p class="text">
+            Le gradient signature Izzico utilise les <strong>3 couleurs primaires des rôles</strong>.
+            Il représente l'identité visuelle de la marque et ne doit jamais être modifié sans approbation explicite.
+          </p>
+          <p class="text">
+            <strong>Version officielle :</strong> Choisie le 9 décembre 2025<br>
+            <strong>Stops :</strong> 0% Owner (#9c5698) → 20% Bridge (#c85570) → 50% Resident (#e05747) → 100% Searcher (#ffa000)
+          </p>
+
+          <div class="gradient-display" style="background: linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%);">
+            <div class="gradient-info">
+              <div class="gradient-name">Gradient Signature Izzico v3</div>
+              <div class="gradient-code">linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)</div>
+            </div>
+          </div>
+
+          <h4>Code CSS</h4>
+          <div class="code-block">
+<span class="comment">/* Gradient Signature Izzico */</span>
+<span class="property">--gradient-brand:</span> <span class="value">linear-gradient(135deg,
+  #9c5698 0%,    /* Owner Primary */
+  #c85570 20%,   /* Bridge (évite zone boue) */
+  #d15659 35%,   /* Transition */
+  #e05747 50%,   /* Resident Primary */
+  #ff7c10 75%,   /* Transition */
+  #ffa000 100%   /* Searcher Primary */
+)</span>;
+          </div>
+
+          <h4>Code SwiftUI</h4>
+          <div class="code-block">
+<span class="comment">// Gradient Signature Izzico</span>
+<span class="tag">LinearGradient</span>(
+    gradient: <span class="tag">Gradient</span>(stops: [
+        .<span class="property">init</span>(color: <span class="tag">Color</span>(hex: <span class="value">"9c5698"</span>), location: <span class="value">0.0</span>),
+        .<span class="property">init</span>(color: <span class="tag">Color</span>(hex: <span class="value">"c85570"</span>), location: <span class="value">0.2</span>),
+        .<span class="property">init</span>(color: <span class="tag">Color</span>(hex: <span class="value">"e05747"</span>), location: <span class="value">0.5</span>),
+        .<span class="property">init</span>(color: <span class="tag">Color</span>(hex: <span class="value">"ffa000"</span>), location: <span class="value">1.0</span>)
+    ]),
+    startPoint: .<span class="property">topLeading</span>,
+    endPoint: .<span class="property">bottomTrailing</span>
+)
+          </div>
+        </div>
+
+        <!-- Couleurs Primaires par Rôle -->
+        <div class="subsection">
+          <h3>Couleurs Primaires par Rôle</h3>
+
+          <h4>Owner - Mauve/Purple (#9c5698)</h4>
+          <p class="text">Propriétaires (50-70 ans) - Ton professionnel, chaleureux, fiable</p>
+          <div class="color-grid">
+            <div class="color-swatch" onclick="copyToClipboard('#F8F0F7')">
+              <div class="color-preview" style="background: #F8F0F7;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 50</div>
+                <div class="color-code">#F8F0F7</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#F0E0EE')">
+              <div class="color-preview" style="background: #F0E0EE;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 100</div>
+                <div class="color-code">#F0E0EE</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#E0C0DC')">
+              <div class="color-preview" style="background: #E0C0DC;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 200</div>
+                <div class="color-code">#E0C0DC</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#C990C2')">
+              <div class="color-preview" style="background: #C990C2;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 300</div>
+                <div class="color-code">#C990C2</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#B070A8')">
+              <div class="color-preview" style="background: #B070A8;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 400</div>
+                <div class="color-code">#B070A8</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#9c5698')" style="border: 3px solid var(--gray-800);">
+              <div class="color-preview" style="background: #9c5698;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 500 PRIMARY</div>
+                <div class="color-code">#9c5698</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#7E4580')">
+              <div class="color-preview" style="background: #7E4580;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 600</div>
+                <div class="color-code">#7E4580</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#633668')">
+              <div class="color-preview" style="background: #633668;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 700 TEXT</div>
+                <div class="color-code">#633668</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#482850')">
+              <div class="color-preview" style="background: #482850;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 800</div>
+                <div class="color-code">#482850</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#2E1A38')">
+              <div class="color-preview" style="background: #2E1A38;"></div>
+              <div class="color-info">
+                <div class="color-name">Owner 900</div>
+                <div class="color-code">#2E1A38</div>
+              </div>
+            </div>
+          </div>
+
+          <h4>Resident - Coral/Orange (#e05747)</h4>
+          <p class="text">Résidents (20-30 ans) - Ton décontracté, direct, coloc virtuel</p>
+          <div class="color-grid">
+            <div class="color-swatch" onclick="copyToClipboard('#FEF2EE')">
+              <div class="color-preview" style="background: #FEF2EE;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 50</div>
+                <div class="color-code">#FEF2EE</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#FDE0D6')">
+              <div class="color-preview" style="background: #FDE0D6;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 100</div>
+                <div class="color-code">#FDE0D6</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#F9B8A0')">
+              <div class="color-preview" style="background: #F9B8A0;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 200</div>
+                <div class="color-code">#F9B8A0</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#F28B6A')">
+              <div class="color-preview" style="background: #F28B6A;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 300</div>
+                <div class="color-code">#F28B6A</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#E96A50')">
+              <div class="color-preview" style="background: #E96A50;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 400</div>
+                <div class="color-code">#E96A50</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#e05747')" style="border: 3px solid var(--gray-800);">
+              <div class="color-preview" style="background: #e05747;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 500 PRIMARY</div>
+                <div class="color-code">#e05747</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#C04538')">
+              <div class="color-preview" style="background: #C04538;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 600</div>
+                <div class="color-code">#C04538</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#9A362C')">
+              <div class="color-preview" style="background: #9A362C;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 700 TEXT</div>
+                <div class="color-code">#9A362C</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#742920')">
+              <div class="color-preview" style="background: #742920;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 800</div>
+                <div class="color-code">#742920</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#4E1C16')">
+              <div class="color-preview" style="background: #4E1C16;"></div>
+              <div class="color-info">
+                <div class="color-name">Resident 900</div>
+                <div class="color-code">#4E1C16</div>
+              </div>
+            </div>
+          </div>
+
+          <h4>Searcher - Gold/Amber (#ffa000)</h4>
+          <p class="text">Chercheurs (20-30 ans) - Ton amical, encourageant, honnête</p>
+          <div class="color-grid">
+            <div class="color-swatch" onclick="copyToClipboard('#FFFBEB')">
+              <div class="color-preview" style="background: #FFFBEB;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 50</div>
+                <div class="color-code">#FFFBEB</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#FEF3C7')">
+              <div class="color-preview" style="background: #FEF3C7;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 100</div>
+                <div class="color-code">#FEF3C7</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#FDE68A')">
+              <div class="color-preview" style="background: #FDE68A;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 200</div>
+                <div class="color-code">#FDE68A</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#FCD34D')">
+              <div class="color-preview" style="background: #FCD34D;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 300</div>
+                <div class="color-code">#FCD34D</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#FBBF24')">
+              <div class="color-preview" style="background: #FBBF24;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 400</div>
+                <div class="color-code">#FBBF24</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#ffa000')" style="border: 3px solid var(--gray-800);">
+              <div class="color-preview" style="background: #ffa000;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 500 PRIMARY</div>
+                <div class="color-code">#ffa000</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#D98400')">
+              <div class="color-preview" style="background: #D98400;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 600</div>
+                <div class="color-code">#D98400</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#A16300')">
+              <div class="color-preview" style="background: #A16300;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 700 TEXT</div>
+                <div class="color-code">#A16300</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#764800')">
+              <div class="color-preview" style="background: #764800;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 800</div>
+                <div class="color-code">#764800</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#4D3000')">
+              <div class="color-preview" style="background: #4D3000;"></div>
+              <div class="color-info">
+                <div class="color-name">Searcher 900</div>
+                <div class="color-code">#4D3000</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Gradients par Rôle -->
+        <div class="subsection">
+          <h3>Gradients par Rôle</h3>
+          <p class="text">Chaque rôle possède 9 variantes de gradients : logo, soft, light, medium, dark, subtle, cta, vibrant</p>
+
+          <h4>Owner Gradients</h4>
+          <div class="gradient-display" style="background: linear-gradient(135deg, #9c5698 0%, #B070A8 50%, #E0C0DC 100%);">
+            <div class="gradient-info">
+              <div class="gradient-name">gradient-owner (logo/default)</div>
+              <div class="gradient-code">linear-gradient(135deg, #9c5698 0%, #B070A8 50%, #E0C0DC 100%)</div>
+            </div>
+          </div>
+
+          <h4>Resident Gradients</h4>
+          <div class="gradient-display" style="background: linear-gradient(135deg, #e05747 0%, #E96A50 50%, #F9B8A0 100%);">
+            <div class="gradient-info">
+              <div class="gradient-name">gradient-resident (logo/default)</div>
+              <div class="gradient-code">linear-gradient(135deg, #e05747 0%, #E96A50 50%, #F9B8A0 100%)</div>
+            </div>
+          </div>
+
+          <h4>Searcher Gradients</h4>
+          <div class="gradient-display" style="background: linear-gradient(135deg, #ffa000 0%, #FBBF24 50%, #FDE68A 100%);">
+            <div class="gradient-info">
+              <div class="gradient-name">gradient-searcher (logo/default)</div>
+              <div class="gradient-code">linear-gradient(135deg, #ffa000 0%, #FBBF24 50%, #FDE68A 100%)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Couleurs Sémantiques -->
+        <div class="subsection">
+          <h3>Couleurs Sémantiques</h3>
+          <p class="text">Couleurs standard pour succès, erreurs, warnings, info</p>
+          <div class="color-grid">
+            <div class="color-swatch" onclick="copyToClipboard('#10B981')">
+              <div class="color-preview" style="background: #10B981;"></div>
+              <div class="color-info">
+                <div class="color-name">Success</div>
+                <div class="color-code">#10B981</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#EF4444')">
+              <div class="color-preview" style="background: #EF4444;"></div>
+              <div class="color-info">
+                <div class="color-name">Error</div>
+                <div class="color-code">#EF4444</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#D97706')">
+              <div class="color-preview" style="background: #D97706;"></div>
+              <div class="color-info">
+                <div class="color-name">Warning</div>
+                <div class="color-code">#D97706</div>
+              </div>
+            </div>
+            <div class="color-swatch" onclick="copyToClipboard('#3B82F6')">
+              <div class="color-preview" style="background: #3B82F6;"></div>
+              <div class="color-info">
+                <div class="color-name">Info</div>
+                <div class="color-code">#3B82F6</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- UI Accents -->
+        <div class="subsection">
+          <h3>UI Accent Colors</h3>
+          <p class="text">7 couleurs fonctionnelles pour UX/UI avec ΔE > 7 entre couleurs distinctes</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Couleur</th>
+                <th>Hex</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><div style="width: 32px; height: 16px; background: #5B8BD9; border-radius: 4px;"></div> Sky</td>
+                <td>#5B8BD9</td>
+                <td>Sécurité, confiance, banque, mots de passe</td>
+              </tr>
+              <tr>
+                <td><div style="width: 32px; height: 16px; background: #7CB89B; border-radius: 4px;"></div> Sage</td>
+                <td>#7CB89B</td>
+                <td>Succès, validation, vérification</td>
+              </tr>
+              <tr>
+                <td><div style="width: 32px; height: 16px; background: #D9A870; border-radius: 4px;"></div> Amber</td>
+                <td>#D9A870</td>
+                <td>Alertes, attention, notifications</td>
+              </tr>
+              <tr>
+                <td><div style="width: 32px; height: 16px; background: #9B7BD9; border-radius: 4px;"></div> Lavender</td>
+                <td>#9B7BD9</td>
+                <td>Premium, exclusivité, luxe</td>
+              </tr>
+              <tr>
+                <td><div style="width: 32px; height: 16px; background: #D08090; border-radius: 4px;"></div> Dusty Rose</td>
+                <td>#D08090</td>
+                <td>Social, communauté, invitations</td>
+              </tr>
+              <tr>
+                <td><div style="width: 32px; height: 16px; background: #70B0C0; border-radius: 4px;"></div> Teal</td>
+                <td>#70B0C0</td>
+                <td>Technique, connectivité, appareils</td>
+              </tr>
+              <tr>
+                <td><div style="width: 32px; height: 16px; background: #C87060; border-radius: 4px;"></div> Terracotta</td>
+                <td>#C87060</td>
+                <td>Personnel, profil, identité</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Règles WCAG -->
+        <div class="subsection">
+          <h3>Règles d'Accessibilité</h3>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>WCAG AA minimum :</strong> Ratio de contraste 4.5:1 pour tout texte</li>
+            <li><strong>ΔE > 7 :</strong> Différence perceptuelle entre couleurs distinctes (seuil de perception humaine)</li>
+            <li><strong>Progression L* monotone :</strong> Luminosité décroissante de 50 (light) vers 900 (dark)</li>
+            <li><strong>Variants TEXT :</strong> Owner 700, Resident 700, Searcher 700 sont text-safe (WCAG AA)</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 3. TYPOGRAPHIE -->
+      <section id="typographie" class="section">
+        <div class="section-header">
+          <h2>3. Typographie</h2>
+          <p>Les 3 fonts Izzico : Inter, Nunito, Fredoka</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Les 3 Fonts</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Font</th>
+                <th>Usage</th>
+                <th>Poids disponibles</th>
+                <th>Variable CSS</th>
+                <th>Tailwind Class</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong style="font-family: var(--font-body);">Inter</strong></td>
+                <td>Body text, UI elements</td>
+                <td>400, 500, 600, 700</td>
+                <td>--font-inter</td>
+                <td>font-sans</td>
+              </tr>
+              <tr>
+                <td><strong style="font-family: var(--font-heading);">Nunito</strong></td>
+                <td>Headings, section titles</td>
+                <td>400, 600, 700, 800</td>
+                <td>--font-nunito</td>
+                <td>font-heading</td>
+              </tr>
+              <tr>
+                <td><strong style="font-family: var(--font-brand);">Fredoka</strong></td>
+                <td>Brand wordmark "Izzico" ONLY</td>
+                <td>500, 600</td>
+                <td>--font-fredoka</td>
+                <td>font-brand</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Exemples Visuels</h3>
+
+          <div class="type-example">
+            <div class="type-label">H1 - Nunito 48px / Bold</div>
+            <h1 style="font-size: 48px; margin-top: 8px;">Bienvenue dans ton nouvel espace</h1>
+          </div>
+
+          <div class="type-example">
+            <div class="type-label">H2 - Nunito 36px / Bold</div>
+            <h2 style="font-size: 36px; margin-top: 8px;">Tes dernières candidatures</h2>
+          </div>
+
+          <div class="type-example">
+            <div class="type-label">Body - Inter 16px / Regular</div>
+            <p style="font-size: 16px; font-family: var(--font-body); margin-top: 8px;">
+              Le co-living chez Izzico, c'est trouver les bonnes personnes pour vivre avec toi.
+              On enlève les galères pour que tu te concentres sur les choses chouettes.
+            </p>
+          </div>
+
+          <div class="type-example">
+            <div class="type-label">Brand - Fredoka 32px / SemiBold</div>
+            <div style="font-family: var(--font-brand); font-size: 32px; font-weight: 600; margin-top: 8px;">
+              Izzico
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Hiérarchie Typographique</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Font</th>
+                <th>Size (px / rem)</th>
+                <th>Weight</th>
+                <th>Line Height</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>h1</td>
+                <td>Nunito</td>
+                <td>48px / 3rem</td>
+                <td>700 (Bold)</td>
+                <td>1.2</td>
+              </tr>
+              <tr>
+                <td>h2</td>
+                <td>Nunito</td>
+                <td>36px / 2.25rem</td>
+                <td>700 (Bold)</td>
+                <td>1.2</td>
+              </tr>
+              <tr>
+                <td>h3</td>
+                <td>Nunito</td>
+                <td>24px / 1.5rem</td>
+                <td>600 (SemiBold)</td>
+                <td>1.3</td>
+              </tr>
+              <tr>
+                <td>h4</td>
+                <td>Nunito</td>
+                <td>20px / 1.25rem</td>
+                <td>600 (SemiBold)</td>
+                <td>1.3</td>
+              </tr>
+              <tr>
+                <td>body</td>
+                <td>Inter</td>
+                <td>16px / 1rem</td>
+                <td>400 (Regular)</td>
+                <td>1.6</td>
+              </tr>
+              <tr>
+                <td>caption</td>
+                <td>Inter</td>
+                <td>14px / 0.875rem</td>
+                <td>400 (Regular)</td>
+                <td>1.5</td>
+              </tr>
+              <tr>
+                <td>small</td>
+                <td>Inter</td>
+                <td>12px / 0.75rem</td>
+                <td>400 (Regular)</td>
+                <td>1.5</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Code d'Intégration</h3>
+
+          <h4>CSS Variables</h4>
+          <div class="code-block">
+<span class="property">--font-body:</span> <span class="value">var(--font-inter), 'Inter', sans-serif</span>;
+<span class="property">--font-heading:</span> <span class="value">var(--font-nunito), 'Nunito', sans-serif</span>;
+<span class="property">--font-brand:</span> <span class="value">var(--font-fredoka), 'Fredoka', sans-serif</span>;
+          </div>
+
+          <h4>Tailwind Classes</h4>
+          <div class="code-block">
+<span class="tag">&lt;p</span> <span class="property">className</span>=<span class="value">"font-sans"</span><span class="tag">&gt;</span>Regular body text (Inter)<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;h1</span> <span class="property">className</span>=<span class="value">"font-heading"</span><span class="tag">&gt;</span>Section Title (Nunito)<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;span</span> <span class="property">className</span>=<span class="value">"font-brand"</span><span class="tag">&gt;</span>Izzico<span class="tag">&lt;/span&gt;</span>
+          </div>
+
+          <h4>SwiftUI Font Extensions</h4>
+          <div class="code-block">
+<span class="comment">// Custom font modifiers</span>
+<span class="tag">Text</span>(<span class="value">"Body text"</span>)
+    .<span class="property">font</span>(.<span class="property">custom</span>(<span class="value">"Inter"</span>, size: <span class="value">16</span>))
+    .<span class="property">fontWeight</span>(.<span class="property">regular</span>)
+
+<span class="tag">Text</span>(<span class="value">"Heading"</span>)
+    .<span class="property">font</span>(.<span class="property">custom</span>(<span class="value">"Nunito"</span>, size: <span class="value">24</span>))
+    .<span class="property">fontWeight</span>(.<span class="property">bold</span>)
+
+<span class="tag">Text</span>(<span class="value">"Izzico"</span>)
+    .<span class="property">font</span>(.<span class="property">custom</span>(<span class="value">"Fredoka"</span>, size: <span class="value">32</span>))
+    .<span class="property">fontWeight</span>(.<span class="property">semibold</span>)
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. LOGOS & IDENTITÉ VISUELLE -->
+      <section id="logos" class="section">
+        <div class="section-header">
+          <h2>4. Logos & Identité Visuelle</h2>
+          <p>Les 12 versions officielles verrouillées</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Les 12 Versions Officielles</h3>
+          <p class="text">
+            <strong>Location :</strong> brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/<br>
+            <strong>CRITICAL :</strong> Ces fichiers sont les SEULES versions officielles. Ne jamais utiliser les anciennes versions.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Gradient Signature</th>
+                <th>Noir</th>
+                <th>Blanc</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Icon</strong> (2048px)</td>
+                <td>izzico-icon-squircle-epais-gradient.svg</td>
+                <td>izzico-icon-squircle-epais-noir-2048px.svg</td>
+                <td>izzico-icon-squircle-epais-blanc-2048px.svg</td>
+              </tr>
+              <tr>
+                <td><strong>Trademark</strong> (4096px)</td>
+                <td>izzico-trademark-squircle-epais-gradient.svg</td>
+                <td>izzico-trademark-squircle-epais-noir-4096px.svg</td>
+                <td>izzico-trademark-squircle-epais-blanc-4096px.svg</td>
+              </tr>
+              <tr>
+                <td><strong>Lockup Option D</strong> (4096px)</td>
+                <td>izzico-lockup-optionD-squircle-epais-gradient.svg</td>
+                <td>izzico-lockup-optionD-squircle-epais-noir-4096px.svg</td>
+                <td>izzico-lockup-optionD-squircle-epais-blanc-4096px.svg</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Géométrie de l'Icon</h3>
+          <p class="text">L'icon Izzico combine 4 éléments symboliques :</p>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>Head (Cercle)</strong> : Les résidents - cœur du co-living</li>
+            <li><strong>Loupe (139°)</strong> : Recherche active - Searchers</li>
+            <li><strong>Key (36°)</strong> : Accès au logement - Owners</li>
+            <li><strong>Bust</strong> : L'humain au centre</li>
+          </ul>
+
+          <h4>Orientation</h4>
+          <p class="text">
+            <strong>CRITICAL :</strong> Ne jamais flip ou mirror l'icon<br>
+            • <strong>Key avec dents :</strong> toujours à GAUCHE<br>
+            • <strong>Loupe avec manche :</strong> toujours à DROITE
+          </p>
+        </div>
+
+        <div class="subsection">
+          <h3>Proportions Lockup (Option D)</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Height</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Icon</td>
+                <td>130px</td>
+              </tr>
+              <tr>
+                <td>Gap</td>
+                <td>3px</td>
+              </tr>
+              <tr>
+                <td>Trademark (wordmark)</td>
+                <td>60px</td>
+              </tr>
+              <tr>
+                <td><strong>Ratio Icon/Trademark</strong></td>
+                <td><strong>~2.17:1</strong></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Variantes de Couleur</h3>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>Gradient Signature :</strong> Contextes brandés, splash screens, pages d'accueil</li>
+            <li><strong>Noir (#1A1A2E) :</strong> Fonds clairs, print, documents officiels</li>
+            <li><strong>Blanc (#FFFFFF) :</strong> Fonds sombres, headers avec gradient</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3>85% Squircle Corners</h3>
+          <p class="text">
+            Les coins de l'icon utilisent une superellipse (squircle) à 85% pour créer une liaison visuelle avec la typographie Fredoka.
+            Cette courbure douce est l'un des éléments distinctifs de l'identité Izzico.
+          </p>
+        </div>
+      </section>
+
+      <!-- 5. SPACING & LAYOUT -->
+      <section id="spacing" class="section">
+        <div class="section-header">
+          <h2>5. Spacing & Layout</h2>
+          <p>Échelle de spacing 8px base</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Échelle de Spacing</h3>
+          <p class="text">Système basé sur 8px (0.5rem) pour une cohérence verticale et horizontale</p>
+
+          <div class="spacing-grid">
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-0 (0px)</div>
+              <div class="spacing-visual" style="width: 0px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-1 (4px)</div>
+              <div class="spacing-visual" style="width: 4px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-2 (8px)</div>
+              <div class="spacing-visual" style="width: 8px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-3 (12px)</div>
+              <div class="spacing-visual" style="width: 12px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-4 (16px)</div>
+              <div class="spacing-visual" style="width: 16px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-5 (20px)</div>
+              <div class="spacing-visual" style="width: 20px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-6 (24px)</div>
+              <div class="spacing-visual" style="width: 24px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-8 (32px)</div>
+              <div class="spacing-visual" style="width: 32px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-10 (40px)</div>
+              <div class="spacing-visual" style="width: 40px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-12 (48px)</div>
+              <div class="spacing-visual" style="width: 48px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-16 (64px)</div>
+              <div class="spacing-visual" style="width: 64px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-20 (80px)</div>
+              <div class="spacing-visual" style="width: 80px;"></div>
+            </div>
+            <div class="spacing-item">
+              <div class="spacing-label">spacing-24 (96px)</div>
+              <div class="spacing-visual" style="width: 96px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Patterns Récurrents</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Spacing</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cards (padding)</td>
+                <td>p-5 (20px) ou p-6 (24px)</td>
+                <td>Padding intérieur des cards</td>
+              </tr>
+              <tr>
+                <td>Grids (gap)</td>
+                <td>gap-4 (16px)</td>
+                <td>Espacement entre cards dans une grille</td>
+              </tr>
+              <tr>
+                <td>Conteneurs (padding)</td>
+                <td>p-8 (32px)</td>
+                <td>Padding des sections principales</td>
+              </tr>
+              <tr>
+                <td>Section spacing</td>
+                <td>mb-8 ou mb-12</td>
+                <td>Espacement vertical entre sections</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 6. BORDER RADIUS & SHAPES -->
+      <section id="shapes" class="section">
+        <div class="section-header">
+          <h2>6. Border Radius & Shapes</h2>
+          <p>Système Superellipse (Squircle) inspiré de Fredoka</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Superellipse System</h3>
+          <p class="text">
+            Izzico utilise le nouveau <code>corner-shape: squircle</code> (Chrome 139+) pour des coins organiques et doux,
+            inspirés de la typographie Fredoka. Un fallback <code>border-radius</code> standard est fourni pour les navigateurs non compatibles.
+          </p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Class CSS</th>
+                <th>Border Radius (fallback)</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>.superellipse-sm</td>
+                <td>6px</td>
+                <td>Petits éléments, badges</td>
+              </tr>
+              <tr>
+                <td>.superellipse-md</td>
+                <td>8px</td>
+                <td>Inputs, petits boutons</td>
+              </tr>
+              <tr>
+                <td>.superellipse-lg</td>
+                <td>12px</td>
+                <td>Boutons standards</td>
+              </tr>
+              <tr>
+                <td>.superellipse-xl</td>
+                <td>16px</td>
+                <td>Icons, avatars</td>
+              </tr>
+              <tr>
+                <td>.superellipse-2xl</td>
+                <td>24px</td>
+                <td>Cards (DEFAULT)</td>
+              </tr>
+              <tr>
+                <td>.superellipse-3xl</td>
+                <td>28px</td>
+                <td>Conteneurs majeurs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Patterns par Composant</h3>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>Cards :</strong> superellipse-2xl (24px) - le radius par défaut</li>
+            <li><strong>Conteneurs :</strong> superellipse-3xl (28px) - sections principales</li>
+            <li><strong>Icons :</strong> superellipse-xl (16px) - avatars, icons</li>
+            <li><strong>Buttons :</strong> rounded-full (cercle complet) - boutons CTA</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3>Code CSS</h3>
+          <div class="code-block">
+<span class="comment">/* Superellipse avec progressive enhancement */</span>
+<span class="property">.superellipse-2xl</span> {
+  <span class="property">border-radius:</span> <span class="value">24px</span>; <span class="comment">/* Fallback */</span>
+  <span class="property">corner-shape:</span> <span class="value">squircle</span>; <span class="comment">/* Chrome 139+ */</span>
+}
+          </div>
+
+          <h4>SwiftUI</h4>
+          <div class="code-block">
+<span class="comment">// Superellipse shape</span>
+<span class="tag">RoundedRectangle</span>(cornerRadius: <span class="value">24</span>, style: .<span class="property">continuous</span>)
+    .<span class="property">fill</span>(<span class="tag">Color</span>.white)
+          </div>
+        </div>
+      </section>
+
+      <!-- 7. SHADOWS (OMBRES) -->
+      <section id="shadows" class="section">
+        <div class="section-header">
+          <h2>7. Shadows (Ombres)</h2>
+          <p>6 niveaux d'élévation + shadows rôle-spécifiques</p>
+        </div>
+
+        <div class="subsection">
+          <h3>6 Niveaux de Shadows</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Niveau</th>
+                <th>Valeurs CSS</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>shadow-xs</td>
+                <td>0 1px 2px rgba(0,0,0,0.05)</td>
+                <td>Éléments très subtils</td>
+              </tr>
+              <tr>
+                <td>shadow-sm</td>
+                <td>0 1px 3px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.06)</td>
+                <td>Cards par défaut</td>
+              </tr>
+              <tr>
+                <td>shadow-md</td>
+                <td>0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06)</td>
+                <td>Buttons, cards interactives</td>
+              </tr>
+              <tr>
+                <td>shadow-lg</td>
+                <td>0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)</td>
+                <td>Cards hover</td>
+              </tr>
+              <tr>
+                <td>shadow-xl</td>
+                <td>0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04)</td>
+                <td>Modales, dropdowns</td>
+              </tr>
+              <tr>
+                <td>shadow-2xl</td>
+                <td>0 25px 50px -12px rgba(0,0,0,0.25)</td>
+                <td>Overlays, lightboxes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Shadows Rôle-Spécifiques</h3>
+          <p class="text">Ombres colorées avec les teintes des rôles (alpha channel 0.2)</p>
+
+          <div class="code-block">
+<span class="comment">/* Owner shadow */</span>
+<span class="property">--owner-shadow:</span> <span class="value">rgba(156, 86, 152, 0.2)</span>;
+
+<span class="comment">/* Resident shadow */</span>
+<span class="property">--resident-shadow:</span> <span class="value">rgba(224, 87, 71, 0.2)</span>;
+
+<span class="comment">/* Searcher shadow */</span>
+<span class="property">--searcher-shadow:</span> <span class="value">rgba(255, 160, 0, 0.2)</span>;
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Patterns d'Usage</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Element</th>
+                <th>Default</th>
+                <th>Hover</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Cards</td>
+                <td>shadow-sm</td>
+                <td>shadow-lg</td>
+              </tr>
+              <tr>
+                <td>Buttons</td>
+                <td>shadow-md</td>
+                <td>shadow-lg</td>
+              </tr>
+              <tr>
+                <td>Modales</td>
+                <td>shadow-2xl</td>
+                <td>—</td>
+              </tr>
+              <tr>
+                <td>Dropdowns</td>
+                <td>shadow-xl</td>
+                <td>—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 8. ANIMATIONS & TRANSITIONS -->
+      <section id="animations" class="section">
+        <div class="section-header">
+          <h2>8. Animations & Transitions</h2>
+          <p>Keyframes CSS + Framer Motion patterns</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Keyframes CSS Principales</h3>
+          <div class="code-block">
+<span class="comment">/* Fade In */</span>
+<span class="property">@keyframes fadeIn</span> {
+  <span class="property">from</span> { <span class="property">opacity:</span> <span class="value">0</span>; }
+  <span class="property">to</span> { <span class="property">opacity:</span> <span class="value">1</span>; }
+}
+
+<span class="comment">/* Slide Up */</span>
+<span class="property">@keyframes slideUp</span> {
+  <span class="property">from</span> { <span class="property">opacity:</span> <span class="value">0</span>; <span class="property">transform:</span> <span class="value">translateY(20px)</span>; }
+  <span class="property">to</span> { <span class="property">opacity:</span> <span class="value">1</span>; <span class="property">transform:</span> <span class="value">translateY(0)</span>; }
+}
+
+<span class="comment">/* Scale In */</span>
+<span class="property">@keyframes scaleIn</span> {
+  <span class="property">from</span> { <span class="property">opacity:</span> <span class="value">0</span>; <span class="property">transform:</span> <span class="value">scale(0.95)</span>; }
+  <span class="property">to</span> { <span class="property">opacity:</span> <span class="value">1</span>; <span class="property">transform:</span> <span class="value">scale(1)</span>; }
+}
+
+<span class="comment">/* Gradient Shift */</span>
+<span class="property">@keyframes gradientShift</span> {
+  <span class="value">0%</span> { <span class="property">background-position:</span> <span class="value">0% 50%</span>; }
+  <span class="value">50%</span> { <span class="property">background-position:</span> <span class="value">100% 50%</span>; }
+  <span class="value">100%</span> { <span class="property">background-position:</span> <span class="value">0% 50%</span>; }
+}
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Framer Motion Patterns</h3>
+          <p class="text">Patterns réutilisables pour React avec Framer Motion</p>
+
+          <div class="code-block">
+<span class="comment">// fadeInUp</span>
+<span class="property">initial:</span> { <span class="property">opacity:</span> <span class="value">0</span>, <span class="property">y:</span> <span class="value">20</span> }
+<span class="property">animate:</span> { <span class="property">opacity:</span> <span class="value">1</span>, <span class="property">y:</span> <span class="value">0</span> }
+<span class="property">exit:</span> { <span class="property">opacity:</span> <span class="value">0</span>, <span class="property">y:</span> <span class="value">-10</span> }
+
+<span class="comment">// cardHover</span>
+<span class="property">whileHover:</span> { <span class="property">scale:</span> <span class="value">1.02</span>, <span class="property">y:</span> <span class="value">-4</span> }
+<span class="property">whileTap:</span> { <span class="property">scale:</span> <span class="value">0.98</span> }
+
+<span class="comment">// staggerChildren</span>
+<span class="property">animate:</span> { <span class="property">transition:</span> { <span class="property">staggerChildren:</span> <span class="value">0.05</span> } }
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Transitions CSS</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Speed</th>
+                <th>Duration</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>transition-fast</td>
+                <td>150ms</td>
+                <td>Micro-interactions, toggles</td>
+              </tr>
+              <tr>
+                <td>transition-base</td>
+                <td>200ms</td>
+                <td>Hovers, focus states (DEFAULT)</td>
+              </tr>
+              <tr>
+                <td>transition-slow</td>
+                <td>300ms</td>
+                <td>Modales, overlays</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Spring Animations</h3>
+          <p class="text">Paramètres recommandés pour animations organiques</p>
+
+          <div class="code-block">
+<span class="comment">// Cards (snappy)</span>
+<span class="property">stiffness:</span> <span class="value">400</span>
+<span class="property">damping:</span> <span class="value">17</span>
+
+<span class="comment">// Modales (smooth)</span>
+<span class="property">response:</span> <span class="value">0.3</span>
+<span class="property">dampingFraction:</span> <span class="value">0.7</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 9. GLASSMORPHISM & EFFECTS -->
+      <section id="glassmorphism" class="section">
+        <div class="section-header">
+          <h2>9. Glassmorphism & Effects</h2>
+          <p>Effets visuels modernes</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Backdrop Blur</h3>
+          <p class="text">Effets de flou pour glassmorphism</p>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Blur Amount</th>
+                <th>Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>backdrop-blur-sm</td>
+                <td>4px</td>
+                <td>Cards subtiles</td>
+              </tr>
+              <tr>
+                <td>backdrop-blur-md</td>
+                <td>12px</td>
+                <td>Modales, overlays</td>
+              </tr>
+              <tr>
+                <td>backdrop-blur-xl</td>
+                <td>20px</td>
+                <td>Effets prononcés</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Pattern Standard Glassmorphism</h3>
+          <div class="code-block">
+<span class="tag">&lt;div</span> <span class="property">className</span>=<span class="value">"bg-white/80 backdrop-blur-sm"</span><span class="tag">&gt;</span>
+  Card content
+<span class="tag">&lt;/div&gt;</span>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Grain Textures</h3>
+          <p class="text">
+            Textures SVG pour un style organique/crayon. Définies en CSS mais <strong>PEU utilisées en production</strong>.
+          </p>
+
+          <div class="warning">
+            <div class="warning-title">⚠️ État : CSS défini mais PEU utilisé</div>
+            <div class="warning-text">
+              Les grain textures sont disponibles dans globals.css mais ne sont pas systématiquement appliquées
+              dans les composants. À valider avant utilisation intensive.
+            </div>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Class</th>
+                <th>Blend Mode</th>
+                <th>Opacity</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>.grain-subtle</td>
+                <td>overlay</td>
+                <td>1.0</td>
+              </tr>
+              <tr>
+                <td>.grain-medium</td>
+                <td>overlay</td>
+                <td>0.4</td>
+              </tr>
+              <tr>
+                <td>.grain-strong</td>
+                <td>overlay</td>
+                <td>1.0</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 10. COMPOSANTS UI - DESIGN PATTERNS -->
+      <section id="composants" class="section">
+        <div class="section-header">
+          <h2>10. Composants UI - Design Patterns</h2>
+          <p>Patterns réutilisables pour les composants clés</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Button</h3>
+          <div class="component-example">
+            <button class="btn btn-primary">Primary Button</button>
+          </div>
+
+          <h4>Variants</h4>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>default (filled) :</strong> bg-{role}-500, text-white</li>
+            <li><strong>outline :</strong> border-{role}-500, text-{role}-500</li>
+            <li><strong>ghost :</strong> text-gray-700, hover:bg-gray-100</li>
+          </ul>
+
+          <h4>Sizes</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Size</th>
+                <th>Padding</th>
+                <th>Min Height</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>sm</td>
+                <td>px-4 py-2</td>
+                <td>36px</td>
+              </tr>
+              <tr>
+                <td>default</td>
+                <td>px-6 py-3</td>
+                <td>44px (WCAG touch target)</td>
+              </tr>
+              <tr>
+                <td>lg</td>
+                <td>px-8 py-4</td>
+                <td>52px</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Code</h4>
+          <div class="code-block">
+<span class="tag">&lt;button</span> <span class="property">className</span>=<span class="value">"btn btn-primary"</span><span class="tag">&gt;</span>
+  Click me
+<span class="tag">&lt;/button&gt;</span>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Card</h3>
+          <div class="component-example">
+            <div class="card">
+              <h3 style="margin-bottom: 8px;">Card Title</h3>
+              <p style="color: var(--gray-700); margin: 0;">This is a card with superellipse corners and subtle shadow.</p>
+            </div>
+          </div>
+
+          <h4>Variants</h4>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>default :</strong> bg-white, shadow-sm, superellipse-2xl</li>
+            <li><strong>bordered :</strong> + border border-gray-200</li>
+            <li><strong>elevated :</strong> + shadow-lg</li>
+          </ul>
+
+          <h4>Padding</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Size</th>
+                <th>Padding</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>sm</td>
+                <td>12px</td>
+              </tr>
+              <tr>
+                <td>md</td>
+                <td>20px (DEFAULT)</td>
+              </tr>
+              <tr>
+                <td>lg</td>
+                <td>24px</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Interactive States</h4>
+          <div class="code-block">
+<span class="comment">/* Hover */</span>
+<span class="property">hover:shadow-lg</span>
+<span class="property">hover:border-{role}-200</span>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>KPI Card (par rôle)</h3>
+          <p class="text">
+            Cards avec icon gradient + texte blanc sur fond de rôle.
+            Utilisées pour afficher les métriques clés (Searcher/Owner/Resident)
+          </p>
+
+          <h4>Structure</h4>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li>superellipse-2xl + p-5</li>
+            <li>Icon avec gradient + white text</li>
+            <li>Framer Motion : fadeInUp + hover scale 1.02</li>
+          </ul>
+
+          <h4>Code</h4>
+          <div class="code-block">
+<span class="tag">&lt;motion.div</span>
+  <span class="property">className</span>=<span class="value">"superellipse-2xl p-5 bg-gradient-owner"</span>
+  <span class="property">initial</span>=<span class="value">{{ opacity: 0, y: 20 }}</span>
+  <span class="property">animate</span>=<span class="value">{{ opacity: 1, y: 0 }}</span>
+  <span class="property">whileHover</span>=<span class="value">{{ scale: 1.02 }}</span>
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="property">className</span>=<span class="value">"flex items-center gap-3"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="property">className</span>=<span class="value">"p-3 bg-white/20 rounded-full"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;Icon</span> <span class="property">className</span>=<span class="value">"text-white"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;p</span> <span class="property">className</span>=<span class="value">"text-white/80 text-sm"</span><span class="tag">&gt;</span>Label<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;p</span> <span class="property">className</span>=<span class="value">"text-white text-2xl font-bold"</span><span class="tag">&gt;</span>Value<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/motion.div&gt;</span>
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Navigation Card</h3>
+          <p class="text">Cards cliquables avec glassmorphism et hover lift</p>
+
+          <h4>Pattern</h4>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li>superellipse-2xl + p-6</li>
+            <li>Glassmorphism : bg-white/80 backdrop-blur-sm</li>
+            <li>Hover : border-{role}-200 + shadow-lg</li>
+            <li>Lift : y: -4</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 11. TONE OF VOICE & COPYWRITING -->
+      <section id="voice" class="section">
+        <div class="section-header">
+          <h2>11. Tone of Voice & Copywriting</h2>
+          <p>Règles de rédaction par segment utilisateur</p>
+        </div>
+
+        <div class="subsection">
+          <h3>L'Essence Izzico</h3>
+          <blockquote style="border-left: 4px solid var(--owner-primary); padding-left: 20px; color: var(--gray-700); font-style: italic; margin: 24px 0;">
+            "Ce qui stresse vraiment dans la recherche de co-living, ce n'est pas de trouver un toit,
+            c'est de trouver les bonnes personnes avec qui ça va matcher pour vivre avec eux."
+          </blockquote>
+          <p class="text">
+            <strong>Promesse :</strong> Izzico enlève les galères du co-living pour que chacun puisse se concentrer sur les choses chouettes.
+          </p>
+        </div>
+
+        <div class="subsection">
+          <h3>Les 4 Dimensions par Segment</h3>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Dimension</th>
+                <th>Searchers</th>
+                <th>Résidents</th>
+                <th>Propriétaires</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Formalité</strong></td>
+                <td>4 (Casual)</td>
+                <td>4 (Casual)</td>
+                <td>3 (Neutre)</td>
+              </tr>
+              <tr>
+                <td><strong>Humour</strong></td>
+                <td>4 (Léger)</td>
+                <td>5 (Désamorce)</td>
+                <td>3 (Sobre)</td>
+              </tr>
+              <tr>
+                <td><strong>Irrévérence</strong></td>
+                <td>4</td>
+                <td>4-5</td>
+                <td>2 (Respectueux)</td>
+              </tr>
+              <tr>
+                <td><strong>Énergie</strong></td>
+                <td>4-5</td>
+                <td>4-5</td>
+                <td>3-4</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Voix par Segment</h3>
+
+          <h4>Searchers (20-30 ans)</h4>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>Pronom :</strong> Tu</li>
+            <li><strong>Salutation :</strong> "Hello [Prénom] !"</li>
+            <li><strong>Ton :</strong> L'ami qui t'aide à trouver une coloc</li>
+            <li><strong>Énergie :</strong> Haute sur les moments clés (match, acceptation)</li>
+          </ul>
+
+          <h4>Résidents (20-30 ans)</h4>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>Pronom :</strong> Tu</li>
+            <li><strong>Salutation :</strong> "Hello [Prénom] !"</li>
+            <li><strong>Ton :</strong> Le coloc virtuel qui facilite tout</li>
+            <li><strong>Règle critique :</strong> Izzico n'est pas le professeur qui punit, mais le facilitateur qui apaise</li>
+          </ul>
+
+          <h4>Propriétaires (50-70 ans)</h4>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><strong>Pronom :</strong> Tu</li>
+            <li><strong>Salutation :</strong> "Bonjour [Prénom]" (pas "Hello")</li>
+            <li><strong>Ton :</strong> Gestionnaire de confiance, fiable</li>
+            <li><strong>Énergie :</strong> Sobre, célèbre les performances</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3>Vocabulaire</h3>
+
+          <h4>Terme Officiel : Co-living</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Terme</th>
+                <th>Statut</th>
+                <th>Pourquoi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Co-living</strong></td>
+                <td>Officiel</td>
+                <td>Premium, lifestyle, international</td>
+              </tr>
+              <tr>
+                <td>Colocation</td>
+                <td>SEO uniquement</td>
+                <td>Métadonnées, pas dans le branding</td>
+              </tr>
+              <tr>
+                <td>Coloc</td>
+                <td>Banni</td>
+                <td>Cheap, étudiant, low-cost</td>
+              </tr>
+              <tr>
+                <td>Kot</td>
+                <td>Banni</td>
+                <td>Trop belge, connotation universitaire</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Mots Signature</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Concept</th>
+                <th>Terme Izzico</th>
+                <th>Définition</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>L'onboarding</td>
+                <td><strong>Living Persona</strong></td>
+                <td>Le questionnaire qui définit qui tu es</td>
+              </tr>
+              <tr>
+                <td>Le match</td>
+                <td><strong>Living Match</strong></td>
+                <td>Compatibilité trouvée entre searcher et résidence</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h4>Lexique de Substitution</h4>
+          <table>
+            <thead>
+              <tr>
+                <th>Au lieu de...</th>
+                <th>Izzico dit...</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Locataire</td>
+                <td>Résident</td>
+              </tr>
+              <tr>
+                <td>Bien immobilier</td>
+                <td>Résidence / Maison</td>
+              </tr>
+              <tr>
+                <td>Candidature</td>
+                <td>Demande / Profil</td>
+              </tr>
+              <tr>
+                <td>Bail</td>
+                <td>Contrat</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="subsection">
+          <h3>Mots Bannis</h3>
+          <p class="text"><strong>Corporate speak :</strong></p>
+          <p style="color: var(--gray-700); margin-left: 24px;">
+            Leverage, Synergy, Revolutionary, Disruptive, Game-changer, Innovative, Solutions,
+            Empower, Transform, Seamless, Cutting-edge, Best-in-class, World-class
+          </p>
+
+          <p class="text" style="margin-top: 16px;"><strong>Formalisme excessif :</strong></p>
+          <p style="color: var(--gray-700); margin-left: 24px;">
+            "Nous vous informons que...", "Veuillez noter que...", "Suite à votre demande...",
+            "Nous avons le plaisir de..."
+          </p>
+        </div>
+
+        <div class="subsection">
+          <h3>Templates</h3>
+
+          <h4>Nouveau Living Match (Searcher)</h4>
+          <div class="code-block" style="background: var(--gray-50); color: var(--gray-900);">
+Hello [Prénom] !
+
+Tu as un nouveau Living Match. [Prénom Résident 1] & [Prénom Résident 2]
+cherchent quelqu'un comme toi.
+
+[Bouton: Découvrir la résidence]
+
+L'équipe Izzico
+          </div>
+
+          <h4>Milestone (Résident)</h4>
+          <div class="code-block" style="background: var(--gray-50); color: var(--gray-900);">
+Hello [Prénom] !
+
+6 mois ensemble ! Vous êtes dans le top 10% des co-livings stables.
+
+Bravo à toute l'équipe : [Liste prénoms].
+
+L'équipe Izzico
+          </div>
+
+          <h4>Bon avis (Propriétaire)</h4>
+          <div class="code-block" style="background: var(--gray-50); color: var(--gray-900);">
+Bonjour [Prénom],
+
+[Prénom résident] t'a donné 5 étoiles. Tes résidents sont heureux !
+
+[Bouton: Voir l'avis]
+
+L'équipe Izzico
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Checklist Avant Publication</h3>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li>Le texte correspond-il au segment cible (Searcher/Résident/Proprio) ?</li>
+            <li>Le tutoiement est-il respecté ?</li>
+            <li>Aucun mot banni n'est utilisé ?</li>
+            <li>"Co-living" est utilisé, pas "coloc" ?</li>
+            <li>"Living Persona" / "Living Match" sont utilisés correctement ?</li>
+            <li>Pas d'emojis standards (utiliser icônes Izzico si nécessaire) ?</li>
+            <li>L'action attendue est-elle évidente ?</li>
+            <li>Pourrait-on raccourcir de 30% ?</li>
+            <li>Un utilisateur de 16 ans comprendrait-il ?</li>
+            <li>Le ton est-il adapté au contexte (célébration vs erreur vs info) ?</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- 12. DIVERGENCES & WARNINGS -->
+      <section id="divergences" class="section">
+        <div class="section-header">
+          <h2>12. Divergences & Warnings</h2>
+          <p>Incohérences identifiées entre documents et code</p>
+        </div>
+
+        <div class="warning">
+          <div class="warning-title">⚠️ searcher-theme.ts vs globals.css</div>
+          <div class="warning-text">
+            <strong>Divergence critique :</strong> searcher-theme.ts utilise <code>#FFA040</code> comme couleur primaire,
+            mais globals.css et izzico-color-system.html définissent <code>#ffa000</code> comme couleur officielle.<br><br>
+            <strong>Recommandation :</strong> Mettre à jour searcher-theme.ts pour utiliser #ffa000 (Brand Guidelines)
+          </div>
+        </div>
+
+        <div class="warning">
+          <div class="warning-title">⚠️ Grain textures peu utilisées</div>
+          <div class="warning-text">
+            Les classes CSS pour grain textures (.grain-subtle, .grain-medium, .grain-strong) sont définies
+            dans globals.css mais ne sont PAS systématiquement appliquées dans les composants en production.<br><br>
+            <strong>Recommandation :</strong> Valider l'usage avant adoption intensive, ou retirer du design system si inutilisé
+          </div>
+        </div>
+
+        <div class="warning">
+          <div class="warning-title">⚠️ resident-theme.ts manquant</div>
+          <div class="warning-text">
+            Il existe searcher-theme.ts et owner-theme.ts, mais <strong>resident-theme.ts est absent</strong>.<br><br>
+            <strong>Recommandation :</strong> Créer resident-theme.ts avec la même structure pour cohérence
+          </div>
+        </div>
+
+        <div class="warning">
+          <div class="warning-title">⚠️ Double-définition des gradients</div>
+          <div class="warning-text">
+            Les gradients sont définis à la fois dans <strong>globals.css (CSS variables)</strong>
+            et dans <strong>*-theme.ts (constants JS)</strong>. Cela crée une duplication de source de vérité.<br><br>
+            <strong>Recommandation :</strong> Choisir une source unique (CSS variables recommandé pour cohérence web/iOS)
+          </div>
+        </div>
+      </section>
+
+      <!-- 13. CODE SNIPPETS (WEB + iOS) -->
+      <section id="code" class="section">
+        <div class="section-header">
+          <h2>13. Code Snippets (Web + iOS)</h2>
+          <p>Exemples de code CSS/Tailwind + SwiftUI</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Card avec Superellipse + Glassmorphism</h3>
+
+          <h4>WEB (Tailwind)</h4>
+          <div class="code-block">
+<span class="tag">&lt;div</span> <span class="property">className</span>=<span class="value">"superellipse-2xl p-6 bg-white/80 backdrop-blur-sm shadow-sm hover:shadow-lg"</span><span class="tag">&gt;</span>
+  Card content
+<span class="tag">&lt;/div&gt;</span>
+          </div>
+
+          <h4>iOS (SwiftUI)</h4>
+          <div class="code-block">
+<span class="tag">VStack</span> {
+  <span class="comment">// Content</span>
+}
+.<span class="property">padding</span>(<span class="value">24</span>)
+.<span class="property">background</span>(
+  <span class="tag">RoundedRectangle</span>(cornerRadius: <span class="value">24</span>, style: .<span class="property">continuous</span>)
+    .<span class="property">fill</span>(<span class="tag">Color</span>.white.<span class="property">opacity</span>(<span class="value">0.8</span>))
+    .<span class="property">background</span>(.<span class="property">ultraThinMaterial</span>)
+)
+.<span class="property">shadow</span>(color: <span class="tag">Color</span>.black.<span class="property">opacity</span>(<span class="value">0.05</span>), radius: <span class="value">3</span>, x: <span class="value">0</span>, y: <span class="value">1</span>)
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Button avec Gradient</h3>
+
+          <h4>WEB (Tailwind)</h4>
+          <div class="code-block">
+<span class="tag">&lt;button</span> <span class="property">className</span>=<span class="value">"px-6 py-3 rounded-full bg-gradient-owner text-white font-semibold shadow-md hover:shadow-lg transition-all"</span><span class="tag">&gt;</span>
+  Click me
+<span class="tag">&lt;/button&gt;</span>
+          </div>
+
+          <h4>iOS (SwiftUI)</h4>
+          <div class="code-block">
+<span class="tag">Button</span>(<span class="value">"Click me"</span>) {
+  <span class="comment">// Action</span>
+}
+.<span class="property">padding</span>(.<span class="property">horizontal</span>, <span class="value">24</span>)
+.<span class="property">padding</span>(.<span class="property">vertical</span>, <span class="value">12</span>)
+.<span class="property">background</span>(
+  <span class="tag">LinearGradient</span>(
+    colors: [<span class="tag">Color</span>(hex: <span class="value">"9c5698"</span>), <span class="tag">Color</span>(hex: <span class="value">"B070A8"</span>), <span class="tag">Color</span>(hex: <span class="value">"E0C0DC"</span>)],
+    startPoint: .<span class="property">leading</span>,
+    endPoint: .<span class="property">trailing</span>
+  )
+)
+.<span class="property">foregroundColor</span>(.<span class="property">white</span>)
+.<span class="property">clipShape</span>(<span class="tag">Capsule</span>())
+.<span class="property">shadow</span>(radius: <span class="value">4</span>)
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>KPI Card avec Animation</h3>
+
+          <h4>WEB (React + Framer Motion)</h4>
+          <div class="code-block">
+<span class="tag">&lt;motion.div</span>
+  <span class="property">className</span>=<span class="value">"superellipse-2xl p-5 bg-gradient-owner"</span>
+  <span class="property">initial</span>=<span class="value">{{ opacity: 0, y: 20 }}</span>
+  <span class="property">animate</span>=<span class="value">{{ opacity: 1, y: 0 }}</span>
+  <span class="property">whileHover</span>=<span class="value">{{ scale: 1.02, y: -4 }}</span>
+  <span class="property">transition</span>=<span class="value">{{ type: "spring", stiffness: 400, damping: 17 }}</span>
+<span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="property">className</span>=<span class="value">"flex items-center gap-3"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;div</span> <span class="property">className</span>=<span class="value">"p-3 bg-white/20 rounded-full"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;Icon</span> <span class="property">className</span>=<span class="value">"text-white"</span> <span class="tag">/&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+    <span class="tag">&lt;div&gt;</span>
+      <span class="tag">&lt;p</span> <span class="property">className</span>=<span class="value">"text-white/80 text-sm"</span><span class="tag">&gt;</span>Total Revenue<span class="tag">&lt;/p&gt;</span>
+      <span class="tag">&lt;p</span> <span class="property">className</span>=<span class="value">"text-white text-2xl font-bold"</span><span class="tag">&gt;</span>€12,450<span class="tag">&lt;/p&gt;</span>
+    <span class="tag">&lt;/div&gt;</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/motion.div&gt;</span>
+          </div>
+
+          <h4>iOS (SwiftUI)</h4>
+          <div class="code-block">
+<span class="tag">HStack</span>(spacing: <span class="value">12</span>) {
+  <span class="tag">ZStack</span> {
+    <span class="tag">Circle</span>()
+      .<span class="property">fill</span>(<span class="tag">Color</span>.white.<span class="property">opacity</span>(<span class="value">0.2</span>))
+      .<span class="property">frame</span>(width: <span class="value">48</span>, height: <span class="value">48</span>)
+    <span class="tag">Image</span>(systemName: <span class="value">"dollarsign.circle.fill"</span>)
+      .<span class="property">foregroundColor</span>(.<span class="property">white</span>)
+  }
+
+  <span class="tag">VStack</span>(alignment: .<span class="property">leading</span>, spacing: <span class="value">4</span>) {
+    <span class="tag">Text</span>(<span class="value">"Total Revenue"</span>)
+      .<span class="property">font</span>(.<span class="property">caption</span>)
+      .<span class="property">foregroundColor</span>(<span class="tag">Color</span>.white.<span class="property">opacity</span>(<span class="value">0.8</span>))
+    <span class="tag">Text</span>(<span class="value">"€12,450"</span>)
+      .<span class="property">font</span>(.<span class="property">title2</span>)
+      .<span class="property">fontWeight</span>(.<span class="property">bold</span>)
+      .<span class="property">foregroundColor</span>(.<span class="property">white</span>)
+  }
+}
+.<span class="property">padding</span>(<span class="value">20</span>)
+.<span class="property">background</span>(
+  <span class="tag">RoundedRectangle</span>(cornerRadius: <span class="value">24</span>, style: .<span class="property">continuous</span>)
+    .<span class="property">fill</span>(<span class="tag">LinearGradient</span>(
+      colors: [<span class="tag">Color</span>(hex: <span class="value">"9c5698"</span>), <span class="tag">Color</span>(hex: <span class="value">"B070A8"</span>)],
+      startPoint: .<span class="property">topLeading</span>,
+      endPoint: .<span class="property">bottomTrailing</span>
+    ))
+)
+.<span class="property">scaleEffect</span>(isHovered ? <span class="value">1.02</span> : <span class="value">1.0</span>)
+.<span class="property">animation</span>(.<span class="property">spring</span>(response: <span class="value">0.3</span>, dampingFraction: <span class="value">0.7</span>), value: isHovered)
+          </div>
+        </div>
+
+        <div class="subsection">
+          <h3>Navigation avec Gradient Hover</h3>
+
+          <h4>WEB (CSS)</h4>
+          <div class="code-block">
+<span class="comment">/* Navigation item with gradient text on hover */</span>
+<span class="property">.nav-item</span> {
+  <span class="property">transition:</span> <span class="value">all 0.3s ease</span>;
+}
+
+<span class="property">.nav-item:hover .nav-text</span> {
+  <span class="property">background:</span> <span class="value">linear-gradient(135deg, #9c5698 0%, #e05747 50%, #ffa000 100%)</span>;
+  <span class="property">-webkit-background-clip:</span> <span class="value">text</span>;
+  <span class="property">-webkit-text-fill-color:</span> <span class="value">transparent</span>;
+  <span class="property">background-clip:</span> <span class="value">text</span>;
+}
+          </div>
+        </div>
+      </section>
+
+      <!-- CHANGELOG -->
+      <section id="changelog" class="section">
+        <div class="section-header">
+          <h2>14. Changelog & Versioning</h2>
+          <p>Historique des versions</p>
+        </div>
+
+        <div class="subsection">
+          <table>
+            <thead>
+              <tr>
+                <th>Version</th>
+                <th>Date</th>
+                <th>Modifications</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>v3.1.0</strong></td>
+                <td>2026-01-18</td>
+                <td>
+                  • Document complet de charte graphique unifié<br>
+                  • Consolidation docs + code implémenté<br>
+                  • Documentation des divergences
+                </td>
+              </tr>
+              <tr>
+                <td><strong>v3.0.0</strong></td>
+                <td>2025-12-09</td>
+                <td>
+                  • Verrouillage Gradient Signature<br>
+                  • Finalisation 3 fonts (Inter, Nunito, Fredoka)<br>
+                  • Couleurs v3 (échelles 50-900 monotones)
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RESSOURCES -->
+      <section id="ressources" class="section">
+        <div class="section-header">
+          <h2>15. Ressources & Fichiers</h2>
+          <p>Liens vers les fichiers sources</p>
+        </div>
+
+        <div class="subsection">
+          <h3>Documents Brand Identity</h3>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><code>brand-identity/izzico-color-system.html</code> - Système colorimétrique v3</li>
+            <li><code>brand-identity/izzico-voice-guidelines.md</code> - Tone of voice complet</li>
+            <li><code>brand-identity/izzico-brand-folder.html</code> - Typographie et géométrie</li>
+            <li><code>brand-identity/logo final izzico/dérnière versions lock- LOGO FINAL/</code> - 12 logos officiels</li>
+          </ul>
+        </div>
+
+        <div class="subsection">
+          <h3>Code Sources</h3>
+          <ul style="color: var(--gray-700); margin-left: 24px; line-height: 2;">
+            <li><code>app/globals.css</code> - CSS variables principales</li>
+            <li><code>tailwind.config.ts</code> - Extensions Tailwind</li>
+            <li><code>app/fonts.ts</code> - Configuration Next.js fonts</li>
+            <li><code>lib/constants/searcher-theme.ts</code> - Constants Searcher</li>
+            <li><code>lib/constants/owner-theme.ts</code> - Constants Owner</li>
+          </ul>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <p class="brand-text" style="font-size: 24px; margin-bottom: 12px;">Izzico</p>
+      <p style="opacity: 0.8;">Charte Graphique et Design System v3.1.0</p>
+      <p style="font-size: 13px; opacity: 0.6; margin-top: 8px;">
+        Document généré le 18 janvier 2026 • Source unique de vérité
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Copy to clipboard function
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        // Show success feedback
+        const toast = document.createElement('div');
+        toast.textContent = 'Copié : ' + text;
+        toast.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #9c5698; color: white; padding: 12px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 1000; animation: fadeInUp 0.3s;';
+        document.body.appendChild(toast);
+        setTimeout(() => {
+          toast.style.animation = 'fadeOut 0.3s';
+          setTimeout(() => document.body.removeChild(toast), 300);
+        }, 2000);
+      });
+    }
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('.nav a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>

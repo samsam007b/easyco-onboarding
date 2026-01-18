@@ -906,6 +906,15 @@ body.theme-resident ::selection {
 
 /* ============================================
    Grain Textures (Crayon/Organic Style)
+   ⚠️ STATUS: EXPERIMENTAL - Pas encore utilisé en production
+
+   Textures prêtes pour ajouter un effet "crayon/organic" aux éléments.
+   Fichiers: /public/textures/grain-{subtle,medium,strong}.svg
+
+   Usage: Ajouter .grain-subtle, .grain-medium, ou .grain-strong à un élément
+
+   Décision: CONSERVÉ pour usage futur potentiel, mais PAS prioritaire MVP.
+   Dernière révision: 2026-01-18
    ============================================ */
 
 /* Apply grain texture overlay to any element */
