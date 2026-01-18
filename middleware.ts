@@ -2,8 +2,48 @@ import { createServerClient, type CookieOptions } from '@supabase/ssr'
 import { NextResponse, type NextRequest } from 'next/server'
 
 /**
+ * Session Timeout Configuration
+ * SECURITY FIX: VULN-004 - Enforce session timeouts for inactivity
+ * Based on OWASP Session Management recommendations
+ */
+const SESSION_CONFIG = {
+  // Standard timeout for normal routes (2 hours)
+  STANDARD_TIMEOUT_MS: 2 * 60 * 60 * 1000,
+  // Strict timeout for sensitive routes (30 minutes) - bank info, admin
+  SENSITIVE_TIMEOUT_MS: 30 * 60 * 1000,
+  // Cookie name for tracking last activity
+  LAST_ACTIVITY_COOKIE: 'izzico_last_activity',
+  // Routes that require stricter timeout
+  SENSITIVE_ROUTES: [
+    '/settings/bank',
+    '/settings/payment',
+    '/admin',
+    '/dashboard/owner/bank',
+    '/api/bank',
+    '/api/admin',
+  ],
+}
+
+/**
+ * Check if session has timed out
+ * @returns true if session is expired
+ */
+function isSessionExpired(lastActivity: number | null, isSensitiveRoute: boolean): boolean {
+  if (!lastActivity) return false // No activity recorded yet - allow
+
+  const now = Date.now()
+  const timeoutMs = isSensitiveRoute
+    ? SESSION_CONFIG.SENSITIVE_TIMEOUT_MS
+    : SESSION_CONFIG.STANDARD_TIMEOUT_MS
+
+  return (now - lastActivity) > timeoutMs
+}
+
+/**
  * Middleware for route protection and authentication
  * Runs on every request to check auth status and handle redirects
+ *
+ * SECURITY: Implements session timeout for VULN-004
  */
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({
@@ -62,6 +102,73 @@ export async function middleware(request: NextRequest) {
   const { data: { user }, error } = await supabase.auth.getUser()
 
   const { pathname } = request.nextUrl
+
+  // ========================================================================
+  // SECURITY FIX VULN-004: Session Timeout Enforcement
+  // ========================================================================
+  if (user) {
+    // Check if this is a sensitive route
+    const isSensitiveRoute = SESSION_CONFIG.SENSITIVE_ROUTES.some(
+      route => pathname.startsWith(route)
+    )
+
+    // Get last activity from cookie
+    const lastActivityCookie = request.cookies.get(SESSION_CONFIG.LAST_ACTIVITY_COOKIE)
+    const lastActivity = lastActivityCookie ? parseInt(lastActivityCookie.value, 10) : null
+
+    // Check for session timeout
+    if (isSessionExpired(lastActivity, isSensitiveRoute)) {
+      // Session timed out - force re-authentication
+      console.warn(
+        `[SECURITY] Session timeout for user ${user.id} on ${pathname}`,
+        { lastActivity, isSensitive: isSensitiveRoute }
+      )
+
+      // For sensitive routes, redirect to re-authentication
+      if (isSensitiveRoute) {
+        const reauthUrl = new URL('/auth/reauth', request.url)
+        reauthUrl.searchParams.set('redirect', pathname)
+        reauthUrl.searchParams.set('reason', 'session_timeout')
+
+        // Clear the activity cookie on timeout
+        const timeoutResponse = NextResponse.redirect(reauthUrl)
+        timeoutResponse.cookies.delete(SESSION_CONFIG.LAST_ACTIVITY_COOKIE)
+        return timeoutResponse
+      }
+
+      // For standard routes with 2h timeout, just sign out
+      if (lastActivity && (Date.now() - lastActivity) > SESSION_CONFIG.STANDARD_TIMEOUT_MS) {
+        // Full session expired - redirect to login
+        const loginUrl = new URL('/auth', request.url)
+        loginUrl.searchParams.set('redirect', pathname)
+        loginUrl.searchParams.set('reason', 'inactivity')
+
+        const expiredResponse = NextResponse.redirect(loginUrl)
+        expiredResponse.cookies.delete(SESSION_CONFIG.LAST_ACTIVITY_COOKIE)
+        return expiredResponse
+      }
+    }
+
+    // Update last activity timestamp (for authenticated users on non-static routes)
+    if (!pathname.startsWith('/_next') && !pathname.includes('.')) {
+      response.cookies.set({
+        name: SESSION_CONFIG.LAST_ACTIVITY_COOKIE,
+        value: Date.now().toString(),
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        path: '/',
+        // Cookie expires when browser closes (session cookie) + max 24h
+        maxAge: 24 * 60 * 60,
+      })
+    }
+  } else {
+    // User not authenticated - clear activity cookie if present
+    if (request.cookies.has(SESSION_CONFIG.LAST_ACTIVITY_COOKIE)) {
+      response.cookies.delete(SESSION_CONFIG.LAST_ACTIVITY_COOKIE)
+    }
+  }
+  // ========================================================================
 
   // Check if user is a super admin (bypass all restrictions)
   let isSuperAdmin = false
