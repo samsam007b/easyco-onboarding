@@ -3,9 +3,76 @@ import { createClient } from '@/lib/auth/supabase-client';
 export class StorageService {
   private supabase = createClient();
 
-  // NOTE: Image compression with Sharp moved to API routes (server-side only)
-  // See: app/api/storage/upload-image/route.ts
-  // Reason: Sharp requires Node.js APIs not available in browser
+  /**
+   * Optimise une image via API route (server-side Sharp)
+   * @param file Image à optimiser
+   * @param type Type d'optimisation (avatar ou property)
+   * @returns File optimisé + statistiques
+   */
+  private async optimizeImageViaAPI(
+    file: File,
+    type: 'avatar' | 'property'
+  ): Promise<{ file: File; originalSize: number; optimizedSize: number; reduction: number }> {
+    const originalSize = file.size;
+
+    // Skip si pas une image
+    if (!file.type.startsWith('image/')) {
+      return {
+        file,
+        originalSize,
+        optimizedSize: originalSize,
+        reduction: 0,
+      };
+    }
+
+    try {
+      // Envoyer à l'API pour compression
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('type', type);
+
+      const response = await fetch('/api/storage/optimize-image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Optimization failed');
+      }
+
+      // Récupérer stats depuis headers
+      const optimizedSize = parseInt(response.headers.get('X-Optimized-Size') || '0');
+      const reduction = parseFloat(response.headers.get('X-Reduction-Percent') || '0');
+
+      // Récupérer le blob optimisé
+      const blob = await response.blob();
+      const optimizedFile = new File([blob], file.name.replace(/\.\w+$/, '.webp'), {
+        type: 'image/webp',
+      });
+
+      console.log(
+        `[Storage] Image optimized: ${(originalSize / 1024).toFixed(0)} KB → ${(
+          optimizedSize / 1024
+        ).toFixed(0)} KB (-${reduction.toFixed(1)}%)`
+      );
+
+      return {
+        file: optimizedFile,
+        originalSize,
+        optimizedSize,
+        reduction,
+      };
+    } catch (error) {
+      console.error('[Storage] Error optimizing via API:', error);
+      // En cas d'erreur, retourner fichier original
+      return {
+        file,
+        originalSize,
+        optimizedSize: originalSize,
+        reduction: 0,
+      };
+    }
+  }
 
   /**
    * Upload a file to Supabase Storage
@@ -111,25 +178,53 @@ export class StorageService {
   }
 
   /**
-   * Upload property image
-   * TODO: Add server-side compression via API route
+   * Upload property image (avec compression automatique server-side)
+   * Optimise via API route : max 2048px, WebP quality 85
+   * Réduction attendue : 5 MB → 500 KB (90%)
    */
   async uploadPropertyImage(
     file: File,
     propertyId: string
-  ): Promise<{ success: boolean; url?: string; error?: string }> {
-    return this.uploadFile(file, 'property-images', propertyId);
+  ): Promise<{ success: boolean; url?: string; error?: string; stats?: any }> {
+    // Optimiser via API (server-side Sharp)
+    const { file: optimizedFile, originalSize, optimizedSize, reduction } =
+      await this.optimizeImageViaAPI(file, 'property');
+
+    const result = await this.uploadFile(optimizedFile, 'property-images', propertyId);
+
+    return {
+      ...result,
+      stats: {
+        originalSize,
+        optimizedSize,
+        reduction,
+      },
+    };
   }
 
   /**
-   * Upload profile photo
-   * TODO: Add server-side compression via API route
+   * Upload profile photo (avec compression automatique server-side)
+   * Optimise via API route : 512×512px carré, WebP quality 85
+   * Réduction attendue : 2 MB → 100 KB (95%)
    */
   async uploadProfilePhoto(
     file: File,
     userId: string
-  ): Promise<{ success: boolean; url?: string; error?: string }> {
-    return this.uploadFile(file, 'profile-photos', userId);
+  ): Promise<{ success: boolean; url?: string; error?: string; stats?: any }> {
+    // Optimiser via API (server-side Sharp)
+    const { file: optimizedFile, originalSize, optimizedSize, reduction } =
+      await this.optimizeImageViaAPI(file, 'avatar');
+
+    const result = await this.uploadFile(optimizedFile, 'profile-photos', userId);
+
+    return {
+      ...result,
+      stats: {
+        originalSize,
+        optimizedSize,
+        reduction,
+      },
+    };
   }
 
   /**
