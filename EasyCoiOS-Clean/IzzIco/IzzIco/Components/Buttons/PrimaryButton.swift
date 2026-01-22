@@ -3,6 +3,7 @@
 //  IzzIco
 //
 //  Primary button component with gradient background
+//  Migrated to DesignTokens v3.3 on 2026-01-22
 //
 
 import SwiftUI
@@ -14,9 +15,17 @@ struct PrimaryButton: View {
     var isLoading: Bool = false
     var isDisabled: Bool = false
     var fullWidth: Bool = true
-    var gradient: LinearGradient = Theme.Colors.primaryGradient
+    var gradient: LinearGradient = DesignTokens.Gradients.primary
+    var role: UserRole? = nil  // Optional: use role-specific gradient
 
     @State private var isPressed = false
+
+    private var effectiveGradient: LinearGradient {
+        if let role = role {
+            return role.gradient
+        }
+        return gradient
+    }
 
     var body: some View {
         Button(action: {
@@ -34,33 +43,29 @@ struct PrimaryButton: View {
                     Image.lucide(icon)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: Theme.Size.iconMedium, height: Theme.Size.iconMedium)
+                        .frame(width: DesignTokens.Size.iconMedium, height: DesignTokens.Size.iconMedium)
                         .foregroundColor(.white)
                 }
 
                 Text(isLoading ? "Chargement..." : title)
-                    .font(Theme.Typography.body(.semibold))
+                    .font(DesignTokens.Typography.headline)
                     .foregroundColor(.white)
             }
             .frame(maxWidth: fullWidth ? .infinity : nil)
-            .frame(height: Theme.Size.buttonHeight)
+            .frame(height: DesignTokens.Size.buttonHeight)
             .background(
                 Group {
                     if isDisabled {
-                        LinearGradient(
-                            colors: [Theme.Colors.gray300, Theme.Colors.gray400],
-                            startPoint: .leading,
-                            endPoint: .trailing
-                        )
+                        DesignTokens.Gradients.disabled
                     } else {
-                        gradient
+                        effectiveGradient
                     }
                 }
             )
-            .cornerRadius(Theme.CornerRadius.button)
+            .continuousCornerRadius(DesignTokens.CornerRadius.button)
             .opacity(isDisabled ? 0.6 : (isPressed ? 0.9 : 1.0))
             .scaleEffect(isPressed ? 0.97 : 1.0)
-            .buttonShadow()
+            .applyShadow(DesignTokens.Shadows.level2)
         }
         .disabled(isDisabled || isLoading)
         .buttonStyle(PlainButtonStyle())
@@ -75,7 +80,31 @@ struct PrimaryButton: View {
                     isPressed = false
                 }
         )
-        .animation(Theme.Animation.springFast, value: isPressed)
+        .animation(DesignTokens.Animation.snappy, value: isPressed)
+    }
+}
+
+// MARK: - Convenience Initializers
+
+extension PrimaryButton {
+    /// Create a role-themed button (uses role gradient automatically)
+    init(
+        title: String,
+        icon: String? = nil,
+        role: UserRole,
+        isLoading: Bool = false,
+        isDisabled: Bool = false,
+        fullWidth: Bool = true,
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.icon = icon
+        self.action = action
+        self.isLoading = isLoading
+        self.isDisabled = isDisabled
+        self.fullWidth = fullWidth
+        self.gradient = DesignTokens.Gradients.primary
+        self.role = role
     }
 }
 
@@ -90,13 +119,20 @@ struct PrimaryButton_Previews: PreviewProvider {
 
             PrimaryButton(title: "En cours...", icon: nil, action: {}, isLoading: true)
 
-            PrimaryButton(title: "Désactivé", icon: nil, action: {}, isDisabled: true)
+            PrimaryButton(title: "Desactive", icon: nil, action: {}, isDisabled: true)
+
+            // Role-specific buttons
+            PrimaryButton(title: "Chercher", icon: "search", role: .searcher, action: {})
+
+            PrimaryButton(title: "Proprietes", icon: "home", role: .owner, action: {})
+
+            PrimaryButton(title: "Mon Hub", icon: "users", role: .resident, action: {})
 
             PrimaryButton(
                 title: "Match",
                 icon: "heart",
                 action: {},
-                gradient: Theme.Gradients.pinkGradient
+                gradient: DesignTokens.Gradients.pink
             )
 
             PrimaryButton(

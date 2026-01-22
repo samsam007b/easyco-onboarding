@@ -315,7 +315,7 @@ export function DocumentsModal({
             paymentDate: new Date(paymentDate),
             paymentMethod,
           };
-          blob = documentGenerationService.generateRentReceipt(data);
+          blob = await documentGenerationService.generateRentReceipt(data);
           filename = documentGenerationService.generateReceiptFilename(
             selectedTenant.name,
             selectedMonth,
@@ -331,7 +331,7 @@ export function DocumentsModal({
             startDate: selectedTenant.moveInDate,
             reason: purpose || undefined,
           };
-          blob = documentGenerationService.generateHousingAttestation(data);
+          blob = await documentGenerationService.generateHousingAttestation(data);
           filename = documentGenerationService.generateAttestationFilename('housing', selectedTenant.name);
           break;
         }
@@ -345,7 +345,7 @@ export function DocumentsModal({
             leaseStartDate: selectedTenant.moveInDate,
             purpose: purpose || undefined,
           };
-          blob = documentGenerationService.generateRentAttestation(data);
+          blob = await documentGenerationService.generateRentAttestation(data);
           filename = documentGenerationService.generateAttestationFilename('rent', selectedTenant.name);
           break;
         }

@@ -1,11 +1,19 @@
 import SwiftUI
 
-/// Design System de l'application EasyCo
-/// Basé sur la charte graphique de la web app
-/// Centralise toutes les couleurs, fonts et styles pour une cohérence visuelle
+// ============================================
+// THEME.SWIFT - LEGACY COMPATIBILITY BRIDGE
+// ============================================
+// This file now forwards all values to DesignTokens.swift
+// DO NOT add new values here - add them to DesignTokens instead
+// This file exists for backward compatibility with existing code
+// Plan: Gradually migrate all Theme.* usages to DesignTokens.*
+// ============================================
+
+/// Design System de l'application Izzico
+/// DEPRECATED: Use DesignTokens instead for new code
 struct Theme {
 
-    // MARK: - User Role
+    // MARK: - User Role (bridges to DesignTokens.UserRole)
 
     enum UserRole {
         case searcher
@@ -14,153 +22,158 @@ struct Theme {
 
         var primaryColor: Color {
             switch self {
-            case .searcher: return Colors.Searcher.primary
-            case .owner: return Colors.Owner.primary
-            case .resident: return Colors.Resident.primary
+            case .searcher: return DesignTokens.Searcher.primary
+            case .owner: return DesignTokens.Owner.primary
+            case .resident: return DesignTokens.Resident.primary
             }
         }
 
         var gradient: LinearGradient {
             switch self {
-            case .searcher: return Gradients.searcherCTA
-            case .owner: return Gradients.ownerCTA
-            case .resident: return Gradients.residentCTA
+            case .searcher: return DesignTokens.Searcher.gradient
+            case .owner: return DesignTokens.Owner.gradient
+            case .resident: return DesignTokens.Resident.gradient
             }
         }
 
         var lightBackground: Color {
             switch self {
-            case .searcher: return Colors.Searcher._100
-            case .owner: return Colors.Owner._100
-            case .resident: return Colors.Resident._100
+            case .searcher: return DesignTokens.Searcher.color100
+            case .owner: return DesignTokens.Owner.color100
+            case .resident: return DesignTokens.Resident.color100
+            }
+        }
+
+        /// Convert to new UserRole enum
+        var asDesignTokenRole: IzzIco.UserRole {
+            switch self {
+            case .searcher: return .searcher
+            case .owner: return .owner
+            case .resident: return .resident
             }
         }
     }
 
-    // MARK: - Colors
+    // MARK: - Colors (bridges to DesignTokens)
 
     struct Colors {
-        // Legacy compatibility
-        static let primary = Owner.primary
-        static let secondary = Searcher.primary
-        static let accent = Resident.primary
+        // Legacy compatibility - now uses correct values from DesignTokens
+        static let primary = DesignTokens.Owner.primary
+        static let secondary = DesignTokens.Searcher.primary
+        static let accent = DesignTokens.Resident.primary
 
-        // MARK: - Searcher Colors (Yellow/Gold/Amber)
+        // MARK: - Searcher Colors (bridges to DesignTokens.Searcher)
         struct Searcher {
-            static let _50 = Color(hex: "FFFEF0")
-            static let _100 = Color(hex: "FFF9E6")
-            static let _200 = Color(hex: "FFF59D")
-            static let _300 = Color(hex: "FFEB3B")
-            static let _400 = Color(hex: "FFD249")
-            static let primary = Color(hex: "FFB10B")  // _500 - Updated to #FFB10B
-            static let _600 = Color(hex: "F9A825")
-            static let _700 = Color(hex: "F57F17")
-            static let _800 = Color(hex: "E65100")
-            static let _900 = Color(hex: "BF360C")
+            static let _50 = DesignTokens.Searcher.color50
+            static let _100 = DesignTokens.Searcher.color100
+            static let _200 = DesignTokens.Searcher.color200
+            static let _300 = DesignTokens.Searcher.color300
+            static let _400 = DesignTokens.Searcher.color400
+            static let primary = DesignTokens.Searcher.primary  // #ffa000
+            static let _600 = DesignTokens.Searcher.color600
+            static let _700 = DesignTokens.Searcher.color700
+            static let _800 = DesignTokens.Searcher.color800
+            static let _900 = DesignTokens.Searcher.color900
         }
 
-        // MARK: - Owner Colors (Mauve/Purple/Indigo)
+        // MARK: - Owner Colors (bridges to DesignTokens.Owner)
         struct Owner {
-            static let _50 = Color(hex: "F9F8FF")
-            static let _100 = Color(hex: "F3F1FF")
-            static let _200 = Color(hex: "E0D9FF")
-            static let _300 = Color(hex: "BAB2E3")
-            static let _400 = Color(hex: "8E7AD6")
-            static let primary = Color(hex: "9256A4")  // _500 - Updated to #9256A4
-            static let _600 = Color(hex: "5B45B8")
-            static let _700 = Color(hex: "4A148C")
-            static let _800 = Color(hex: "38006B")
-            static let _900 = Color(hex: "1A0033")
+            static let _50 = DesignTokens.Owner.color50
+            static let _100 = DesignTokens.Owner.color100
+            static let _200 = DesignTokens.Owner.color200
+            static let _300 = DesignTokens.Owner.color300
+            static let _400 = DesignTokens.Owner.color400
+            static let primary = DesignTokens.Owner.primary  // #9c5698
+            static let _600 = DesignTokens.Owner.color600
+            static let _700 = DesignTokens.Owner.color700
+            static let _800 = DesignTokens.Owner.color800
+            static let _900 = DesignTokens.Owner.color900
         }
 
-        // MARK: - Resident Colors (Orange/Coral/Terracotta)
+        // MARK: - Resident Colors (bridges to DesignTokens.Resident)
         struct Resident {
-            static let _50 = Color(hex: "FFFAF8")
-            static let _100 = Color(hex: "FFF3EF")
-            static let _200 = Color(hex: "FFB88C")
-            static let _300 = Color(hex: "FF8C5C")
-            static let _400 = Color(hex: "FF6F3C")
-            static let primary = Color(hex: "FF5722")  // _500
-            static let _600 = Color(hex: "E64A19")
-            static let _700 = Color(hex: "D84315")
-            static let _800 = Color(hex: "BF360C")
-            static let _900 = Color(hex: "8D2A0E")
+            static let _50 = DesignTokens.Resident.color50
+            static let _100 = DesignTokens.Resident.color100
+            static let _200 = DesignTokens.Resident.color200
+            static let _300 = DesignTokens.Resident.color300
+            static let _400 = DesignTokens.Resident.color400
+            static let primary = DesignTokens.Resident.primary  // #e05747
+            static let _600 = DesignTokens.Resident.color600
+            static let _700 = DesignTokens.Resident.color700
+            static let _800 = DesignTokens.Resident.color800
+            static let _900 = DesignTokens.Resident.color900
         }
 
-        // MARK: - Neutral Colors (Gray scale)
+        // MARK: - Neutral Colors (bridges to DesignTokens.Neutral)
         struct Gray {
-            static let _50 = Color(hex: "F9F9F9")
-            static let _100 = Color(hex: "F2F2F2")
-            static let _200 = Color(hex: "E5E5E5")
-            static let _300 = Color(hex: "D9D9D9")
-            static let _400 = Color(hex: "BFBFBF")
-            static let _500 = Color(hex: "8C8C8C")
-            static let _600 = Color(hex: "666666")
-            static let _700 = Color(hex: "404040")
-            static let _800 = Color(hex: "2D2D2D")
-            static let _900 = Color(hex: "1A1A1A")
+            static let _50 = DesignTokens.Neutral.gray50
+            static let _100 = DesignTokens.Neutral.gray100
+            static let _200 = DesignTokens.Neutral.gray200
+            static let _300 = DesignTokens.Neutral.gray300
+            static let _400 = DesignTokens.Neutral.gray400
+            static let _500 = DesignTokens.Neutral.gray500
+            static let _600 = DesignTokens.Neutral.gray600
+            static let _700 = DesignTokens.Neutral.gray700
+            static let _800 = DesignTokens.Neutral.gray800
+            static let _900 = DesignTokens.Neutral.gray900
         }
 
         // Backgrounds
-        static let background = Color(hex: "FFFFFF")
-        static let backgroundSecondary = Color(hex: "F9FAFB")
-        static let backgroundTertiary = Color(hex: "F3F4F6")
+        static let background = DesignTokens.Neutral.surface
+        static let backgroundSecondary = DesignTokens.Neutral.background
+        static let backgroundTertiary = DesignTokens.Neutral.surfaceSecondary
 
         // Text Colors
-        static let textPrimary = Color(hex: "111827")
-        static let textSecondary = Color(hex: "6B7280")
-        static let textTertiary = Color(hex: "9CA3AF")
+        static let textPrimary = DesignTokens.Neutral.text
+        static let textSecondary = DesignTokens.Neutral.textSecondary
+        static let textTertiary = DesignTokens.Neutral.textTertiary
 
         // Semantic Colors
-        static let success = Color(hex: "10B981")
-        static let successLight = Color(hex: "D1FAE5")
-        static let warning = Color(hex: "F59E0B")
-        static let warningLight = Color(hex: "FEF3C7")
-        static let error = Color(hex: "EF4444")
-        static let errorLight = Color(hex: "FEE2E2")
-        static let info = Color(hex: "3B82F6")
-        static let infoLight = Color(hex: "DBEAFE")
+        static let success = DesignTokens.Semantic.success
+        static let successLight = DesignTokens.Semantic.successLight
+        static let warning = DesignTokens.Semantic.warning
+        static let warningLight = DesignTokens.Semantic.warningLight
+        static let error = DesignTokens.Semantic.error
+        static let errorLight = DesignTokens.Semantic.errorLight
+        static let info = DesignTokens.Semantic.info
+        static let infoLight = DesignTokens.Semantic.infoLight
 
         // UI Elements
-        static let border = Color(hex: "E5E7EB")
-        static let divider = Color(hex: "F3F4F6")
+        static let border = DesignTokens.Neutral.border
+        static let divider = DesignTokens.Neutral.divider
         static let overlay = Color.black.opacity(0.5)
 
-        // Additional UI colors for new components
+        // Additional UI colors
         static let backgroundPrimary = Color.white
-        static let primaryGradient = LinearGradient(
-            colors: [Color(hex: "FFA040"), Color(hex: "FFB85C")],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
-        static let gray50 = Color(hex: "F9FAFB")
-        static let gray100 = Color(hex: "F3F4F6")
-        static let gray200 = Color(hex: "E5E7EB")
-        static let gray300 = Color(hex: "D1D5DB")
-        static let gray400 = Color(hex: "9CA3AF")
-        static let gray600 = Gray._600  // Alias to Gray._600
-        static let gray700 = Gray._700  // Alias to Gray._700
-        static let heartRed = Color(hex: "EF4444")
-        static let messageBlue = Color(hex: "0EA5E9")
-        static let matchPink = Color(hex: "EC4899")
+        static let primaryGradient = DesignTokens.Gradients.primary
+        static let gray50 = DesignTokens.Neutral.gray50
+        static let gray100 = DesignTokens.Neutral.gray100
+        static let gray200 = DesignTokens.Neutral.gray200
+        static let gray300 = DesignTokens.Neutral.gray300
+        static let gray400 = DesignTokens.Neutral.gray400
+        static let gray600 = DesignTokens.Neutral.gray600
+        static let gray700 = DesignTokens.Neutral.gray700
+        static let heartRed = DesignTokens.Semantic.error
+        static let messageBlue = DesignTokens.UIAccent.sky
+        static let matchPink = DesignTokens.UIAccent.dustyRose
 
         // Property Status Colors
-        static let available = Color(hex: "10B981")
-        static let pending = Color(hex: "F59E0B")
-        static let occupied = Color(hex: "EF4444")
+        static let available = DesignTokens.Semantic.success
+        static let pending = DesignTokens.Semantic.warning
+        static let occupied = DesignTokens.Semantic.error
 
-        // Legacy role-specific colors (for compatibility)
-        static let searcherPrimary = Searcher.primary
-        static let searcherGradientStart = Color(hex: "FFA040")
-        static let searcherGradientEnd = Color(hex: "FFB85C")
+        // Legacy role-specific colors
+        static let searcherPrimary = DesignTokens.Searcher.primary
+        static let searcherGradientStart = DesignTokens.Searcher.color500
+        static let searcherGradientEnd = DesignTokens.Searcher.color400
 
-        static let ownerPrimary = Owner.primary
-        static let ownerGradientStart = Owner.primary
-        static let ownerGradientEnd = Color(hex: "4A148C")
+        static let ownerPrimary = DesignTokens.Owner.primary
+        static let ownerGradientStart = DesignTokens.Owner.primary
+        static let ownerGradientEnd = DesignTokens.Owner.color700
 
-        static let residentPrimary = Resident.primary
-        static let residentGradientStart = Color(hex: "D97B6F")
-        static let residentGradientEnd = Color(hex: "FF8C4B")
+        static let residentPrimary = DesignTokens.Resident.primary
+        static let residentGradientStart = DesignTokens.Resident.color400
+        static let residentGradientEnd = DesignTokens.Resident.color500
     }
 
     // MARK: - Color Aliases (for component compatibility)
@@ -169,187 +182,163 @@ struct Theme {
     typealias ResidentColors = Colors.Resident
     typealias GrayColors = Colors.Gray
 
-    // MARK: - Gradients
+    // MARK: - Gradients (bridges to DesignTokens)
 
     struct Gradients {
         /// Gradient tricolore signature de la marque
-        static let brand = LinearGradient(
-            colors: [
-                Color(hex: "9256A4"),  // Owner - Mauve (Updated to #9256A4)
-                Color(hex: "FF6F3C"),  // Resident - Orange
-                Color(hex: "FFB10B")   // Searcher - Yellow (Updated to #FFB10B)
-            ],
-            startPoint: .topLeading,
-            endPoint: .bottomTrailing
-        )
+        static let brand = DesignTokens.Brand.signatureGradient
 
-        static let brandHorizontal = LinearGradient(
-            colors: [
-                Color(hex: "9256A4"),  // Owner - Updated to #9256A4
-                Color(hex: "FF6F3C"),  // Resident - Orange
-                Color(hex: "FFB10B")   // Searcher - Updated to #FFB10B
-            ],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
+        static let brandHorizontal = DesignTokens.Brand.signatureGradientHorizontal
 
         // Searcher CTA Gradient
-        static let searcherCTA = LinearGradient(
-            colors: [Color(hex: "FFA040"), Color(hex: "FFB85C"), Color(hex: "FFD080")],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
+        static let searcherCTA = DesignTokens.Gradients.searcherCTA
 
-        static let searcherSoft = LinearGradient(
-            colors: [Color(hex: "FFF9E6"), Color(hex: "FFF4D9")],
-            startPoint: .top,
-            endPoint: .bottom
-        )
+        static let searcherSoft = DesignTokens.Gradients.searcherSoft
 
         // Owner CTA Gradient
-        static let ownerCTA = LinearGradient(
-            colors: [Color(hex: "7B5FB8"), Color(hex: "A67BB8"), Color(hex: "C98B9E")],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
+        static let ownerCTA = DesignTokens.Gradients.ownerCTA
 
-        static let ownerSoft = LinearGradient(
-            colors: [Color(hex: "F3F1FF"), Color(hex: "EDE9FF")],
-            startPoint: .top,
-            endPoint: .bottom
-        )
+        static let ownerSoft = DesignTokens.Gradients.ownerSoft
 
         // Resident CTA Gradient
-        static let residentCTA = LinearGradient(
-            colors: [Color(hex: "D97B6F"), Color(hex: "E8865D"), Color(hex: "FF8C4B")],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
+        static let residentCTA = DesignTokens.Gradients.residentCTA
 
-        static let residentSoft = LinearGradient(
-            colors: [Color(hex: "FFF3EF"), Color(hex: "FFEDE6")],
-            startPoint: .top,
-            endPoint: .bottom
-        )
+        static let residentSoft = DesignTokens.Gradients.residentSoft
 
-        /// Gradient pour badge de score de compatibilité
-        static let compatibilityScore = LinearGradient(
-            colors: [Color(hex: "10B981"), Color(hex: "059669")],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
+        /// Gradient pour badge de score de compatibilite
+        static let compatibilityScore = DesignTokens.Gradients.success
 
         /// Pink gradient for match-related features
-        static let pinkGradient = LinearGradient(
-            colors: [Color(hex: "EC4899"), Color(hex: "F472B6")],
-            startPoint: .leading,
-            endPoint: .trailing
-        )
+        static let pinkGradient = DesignTokens.Gradients.pink
     }
 
-    // MARK: - Typography
+    // MARK: - Typography (bridges to DesignTokens)
 
     struct Typography {
         // Titles
         static func largeTitle(_ weight: Font.Weight = .bold) -> Font {
-            .system(size: 34, weight: weight, design: .default)
+            weight == .bold ? DesignTokens.Typography.largeTitle : .system(size: 34, weight: weight)
         }
 
         static func title1(_ weight: Font.Weight = .bold) -> Font {
-            .system(size: 28, weight: weight, design: .default)
+            weight == .bold ? DesignTokens.Typography.title1 : .system(size: 28, weight: weight)
         }
 
         static func title2(_ weight: Font.Weight = .semibold) -> Font {
-            .system(size: 22, weight: weight, design: .default)
+            weight == .semibold ? DesignTokens.Typography.title2 : .system(size: 22, weight: weight)
         }
 
         static func title3(_ weight: Font.Weight = .semibold) -> Font {
-            .system(size: 20, weight: weight, design: .default)
+            weight == .semibold ? DesignTokens.Typography.title3 : .system(size: 20, weight: weight)
         }
 
         // Body
         static func bodyLarge(_ weight: Font.Weight = .regular) -> Font {
-            .system(size: 17, weight: weight, design: .default)
+            .system(size: 17, weight: weight)
         }
 
         static func body(_ weight: Font.Weight = .regular) -> Font {
-            .system(size: 15, weight: weight, design: .default)
+            weight == .regular ? DesignTokens.Typography.body :
+            weight == .semibold ? DesignTokens.Typography.headline :
+            .system(size: 15, weight: weight)
         }
 
         static func bodySmall(_ weight: Font.Weight = .regular) -> Font {
-            .system(size: 13, weight: weight, design: .default)
+            DesignTokens.Typography.footnote
         }
 
         // Caption
         static func caption(_ weight: Font.Weight = .regular) -> Font {
-            .system(size: 13, weight: weight, design: .default)
+            DesignTokens.Typography.caption
         }
 
         static func captionSmall(_ weight: Font.Weight = .regular) -> Font {
-            .system(size: 11, weight: weight, design: .default)
+            DesignTokens.Typography.caption2
         }
 
         // Special purpose
         static func price(_ weight: Font.Weight = .bold) -> Font {
-            .system(size: 20, weight: weight, design: .default)
+            .system(size: 20, weight: weight)
         }
 
         static func badge(_ weight: Font.Weight = .semibold) -> Font {
-            .system(size: 12, weight: weight, design: .default)
+            DesignTokens.Typography.caption
         }
     }
 
-    // MARK: - Spacing (Base 8px)
+    // MARK: - Spacing (bridges to DesignTokens)
 
     struct Spacing {
-        static let _1: CGFloat = 4
-        static let _2: CGFloat = 8
-        static let _3: CGFloat = 12
-        static let _4: CGFloat = 16
-        static let _5: CGFloat = 20
-        static let _6: CGFloat = 24
-        static let _8: CGFloat = 32
-        static let _10: CGFloat = 40
-        static let _12: CGFloat = 48
+        static let _1: CGFloat = DesignTokens.Spacing.xs
+        static let _2: CGFloat = DesignTokens.Spacing.sm
+        static let _3: CGFloat = DesignTokens.Spacing.spacing3
+        static let _4: CGFloat = DesignTokens.Spacing.md
+        static let _5: CGFloat = DesignTokens.Spacing.spacing5
+        static let _6: CGFloat = DesignTokens.Spacing.lg
+        static let _8: CGFloat = DesignTokens.Spacing.xl
+        static let _10: CGFloat = DesignTokens.Spacing.spacing10
+        static let _12: CGFloat = DesignTokens.Spacing.xxl
 
         // Legacy names
-        static let xxs: CGFloat = 4
-        static let xs: CGFloat = 8
-        static let sm: CGFloat = 12
-        static let md: CGFloat = 16
-        static let lg: CGFloat = 24
-        static let xl: CGFloat = 32
-        static let xxl: CGFloat = 48
+        static let xxs: CGFloat = DesignTokens.Spacing.xs
+        static let xs: CGFloat = DesignTokens.Spacing.sm
+        static let sm: CGFloat = DesignTokens.Spacing.spacing3
+        static let md: CGFloat = DesignTokens.Spacing.md
+        static let lg: CGFloat = DesignTokens.Spacing.lg
+        static let xl: CGFloat = DesignTokens.Spacing.xl
+        static let xxl: CGFloat = DesignTokens.Spacing.xxl
     }
 
-    // MARK: - Corner Radius
+    // MARK: - Corner Radius (bridges to DesignTokens)
 
     struct CornerRadius {
-        static let sm: CGFloat = 6
-        static let md: CGFloat = 8
-        static let lg: CGFloat = 12
-        static let xl: CGFloat = 16
-        static let _2xl: CGFloat = 20
-        static let _3xl: CGFloat = 24
-        static let full: CGFloat = 9999
+        static let sm: CGFloat = DesignTokens.CornerRadius.sm
+        static let md: CGFloat = DesignTokens.CornerRadius.md
+        static let lg: CGFloat = DesignTokens.CornerRadius.lg
+        static let xl: CGFloat = DesignTokens.CornerRadius.xl
+        static let _2xl: CGFloat = DesignTokens.CornerRadius.xxl
+        static let _3xl: CGFloat = DesignTokens.CornerRadius.xxxl
+        static let full: CGFloat = DesignTokens.CornerRadius.round
 
-        // Additional aliases for new components
-        static let card: CGFloat = 12
-        static let button: CGFloat = 8
-        static let modal: CGFloat = 24
-        static let input: CGFloat = 8
+        // Semantic aliases
+        static let card: CGFloat = DesignTokens.CornerRadius.card
+        static let button: CGFloat = DesignTokens.CornerRadius.button
+        static let modal: CGFloat = DesignTokens.CornerRadius.modal
+        static let input: CGFloat = DesignTokens.CornerRadius.input
     }
 
-    // MARK: - Shadows
+    // MARK: - Shadows (bridges to DesignTokens)
 
     struct Shadows {
-        static let small = Shadow(color: .black.opacity(0.05), radius: 4, x: 0, y: 2)
-        static let medium = Shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
-        static let large = Shadow(color: .black.opacity(0.15), radius: 16, x: 0, y: 8)
+        static let small = Shadow(
+            color: DesignTokens.Shadows.level1.color,
+            radius: DesignTokens.Shadows.level1.radius,
+            x: DesignTokens.Shadows.level1.x,
+            y: DesignTokens.Shadows.level1.y
+        )
+        static let medium = Shadow(
+            color: DesignTokens.Shadows.level2.color,
+            radius: DesignTokens.Shadows.level2.radius,
+            x: DesignTokens.Shadows.level2.x,
+            y: DesignTokens.Shadows.level2.y
+        )
+        static let large = Shadow(
+            color: DesignTokens.Shadows.level3.color,
+            radius: DesignTokens.Shadows.level3.radius,
+            x: DesignTokens.Shadows.level3.x,
+            y: DesignTokens.Shadows.level3.y
+        )
 
         // Role-specific glow shadows
         static func glow(for role: UserRole) -> Shadow {
-            Shadow(color: role.primaryColor.opacity(0.3), radius: 12, x: 0, y: 4)
+            switch role {
+            case .searcher:
+                return Shadow(color: DesignTokens.Searcher.shadow, radius: 12, x: 0, y: 4)
+            case .owner:
+                return Shadow(color: DesignTokens.Owner.shadow, radius: 12, x: 0, y: 4)
+            case .resident:
+                return Shadow(color: DesignTokens.Resident.shadow, radius: 12, x: 0, y: 4)
+            }
         }
     }
 
@@ -360,70 +349,37 @@ struct Theme {
         let y: CGFloat
     }
 
-    // MARK: - Sizes
+    // MARK: - Sizes (bridges to DesignTokens)
 
     struct Size {
-        static let buttonHeight: CGFloat = 48
-        static let cardImageHeight: CGFloat = 240
-        static let cardImageHeightCompact: CGFloat = 180
-        static let iconSmall: CGFloat = 16
-        static let iconMedium: CGFloat = 20
-        static let iconLarge: CGFloat = 24
-        static let touchTarget: CGFloat = 44  // Minimum touch target size
-        static let inputHeight: CGFloat = 48
-        static let searchBarHeight: CGFloat = 44
+        static let buttonHeight: CGFloat = DesignTokens.Size.buttonHeight
+        static let cardImageHeight: CGFloat = DesignTokens.Size.cardImageHeight
+        static let cardImageHeightCompact: CGFloat = DesignTokens.Size.cardImageHeightCompact
+        static let iconSmall: CGFloat = DesignTokens.Size.iconSmall
+        static let iconMedium: CGFloat = DesignTokens.Size.iconMedium
+        static let iconLarge: CGFloat = DesignTokens.Size.iconLarge
+        static let touchTarget: CGFloat = DesignTokens.Size.touchTarget
+        static let inputHeight: CGFloat = DesignTokens.Size.inputHeight
+        static let searchBarHeight: CGFloat = DesignTokens.Size.searchBarHeight
     }
 
-    // MARK: - Animations
+    // MARK: - Animations (bridges to DesignTokens)
 
     struct Animations {
-        static let fast = SwiftUI.Animation.easeInOut(duration: 0.15)
-        static let quick = SwiftUI.Animation.easeInOut(duration: 0.2)
-        static let standard = SwiftUI.Animation.easeInOut(duration: 0.3)
-        static let slow = SwiftUI.Animation.easeInOut(duration: 0.5)
-        static let spring = SwiftUI.Animation.spring(response: 0.3, dampingFraction: 0.7)
-        static let bouncy = SwiftUI.Animation.spring(response: 0.4, dampingFraction: 0.6)
-        static let springFast = SwiftUI.Animation.spring(response: 0.25, dampingFraction: 0.7)
+        static let fast = DesignTokens.Animation.easeOut
+        static let quick = DesignTokens.Animation.easeInOut
+        static let standard = SwiftUI.Animation.easeInOut(duration: DesignTokens.Animation.slow)
+        static let slow = SwiftUI.Animation.easeInOut(duration: DesignTokens.Animation.verySlow)
+        static let spring = DesignTokens.Animation.snappy
+        static let bouncy = DesignTokens.Animation.bouncy
+        static let springFast = DesignTokens.Animation.snappy
     }
 
     // Alias for backward compatibility
     typealias Animation = Animations
 }
 
-// MARK: - Color Extension for Hex
-// NOTE: Color.init(hex:) is now defined in Core/DesignSystem/DesignTokens.swift
-// This duplicate extension has been commented out to avoid ambiguity
-
-/*
-extension Color {
-    init(hex: String) {
-        let hex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var int: UInt64 = 0
-        Scanner(string: hex).scanHexInt64(&int)
-        let a, r, g, b: UInt64
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (255, (int >> 8) * 17, (int >> 4 & 0xF) * 17, (int & 0xF) * 17)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (255, int >> 16, int >> 8 & 0xFF, int & 0xFF)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (int >> 24, int >> 16 & 0xFF, int >> 8 & 0xFF, int & 0xFF)
-        default:
-            (a, r, g, b) = (1, 1, 1, 0)
-        }
-
-        self.init(
-            .sRGB,
-            red: Double(r) / 255,
-            green: Double(g) / 255,
-            blue:  Double(b) / 255,
-            opacity: Double(a) / 255
-        )
-    }
-}
-*/
-
-// MARK: - View Extensions for Theme
+// MARK: - View Extensions for Theme (bridges to DesignTokens extensions)
 
 extension View {
     func themeShadow(_ shadow: Theme.Shadow) -> some View {
@@ -440,23 +396,23 @@ extension View {
     func cardStyle(cornerRadius: CGFloat = Theme.CornerRadius._3xl) -> some View {
         self
             .background(Color.white)
-            .cornerRadius(cornerRadius)
-            .themeShadow(Theme.Shadows.small)
+            .continuousCornerRadius(cornerRadius)
+            .applyShadow(DesignTokens.Shadows.level1)
     }
 
     /// Apply card shadow
     func cardShadow() -> some View {
-        self.shadow(color: .black.opacity(0.08), radius: 8, x: 0, y: 4)
+        self.applyShadow(DesignTokens.Shadows.level2)
     }
 
     /// Apply button shadow
     func buttonShadow() -> some View {
-        self.shadow(color: .black.opacity(0.12), radius: 4, x: 0, y: 2)
+        self.applyShadow(DesignTokens.Shadows.level1)
     }
 
     /// Apply soft shadow
     func softShadow() -> some View {
-        self.shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 2)
+        self.applyShadow(DesignTokens.Shadows.level1)
     }
 }
 

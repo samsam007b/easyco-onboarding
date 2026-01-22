@@ -7,11 +7,14 @@
  * - Lease summary documents
  *
  * Supports i18n for fr, en, nl, de
+ *
+ * PERF: jsPDF (~450KB) is loaded dynamically only when generating PDFs
+ * to reduce initial bundle size and improve FCP
  */
 
 import { format } from 'date-fns';
 import { fr, enUS, nl, de } from 'date-fns/locale';
-import jsPDF from 'jspdf';
+// PERF: jsPDF loaded dynamically in methods that need it
 
 // =============================================================================
 // I18N CONFIGURATION
@@ -336,8 +339,12 @@ const numberToWords = (n: number, language: DocumentLanguage = 'fr'): string => 
 class DocumentGenerationService {
   /**
    * Generate a rent receipt (quittance de loyer) PDF
+   * PERF: jsPDF loaded dynamically only when generating PDFs
    */
-  generateRentReceipt(data: RentReceiptData, language: DocumentLanguage = 'fr'): Blob {
+  async generateRentReceipt(data: RentReceiptData, language: DocumentLanguage = 'fr'): Promise<Blob> {
+    // PERF: Dynamic import - jsPDF (~450KB) only loaded when generating PDF
+    const { default: jsPDF } = await import('jspdf');
+
     const t = translations.rentReceipt;
     const tc = translations.common;
     const doc = new jsPDF();
@@ -485,8 +492,12 @@ class DocumentGenerationService {
 
   /**
    * Generate a housing attestation (attestation d'hébergement) PDF
+   * PERF: jsPDF loaded dynamically only when generating PDFs
    */
-  generateHousingAttestation(data: HousingAttestationData, language: DocumentLanguage = 'fr'): Blob {
+  async generateHousingAttestation(data: HousingAttestationData, language: DocumentLanguage = 'fr'): Promise<Blob> {
+    // PERF: Dynamic import - jsPDF (~450KB) only loaded when generating PDF
+    const { default: jsPDF } = await import('jspdf');
+
     const t = translations.housingAttestation;
     const tc = translations.common;
     const doc = new jsPDF();
@@ -582,8 +593,12 @@ class DocumentGenerationService {
 
   /**
    * Generate a rent attestation (attestation de loyer) PDF
+   * PERF: jsPDF loaded dynamically only when generating PDFs
    */
-  generateRentAttestation(data: RentAttestationData, language: DocumentLanguage = 'fr'): Blob {
+  async generateRentAttestation(data: RentAttestationData, language: DocumentLanguage = 'fr'): Promise<Blob> {
+    // PERF: Dynamic import - jsPDF (~450KB) only loaded when generating PDF
+    const { default: jsPDF } = await import('jspdf');
+
     const t = translations.rentAttestation;
     const tc = translations.common;
     const doc = new jsPDF();

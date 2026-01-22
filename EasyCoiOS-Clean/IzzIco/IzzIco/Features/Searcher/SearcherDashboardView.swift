@@ -2,6 +2,7 @@ import SwiftUI
 
 // MARK: - Searcher Dashboard View
 // Information Rich Design - Matching ProfileView aesthetic
+// Migrated to DesignTokens v3.3 on 2026-01-22
 
 struct SearcherDashboardView: View {
     @StateObject private var viewModel = SearcherDashboardViewModel()
@@ -88,12 +89,12 @@ struct SearcherDashboardView: View {
         VStack(spacing: 12) {
             Text("Trouve ta colocation")
                 .font(.system(size: 32, weight: .bold))
-                .foregroundColor(Color(hex: "1F2937"))
+                .foregroundColor(DesignTokens.Colors.textPrimary)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             Text("Transparence et modernité")
                 .font(.system(size: 16, weight: .medium))
-                .foregroundColor(Color(hex: "6B7280"))
+                .foregroundColor(DesignTokens.Colors.textSecondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
         .padding(20)
@@ -201,7 +202,7 @@ struct SearcherDashboardView: View {
                     Image(systemName: "chevron.down")
                         .font(.system(size: 12, weight: .semibold))
                 }
-                .foregroundColor(Color(hex: "1F2937"))
+                .foregroundColor(DesignTokens.Colors.textPrimary)
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
                 .background(
@@ -219,7 +220,7 @@ struct SearcherDashboardView: View {
         VStack(alignment: .leading, spacing: 12) {
             Text("Activité")
                 .font(.system(size: 15, weight: .bold))
-                .foregroundColor(Color(hex: "1F2937"))
+                .foregroundColor(DesignTokens.Colors.textPrimary)
                 .padding(.horizontal, 4)
 
             LazyVGrid(columns: [
@@ -232,7 +233,7 @@ struct SearcherDashboardView: View {
                         icon: "heart.fill",
                         value: "\(stats.favoritesCount)",
                         label: "Favoris",
-                        color: Color(hex: "EF4444")
+                        color: DesignTokens.Semantic.error
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -252,7 +253,7 @@ struct SearcherDashboardView: View {
                         icon: "message.fill",
                         value: "\(stats.unreadMessages)",
                         label: "Messages",
-                        color: Color(hex: "3B82F6")
+                        color: DesignTokens.UIAccent.sky
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -271,7 +272,7 @@ struct SearcherDashboardView: View {
                         .foregroundColor(Theme.Colors.Searcher.primary)
                     Text("Top Matchs")
                         .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(Color(hex: "1F2937"))
+                        .foregroundColor(DesignTokens.Colors.textPrimary)
                 }
 
                 Spacer()
@@ -302,7 +303,7 @@ struct SearcherDashboardView: View {
             HStack {
                 Text("Récemment consultées")
                     .font(.system(size: 15, weight: .bold))
-                    .foregroundColor(Color(hex: "1F2937"))
+                    .foregroundColor(DesignTokens.Colors.textPrimary)
 
                 Spacer()
 
@@ -351,19 +352,19 @@ private struct SearchPreferenceRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(label)
                     .font(.system(size: 11, weight: .bold))
-                    .foregroundColor(Color(hex: "6B7280"))
+                    .foregroundColor(DesignTokens.Colors.textSecondary)
                     .tracking(0.5)
 
                 Text(value)
                     .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(Color(hex: "1F2937"))
+                    .foregroundColor(DesignTokens.Colors.textPrimary)
             }
 
             Spacer()
 
             Image(systemName: "chevron.right")
                 .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(Color(hex: "9CA3AF"))
+                .foregroundColor(DesignTokens.Colors.textTertiary)
         }
         .padding(16)
         .background(
@@ -405,12 +406,12 @@ private struct SearchPreferenceCompact: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(label)
                     .font(.system(size: 10, weight: .bold))
-                    .foregroundColor(Color(hex: "6B7280"))
+                    .foregroundColor(DesignTokens.Colors.textSecondary)
                     .tracking(0.5)
 
                 Text(value)
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(Color(hex: "1F2937"))
+                    .foregroundColor(DesignTokens.Colors.textPrimary)
                     .lineLimit(1)
             }
         }
@@ -441,7 +442,7 @@ private struct QuickFilterButton: View {
             Text(title)
                 .font(.system(size: 14, weight: .semibold))
         }
-        .foregroundColor(Color(hex: "1F2937"))
+        .foregroundColor(DesignTokens.Colors.textPrimary)
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .background(
@@ -474,11 +475,11 @@ private struct RichStatCardSearcher: View {
 
             Text(value)
                 .font(.system(size: 22, weight: .bold))
-                .foregroundColor(Color(hex: "1F2937"))
+                .foregroundColor(DesignTokens.Colors.textPrimary)
 
             Text(label)
                 .font(.system(size: 11, weight: .medium))
-                .foregroundColor(Color(hex: "6B7280"))
+                .foregroundColor(DesignTokens.Colors.textSecondary)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 16)
@@ -521,7 +522,7 @@ private struct TopMatchCardRich: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(property.title)
                     .font(.system(size: 15, weight: .bold))
-                    .foregroundColor(Color(hex: "1F2937"))
+                    .foregroundColor(DesignTokens.Colors.textPrimary)
                     .lineLimit(1)
 
                 HStack(spacing: 4) {
@@ -530,7 +531,7 @@ private struct TopMatchCardRich: View {
                     Text(property.city)
                         .font(.system(size: 13, weight: .medium))
                 }
-                .foregroundColor(Color(hex: "6B7280"))
+                .foregroundColor(DesignTokens.Colors.textSecondary)
 
                 Text("\(property.monthlyRent)€/mois")
                     .font(.system(size: 15, weight: .bold))
@@ -542,7 +543,7 @@ private struct TopMatchCardRich: View {
             // Arrow
             Image(systemName: "chevron.right")
                 .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(Color(hex: "9CA3AF"))
+                .foregroundColor(DesignTokens.Colors.textTertiary)
         }
         .padding(14)
         .background(
@@ -628,12 +629,12 @@ private struct PropertyCompactCardRich: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(property.title)
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(Color(hex: "1F2937"))
+                    .foregroundColor(DesignTokens.Colors.textPrimary)
                     .lineLimit(1)
 
                 Text(property.city)
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(Color(hex: "6B7280"))
+                    .foregroundColor(DesignTokens.Colors.textSecondary)
 
                 Text("\(property.monthlyRent)€/mois")
                     .font(.system(size: 14, weight: .bold))

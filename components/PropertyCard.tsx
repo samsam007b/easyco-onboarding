@@ -44,6 +44,8 @@ interface PropertyCardProps {
   variant?: 'default' | 'compact';
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  /** Index in list for priority loading optimization */
+  index?: number;
 }
 
 function PropertyCard({
@@ -57,7 +59,8 @@ function PropertyCard({
   isFavorite = false,
   variant = 'default',
   onMouseEnter,
-  onMouseLeave
+  onMouseLeave,
+  index = 0,
 }: PropertyCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [localFavorite, setLocalFavorite] = useState(isFavorite);
@@ -148,6 +151,10 @@ function PropertyCard({
               alt={property.title}
               fill
               className="object-cover"
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              quality={80}
+              priority={index < 2}
+              loading={index < 2 ? 'eager' : 'lazy'}
             />
 
             {/* Favorite button */}
@@ -268,6 +275,10 @@ function PropertyCard({
             alt={property.title}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            quality={85}
+            priority={index < 3}
+            loading={index < 3 ? 'eager' : 'lazy'}
           />
 
           {/* Favorite button */}

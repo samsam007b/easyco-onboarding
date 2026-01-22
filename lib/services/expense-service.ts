@@ -72,8 +72,7 @@ const translations = {
   },
 };
 import { ocrService } from './ocr-service';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+// PERF: jsPDF and autoTable loaded dynamically in exportToPDF() to reduce bundle size
 import type {
   Expense,
   ExpenseSplit,
@@ -417,12 +416,22 @@ class ExpenseService {
   /**
    * Export expenses to PDF
    */
+  /**
+   * Export expenses to PDF
+   * PERF: jsPDF and autoTable loaded dynamically only when exporting
+   */
   async exportToPDF(
     propertyId: string,
     propertyName: string,
     options: ExpenseExportOptions
   ): Promise<ExpenseExportData> {
     try {
+      // PERF: Dynamic imports - jsPDF (~450KB) + autoTable (~100KB) only loaded when exporting
+      const [{ default: jsPDF }, { default: autoTable }] = await Promise.all([
+        import('jspdf'),
+        import('jspdf-autotable'),
+      ]);
+
       // Fetch expenses
       const { data: expenses } = await this.supabase
         .from('expenses')

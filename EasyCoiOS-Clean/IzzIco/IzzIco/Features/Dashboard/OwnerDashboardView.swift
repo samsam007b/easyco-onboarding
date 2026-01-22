@@ -3,6 +3,7 @@
 //  IzzIco
 //
 //  Modern Pinterest-style dashboard for property owners
+//  Migrated to DesignTokens v3.3 on 2026-01-22
 //
 
 import SwiftUI
@@ -230,32 +231,32 @@ struct OwnerDashboardView: View {
                     VStack(alignment: .trailing, spacing: 2) {
                         Text("68,500€")
                             .font(Theme.PinterestTypography.heroSmall(.bold))
-                            .foregroundColor(Color(hex: "10B981"))
+                            .foregroundColor(DesignTokens.Semantic.success)
 
                         HStack(spacing: 4) {
                             Image(systemName: "arrow.up.right")
                                 .font(.system(size: 10, weight: .bold))
-                                .foregroundColor(Color(hex: "10B981"))
+                                .foregroundColor(DesignTokens.Semantic.success)
 
                             Text("+15.2%")
                                 .font(Theme.PinterestTypography.bodySmall(.semibold))
-                                .foregroundColor(Color(hex: "10B981"))
+                                .foregroundColor(DesignTokens.Semantic.success)
                         }
                     }
                 }
 
                 // Chart Placeholder
                 RoundedRectangle(cornerRadius: 12)
-                    .fill(Color(hex: "F3F4F6"))
+                    .fill(DesignTokens.Neutral.gray100)
                     .frame(height: 180)
                     .overlay(
                         VStack {
                             Image(systemName: "chart.bar.fill")
                                 .font(.system(size: 40))
-                                .foregroundColor(Color(hex: "9CA3AF"))
+                                .foregroundColor(DesignTokens.Colors.textTertiary)
                             Text("Graphique des revenus")
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(Color(hex: "6B7280"))
+                                .foregroundColor(DesignTokens.Colors.textSecondary)
                         }
                     )
             }
@@ -276,7 +277,7 @@ struct OwnerDashboardView: View {
                     // Donut Chart Placeholder
                     ZStack {
                         Circle()
-                            .stroke(Color(hex: "F3F4F6"), lineWidth: 20)
+                            .stroke(DesignTokens.Neutral.gray100, lineWidth: 20)
                             .frame(width: 100, height: 100)
 
                         Circle()
@@ -381,12 +382,12 @@ struct OwnerDashboardView: View {
 
                 HStack(spacing: 6) {
                     Circle()
-                        .fill(Color(hex: "F59E0B"))
+                        .fill(DesignTokens.Semantic.warning)
                         .frame(width: 8, height: 8)
 
                     Text("\(pendingApplications.count)")
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(Color(hex: "F59E0B"))
+                        .foregroundColor(DesignTokens.Semantic.warning)
                 }
             }
 
@@ -447,7 +448,7 @@ struct ModernPropertyCard: View {
                             .scaledToFill()
                     } placeholder: {
                         Rectangle()
-                            .fill(Color(hex: "F3F4F6"))
+                            .fill(DesignTokens.Neutral.gray100)
                     }
                     .frame(width: 80, height: 80)
                     .cornerRadius(12)
@@ -472,10 +473,10 @@ struct ModernPropertyCard: View {
                             Text("245")
                                 .font(.system(size: 12, weight: .medium))
                         }
-                        .foregroundColor(Color(hex: "6B7280"))
+                        .foregroundColor(DesignTokens.Colors.textSecondary)
 
                         Circle()
-                            .fill(Color(hex: "D1D5DB"))
+                            .fill(DesignTokens.Neutral.gray300)
                             .frame(width: 3, height: 3)
 
                         HStack(spacing: 4) {
@@ -484,7 +485,7 @@ struct ModernPropertyCard: View {
                             Text("8")
                                 .font(.system(size: 12, weight: .medium))
                         }
-                        .foregroundColor(Color(hex: "6B7280"))
+                        .foregroundColor(DesignTokens.Colors.textSecondary)
                     }
                 }
 
@@ -544,10 +545,10 @@ struct DashboardApplicationCard: View {
                     HStack(spacing: Theme.PinterestSpacing.xs) {
                         Text(application.timeAgo)
                             .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(Color(hex: "9CA3AF"))
+                            .foregroundColor(DesignTokens.Colors.textTertiary)
 
                         Circle()
-                            .fill(Color(hex: "D1D5DB"))
+                            .fill(DesignTokens.Neutral.gray300)
                             .frame(width: 3, height: 3)
 
                         HStack(spacing: 4) {
@@ -573,7 +574,7 @@ struct DashboardApplicationCard: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(width: 36, height: 36)
-                            .background(Color(hex: "10B981"))
+                            .background(DesignTokens.Semantic.success)
                             .clipShape(Circle())
                     }
 
@@ -584,7 +585,7 @@ struct DashboardApplicationCard: View {
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(.white)
                             .frame(width: 36, height: 36)
-                            .background(Color(hex: "EF4444"))
+                            .background(DesignTokens.Semantic.error)
                             .clipShape(Circle())
                     }
                 }
@@ -616,9 +617,9 @@ struct PropertyApplication: Identifiable {
     }
 
     var scoreColor: Color {
-        if score >= 80 { return Color(hex: "10B981") }
-        if score >= 60 { return Color(hex: "F59E0B") }
-        return Color(hex: "EF4444")
+        if score >= 80 { return DesignTokens.Semantic.success }
+        if score >= 60 { return DesignTokens.Semantic.warning }
+        return DesignTokens.Semantic.error
     }
 }
 

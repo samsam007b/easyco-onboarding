@@ -3,6 +3,7 @@
 //  IzzIco
 //
 //  Secondary button component with border style
+//  Migrated to DesignTokens v3.3 on 2026-01-22
 //
 
 import SwiftUI
@@ -13,9 +14,17 @@ struct SecondaryButton: View {
     let action: () -> Void
     var isDisabled: Bool = false
     var fullWidth: Bool = true
-    var color: Color = Theme.Colors.primary
+    var color: Color = DesignTokens.Colors.primary
+    var role: UserRole? = nil  // Optional: use role-specific color
 
     @State private var isPressed = false
+
+    private var effectiveColor: Color {
+        if let role = role {
+            return role.primaryColor
+        }
+        return color
+    }
 
     var body: some View {
         Button(action: {
@@ -29,22 +38,22 @@ struct SecondaryButton: View {
                     Image.lucide(icon)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: Theme.Size.iconMedium, height: Theme.Size.iconMedium)
-                        .foregroundColor(isDisabled ? Theme.Colors.gray400 : color)
+                        .frame(width: DesignTokens.Size.iconMedium, height: DesignTokens.Size.iconMedium)
+                        .foregroundColor(isDisabled ? DesignTokens.Colors.gray400 : effectiveColor)
                 }
 
                 Text(title)
-                    .font(Theme.Typography.body(.semibold))
-                    .foregroundColor(isDisabled ? Theme.Colors.gray400 : color)
+                    .font(DesignTokens.Typography.headline)
+                    .foregroundColor(isDisabled ? DesignTokens.Colors.gray400 : effectiveColor)
             }
             .frame(maxWidth: fullWidth ? .infinity : nil)
-            .frame(height: Theme.Size.buttonHeight)
-            .background(Theme.Colors.backgroundPrimary)
+            .frame(height: DesignTokens.Size.buttonHeight)
+            .background(DesignTokens.Colors.backgroundPrimary)
             .overlay(
-                RoundedRectangle(cornerRadius: Theme.CornerRadius.button)
-                    .stroke(isDisabled ? Theme.Colors.gray300 : color, lineWidth: 2)
+                RoundedRectangle(cornerRadius: DesignTokens.CornerRadius.button, style: .continuous)
+                    .stroke(isDisabled ? DesignTokens.Colors.gray300 : effectiveColor, lineWidth: 2)
             )
-            .cornerRadius(Theme.CornerRadius.button)
+            .continuousCornerRadius(DesignTokens.CornerRadius.button)
             .opacity(isPressed ? 0.7 : 1.0)
             .scaleEffect(isPressed ? 0.98 : 1.0)
         }
@@ -61,7 +70,29 @@ struct SecondaryButton: View {
                     isPressed = false
                 }
         )
-        .animation(Theme.Animation.springFast, value: isPressed)
+        .animation(DesignTokens.Animation.snappy, value: isPressed)
+    }
+}
+
+// MARK: - Convenience Initializers
+
+extension SecondaryButton {
+    /// Create a role-themed secondary button
+    init(
+        title: String,
+        icon: String? = nil,
+        role: UserRole,
+        isDisabled: Bool = false,
+        fullWidth: Bool = true,
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.icon = icon
+        self.action = action
+        self.isDisabled = isDisabled
+        self.fullWidth = fullWidth
+        self.color = DesignTokens.Colors.primary
+        self.role = role
     }
 }
 
@@ -74,13 +105,20 @@ struct SecondaryButton_Previews: PreviewProvider {
 
             SecondaryButton(title: "Modifier", icon: "edit", action: {})
 
-            SecondaryButton(title: "Désactivé", icon: nil, action: {}, isDisabled: true)
+            SecondaryButton(title: "Desactive", icon: nil, action: {}, isDisabled: true)
+
+            // Role-specific buttons
+            SecondaryButton(title: "Rechercher", icon: "search", role: .searcher, action: {})
+
+            SecondaryButton(title: "Gerer", icon: "settings", role: .owner, action: {})
+
+            SecondaryButton(title: "Partager", icon: "share", role: .resident, action: {})
 
             SecondaryButton(
                 title: "Supprimer",
                 icon: "trash",
                 action: {},
-                color: Theme.Colors.error
+                color: DesignTokens.Colors.error
             )
 
             SecondaryButton(

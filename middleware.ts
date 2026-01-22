@@ -44,8 +44,32 @@ function isSessionExpired(lastActivity: number | null, isSensitiveRoute: boolean
  * Runs on every request to check auth status and handle redirects
  *
  * SECURITY: Implements session timeout for VULN-004
+ * PERF: Optimized to minimize Supabase calls and use early returns
  */
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
+
+  // ========================================================================
+  // PERF OPTIMIZATION 1: Early return for static files (no auth check needed)
+  // This saves ~100ms per static request by skipping Supabase entirely
+  // ========================================================================
+  if (
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/static') ||
+    pathname.includes('.')
+  ) {
+    return NextResponse.next()
+  }
+
+  // ========================================================================
+  // PERF OPTIMIZATION 2: Early return for public routes that never need auth
+  // ========================================================================
+  const alwaysPublicRoutes = ['/', '/terms', '/privacy', '/legal', '/coming-soon']
+  if (alwaysPublicRoutes.some(route => pathname === route || pathname.startsWith(route + '/'))) {
+    return NextResponse.next()
+  }
+
+  // Now we need auth - create the Supabase client
   let response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -100,8 +124,6 @@ export async function middleware(request: NextRequest) {
 
   // Refresh session if expired - required for Server Components
   const { data: { user }, error } = await supabase.auth.getUser()
-
-  const { pathname } = request.nextUrl
 
   // ========================================================================
   // SECURITY FIX VULN-004: Session Timeout Enforcement
@@ -170,12 +192,28 @@ export async function middleware(request: NextRequest) {
   }
   // ========================================================================
 
-  // Check if user is a super admin (bypass all restrictions)
+  // ========================================================================
+  // PERF OPTIMIZATION 3: Consolidate user data + super admin check into ONE query
+  // Instead of 2-3 sequential queries, we fetch everything in parallel
+  // ========================================================================
   let isSuperAdmin = false
-  if (user?.email) {
-    const { data: superAdminCheck } = await supabase
-      .rpc('is_super_admin', { user_email: user.email })
-    isSuperAdmin = superAdminCheck === true
+  let userData: { user_type: string | null; onboarding_completed: boolean | null } | null = null
+
+  if (user) {
+    // PERF: Parallel fetch instead of sequential
+    const [superAdminResult, userDataResult] = await Promise.all([
+      user.email
+        ? supabase.rpc('is_super_admin', { user_email: user.email })
+        : Promise.resolve({ data: false }),
+      supabase
+        .from('users')
+        .select('user_type, onboarding_completed')
+        .eq('id', user.id)
+        .single(),
+    ])
+
+    isSuperAdmin = superAdminResult.data === true
+    userData = userDataResult.data
   }
 
   // 🔴 CLOSED BETA: Block all Searcher-related routes (EXCEPT for super admins)
@@ -195,29 +233,22 @@ export async function middleware(request: NextRequest) {
     }
 
     // 🔴 CLOSED BETA: Also block if user has user_type = 'searcher'
-    if (user) {
-      const { data: userData } = await supabase
-        .from('users')
-        .select('user_type')
-        .eq('id', user.id)
-        .single()
+    // PERF: Use cached userData instead of another query
+    if (userData?.user_type === 'searcher') {
+      // Allow only specific paths for searcher users
+      const allowedPathsForSearchers = [
+        '/coming-soon/searcher',
+        '/profile',
+        '/auth',
+        '/welcome'
+      ]
 
-      if (userData?.user_type === 'searcher') {
-        // Allow only specific paths for searcher users
-        const allowedPathsForSearchers = [
-          '/coming-soon/searcher',
-          '/profile',
-          '/auth',
-          '/welcome'
-        ]
+      const isAllowedPath = allowedPathsForSearchers.some(path =>
+        pathname.startsWith(path)
+      )
 
-        const isAllowedPath = allowedPathsForSearchers.some(path =>
-          pathname.startsWith(path)
-        )
-
-        if (!isAllowedPath) {
-          return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
-        }
+      if (!isAllowedPath) {
+        return NextResponse.redirect(new URL('/coming-soon/searcher', request.url))
       }
     }
   }
@@ -317,14 +348,7 @@ export async function middleware(request: NextRequest) {
     return response
   }
 
-  // Allow access to static files and Next.js internals
-  if (
-    pathname.startsWith('/_next') ||
-    pathname.startsWith('/static') ||
-    pathname.includes('.')
-  ) {
-    return response
-  }
+  // PERF: Static file check already done at top of middleware (early return)
 
   // Check if current route is public
   const isPublicRoute = publicRoutes.some(route => pathname === route || pathname.startsWith(route))
@@ -340,13 +364,7 @@ export async function middleware(request: NextRequest) {
 
   // Handle authenticated users trying to access auth-only routes
   if (user && isAuthOnlyRoute) {
-    // Get user data to determine redirect
-    const { data: userData } = await supabase
-      .from('users')
-      .select('user_type, onboarding_completed')
-      .eq('id', user.id)
-      .single()
-
+    // PERF: Use cached userData instead of another query (already fetched above)
     if (userData) {
       // If onboarding not completed, redirect to onboarding
       // BUT only if not already on an onboarding page (prevent loops)

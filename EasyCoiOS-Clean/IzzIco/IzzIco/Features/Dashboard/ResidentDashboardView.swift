@@ -3,6 +3,7 @@
 //  IzzIco
 //
 //  Dashboard for current residents with rent, maintenance, documents
+//  Migrated to DesignTokens v3.3 on 2026-01-22
 //
 
 import SwiftUI
@@ -152,7 +153,7 @@ struct ResidentDashboardView: View {
                         icon: "message-circle",
                         title: "Messages",
                         value: "\(viewModel.unreadMessages)",
-                        color: Color(hex: "F59E0B"),
+                        color: DesignTokens.Semantic.warning,
                         hasNotification: viewModel.unreadMessages > 0
                     )
                 }
@@ -163,7 +164,7 @@ struct ResidentDashboardView: View {
                         icon: "check-square",
                         title: "Tâches",
                         value: "\(viewModel.pendingTasks)",
-                        color: Color(hex: "10B981")
+                        color: DesignTokens.Semantic.success
                     )
                 }
                 .buttonStyle(PlainButtonStyle())
@@ -216,7 +217,7 @@ struct ResidentDashboardView: View {
                             icon: "check-square",
                             title: "Tâches",
                             subtitle: "\(viewModel.pendingTasks) en cours",
-                            color: Color(hex: "10B981")
+                            color: DesignTokens.Semantic.success
                         )
                     }
                     .buttonStyle(PlainButtonStyle())
@@ -236,7 +237,7 @@ struct ResidentDashboardView: View {
                             icon: "calendar",
                             title: "Calendrier",
                             subtitle: "\(viewModel.upcomingEvents) événements",
-                            color: Color(hex: "6366F1")
+                            color: DesignTokens.UIAccent.lavender
                         )
                     }
                     .buttonStyle(PlainButtonStyle())

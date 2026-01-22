@@ -1,9 +1,13 @@
 /**
  * OCR Service for Receipt Scanning
  * Uses Tesseract.js to extract text from receipt images
+ *
+ * PERF: Tesseract.js (~6.8MB) is loaded dynamically only when needed
+ * to reduce initial bundle size and improve FCP
  */
 
-import { createWorker, type Worker } from 'tesseract.js';
+// Dynamic import types - actual import happens in initialize()
+type Worker = import('tesseract.js').Worker;
 import type { OCRData, OCRResult, OCRLineItem } from '@/types/finances.types';
 
 // ============================================================================
@@ -89,6 +93,7 @@ class OCRService {
   /**
    * Initialize Tesseract worker
    * Only call this once and reuse the worker
+   * PERF: Uses dynamic import to load tesseract.js only when needed
    */
   async initialize(): Promise<void> {
     if (this.isInitialized && this.worker) {
@@ -97,6 +102,10 @@ class OCRService {
 
     try {
       console.log('[OCR] Initializing Tesseract worker...');
+      console.log('[OCR] PERF: Loading tesseract.js dynamically...');
+
+      // PERF: Dynamic import - tesseract.js (~6.8MB) only loaded when OCR is used
+      const { createWorker } = await import('tesseract.js');
 
       // Create worker with explicit configuration
       this.worker = await createWorker('fra', 1, {

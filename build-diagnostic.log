@@ -1,0 +1,89 @@
+npm warn config optional Use `--omit=optional` to exclude optional dependencies, or
+npm warn config `--include=optional` to include them.
+npm warn config
+npm warn config       Default value does install optional deps unless otherwise omitted.
+
+> izzico-onboarding@0.3.2 build
+> next build
+
+[@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead.
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · instrumentationHook
+
+   Creating an optimized production build ...
+[@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (118kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings
+
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+A Node.js API is used (process.versions at line: 32) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/realtime-js/dist/module/lib/websocket-factory.js
+./node_modules/@supabase/realtime-js/dist/module/index.js
+./node_modules/@supabase/supabase-js/dist/module/index.js
+./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+
+./node_modules/@supabase/supabase-js/dist/module/index.js
+A Node.js API is used (process.version at line: 24) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/supabase-js/dist/module/index.js
+./node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+
+   Linting and checking validity of types ...
+Failed to compile.
+
+./app/auth/reauth/page.tsx:175:31
+Type error: Type 'string' is not assignable to type 'number'.
+
+[0m [90m 173 |[39m             [33m>[39m[0m
+[0m [90m 174 |[39m               {isLoading [33m?[39m ([0m
+[0m[31m[1m>[22m[39m[90m 175 |[39m                 [33m<[39m[33mLoadingHouse[39m size[33m=[39m[32m"sm"[39m [33m/[39m[33m>[39m[0m
+[0m [90m     |[39m                               [31m[1m^[22m[39m[0m
+[0m [90m 176 |[39m               ) [33m:[39m ([0m
+[0m [90m 177 |[39m                 t([32m'auth.verifyIdentity'[39m)[0m
+[0m [90m 178 |[39m               )}[0m
+Next.js build worker exited with code: 1 and signal: null
+npm warn config optional Use `--omit=optional` to exclude optional dependencies, or
+npm warn config `--include=optional` to include them.
+npm warn config
+npm warn config       Default value does install optional deps unless otherwise omitted.
+
+> izzico-onboarding@0.3.2 build
+> next build
+
+[@sentry/nextjs] DEPRECATION WARNING: disableLogger is deprecated and will be removed in a future version. Use webpack.treeshake.removeDebugLogging instead.
+  ▲ Next.js 14.2.35
+  - Environments: .env.local
+  - Experiments (use with caution):
+    · instrumentationHook
+
+   Creating an optimized production build ...
+[@sentry/nextjs] DEPRECATION WARNING: It is recommended renaming your `sentry.client.config.ts` file, or moving its content to `instrumentation-client.ts`. When using Turbopack `sentry.client.config.ts` will no longer work. Read more about the `instrumentation-client.ts` file: https://nextjs.org/docs/app/api-reference/file-conventions/instrumentation-client
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (139kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (188kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (118kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+Failed to compile.
+
+./app/auth/reauth/page.tsx:188:33
+Type error: Expected 1 arguments, but got 2.
+
+[0m [90m 186 |[39m           [33m<[39m[33mdiv[39m className[33m=[39m[32m"text-center"[39m[33m>[39m[0m
+[0m [90m 187 |[39m             [33m<[39m[33mp[39m className[33m=[39m[32m"text-sm text-slate-500 mb-2"[39m[33m>[39m[0m
+[0m[31m[1m>[22m[39m[90m 188 |[39m               {t([32m'auth.notYou'[39m[33m,[39m [32m'Ce n\'est pas toi ?'[39m)}[0m
+[0m [90m     |[39m                                 [31m[1m^[22m[39m[0m
+[0m [90m 189 |[39m             [33m<[39m[33m/[39m[33mp[39m[33m>[39m[0m
+[0m [90m 190 |[39m             [33m<[39m[33mbutton[39m[0m
+[0m [90m 191 |[39m               onClick[33m=[39m{handleLogout}[0m
+Next.js build worker exited with code: 1 and signal: null
