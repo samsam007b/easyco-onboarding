@@ -1,0 +1,88 @@
+name: "🚀 Tâche Longue Claude (Ralph Loop)"
+description: "Lance une tâche complexe avec jusqu'à 2h de travail autonome"
+title: "[Ralph] "
+labels: ["claude-task", "claude-long"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Tâche Longue - Mode Ralph Loop
+
+        ⚠️ **Cette tâche peut prendre jusqu'à 2 heures.**
+
+        Claude travaillera de manière autonome avec:
+        - Commits intermédiaires
+        - Documentation de progression
+        - PR détaillée à la fin
+
+        Tu recevras des notifications Telegram:
+        - 🚀 Au démarrage
+        - ✅ ou ❌ À la fin
+
+  - type: dropdown
+    id: complexity
+    attributes:
+      label: Complexité estimée
+      options:
+        - "🟢 Moyen (~30 min)"
+        - "🟡 Important (~1h)"
+        - "🔴 Majeur (~2h)"
+      default: 1
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objectif principal
+      description: Quel est le but final de cette tâche?
+      placeholder: "Implémenter le système de matching V2 avec algorithme de compatibilité"
+    validations:
+      required: true
+
+  - type: textarea
+    id: subtasks
+    attributes:
+      label: Sous-tâches (optionnel)
+      description: Découpe en étapes si tu veux guider Claude
+      placeholder: |
+        1. Analyser le système de matching actuel
+        2. Créer les nouvelles tables SQL
+        3. Implémenter l'algorithme de scoring
+        4. Ajouter l'interface utilisateur
+        5. Écrire les tests
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Contraintes importantes
+      description: Règles que Claude DOIT respecter
+      placeholder: |
+        - Ne pas modifier les migrations existantes
+        - Garder la rétrocompatibilité avec l'API actuelle
+        - Utiliser uniquement les couleurs role-based
+
+  - type: textarea
+    id: resources
+    attributes:
+      label: Ressources / Références
+      description: Fichiers à lire, documentation, exemples...
+      placeholder: |
+        - Lire: lib/matching/current-algorithm.ts
+        - Référence: https://example.com/matching-algo
+        - Design: Figma link...
+
+  - type: checkboxes
+    id: apex-options
+    attributes:
+      label: Options Apex
+      description: Activer les fonctionnalités du workflow Apex
+      options:
+        - label: "🔍 Design V3-fun Review"
+          required: false
+        - label: "🔒 RGPD/Security Review"
+          required: false
+        - label: "🗣️ Voice Guidelines Review"
+          required: false
+        - label: "🧪 Tests automatiques"
+          required: false

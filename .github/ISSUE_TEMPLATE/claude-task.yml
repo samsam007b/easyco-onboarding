@@ -1,0 +1,74 @@
+name: "🤖 Tâche Claude"
+description: "Lance une tâche pour Claude Code depuis ton mobile"
+title: "[Claude] "
+labels: ["claude-task"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Lancer une tâche pour Claude
+
+        Cette issue va automatiquement déclencher Claude Code via GitHub Actions.
+        Tu recevras une notification Telegram quand ce sera terminé.
+
+  - type: dropdown
+    id: task-type
+    attributes:
+      label: Type de tâche
+      description: Quel type de travail Claude doit-il faire?
+      options:
+        - "✨ Feature - Nouvelle fonctionnalité"
+        - "🐛 Fix - Correction de bug"
+        - "🎨 Design - Amélioration UI/UX"
+        - "📝 Docs - Documentation"
+        - "♻️ Refactor - Refactoring de code"
+        - "🧪 Test - Ajout de tests"
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description de la tâche
+      description: Décris ce que Claude doit faire (sois précis!)
+      placeholder: |
+        Exemple: "Ajoute un bouton de partage sur la page de profil résident.
+        Le bouton doit utiliser les couleurs resident-* et être placé en haut à droite."
+    validations:
+      required: true
+
+  - type: dropdown
+    id: workflow
+    attributes:
+      label: Workflow à utiliser
+      description: Claude doit-il suivre un workflow spécifique?
+      options:
+        - "Auto - Claude choisit"
+        - "Apex Feature - Workflow complet avec review"
+        - "Apex Fix - Debug systématique"
+        - "Rapide - Juste faire la tâche"
+      default: 0
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Contexte additionnel (optionnel)
+      description: Fichiers concernés, contraintes, références...
+      placeholder: |
+        - Fichiers: app/dashboard/resident/page.tsx
+        - Contrainte: Doit rester compatible mobile
+        - Référence: Voir le bouton sur la page owner
+
+  - type: checkboxes
+    id: options
+    attributes:
+      label: Options
+      options:
+        - label: "🔄 Self-review (-X) - Claude vérifie son propre code"
+          required: false
+        - label: "🧪 Tests (-T) - Exécuter les tests après"
+          required: false
+        - label: "📤 PR automatique (-PR) - Créer une Pull Request"
+          required: false

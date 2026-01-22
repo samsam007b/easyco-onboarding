@@ -1,0 +1,47 @@
+# Notification Telegram pour tâches Claude
+# Envoie une notification quand une issue "claude-task" est créée
+# Tu ouvres ensuite Claude iOS pour travailler dessus (utilise ton Max)
+
+name: Claude Task Notification
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  notify:
+    # Déclenche seulement si l'issue a le label claude-task
+    if: contains(github.event.issue.labels.*.name, 'claude-task')
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Telegram Notification
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_URL: ${{ github.event.issue.html_url }}
+          REPO_NAME: ${{ github.repository }}
+        run: |
+          # Déterminer le type de tâche
+          if echo "${{ join(github.event.issue.labels.*.name, ',') }}" | grep -q "claude-long"; then
+            TASK_TYPE="LONGUE"
+            EMOJI="🚀"
+          else
+            TASK_TYPE="standard"
+            EMOJI="📋"
+          fi
+
+          MESSAGE="${EMOJI} Nouvelle tâche Claude (${TASK_TYPE})
+
+          Issue #${ISSUE_NUMBER}
+          Repo: ${REPO_NAME}
+
+          Ouvre Claude iOS pour travailler dessus:
+          ${ISSUE_URL}"
+
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d "chat_id=${TELEGRAM_CHAT_ID}" \
+            -d "text=${MESSAGE}" \
+            -d "disable_web_page_preview=false"

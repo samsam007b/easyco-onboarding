@@ -351,3 +351,73 @@ Located in `brand-identity/logo final izzico/ancienne versions/` - DO NOT USE fo
 10. **No emojis**: Use custom Izzico icons instead of standard emojis
 11. **Use "co-living"**: Never use "coloc" or "colocation" in branding/UI
 12. **Signature words**: Use "Living Persona" (not "profil") and "Living Match" (not "match")
+
+## Apex Workflow (IMPORTANT)
+
+Quand l'utilisateur mentionne **"apex"** dans sa demande, active automatiquement le workflow Apex approprié :
+
+### Détection du mot-clé "apex"
+
+| Demande utilisateur | Action |
+|---------------------|--------|
+| "apex ajoute un bouton de partage" | → Lis et suis `.claude/workflows/izzico-feature/` |
+| "apex fix le bug du gradient" | → Lis et suis `.claude/commands/izzico-fix.md` |
+| "ajoute un bouton" (sans apex) | → Travaille normalement sans workflow |
+
+### Comportement du workflow Apex
+
+Quand "apex" est détecté :
+1. **Charge les étapes une par une** depuis `.claude/workflows/izzico-feature/steps/`
+2. **Suit strictement** chaque fichier d'étape dans l'ordre
+3. **Lance les reviews** Design V3-fun, RGPD/Security, Voice Guidelines
+4. **Ne skip pas** les validations sauf si l'utilisateur ajoute "-A" (auto mode)
+
+### Paramètres optionnels avec apex
+
+L'utilisateur peut ajouter des flags après "apex" :
+- `-A` : Auto mode (pas de validation intermédiaire)
+- `-X` : Force l'examination/review (activé par défaut)
+- `-T` : Lance les tests
+- `-PR` : Crée une Pull Request
+
+**Exemple** : "apex -A -PR ajoute la feature de partage" → workflow complet en auto avec PR
+
+### Quand NE PAS utiliser le workflow
+
+Si l'utilisateur ne mentionne pas "apex", travaille normalement. Le workflow est réservé aux tâches complexes où l'utilisateur veut une approche structurée avec reviews automatiques
+
+## Mobile Workflow (GitHub Actions + Telegram)
+
+Le projet supporte le lancement de tâches Claude à distance via GitHub Issues.
+
+### Architecture
+
+```
+iPhone → GitHub Issue → GitHub Actions → Claude Code → PR → Telegram
+```
+
+### Comment ça marche
+
+1. **Créer une Issue** avec le label `claude-task` depuis GitHub Mobile
+2. **Claude démarre automatiquement** via GitHub Actions
+3. **Notification Telegram** quand c'est terminé
+
+### Templates d'Issue disponibles
+
+| Template | Usage | Labels |
+|----------|-------|--------|
+| "Tâche Claude" | Tâches courtes (< 30 min) | `claude-task` |
+| "Tâche Longue (Ralph Loop)" | Tâches complexes (< 2h) | `claude-task` + `claude-long` |
+
+### Mention @claude
+
+Sur n'importe quelle Issue ou PR, écrire `@claude <demande>` déclenche une réponse.
+
+### Configuration requise
+
+Secrets GitHub nécessaires (Settings → Secrets → Actions) :
+- `ANTHROPIC_API_KEY` - Clé API Anthropic
+- `TELEGRAM_BOT_TOKEN` - Token du bot Telegram
+- `TELEGRAM_CHAT_ID` - ID du chat Telegram
+
+**Documentation complète**: `.claude/docs/mobile-workflow-setup.md`
