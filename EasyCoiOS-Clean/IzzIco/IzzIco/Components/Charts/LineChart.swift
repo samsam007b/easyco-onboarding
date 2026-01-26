@@ -112,6 +112,21 @@ struct LineChart: View {
 
     @ViewBuilder
     private func gradientFill(in size: CGSize) -> some View {
+        if data.isEmpty {
+            EmptyView()
+        } else {
+            let fillPath = createFillPath(in: size)
+            fillPath.fill(
+                LinearGradient(
+                    colors: [lineColor.opacity(0.3), lineColor.opacity(0.05)],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+        }
+    }
+
+    private func createFillPath(in size: CGSize) -> Path {
         var path = Path()
         guard !data.isEmpty else { return path }
 
@@ -127,13 +142,6 @@ struct LineChart: View {
         path.closeSubpath()
 
         return path
-            .fill(
-                LinearGradient(
-                    colors: [lineColor.opacity(0.3), lineColor.opacity(0.05)],
-                    startPoint: .top,
-                    endPoint: .bottom
-                )
-            )
     }
 
     // MARK: - Data Points

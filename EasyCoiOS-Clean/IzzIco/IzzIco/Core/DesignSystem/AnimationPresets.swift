@@ -40,24 +40,24 @@ struct AnimationPresets {
     // MARK: - Easing Animations
 
     /// Fast ease out - For quick reveals
-    static let easeOutFast = Animation.easeOut(duration: DesignTokens.Duration.fast)
+    static let easeOutFast = Animation.easeOut(duration: 0.2)
 
     /// Normal ease out - Standard transitions
-    static let easeOut = Animation.easeOut(duration: DesignTokens.Duration.normal)
+    static let easeOut = Animation.easeOut(duration: 0.3)
 
     /// Slow ease out - For dramatic reveals
-    static let easeOutSlow = Animation.easeOut(duration: DesignTokens.Duration.slow)
+    static let easeOutSlow = Animation.easeOut(duration: 0.5)
 
     /// Ease in out - For smooth bidirectional animations
-    static let easeInOut = Animation.easeInOut(duration: DesignTokens.Duration.normal)
+    static let easeInOut = Animation.easeInOut(duration: 0.3)
 
     // MARK: - Linear Animations
 
     /// Linear animation - For continuous progress
-    static let linear = Animation.linear(duration: DesignTokens.Duration.normal)
+    static let linear = Animation.linear(duration: 0.3)
 
     /// Linear slow - For loaders
-    static let linearSlow = Animation.linear(duration: DesignTokens.Duration.slow)
+    static let linearSlow = Animation.linear(duration: 0.5)
 
     // MARK: - Transition Animations
 

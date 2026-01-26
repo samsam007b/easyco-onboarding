@@ -112,15 +112,15 @@ extension View {
     }
 
     func searcherGradientOverlay(opacity: Double = 0.1) -> some View {
-        self.gradientOverlay(DesignTokens.Colors.searcherGradient, opacity: opacity)
+        self.gradientOverlay(DesignTokens.Searcher.gradient, opacity: opacity)
     }
 
     func ownerGradientOverlay(opacity: Double = 0.1) -> some View {
-        self.gradientOverlay(DesignTokens.Colors.ownerGradient, opacity: opacity)
+        self.gradientOverlay(DesignTokens.Owner.gradient, opacity: opacity)
     }
 
     func residentGradientOverlay(opacity: Double = 0.1) -> some View {
-        self.gradientOverlay(DesignTokens.Colors.residentGradient, opacity: opacity)
+        self.gradientOverlay(DesignTokens.Resident.gradient, opacity: opacity)
     }
 }
 

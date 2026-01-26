@@ -1,0 +1,159 @@
+{
+  "$schema": "https://schemas.designtokens.org/1.0.0",
+  "colors": {
+    "owner": {
+      "50": { "value": "#F8F0F7", "type": "color" },
+      "100": { "value": "#F0E0EE", "type": "color" },
+      "200": { "value": "#E0C0DC", "type": "color" },
+      "300": { "value": "#C990C2", "type": "color" },
+      "400": { "value": "#B070A8", "type": "color" },
+      "500": { "value": "#9c5698", "type": "color", "description": "Owner primary" },
+      "600": { "value": "#7E4580", "type": "color" },
+      "700": { "value": "#633668", "type": "color", "description": "WCAG AA text" },
+      "800": { "value": "#482850", "type": "color" },
+      "900": { "value": "#2E1A38", "type": "color" }
+    },
+    "resident": {
+      "50": { "value": "#FEF2EE", "type": "color" },
+      "100": { "value": "#FDE0D6", "type": "color" },
+      "200": { "value": "#F9B8A0", "type": "color" },
+      "300": { "value": "#F28B6A", "type": "color" },
+      "400": { "value": "#E96A50", "type": "color" },
+      "500": { "value": "#e05747", "type": "color", "description": "Resident primary" },
+      "600": { "value": "#C04538", "type": "color" },
+      "700": { "value": "#9A362C", "type": "color", "description": "WCAG AA text" },
+      "800": { "value": "#742920", "type": "color" },
+      "900": { "value": "#4E1C16", "type": "color" }
+    },
+    "searcher": {
+      "50": { "value": "#FFFBEB", "type": "color" },
+      "100": { "value": "#FEF3C7", "type": "color" },
+      "200": { "value": "#FDE68A", "type": "color" },
+      "300": { "value": "#FCD34D", "type": "color" },
+      "400": { "value": "#FBBF24", "type": "color" },
+      "500": { "value": "#ffa000", "type": "color", "description": "Searcher primary" },
+      "600": { "value": "#D98400", "type": "color" },
+      "700": { "value": "#A16300", "type": "color", "description": "WCAG AA text" },
+      "800": { "value": "#764800", "type": "color" },
+      "900": { "value": "#4D3000", "type": "color" }
+    },
+    "gray": {
+      "50": { "value": "#FAFAFA", "type": "color" },
+      "100": { "value": "#F4F4F5", "type": "color" },
+      "200": { "value": "#E4E4E7", "type": "color" },
+      "300": { "value": "#D4D4D8", "type": "color" },
+      "400": { "value": "#A1A1AA", "type": "color" },
+      "500": { "value": "#71717A", "type": "color" },
+      "600": { "value": "#52525B", "type": "color" },
+      "700": { "value": "#3F3F46", "type": "color" },
+      "800": { "value": "#27272A", "type": "color" },
+      "900": { "value": "#18181B", "type": "color" }
+    },
+    "semantic": {
+      "success": { "value": "#10B981", "type": "color" },
+      "success-light": { "value": "#ECFDF5", "type": "color" },
+      "error": { "value": "#EF4444", "type": "color" },
+      "error-light": { "value": "#FEF2F2", "type": "color" },
+      "warning": { "value": "#D97706", "type": "color" },
+      "warning-light": { "value": "#FFFBEB", "type": "color" },
+      "info": { "value": "#3B82F6", "type": "color" },
+      "info-light": { "value": "#EFF6FF", "type": "color" }
+    },
+    "ui-accents": {
+      "sage": { "value": "#7CB89B", "type": "color" },
+      "terracotta": { "value": "#C87060", "type": "color" },
+      "dusty-rose": { "value": "#D08090", "type": "color" },
+      "lavender": { "value": "#9B7BD9", "type": "color" },
+      "sky": { "value": "#5B8BD9", "type": "color" },
+      "amber": { "value": "#D9A870", "type": "color" },
+      "teal": { "value": "#70B0C0", "type": "color" },
+      "blush": { "value": "#E07BAD", "type": "color" }
+    }
+  },
+  "spacing": {
+    "xs": { "value": 4, "type": "dimension", "unit": "px" },
+    "sm": { "value": 8, "type": "dimension", "unit": "px" },
+    "md": { "value": 12, "type": "dimension", "unit": "px" },
+    "lg": { "value": 16, "type": "dimension", "unit": "px" },
+    "xl": { "value": 20, "type": "dimension", "unit": "px" },
+    "xxl": { "value": 24, "type": "dimension", "unit": "px" },
+    "xxxl": { "value": 32, "type": "dimension", "unit": "px" }
+  },
+  "radius": {
+    "small": { "value": 12, "type": "dimension", "unit": "px" },
+    "medium": { "value": 16, "type": "dimension", "unit": "px" },
+    "large": { "value": 20, "type": "dimension", "unit": "px" },
+    "xLarge": { "value": 24, "type": "dimension", "unit": "px" },
+    "xxLarge": { "value": 28, "type": "dimension", "unit": "px" },
+    "button": { "value": 16, "type": "dimension", "unit": "px" },
+    "card": { "value": 24, "type": "dimension", "unit": "px" },
+    "pill": { "value": 100, "type": "dimension", "unit": "px" }
+  },
+  "typography": {
+    "hero-large": { "value": 32, "type": "fontSizes", "unit": "px" },
+    "hero-medium": { "value": 28, "type": "fontSizes", "unit": "px" },
+    "title-large": { "value": 24, "type": "fontSizes", "unit": "px" },
+    "title-medium": { "value": 20, "type": "fontSizes", "unit": "px" },
+    "title-small": { "value": 18, "type": "fontSizes", "unit": "px" },
+    "body-large": { "value": 17, "type": "fontSizes", "unit": "px" },
+    "body-regular": { "value": 15, "type": "fontSizes", "unit": "px" },
+    "body-small": { "value": 14, "type": "fontSizes", "unit": "px" },
+    "caption": { "value": 12, "type": "fontSizes", "unit": "px" },
+    "caption-small": { "value": 11, "type": "fontSizes", "unit": "px" }
+  },
+  "shadows": {
+    "subtle": {
+      "value": {
+        "color": "rgba(0, 0, 0, 0.04)",
+        "offsetX": 0,
+        "offsetY": 2,
+        "blur": 8
+      },
+      "type": "shadow"
+    },
+    "soft": {
+      "value": {
+        "color": "rgba(0, 0, 0, 0.06)",
+        "offsetX": 0,
+        "offsetY": 4,
+        "blur": 12
+      },
+      "type": "shadow"
+    },
+    "medium": {
+      "value": {
+        "color": "rgba(0, 0, 0, 0.08)",
+        "offsetX": 0,
+        "offsetY": 6,
+        "blur": 16
+      },
+      "type": "shadow"
+    },
+    "strong": {
+      "value": {
+        "color": "rgba(0, 0, 0, 0.12)",
+        "offsetX": 0,
+        "offsetY": 8,
+        "blur": 24
+      },
+      "type": "shadow"
+    }
+  },
+  "gradients": {
+    "signature": {
+      "value": {
+        "type": "linear",
+        "angle": 135,
+        "stops": [
+          { "color": "#9c5698", "position": 0 },
+          { "color": "#C85570", "position": 20 },
+          { "color": "#D15659", "position": 35 },
+          { "color": "#e05747", "position": 50 },
+          { "color": "#FF7C10", "position": 75 },
+          { "color": "#ffa000", "position": 100 }
+        ]
+      },
+      "type": "gradient"
+    }
+  }
+}

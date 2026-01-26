@@ -725,6 +725,8 @@ extension View {
                     DesignTokens.Owner.gradient
                 case .resident:
                     DesignTokens.Resident.gradient
+                case .admin:
+                    DesignTokens.Owner.gradient  // Admin uses owner gradient
                 }
             }
         )
@@ -739,49 +741,14 @@ extension View {
             return AnyView(self.applyShadow(DesignTokens.Shadows.owner))
         case .resident:
             return AnyView(self.applyShadow(DesignTokens.Shadows.resident))
+        case .admin:
+            return AnyView(self.applyShadow(DesignTokens.Shadows.owner))  // Admin uses owner shadow
         }
     }
 }
 
 // MARK: - User Role Enum
 
-enum UserRole: String, CaseIterable {
-    case searcher
-    case owner
-    case resident
-
-    var primaryColor: Color {
-        switch self {
-        case .searcher: return DesignTokens.Searcher.primary
-        case .owner: return DesignTokens.Owner.primary
-        case .resident: return DesignTokens.Resident.primary
-        }
-    }
-
-    var gradient: LinearGradient {
-        switch self {
-        case .searcher: return DesignTokens.Searcher.gradient
-        case .owner: return DesignTokens.Owner.gradient
-        case .resident: return DesignTokens.Resident.gradient
-        }
-    }
-
-    var lightColor: Color {
-        switch self {
-        case .searcher: return DesignTokens.Searcher.light
-        case .owner: return DesignTokens.Owner.light
-        case .resident: return DesignTokens.Resident.light
-        }
-    }
-
-    var textColor: Color {
-        switch self {
-        case .searcher: return DesignTokens.Searcher.text
-        case .owner: return DesignTokens.Owner.text
-        case .resident: return DesignTokens.Resident.text
-        }
-    }
-}
 
 // MARK: - Color Extension for Hex
 
