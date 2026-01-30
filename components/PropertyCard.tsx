@@ -2,12 +2,26 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { Heart, MapPin, Users, Home, Star, Calendar } from 'lucide-react';
+import { Heart, MapPin, Bed, Users, Calendar } from 'lucide-react';
 import { useState, memo, useCallback, useMemo } from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
 import { calculatePropertySearcherMatch, getPropertyMatchQuality } from '@/lib/services/property-matching-service';
 import type { PropertyWithResidents, PropertySearcherProfile } from '@/lib/services/property-matching-service';
 import type { PropertyRoommateCompatibility } from '@/lib/services/roommate-matching-service';
-import { getCompatibilityDescription } from '@/lib/services/roommate-matching-service';
+
+// Couleurs V3-fun pour Searcher
+const SEARCHER_COLORS = {
+  card: '#FFFBEB',
+  cardDark: 'rgba(255, 160, 0, 0.08)',
+  blob: '#FEF3C7',
+  blobDark: 'rgba(255, 160, 0, 0.15)',
+  text: '#A16300',
+  textDark: '#F5F5F7',
+  border: 'rgba(255, 160, 0, 0.15)',
+  gradient: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
+  badgeBg: 'rgba(255, 160, 0, 0.12)',
+  badgeBgDark: 'rgba(255, 160, 0, 0.2)',
+};
 
 interface ResidentProfile {
   id: string;
@@ -37,14 +51,13 @@ interface PropertyCardProps {
   residents?: ResidentProfile[];
   showCompatibilityScore?: boolean;
   compatibilityScore?: number;
-  searcherProfile?: PropertySearcherProfile; // OLD: For property matching
-  roommateMatch?: PropertyRoommateCompatibility; // NEW: For roommate compatibility
+  searcherProfile?: PropertySearcherProfile;
+  roommateMatch?: PropertyRoommateCompatibility;
   onFavoriteClick?: (id: string) => void;
   isFavorite?: boolean;
   variant?: 'default' | 'compact';
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
-  /** Index in list for priority loading optimization */
   index?: number;
 }
 
@@ -62,19 +75,14 @@ function PropertyCard({
   onMouseLeave,
   index = 0,
 }: PropertyCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
   const [localFavorite, setLocalFavorite] = useState(isFavorite);
 
   // Calculate property matching score if searcher profile is provided
   const propertyMatchResult = useMemo(() => {
-    if (!searcherProfile) {
-      console.log('[PropertyCard] No searcher profile provided');
-      return null;
-    }
+    if (!searcherProfile) return null;
 
-    console.log('[PropertyCard] Calculating match for:', property.title, 'with profile:', searcherProfile);
-
-    // Convert property to PropertyWithResidents format
     const propertyWithResidents: PropertyWithResidents = {
       id: property.id,
       owner_id: property.owner_id || '',
@@ -82,37 +90,32 @@ function PropertyCard({
       property_type: property.property_type as any,
       address: property.address || '',
       city: property.city,
-      postal_code: '', // Not available in current prop
+      postal_code: '',
       bedrooms: property.bedrooms || 0,
-      bathrooms: 0, // Not available in current prop
-      furnished: false, // Not available in current prop
+      bathrooms: 0,
+      furnished: false,
       monthly_rent: property.monthly_rent,
-      charges: 0, // Not available in current prop
-      deposit: 0, // Not available in current prop
+      charges: 0,
+      deposit: 0,
       is_available: true,
-      amenities: [], // Not available in current prop
-      smoking_allowed: false, // Not available in current prop
-      pets_allowed: false, // Not available in current prop
-      couples_allowed: false, // Not available in current prop
+      amenities: [],
+      smoking_allowed: false,
+      pets_allowed: false,
+      couples_allowed: false,
       images: property.images || [],
       status: 'published',
       views_count: property.views_count || 0,
       inquiries_count: 0,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
-      residents: [], // Residents would need full profile data
+      residents: [],
     };
 
-    const result = calculatePropertySearcherMatch(propertyWithResidents, searcherProfile);
-    console.log('[PropertyCard] Match result:', result);
-    return result;
-  }, [property, searcherProfile, residents]);
+    return calculatePropertySearcherMatch(propertyWithResidents, searcherProfile);
+  }, [property, searcherProfile]);
 
-  // Prioritize roommate matching score over property matching score
   const displayScore = roommateMatch?.averageScore ?? propertyMatchResult?.score ?? compatibilityScore;
   const matchQuality = displayScore ? getPropertyMatchQuality(displayScore) : null;
-
-  console.log('[PropertyCard] Display score:', displayScore, 'quality:', matchQuality, 'roommateMatch:', roommateMatch?.averageScore, 'propertyMatch:', propertyMatchResult?.score, 'showCompatibilityScore:', showCompatibilityScore);
 
   const handleFavoriteClick = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -121,129 +124,114 @@ function PropertyCard({
     onFavoriteClick?.(property.id);
   }, [localFavorite, property.id, onFavoriteClick]);
 
-  // Generate placeholder image based on property type and location
   const getPlaceholderImage = () => {
     const seed = property.id || property.title;
-    return `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(seed)}&backgroundColor=6E56CF,FFD249,FF6F3C`;
+    return `https://api.dicebear.com/7.x/shapes/svg?seed=${encodeURIComponent(seed)}&backgroundColor=ffa000,e05747`;
   };
 
   const imageUrl = property.main_image || property.images?.[0] || getPlaceholderImage();
 
+  // Check if available now or soon
+  const isAvailableSoon = property.available_from && new Date(property.available_from) <= new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+
+  // ============================================================================
+  // COMPACT VARIANT
+  // ============================================================================
   if (variant === 'compact') {
     return (
       <Link
         href={`/properties/${property.id}`}
-        className="block"
-        onMouseEnter={() => {
-          setIsHovered(true);
-          onMouseEnter?.();
-        }}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          onMouseLeave?.();
-        }}
+        className="block group"
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
       >
-        <div className="bg-white superellipse-xl shadow-sm hover:shadow-md transition-all overflow-hidden">
+        <div
+          className="relative overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
+          style={{
+            background: isDark ? SEARCHER_COLORS.cardDark : SEARCHER_COLORS.card,
+            border: `1px solid ${isDark ? SEARCHER_COLORS.border : 'transparent'}`,
+          }}
+        >
+          {/* Decorative blob */}
+          <div
+            className="absolute -top-6 -right-6 w-16 h-16 rounded-full opacity-50"
+            style={{ background: isDark ? SEARCHER_COLORS.blobDark : SEARCHER_COLORS.blob }}
+          />
+
           {/* Image */}
-          <div className="relative h-40 bg-gray-200">
+          <div className="relative h-32 overflow-hidden">
             <Image
               src={imageUrl}
               alt={property.title}
               fill
-              className="object-cover"
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              quality={80}
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              sizes="(max-width: 640px) 50vw, 200px"
+              quality={75}
               priority={index < 2}
               loading={index < 2 ? 'eager' : 'lazy'}
             />
 
-            {/* Favorite button */}
+            {/* Favorite */}
             <button
               onClick={handleFavoriteClick}
-              className="absolute top-2 right-2 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:scale-110 transition-transform"
+              className="absolute top-2 right-2 p-1.5 rounded-xl transition-all duration-200 hover:scale-110"
+              style={{
+                background: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.9)',
+              }}
             >
               <Heart
-                className={`w-4 h-4 ${localFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
+                className={`w-4 h-4 transition-colors ${
+                  localFavorite ? 'fill-red-500 text-red-500' : isDark ? 'text-white' : 'text-gray-600'
+                }`}
               />
             </button>
 
-            {/* Residents Photos */}
-            {residents && residents.length > 0 && (
-              <div className="absolute bottom-2 left-2 flex items-center gap-1">
-                <div className="flex -space-x-2">
-                  {residents.slice(0, 3).map((resident, index) => (
-                    <div
-                      key={resident.id}
-                      className="w-8 h-8 rounded-full bg-resident-500 border-2 border-white shadow-md flex items-center justify-center"
-                      style={{ zIndex: 10 - index }}
-                    >
-                      {resident.profile_photo_url ? (
-                        <img
-                          src={resident.profile_photo_url}
-                          alt={resident.first_name}
-                          className="w-full h-full rounded-full object-cover"
-                        />
-                      ) : (
-                        <Users className="w-4 h-4 text-white" />
-                      )}
-                    </div>
-                  ))}
-                </div>
-                {residents.length > 3 && (
-                  <div className="w-8 h-8 rounded-full bg-gray-800/80 backdrop-blur-sm border-2 border-white text-white text-xs font-bold flex items-center justify-center shadow-md">
-                    +{residents.length - 3}
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Property Match Score Badge - V1 Flat */}
+            {/* Match Score */}
             {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && propertyMatchResult?.isScoreReliable !== false && (
-              <div className={`absolute top-2 left-2 px-3 py-1 rounded-full text-xs font-bold shadow-md ${
-                matchQuality?.color === 'green' ? 'bg-green-100 text-green-700' :
-                matchQuality?.color === 'blue' ? 'bg-blue-100 text-blue-700' :
-                matchQuality?.color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
-                matchQuality?.color === 'orange' ? 'bg-orange-100 text-orange-700' :
-                'bg-red-100 text-red-700'
-              }`}>
-                {displayScore}% Match
-              </div>
-            )}
-            {/* Profile Incomplete Indicator */}
-            {searcherProfile && propertyMatchResult && propertyMatchResult.isScoreReliable === false && (
-              <div className="absolute top-2 left-2 bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-xs font-bold shadow-md">
-                Complétez votre profil
+              <div
+                className="absolute top-2 left-2 px-2 py-1 rounded-lg text-xs font-bold"
+                style={{
+                  background: matchQuality?.color === 'green' ? 'rgba(34, 197, 94, 0.9)' :
+                              matchQuality?.color === 'blue' ? 'rgba(59, 130, 246, 0.9)' :
+                              'rgba(255, 160, 0, 0.9)',
+                  color: 'white',
+                }}
+              >
+                {displayScore}%
               </div>
             )}
           </div>
 
           {/* Content */}
-          <div className="p-3">
-            <div className="flex items-start justify-between mb-1">
-              <h3 className="font-semibold text-sm text-gray-900 line-clamp-1">
-                {property.title}
-              </h3>
-              {property.rating && (
-                <div className="flex items-center gap-1 flex-shrink-0 ml-2">
-                  <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  <span className="text-xs font-medium">{property.rating}</span>
-                </div>
-              )}
-            </div>
+          <div className="relative z-10 p-3">
+            <h3
+              className="font-bold text-sm line-clamp-1 mb-1"
+              style={{ color: isDark ? SEARCHER_COLORS.textDark : SEARCHER_COLORS.text }}
+            >
+              {property.title}
+            </h3>
 
-            <p className="text-xs text-gray-600 mb-2 flex items-center gap-1">
-              <MapPin className="w-3 h-3" />
-              {property.neighborhood ? `${property.neighborhood}, ${property.city}` : property.city}
+            <p className={`text-xs mb-2 flex items-center gap-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              <MapPin className="w-3 h-3 flex-shrink-0" />
+              <span className="truncate">{property.neighborhood || property.city}</span>
             </p>
 
-            {/* Price section - V3.A Clean */}
-            <div className="flex items-center justify-between pt-2 mt-2 border-t border-gray-100">
-              <span className="text-sm font-bold text-gray-900">
+            <div className="flex items-center justify-between">
+              <span
+                className="text-base font-bold"
+                style={{ color: isDark ? SEARCHER_COLORS.textDark : SEARCHER_COLORS.text }}
+              >
                 €{property.monthly_rent}
-                <span className="text-xs text-gray-500 font-normal">/mois</span>
+                <span className={`text-xs font-normal ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>/mois</span>
               </span>
               {property.bedrooms && (
-                <span className="text-xs text-gray-500">
+                <span
+                  className="text-xs px-2 py-1 rounded-lg"
+                  style={{
+                    background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
+                    color: SEARCHER_COLORS.text,
+                  }}
+                >
                   {property.bedrooms} ch.
                 </span>
               )}
@@ -254,210 +242,199 @@ function PropertyCard({
     );
   }
 
+  // ============================================================================
+  // DEFAULT VARIANT - V3-fun Design
+  // ============================================================================
   return (
     <Link
-        href={`/properties/${property.id}`}
-        className="block group"
-        onMouseEnter={() => {
-          setIsHovered(true);
-          onMouseEnter?.();
-        }}
-        onMouseLeave={() => {
-          setIsHovered(false);
-          onMouseLeave?.();
+      href={`/properties/${property.id}`}
+      className="block group"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div
+        className="relative overflow-hidden rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+        style={{
+          background: isDark ? SEARCHER_COLORS.cardDark : SEARCHER_COLORS.card,
+          border: `1px solid ${isDark ? SEARCHER_COLORS.border : 'transparent'}`,
         }}
       >
-        <div className="bg-white superellipse-2xl shadow-lg hover:shadow-2xl transition-all overflow-hidden">
-        {/* Image */}
-        <div className="relative h-48 sm:h-56 bg-gray-200">
+        {/* Decorative blob - top right */}
+        <div
+          className="absolute -top-10 -right-10 w-28 h-28 rounded-full opacity-60 transition-transform duration-300 group-hover:scale-110"
+          style={{ background: isDark ? SEARCHER_COLORS.blobDark : SEARCHER_COLORS.blob }}
+        />
+
+        {/* Decorative blob - bottom left (smaller) */}
+        <div
+          className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full opacity-40"
+          style={{ background: isDark ? SEARCHER_COLORS.blobDark : SEARCHER_COLORS.blob }}
+        />
+
+        {/* Image Container */}
+        <div className="relative h-52 overflow-hidden rounded-t-3xl">
           <Image
             src={imageUrl}
             alt={property.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 350px"
             quality={85}
             priority={index < 3}
             loading={index < 3 ? 'eager' : 'lazy'}
           />
 
-          {/* Favorite button */}
+          {/* Gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+          {/* Favorite Button */}
           <button
             onClick={handleFavoriteClick}
-            className="absolute top-3 right-3 p-2 bg-white/90 backdrop-blur-sm rounded-full hover:scale-110 transition-transform z-10"
+            className="absolute top-3 right-3 p-2.5 rounded-xl transition-all duration-200 hover:scale-110 z-10"
+            style={{
+              background: isDark ? 'rgba(0,0,0,0.5)' : 'rgba(255,255,255,0.95)',
+              backdropFilter: 'blur(8px)',
+            }}
           >
             <Heart
-              className={`w-5 h-5 ${localFavorite ? 'fill-red-500 text-red-500' : 'text-gray-600'}`}
+              className={`w-5 h-5 transition-colors ${
+                localFavorite ? 'fill-red-500 text-red-500' : isDark ? 'text-white' : 'text-gray-600'
+              }`}
             />
           </button>
 
-          {/* Residents Photos - Enhanced */}
-          {residents && residents.length > 0 && (
-            <div className="absolute bottom-3 left-3 flex items-center gap-2 group/residents">
-              <div className="flex -space-x-4">
-                {residents.slice(0, 3).map((resident, index) => (
-                  <div
-                    key={resident.id}
-                    className="w-12 h-12 rounded-full bg-resident-500 border-3 border-white shadow-xl flex items-center justify-center transition-transform hover:scale-110 hover:z-50"
-                    style={{ zIndex: 10 - index }}
-                    title={resident.first_name}
-                  >
-                    {resident.profile_photo_url ? (
-                      <img
-                        src={resident.profile_photo_url}
-                        alt={resident.first_name}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    ) : (
-                      <Users className="w-6 h-6 text-white" />
-                    )}
-                  </div>
-                ))}
-              </div>
-              {residents.length > 3 && (
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 border-3 border-white text-white text-sm font-bold flex items-center justify-center shadow-xl">
-                  +{residents.length - 3}
-                </div>
-              )}
-              {/* Tooltip on hover */}
-              <div className="absolute bottom-full left-0 mb-2 hidden group-hover/residents:block bg-black/90 text-white text-xs px-3 py-2 superellipse-lg whitespace-nowrap shadow-xl">
-                {residents.length} colocataire{residents.length > 1 ? 's' : ''} · Voir les profils
-              </div>
-            </div>
-          )}
-
-          {/* Property Match Score Badge - V1 Flat */}
+          {/* Match Score Badge */}
           {(showCompatibilityScore || searcherProfile) && displayScore !== undefined && propertyMatchResult?.isScoreReliable !== false && (
-            <div className={`absolute top-3 left-3 px-4 py-2 rounded-full text-sm font-bold shadow-lg ${
-              matchQuality?.color === 'green' ? 'bg-green-100 text-green-700' :
-              matchQuality?.color === 'blue' ? 'bg-blue-100 text-blue-700' :
-              matchQuality?.color === 'yellow' ? 'bg-yellow-100 text-yellow-700' :
-              matchQuality?.color === 'orange' ? 'bg-orange-100 text-orange-700' :
-              'bg-red-100 text-red-700'
-            }`}>
+            <div
+              className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg"
+              style={{
+                background: matchQuality?.color === 'green' ? 'rgba(34, 197, 94, 0.95)' :
+                            matchQuality?.color === 'blue' ? 'rgba(59, 130, 246, 0.95)' :
+                            matchQuality?.color === 'yellow' ? 'rgba(245, 158, 11, 0.95)' :
+                            'rgba(255, 160, 0, 0.95)',
+                color: 'white',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
               {displayScore}% Match
             </div>
           )}
 
           {/* Profile Incomplete Badge */}
           {searcherProfile && propertyMatchResult && propertyMatchResult.isScoreReliable === false && (
-            <div className="absolute top-3 left-3 bg-gray-100 text-gray-700 px-4 py-2 rounded-full text-sm font-bold shadow-lg">
-              Complétez votre profil
+            <div
+              className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg"
+              style={{
+                background: 'rgba(255,255,255,0.95)',
+                color: SEARCHER_COLORS.text,
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              Complete ton profil
             </div>
           )}
 
-          {/* Property Type Badge */}
-          {!showCompatibilityScore && !searcherProfile && (
-            <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-medium text-gray-700">
-              {property.property_type}
+          {/* Available Now Badge */}
+          {isAvailableSoon && !showCompatibilityScore && !searcherProfile && (
+            <div
+              className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg flex items-center gap-1.5"
+              style={{
+                background: 'rgba(34, 197, 94, 0.95)',
+                color: 'white',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+              Dispo
             </div>
           )}
+
+          {/* Location on image */}
+          <div className="absolute bottom-3 left-3 flex items-center gap-1.5 text-white text-sm font-medium">
+            <MapPin className="w-4 h-4" />
+            <span className="drop-shadow-md">
+              {property.neighborhood ? `${property.neighborhood}, ${property.city}` : property.city}
+            </span>
+          </div>
         </div>
 
         {/* Content */}
-        <div className="p-4 sm:p-6">
-          {/* Title and Rating */}
-          <div className="flex items-start justify-between mb-2">
-            <h3 className="font-bold text-lg text-gray-900 line-clamp-2 flex-1">
-              {property.title}
-            </h3>
-            {property.rating && (
-              <div className="flex items-center gap-1 flex-shrink-0 ml-3">
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <span className="text-sm font-semibold">{property.rating}</span>
-                {property.reviews_count && (
-                  <span className="text-xs text-gray-500">({property.reviews_count})</span>
-                )}
-              </div>
-            )}
-          </div>
+        <div className="relative z-10 p-5">
+          {/* Title */}
+          <h3
+            className="font-bold text-lg line-clamp-2 mb-3"
+            style={{ color: isDark ? SEARCHER_COLORS.textDark : SEARCHER_COLORS.text }}
+          >
+            {property.title}
+          </h3>
 
-          {/* Location */}
-          <p className="text-sm text-gray-600 mb-3 flex items-center gap-1">
-            <MapPin className="w-4 h-4" />
-            {property.neighborhood ? `${property.neighborhood}, ${property.city}` : property.city}
-          </p>
-
-          {/* Info Tags - V3.A Flat Modern */}
+          {/* Info Tags */}
           <div className="flex flex-wrap gap-2 mb-4">
             {property.bedrooms && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-full text-xs font-medium text-gray-700">
-                <Home className="w-3.5 h-3.5" />
-                {property.bedrooms} ch.
+              <span
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
+                style={{
+                  background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
+                  color: SEARCHER_COLORS.text,
+                }}
+              >
+                <Bed className="w-3.5 h-3.5" />
+                {property.bedrooms} chambre{property.bedrooms > 1 ? 's' : ''}
               </span>
             )}
             {residents && residents.length > 0 && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-100 rounded-full text-xs font-medium text-gray-700">
+              <span
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
+                style={{
+                  background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
+                  color: SEARCHER_COLORS.text,
+                }}
+              >
                 <Users className="w-3.5 h-3.5" />
                 {residents.length} coloc{residents.length > 1 ? 's' : ''}
               </span>
             )}
             {property.available_from && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 rounded-full text-xs font-medium">
+              <span
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
+                style={{
+                  background: isDark ? 'rgba(34, 197, 94, 0.15)' : 'rgba(34, 197, 94, 0.1)',
+                  color: isDark ? '#4ade80' : '#15803d',
+                }}
+              >
                 <Calendar className="w-3.5 h-3.5" />
-                Dispo {new Date(property.available_from).toLocaleDateString('fr-FR', { month: 'short' })}
+                {new Date(property.available_from) <= new Date()
+                  ? 'Maintenant'
+                  : new Date(property.available_from).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
+                }
               </span>
             )}
           </div>
 
-          {/* Resident Avatars - Subtle */}
-          {residents && residents.length > 0 && (
-            <div className="flex items-center gap-2 mb-4">
-              <div className="flex -space-x-2">
-                {residents.slice(0, 3).map((resident, index) => (
-                  <div
-                    key={resident.id}
-                    className="w-8 h-8 rounded-full bg-resident-400 border-2 border-white shadow-sm flex items-center justify-center"
-                    style={{ zIndex: 10 - index }}
-                  >
-                    {resident.profile_photo_url ? (
-                      <img
-                        src={resident.profile_photo_url}
-                        alt={resident.first_name}
-                        className="w-full h-full rounded-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-xs font-medium text-white">
-                        {resident.first_name.charAt(0)}
-                      </span>
-                    )}
-                  </div>
-                ))}
-                {residents.length > 3 && (
-                  <div className="w-8 h-8 rounded-full bg-gray-200 border-2 border-white text-gray-600 text-xs font-medium flex items-center justify-center">
-                    +{residents.length - 3}
-                  </div>
-                )}
-              </div>
-              <span className="text-xs text-gray-500">
-                {residents.slice(0, 2).map(r => r.first_name).join(', ')}
-                {residents.length > 2 && ` ...`}
-              </span>
-            </div>
-          )}
-
-          {/* Footer: Price and CTA - V3.A Clean */}
-          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+          {/* Price - Prominent */}
+          <div
+            className="pt-4 flex items-center justify-between"
+            style={{ borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}` }}
+          >
             <div>
-              <span className="text-2xl font-bold text-gray-900">
+              <span
+                className="text-2xl font-bold"
+                style={{ color: isDark ? SEARCHER_COLORS.textDark : SEARCHER_COLORS.text }}
+              >
                 €{property.monthly_rent}
               </span>
-              <span className="text-sm text-gray-500">/mois</span>
+              <span className={`text-sm ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>/mois</span>
             </div>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                window.location.href = `/properties/${property.id}`;
-              }}
-              className="group relative px-6 py-3 text-white font-bold rounded-full transition-all hover:scale-105 active:scale-98 backdrop-blur-xl border border-white/30"
-              style={{
-                background: '#e05747d9',
-                boxShadow: '0 10px 30px -5px rgba(255, 101, 30, 0.4), 0 4px 10px -2px rgba(255, 101, 30, 0.3)'
-              }}
+
+            {/* Subtle arrow indicator */}
+            <div
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all duration-300 group-hover:scale-110"
+              style={{ background: SEARCHER_COLORS.gradient }}
             >
-              <span className="relative z-10">Voir détails</span>
-            </button>
+              <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </div>
         </div>
       </div>
