@@ -1,40 +1,54 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { useTheme } from '@/contexts/ThemeContext';
 import { ChevronDown, HelpCircle, Mail } from 'lucide-react';
+import { type Role } from './landing/RoleSwitcher';
+
+interface FAQProps {
+  activeRole: Role;
+}
 
 // Couleurs du design system v3 - couleurs primaires exactes par rôle
-// Source: brand-identity/izzico-color-system.html
 const ROLE_COLORS = {
   owner: {
-    gradient: { start: '#9c5698', end: '#9c5698' },
-    gradientDark: { start: '#9c5698', end: '#9c5698' },
-    light: '#F8F0F7',
+    primary: '#9c5698',
+    secondary: '#c85570',
+    gradient: 'linear-gradient(135deg, #9c5698 0%, #c85570 100%)',
+    light: 'rgba(156, 86, 152, 0.1)',
+    border: 'rgba(156, 86, 152, 0.2)',
   },
   resident: {
-    gradient: { start: '#e05747', end: '#e05747' },
-    gradientDark: { start: '#e05747', end: '#e05747' },
-    light: '#FEF2EE',
+    primary: '#e05747',
+    secondary: '#ff7c10',
+    gradient: 'linear-gradient(135deg, #e05747 0%, #ff7c10 100%)',
+    light: 'rgba(224, 87, 71, 0.1)',
+    border: 'rgba(224, 87, 71, 0.2)',
   },
   searcher: {
-    gradient: { start: '#ffa000', end: '#ffa000' },
-    gradientDark: { start: '#ffa000', end: '#ffa000' },
-    light: '#FFFBEB',
+    primary: '#ffa000',
+    secondary: '#e05747',
+    gradient: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
+    light: 'rgba(255, 160, 0, 0.1)',
+    border: 'rgba(255, 160, 0, 0.2)',
   },
 };
 
-export default function FAQ() {
+const contentVariants = {
+  enter: { opacity: 0, y: 20 },
+  center: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: -20 },
+};
+
+export default function FAQ({ activeRole }: FAQProps) {
   const { getSection } = useLanguage();
   const { resolvedTheme } = useTheme();
   const landing = getSection('landing');
   const faq = landing.faq;
   const isDark = resolvedTheme === 'dark';
-
-  const getGradient = (colors: typeof ROLE_COLORS.owner) => {
-    return isDark ? colors.gradientDark : colors.gradient;
-  };
+  const colors = ROLE_COLORS[activeRole];
 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -71,7 +85,7 @@ export default function FAQ() {
 
   return (
     <section
-      className="py-24 transition-colors duration-300"
+      className="py-24 transition-colors duration-500"
       style={{
         background: isDark
           ? 'linear-gradient(to bottom, #141418, #0F0F12)'
@@ -79,142 +93,155 @@ export default function FAQ() {
       }}
     >
       <div className="max-w-4xl mx-auto px-6">
-        {/* Section Header */}
-        <div className="text-center mb-20">
-          <div className="inline-flex items-center justify-center mb-6">
-            <div
-              className="w-16 h-16 superellipse-2xl flex items-center justify-center shadow-lg"
-              style={{ background: `linear-gradient(to bottom right, ${getGradient(ROLE_COLORS.owner).start}, ${getGradient(ROLE_COLORS.owner).end})` }}
-            >
-              <HelpCircle className="w-8 h-8 text-white" />
-            </div>
-          </div>
-          <h2
-            className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4"
-            style={{ backgroundImage: `linear-gradient(to right, ${getGradient(ROLE_COLORS.owner).start}, ${getGradient(ROLE_COLORS.owner).end})` }}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeRole}
+            variants={contentVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{ duration: 0.4 }}
           >
-            {faq.title}
-          </h2>
-          <p className={`text-xl max-w-2xl mx-auto leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            {faq.subtitle}
-          </p>
-        </div>
-
-        {/* FAQ Items */}
-        <div className="space-y-4 mb-16">
-          {faqData.map((item, index) => {
-            const isOpen = openIndex === index;
-            const ownerGradient = getGradient(ROLE_COLORS.owner);
-
-            return (
-              <div
-                key={index}
-                className="group relative"
-              >
-                {/* Background glow on hover */}
+            {/* Section Header */}
+            <div className="text-center mb-20">
+              <div className="inline-flex items-center justify-center mb-6">
                 <div
-                  className="absolute inset-0 superellipse-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10"
-                  style={{ background: `linear-gradient(to bottom right, ${ownerGradient.start}15, ${ownerGradient.end}15)` }}
-                />
-
-                <div
-                  className="relative superellipse-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border"
-                  style={{
-                    background: isDark ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                    borderColor: `${ownerGradient.start}${isDark ? '40' : '20'}`,
-                    backdropFilter: isDark ? 'blur(10px)' : 'none',
-                  }}
+                  className="w-16 h-16 superellipse-2xl flex items-center justify-center shadow-lg"
+                  style={{ background: colors.gradient }}
                 >
-                  {/* Question */}
-                  <button
-                    onClick={() => toggleQuestion(index)}
-                    className="w-full flex items-center justify-between p-6 sm:p-8 text-left transition-all duration-200"
-                  >
-                    <span className={`font-bold pr-8 text-lg ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-                      {item.question}
-                    </span>
-                    <div
-                      className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
-                      style={{
-                        background: isOpen
-                          ? `linear-gradient(to bottom right, ${ownerGradient.start}, ${ownerGradient.end})`
-                          : `${ownerGradient.start}15`,
-                        boxShadow: isOpen ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none',
-                      }}
-                    >
-                      <ChevronDown
-                        className={`w-5 h-5 transition-all duration-300 ${
-                          isOpen ? 'transform rotate-180 text-white' : ''
-                        }`}
-                        style={{ color: isOpen ? 'white' : ownerGradient.start }}
-                      />
-                    </div>
-                  </button>
-
-                  {/* Answer */}
-                  <div
-                    className={`overflow-hidden transition-all duration-300 ${
-                      isOpen ? 'max-h-96' : 'max-h-0'
-                    }`}
-                  >
-                    <div className="px-6 sm:px-8 pb-6 sm:pb-8">
-                      <div
-                        className="pt-4"
-                        style={{ borderTop: `1px solid ${isDark ? '#2A2A30' : '#F3F4F6'}` }}
-                      />
-                      <p className={`leading-relaxed text-lg mt-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                        {item.answer}
-                      </p>
-                    </div>
-                  </div>
+                  <HelpCircle className="w-8 h-8 text-white" />
                 </div>
               </div>
-            );
-          })}
-        </div>
-
-        {/* Contact CTA */}
-        <div className="relative group">
-          {/* Background glow */}
-          <div
-            className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
-            style={{ background: `linear-gradient(to bottom right, ${getGradient(ROLE_COLORS.owner).start}20, ${getGradient(ROLE_COLORS.searcher).start}20)` }}
-          />
-
-          <div
-            className="relative text-center p-10 sm:p-12 superellipse-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border"
-            style={{
-              background: isDark
-                ? 'linear-gradient(to bottom right, rgba(139, 111, 207, 0.1), rgba(26, 26, 31, 0.8), rgba(255, 176, 80, 0.05))'
-                : `linear-gradient(to bottom right, ${ROLE_COLORS.owner.light}50, white, ${ROLE_COLORS.searcher.light}30)`,
-              borderColor: `${getGradient(ROLE_COLORS.owner).start}${isDark ? '40' : '20'}`,
-              backdropFilter: isDark ? 'blur(10px)' : 'none',
-            }}
-          >
-            <div
-              className="w-16 h-16 mx-auto mb-6 superellipse-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
-              style={{ background: `linear-gradient(to bottom right, ${getGradient(ROLE_COLORS.owner).start}, ${getGradient(ROLE_COLORS.owner).end})` }}
-            >
-              <Mail className="w-8 h-8 text-white" />
+              <h2
+                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4"
+                style={{ backgroundImage: colors.gradient }}
+              >
+                {faq.title}
+              </h2>
+              <p className={`text-xl max-w-2xl mx-auto leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                {faq.subtitle}
+              </p>
             </div>
-            <h3
-              className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent mb-4"
-              style={{ backgroundImage: `linear-gradient(to right, ${getGradient(ROLE_COLORS.owner).start}, ${getGradient(ROLE_COLORS.owner).end})` }}
-            >
-              {faq.contactTitle}
-            </h3>
-            <p className={`mb-8 text-lg max-w-md mx-auto leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-              {faq.contactSubtitle}
-            </p>
-            <a
-              href="mailto:hello@izzico.be"
-              className="inline-block px-10 py-5 text-white font-bold rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-lg hover:brightness-110"
-              style={{ background: `linear-gradient(to right, ${getGradient(ROLE_COLORS.searcher).start}, ${getGradient(ROLE_COLORS.searcher).end})` }}
-            >
-              {faq.contactButton}
-            </a>
-          </div>
-        </div>
+
+            {/* FAQ Items */}
+            <div className="space-y-4 mb-16">
+              {faqData.map((item, index) => {
+                const isOpen = openIndex === index;
+
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.08, duration: 0.4 }}
+                    className="group relative"
+                  >
+                    {/* Background glow on hover */}
+                    <div
+                      className="absolute inset-0 superellipse-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10"
+                      style={{ background: colors.light }}
+                    />
+
+                    <div
+                      className="relative superellipse-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border"
+                      style={{
+                        background: isDark ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
+                        borderColor: isDark ? `${colors.primary}40` : colors.border,
+                        backdropFilter: isDark ? 'blur(10px)' : 'none',
+                      }}
+                    >
+                      {/* Question */}
+                      <button
+                        onClick={() => toggleQuestion(index)}
+                        className="w-full flex items-center justify-between p-6 sm:p-8 text-left transition-all duration-200"
+                      >
+                        <span className={`font-bold pr-8 text-lg ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+                          {item.question}
+                        </span>
+                        <div
+                          className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
+                          style={{
+                            background: isOpen
+                              ? colors.gradient
+                              : `${colors.primary}15`,
+                            boxShadow: isOpen ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none',
+                          }}
+                        >
+                          <ChevronDown
+                            className={`w-5 h-5 transition-all duration-300 ${
+                              isOpen ? 'transform rotate-180 text-white' : ''
+                            }`}
+                            style={{ color: isOpen ? 'white' : colors.primary }}
+                          />
+                        </div>
+                      </button>
+
+                      {/* Answer */}
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ${
+                          isOpen ? 'max-h-96' : 'max-h-0'
+                        }`}
+                      >
+                        <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                          <div
+                            className="pt-4"
+                            style={{ borderTop: `1px solid ${isDark ? '#2A2A30' : '#F3F4F6'}` }}
+                          />
+                          <p className={`leading-relaxed text-lg mt-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                            {item.answer}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Contact CTA */}
+            <div className="relative group">
+              {/* Background glow */}
+              <div
+                className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
+                style={{ background: colors.light }}
+              />
+
+              <div
+                className="relative text-center p-10 sm:p-12 superellipse-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border"
+                style={{
+                  background: isDark
+                    ? `linear-gradient(to bottom right, ${colors.primary}15, rgba(26, 26, 31, 0.8), ${colors.secondary}10)`
+                    : `linear-gradient(to bottom right, ${colors.light}, white, ${colors.light})`,
+                  borderColor: isDark ? `${colors.primary}40` : colors.border,
+                  backdropFilter: isDark ? 'blur(10px)' : 'none',
+                }}
+              >
+                <div
+                  className="w-16 h-16 mx-auto mb-6 superellipse-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
+                  style={{ background: colors.gradient }}
+                >
+                  <Mail className="w-8 h-8 text-white" />
+                </div>
+                <h3
+                  className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent mb-4"
+                  style={{ backgroundImage: colors.gradient }}
+                >
+                  {faq.contactTitle}
+                </h3>
+                <p className={`mb-8 text-lg max-w-md mx-auto leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {faq.contactSubtitle}
+                </p>
+                <a
+                  href="mailto:hello@izzico.be"
+                  className="inline-block px-10 py-5 text-white font-bold rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-lg hover:brightness-110"
+                  style={{ background: colors.gradient }}
+                >
+                  {faq.contactButton}
+                </a>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

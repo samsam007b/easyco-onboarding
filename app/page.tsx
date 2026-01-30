@@ -91,16 +91,16 @@ export default function Home() {
       <RoleFeaturesSection activeRole={activeRole} />
 
       {/* How It Works Section */}
-      <HowItWorks />
+      <HowItWorks activeRole={activeRole} />
 
       {/* Stats Section */}
-      <StatsSection />
+      <StatsSection activeRole={activeRole} />
 
       {/* Testimonials Section - Désactivé temporairement (pas de vrais utilisateurs) */}
       {/* <Testimonials /> */}
 
       {/* FAQ Section */}
-      <FAQ />
+      <FAQ activeRole={activeRole} />
 
       </main>
 
