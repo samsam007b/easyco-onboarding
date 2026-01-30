@@ -282,6 +282,41 @@ function HeroSearcher() {
             </div>
           ))}
         </div>
+
+        {/* Secondary CTAs */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-10"
+        >
+          <Link href="/onboarding/searcher">
+            <Button
+              variant="outline"
+              className={`px-6 py-5 text-base font-semibold rounded-2xl border-2 transition-all hover:scale-105 ${
+                resolvedTheme === 'dark'
+                  ? 'border-searcher-500/50 text-searcher-400 hover:bg-searcher-500/10'
+                  : 'border-searcher-500 text-searcher-600 hover:bg-searcher-50'
+              }`}
+            >
+              <Target className="w-5 h-5 mr-2" />
+              Créer mon Living Persona
+            </Button>
+          </Link>
+          <Link href="/guest">
+            <Button
+              variant="ghost"
+              className={`px-6 py-5 text-base font-medium rounded-2xl transition-all ${
+                resolvedTheme === 'dark'
+                  ? 'text-gray-300 hover:text-white hover:bg-white/5'
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
+            >
+              Explorer les annonces
+              <span className="ml-2">→</span>
+            </Button>
+          </Link>
+        </motion.div>
       </motion.div>
       </div>{/* End Glassmorphism Container */}
     </div>
@@ -392,13 +427,13 @@ function HeroResident() {
               }}
             >
               <Home className="w-5 h-5 mr-2" />
-              Connecte-toi
+              Accéder à mon co-living
             </Button>
           </Link>
-          <Link href="/onboarding/resident">
+          <Link href="/signup">
             <Button
               variant="outline"
-              className={`px-8 py-6 text-lg font-semibold rounded-2xl border-2 transition-all ${
+              className={`px-8 py-6 text-lg font-semibold rounded-2xl border-2 transition-all hover:scale-105 ${
                 resolvedTheme === 'dark'
                   ? 'border-resident-500/50 text-resident-400 hover:bg-resident-500/10'
                   : 'border-resident-500 text-resident-600 hover:bg-resident-50'
@@ -605,19 +640,19 @@ function HeroOwner() {
               }}
             >
               <Building2 className="w-5 h-5 mr-2" />
-              Liste ton bien
+              Ajouter mon bien
             </Button>
           </Link>
           <Link href="/auth">
             <Button
               variant="outline"
-              className={`px-8 py-6 text-lg font-semibold rounded-2xl border-2 transition-all ${
+              className={`px-8 py-6 text-lg font-semibold rounded-2xl border-2 transition-all hover:scale-105 ${
                 resolvedTheme === 'dark'
                   ? 'border-owner-500/50 text-owner-400 hover:bg-owner-500/10'
                   : 'border-owner-500 text-owner-600 hover:bg-owner-50'
               }`}
             >
-              Accéder au dashboard
+              Voir mon dashboard
             </Button>
           </Link>
         </motion.div>
