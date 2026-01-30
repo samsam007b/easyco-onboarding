@@ -12,28 +12,11 @@ import ThemeToggle from '@/components/ThemeToggle';
 import RoleSwitcher, { type Role } from '@/components/landing/RoleSwitcher';
 
 interface ModernPublicHeaderProps {
-  activePage?: 'explorer' | 'residents' | 'owners' | null;
-  onNavigate?: (page: 'explorer' | 'residents' | 'owners' | null) => void;
-  // New role-based props (will replace activePage)
   activeRole?: Role;
   onRoleChange?: (role: Role) => void;
 }
 
-// Role mapping: old page names to new role names
-const pageToRole: Record<string, Role> = {
-  'explorer': 'searcher',
-  'residents': 'resident',
-  'owners': 'owner',
-};
-const roleToPage: Record<Role, 'explorer' | 'residents' | 'owners'> = {
-  'searcher': 'explorer',
-  'resident': 'residents',
-  'owner': 'owners',
-};
-
 export default function ModernPublicHeader({
-  activePage = null,
-  onNavigate,
   activeRole: externalActiveRole,
   onRoleChange,
 }: ModernPublicHeaderProps) {
@@ -61,10 +44,8 @@ export default function ModernPublicHeader({
     if (onRoleChange) {
       onRoleChange(role);
     }
-    // Also update old activePage for backwards compatibility
-    if (onNavigate) {
-      onNavigate(roleToPage[role]);
-    }
+    // Note: We no longer trigger slide pages - the role switcher now controls
+    // the main landing page content directly via activeRole
   };
 
   // Close dropdown when clicking outside
@@ -112,7 +93,6 @@ export default function ModernPublicHeader({
           <Link
             href="/"
             className="flex items-center group"
-            onClick={() => onNavigate?.(null)}
           >
             <img
               src="/logos/izzico-trademark-text-gradient.svg?v=5"
