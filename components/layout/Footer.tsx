@@ -64,7 +64,7 @@ export default function Footer() {
             {/* Brand Column */}
             <div className="col-span-2 md:col-span-1">
               <Image
-                src={isDark ? '/logos/izzico-trademark-squircle-epais-blanc.svg' : '/logos/izzico-trademark-squircle-epais-gradient.svg'}
+                src={isDark ? '/logos/izzico-trademark-squircle-epais-blanc.svg' : '/logos/izzico-trademark-squircle-epais-noir.svg'}
                 alt="Izzico"
                 width={140}
                 height={48}
