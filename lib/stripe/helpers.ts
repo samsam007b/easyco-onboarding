@@ -73,22 +73,22 @@ export function getSubscriptionInfo(plan: string) {
   const info: Record<string, { name: string; price: string; interval: string }> = {
     'owner_monthly': {
       name: 'IZZICO Owner - Mensuel',
-      price: '€15.99',
+      price: '€22.99',
       interval: 'mois',
     },
     'owner_annual': {
       name: 'IZZICO Owner - Annuel',
-      price: '€159.90',
+      price: '€229.90',
       interval: 'an',
     },
     'resident_monthly': {
       name: 'IZZICO Resident - Mensuel',
-      price: '€7.99',
+      price: '€3.99',
       interval: 'mois',
     },
     'resident_annual': {
       name: 'IZZICO Resident - Annuel',
-      price: '€79.90',
+      price: '€39.90',
       interval: 'an',
     },
   };

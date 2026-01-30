@@ -44,7 +44,7 @@ interface PlanDetails {
 const planDetails: Record<PlanType, PlanDetails> = {
   owner_monthly: {
     name: 'IzzIco Owner',
-    price: '15,99',
+    price: '22,99',
     intervalKey: 'month',
     trialKey: 'owner',
     featureKeys: [
@@ -60,9 +60,9 @@ const planDetails: Record<PlanType, PlanDetails> = {
   },
   owner_annual: {
     name: 'IzzIco Owner',
-    price: '159,90',
+    price: '229,90',
     intervalKey: 'year',
-    savings: '31,98',
+    savings: '2 mois',
     trialKey: 'owner',
     featureKeys: [
       'multiProperty',
@@ -77,7 +77,7 @@ const planDetails: Record<PlanType, PlanDetails> = {
   },
   resident_monthly: {
     name: 'IzzIco Resident',
-    price: '7,99',
+    price: '3,99',
     intervalKey: 'month',
     trialKey: 'resident',
     featureKeys: [
@@ -93,9 +93,9 @@ const planDetails: Record<PlanType, PlanDetails> = {
   },
   resident_annual: {
     name: 'IzzIco Resident',
-    price: '79,90',
+    price: '39,90',
     intervalKey: 'year',
-    savings: '15,98',
+    savings: '2 mois',
     trialKey: 'resident',
     featureKeys: [
       'verifiedProfile',
@@ -407,7 +407,7 @@ export default function CheckoutPage() {
                     <div className={`inline-flex items-center gap-1.5 mt-2 px-3 py-1 rounded-full ${colors.bg}`}>
                       <Zap className={`w-4 h-4 ${colors.text}`} />
                       <span className={`text-sm font-semibold ${colors.text}`}>
-                        {t?.plans?.savings?.[language] || 'Save'} {currentPlan.savings}€{t?.plans?.perYear?.[language] || '/year'}
+                        {currentPlan.savings} {t?.plans?.free?.[language] || 'offerts'}
                       </span>
                     </div>
                   )}
