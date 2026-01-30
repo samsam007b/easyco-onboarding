@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Shield, Target, Zap, Users, BarChart3, Home, Search, CheckCircle2, Calendar, MessageSquare, FileText, Wallet, Heart } from 'lucide-react';
+import { Shield, Target, Users, BarChart3, MessageSquare, FileText, Wallet, Heart, UserPlus, CheckCircle, AlertTriangle, PieChart } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
 import { type Role } from './RoleSwitcher';
 
@@ -21,79 +21,97 @@ interface Feature {
 
 const searcherFeatures: Feature[] = [
   {
-    icon: Target,
+    icon: Heart,
     title: 'Living Match',
-    subtitle: 'Trouve ceux qui te ressemblent',
-    description: 'Crée ton Living Persona en 3 minutes — notre algorithme trouve les résidences et colocataires qui matchent vraiment avec toi.',
+    subtitle: 'Compatibilité intelligente',
+    description: 'Notre algorithme analyse ton Living Persona pour te proposer des colocations et colocataires compatibles avec ton style de vie.',
     gradient: 'linear-gradient(135deg, #ffa000, #e05747)',
     borderColor: 'rgba(255, 160, 0, 0.18)',
     hoverBg: 'rgba(255, 160, 0, 0.08)',
   },
   {
     icon: Shield,
-    title: 'Annonces vérifiées',
-    subtitle: 'Zéro arnaque, garanti',
-    description: 'Chaque annonce est vérifiée par notre équipe. Photos réelles, propriétaires identifiés, contrats conformes.',
+    title: '100% Vérifié',
+    subtitle: 'Zéro mauvaise surprise',
+    description: 'Chaque bien est visité et validé par notre équipe. Photos réelles, propriétaires vérifiés, aucune mauvaise surprise.',
     gradient: 'linear-gradient(135deg, #ffa000, #ffa000)',
     borderColor: 'rgba(255, 160, 0, 0.18)',
     hoverBg: 'rgba(255, 160, 0, 0.08)',
   },
   {
-    icon: Heart,
-    title: 'Swipe & Match',
-    subtitle: 'Trouve tes futurs colocs',
-    description: 'Compatible à 87% ? Swipe, matche, discute. Découvre des profils vérifiés avec un score de compatibilité basé sur vos styles de vie.',
-    gradient: 'linear-gradient(135deg, #e05747, #ffa000)',
-    borderColor: 'rgba(224, 87, 71, 0.18)',
-    hoverBg: 'rgba(224, 87, 71, 0.08)',
-  },
-];
-
-const residentFeatures: Feature[] = [
-  {
-    icon: Wallet,
-    title: 'Split & Scan',
-    subtitle: 'Partage des dépenses sans prise de tête',
-    description: 'Scanne un ticket, on calcule qui paie quoi. Automatiquement. Plus de discussions interminables sur les courses.',
-    gradient: 'linear-gradient(135deg, #e05747, #e05747)',
-    borderColor: 'rgba(224, 87, 71, 0.18)',
-    hoverBg: 'rgba(224, 87, 71, 0.08)',
-  },
-  {
-    icon: Target,
-    title: 'Resident Swipe',
-    subtitle: 'Trouve ton futur coloc',
-    description: 'Un swipe de distance. Découvre des profils compatibles avec tes rythmes de vie, tes valeurs et tes hobbies.',
+    icon: UserPlus,
+    title: 'Recherche en groupe',
+    subtitle: 'Cherche avec tes amis',
+    description: 'Tu cherches avec des amis ? Créez un groupe de recherche et trouvez ensemble le co-living parfait.',
     gradient: 'linear-gradient(135deg, #e05747, #ffa000)',
     borderColor: 'rgba(224, 87, 71, 0.18)',
     hoverBg: 'rgba(224, 87, 71, 0.08)',
   },
   {
     icon: MessageSquare,
-    title: 'Issue Hub',
-    subtitle: 'Gère les réparations sereinement',
-    description: "Une fuite ? Crée un ticket en 2 clics avec photos. Ton propriétaire reçoit la demande et suit l'avancement.",
-    gradient: 'linear-gradient(135deg, #e05747, #9c5698)',
-    borderColor: 'rgba(200, 85, 112, 0.18)',
-    hoverBg: 'rgba(200, 85, 112, 0.08)',
+    title: 'Chat direct',
+    subtitle: 'Communique facilement',
+    description: "Contacte les propriétaires et futurs colocataires directement depuis l'app. Pose tes questions avant de visiter.",
+    gradient: 'linear-gradient(135deg, #ffa000, #e05747)',
+    borderColor: 'rgba(255, 160, 0, 0.18)',
+    hoverBg: 'rgba(255, 160, 0, 0.08)',
+  },
+];
+
+const residentFeatures: Feature[] = [
+  {
+    icon: Wallet,
+    title: 'Paiements simplifiés',
+    subtitle: 'Fini les calculs',
+    description: 'Split du loyer, partage des charges, tout est automatisé. Plus de discussions interminables sur qui doit quoi.',
+    gradient: 'linear-gradient(135deg, #e05747, #e05747)',
+    borderColor: 'rgba(224, 87, 71, 0.18)',
+    hoverBg: 'rgba(224, 87, 71, 0.08)',
+  },
+  {
+    icon: FileText,
+    title: 'Documents centralisés',
+    subtitle: 'Tout au même endroit',
+    description: 'Contrats, quittances, règlement intérieur... tous tes documents importants accessibles en un clic.',
+    gradient: 'linear-gradient(135deg, #e05747, #ff7c10)',
+    borderColor: 'rgba(224, 87, 71, 0.18)',
+    hoverBg: 'rgba(224, 87, 71, 0.08)',
+  },
+  {
+    icon: MessageSquare,
+    title: 'Communication fluide',
+    subtitle: 'Reste connecté',
+    description: 'Chat de groupe, annonces, planning partagé. Communique facilement avec tes colocataires et ton propriétaire.',
+    gradient: 'linear-gradient(135deg, #ff7c10, #e05747)',
+    borderColor: 'rgba(255, 124, 16, 0.18)',
+    hoverBg: 'rgba(255, 124, 16, 0.08)',
+  },
+  {
+    icon: AlertTriangle,
+    title: 'Signalement rapide',
+    subtitle: 'Problème résolu vite',
+    description: 'Un problème ? Signale-le en 2 clics avec photos. Le proprio est notifié et suit la résolution.',
+    gradient: 'linear-gradient(135deg, #e05747, #ff7c10)',
+    borderColor: 'rgba(224, 87, 71, 0.18)',
+    hoverBg: 'rgba(224, 87, 71, 0.08)',
   },
 ];
 
 const ownerFeatures: Feature[] = [
   {
     icon: Users,
-    title: 'Resident Match',
-    subtitle: 'Les bons résidents, automatiquement',
-    description: 'Reçois uniquement des candidatures compatibles avec tes résidents actuels. Moins de tri, plus de qualité.',
+    title: 'Locataires pré-qualifiés',
+    subtitle: 'Candidats triés sur le volet',
+    description: 'Reçois des candidatures avec dossier complet et score de compatibilité. Moins de tri, plus de qualité.',
     gradient: 'linear-gradient(135deg, #9c5698, #9c5698)',
     borderColor: 'rgba(156, 86, 152, 0.18)',
     hoverBg: 'rgba(156, 86, 152, 0.08)',
   },
   {
-    icon: BarChart3,
-    title: 'Dashboard intuitif',
-    subtitle: "Tout en un coup d'œil",
-    description: 'Revenus, occupation, paiements en retard — toutes les infos importantes sur un seul écran.',
+    icon: Wallet,
+    title: 'Paiements garantis',
+    subtitle: 'Loyers sécurisés',
+    description: 'Loyers collectés automatiquement, reversés en un virement unique. Fini les relances et les retards.',
     gradient: 'linear-gradient(135deg, #9c5698, #c85570)',
     borderColor: 'rgba(156, 86, 152, 0.18)',
     hoverBg: 'rgba(156, 86, 152, 0.08)',
@@ -101,11 +119,20 @@ const ownerFeatures: Feature[] = [
   {
     icon: FileText,
     title: 'Contrats automatisés',
-    subtitle: 'Génère et signe en ligne',
-    description: 'Baux conformes, états des lieux digitaux, signatures électroniques. Tout est légal et archivé.',
-    gradient: 'linear-gradient(135deg, #9c5698, #e05747)',
+    subtitle: 'Signature en ligne',
+    description: 'Génération automatique, signature électronique, archivage sécurisé. Tout est conforme et accessible.',
+    gradient: 'linear-gradient(135deg, #c85570, #9c5698)',
     borderColor: 'rgba(200, 85, 112, 0.18)',
     hoverBg: 'rgba(200, 85, 112, 0.08)',
+  },
+  {
+    icon: PieChart,
+    title: 'Analytics détaillés',
+    subtitle: 'Pilotez vos biens',
+    description: 'Revenus, taux d\'occupation, incidents... Toutes les métriques clés sur votre tableau de bord.',
+    gradient: 'linear-gradient(135deg, #9c5698, #c85570)',
+    borderColor: 'rgba(156, 86, 152, 0.18)',
+    hoverBg: 'rgba(156, 86, 152, 0.08)',
   },
 ];
 
@@ -185,7 +212,7 @@ export default function RoleFeaturesSection({ activeRole }: RoleFeaturesSectionP
             animate="center"
             exit="exit"
             transition={{ duration: 0.4 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
           >
             {features.map((feature, index) => {
               const Icon = feature.icon;

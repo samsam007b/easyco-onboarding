@@ -34,27 +34,25 @@ const ROLE_COLORS = {
   },
 };
 
-// Contenu spécifique par rôle
+// Contenu spécifique par rôle - aligné avec le HTML de référence
 const roleContent = {
   searcher: {
     title: 'Izzico en chiffres',
     subtitle: 'La confiance de milliers de chercheurs',
     stats: [
-      { icon: Home, value: '500+', label: 'Co-livings disponibles' },
-      { icon: Users, value: '2,500+', label: 'Membres actifs' },
-      { icon: Star, value: '4.8/5', label: 'Note moyenne' },
-      { icon: Shield, value: '100%', label: 'Annonces vérifiées' },
+      { icon: Home, value: '247', label: 'Co-livings disponibles' },
+      { icon: Users, value: '1,842', label: 'Membres actifs' },
+      { icon: Star, value: '98%', label: 'Satisfaction' },
     ],
     trustBadge: 'Toutes les annonces sont vérifiées par notre équipe',
   },
   resident: {
     title: 'Izzico en chiffres',
-    subtitle: 'Rejoins une communauté active',
+    subtitle: 'Simplifie ton quotidien',
     stats: [
-      { icon: Heart, value: '87%', label: 'Taux de satisfaction' },
-      { icon: Wallet, value: '€2,400', label: 'Économisés en moyenne/an' },
-      { icon: Users, value: '12,000+', label: 'Résidents connectés' },
-      { icon: Clock, value: '< 2min', label: 'Pour partager une dépense' },
+      { icon: Clock, value: '3 min', label: 'Pour payer ton loyer' },
+      { icon: Shield, value: '100%', label: 'Paiements sécurisés' },
+      { icon: Heart, value: '24/7', label: 'Support disponible' },
     ],
     trustBadge: 'Simplifie ton quotidien avec tes colocs',
   },
@@ -62,10 +60,9 @@ const roleContent = {
     title: 'Izzico en chiffres',
     subtitle: 'La gestion locative simplifiée',
     stats: [
-      { icon: Building2, value: '350+', label: 'Biens gérés' },
-      { icon: TrendingUp, value: '95%', label: "Taux d'occupation" },
-      { icon: BarChart3, value: '-70%', label: 'Temps de gestion' },
-      { icon: CheckCircle, value: '0€', label: 'Frais cachés' },
+      { icon: TrendingUp, value: '+15%', label: 'Revenus locatifs' },
+      { icon: Building2, value: '98%', label: "Taux d'occupation" },
+      { icon: CheckCircle, value: '0€', label: 'Impayés' },
     ],
     trustBadge: 'Rejoins les propriétaires qui nous font confiance',
   },
@@ -115,7 +112,7 @@ export default function StatsSection({ activeRole }: StatsSectionProps) {
             </div>
 
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {content.stats.map((stat, index) => {
                 const Icon = stat.icon;
                 return (

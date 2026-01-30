@@ -35,7 +35,7 @@ const ROLE_COLORS = {
   },
 };
 
-// Contenu spécifique par rôle
+// Contenu spécifique par rôle - aligné avec le HTML de référence
 const roleContent = {
   searcher: {
     title: 'Comment ça marche ?',
@@ -47,14 +47,14 @@ const roleContent = {
         description: 'En 3 minutes, réponds à quelques questions sur ton style de vie, tes habitudes et tes préférences.',
       },
       {
-        icon: Target,
-        title: 'Découvre des matchs',
-        description: 'Notre algorithme te propose des co-livings et des colocs compatibles avec ton profil.',
+        icon: Search,
+        title: 'Explore tes matchs',
+        description: 'Découvre des co-livings et colocataires compatibles avec ton profil. Swipe, matche, discute.',
       },
       {
         icon: Home,
         title: 'Emménage sereinement',
-        description: 'Visite, signe ton contrat en ligne, et intègre ta nouvelle communauté.',
+        description: 'Visite, signe ton contrat en ligne et intègre ta nouvelle communauté.',
       },
     ],
     cta: 'Créer mon Living Persona',
@@ -76,8 +76,8 @@ const roleContent = {
       },
       {
         icon: Wallet,
-        title: 'Simplifie ton quotidien',
-        description: 'Partage les dépenses, gère les tâches, et communique facilement avec tout le monde.',
+        title: 'Gère ton quotidien',
+        description: 'Partage les dépenses, gère les documents, et communique facilement avec tout le monde.',
       },
     ],
     cta: 'Télécharger l\'app',
@@ -85,22 +85,27 @@ const roleContent = {
   },
   owner: {
     title: 'Comment ça marche ?',
-    subtitle: 'Gère tes biens efficacement en 3 étapes',
+    subtitle: 'Gère tes biens efficacement en 4 étapes',
     steps: [
       {
         icon: Building2,
-        title: 'Publie tes biens',
+        title: 'Crée ton annonce',
         description: 'Ajoute tes propriétés en quelques clics avec photos, description et loyer.',
       },
       {
         icon: Users,
         title: 'Reçois des candidatures',
-        description: 'Notre algorithme te propose uniquement des candidats compatibles avec tes résidents actuels.',
+        description: 'Des candidats pré-qualifiés, compatibles avec tes résidents actuels.',
+      },
+      {
+        icon: FileText,
+        title: 'Signe en ligne',
+        description: 'Contrats générés automatiquement, signature électronique sécurisée.',
       },
       {
         icon: BarChart3,
-        title: 'Gère tout en un clic',
-        description: 'Contrats, paiements, incidents — tout est centralisé dans ton dashboard.',
+        title: 'Encaisse sans effort',
+        description: 'Loyers collectés automatiquement, reversés sur ton compte chaque mois.',
       },
     ],
     cta: 'Ajouter mon bien',
