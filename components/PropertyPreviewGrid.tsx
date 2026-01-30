@@ -7,6 +7,12 @@ import { ArrowRight, ChevronLeft, ChevronRight } from 'lucide-react';
 import { createClient } from '@/lib/auth/supabase-client';
 import { useTheme } from '@/contexts/ThemeContext';
 
+interface ResidentProfile {
+  id: string;
+  first_name: string;
+  profile_photo_url?: string;
+}
+
 interface Property {
   id: string;
   title: string;
@@ -22,6 +28,7 @@ interface Property {
   rating?: number;
   reviews_count?: number;
   available_from?: string;
+  residents?: ResidentProfile[];
 }
 
 interface PropertyPreviewGridProps {
@@ -29,7 +36,7 @@ interface PropertyPreviewGridProps {
   showHeader?: boolean;
 }
 
-// Couleurs V3-fun pour Searcher
+// Couleurs V3-fun pour Searcher (pure amber/gold - pas de transition vers orange)
 const SEARCHER_COLORS = {
   card: '#FFFBEB',
   cardDark: 'rgba(255, 160, 0, 0.08)',
@@ -37,7 +44,8 @@ const SEARCHER_COLORS = {
   blobDark: 'rgba(255, 160, 0, 0.15)',
   text: '#A16300',
   border: 'rgba(255, 160, 0, 0.15)',
-  gradient: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
+  // Gradient searcher pur (jaune -> jaune fonce) - PAS de transition vers orange/rouge
+  gradient: 'linear-gradient(135deg, #ffa000 0%, #D98400 100%)',
 };
 
 export default function PropertyPreviewGrid({
@@ -105,12 +113,28 @@ export default function PropertyPreviewGrid({
         '/images/hero/pexels-solliefoto-298842.jpg',
       ];
 
+      // Mock resident names for community aspect preview
+      const mockResidentNames = [
+        ['Emma', 'Lucas', 'Chloé'],
+        ['Thomas', 'Léa'],
+        ['Hugo', 'Manon', 'Louis', 'Julie'],
+        ['Camille', 'Nathan'],
+        ['Sarah', 'Alexandre', 'Marie'],
+      ];
+
       const propertiesWithImages = (data || []).map((property, index) => {
         const imageIndex = index % 5;
         const heroImage = heroImages[imageIndex];
 
         const isFigmaScreenshot = property.main_image?.includes('/images/properties/property-') ||
                                   property.main_image?.includes('/images/carousel/figma-');
+
+        // Generate mock residents for community preview
+        const residentNames = mockResidentNames[index % mockResidentNames.length];
+        const mockResidents: ResidentProfile[] = residentNames.map((name, idx) => ({
+          id: `mock-${property.id}-${idx}`,
+          first_name: name,
+        }));
 
         return {
           ...property,
@@ -119,7 +143,8 @@ export default function PropertyPreviewGrid({
             img.includes('/images/properties/property-') || img.includes('/images/carousel/figma-')
           )
             ? [heroImage]
-            : (property.images || [heroImage])
+            : (property.images || [heroImage]),
+          residents: mockResidents,
         };
       });
 
@@ -259,7 +284,9 @@ export default function PropertyPreviewGrid({
               >
                 <PropertyCard
                   property={property}
+                  residents={property.residents}
                   variant="default"
+                  index={index}
                 />
               </div>
             ))}

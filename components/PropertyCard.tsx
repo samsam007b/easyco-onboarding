@@ -337,35 +337,35 @@ function PropertyCard({
             </div>
           )}
 
-          {/* Available Now Badge OR Matching Teaser */}
+          {/* Matching Teaser for non-logged users - ALWAYS visible to encourage signup */}
           {!showCompatibilityScore && !searcherProfile && (
-            isAvailableSoon ? (
-              <div
-                className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg flex items-center gap-1.5"
-                style={{
-                  background: 'rgba(34, 197, 94, 0.95)',
-                  color: 'white',
-                  backdropFilter: 'blur(8px)',
-                }}
-              >
-                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-                Dispo
-              </div>
-            ) : (
-              // Matching Teaser for non-logged users - encourages signup
-              <div
-                className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg flex items-center gap-1.5 cursor-pointer"
-                style={{
-                  background: SEARCHER_COLORS.matchingTeaser,
-                  color: 'white',
-                  backdropFilter: 'blur(8px)',
-                }}
-                title="Crée ton profil pour voir ton % de compatibilité"
-              >
-                <span className="blur-[2px] select-none">87%</span>
-                <span className="text-xs opacity-80">Match</span>
-              </div>
-            )
+            <div
+              className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg flex items-center gap-1.5 cursor-pointer"
+              style={{
+                background: SEARCHER_COLORS.matchingTeaser,
+                color: 'white',
+                backdropFilter: 'blur(8px)',
+              }}
+              title="Crée ton profil pour voir ton % de compatibilité"
+            >
+              <span className="blur-[2px] select-none">87%</span>
+              <span className="text-xs opacity-80">Match</span>
+            </div>
+          )}
+
+          {/* Available Now indicator - bottom left, subtle */}
+          {isAvailableSoon && (
+            <div
+              className="absolute bottom-12 right-3 px-2.5 py-1 rounded-lg text-xs font-medium shadow-lg flex items-center gap-1"
+              style={{
+                background: 'rgba(34, 197, 94, 0.9)',
+                color: 'white',
+                backdropFilter: 'blur(8px)',
+              }}
+            >
+              <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              Dispo
+            </div>
           )}
 
           {/* Location on image */}
