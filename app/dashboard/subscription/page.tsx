@@ -412,44 +412,8 @@ export default function SubscriptionPage() {
           </div>
         </motion.div>
 
-        {/* Features Grid */}
-        <div className="max-w-6xl mx-auto px-4 py-16">
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              Tout ce dont vous avez besoin
-            </h2>
-            <p className="text-gray-600 max-w-xl mx-auto">
-              Des outils puissants pour simplifier la gestion de votre colocation
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {premiumFeatures.map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 + index * 0.1 }}
-                whileHover={{ scale: 1.02, y: -4 }}
-                className="group bg-white superellipse-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200"
-              >
-                <div className={`w-14 h-14 ${feature.bgColor} superellipse-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                  <feature.icon className={`w-7 h-7 ${feature.iconColor}`} />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
-                <p className="text-gray-600 text-sm">{feature.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Pricing Section */}
-        <div id="pricing-section" className="max-w-6xl mx-auto px-4 py-16">
+        {/* Pricing Section - Shown first for better UX */}
+        <div id="pricing-section" className="max-w-6xl mx-auto px-4 py-8">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
@@ -508,7 +472,7 @@ export default function SubscriptionPage() {
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-bold text-gray-900">
-                      {userRole === 'owner' ? '15,99€' : '7,99€'}
+                      {userRole === 'owner' ? '22,99€' : '3,99€'}
                     </span>
                     <span className="text-gray-500">/mois</span>
                   </div>
@@ -597,14 +561,14 @@ export default function SubscriptionPage() {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-900">Annuel</h3>
-                    <p className="text-sm text-gray-500">Économisez 17%</p>
+                    <p className="text-sm text-gray-500">2 mois offerts</p>
                   </div>
                 </div>
 
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
                     <span className="text-4xl font-bold text-gray-900">
-                      {userRole === 'owner' ? '159,90€' : '79,90€'}
+                      {userRole === 'owner' ? '229,90€' : '39,90€'}
                     </span>
                     <span className="text-gray-500">/an</span>
                   </div>
@@ -617,7 +581,7 @@ export default function SubscriptionPage() {
                         ? 'bg-owner-100 text-owner-700'
                         : 'bg-resident-100 text-resident-700'
                     }`}>
-                      -{userRole === 'owner' ? '31,98€' : '15,98€'}
+                      2 mois offerts
                     </span>
                   </div>
                 </div>
@@ -697,11 +661,11 @@ export default function SubscriptionPage() {
 
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold text-gray-900">15,99€</span>
+                    <span className="text-3xl font-bold text-gray-900">22,99€</span>
                     <span className="text-gray-500">/mois</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    ou 159,90€/an (économisez 17%)
+                    ou 229,90€/an (2 mois offerts)
                   </p>
                   <p className="text-sm text-green-600 font-medium mt-2">
                     3 mois d'essai gratuit
@@ -761,11 +725,11 @@ export default function SubscriptionPage() {
 
                 <div className="mb-6">
                   <div className="flex items-baseline gap-1">
-                    <span className="text-3xl font-bold text-gray-900">7,99€</span>
+                    <span className="text-3xl font-bold text-gray-900">3,99€</span>
                     <span className="text-gray-500">/mois</span>
                   </div>
                   <p className="text-xs text-gray-500 mt-1">
-                    ou 79,90€/an (économisez 17%)
+                    ou 39,90€/an (2 mois offerts)
                   </p>
                   <p className="text-sm text-green-600 font-medium mt-2">
                     6 mois d'essai gratuit
@@ -826,6 +790,42 @@ export default function SubscriptionPage() {
           )}
         </div>
 
+        {/* Features Grid - Shown after pricing for users who want more info */}
+        <div className="max-w-6xl mx-auto px-4 py-16">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              Tout ce dont vous avez besoin
+            </h2>
+            <p className="text-gray-600 max-w-xl mx-auto">
+              Des outils puissants pour simplifier la gestion de votre colocation
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {premiumFeatures.map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ scale: 1.02, y: -4 }}
+                className="group bg-white superellipse-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-purple-200"
+              >
+                <div className={`w-14 h-14 ${feature.bgColor} superellipse-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                  <feature.icon className={`w-7 h-7 ${feature.iconColor}`} />
+                </div>
+                <h3 className="text-lg font-bold text-gray-900 mb-2">{feature.title}</h3>
+                <p className="text-gray-600 text-sm">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
 
         {/* Final CTA */}
         <div className="max-w-6xl mx-auto px-4 py-16 text-center">
@@ -881,8 +881,8 @@ export default function SubscriptionPage() {
   }
 
   // Tarif de lancement (use userRole since status doesn't have user_type anymore)
-  const monthlyPrice = userRole === 'owner' ? 15.99 : 7.99;
-  const annualPrice = userRole === 'owner' ? 159.90 : 79.90;
+  const monthlyPrice = userRole === 'owner' ? 22.99 : 3.99;
+  const annualPrice = userRole === 'owner' ? 229.90 : 39.90;
   const annualSavings = (monthlyPrice * 12 - annualPrice).toFixed(2);
 
   // Compute trial progress percent
@@ -1162,14 +1162,14 @@ export default function SubscriptionPage() {
             >
               <div className="flex items-center gap-2 mb-3">
                 <Zap className="w-6 h-6" />
-                <h3 className="text-lg font-bold">Économisez avec l'annuel</h3>
+                <h3 className="text-lg font-bold">Passez à l'annuel</h3>
               </div>
               <div className="mb-4">
                 <div className="flex items-baseline gap-1 mb-1">
                   <span className="text-4xl font-bold">{annualPrice}€</span>
                   <span className="text-white/80">/an</span>
                 </div>
-                <p className="text-sm text-white/90">Économisez {annualSavings}€ par an</p>
+                <p className="text-sm text-white/90">2 mois offerts</p>
               </div>
               <button
                 onClick={() => setShowPlanModal(true)}

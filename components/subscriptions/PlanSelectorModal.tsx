@@ -25,12 +25,12 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
   // Pricing data (tarif de lancement)
   const pricing = {
     owner: {
-      monthly: 15.99,
-      annual: 159.90,
+      monthly: 22.99,
+      annual: 229.90,
     },
     resident: {
-      monthly: 7.99,
-      annual: 79.90,
+      monthly: 3.99,
+      annual: 39.90,
     },
   };
 
@@ -123,7 +123,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
                       <Zap className="w-4 h-4" />
                       Annuel
                       <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full">
-                        -{savingsPercent}%
+                        2 mois offerts
                       </span>
                     </button>
                   </div>
@@ -142,7 +142,7 @@ export default function PlanSelectorModal({ isOpen, onClose, userType }: PlanSel
                       {selectedInterval === 'annual' && (
                         <div className="flex items-center gap-2 text-green-700 font-semibold mb-3">
                           <Zap className="w-5 h-5" />
-                          <span>Meilleure offre - Économisez {savings}€</span>
+                          <span>Meilleure offre - 2 mois offerts</span>
                         </div>
                       )}
 

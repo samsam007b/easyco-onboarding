@@ -34,28 +34,28 @@ const products: ProductConfig[] = [
   {
     name: 'IzzIco Owner - Mensuel',
     description: 'Abonnement mensuel pour propriétaires. Gestion multi-propriétés, matching avancé, messagerie illimitée.',
-    priceAmount: 1599, // 15.99€
+    priceAmount: 2299, // 22.99€
     interval: 'month',
     envKey: 'STRIPE_PRICE_OWNER_MONTHLY',
   },
   {
     name: 'IzzIco Owner - Annuel',
-    description: 'Abonnement annuel pour propriétaires. Économisez 31,98€/an.',
-    priceAmount: 15990, // 159.90€
+    description: 'Abonnement annuel pour propriétaires. Économisez 45,98€/an.',
+    priceAmount: 22990, // 229.90€
     interval: 'year',
     envKey: 'STRIPE_PRICE_OWNER_ANNUAL',
   },
   {
     name: 'IzzIco Resident - Mensuel',
     description: 'Abonnement mensuel pour résidents. Profil vérifié, matching colocations, messagerie illimitée.',
-    priceAmount: 799, // 7.99€
+    priceAmount: 399, // 3.99€
     interval: 'month',
     envKey: 'STRIPE_PRICE_RESIDENT_MONTHLY',
   },
   {
     name: 'IzzIco Resident - Annuel',
-    description: 'Abonnement annuel pour résidents. Économisez 15,98€/an.',
-    priceAmount: 7990, // 79.90€
+    description: 'Abonnement annuel pour résidents. Économisez 7,98€/an.',
+    priceAmount: 3990, // 39.90€
     interval: 'year',
     envKey: 'STRIPE_PRICE_RESIDENT_ANNUAL',
   },
