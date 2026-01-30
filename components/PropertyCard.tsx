@@ -9,7 +9,7 @@ import { calculatePropertySearcherMatch, getPropertyMatchQuality } from '@/lib/s
 import type { PropertyWithResidents, PropertySearcherProfile } from '@/lib/services/property-matching-service';
 import type { PropertyRoommateCompatibility } from '@/lib/services/roommate-matching-service';
 
-// Couleurs V3-fun pour Searcher
+// Couleurs V3-fun pour Searcher (pure amber/gold - pas de transition vers orange)
 const SEARCHER_COLORS = {
   card: '#FFFBEB',
   cardDark: 'rgba(255, 160, 0, 0.08)',
@@ -18,9 +18,12 @@ const SEARCHER_COLORS = {
   text: '#A16300',
   textDark: '#F5F5F7',
   border: 'rgba(255, 160, 0, 0.15)',
-  gradient: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
+  // Gradient searcher pur (jaune -> jaune fonce) - PAS de transition vers orange/rouge
+  gradient: 'linear-gradient(135deg, #ffa000 0%, #D98400 100%)',
   badgeBg: 'rgba(255, 160, 0, 0.12)',
   badgeBgDark: 'rgba(255, 160, 0, 0.2)',
+  // Pour le matching teaser
+  matchingTeaser: 'rgba(255, 160, 0, 0.9)',
 };
 
 interface ResidentProfile {
@@ -334,19 +337,35 @@ function PropertyCard({
             </div>
           )}
 
-          {/* Available Now Badge */}
-          {isAvailableSoon && !showCompatibilityScore && !searcherProfile && (
-            <div
-              className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg flex items-center gap-1.5"
-              style={{
-                background: 'rgba(34, 197, 94, 0.95)',
-                color: 'white',
-                backdropFilter: 'blur(8px)',
-              }}
-            >
-              <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-              Dispo
-            </div>
+          {/* Available Now Badge OR Matching Teaser */}
+          {!showCompatibilityScore && !searcherProfile && (
+            isAvailableSoon ? (
+              <div
+                className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg flex items-center gap-1.5"
+                style={{
+                  background: 'rgba(34, 197, 94, 0.95)',
+                  color: 'white',
+                  backdropFilter: 'blur(8px)',
+                }}
+              >
+                <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
+                Dispo
+              </div>
+            ) : (
+              // Matching Teaser for non-logged users - encourages signup
+              <div
+                className="absolute top-3 left-3 px-3 py-1.5 rounded-xl text-sm font-medium shadow-lg flex items-center gap-1.5 cursor-pointer"
+                style={{
+                  background: SEARCHER_COLORS.matchingTeaser,
+                  color: 'white',
+                  backdropFilter: 'blur(8px)',
+                }}
+                title="Crée ton profil pour voir ton % de compatibilité"
+              >
+                <span className="blur-[2px] select-none">87%</span>
+                <span className="text-xs opacity-80">Match</span>
+              </div>
+            )
           )}
 
           {/* Location on image */}
@@ -368,46 +387,79 @@ function PropertyCard({
             {property.title}
           </h3>
 
-          {/* Info Tags */}
-          <div className="flex flex-wrap gap-2 mb-4">
-            {property.bedrooms && (
-              <span
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
-                style={{
-                  background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
-                  color: SEARCHER_COLORS.text,
-                }}
-              >
-                <Bed className="w-3.5 h-3.5" />
-                {property.bedrooms} chambre{property.bedrooms > 1 ? 's' : ''}
-              </span>
-            )}
+          {/* Info Tags + Resident Avatars */}
+          <div className="flex items-center justify-between mb-4">
+            {/* Tags */}
+            <div className="flex flex-wrap gap-2">
+              {property.bedrooms && (
+                <span
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
+                  style={{
+                    background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
+                    color: SEARCHER_COLORS.text,
+                  }}
+                >
+                  <Bed className="w-3.5 h-3.5" />
+                  {property.bedrooms} ch.
+                </span>
+              )}
+              {residents && residents.length > 0 && (
+                <span
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
+                  style={{
+                    background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
+                    color: SEARCHER_COLORS.text,
+                  }}
+                >
+                  <Users className="w-3.5 h-3.5" />
+                  {residents.length} coloc{residents.length > 1 ? 's' : ''}
+                </span>
+              )}
+            </div>
+
+            {/* Resident Avatars - Community aspect */}
             {residents && residents.length > 0 && (
-              <span
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
-                style={{
-                  background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
-                  color: SEARCHER_COLORS.text,
-                }}
-              >
-                <Users className="w-3.5 h-3.5" />
-                {residents.length} coloc{residents.length > 1 ? 's' : ''}
-              </span>
-            )}
-            {property.available_from && (
-              <span
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold"
-                style={{
-                  background: isDark ? 'rgba(34, 197, 94, 0.15)' : 'rgba(34, 197, 94, 0.1)',
-                  color: isDark ? '#4ade80' : '#15803d',
-                }}
-              >
-                <Calendar className="w-3.5 h-3.5" />
-                {new Date(property.available_from) <= new Date()
-                  ? 'Maintenant'
-                  : new Date(property.available_from).toLocaleDateString('fr-FR', { day: 'numeric', month: 'short' })
-                }
-              </span>
+              <div className="flex items-center -space-x-2">
+                {residents.slice(0, 3).map((resident, idx) => (
+                  <div
+                    key={resident.id}
+                    className="w-8 h-8 rounded-full border-2 overflow-hidden"
+                    style={{
+                      borderColor: isDark ? '#1a1a1f' : '#FFFBEB',
+                      zIndex: 3 - idx,
+                    }}
+                  >
+                    {resident.profile_photo_url ? (
+                      <Image
+                        src={resident.profile_photo_url}
+                        alt={resident.first_name}
+                        width={32}
+                        height={32}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center text-xs font-bold text-white"
+                        style={{ background: SEARCHER_COLORS.gradient }}
+                      >
+                        {resident.first_name.charAt(0)}
+                      </div>
+                    )}
+                  </div>
+                ))}
+                {residents.length > 3 && (
+                  <div
+                    className="w-8 h-8 rounded-full border-2 flex items-center justify-center text-xs font-bold"
+                    style={{
+                      borderColor: isDark ? '#1a1a1f' : '#FFFBEB',
+                      background: isDark ? SEARCHER_COLORS.badgeBgDark : SEARCHER_COLORS.badgeBg,
+                      color: SEARCHER_COLORS.text,
+                    }}
+                  >
+                    +{residents.length - 3}
+                  </div>
+                )}
+              </div>
             )}
           </div>
 
@@ -417,6 +469,9 @@ function PropertyCard({
             style={{ borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'}` }}
           >
             <div>
+              <span className={`text-xs block mb-0.5 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
+                à partir de
+              </span>
               <span
                 className="text-2xl font-bold"
                 style={{ color: isDark ? SEARCHER_COLORS.textDark : SEARCHER_COLORS.text }}
