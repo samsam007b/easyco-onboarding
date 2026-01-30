@@ -3,27 +3,51 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import NotificationBell from '@/components/notifications/NotificationBell';
-import { Menu, X, Home, Search, Users, Building2, Globe, ChevronDown } from 'lucide-react';
+import { Menu, X, Globe, ChevronDown } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
 import { useTheme } from '@/contexts/ThemeContext';
 import ThemeToggle from '@/components/ThemeToggle';
+import RoleSwitcher, { type Role } from '@/components/landing/RoleSwitcher';
+
 interface ModernPublicHeaderProps {
   activePage?: 'explorer' | 'residents' | 'owners' | null;
   onNavigate?: (page: 'explorer' | 'residents' | 'owners' | null) => void;
+  // New role-based props (will replace activePage)
+  activeRole?: Role;
+  onRoleChange?: (role: Role) => void;
 }
+
+// Role mapping: old page names to new role names
+const pageToRole: Record<string, Role> = {
+  'explorer': 'searcher',
+  'residents': 'resident',
+  'owners': 'owner',
+};
+const roleToPage: Record<Role, 'explorer' | 'residents' | 'owners'> = {
+  'searcher': 'explorer',
+  'resident': 'residents',
+  'owner': 'owners',
+};
 
 export default function ModernPublicHeader({
   activePage = null,
-  onNavigate
+  onNavigate,
+  activeRole: externalActiveRole,
+  onRoleChange,
 }: ModernPublicHeaderProps) {
   const { language, setLanguage, getSection } = useLanguage();
   const { resolvedTheme } = useTheme();
   const nav = getSection('nav');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [langDropdownOpen, setLangDropdownOpen] = useState(false);
+
+  // Internal role state (default to searcher)
+  const [internalRole, setInternalRole] = useState<Role>('searcher');
+
+  // Use external role if provided, otherwise use internal
+  const activeRole = externalActiveRole ?? internalRole;
 
   const languages = [
     { code: 'fr', label: 'Français' },
@@ -32,31 +56,14 @@ export default function ModernPublicHeader({
     { code: 'de', label: 'Deutsch' },
   ] as const;
 
-  const navItems = [
-    {
-      id: 'explorer' as const,
-      label: nav.explorer,
-      icon: Search,
-      color: 'yellow'
-    },
-    {
-      id: 'residents' as const,
-      label: nav.residents,
-      icon: Users,
-      color: 'orange'
-    },
-    {
-      id: 'owners' as const,
-      label: nav.owners,
-      icon: Building2,
-      color: 'purple'
-    },
-  ];
-
-  const handleNavClick = (pageId: 'explorer' | 'residents' | 'owners') => {
+  const handleRoleChange = (role: Role) => {
+    setInternalRole(role);
+    if (onRoleChange) {
+      onRoleChange(role);
+    }
+    // Also update old activePage for backwards compatibility
     if (onNavigate) {
-      // Toggle: si déjà actif, on ferme
-      onNavigate(activePage === pageId ? null : pageId);
+      onNavigate(roleToPage[role]);
     }
   };
 
@@ -114,56 +121,12 @@ export default function ModernPublicHeader({
             />
           </Link>
 
-          {/* Desktop Navigation - Centré */}
-          <nav className="hidden md:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
-            {navItems.map((item) => {
-              const isActive = activePage === item.id;
-              const Icon = item.icon;
-
-              return (
-                <div key={item.id} className="relative">
-                  {/* Triangle pointer - avec couleur du dégradé - v3 colors */}
-                  {isActive && (
-                    <motion.div
-                      className="absolute -bottom-3 left-1/2 -translate-x-1/2 z-10 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent"
-                      style={{
-                        borderTopColor: item.color === 'yellow'
-                          ? 'hsl(var(--searcher-500))'
-                          : item.color === 'orange'
-                          ? 'hsl(var(--resident-500))'
-                          : 'hsl(var(--owner-500))'
-                      }}
-                      initial={{ opacity: 0, y: -5 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -5 }}
-                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                    />
-                  )}
-
-                  {/* Button content - Texte avec effet hover et état actif */}
-                  <button
-                    onClick={() => handleNavClick(item.id)}
-                    className={cn(
-                      "relative z-10 flex items-center gap-2 px-4 py-2 superellipse-xl text-sm font-semibold transition-all",
-                      isActive
-                        ? item.color === 'yellow'
-                          ? "text-searcher-700 bg-searcher-50"
-                          : item.color === 'orange'
-                          ? "text-resident-700 bg-resident-50"
-                          : "text-owner-700 bg-owner-50"
-                        : item.color === 'yellow'
-                        ? "text-gray-600 hover:text-searcher-700 hover:bg-searcher-50"
-                        : item.color === 'orange'
-                        ? "text-gray-600 hover:text-resident-700 hover:bg-resident-50"
-                        : "text-gray-600 hover:text-owner-700 hover:bg-owner-50"
-                    )}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span>{item.label}</span>
-                  </button>
-                </div>
-              );
-            })}
+          {/* Desktop Navigation - Role Switcher centré */}
+          <nav className="hidden md:flex items-center absolute left-1/2 -translate-x-1/2">
+            <RoleSwitcher
+              activeRole={activeRole}
+              onRoleChange={handleRoleChange}
+            />
           </nav>
 
           {/* Desktop Actions */}
@@ -311,33 +274,16 @@ export default function ModernPublicHeader({
               }}
             >
               <nav className="py-4 flex flex-col gap-2">
-                {navItems.map((item) => {
-                  const Icon = item.icon;
-                  const isActive = activePage === item.id;
-
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => {
-                        handleNavClick(item.id);
-                        setMobileMenuOpen(false);
-                      }}
-                      className={cn(
-                        "flex items-center gap-3 px-4 py-3 superellipse-lg transition-all text-left",
-                        isActive
-                          ? resolvedTheme === 'dark'
-                            ? "bg-owner-900/30 text-owner-300 font-semibold"
-                            : "bg-owner-100 text-owner-900 font-semibold"
-                          : resolvedTheme === 'dark'
-                            ? "text-gray-200 hover:bg-white/5"
-                            : "text-gray-700 hover:bg-gray-100"
-                      )}
-                    >
-                      <Icon className="w-5 h-5" />
-                      {item.label}
-                    </button>
-                  );
-                })}
+                {/* Mobile Role Switcher */}
+                <div className="px-4 pb-4">
+                  <RoleSwitcher
+                    activeRole={activeRole}
+                    onRoleChange={(role) => {
+                      handleRoleChange(role);
+                      setMobileMenuOpen(false);
+                    }}
+                  />
+                </div>
 
                 {/* Theme toggle in mobile menu */}
                 <div className="px-4 py-2">
@@ -345,7 +291,7 @@ export default function ModernPublicHeader({
                 </div>
 
                 <div
-                  className="pt-4 mt-4 flex flex-col gap-3"
+                  className="pt-4 mt-4 px-4 flex flex-col gap-3"
                   style={{
                     borderTop: `1px solid ${resolvedTheme === 'dark' ? '#2A2A30' : '#E5E7EB'}`,
                   }}
