@@ -2,47 +2,79 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTheme } from '@/contexts/ThemeContext';
-import { Home, Users, Star, CheckCircle, Building2, TrendingUp, Clock, Shield, Heart, Wallet, BarChart3 } from 'lucide-react';
+import { Home, Users, Star, CheckCircle, Building2, TrendingUp, Clock, Shield, Heart } from 'lucide-react';
 import { type Role } from './landing/RoleSwitcher';
 
 interface StatsSectionProps {
   activeRole: Role;
 }
 
-// Couleurs du design system v3 - couleurs primaires exactes par rôle
-const ROLE_COLORS = {
-  owner: {
-    primary: '#9c5698',
-    secondary: '#c85570',
-    gradient: 'linear-gradient(135deg, #9c5698 0%, #c85570 100%)',
-    light: 'rgba(156, 86, 152, 0.1)',
-    border: 'rgba(156, 86, 152, 0.2)',
+// Couleurs sémantiques UI (conventions UX du design system)
+const SEMANTIC_COLORS = {
+  // Logements/Properties - Teal (stabilité)
+  home: { bg: '#70B0C0', light: '#F0FDFA' },
+  // Utilisateurs/Communauté - Dusty Rose (social)
+  users: { bg: '#D08090', light: '#FDF2F4' },
+  // Satisfaction/Étoiles - Amber (positif, chaleur)
+  satisfaction: { bg: '#D9A870', light: '#FFFBEB' },
+  // Temps/Rapidité - Sky (efficacité)
+  time: { bg: '#5B8BD9', light: '#EFF6FF' },
+  // Sécurité - Sage (confiance, succès)
+  security: { bg: '#7CB89B', light: '#F0F9F4' },
+  // Support/Coeur - Dusty Rose (relationnel)
+  support: { bg: '#D08090', light: '#FDF2F4' },
+  // Croissance/Revenus - Sage (succès financier)
+  growth: { bg: '#7CB89B', light: '#F0F9F4' },
+  // Occupation/Building - Lavender (premium)
+  occupation: { bg: '#9B7BD9', light: '#F5F3FF' },
+  // Zéro impayé - Sage (succès)
+  success: { bg: '#7CB89B', light: '#F0F9F4' },
+};
+
+// Couleurs de fond par rôle (tons très légers)
+const ROLE_BG_COLORS = {
+  searcher: {
+    card: '#FFFBEB', // searcher-50
+    cardDark: 'rgba(255, 160, 0, 0.08)',
+    blob: '#FEF3C7', // searcher-100
+    blobDark: 'rgba(255, 160, 0, 0.15)',
+    text: '#A16300', // searcher-700 (accessible)
+    border: 'rgba(255, 160, 0, 0.15)',
   },
   resident: {
-    primary: '#e05747',
-    secondary: '#ff7c10',
-    gradient: 'linear-gradient(135deg, #e05747 0%, #ff7c10 100%)',
-    light: 'rgba(224, 87, 71, 0.1)',
-    border: 'rgba(224, 87, 71, 0.2)',
+    card: '#FEF2EE', // resident-50
+    cardDark: 'rgba(224, 87, 71, 0.08)',
+    blob: '#FDE0D6', // resident-100
+    blobDark: 'rgba(224, 87, 71, 0.15)',
+    text: '#9A362C', // resident-700 (accessible)
+    border: 'rgba(224, 87, 71, 0.15)',
   },
-  searcher: {
-    primary: '#ffa000',
-    secondary: '#e05747',
-    gradient: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
-    light: 'rgba(255, 160, 0, 0.1)',
-    border: 'rgba(255, 160, 0, 0.2)',
+  owner: {
+    card: '#F8F0F7', // owner-50
+    cardDark: 'rgba(156, 86, 152, 0.08)',
+    blob: '#F0E0EE', // owner-100
+    blobDark: 'rgba(156, 86, 152, 0.15)',
+    text: '#633668', // owner-700 (accessible)
+    border: 'rgba(156, 86, 152, 0.15)',
   },
 };
 
+interface Stat {
+  icon: React.ElementType;
+  value: string;
+  label: string;
+  iconColor: { bg: string; light: string };
+}
+
 // Contenu spécifique par rôle - aligné avec le HTML de référence
-const roleContent = {
+const roleContent: Record<Role, { title: string; subtitle: string; stats: Stat[]; trustBadge: string }> = {
   searcher: {
     title: 'Izzico en chiffres',
     subtitle: 'La confiance de milliers de chercheurs',
     stats: [
-      { icon: Home, value: '247', label: 'Co-livings disponibles' },
-      { icon: Users, value: '1,842', label: 'Membres actifs' },
-      { icon: Star, value: '98%', label: 'Satisfaction' },
+      { icon: Home, value: '247', label: 'Co-livings disponibles', iconColor: SEMANTIC_COLORS.home },
+      { icon: Users, value: '1,842', label: 'Membres actifs', iconColor: SEMANTIC_COLORS.users },
+      { icon: Star, value: '98%', label: 'Satisfaction', iconColor: SEMANTIC_COLORS.satisfaction },
     ],
     trustBadge: 'Toutes les annonces sont vérifiées par notre équipe',
   },
@@ -50,9 +82,9 @@ const roleContent = {
     title: 'Izzico en chiffres',
     subtitle: 'Simplifie ton quotidien',
     stats: [
-      { icon: Clock, value: '3 min', label: 'Pour payer ton loyer' },
-      { icon: Shield, value: '100%', label: 'Paiements sécurisés' },
-      { icon: Heart, value: '24/7', label: 'Support disponible' },
+      { icon: Clock, value: '3 min', label: 'Pour payer ton loyer', iconColor: SEMANTIC_COLORS.time },
+      { icon: Shield, value: '100%', label: 'Paiements sécurisés', iconColor: SEMANTIC_COLORS.security },
+      { icon: Heart, value: '24/7', label: 'Support disponible', iconColor: SEMANTIC_COLORS.support },
     ],
     trustBadge: 'Simplifie ton quotidien avec tes colocs',
   },
@@ -60,9 +92,9 @@ const roleContent = {
     title: 'Izzico en chiffres',
     subtitle: 'La gestion locative simplifiée',
     stats: [
-      { icon: TrendingUp, value: '+15%', label: 'Revenus locatifs' },
-      { icon: Building2, value: '98%', label: "Taux d'occupation" },
-      { icon: CheckCircle, value: '0€', label: 'Impayés' },
+      { icon: TrendingUp, value: '+15%', label: 'Revenus locatifs', iconColor: SEMANTIC_COLORS.growth },
+      { icon: Building2, value: '98%', label: "Taux d'occupation", iconColor: SEMANTIC_COLORS.occupation },
+      { icon: CheckCircle, value: '0€', label: 'Impayés', iconColor: SEMANTIC_COLORS.success },
     ],
     trustBadge: 'Rejoins les propriétaires qui nous font confiance',
   },
@@ -76,14 +108,15 @@ const contentVariants = {
 
 export default function StatsSection({ activeRole }: StatsSectionProps) {
   const { resolvedTheme } = useTheme();
-  const colors = ROLE_COLORS[activeRole];
+  const isDark = resolvedTheme === 'dark';
+  const roleColors = ROLE_BG_COLORS[activeRole];
   const content = roleContent[activeRole];
 
   return (
     <section
       className="py-20 transition-colors duration-500"
       style={{
-        background: resolvedTheme === 'dark'
+        background: isDark
           ? 'linear-gradient(to bottom, #0F0F12 0%, #141418 50%, #0F0F12 100%)'
           : 'linear-gradient(to bottom, #FFFFFF 0%, rgba(249, 250, 251, 0.3) 50%, #FFFFFF 100%)',
       }}
@@ -101,12 +134,12 @@ export default function StatsSection({ activeRole }: StatsSectionProps) {
             {/* Section Header */}
             <div className="text-center mb-16">
               <h2
-                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4"
-                style={{ backgroundImage: colors.gradient }}
+                className="text-4xl md:text-5xl font-bold mb-4"
+                style={{ color: isDark ? '#F5F5F7' : roleColors.text }}
               >
                 {content.title}
               </h2>
-              <p className={`text-xl max-w-2xl mx-auto ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
+              <p className={`text-xl max-w-2xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 {content.subtitle}
               </p>
             </div>
@@ -123,40 +156,52 @@ export default function StatsSection({ activeRole }: StatsSectionProps) {
                     transition={{ delay: index * 0.1, duration: 0.4 }}
                     className="group relative"
                   >
-                    {/* Glow effect on hover */}
+                    {/* Stat Card with V3-fun design */}
                     <div
-                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"
-                      style={{ background: colors.light }}
-                    />
-
-                    {/* Stat Card */}
-                    <div
-                      className="relative rounded-3xl p-8 text-center shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 border"
+                      className="relative overflow-hidden rounded-3xl p-8 text-center transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                       style={{
-                        background: resolvedTheme === 'dark' ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                        borderColor: resolvedTheme === 'dark' ? `${colors.primary}40` : colors.border,
-                        backdropFilter: resolvedTheme === 'dark' ? 'blur(10px)' : 'none',
+                        background: isDark ? roleColors.cardDark : roleColors.card,
+                        border: `1px solid ${isDark ? roleColors.border : 'transparent'}`,
                       }}
                     >
-                      {/* Icon */}
+                      {/* Decorative blob - top right */}
                       <div
-                        className="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
-                        style={{ background: colors.gradient }}
-                      >
-                        <Icon className="w-8 h-8 text-white" />
-                      </div>
+                        className="absolute -top-10 -right-10 w-28 h-28 rounded-full opacity-60 transition-transform duration-300 group-hover:scale-110"
+                        style={{
+                          background: isDark ? roleColors.blobDark : roleColors.blob,
+                        }}
+                      />
 
-                      {/* Value */}
+                      {/* Decorative blob - bottom left (smaller) */}
                       <div
-                        className="text-4xl md:text-5xl font-bold mb-3 bg-clip-text text-transparent"
-                        style={{ backgroundImage: colors.gradient }}
-                      >
-                        {stat.value}
-                      </div>
+                        className="absolute -bottom-6 -left-6 w-20 h-20 rounded-full opacity-40"
+                        style={{
+                          background: isDark ? roleColors.blobDark : roleColors.blob,
+                        }}
+                      />
 
-                      {/* Label */}
-                      <div className={`text-sm md:text-base font-medium leading-snug ${resolvedTheme === 'dark' ? 'text-gray-400' : 'text-gray-600'}`}>
-                        {stat.label}
+                      {/* Content */}
+                      <div className="relative z-10">
+                        {/* Icon - semantic color */}
+                        <div
+                          className="w-14 h-14 mx-auto mb-5 rounded-2xl flex items-center justify-center shadow-md transform group-hover:rotate-3 transition-transform duration-300"
+                          style={{ background: stat.iconColor.bg }}
+                        >
+                          <Icon className="w-7 h-7 text-white" />
+                        </div>
+
+                        {/* Value - role color for hierarchy */}
+                        <div
+                          className="text-4xl md:text-5xl font-bold mb-3"
+                          style={{ color: isDark ? '#F5F5F7' : roleColors.text }}
+                        >
+                          {stat.value}
+                        </div>
+
+                        {/* Label */}
+                        <div className={`text-sm md:text-base font-medium leading-snug ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                          {stat.label}
+                        </div>
                       </div>
                     </div>
                   </motion.div>
@@ -167,16 +212,19 @@ export default function StatsSection({ activeRole }: StatsSectionProps) {
             {/* Trust Badge */}
             <div className="mt-16 text-center">
               <div
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-full shadow-md border"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-full shadow-md"
                 style={{
-                  background: resolvedTheme === 'dark'
-                    ? `linear-gradient(to right, ${colors.primary}15, ${colors.secondary}15)`
-                    : `linear-gradient(to right, ${colors.light}, ${colors.light})`,
-                  borderColor: resolvedTheme === 'dark' ? `${colors.primary}40` : colors.border,
+                  background: isDark ? roleColors.cardDark : roleColors.card,
+                  border: `1px solid ${isDark ? roleColors.border : 'transparent'}`,
                 }}
               >
-                <CheckCircle style={{ color: colors.primary }} className="w-6 h-6" />
-                <span className={`font-semibold text-lg ${resolvedTheme === 'dark' ? 'text-gray-100' : 'text-gray-800'}`}>
+                <div
+                  className="w-8 h-8 rounded-lg flex items-center justify-center"
+                  style={{ background: SEMANTIC_COLORS.security.bg }}
+                >
+                  <CheckCircle className="w-5 h-5 text-white" />
+                </div>
+                <span className={`font-semibold text-lg ${isDark ? 'text-gray-100' : 'text-gray-800'}`}>
                   {content.trustBadge}
                 </span>
               </div>

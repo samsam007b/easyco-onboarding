@@ -11,28 +11,45 @@ interface FAQProps {
   activeRole: Role;
 }
 
-// Couleurs du design system v3 - couleurs primaires exactes par rôle
-const ROLE_COLORS = {
-  owner: {
-    primary: '#9c5698',
-    secondary: '#c85570',
-    gradient: 'linear-gradient(135deg, #9c5698 0%, #c85570 100%)',
-    light: 'rgba(156, 86, 152, 0.1)',
-    border: 'rgba(156, 86, 152, 0.2)',
+// Couleurs sémantiques UI
+const SEMANTIC_COLORS = {
+  // Help/Questions - Lavender (aide, premium)
+  help: { bg: '#9B7BD9', light: '#F5F3FF' },
+  // Contact/Mail - Dusty Rose (relationnel)
+  contact: { bg: '#D08090', light: '#FDF2F4' },
+};
+
+// Couleurs de fond par rôle (tons très légers)
+const ROLE_BG_COLORS = {
+  searcher: {
+    card: '#FFFBEB', // searcher-50
+    cardDark: 'rgba(255, 160, 0, 0.08)',
+    blob: '#FEF3C7', // searcher-100
+    blobDark: 'rgba(255, 160, 0, 0.15)',
+    text: '#A16300', // searcher-700 (accessible)
+    border: 'rgba(255, 160, 0, 0.15)',
+    gradient: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
+    primary: '#ffa000',
   },
   resident: {
-    primary: '#e05747',
-    secondary: '#ff7c10',
+    card: '#FEF2EE', // resident-50
+    cardDark: 'rgba(224, 87, 71, 0.08)',
+    blob: '#FDE0D6', // resident-100
+    blobDark: 'rgba(224, 87, 71, 0.15)',
+    text: '#9A362C', // resident-700 (accessible)
+    border: 'rgba(224, 87, 71, 0.15)',
     gradient: 'linear-gradient(135deg, #e05747 0%, #ff7c10 100%)',
-    light: 'rgba(224, 87, 71, 0.1)',
-    border: 'rgba(224, 87, 71, 0.2)',
+    primary: '#e05747',
   },
-  searcher: {
-    primary: '#ffa000',
-    secondary: '#e05747',
-    gradient: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
-    light: 'rgba(255, 160, 0, 0.1)',
-    border: 'rgba(255, 160, 0, 0.2)',
+  owner: {
+    card: '#F8F0F7', // owner-50
+    cardDark: 'rgba(156, 86, 152, 0.08)',
+    blob: '#F0E0EE', // owner-100
+    blobDark: 'rgba(156, 86, 152, 0.15)',
+    text: '#633668', // owner-700 (accessible)
+    border: 'rgba(156, 86, 152, 0.15)',
+    gradient: 'linear-gradient(135deg, #9c5698 0%, #c85570 100%)',
+    primary: '#9c5698',
   },
 };
 
@@ -48,7 +65,7 @@ export default function FAQ({ activeRole }: FAQProps) {
   const landing = getSection('landing');
   const faq = landing.faq;
   const isDark = resolvedTheme === 'dark';
-  const colors = ROLE_COLORS[activeRole];
+  const roleColors = ROLE_BG_COLORS[activeRole];
 
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -106,15 +123,15 @@ export default function FAQ({ activeRole }: FAQProps) {
             <div className="text-center mb-20">
               <div className="inline-flex items-center justify-center mb-6">
                 <div
-                  className="w-16 h-16 superellipse-2xl flex items-center justify-center shadow-lg"
-                  style={{ background: colors.gradient }}
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-md"
+                  style={{ background: SEMANTIC_COLORS.help.bg }}
                 >
-                  <HelpCircle className="w-8 h-8 text-white" />
+                  <HelpCircle className="w-7 h-7 text-white" />
                 </div>
               </div>
               <h2
-                className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent mb-4"
-                style={{ backgroundImage: colors.gradient }}
+                className="text-4xl md:text-5xl font-bold mb-4"
+                style={{ color: isDark ? '#F5F5F7' : roleColors.text }}
               >
                 {faq.title}
               </h2>
@@ -136,58 +153,65 @@ export default function FAQ({ activeRole }: FAQProps) {
                     transition={{ delay: index * 0.08, duration: 0.4 }}
                     className="group relative"
                   >
-                    {/* Background glow on hover */}
+                    {/* FAQ Item Card with V3-fun design */}
                     <div
-                      className="absolute inset-0 superellipse-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm -z-10"
-                      style={{ background: colors.light }}
-                    />
-
-                    <div
-                      className="relative superellipse-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border"
+                      className="relative overflow-hidden rounded-2xl transition-all duration-300 hover:shadow-lg"
                       style={{
-                        background: isDark ? 'rgba(26, 26, 31, 0.8)' : '#FFFFFF',
-                        borderColor: isDark ? `${colors.primary}40` : colors.border,
-                        backdropFilter: isDark ? 'blur(10px)' : 'none',
+                        background: isDark ? roleColors.cardDark : roleColors.card,
+                        border: `1px solid ${isDark ? roleColors.border : 'transparent'}`,
                       }}
                     >
+                      {/* Decorative blob - top right (only when open) */}
+                      {isOpen && (
+                        <div
+                          className="absolute -top-8 -right-8 w-24 h-24 rounded-full opacity-50"
+                          style={{
+                            background: isDark ? roleColors.blobDark : roleColors.blob,
+                          }}
+                        />
+                      )}
+
                       {/* Question */}
                       <button
                         onClick={() => toggleQuestion(index)}
-                        className="w-full flex items-center justify-between p-6 sm:p-8 text-left transition-all duration-200"
+                        className="relative z-10 w-full flex items-center justify-between p-6 text-left transition-all duration-200"
                       >
-                        <span className={`font-bold pr-8 text-lg ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+                        <span
+                          className="font-bold pr-6 text-lg"
+                          style={{ color: isDark ? '#F5F5F7' : roleColors.text }}
+                        >
                           {item.question}
                         </span>
                         <div
-                          className="w-10 h-10 superellipse-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
+                          className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 transition-all duration-300"
                           style={{
                             background: isOpen
-                              ? colors.gradient
-                              : `${colors.primary}15`,
-                            boxShadow: isOpen ? '0 10px 15px -3px rgba(0, 0, 0, 0.1)' : 'none',
+                              ? roleColors.gradient
+                              : isDark ? roleColors.blobDark : roleColors.blob,
+                            boxShadow: isOpen ? '0 4px 12px rgba(0, 0, 0, 0.15)' : 'none',
                           }}
                         >
                           <ChevronDown
                             className={`w-5 h-5 transition-all duration-300 ${
-                              isOpen ? 'transform rotate-180 text-white' : ''
+                              isOpen ? 'transform rotate-180' : ''
                             }`}
-                            style={{ color: isOpen ? 'white' : colors.primary }}
+                            style={{ color: isOpen ? 'white' : roleColors.text }}
                           />
                         </div>
                       </button>
 
                       {/* Answer */}
                       <div
-                        className={`overflow-hidden transition-all duration-300 ${
+                        className={`relative z-10 overflow-hidden transition-all duration-300 ${
                           isOpen ? 'max-h-96' : 'max-h-0'
                         }`}
                       >
-                        <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                        <div className="px-6 pb-6">
                           <div
                             className="pt-4"
-                            style={{ borderTop: `1px solid ${isDark ? '#2A2A30' : '#F3F4F6'}` }}
+                            style={{ borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}` }}
                           />
-                          <p className={`leading-relaxed text-lg mt-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                          <p className={`leading-relaxed text-base mt-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                             {item.answer}
                           </p>
                         </div>
@@ -198,46 +222,57 @@ export default function FAQ({ activeRole }: FAQProps) {
               })}
             </div>
 
-            {/* Contact CTA */}
+            {/* Contact CTA with V3-fun design */}
             <div className="relative group">
-              {/* Background glow */}
               <div
-                className="absolute inset-0 superellipse-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"
-                style={{ background: colors.light }}
-              />
-
-              <div
-                className="relative text-center p-10 sm:p-12 superellipse-3xl shadow-lg hover:shadow-2xl transition-all duration-300 border"
+                className="relative overflow-hidden text-center p-10 sm:p-12 rounded-3xl transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
                 style={{
-                  background: isDark
-                    ? `linear-gradient(to bottom right, ${colors.primary}15, rgba(26, 26, 31, 0.8), ${colors.secondary}10)`
-                    : `linear-gradient(to bottom right, ${colors.light}, white, ${colors.light})`,
-                  borderColor: isDark ? `${colors.primary}40` : colors.border,
-                  backdropFilter: isDark ? 'blur(10px)' : 'none',
+                  background: isDark ? roleColors.cardDark : roleColors.card,
+                  border: `1px solid ${isDark ? roleColors.border : 'transparent'}`,
                 }}
               >
+                {/* Decorative blob - top right */}
                 <div
-                  className="w-16 h-16 mx-auto mb-6 superellipse-2xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-300"
-                  style={{ background: colors.gradient }}
-                >
-                  <Mail className="w-8 h-8 text-white" />
+                  className="absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-60 transition-transform duration-300 group-hover:scale-110"
+                  style={{
+                    background: isDark ? roleColors.blobDark : roleColors.blob,
+                  }}
+                />
+
+                {/* Decorative blob - bottom left */}
+                <div
+                  className="absolute -bottom-8 -left-8 w-24 h-24 rounded-full opacity-40"
+                  style={{
+                    background: isDark ? roleColors.blobDark : roleColors.blob,
+                  }}
+                />
+
+                {/* Content */}
+                <div className="relative z-10">
+                  <div
+                    className="w-14 h-14 mx-auto mb-6 rounded-2xl flex items-center justify-center shadow-md transform group-hover:rotate-3 transition-transform duration-300"
+                    style={{ background: SEMANTIC_COLORS.contact.bg }}
+                  >
+                    <Mail className="w-7 h-7 text-white" />
+                  </div>
+                  <h3
+                    className="text-2xl sm:text-3xl font-bold mb-4"
+                    style={{ color: isDark ? '#F5F5F7' : roleColors.text }}
+                  >
+                    {faq.contactTitle}
+                  </h3>
+                  <p className={`mb-8 text-lg max-w-md mx-auto leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                    {faq.contactSubtitle}
+                  </p>
+                  {/* CTA - gradient réservé au CTA principal */}
+                  <a
+                    href="mailto:hello@izzico.be"
+                    className="inline-block px-10 py-5 text-white font-bold rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-lg hover:brightness-110"
+                    style={{ background: roleColors.gradient }}
+                  >
+                    {faq.contactButton}
+                  </a>
                 </div>
-                <h3
-                  className="text-2xl sm:text-3xl font-bold bg-clip-text text-transparent mb-4"
-                  style={{ backgroundImage: colors.gradient }}
-                >
-                  {faq.contactTitle}
-                </h3>
-                <p className={`mb-8 text-lg max-w-md mx-auto leading-relaxed ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-                  {faq.contactSubtitle}
-                </p>
-                <a
-                  href="mailto:hello@izzico.be"
-                  className="inline-block px-10 py-5 text-white font-bold rounded-full transition-all shadow-xl hover:shadow-2xl hover:scale-105 text-lg hover:brightness-110"
-                  style={{ background: colors.gradient }}
-                >
-                  {faq.contactButton}
-                </a>
               </div>
             </div>
           </motion.div>
