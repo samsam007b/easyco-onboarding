@@ -22,6 +22,34 @@ import { VirtualTourInfo } from '@/types/virtual-tours.types';
 import PropertyCTASidebar from '@/components/PropertyCTASidebar';
 import LoadingHouse from '@/components/ui/LoadingHouse';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { useTheme } from '@/contexts/ThemeContext';
+
+// ============================================
+// V3-fun Searcher Color System
+// ============================================
+const SEARCHER_COLORS = {
+  primary: '#ffa000',
+  hover: '#D98400',
+  accent: '#FBBF24',
+  subtle: '#FCD34D',
+  light: '#FDE68A',
+  dark: '#A16300',
+  card: '#FFFBEB',
+  cardDark: 'rgba(255, 160, 0, 0.08)',
+  blob: '#FEF3C7',
+  blobDark: 'rgba(255, 160, 0, 0.15)',
+  text: '#A16300',
+  textDark: '#F5F5F7',
+  border: 'rgba(255, 160, 0, 0.15)',
+  gradient: 'linear-gradient(135deg, #ffa000 0%, #D98400 100%)',
+  badgeBg: 'rgba(255, 160, 0, 0.12)',
+  badgeBgDark: 'rgba(255, 160, 0, 0.2)',
+  iconBg: 'rgba(255, 160, 0, 0.15)',
+  iconBgDark: 'rgba(255, 160, 0, 0.25)',
+};
+
+// Signature Gradient Izzico (Brand Identity)
+const SIGNATURE_GRADIENT = 'linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)';
 
 // Lazy load heavy components
 const SafeSinglePropertyMap = dynamic(() => import('@/components/SafeSinglePropertyMap'), {
@@ -57,6 +85,8 @@ export default function PropertyDetailsPage() {
   const params = useParams();
   const propertyId = params.id as string;
   const { t } = useLanguage();
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
 
   const [property, setProperty] = useState<Property | null>(null);
   const [rooms, setRooms] = useState<RoomWithTotal[]>([]);
@@ -285,8 +315,15 @@ export default function PropertyDetailsPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
             </>
           ) : (
-            <div className="bg-gradient-to-br from-orange-100 to-orange-200 h-full flex items-center justify-center">
-              <Home className="w-32 h-32 text-orange-300" />
+            <div
+              className="h-full flex items-center justify-center"
+              style={{
+                background: isDark
+                  ? `linear-gradient(135deg, ${SEARCHER_COLORS.cardDark} 0%, rgba(255, 160, 0, 0.02) 100%)`
+                  : `linear-gradient(135deg, ${SEARCHER_COLORS.card} 0%, ${SEARCHER_COLORS.light} 100%)`
+              }}
+            >
+              <Home className="w-32 h-32" style={{ color: SEARCHER_COLORS.subtle }} />
             </div>
           )}
 
@@ -318,7 +355,10 @@ export default function PropertyDetailsPage() {
                 <Button
                   onClick={handlePublish}
                   disabled={actionLoading}
-                  className="bg-orange-600 hover:bg-orange-700"
+                  style={{
+                    background: SEARCHER_COLORS.gradient,
+                  }}
+                  className="text-white hover:opacity-90 transition-opacity"
                 >
                   {t('properties.details.publish')}
                 </Button>
@@ -368,7 +408,8 @@ export default function PropertyDetailsPage() {
                         {residents.slice(0, 5).map((resident, idx) => (
                           <div
                             key={idx}
-                            className="w-14 h-14 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 border-3 border-white shadow-lg flex items-center justify-center"
+                            className="w-14 h-14 rounded-full border-3 border-white shadow-lg flex items-center justify-center"
+                            style={{ background: SEARCHER_COLORS.gradient }}
                           >
                             {resident.profile_photo_url ? (
                               <img
@@ -401,7 +442,10 @@ export default function PropertyDetailsPage() {
                     <p className="text-5xl font-bold text-white">€{cheapestRoom.price}</p>
                     <p className="text-sm text-white/70 mt-1">{t('properties.details.perMonth')}</p>
                     {rooms.length > 1 && (
-                      <Badge className="mt-3 bg-orange-500 text-white border-0">
+                      <Badge
+                        className="mt-3 text-white border-0"
+                        style={{ background: SEARCHER_COLORS.primary }}
+                      >
                         {rooms.filter(r => r.is_available).length} {rooms.filter(r => r.is_available).length > 1 ? t('properties.details.roomsAvailable') : t('properties.details.roomAvailable')}
                       </Badge>
                     )}
@@ -425,11 +469,11 @@ export default function PropertyDetailsPage() {
                       src={getImageUrl(image)}
                       alt={`${property.title} - ${index + 1}`}
                       onClick={() => setSelectedImageIndex(index)}
-                      className={`h-20 w-32 object-cover rounded-lg border-2 transition-all cursor-pointer flex-shrink-0 hover:border-orange-500 hover:scale-105 ${
-                        selectedImageIndex === index
-                          ? 'border-orange-500 ring-2 ring-orange-300'
-                          : 'border-gray-200'
-                      }`}
+                      className="h-20 w-32 object-cover superellipse-lg border-2 transition-all cursor-pointer flex-shrink-0 hover:scale-105"
+                      style={{
+                        borderColor: selectedImageIndex === index ? SEARCHER_COLORS.primary : isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb',
+                        boxShadow: selectedImageIndex === index ? `0 0 0 2px ${SEARCHER_COLORS.subtle}` : 'none',
+                      }}
                     />
                   ))}
                   {property.images.length > 8 && (
@@ -460,59 +504,88 @@ export default function PropertyDetailsPage() {
       </div>
 
       {/* Main Content */}
-      <div className="bg-gray-50 min-h-screen">
+      <div
+        className="min-h-screen"
+        style={{
+          background: isDark
+            ? 'linear-gradient(180deg, rgba(26,26,46,1) 0%, rgba(20,20,35,1) 100%)'
+            : 'linear-gradient(180deg, #FAFAFA 0%, #F5F5F5 100%)'
+        }}
+      >
         <div className="max-w-7xl mx-auto px-8 py-8">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2 space-y-6">
               {/* Overview */}
-              <Card>
+              <Card
+                className="superellipse-2xl border-0"
+                style={{
+                  background: isDark
+                    ? 'rgba(255,255,255,0.03)'
+                    : '#FFFFFF',
+                  boxShadow: isDark
+                    ? '0 4px 24px rgba(0,0,0,0.3)'
+                    : '0 4px 24px rgba(0,0,0,0.06)',
+                }}
+              >
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
-                    <Home className="w-5 h-5 text-orange-600" />
+                    <Home className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
                     {t('properties.overview.title')}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div className="flex items-center gap-3">
-                      <div className="p-3 bg-orange-100 rounded-full">
-                        <Bed className="w-5 h-5 text-orange-600" />
+                      <div
+                        className="p-3 superellipse-xl"
+                        style={{ background: isDark ? SEARCHER_COLORS.iconBgDark : SEARCHER_COLORS.iconBg }}
+                      >
+                        <Bed className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">{t('properties.overview.bedrooms')}</p>
+                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('properties.overview.bedrooms')}</p>
                         <p className="font-semibold">{property.bedrooms}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3">
-                      <div className="p-3 bg-orange-100 rounded-full">
-                        <Bath className="w-5 h-5 text-orange-600" />
+                      <div
+                        className="p-3 superellipse-xl"
+                        style={{ background: isDark ? SEARCHER_COLORS.iconBgDark : SEARCHER_COLORS.iconBg }}
+                      >
+                        <Bath className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">{t('properties.overview.bathrooms')}</p>
+                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('properties.overview.bathrooms')}</p>
                         <p className="font-semibold">{property.bathrooms}</p>
                       </div>
                     </div>
 
                     {property.surface_area && (
                       <div className="flex items-center gap-3">
-                        <div className="p-3 bg-orange-100 rounded-full">
-                          <Maximize className="w-5 h-5 text-orange-600" />
+                        <div
+                          className="p-3 superellipse-xl"
+                          style={{ background: isDark ? SEARCHER_COLORS.iconBgDark : SEARCHER_COLORS.iconBg }}
+                        >
+                          <Maximize className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
                         </div>
                         <div>
-                          <p className="text-sm text-gray-600">{t('properties.overview.surface')}</p>
+                          <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('properties.overview.surface')}</p>
                           <p className="font-semibold">{property.surface_area} m²</p>
                         </div>
                       </div>
                     )}
 
                     <div className="flex items-center gap-3">
-                      <div className="p-3 bg-orange-100 rounded-full">
-                        <Calendar className="w-5 h-5 text-orange-600" />
+                      <div
+                        className="p-3 superellipse-xl"
+                        style={{ background: isDark ? SEARCHER_COLORS.iconBgDark : SEARCHER_COLORS.iconBg }}
+                      >
+                        <Calendar className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
                       </div>
                       <div>
-                        <p className="text-sm text-gray-600">{t('properties.overview.furnished')}</p>
+                        <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{t('properties.overview.furnished')}</p>
                         <p className="font-semibold">{property.furnished ? t('properties.overview.yes') : t('properties.overview.no')}</p>
                       </div>
                     </div>
@@ -534,13 +607,23 @@ export default function PropertyDetailsPage() {
 
               {/* Residents Section */}
               {residents.length > 0 && (
-                <Card>
+                <Card
+                  className="superellipse-2xl border-0"
+                  style={{
+                    background: isDark
+                      ? 'rgba(255,255,255,0.03)'
+                      : '#FFFFFF',
+                    boxShadow: isDark
+                      ? '0 4px 24px rgba(0,0,0,0.3)'
+                      : '0 4px 24px rgba(0,0,0,0.06)',
+                  }}
+                >
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <Users className="w-5 h-5 text-orange-600" />
+                      <Users className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
                       {t('properties.residents.title')} ({residents.length})
                     </CardTitle>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className={`text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                       {t('properties.residents.subtitle')}
                     </p>
                   </CardHeader>
@@ -560,15 +643,32 @@ export default function PropertyDetailsPage() {
 
               {/* Amenities */}
               {property.amenities && property.amenities.length > 0 && (
-                <Card>
+                <Card
+                  className="superellipse-2xl border-0"
+                  style={{
+                    background: isDark
+                      ? 'rgba(255,255,255,0.03)'
+                      : '#FFFFFF',
+                    boxShadow: isDark
+                      ? '0 4px 24px rgba(0,0,0,0.3)'
+                      : '0 4px 24px rgba(0,0,0,0.06)',
+                  }}
+                >
                   <CardHeader>
                     <CardTitle>{t('properties.amenities.title')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                       {property.amenities.map((amenity) => (
-                        <div key={amenity} className="flex items-center gap-2 p-2 bg-orange-50 rounded-lg border border-orange-100">
-                          {getAmenityIcon(amenity)}
+                        <div
+                          key={amenity}
+                          className="flex items-center gap-2 p-3 superellipse-xl transition-all hover:scale-[1.02]"
+                          style={{
+                            background: isDark ? SEARCHER_COLORS.cardDark : SEARCHER_COLORS.card,
+                            border: `1px solid ${isDark ? 'rgba(255,160,0,0.2)' : 'rgba(255,160,0,0.15)'}`,
+                          }}
+                        >
+                          <CheckCircle className="w-4 h-4" style={{ color: '#22c55e' }} />
                           <span className="capitalize text-sm">{amenity.replace('_', ' ')}</span>
                         </div>
                       ))}
@@ -588,10 +688,20 @@ export default function PropertyDetailsPage() {
 
               {/* Location Map */}
               {property.latitude && property.longitude && (
-                <Card>
+                <Card
+                  className="superellipse-2xl border-0 overflow-hidden"
+                  style={{
+                    background: isDark
+                      ? 'rgba(255,255,255,0.03)'
+                      : '#FFFFFF',
+                    boxShadow: isDark
+                      ? '0 4px 24px rgba(0,0,0,0.3)'
+                      : '0 4px 24px rgba(0,0,0,0.06)',
+                  }}
+                >
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <MapPin className="w-5 h-5 text-orange-600" />
+                      <MapPin className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
                       {t('properties.location.title')}
                     </CardTitle>
                   </CardHeader>
@@ -600,7 +710,7 @@ export default function PropertyDetailsPage() {
                       latitude={property.latitude}
                       longitude={property.longitude}
                       title={property.title}
-                      address={`${property.address}, {property.city} ${property.postal_code}`}
+                      address={`${property.address}, ${property.city} ${property.postal_code}`}
                       className="w-full h-[400px] superellipse-2xl overflow-hidden"
                     />
                   </CardContent>
@@ -702,11 +812,11 @@ export default function PropertyDetailsPage() {
                       e.stopPropagation();
                       setLightboxIndex(index);
                     }}
-                    className={`h-16 w-24 object-cover rounded-lg cursor-pointer transition-all flex-shrink-0 ${
-                      lightboxIndex === index
-                        ? 'ring-2 ring-orange-500 opacity-100'
-                        : 'opacity-50 hover:opacity-80'
-                    }`}
+                    className="h-16 w-24 object-cover superellipse-lg cursor-pointer transition-all flex-shrink-0"
+                    style={{
+                      opacity: lightboxIndex === index ? 1 : 0.5,
+                      boxShadow: lightboxIndex === index ? `0 0 0 2px ${SEARCHER_COLORS.primary}` : 'none',
+                    }}
                   />
                 ))}
               </div>

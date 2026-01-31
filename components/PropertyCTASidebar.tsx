@@ -11,6 +11,24 @@ import CostBreakdownCard from '@/components/CostBreakdownCard';
 import ScheduleTourModal from '@/components/ScheduleTourModal';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/lib/i18n/use-language';
+import { useTheme } from '@/contexts/ThemeContext';
+
+// ============================================
+// V3-fun Searcher Color System
+// ============================================
+const SEARCHER_COLORS = {
+  primary: '#ffa000',
+  hover: '#D98400',
+  accent: '#FBBF24',
+  subtle: '#FCD34D',
+  light: '#FDE68A',
+  dark: '#A16300',
+  card: '#FFFBEB',
+  cardDark: 'rgba(255, 160, 0, 0.08)',
+  border: 'rgba(255, 160, 0, 0.15)',
+  borderDark: 'rgba(255, 160, 0, 0.25)',
+  gradient: 'linear-gradient(135deg, #ffa000 0%, #D98400 100%)',
+};
 
 interface PropertyOwner {
   id: string;
@@ -46,6 +64,8 @@ export default function PropertyCTASidebar({
   const { language, getSection } = useLanguage();
   const property = getSection('property');
   const common = getSection('common');
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
 
   // Locale map for date formatting
   const localeMap: Record<string, string> = {
@@ -98,44 +118,57 @@ export default function PropertyCTASidebar({
     <div className={cn("space-y-4", className)}>
       {/* Property Owner Card */}
       {owner && (
-        <Card className="border-orange-200">
+        <Card
+          className="superellipse-2xl border-0"
+          style={{
+            background: isDark ? 'rgba(255,255,255,0.03)' : '#FFFFFF',
+            boxShadow: isDark ? '0 4px 24px rgba(0,0,0,0.3)' : '0 4px 24px rgba(0,0,0,0.06)',
+            border: `1px solid ${isDark ? SEARCHER_COLORS.borderDark : SEARCHER_COLORS.border}`,
+          }}
+        >
           <CardHeader className="pb-4">
             <CardTitle className="text-base flex items-center gap-2">
-              <User className="w-5 h-5 text-gray-600" />
+              <User className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
               {property?.sidebar?.ownerContact || 'Votre contact propriétaire'}
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="flex items-start gap-3">
-              <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 border border-gray-200">
+              <div
+                className="w-14 h-14 superellipse-xl flex items-center justify-center flex-shrink-0"
+                style={{
+                  background: isDark ? 'rgba(255,255,255,0.05)' : '#f3f4f6',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb'}`,
+                }}
+              >
                 {owner.profile_photo_url ? (
                   <img
                     src={owner.profile_photo_url}
                     alt={`${owner.first_name} ${owner.last_name}`}
-                    className="w-full h-full rounded-full object-cover"
+                    className="w-full h-full superellipse-xl object-cover"
                   />
                 ) : (
-                  <User className="w-7 h-7 text-gray-500" />
+                  <User className="w-7 h-7" style={{ color: isDark ? '#9ca3af' : '#6b7280' }} />
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-gray-900 text-base">
+                <p className={`font-semibold text-base ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                   {owner.first_name} {owner.last_name}
                 </p>
                 {owner.company_name && (
-                  <div className="flex items-center gap-1 text-sm text-gray-600 mt-1">
+                  <div className={`flex items-center gap-1 text-sm mt-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                     <Building2 className="w-3.5 h-3.5" />
                     <span className="truncate">{owner.company_name}</span>
                   </div>
                 )}
                 {owner.email && (
-                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-1.5">
+                  <div className={`flex items-center gap-1 text-xs mt-1.5 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
                     <Mail className="w-3.5 h-3.5" />
                     <span className="truncate">{owner.email}</span>
                   </div>
                 )}
                 {owner.phone && (
-                  <div className="flex items-center gap-1 text-xs text-gray-500 mt-1">
+                  <div className={`flex items-center gap-1 text-xs mt-1 ${isDark ? 'text-gray-500' : 'text-gray-500'}`}>
                     <Phone className="w-3.5 h-3.5" />
                     <span>{owner.phone}</span>
                   </div>
@@ -143,15 +176,27 @@ export default function PropertyCTASidebar({
               </div>
             </div>
 
-            {/* Trust badges - V1 Discret */}
-            <div className="flex items-center gap-2 mt-4 pt-4 border-t border-gray-100">
-              <div className="flex items-center gap-1 text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+            {/* Trust badges - V3-fun style */}
+            <div className={`flex items-center gap-2 mt-4 pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-100'}`}>
+              <div
+                className="flex items-center gap-1 text-xs px-2 py-1 superellipse-full"
+                style={{
+                  background: isDark ? SEARCHER_COLORS.cardDark : SEARCHER_COLORS.card,
+                  color: isDark ? SEARCHER_COLORS.subtle : SEARCHER_COLORS.dark,
+                }}
+              >
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
                 <span className="font-medium">{property?.sidebar?.verified || 'Vérifié'}</span>
               </div>
-              <div className="flex items-center gap-1 text-xs text-gray-600 bg-gray-100 px-2 py-1 rounded-full">
+              <div
+                className="flex items-center gap-1 text-xs px-2 py-1 superellipse-full"
+                style={{
+                  background: isDark ? SEARCHER_COLORS.cardDark : SEARCHER_COLORS.card,
+                  color: isDark ? SEARCHER_COLORS.subtle : SEARCHER_COLORS.dark,
+                }}
+              >
                 <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
@@ -163,7 +208,13 @@ export default function PropertyCTASidebar({
       )}
 
       {/* Room Selection */}
-      <Card className="sticky top-24">
+      <Card
+        className="sticky top-24 superellipse-2xl border-0"
+        style={{
+          background: isDark ? 'rgba(255,255,255,0.03)' : '#FFFFFF',
+          boxShadow: isDark ? '0 4px 24px rgba(0,0,0,0.3)' : '0 4px 24px rgba(0,0,0,0.06)',
+        }}
+      >
         <CardHeader>
           <CardTitle className="text-lg">{property?.sidebar?.selectRoom || 'Sélectionnez votre chambre'}</CardTitle>
         </CardHeader>
@@ -185,10 +236,13 @@ export default function PropertyCTASidebar({
           )}
 
           {/* Primary CTAs */}
-          <div className="space-y-3 pt-4 border-t">
+          <div className={`space-y-3 pt-4 border-t ${isDark ? 'border-gray-700' : 'border-gray-200'}`}>
             <Button
               onClick={handleApply}
-              className="w-full bg-searcher-500 hover:bg-searcher-600 text-white font-semibold py-6"
+              className="w-full text-white font-semibold py-6 superellipse-xl transition-all hover:scale-[1.02] hover:shadow-lg"
+              style={{
+                background: SEARCHER_COLORS.gradient,
+              }}
               disabled={!selectedRoom?.is_available}
             >
               <Send className="w-5 h-5 mr-2" />
@@ -199,7 +253,12 @@ export default function PropertyCTASidebar({
               <Button
                 onClick={handleScheduleTour}
                 variant="outline"
-                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="superellipse-xl transition-all hover:scale-[1.02]"
+                style={{
+                  borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb',
+                  color: isDark ? '#d1d5db' : '#374151',
+                  background: isDark ? 'rgba(255,255,255,0.03)' : 'transparent',
+                }}
               >
                 <Calendar className="w-4 h-4 mr-2" />
                 {property?.sidebar?.visit || 'Visite'}
@@ -207,7 +266,12 @@ export default function PropertyCTASidebar({
               <Button
                 onClick={handleVirtualTour}
                 variant="outline"
-                className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                className="superellipse-xl transition-all hover:scale-[1.02]"
+                style={{
+                  borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb',
+                  color: isDark ? '#d1d5db' : '#374151',
+                  background: isDark ? 'rgba(255,255,255,0.03)' : 'transparent',
+                }}
               >
                 <Video className="w-4 h-4 mr-2" />
                 {property?.sidebar?.virtual || 'Virtuelle'}
@@ -217,7 +281,12 @@ export default function PropertyCTASidebar({
             <Button
               onClick={handleContact}
               variant="outline"
-              className="w-full border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="w-full superellipse-xl transition-all hover:scale-[1.02]"
+              style={{
+                borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb',
+                color: isDark ? '#d1d5db' : '#374151',
+                background: isDark ? 'rgba(255,255,255,0.03)' : 'transparent',
+              }}
             >
               <Phone className="w-4 h-4 mr-2" />
               {property?.sidebar?.contactOwner || 'Contacter le propriétaire'}
@@ -227,15 +296,21 @@ export default function PropertyCTASidebar({
       </Card>
 
       {/* Property Info Summary */}
-      <Card>
+      <Card
+        className="superellipse-2xl border-0"
+        style={{
+          background: isDark ? 'rgba(255,255,255,0.03)' : '#FFFFFF',
+          boxShadow: isDark ? '0 4px 24px rgba(0,0,0,0.3)' : '0 4px 24px rgba(0,0,0,0.06)',
+        }}
+      >
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex items-start gap-2">
-              <MapPin className="w-4 h-4 text-gray-500 mt-1 flex-shrink-0" />
-              <p className="text-sm text-gray-700">{propertyAddress}</p>
+              <MapPin className="w-4 h-4 mt-1 flex-shrink-0" style={{ color: SEARCHER_COLORS.primary }} />
+              <p className={`text-sm ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{propertyAddress}</p>
             </div>
-            <div className="flex items-center gap-2 text-sm text-gray-600">
-              <Calendar className="w-4 h-4 text-gray-500" />
+            <div className={`flex items-center gap-2 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              <Calendar className="w-4 h-4" style={{ color: SEARCHER_COLORS.primary }} />
               <span>
                 {selectedRoom?.is_available
                   ? selectedRoom.available_from
@@ -251,17 +326,29 @@ export default function PropertyCTASidebar({
 
       {/* Mini Calendar for Availability */}
       {selectedRoom?.available_from && (
-        <Card>
+        <Card
+          className="superellipse-2xl border-0"
+          style={{
+            background: isDark ? 'rgba(255,255,255,0.03)' : '#FFFFFF',
+            boxShadow: isDark ? '0 4px 24px rgba(0,0,0,0.3)' : '0 4px 24px rgba(0,0,0,0.06)',
+          }}
+        >
           <CardHeader>
             <CardTitle className="text-base flex items-center gap-2">
-              <Calendar className="w-5 h-5 text-gray-600" />
+              <Calendar className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
               {property?.sidebar?.availability || 'Disponibilité'}
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 text-center">
-              <p className="text-sm text-gray-600 mb-1">{property?.sidebar?.availableStarting || 'Disponible à partir du'}</p>
-              <p className="text-2xl font-bold text-gray-900">
+            <div
+              className="superellipse-xl p-4 text-center"
+              style={{
+                background: isDark ? SEARCHER_COLORS.cardDark : SEARCHER_COLORS.card,
+                border: `1px solid ${isDark ? SEARCHER_COLORS.borderDark : SEARCHER_COLORS.border}`,
+              }}
+            >
+              <p className={`text-sm mb-1 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>{property?.sidebar?.availableStarting || 'Disponible à partir du'}</p>
+              <p className={`text-2xl font-bold ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
                 {new Date(selectedRoom.available_from).toLocaleDateString(localeMap[language] || 'en-US', {
                   day: 'numeric',
                   month: 'long',
@@ -273,27 +360,52 @@ export default function PropertyCTASidebar({
         </Card>
       )}
 
-      {/* Trust Badges - V1 Discret */}
-      <Card className="bg-gray-50 border-gray-200">
+      {/* Trust Badges - V3-fun */}
+      <Card
+        className="superellipse-2xl border-0"
+        style={{
+          background: isDark ? 'rgba(255,255,255,0.02)' : SEARCHER_COLORS.card,
+          boxShadow: isDark ? '0 4px 24px rgba(0,0,0,0.2)' : '0 4px 24px rgba(0,0,0,0.04)',
+          border: `1px solid ${isDark ? SEARCHER_COLORS.borderDark : SEARCHER_COLORS.border}`,
+        }}
+      >
         <CardContent className="pt-6">
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
-                <span className="text-lg">✓</span>
+              <div
+                className="w-8 h-8 superellipse-full flex items-center justify-center"
+                style={{
+                  background: isDark ? 'rgba(255,255,255,0.05)' : '#FFFFFF',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb'}`,
+                }}
+              >
+                <span style={{ color: '#22c55e' }}>✓</span>
               </div>
-              <p className="text-sm font-medium text-gray-900">{property?.sidebar?.propertyVerified || 'Propriété vérifiée'}</p>
+              <p className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>{property?.sidebar?.propertyVerified || 'Propriété vérifiée'}</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
-                <span className="text-lg">✓</span>
+              <div
+                className="w-8 h-8 superellipse-full flex items-center justify-center"
+                style={{
+                  background: isDark ? 'rgba(255,255,255,0.05)' : '#FFFFFF',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb'}`,
+                }}
+              >
+                <span style={{ color: '#22c55e' }}>✓</span>
               </div>
-              <p className="text-sm font-medium text-gray-900">{property?.sidebar?.securePayment || 'Paiement sécurisé'}</p>
+              <p className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>{property?.sidebar?.securePayment || 'Paiement sécurisé'}</p>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center border border-gray-200">
-                <span className="text-lg">✓</span>
+              <div
+                className="w-8 h-8 superellipse-full flex items-center justify-center"
+                style={{
+                  background: isDark ? 'rgba(255,255,255,0.05)' : '#FFFFFF',
+                  border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb'}`,
+                }}
+              >
+                <span style={{ color: '#22c55e' }}>✓</span>
               </div>
-              <p className="text-sm font-medium text-gray-900">{property?.sidebar?.standardLease || 'Contrat de bail standard'}</p>
+              <p className={`text-sm font-medium ${isDark ? 'text-gray-200' : 'text-gray-900'}`}>{property?.sidebar?.standardLease || 'Contrat de bail standard'}</p>
             </div>
           </div>
         </CardContent>
@@ -310,25 +422,43 @@ export default function PropertyCTASidebar({
         />
       )}
 
-      {/* Virtual Tour Modal - Simple for now */}
+      {/* Virtual Tour Modal - V3-fun style */}
       {showVirtualTour && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <Card className="max-w-4xl w-full">
+        <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center p-4">
+          <Card
+            className="max-w-4xl w-full superellipse-2xl border-0"
+            style={{
+              background: isDark ? 'rgba(30,30,40,0.98)' : '#FFFFFF',
+              boxShadow: '0 24px 48px rgba(0,0,0,0.3)',
+            }}
+          >
             <CardHeader>
               <div className="flex items-center justify-between">
-                <CardTitle>{property?.sidebar?.virtualTour || 'Visite virtuelle'}</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Video className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
+                  {property?.sidebar?.virtualTour || 'Visite virtuelle'}
+                </CardTitle>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowVirtualTour(false)}
+                  className="superellipse-lg"
+                  style={{
+                    borderColor: isDark ? 'rgba(255,255,255,0.1)' : '#e5e7eb',
+                  }}
                 >
                   {common?.close || 'Fermer'}
                 </Button>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                <p className="text-gray-500">{property?.sidebar?.virtualTourComingSoon || 'Visite virtuelle à venir'}</p>
+              <div
+                className="aspect-video superellipse-xl flex items-center justify-center"
+                style={{
+                  background: isDark ? 'rgba(255,255,255,0.03)' : '#f9fafb',
+                }}
+              >
+                <p className={isDark ? 'text-gray-400' : 'text-gray-500'}>{property?.sidebar?.virtualTourComingSoon || 'Visite virtuelle à venir'}</p>
               </div>
             </CardContent>
           </Card>
