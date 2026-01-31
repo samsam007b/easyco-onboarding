@@ -157,21 +157,21 @@ function HeroSearcher() {
 
   return (
     <div className="flex flex-col items-center text-center">
-      {/* Glassmorphism Container - Enhanced for better text readability */}
+      {/* Glassmorphism Container - Colorful gradient with blur */}
       <div
         className="relative w-full max-w-4xl mx-auto rounded-[40px] p-8 md:p-12"
         style={{
           background: resolvedTheme === 'dark'
-            ? 'linear-gradient(135deg, rgba(15, 15, 18, 0.85) 0%, rgba(20, 20, 24, 0.85) 100%)'
-            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 251, 235, 0.9) 100%)',
-          backdropFilter: 'blur(40px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+            ? 'linear-gradient(135deg, rgba(255, 160, 0, 0.18) 0%, rgba(224, 87, 71, 0.15) 50%, rgba(156, 86, 152, 0.18) 100%)'
+            : 'linear-gradient(135deg, rgba(255, 160, 0, 0.28) 0%, rgba(224, 87, 71, 0.24) 50%, rgba(156, 86, 152, 0.28) 100%)',
+          backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
+          WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
           boxShadow: resolvedTheme === 'dark'
-            ? 'inset 0 0 60px rgba(255, 160, 0, 0.08), 0 25px 80px -20px rgba(0, 0, 0, 0.6)'
-            : 'inset 0 0 60px rgba(255, 160, 0, 0.15), 0 25px 80px -20px rgba(255, 160, 0, 0.2)',
+            ? 'inset 0 0 80px rgba(255, 255, 255, 0.12), inset 0 -2px 40px rgba(255, 160, 0, 0.25), 0 25px 80px -20px rgba(0, 0, 0, 0.5)'
+            : 'inset 0 0 80px rgba(255, 255, 255, 0.5), inset 0 -2px 40px rgba(255, 160, 0, 0.35), 0 25px 80px -20px rgba(255, 160, 0, 0.3)',
           border: resolvedTheme === 'dark'
-            ? '1px solid rgba(255, 160, 0, 0.15)'
-            : '1px solid rgba(255, 160, 0, 0.2)',
+            ? '1px solid rgba(255, 255, 255, 0.12)'
+            : '1px solid rgba(255, 255, 255, 0.6)',
         }}
       >
         {/* Badge */}
@@ -213,12 +213,17 @@ function HeroSearcher() {
           </span>
         </motion.h1>
 
-        {/* Subtitle - Enhanced contrast for glassmorphism */}
+        {/* Subtitle - With text shadow for readability on glassmorphism */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className={`text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-medium ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+          className={`text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-semibold ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}
+          style={{
+            textShadow: resolvedTheme === 'dark'
+              ? '0 2px 10px rgba(0, 0, 0, 0.5)'
+              : '0 1px 8px rgba(255, 255, 255, 0.8)',
+          }}
         >
           Annonces vérifiées, colocs compatibles, zéro arnaque.
           <br className="hidden md:block" />
