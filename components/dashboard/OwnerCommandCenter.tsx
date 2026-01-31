@@ -196,15 +196,24 @@ export default function OwnerCommandCenter() {
 
       setProperties(propertiesData);
 
-      // Calculate base stats
+      // Get property IDs for batch queries
+      const propertyIds = propertiesData.map(p => p.id);
+
+      // BATCH: Get residents to calculate actual occupancy
+      const { data: allResidents } = await supabase
+        .from('property_residents')
+        .select('property_id')
+        .in('property_id', propertyIds);
+
+      // Calculate which properties have residents (are actually rented)
+      const rentedPropertyIds = new Set(allResidents?.map(r => r.property_id) || []);
+
+      // Calculate base stats using actual resident data
       const published = propertiesData.filter(p => p.status === 'published').length;
-      const rented = propertiesData.filter(p => p.status === 'rented').length;
+      const rented = rentedPropertyIds.size; // Count properties with actual residents
       const occupationRate = propertiesData.length > 0 ? Math.round((rented / propertiesData.length) * 100) : 0;
       const totalViews = propertiesData.reduce((sum, p) => sum + (p.views_count || 0), 0);
       const totalExpected = propertiesData.reduce((sum, p) => sum + (p.monthly_rent || 0), 0);
-
-      // Get applications count
-      const propertyIds = propertiesData.map(p => p.id);
       let pendingApplications = 0;
       if (propertyIds.length > 0) {
         const { count } = await supabase
@@ -348,7 +357,8 @@ export default function OwnerCommandCenter() {
           status: property.status,
           mainImage: property.main_image,
           monthlyRent: property.monthly_rent || 0,
-          occupancyStatus: property.status === 'rented' ? 'occupied' :
+          // Use actual resident data to determine occupancy, not just property status
+          occupancyStatus: rentedPropertyIds.has(property.id) ? 'occupied' :
                           property.status === 'published' ? 'vacant' : 'pending',
           hasOverdueRent,
           overdueAmount: hasOverdueRent ? overdueAmount : undefined,
@@ -396,7 +406,7 @@ export default function OwnerCommandCenter() {
         overdueCount: totalOverdueCount,
         totalProperties: propertiesData.length,
         occupiedProperties: rented,
-        vacantProperties: published,
+        vacantProperties: propertiesData.length - rented, // Vacant = total - occupied
         occupationRate,
         pendingApplications,
         openMaintenanceCount: totalOpenMaintenance,
