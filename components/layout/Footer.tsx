@@ -13,19 +13,9 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const footerLinks = {
-    explore: [
-      { label: 'Trouver un co-living', href: '/properties/browse' },
-      { label: 'Comment ça marche', href: '/how-it-works' },
-      { label: 'FAQ', href: '/faq' },
-    ],
-    owners: [
-      { label: 'Lister mon bien', href: '/properties/new' },
-      { label: 'Tarifs', href: '/pricing' },
-      { label: 'Devenir partenaire', href: '/owners' },
-    ],
     company: [
       { label: 'À propos', href: '/about' },
-      { label: 'Blog', href: '/blog' },
+      { label: 'Propriétaires', href: '/owners' },
       { label: 'Contact', href: 'mailto:hello@izzico.be' },
     ],
     legal: [
@@ -60,9 +50,9 @@ export default function Footer() {
         }}
       >
         <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-8 lg:gap-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
             {/* Brand Column */}
-            <div className="col-span-2 md:col-span-1">
+            <div className="col-span-2">
               <Image
                 src={isDark ? '/logos/izzico-lockup-squircle-epais-blanc.svg' : '/logos/izzico-lockup-squircle-epais-noir.svg'}
                 alt="Izzico"
@@ -95,52 +85,6 @@ export default function Footer() {
                   </a>
                 ))}
               </div>
-            </div>
-
-            {/* Explorer */}
-            <div>
-              <h4 className={`font-semibold text-sm mb-3 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-                Explorer
-              </h4>
-              <ul className="space-y-2">
-                {footerLinks.explore.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className={`text-sm transition-colors duration-200 ${
-                        isDark
-                          ? 'text-gray-400 hover:text-white'
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Propriétaires */}
-            <div>
-              <h4 className={`font-semibold text-sm mb-3 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
-                Propriétaires
-              </h4>
-              <ul className="space-y-2">
-                {footerLinks.owners.map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className={`text-sm transition-colors duration-200 ${
-                        isDark
-                          ? 'text-gray-400 hover:text-white'
-                          : 'text-gray-600 hover:text-gray-900'
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
             </div>
 
             {/* Izzico */}
