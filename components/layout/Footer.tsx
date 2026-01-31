@@ -64,11 +64,11 @@ export default function Footer() {
             {/* Brand Column */}
             <div className="col-span-2 md:col-span-1">
               <Image
-                src={isDark ? '/logos/izzico-trademark-squircle-epais-blanc.svg' : '/logos/izzico-trademark-squircle-epais-noir.svg'}
+                src={isDark ? '/logos/izzico-lockup-squircle-epais-blanc.svg' : '/logos/izzico-lockup-squircle-epais-noir.svg'}
                 alt="Izzico"
-                width={140}
-                height={48}
-                className="h-12 w-auto mb-4"
+                width={180}
+                height={60}
+                className="h-14 w-auto mb-4"
               />
               <p className={`text-sm leading-relaxed mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
                 Le co-living réinventé.<br />

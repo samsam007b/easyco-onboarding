@@ -123,21 +123,21 @@ function HeroSearcher() {
 
   return (
     <div className="flex flex-col items-center text-center">
-      {/* Glassmorphism Container */}
+      {/* Glassmorphism Container - Enhanced for better text readability */}
       <div
         className="relative w-full max-w-4xl mx-auto rounded-[40px] p-8 md:p-12"
         style={{
           background: resolvedTheme === 'dark'
-            ? 'linear-gradient(135deg, rgba(255, 160, 0, 0.15) 0%, rgba(224, 87, 71, 0.12) 50%, rgba(156, 86, 152, 0.15) 100%)'
-            : 'linear-gradient(135deg, rgba(255, 160, 0, 0.25) 0%, rgba(224, 87, 71, 0.22) 50%, rgba(156, 86, 152, 0.25) 100%)',
-          backdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
-          WebkitBackdropFilter: 'blur(50px) saturate(250%) brightness(1.15)',
+            ? 'linear-gradient(135deg, rgba(15, 15, 18, 0.85) 0%, rgba(20, 20, 24, 0.85) 100%)'
+            : 'linear-gradient(135deg, rgba(255, 255, 255, 0.92) 0%, rgba(255, 251, 235, 0.9) 100%)',
+          backdropFilter: 'blur(40px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(180%)',
           boxShadow: resolvedTheme === 'dark'
-            ? 'inset 0 0 60px rgba(255, 255, 255, 0.15), inset 0 -2px 30px rgba(255, 160, 0, 0.2), 0 25px 80px -20px rgba(0, 0, 0, 0.5)'
-            : 'inset 0 0 60px rgba(255, 255, 255, 0.4), inset 0 -2px 30px rgba(255, 160, 0, 0.3), 0 25px 80px -20px rgba(255, 160, 0, 0.25)',
+            ? 'inset 0 0 60px rgba(255, 160, 0, 0.08), 0 25px 80px -20px rgba(0, 0, 0, 0.6)'
+            : 'inset 0 0 60px rgba(255, 160, 0, 0.15), 0 25px 80px -20px rgba(255, 160, 0, 0.2)',
           border: resolvedTheme === 'dark'
-            ? '1px solid rgba(255, 255, 255, 0.1)'
-            : '1px solid rgba(255, 255, 255, 0.5)',
+            ? '1px solid rgba(255, 160, 0, 0.15)'
+            : '1px solid rgba(255, 160, 0, 0.2)',
         }}
       >
         {/* Badge */}
@@ -179,12 +179,12 @@ function HeroSearcher() {
           </span>
         </motion.h1>
 
-        {/* Subtitle */}
+        {/* Subtitle - Enhanced contrast for glassmorphism */}
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className={`text-xl md:text-2xl mb-12 max-w-2xl mx-auto ${resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}
+          className={`text-xl md:text-2xl mb-12 max-w-2xl mx-auto font-medium ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}
         >
           Annonces vérifiées, colocs compatibles, zéro arnaque.
           <br className="hidden md:block" />
@@ -251,14 +251,14 @@ function HeroSearcher() {
                 />
               </div>
 
-              {/* Search Button */}
+              {/* Search Button - Searcher yellow gradient */}
               <div className="p-2 flex items-center">
                 <Button
                   onClick={handleSearch}
                   className="w-full h-full min-h-[60px] text-white font-semibold text-lg rounded-2xl shadow-lg hover:shadow-xl transition-all hover:scale-[1.02]"
                   style={{
-                    background: 'linear-gradient(135deg, #ffa000 0%, #e05747 100%)',
-                    boxShadow: '0 10px 30px -5px rgba(255, 160, 0, 0.4)',
+                    background: 'linear-gradient(135deg, #ffa000 0%, #D98400 100%)',
+                    boxShadow: '0 10px 30px -5px rgba(255, 160, 0, 0.5)',
                   }}
                 >
                   <Search className="w-5 h-5 mr-2" />
@@ -269,16 +269,25 @@ function HeroSearcher() {
           </div>
         </div>
 
-        {/* Trust badges */}
-        <div className="flex flex-wrap items-center justify-center gap-8 mt-8">
+        {/* Trust badges - Enhanced visibility */}
+        <div className="flex flex-wrap items-center justify-center gap-6 mt-8">
           {[
             { icon: CheckCircle2, text: 'Identité vérifiée' },
             { icon: Shield, text: 'Annonces certifiées' },
             { icon: Target, text: 'Matching intelligent' },
           ].map((badge, i) => (
-            <div key={i} className={`flex items-center gap-2 ${resolvedTheme === 'dark' ? 'text-gray-300' : 'text-gray-700'}`}>
+            <div
+              key={i}
+              className="flex items-center gap-2 px-4 py-2 rounded-full"
+              style={{
+                background: resolvedTheme === 'dark' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(255, 255, 255, 0.8)',
+                backdropFilter: 'blur(10px)',
+              }}
+            >
               <badge.icon className="w-5 h-5 text-green-500" />
-              <span className="text-sm font-medium">{badge.text}</span>
+              <span className={`text-sm font-semibold ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
+                {badge.text}
+              </span>
             </div>
           ))}
         </div>
