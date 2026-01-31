@@ -128,7 +128,7 @@ export default function LeasesPage() {
       // 1. Get user's properties with rent info
       const { data: userProperties, error: propError } = await supabase
         .from('properties')
-        .select('id, name, address, city, monthly_rent')
+        .select('id, title, address, city, monthly_rent')
         .eq('owner_id', user.id);
 
       if (propError) {
@@ -186,7 +186,7 @@ export default function LeasesPage() {
           id: r.id,
           resident_id: r.id,
           property_id: r.property_id,
-          property_name: property?.name || 'Propriété',
+          property_name: property?.title || 'Propriété',
           property_address: property ? `${property.address}, ${property.city}` : '',
           tenant_name: `${r.first_name} ${r.last_name}`,
           tenant_photo: r.photo_url,

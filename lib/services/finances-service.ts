@@ -1,7 +1,24 @@
 /**
  * Finances Service
  * Aggregates financial data for the Owner Finances Hub
- * Combines: Rent payments, Property finances, Alerts
+ * Combines: Rent payment declarations, Property finances, Alerts
+ *
+ * ┌─────────────────────────────────────────────────────────────────────────┐
+ * │ IZZICO PAYMENT PHILOSOPHY                                              │
+ * ├─────────────────────────────────────────────────────────────────────────┤
+ * │ Izzico est un FACILITATEUR, pas une banque.                            │
+ * │                                                                        │
+ * │ Les données de ce service représentent des DÉCLARATIONS de paiement,   │
+ * │ pas des transactions bancaires réelles. Quand un utilisateur "paye",   │
+ * │ il DÉCLARE avoir effectué un paiement - Izzico ne vérifie pas.         │
+ * │                                                                        │
+ * │ Terminologie:                                                          │
+ * │ - "collected" = montant des loyers DÉCLARÉS comme payés                │
+ * │ - "paid" status = résident a DÉCLARÉ avoir payé                        │
+ * │ - "overdue" = échéance dépassée sans déclaration                       │
+ * │                                                                        │
+ * │ Voir CLAUDE.md section "Business Model & Payment Philosophy"           │
+ * └─────────────────────────────────────────────────────────────────────────┘
  */
 
 import { createClient } from '@/lib/auth/supabase-client';
@@ -136,12 +153,11 @@ class FinancesService {
         .in('property_id', propertyIds)
         .order('due_date', { ascending: false });
 
-      // Fetch active residents
+      // Fetch residents (note: no is_active column, all records are considered active)
       const { data: residents } = await this.supabase
         .from('property_residents')
         .select('property_id')
-        .in('property_id', propertyIds)
-        .eq('is_active', true);
+        .in('property_id', propertyIds);
 
       // Calculate data in parallel
       const [kpis, paymentSummary, trend, alerts] = await Promise.all([

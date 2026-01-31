@@ -128,7 +128,7 @@ class GestionService {
         .from('property_residents')
         .select('*')
         .in('property_id', propertyIds)
-        .eq('is_active', true);
+        /* Note: no is_active column, all residents are considered active */;
 
       const now = new Date();
       const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
@@ -174,7 +174,7 @@ class GestionService {
         .from('property_residents')
         .select('*')
         .in('property_id', propertyIds)
-        .eq('is_active', true);
+        /* Note: no is_active column, all residents are considered active */;
 
       const now = new Date();
       let active = 0;
@@ -338,7 +338,7 @@ class GestionService {
         .from('property_residents')
         .select('*, profiles!user_id(full_name)')
         .in('property_id', propertyIds)
-        .eq('is_active', true);
+        /* Note: no is_active column, all residents are considered active */;
 
       const now = new Date();
       residents?.forEach(r => {

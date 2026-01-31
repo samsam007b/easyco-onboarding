@@ -156,7 +156,7 @@ export default function TenantsPage() {
       // Get user's properties
       const { data: userProperties, error: propError } = await supabase
         .from('properties')
-        .select('id, name, address, city')
+        .select('id, title, address, city')
         .eq('owner_id', user.id);
 
       if (propError) {
@@ -203,7 +203,7 @@ export default function TenantsPage() {
 
       // Enrich residents with property names
       // TODO: payment_status should come from a payments/transactions table when available
-      const propertyMap = new Map(userProperties.map(p => [p.id, p.name]));
+      const propertyMap = new Map(userProperties.map(p => [p.id, p.title]));
       const enrichedResidents: PropertyResident[] = (allResidents || []).map(r => ({
         ...r,
         property_name: propertyMap.get(r.property_id) || 'Propriété',
@@ -596,7 +596,7 @@ export default function TenantsPage() {
                 <option value="all">{t?.filter?.allProperties?.[language] || 'All properties'}</option>
                 {properties.map(p => (
                   <option key={p.id} value={p.id}>
-                    {p.name} ({p.resident_count})
+                    {p.title} ({p.resident_count})
                   </option>
                 ))}
               </select>
