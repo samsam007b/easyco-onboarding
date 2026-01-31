@@ -48,6 +48,11 @@ import {
   Pie,
   Cell,
   Legend,
+  BarChart,
+  Bar,
+  RadialBarChart,
+  RadialBar,
+  ComposedChart,
 } from 'recharts';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -203,6 +208,129 @@ function CustomPieTooltip({ active, payload }: any) {
   );
 }
 
+// Custom Tooltip for Bar Chart
+function CustomBarTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  return (
+    <div className="bg-white/95 backdrop-blur-md p-3 superellipse-xl border border-gray-200 shadow-lg">
+      <p className="text-sm font-semibold text-gray-900 mb-2">{label}</p>
+      {payload.map((entry: any, i: number) => (
+        <div key={i} className="flex items-center gap-2 text-sm">
+          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
+          <span className="text-gray-600">{entry.name}:</span>
+          <span className="font-semibold">{entry.value?.toLocaleString()}€</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// Radial Gauge Component for Collection Rate
+function CollectionRateGauge({
+  rate,
+  collected,
+  expected
+}: {
+  rate: number;
+  collected: number;
+  expected: number;
+}) {
+  const data = [
+    { name: 'Taux', value: rate, fill: rate >= 90 ? '#10B981' : rate >= 70 ? '#F59E0B' : '#EF4444' }
+  ];
+
+  const getStatusColor = () => {
+    if (rate >= 90) return { text: '#059669', bg: '#D1FAE5', label: 'Excellent' };
+    if (rate >= 70) return { text: '#D97706', bg: '#FEF3C7', label: 'Correct' };
+    return { text: '#DC2626', bg: '#FEE2E2', label: 'À améliorer' };
+  };
+
+  const status = getStatusColor();
+
+  return (
+    <div className="relative">
+      <ResponsiveContainer width="100%" height={180}>
+        <RadialBarChart
+          cx="50%"
+          cy="50%"
+          innerRadius="60%"
+          outerRadius="85%"
+          barSize={12}
+          data={data}
+          startAngle={180}
+          endAngle={0}
+        >
+          <RadialBar
+            background={{ fill: '#F3F4F6' }}
+            dataKey="value"
+            cornerRadius={10}
+          />
+        </RadialBarChart>
+      </ResponsiveContainer>
+
+      {/* Center content */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[30%] text-center">
+        <p className="text-3xl font-bold text-gray-900">{rate}%</p>
+        <span
+          className="inline-block px-2 py-0.5 text-xs font-semibold rounded-full mt-1"
+          style={{ backgroundColor: status.bg, color: status.text }}
+        >
+          {status.label}
+        </span>
+      </div>
+
+      {/* Bottom stats */}
+      <div className="flex justify-center gap-6 -mt-4">
+        <div className="text-center">
+          <p className="text-xs text-gray-500">Encaissé</p>
+          <p className="text-sm font-bold text-green-600">€{collected.toLocaleString()}</p>
+        </div>
+        <div className="text-center">
+          <p className="text-xs text-gray-500">Attendu</p>
+          <p className="text-sm font-bold text-gray-600">€{expected.toLocaleString()}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Trend Badge Component
+function TrendBadge({
+  value,
+  showIcon = true,
+  size = 'md'
+}: {
+  value: number;
+  showIcon?: boolean;
+  size?: 'sm' | 'md' | 'lg';
+}) {
+  const isPositive = value >= 0;
+  const sizeClasses = {
+    sm: 'text-xs px-1.5 py-0.5',
+    md: 'text-sm px-2 py-1',
+    lg: 'text-base px-3 py-1.5',
+  };
+
+  return (
+    <span className={cn(
+      'inline-flex items-center gap-1 font-semibold rounded-full',
+      sizeClasses[size],
+      isPositive
+        ? 'bg-emerald-100 text-emerald-700'
+        : 'bg-red-100 text-red-700'
+    )}>
+      {showIcon && (
+        isPositive ? (
+          <ArrowUpRight className="w-3.5 h-3.5" />
+        ) : (
+          <TrendingDown className="w-3.5 h-3.5" />
+        )
+      )}
+      {isPositive ? '+' : ''}{value}%
+    </span>
+  );
+}
+
 export default function FinanceAnalyticsPage() {
   const router = useRouter();
   const supabase = createClient();
@@ -355,6 +483,35 @@ export default function FinanceAnalyticsPage() {
     if (!overview?.trend) return [];
     return overview.trend.map(t => t.collected);
   }, [overview?.trend]);
+
+  // Bar chart comparison data (last 6 months with collected vs expected)
+  const barChartData = useMemo(() => {
+    if (!overview?.trend) return [];
+    return overview.trend.map(t => ({
+      month: t.monthLabel,
+      collected: t.collected,
+      expected: t.expected,
+      rate: t.expected > 0 ? Math.round((t.collected / t.expected) * 100) : 0,
+    }));
+  }, [overview?.trend]);
+
+  // Monthly revenue by property for stacked area
+  const stackedPropertyData = useMemo(() => {
+    if (!overview?.trend || properties.length === 0) return [];
+
+    // Get unique months from trend
+    return overview.trend.map(t => {
+      const monthData: Record<string, any> = { month: t.monthLabel };
+      // Distribute the collected amount proportionally to each property
+      const totalRent = properties.reduce((s, p) => s + p.monthlyRent, 0);
+      properties.slice(0, 4).forEach((prop, idx) => {
+        const share = totalRent > 0 ? prop.monthlyRent / totalRent : 0;
+        monthData[`prop${idx}`] = Math.round(t.collected * share);
+        monthData[`prop${idx}Name`] = prop.title;
+      });
+      return monthData;
+    });
+  }, [overview?.trend, properties]);
 
   // Handle payment actions
   const handleMarkPaid = async (paymentId: string) => {
@@ -758,9 +915,9 @@ export default function FinanceAnalyticsPage() {
           </motion.div>
         </motion.div>
 
-        {/* Charts Row */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Area Chart - Progression */}
+        {/* Charts Row 1 - Bar Chart + Radial Gauge */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+          {/* Bar Chart - Comparaison Encaissé vs Attendu */}
           <motion.div
             variants={itemVariants}
             className="lg:col-span-2 bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6"
@@ -773,47 +930,146 @@ export default function FinanceAnalyticsPage() {
                 <BarChart3 className="w-5 h-5 text-white" />
               </div>
               <div>
-                <h2 className="font-bold text-gray-900">Progression</h2>
-                <p className="text-sm text-gray-500">6 derniers mois</p>
+                <h2 className="font-bold text-gray-900">Encaissé vs Attendu</h2>
+                <p className="text-sm text-gray-500">Comparaison mensuelle</p>
               </div>
               {comparison && (
-                <div className="ml-auto flex items-center gap-1">
-                  {comparison.changePercent >= 0 ? (
-                    <TrendingUp className="w-4 h-4 text-green-500" />
-                  ) : (
-                    <TrendingDown className="w-4 h-4 text-red-500" />
-                  )}
-                  <span className={cn(
-                    'text-sm font-semibold',
-                    comparison.changePercent >= 0 ? 'text-green-600' : 'text-red-600'
-                  )}>
-                    {comparison.changePercent >= 0 ? '+' : ''}{comparison.changePercent}%
-                  </span>
+                <div className="ml-auto">
+                  <TrendBadge value={comparison.changePercent} size="md" />
                 </div>
               )}
             </div>
 
-            {overview?.trend && overview.trend.length > 0 ? (
+            {barChartData.length > 0 ? (
               <ResponsiveContainer width="100%" height={280}>
-                <AreaChart data={overview.trend}>
-                  <defs>
-                    <linearGradient id="ownerAreaGradient" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={ownerPalette.tertiary.main} stopOpacity={0.3} />
-                      <stop offset="95%" stopColor={ownerPalette.tertiary.main} stopOpacity={0} />
-                    </linearGradient>
-                  </defs>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <BarChart data={barChartData} barGap={4}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
                   <XAxis
-                    dataKey="monthLabel"
+                    dataKey="month"
                     stroke="#999"
                     style={{ fontSize: '12px' }}
                     tickLine={false}
+                    axisLine={false}
                   />
                   <YAxis
                     stroke="#999"
                     style={{ fontSize: '12px' }}
                     tickLine={false}
-                    tickFormatter={(value) => `${value}€`}
+                    axisLine={false}
+                    tickFormatter={(value) => `${(value / 1000).toFixed(0)}k€`}
+                  />
+                  <Tooltip content={<CustomBarTooltip />} />
+                  <Bar
+                    dataKey="expected"
+                    name="Attendu"
+                    fill={ownerPalette.quaternary.main}
+                    radius={[4, 4, 0, 0]}
+                    opacity={0.6}
+                  />
+                  <Bar
+                    dataKey="collected"
+                    name="Encaissé"
+                    fill={ownerPalette.tertiary.main}
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="h-[280px] flex items-center justify-center text-gray-500">
+                <div className="text-center">
+                  <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-30" />
+                  <p>Aucune donnée disponible</p>
+                </div>
+              </div>
+            )}
+
+            {/* Legend */}
+            <div className="flex items-center justify-center gap-6 mt-4 text-sm">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded" style={{ backgroundColor: ownerPalette.tertiary.main }} />
+                <span className="text-gray-600">Encaissé</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded opacity-60" style={{ backgroundColor: ownerPalette.quaternary.main }} />
+                <span className="text-gray-600">Attendu</span>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Radial Gauge - Taux de recouvrement */}
+          <motion.div
+            variants={itemVariants}
+            className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <div
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: ownerPalette.secondary.main }}
+              >
+                <Percent className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-gray-900">Taux de recouvrement</h2>
+                <p className="text-sm text-gray-500">Performance globale</p>
+              </div>
+            </div>
+
+            <CollectionRateGauge
+              rate={overview?.kpis.collectionRate || 0}
+              collected={overview?.paymentSummary.paid || 0}
+              expected={totalExpected}
+            />
+          </motion.div>
+        </div>
+
+        {/* Charts Row 2 - Area Chart + Pie Chart */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Area Chart - Progression */}
+          <motion.div
+            variants={itemVariants}
+            className="lg:col-span-2 bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div
+                className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
+                style={{ backgroundColor: ownerPalette.tertiary.main }}
+              >
+                <TrendingUp className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h2 className="font-bold text-gray-900">Évolution des revenus</h2>
+                <p className="text-sm text-gray-500">6 derniers mois</p>
+              </div>
+              {comparison && comparison.changePercent !== 0 && (
+                <div className="ml-auto">
+                  <TrendBadge value={comparison.changePercent} size="sm" />
+                </div>
+              )}
+            </div>
+
+            {overview?.trend && overview.trend.length > 0 ? (
+              <ResponsiveContainer width="100%" height={240}>
+                <AreaChart data={overview.trend}>
+                  <defs>
+                    <linearGradient id="ownerAreaGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor={ownerPalette.tertiary.main} stopOpacity={0.4} />
+                      <stop offset="95%" stopColor={ownerPalette.tertiary.main} stopOpacity={0.05} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+                  <XAxis
+                    dataKey="monthLabel"
+                    stroke="#999"
+                    style={{ fontSize: '12px' }}
+                    tickLine={false}
+                    axisLine={false}
+                  />
+                  <YAxis
+                    stroke="#999"
+                    style={{ fontSize: '12px' }}
+                    tickLine={false}
+                    axisLine={false}
+                    tickFormatter={(value) => `${(value / 1000).toFixed(0)}k€`}
                   />
                   <Tooltip content={<CustomAreaTooltip />} />
                   <Area
@@ -827,7 +1083,7 @@ export default function FinanceAnalyticsPage() {
                 </AreaChart>
               </ResponsiveContainer>
             ) : (
-              <div className="h-[280px] flex items-center justify-center text-gray-500">
+              <div className="h-[240px] flex items-center justify-center text-gray-500">
                 <div className="text-center">
                   <BarChart3 className="w-12 h-12 mx-auto mb-2 opacity-30" />
                   <p>Aucune donnée disponible</p>
@@ -841,29 +1097,29 @@ export default function FinanceAnalyticsPage() {
             variants={itemVariants}
             className="bg-white/80 backdrop-blur-sm superellipse-2xl border border-gray-200 shadow-sm p-6"
           >
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-4">
               <div
                 className="w-10 h-10 superellipse-xl flex items-center justify-center shadow-sm"
-                style={{ backgroundColor: ownerPalette.secondary.main }}
+                style={{ backgroundColor: ownerPalette.quaternary.main }}
               >
                 <PieChartIcon className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h2 className="font-bold text-gray-900">Par propriété</h2>
-                <p className="text-sm text-gray-500">Répartition revenus</p>
+                <p className="text-sm text-gray-500">Répartition des revenus</p>
               </div>
             </div>
 
             {propertyChartData.length > 0 ? (
               <div className="relative">
-                <ResponsiveContainer width="100%" height={200}>
+                <ResponsiveContainer width="100%" height={180}>
                   <PieChart>
                     <Pie
                       data={propertyChartData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={50}
-                      outerRadius={80}
+                      innerRadius={45}
+                      outerRadius={75}
                       paddingAngle={3}
                       dataKey="value"
                     >
@@ -888,7 +1144,7 @@ export default function FinanceAnalyticsPage() {
                 </div>
               </div>
             ) : (
-              <div className="h-[200px] flex items-center justify-center text-gray-500">
+              <div className="h-[180px] flex items-center justify-center text-gray-500">
                 <div className="text-center">
                   <Building2 className="w-12 h-12 mx-auto mb-2 opacity-30" />
                   <p>Aucune propriété</p>
@@ -897,17 +1153,17 @@ export default function FinanceAnalyticsPage() {
             )}
 
             {/* Legend */}
-            <div className="mt-4 space-y-2">
+            <div className="mt-3 space-y-1.5">
               {propertyChartData.slice(0, 4).map((item, index) => (
                 <div key={index} className="flex items-center justify-between text-sm">
                   <div className="flex items-center gap-2">
                     <div
-                      className="w-3 h-3 rounded-full"
+                      className="w-2.5 h-2.5 rounded-full"
                       style={{ backgroundColor: PROPERTY_COLORS[index] }}
                     />
-                    <span className="text-gray-600 truncate max-w-[120px]">{item.name}</span>
+                    <span className="text-gray-600 truncate max-w-[100px] text-xs">{item.name}</span>
                   </div>
-                  <span className="font-semibold text-gray-900">€{item.value.toLocaleString()}</span>
+                  <span className="font-semibold text-gray-900 text-xs">€{item.value.toLocaleString()}</span>
                 </div>
               ))}
             </div>
