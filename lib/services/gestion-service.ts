@@ -77,15 +77,19 @@ interface PropertyData {
 }
 
 class GestionService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get comprehensive overview for Gestion Hub
    */
   async getGestionOverview(userId: string): Promise<GestionOverview> {
+    const supabase = this.getSupabase();
     try {
       // Fetch properties for this owner
-      const { data: properties } = await this.supabase
+      const { data: properties } = await supabase
         .from('properties')
         .select('id, title, status, monthly_rent')
         .eq('owner_id', userId);
@@ -124,7 +128,7 @@ class GestionService {
    */
   private async getTenantStats(propertyIds: string[]): Promise<TenantStats> {
     try {
-      const { data: residents } = await this.supabase
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('*')
         .in('property_id', propertyIds)
@@ -141,7 +145,7 @@ class GestionService {
       ).length || 0;
 
       // Check for issues (overdue payments)
-      const { data: overduePayments } = await this.supabase
+      const { data: overduePayments } = await this.getSupabase()
         .from('rent_payments')
         .select('user_id')
         .in('property_id', propertyIds)
@@ -170,7 +174,7 @@ class GestionService {
    */
   private async getLeaseStats(propertyIds: string[], properties: PropertyData[]): Promise<LeaseStats> {
     try {
-      const { data: residents } = await this.supabase
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('*')
         .in('property_id', propertyIds)
@@ -299,7 +303,7 @@ class GestionService {
       const actions: UrgentAction[] = [];
 
       // Fetch properties
-      const { data: properties } = await this.supabase
+      const { data: properties } = await this.getSupabase()
         .from('properties')
         .select('id, title')
         .eq('owner_id', userId);
@@ -310,7 +314,7 @@ class GestionService {
       const propertyMap = new Map(properties.map(p => [p.id, p.title]));
 
       // 1. Overdue payments
-      const { data: overduePayments } = await this.supabase
+      const { data: overduePayments } = await this.getSupabase()
         .from('rent_payments')
         .select('id, property_id, amount, due_date, user_id, profiles!user_id(full_name)')
         .in('property_id', propertyIds)
@@ -334,7 +338,7 @@ class GestionService {
       });
 
       // 2. Expiring leases
-      const { data: residents } = await this.supabase
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('*, profiles!user_id(full_name)')
         .in('property_id', propertyIds)
@@ -416,7 +420,7 @@ class GestionService {
       const activities: ActivityItem[] = [];
 
       // Fetch properties
-      const { data: properties } = await this.supabase
+      const { data: properties } = await this.getSupabase()
         .from('properties')
         .select('id, title')
         .eq('owner_id', userId);
@@ -427,7 +431,7 @@ class GestionService {
       const propertyMap = new Map(properties.map(p => [p.id, p.title]));
 
       // Recent payments
-      const { data: recentPayments } = await this.supabase
+      const { data: recentPayments } = await this.getSupabase()
         .from('rent_payments')
         .select('id, property_id, amount, status, paid_at, created_at')
         .in('property_id', propertyIds)

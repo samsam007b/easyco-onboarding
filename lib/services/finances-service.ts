@@ -127,15 +127,19 @@ interface PaymentWithUser {
 }
 
 class FinancesService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get comprehensive finances overview for Hub
    */
   async getFinancesOverview(userId: string): Promise<FinancesOverview> {
+    const supabase = this.getSupabase();
     try {
       // Fetch properties
-      const { data: properties } = await this.supabase
+      const { data: properties } = await supabase
         .from('properties')
         .select('id, title, status, monthly_rent')
         .eq('owner_id', userId);
@@ -147,14 +151,14 @@ class FinancesService {
       const propertyIds = properties.map(p => p.id);
 
       // Fetch rent payments
-      const { data: payments } = await this.supabase
+      const { data: payments } = await this.getSupabase()
         .from('rent_payments')
         .select('*')
         .in('property_id', propertyIds)
         .order('due_date', { ascending: false });
 
       // Fetch residents (note: no is_active column, all records are considered active)
-      const { data: residents } = await this.supabase
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('property_id')
         .in('property_id', propertyIds);
@@ -394,7 +398,7 @@ class FinancesService {
   async getRecentPayments(userId: string, limit: number = 10): Promise<RentPaymentRecord[]> {
     try {
       // Get user's properties
-      const { data: properties } = await this.supabase
+      const { data: properties } = await this.getSupabase()
         .from('properties')
         .select('id, title')
         .eq('owner_id', userId);
@@ -405,7 +409,7 @@ class FinancesService {
       const propertyMap = new Map(properties.map(p => [p.id, p.title]));
 
       // Get recent payments
-      const { data: payments } = await this.supabase
+      const { data: payments } = await this.getSupabase()
         .from('rent_payments')
         .select(`
           id,
@@ -453,7 +457,7 @@ class FinancesService {
     changePercent: number;
   }> {
     try {
-      const { data: properties } = await this.supabase
+      const { data: properties } = await this.getSupabase()
         .from('properties')
         .select('id, monthly_rent, status')
         .eq('owner_id', userId);
@@ -468,7 +472,7 @@ class FinancesService {
 
       const propertyIds = properties.map(p => p.id);
 
-      const { data: payments } = await this.supabase
+      const { data: payments } = await this.getSupabase()
         .from('rent_payments')
         .select('*')
         .in('property_id', propertyIds);

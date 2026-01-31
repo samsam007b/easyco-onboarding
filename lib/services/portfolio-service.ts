@@ -152,15 +152,19 @@ interface PropertyData {
 }
 
 class PortfolioService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get comprehensive overview for Portfolio Hub
    */
   async getPortfolioOverview(userId: string): Promise<PortfolioOverview> {
+    const supabase = this.getSupabase();
     try {
       // Fetch properties for this owner
-      const { data: properties } = await this.supabase
+      const { data: properties } = await supabase
         .from('properties')
         .select('id, title, status, monthly_rent, views_count, inquiries_count')
         .eq('owner_id', userId);
@@ -172,7 +176,7 @@ class PortfolioService {
       const propertyIds = properties.map(p => p.id);
 
       // Fetch residents once for both property and performance stats (avoids duplicate query)
-      const { data: residents } = await this.supabase
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('property_id')
         .in('property_id', propertyIds)
@@ -225,13 +229,13 @@ class PortfolioService {
   private async getApplicationStats(propertyIds: string[]): Promise<ApplicationStats> {
     try {
       // Individual applications
-      const { data: applications } = await this.supabase
+      const { data: applications } = await this.getSupabase()
         .from('applications')
         .select('id, status')
         .in('property_id', propertyIds);
 
       // Group applications
-      const { data: groupApplications } = await this.supabase
+      const { data: groupApplications } = await this.getSupabase()
         .from('group_applications')
         .select('id, status')
         .in('property_id', propertyIds);
@@ -298,7 +302,7 @@ class PortfolioService {
       const actions: PortfolioAction[] = [];
 
       // Fetch properties
-      const { data: properties } = await this.supabase
+      const { data: properties } = await this.getSupabase()
         .from('properties')
         .select('id, title, status, created_at')
         .eq('owner_id', userId);
@@ -308,13 +312,13 @@ class PortfolioService {
       const propertyIds = properties.map(p => p.id);
 
       // 1. Pending applications
-      const { data: pendingApps } = await this.supabase
+      const { data: pendingApps } = await this.getSupabase()
         .from('applications')
         .select('id')
         .in('property_id', propertyIds)
         .eq('status', 'pending');
 
-      const { data: pendingGroupApps } = await this.supabase
+      const { data: pendingGroupApps } = await this.getSupabase()
         .from('group_applications')
         .select('id')
         .in('property_id', propertyIds)
@@ -354,7 +358,7 @@ class PortfolioService {
       const publishedIds = properties.filter(p => p.status === 'published').map(p => p.id);
 
       if (publishedIds.length > 0) {
-        const { data: residents } = await this.supabase
+        const { data: residents } = await this.getSupabase()
           .from('property_residents')
           .select('property_id')
           .in('property_id', publishedIds)
@@ -389,13 +393,13 @@ class PortfolioService {
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
 
-      const { data: newApps } = await this.supabase
+      const { data: newApps } = await this.getSupabase()
         .from('applications')
         .select('id')
         .in('property_id', propertyIds)
         .gte('created_at', yesterday.toISOString());
 
-      const { data: newGroupApps } = await this.supabase
+      const { data: newGroupApps } = await this.getSupabase()
         .from('group_applications')
         .select('id')
         .in('property_id', propertyIds)
@@ -430,7 +434,7 @@ class PortfolioService {
    */
   async getRecentProperties(userId: string, limit: number = 3): Promise<PropertyPreview[]> {
     try {
-      const { data: properties } = await this.supabase
+      const { data: properties } = await this.getSupabase()
         .from('properties')
         .select('id, title, city, status, monthly_rent, bedrooms, images, views_count, inquiries_count, created_at')
         .eq('owner_id', userId)
@@ -441,7 +445,7 @@ class PortfolioService {
 
       // Get rented status
       const propertyIds = properties.map(p => p.id);
-      const { data: residents } = await this.supabase
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('property_id, move_in_date')
         .in('property_id', propertyIds)
