@@ -3,291 +3,600 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import Link from 'next/link';
 import {
   Search,
-  Home,
-  Users,
-  Building2,
-  Heart,
-  MessageCircle,
-  Calendar,
   MapPin,
   Euro,
-  Bookmark,
-  Target,
-  TrendingUp,
-  DollarSign,
-  Clock,
-  Wrench,
-  UserPlus,
-  LogIn,
-  Lock,
-  Sparkles,
-  ArrowRight,
-  CheckCircle2,
-  X,
-  Star,
-  Eye,
   Bed,
   Bath,
-  Plus
+  Home,
+  UserPlus,
+  LogIn,
+  ArrowRight,
+  Sparkles,
+  X,
+  SlidersHorizontal,
+  Heart,
+  Users,
+  Lock,
+  CheckCircle2,
+  Zap,
+  Shield,
+  Star,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
-import Image from 'next/image';
+import { Input } from '@/components/ui/input';
+import { createClient } from '@/lib/auth/supabase-client';
+import { useTheme } from '@/contexts/ThemeContext';
+import Footer from '@/components/layout/Footer';
 
-type GuestView = 'searcher' | 'resident' | 'owner';
+// ============================================
+// V3-fun Searcher Color System
+// ============================================
+const SEARCHER_COLORS = {
+  primary: '#ffa000',
+  hover: '#D98400',
+  accent: '#FBBF24',
+  subtle: '#FCD34D',
+  light: '#FDE68A',
+  dark: '#A16300',
+  card: '#FFFBEB',
+  cardDark: 'rgba(255, 160, 0, 0.08)',
+  blob: '#FEF3C7',
+  blobDark: 'rgba(255, 160, 0, 0.15)',
+  text: '#A16300',
+  textDark: '#F5F5F7',
+  border: 'rgba(255, 160, 0, 0.15)',
+  gradient: 'linear-gradient(135deg, #ffa000 0%, #D98400 100%)',
+  badgeBg: 'rgba(255, 160, 0, 0.12)',
+  badgeBgDark: 'rgba(255, 160, 0, 0.2)',
+  matchingTeaser: 'rgba(255, 160, 0, 0.9)',
+};
 
-interface SearchCriteria {
-  location: string | null;
-  budgetMin: number | null;
-  budgetMax: number | null;
-  moveInDate: string | null;
+// Signature Gradient Izzico (Brand Identity)
+const SIGNATURE_GRADIENT = 'linear-gradient(135deg, #9c5698 0%, #c85570 20%, #d15659 35%, #e05747 50%, #ff7c10 75%, #ffa000 100%)';
+
+interface Property {
+  id: string;
+  title: string;
+  city: string;
+  neighborhood?: string;
+  monthly_rent: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  images?: string[];
+  property_type?: string;
+  available_from?: string;
+  status?: string;
 }
-
-// Mock data for property previews
-const mockProperties = [
-  {
-    id: '1',
-    title: 'Co-living Moderne Bruxelles',
-    city: 'Bruxelles',
-    neighborhood: 'Ixelles',
-    monthly_rent: 750,
-    bedrooms: 1,
-    bathrooms: 1,
-    main_image: null,
-    compatibility_score: 87,
-  },
-  {
-    id: '2',
-    title: 'Appartement Partagé Centre',
-    city: 'Bruxelles',
-    neighborhood: 'Saint-Gilles',
-    monthly_rent: 650,
-    bedrooms: 1,
-    bathrooms: 1,
-    main_image: null,
-    compatibility_score: 92,
-  },
-  {
-    id: '3',
-    title: 'Maison Co-living Verte',
-    city: 'Bruxelles',
-    neighborhood: 'Forest',
-    monthly_rent: 580,
-    bedrooms: 1,
-    bathrooms: 1,
-    main_image: null,
-    compatibility_score: 78,
-  },
-];
-
-// Mock roommates for swipe preview
-const mockRoommates = [
-  { id: '1', name: 'Marie L.', age: 26, score: 94, occupation: 'Designer' },
-  { id: '2', name: 'Thomas B.', age: 28, score: 88, occupation: 'Développeur' },
-  { id: '3', name: 'Sophie M.', age: 24, score: 91, occupation: 'Étudiante' },
-];
 
 function GuestPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [activeView, setActiveView] = useState<GuestView>('searcher');
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === 'dark';
+  const supabase = createClient();
+
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('location') || '');
+  const [showFilters, setShowFilters] = useState(false);
   const [showSignupModal, setShowSignupModal] = useState(false);
   const [lockedFeatureMessage, setLockedFeatureMessage] = useState('');
 
-  // Parse search criteria from URL
-  const searchCriteria: SearchCriteria = {
-    location: searchParams.get('location'),
-    budgetMin: searchParams.get('budget_min') ? parseInt(searchParams.get('budget_min')!) : null,
-    budgetMax: searchParams.get('budget_max') ? parseInt(searchParams.get('budget_max')!) : null,
-    moveInDate: searchParams.get('move_in_date'),
+  // Filters
+  const [minBudget, setMinBudget] = useState<string>('');
+  const [maxBudget, setMaxBudget] = useState<string>('');
+
+  useEffect(() => {
+    loadProperties();
+  }, []);
+
+  const loadProperties = async () => {
+    try {
+      setIsLoading(true);
+
+      const { data, error } = await supabase
+        .from('properties')
+        .select('id, title, city, neighborhood, monthly_rent, bedrooms, bathrooms, images, property_type, available_from, status')
+        .eq('status', 'published')
+        .order('created_at', { ascending: false })
+        .limit(12);
+
+      if (error) {
+        console.error('Error fetching properties:', error);
+        return;
+      }
+
+      setProperties(data || []);
+    } catch (error) {
+      console.error('Error loading properties:', error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const hasSearchCriteria = searchCriteria.location || searchCriteria.budgetMin || searchCriteria.budgetMax || searchCriteria.moveInDate;
+  const filteredProperties = properties.filter((property) => {
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      const matchesSearch =
+        property.city?.toLowerCase().includes(query) ||
+        property.neighborhood?.toLowerCase().includes(query) ||
+        property.title?.toLowerCase().includes(query);
+      if (!matchesSearch) return false;
+    }
+
+    if (minBudget && property.monthly_rent < parseInt(minBudget)) return false;
+    if (maxBudget && property.monthly_rent > parseInt(maxBudget)) return false;
+
+    return true;
+  });
 
   const handleLockedFeature = (message: string) => {
     setLockedFeatureMessage(message);
     setShowSignupModal(true);
   };
 
-  const viewTabs = [
-    {
-      id: 'searcher' as GuestView,
-      label: 'I\'m searching',
-      icon: Search,
-      description: 'Find your ideal co-living',
-      color: '#ff9811',
-      bgColor: 'bg-orange-50',
-    },
-    {
-      id: 'resident' as GuestView,
-      label: 'I\'m a resident',
-      icon: Home,
-      description: 'Manage your co-living life',
-      color: '#e05747',
-      bgColor: 'bg-orange-50',
-    },
-    {
-      id: 'owner' as GuestView,
-      label: 'I\'m an owner',
-      icon: Building2,
-      description: 'Manage your properties',
-      color: '#ad5684',
-      bgColor: 'bg-purple-50',
-    },
-  ];
+  const handlePropertyClick = (propertyId: string) => {
+    router.push(`/properties/${propertyId}`);
+  };
+
+  // Generate random "fake" match score for teaser (seeded by property id)
+  const getFakeMatchScore = (propertyId: string) => {
+    const hash = propertyId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    return 75 + (hash % 20); // 75-94%
+  };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header with Sign Up CTA */}
-      <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200">
+    <div className={`min-h-screen ${isDark ? 'bg-gray-950' : 'bg-gray-50'}`}>
+      {/* Header */}
+      <header className={`sticky top-0 z-50 backdrop-blur-md border-b ${isDark ? 'bg-gray-950/95 border-gray-800' : 'bg-white/95 border-gray-200'}`}>
         <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <div className="flex items-center gap-2">
-              <div
-                className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #ad5684 0%, #ff9811 100%)' }}
+            <Link href="/" className="flex items-center gap-3">
+              <Image
+                src={isDark ? '/logos/izzico-lockup-squircle-epais-blanc.svg' : '/logos/izzico-lockup-squircle-epais-noir.svg'}
+                alt="Izzico"
+                width={140}
+                height={40}
+                className="h-10 w-auto"
+              />
+              <Badge
+                className="font-medium superellipse-lg"
+                style={{ background: SEARCHER_COLORS.badgeBg, color: SEARCHER_COLORS.dark, border: `1px solid ${SEARCHER_COLORS.border}` }}
               >
-                <Home className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold">
-                <span style={{ color: '#ad5684' }}>Izzi</span>
-                <span style={{ color: '#ff9811' }}>co</span>
-              </span>
-              <Badge variant="warning" size="sm" className="ml-2">
-                Discovery Mode
+                Mode découverte
               </Badge>
-            </div>
+            </Link>
 
             {/* Auth buttons */}
             <div className="flex items-center gap-2">
               <Button
                 variant="ghost"
                 size="sm"
-                onClick={() => router.push('/auth?mode=login')}
+                onClick={() => router.push('/auth/login')}
+                className={isDark ? 'text-gray-300' : 'text-gray-600'}
               >
                 <LogIn className="w-4 h-4 mr-2" />
-                Login
+                <span className="hidden sm:inline">Connexion</span>
               </Button>
               <Button
                 size="sm"
-                onClick={() => router.push('/auth?mode=signup')}
-                className="text-white font-semibold hover:brightness-110"
-                style={{ background: '#ff9811' }}
+                onClick={() => router.push('/auth/signup')}
+                className="text-white font-semibold hover:brightness-110 superellipse-lg"
+                style={{ background: SEARCHER_COLORS.primary }}
               >
                 <UserPlus className="w-4 h-4 mr-2" />
-                Create account
+                <span className="hidden sm:inline">Créer un compte</span>
               </Button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* View Tabs - Main Navigation */}
-      <div className="bg-white border-b border-gray-200 sticky top-[65px] z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex justify-center">
-            <div className="relative inline-flex items-center bg-gray-100 superellipse-2xl p-1.5">
-              {/* Sliding pill background */}
-              <motion.div
-                className="absolute top-1.5 bottom-1.5 superellipse-xl shadow-lg"
-                style={{
-                  background: activeView === 'searcher' ? '#ff9811' : activeView === 'resident' ? '#e05747' : '#ad5684'
-                }}
-                initial={false}
-                animate={{
-                  left: activeView === 'searcher' ? '6px' : activeView === 'resident' ? 'calc(33.33% + 2px)' : 'calc(66.66% - 2px)',
-                  width: 'calc(33.33% - 4px)',
-                }}
-                transition={{
-                  type: 'spring',
-                  stiffness: 400,
-                  damping: 30,
-                }}
-              />
+      {/* Hero Section with V3-fun glassmorphism */}
+      <section className="relative py-16 px-4 overflow-hidden">
+        {/* Background gradient blob */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[600px] blur-3xl opacity-30"
+          style={{ background: `radial-gradient(ellipse at center, ${SEARCHER_COLORS.primary} 0%, transparent 70%)` }}
+        />
 
-              {viewTabs.map((tab) => {
-                const Icon = tab.icon;
-                const isActive = activeView === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    onClick={() => setActiveView(tab.id)}
-                    className={cn(
-                      "relative z-10 px-6 py-3 superellipse-xl flex items-center gap-2 transition-all font-medium text-sm min-w-[140px] justify-center",
-                      isActive ? 'text-white' : 'text-gray-600 hover:text-gray-900'
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          {/* Glassmorphism container */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="superellipse-3xl p-8 md:p-12 mb-8"
+            style={{
+              background: isDark
+                ? 'linear-gradient(135deg, rgba(255, 160, 0, 0.12) 0%, rgba(255, 160, 0, 0.06) 100%)'
+                : 'linear-gradient(135deg, rgba(255, 160, 0, 0.18) 0%, rgba(255, 251, 235, 0.9) 100%)',
+              backdropFilter: 'blur(40px) saturate(180%)',
+              WebkitBackdropFilter: 'blur(40px) saturate(180%)',
+              boxShadow: isDark
+                ? 'inset 0 0 60px rgba(255, 160, 0, 0.1), 0 20px 60px -20px rgba(0, 0, 0, 0.4)'
+                : 'inset 0 0 60px rgba(255, 255, 255, 0.5), 0 20px 60px -20px rgba(255, 160, 0, 0.2)',
+              border: isDark
+                ? '1px solid rgba(255, 160, 0, 0.15)'
+                : '1px solid rgba(255, 255, 255, 0.6)',
+            }}
+          >
+            <h1 className={`text-4xl md:text-5xl font-bold mb-4 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              Trouve ton{' '}
+              <span style={{ color: SEARCHER_COLORS.primary }}>co-living</span>{' '}
+              idéal
+            </h1>
+            <p className={`text-lg mb-8 ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>
+              Explore les propriétés disponibles à Bruxelles et trouve ta future colocation
+            </p>
+
+            {/* Search Bar */}
+            <div className={`flex flex-col sm:flex-row gap-3 max-w-2xl mx-auto p-3 superellipse-2xl ${isDark ? 'bg-gray-900/80' : 'bg-white/90'} shadow-xl`}>
+              <div className="relative flex-1">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
+                <Input
+                  type="text"
+                  placeholder="Rechercher par ville ou quartier..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className={`pl-10 h-12 superellipse-xl border-2 focus:border-[#ffa000] ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'}`}
+                />
+              </div>
+              <Button
+                onClick={() => setShowFilters(!showFilters)}
+                className="h-12 gap-2 superellipse-xl text-white font-semibold"
+                style={{ background: SEARCHER_COLORS.primary }}
+              >
+                <SlidersHorizontal className="w-4 h-4" />
+                Filtres
+              </Button>
+            </div>
+
+            {/* Filters Panel */}
+            <AnimatePresence>
+              {showFilters && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className={`mt-4 p-4 superellipse-xl max-w-2xl mx-auto ${isDark ? 'bg-gray-900/80' : 'bg-white/90'} shadow-lg`}
+                >
+                  <div className="flex flex-wrap items-center justify-center gap-4">
+                    <div className="flex items-center gap-2">
+                      <Euro className="w-4 h-4" style={{ color: SEARCHER_COLORS.primary }} />
+                      <Input
+                        type="number"
+                        placeholder="Min €"
+                        value={minBudget}
+                        onChange={(e) => setMinBudget(e.target.value)}
+                        className={`w-24 h-10 superellipse-lg ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'}`}
+                      />
+                      <span className="text-gray-400">-</span>
+                      <Input
+                        type="number"
+                        placeholder="Max €"
+                        value={maxBudget}
+                        onChange={(e) => setMaxBudget(e.target.value)}
+                        className={`w-24 h-10 superellipse-lg ${isDark ? 'bg-gray-800 border-gray-700' : 'bg-gray-50 border-gray-200'}`}
+                      />
+                    </div>
+                    {(minBudget || maxBudget || searchQuery) && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => {
+                          setSearchQuery('');
+                          setMinBudget('');
+                          setMaxBudget('');
+                        }}
+                        className="text-gray-500"
+                      >
+                        <X className="w-4 h-4 mr-1" />
+                        Effacer
+                      </Button>
                     )}
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span className="hidden sm:inline">{tab.label}</span>
-                  </button>
-                );
-              })}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Value Props */}
+          <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
+            {[
+              { icon: Shield, label: 'Annonces vérifiées' },
+              { icon: Users, label: 'Colocs compatibles' },
+              { icon: Zap, label: 'Matching intelligent' },
+            ].map((prop, idx) => (
+              <motion.div
+                key={prop.label}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 + idx * 0.1 }}
+                className={`flex flex-col items-center gap-2 p-3 superellipse-xl ${isDark ? 'bg-gray-900/50' : 'bg-white/70'}`}
+              >
+                <prop.icon className="w-5 h-5" style={{ color: SEARCHER_COLORS.primary }} />
+                <span className={`text-xs font-medium ${isDark ? 'text-gray-300' : 'text-gray-700'}`}>{prop.label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Properties Grid */}
+      <main className="max-w-7xl mx-auto px-4 pb-32">
+        {/* Results Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className={`text-2xl font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              Propriétés disponibles
+            </h2>
+            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              {filteredProperties.length} {filteredProperties.length === 1 ? 'résultat' : 'résultats'}
+            </p>
+          </div>
+          <Button
+            onClick={() => router.push('/auth/signup')}
+            variant="outline"
+            className="gap-2 superellipse-lg"
+            style={{ borderColor: SEARCHER_COLORS.primary, color: SEARCHER_COLORS.dark }}
+          >
+            <Sparkles className="w-4 h-4" />
+            Voir mon % de match
+          </Button>
+        </div>
+
+        {/* Loading State */}
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[...Array(6)].map((_, idx) => (
+              <div
+                key={idx}
+                className={`superellipse-2xl overflow-hidden ${isDark ? 'bg-gray-900' : 'bg-white'} shadow-sm`}
+              >
+                <div className={`h-48 ${isDark ? 'bg-gray-800' : 'bg-gray-100'} animate-pulse`} />
+                <div className="p-4 space-y-3">
+                  <div className={`h-5 ${isDark ? 'bg-gray-800' : 'bg-gray-100'} superellipse-lg animate-pulse w-3/4`} />
+                  <div className={`h-4 ${isDark ? 'bg-gray-800' : 'bg-gray-100'} superellipse-lg animate-pulse w-1/2`} />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : filteredProperties.length === 0 ? (
+          /* Empty State */
+          <div className={`text-center py-16 superellipse-3xl ${isDark ? 'bg-gray-900' : 'bg-white'}`}>
+            <Home className={`w-16 h-16 mx-auto mb-4 ${isDark ? 'text-gray-700' : 'text-gray-300'}`} />
+            <h3 className={`text-xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              Aucune propriété trouvée
+            </h3>
+            <p className={isDark ? 'text-gray-400' : 'text-gray-600'}>
+              Essaie d'ajuster tes filtres de recherche
+            </p>
+          </div>
+        ) : (
+          <>
+            {/* Properties Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredProperties.map((property, idx) => (
+                <motion.div
+                  key={property.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.05 }}
+                  onClick={() => handlePropertyClick(property.id)}
+                  className={`group cursor-pointer superellipse-2xl overflow-hidden border-2 transition-all duration-300 hover:shadow-xl ${
+                    isDark
+                      ? 'bg-gray-900 border-gray-800 hover:border-[#ffa000]/30'
+                      : 'bg-white border-gray-100 hover:border-[#ffa000]/40'
+                  }`}
+                  style={{
+                    boxShadow: isDark
+                      ? '0 4px 20px rgba(0, 0, 0, 0.3)'
+                      : '0 4px 20px rgba(255, 160, 0, 0.08)',
+                  }}
+                >
+                  {/* Property Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    {property.images && property.images.length > 0 ? (
+                      <img
+                        src={property.images[0]}
+                        alt={property.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center"
+                        style={{ background: isDark ? SEARCHER_COLORS.cardDark : SEARCHER_COLORS.card }}
+                      >
+                        <Home className="w-12 h-12" style={{ color: SEARCHER_COLORS.subtle }} />
+                      </div>
+                    )}
+
+                    {/* Matching Teaser Badge - V3-fun style */}
+                    <div
+                      className="absolute top-3 left-3 px-3 py-1.5 superellipse-xl text-sm font-bold shadow-lg flex items-center gap-1.5 cursor-pointer"
+                      style={{
+                        background: SEARCHER_COLORS.matchingTeaser,
+                        color: 'white',
+                        backdropFilter: 'blur(8px)',
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleLockedFeature('Crée ton compte pour voir ton % de compatibilité avec ce bien');
+                      }}
+                    >
+                      <span className="blur-[2px] select-none">{getFakeMatchScore(property.id)}%</span>
+                      <span className="text-xs opacity-80">Match</span>
+                      <Lock className="w-3 h-3 opacity-70" />
+                    </div>
+
+                    {/* Favorite button */}
+                    <button
+                      className="absolute top-3 right-3 w-9 h-9 superellipse-lg flex items-center justify-center bg-white/90 backdrop-blur-md shadow-lg hover:scale-110 transition-transform"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleLockedFeature('Crée ton compte pour sauvegarder tes favoris');
+                      }}
+                    >
+                      <Heart className="w-5 h-5 text-gray-400" />
+                    </button>
+
+                    {/* Price Badge */}
+                    <div className="absolute bottom-3 left-3">
+                      <div
+                        className="px-3 py-1.5 superellipse-xl backdrop-blur-md font-bold text-white shadow-lg"
+                        style={{ background: SEARCHER_COLORS.gradient }}
+                      >
+                        {property.monthly_rent}€<span className="text-sm font-normal opacity-80">/mois</span>
+                      </div>
+                    </div>
+
+                    {/* Location on image */}
+                    <div className="absolute bottom-3 right-3 flex items-center gap-1.5 text-white text-sm font-medium drop-shadow-lg">
+                      <MapPin className="w-4 h-4" />
+                      <span>{property.city}</span>
+                    </div>
+                  </div>
+
+                  {/* Property Info */}
+                  <div className="p-4">
+                    <h3 className={`font-bold text-lg mb-2 line-clamp-1 group-hover:text-[#ffa000] transition-colors ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                      {property.title}
+                    </h3>
+
+                    <div className={`flex items-center gap-1 text-sm mb-3 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      <MapPin className="w-4 h-4" />
+                      <span>
+                        {property.neighborhood ? `${property.neighborhood}, ` : ''}
+                        {property.city}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className={`flex items-center gap-4 text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                        {property.bedrooms && (
+                          <div className="flex items-center gap-1">
+                            <Bed className="w-4 h-4" />
+                            <span>{property.bedrooms}</span>
+                          </div>
+                        )}
+                        {property.bathrooms && (
+                          <div className="flex items-center gap-1">
+                            <Bath className="w-4 h-4" />
+                            <span>{property.bathrooms}</span>
+                          </div>
+                        )}
+                      </div>
+
+                      <div
+                        className="w-8 h-8 superellipse-lg flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                        style={{ background: SEARCHER_COLORS.badgeBg }}
+                      >
+                        <ArrowRight className="w-4 h-4" style={{ color: SEARCHER_COLORS.primary }} />
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            {/* Inline CTA after 3rd property */}
+            {filteredProperties.length >= 3 && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mt-8 p-6 superellipse-2xl text-center"
+                style={{
+                  background: isDark
+                    ? 'linear-gradient(135deg, rgba(255, 160, 0, 0.15) 0%, rgba(255, 160, 0, 0.08) 100%)'
+                    : 'linear-gradient(135deg, rgba(255, 160, 0, 0.12) 0%, rgba(255, 251, 235, 0.8) 100%)',
+                  border: `2px dashed ${SEARCHER_COLORS.primary}40`,
+                }}
+              >
+                <Sparkles className="w-8 h-8 mx-auto mb-3" style={{ color: SEARCHER_COLORS.primary }} />
+                <h3 className={`text-lg font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  Découvre ton score de compatibilité
+                </h3>
+                <p className={`text-sm mb-4 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Crée ton Living Persona et vois quels biens matchent vraiment avec toi
+                </p>
+                <Button
+                  onClick={() => router.push('/auth/signup')}
+                  className="text-white font-semibold superellipse-xl"
+                  style={{ background: SEARCHER_COLORS.gradient }}
+                >
+                  <UserPlus className="w-4 h-4 mr-2" />
+                  Créer mon profil gratuit
+                </Button>
+              </motion.div>
+            )}
+          </>
+        )}
+
+        {/* Bottom CTA Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mt-12 p-8 superellipse-3xl text-center relative overflow-hidden"
+          style={{ background: SIGNATURE_GRADIENT }}
+        >
+          {/* Decorative elements */}
+          <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2" />
+          <div className="absolute bottom-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl translate-x-1/2 translate-y-1/2" />
+
+          <div className="relative z-10">
+            <Sparkles className="w-12 h-12 text-white mx-auto mb-4" />
+            <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">
+              Prêt à trouver ton co-living idéal ?
+            </h3>
+            <p className="text-white/90 mb-6 max-w-lg mx-auto">
+              Crée ton compte gratuit pour accéder au matching intelligent, sauvegarder tes favoris et contacter les propriétaires.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                size="lg"
+                onClick={() => router.push('/auth/signup')}
+                className="bg-white text-gray-900 hover:bg-gray-100 font-semibold superellipse-xl"
+              >
+                <UserPlus className="w-5 h-5 mr-2" />
+                Créer mon compte gratuit
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                onClick={() => router.push('/auth/login')}
+                className="border-2 border-white text-white hover:bg-white/10 superellipse-xl"
+              >
+                J'ai déjà un compte
+              </Button>
             </div>
           </div>
-
-          {/* Tab description */}
-          <AnimatePresence mode="wait">
-            <motion.p
-              key={activeView}
-              initial={{ opacity: 0, y: 5 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -5 }}
-              className="text-center text-gray-600 mt-3 text-sm"
-            >
-              {viewTabs.find(t => t.id === activeView)?.description}
-            </motion.p>
-          </AnimatePresence>
-        </div>
-      </div>
-
-      {/* Content based on active view */}
-      <main className="max-w-7xl mx-auto px-4 py-6">
-        <AnimatePresence mode="wait">
-          {activeView === 'searcher' && (
-            <SearcherGuestView
-              key="searcher"
-              onLockedFeature={handleLockedFeature}
-              router={router}
-              searchCriteria={searchCriteria}
-            />
-          )}
-          {activeView === 'resident' && (
-            <ResidentGuestView
-              key="resident"
-              onLockedFeature={handleLockedFeature}
-              router={router}
-            />
-          )}
-          {activeView === 'owner' && (
-            <OwnerGuestView
-              key="owner"
-              onLockedFeature={handleLockedFeature}
-              router={router}
-            />
-          )}
-        </AnimatePresence>
+        </motion.div>
       </main>
 
-      {/* Bottom CTA Bar - Fixed */}
-      <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 p-4 z-50">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
+      {/* Fixed Bottom CTA Bar */}
+      <div className={`fixed bottom-0 left-0 right-0 z-50 backdrop-blur-xl border-t ${isDark ? 'bg-gray-950/95 border-gray-800' : 'bg-white/95 border-gray-200'}`}>
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="hidden sm:block">
-            <p className="font-semibold text-gray-900">Ready to start?</p>
-            <p className="text-sm text-gray-600">Create your account for free in 2 minutes</p>
+            <p className={`font-semibold ${isDark ? 'text-white' : 'text-gray-900'}`}>Prêt à commencer ?</p>
+            <p className={`text-sm ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+              Crée ton compte gratuit en 2 minutes
+            </p>
           </div>
           <div className="flex gap-3 w-full sm:w-auto">
             <Button
-              onClick={() => router.push('/auth?mode=signup')}
-              className="flex-1 sm:flex-none text-white font-semibold hover:brightness-110"
-              style={{ background: '#ff9811' }}
+              onClick={() => router.push('/auth/signup')}
+              className="flex-1 sm:flex-none text-white font-semibold hover:brightness-110 superellipse-xl"
+              style={{ background: SEARCHER_COLORS.gradient }}
               size="lg"
             >
               <UserPlus className="w-5 h-5 mr-2" />
-              Create my account
+              Créer mon compte
             </Button>
           </div>
         </div>
@@ -307,12 +616,12 @@ function GuestPageContent() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white superellipse-3xl max-w-md w-full p-8 relative"
+              className={`superellipse-3xl max-w-md w-full p-8 relative ${isDark ? 'bg-gray-900' : 'bg-white'}`}
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setShowSignupModal(false)}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+                className={`absolute top-4 right-4 ${isDark ? 'text-gray-400 hover:text-gray-200' : 'text-gray-400 hover:text-gray-600'}`}
               >
                 <X className="w-6 h-6" />
               </button>
@@ -320,47 +629,47 @@ function GuestPageContent() {
               <div className="text-center">
                 <div
                   className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4"
-                  style={{ background: '#ff981120' }}
+                  style={{ background: SEARCHER_COLORS.badgeBg }}
                 >
-                  <Lock className="w-8 h-8" style={{ color: '#ff9811' }} />
+                  <Lock className="w-8 h-8" style={{ color: SEARCHER_COLORS.primary }} />
                 </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  Premium Feature
+                <h3 className={`text-2xl font-bold mb-2 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+                  Fonctionnalité Premium
                 </h3>
-                <p className="text-gray-600 mb-6">
-                  {lockedFeatureMessage || 'Create a free account to unlock this feature and much more!'}
+                <p className={`mb-6 ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                  {lockedFeatureMessage || 'Crée un compte gratuit pour débloquer cette fonctionnalité et bien plus encore !'}
                 </p>
 
                 <div className="space-y-3 mb-6 text-left">
                   {[
-                    'Smart matching with roommates',
-                    'Messaging with property owners',
-                    'Save your favorites',
-                    'Personalized alerts',
+                    'Matching intelligent avec les colocs',
+                    'Messagerie avec les propriétaires',
+                    'Sauvegarde tes favoris',
+                    'Alertes personnalisées',
                   ].map((benefit, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm">
                       <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0" />
-                      <span className="text-gray-700">{benefit}</span>
+                      <span className={isDark ? 'text-gray-300' : 'text-gray-700'}>{benefit}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="flex flex-col gap-3">
                   <Button
-                    onClick={() => router.push('/auth?mode=signup')}
-                    className="w-full text-white font-semibold hover:brightness-110"
-                    style={{ background: '#ff9811' }}
+                    onClick={() => router.push('/auth/signup')}
+                    className="w-full text-white font-semibold hover:brightness-110 superellipse-xl"
+                    style={{ background: SEARCHER_COLORS.gradient }}
                     size="lg"
                   >
                     <UserPlus className="w-5 h-5 mr-2" />
-                    Create my free account
+                    Créer mon compte gratuit
                   </Button>
                   <Button
-                    onClick={() => router.push('/auth?mode=login')}
+                    onClick={() => router.push('/auth/login')}
                     variant="outline"
-                    className="w-full"
+                    className="w-full superellipse-xl"
                   >
-                    I already have an account
+                    J'ai déjà un compte
                   </Button>
                 </div>
               </div>
@@ -369,644 +678,35 @@ function GuestPageContent() {
         )}
       </AnimatePresence>
 
-      {/* Spacer for fixed bottom bar */}
-      <div className="h-24" />
+      {/* Footer */}
+      <div className="pb-20">
+        <Footer />
+      </div>
     </div>
-  );
-}
-
-// Searcher Guest View
-function SearcherGuestView({
-  onLockedFeature,
-  router,
-  searchCriteria,
-}: {
-  onLockedFeature: (msg: string) => void;
-  router: any;
-  searchCriteria: SearchCriteria;
-}) {
-  const hasSearchCriteria = searchCriteria.location || searchCriteria.budgetMin || searchCriteria.budgetMax || searchCriteria.moveInDate;
-
-  // Format move-in date for display
-  const formatDate = (dateStr: string | null) => {
-    if (!dateStr) return null;
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' });
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-6"
-    >
-      {/* Search Criteria Banner - Only show if criteria exist */}
-      {hasSearchCriteria && (
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="bg-white superellipse-2xl shadow-sm p-4"
-          style={{ borderColor: '#ff981140', border: '1px solid' }}
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: '#ff9811' }}
-            >
-              <Search className="w-4 h-4 text-white" />
-            </div>
-            <h3 className="font-semibold text-gray-900">Your search</h3>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            {searchCriteria.location && (
-              <Badge variant="default" className="flex items-center gap-1.5 px-3 py-1.5" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
-                <MapPin className="w-3.5 h-3.5" />
-                {searchCriteria.location}
-              </Badge>
-            )}
-            {(searchCriteria.budgetMin || searchCriteria.budgetMax) && (
-              <Badge variant="default" className="flex items-center gap-1.5 px-3 py-1.5" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
-                <Euro className="w-3.5 h-3.5" />
-                {searchCriteria.budgetMin && searchCriteria.budgetMax
-                  ? `${searchCriteria.budgetMin}€ - ${searchCriteria.budgetMax}€`
-                  : searchCriteria.budgetMin
-                    ? `Min ${searchCriteria.budgetMin}€`
-                    : `Max ${searchCriteria.budgetMax}€`
-                }
-              </Badge>
-            )}
-            {searchCriteria.moveInDate && (
-              <Badge variant="default" className="flex items-center gap-1.5 px-3 py-1.5" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
-                <Calendar className="w-3.5 h-3.5" />
-                {formatDate(searchCriteria.moveInDate)}
-              </Badge>
-            )}
-          </div>
-          <p className="text-sm text-gray-500 mt-3">
-            <Sparkles className="w-4 h-4 inline mr-1" style={{ color: '#ff9811' }} />
-            Create an account to save your search and receive alerts
-          </p>
-        </motion.div>
-      )}
-
-      {/* Fake Dashboard Compact */}
-      <div className="relative overflow-hidden superellipse-3xl shadow-xl p-4" style={{ background: 'linear-gradient(135deg, #ff9811 0%, #FFB85C 100%)' }}>
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }} />
-
-        <div className="relative z-10">
-          {/* Profile header */}
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 superellipse-xl bg-white/30 flex items-center justify-center border-2 border-white/50">
-                <span className="text-white text-lg font-bold">?</span>
-              </div>
-              <div>
-                <h1 className="text-base font-bold text-white drop-shadow-md">
-                  {hasSearchCriteria ? 'Search results' : 'Welcome!'}
-                </h1>
-                <p className="text-xs text-white/90 drop-shadow-sm">
-                  {hasSearchCriteria
-                    ? `${mockProperties.length} matching properties`
-                    : 'Discover Izzico in guest mode'
-                  }
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* KPI Grid */}
-          <div className="grid grid-cols-4 gap-2 mb-3">
-            {[
-              { icon: Users, label: 'Groups', value: '?', locked: true },
-              { icon: Bookmark, label: 'Favorites', value: '?', locked: true },
-              { icon: MessageCircle, label: 'Messages', value: '?', locked: true },
-              { icon: Target, label: 'Profile', value: '0%', locked: false },
-            ].map((item, idx) => {
-              const Icon = item.icon;
-              return (
-                <button
-                  key={idx}
-                  onClick={() => item.locked && onLockedFeature('Create your account to access this feature')}
-                  className={cn(
-                    "bg-white/25 backdrop-blur-sm superellipse-xl py-2.5 px-2 transition text-center shadow-sm relative",
-                    item.locked && "cursor-pointer hover:bg-white/35"
-                  )}
-                >
-                  {item.locked && (
-                    <div className="absolute top-1 right-1">
-                      <Lock className="w-3 h-3 text-white/70" />
-                    </div>
-                  )}
-                  <Icon className="w-5 h-5 text-white mx-auto mb-0.5 drop-shadow-sm" />
-                  <p className="text-xl font-bold text-white drop-shadow-md">{item.value}</p>
-                  <p className="text-[10px] text-white font-medium drop-shadow-sm">{item.label}</p>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Search preferences teaser */}
-          <div className="bg-white/20 backdrop-blur-sm superellipse-xl p-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2.5">
-                <Target className="w-4 h-4 text-white drop-shadow-sm" />
-                <div className="text-left">
-                  <p className="text-sm font-semibold text-white drop-shadow-md">My Search</p>
-                  <p className="text-xs text-white/90 font-medium drop-shadow-sm">
-                    {hasSearchCriteria ? 'Active criteria' : 'Configure your preferences'}
-                  </p>
-                </div>
-              </div>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => onLockedFeature('Create your account to configure your search preferences')}
-                className="text-white hover:bg-white/20"
-              >
-                <Lock className="w-3 h-3 mr-1" />
-                {hasSearchCriteria ? 'Edit' : 'Configure'}
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Properties Section */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-gray-900">Available properties</h2>
-          <Badge variant="default" style={{ background: '#ff981120', color: '#ff9811', borderColor: '#ff981140' }}>
-            Limited preview
-          </Badge>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {mockProperties.map((property, idx) => (
-            <motion.div
-              key={property.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              className="bg-white superellipse-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
-            >
-              {/* Property Image */}
-              <div className="relative h-40" style={{ background: '#ff981120' }}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Home className="w-12 h-12" style={{ color: '#ff981160' }} />
-                </div>
-                {/* Compatibility Badge - Blurred */}
-                <div className="absolute top-3 right-3">
-                  <div
-                    className="px-3 py-1.5 superellipse-xl flex items-center gap-1.5 cursor-pointer"
-                    style={{ background: '#ff9811' }}
-                    onClick={() => onLockedFeature('Create your account to see your compatibility score')}
-                  >
-                    <Sparkles className="w-3.5 h-3.5 text-white" />
-                    <span className="text-white font-bold text-sm blur-[3px]">{property.compatibility_score}%</span>
-                    <Lock className="w-3 h-3 text-white/80" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Property Info */}
-              <div className="p-4">
-                <h3 className="font-bold text-gray-900 mb-1">{property.title}</h3>
-                <div className="flex items-center gap-1 text-sm text-gray-600 mb-3">
-                  <MapPin className="w-4 h-4" />
-                  <span>{property.neighborhood}, {property.city}</span>
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <div className="flex items-center gap-1">
-                      <Bed className="w-4 h-4" />
-                      {property.bedrooms}
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Bath className="w-4 h-4" />
-                      {property.bathrooms}
-                    </div>
-                  </div>
-                  <p className="text-lg font-bold" style={{ color: '#ff9811' }}>
-                    {property.monthly_rent}€<span className="text-sm font-normal text-gray-500">/mois</span>
-                  </p>
-                </div>
-
-                {/* Action buttons */}
-                <div className="flex gap-2 mt-4">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="flex-1"
-                    onClick={() => onLockedFeature('Create your account to save favorites')}
-                  >
-                    <Heart className="w-4 h-4 mr-1" />
-                    Favorite
-                  </Button>
-                  <Button
-                    size="sm"
-                    className="flex-1 text-white hover:brightness-110"
-                    style={{ background: '#ff9811' }}
-                    onClick={() => onLockedFeature('Create your account to contact the owner')}
-                  >
-                    Contact
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Matching Section - Teaser */}
-      <div className="relative overflow-hidden superellipse-3xl p-6" style={{ background: 'linear-gradient(135deg, #ff981115, #e0574715)', borderColor: '#ff981140', border: '1px solid' }}>
-        <div className="flex flex-col lg:flex-row items-center gap-6">
-          <div className="flex-1">
-            <div className="flex items-center gap-2 mb-3">
-              <div
-                className="w-10 h-10 superellipse-xl flex items-center justify-center"
-                style={{ background: 'linear-gradient(135deg, #e05747, #ff9811)' }}
-              >
-                <Users className="w-5 h-5 text-white" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">Resident Swipe : trouve tes futurs colocs</h3>
-              <Lock className="w-5 h-5" style={{ color: '#ff9811' }} />
-            </div>
-            <p className="text-gray-600 mb-4">
-              Swipe pour découvrir des profils vérifiés avec un score de compatibilité basé sur vos rythmes de vie et vos valeurs. Compatible ? Matche et discute. Incompatible ? Next. Simple, rapide, efficace.
-            </p>
-            <Button
-              onClick={() => onLockedFeature('Create your account to access Living Match and Resident Swipe')}
-              className="text-white font-semibold hover:brightness-110"
-              style={{ background: 'linear-gradient(135deg, #e05747, #ff9811)' }}
-            >
-              <Sparkles className="w-4 h-4 mr-2" />
-              Découvrir le matching
-            </Button>
-          </div>
-
-          {/* Mini profile cards preview */}
-          <div className="relative w-64 h-40">
-            {mockRoommates.slice(0, 3).map((mate, idx) => (
-              <div
-                key={mate.id}
-                className={cn(
-                  "absolute w-48 h-32 bg-white superellipse-2xl shadow-lg p-3 border border-gray-200",
-                  idx === 0 && "top-0 left-0 rotate-[-6deg] z-10",
-                  idx === 1 && "top-2 left-4 rotate-[3deg] z-20",
-                  idx === 2 && "top-4 left-8 rotate-[-2deg] z-30"
-                )}
-              >
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
-                    style={{ background: '#ff981140', color: '#ff9811' }}
-                  >
-                    {mate.name.charAt(0)}
-                  </div>
-                  <div>
-                    <p className="font-semibold text-sm text-gray-900">{mate.name}</p>
-                    <p className="text-xs text-gray-500">{mate.occupation}</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full w-fit blur-[2px]">
-                  <Sparkles className="w-3 h-3" />
-                  <span>{mate.score}% match</span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// Resident Guest View
-function ResidentGuestView({
-  onLockedFeature,
-  router,
-}: {
-  onLockedFeature: (msg: string) => void;
-  router: any;
-}) {
-  const kpiCards = [
-    { title: 'Monthly Rent', value: '€???/???', icon: Home, locked: true },
-    { title: 'Shared Expenses', value: '€???', icon: DollarSign, locked: true },
-    { title: 'Your Balance', value: '€???', icon: TrendingUp, locked: true },
-    { title: 'Roommates', value: '?', icon: Users, locked: true },
-  ];
-
-  const features = [
-    {
-      icon: DollarSign,
-      title: 'Smart Split',
-      description: 'Scanne ton ticket avec ton téléphone. Split & Scan calcule automatiquement qui paie quoi. Fini les prises de tête sur les factures — tout est clair, tout est juste.',
-    },
-    {
-      icon: Calendar,
-      title: 'Smart Rotation',
-      description: 'Les tâches tournent automatiquement — fini les disputes',
-    },
-    {
-      icon: MessageCircle,
-      title: 'Living Rules',
-      description: 'Votez démocratiquement vos règles de maison',
-    },
-    {
-      icon: Wrench,
-      title: 'Issue Hub',
-      description: "Une fuite ? Un problème de chauffage ? Crée un ticket en 2 clics avec photos. Ton propriétaire reçoit la demande, te répond et suit l'avancement. Tout est tracé, tout est transparent.",
-    },
-  ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-6"
-    >
-      {/* Intro */}
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Simplifie ton quotidien en co-living
-        </h2>
-        <p className="text-gray-600">
-          Partage des dépenses, tâches rotatives, communication fluide.
-        </p>
-      </div>
-
-      {/* KPI Cards Preview */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {kpiCards.map((card, idx) => {
-          const Icon = card.icon;
-          return (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              onClick={() => onLockedFeature('Create your account to access the resident dashboard')}
-              className="relative overflow-hidden superellipse-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
-            >
-              <div className="absolute top-2 right-2">
-                <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#e05747' }} />
-              </div>
-
-              <div className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3" style={{ background: '#e0574720' }}>
-                <Icon className="w-5 h-5" style={{ color: '#e05747' }} />
-              </div>
-
-              <p className="text-xs font-medium text-gray-500 mb-1">{card.title}</p>
-              <p className="text-xl font-bold text-gray-900 blur-[4px]">{card.value}</p>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {features.map((feature, idx) => {
-          const Icon = feature.icon;
-          return (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + idx * 0.1 }}
-              onClick={() => onLockedFeature(`Create your account to access "${feature.title}"`)}
-              className="bg-white superellipse-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
-              style={{ borderColor: '#e0574740' }}
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#e0574720' }}>
-                  <Icon className="w-6 h-6" style={{ color: '#e05747' }} />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-bold text-gray-900">{feature.title}</h3>
-                    <Lock className="w-4 h-4" style={{ color: '#e05747' }} />
-                  </div>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Mock Residence Card */}
-      <div className="relative overflow-hidden superellipse-3xl p-6" style={{ background: '#e0574710', borderColor: '#e0574740', border: '1px solid' }}>
-        <div className="flex flex-col md:flex-row gap-6 items-center">
-          {/* Property preview */}
-          <div className="w-full md:w-64 h-40 superellipse-2xl flex items-center justify-center" style={{ background: '#e0574740' }}>
-            <Home className="w-16 h-16" style={{ color: '#e05747' }} />
-          </div>
-
-          <div className="flex-1 text-center md:text-left">
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Your future residence</h3>
-            <p className="text-gray-600 mb-4">
-              Once you have joined a co-living, you will be able to manage your entire
-              co-living life from this dashboard: expenses, tasks, communications...
-            </p>
-            <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              {['Rent management', 'Shared tasks', 'Group chat', 'Events'].map((tag) => (
-                <Badge key={tag} variant="default" style={{ background: '#e0574720', color: '#e05747', borderColor: '#e0574740' }}>
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// Owner Guest View
-function OwnerGuestView({
-  onLockedFeature,
-  router,
-}: {
-  onLockedFeature: (msg: string) => void;
-  router: any;
-}) {
-  const kpiCards = [
-    { title: 'Monthly Revenue', value: '€???', change: '+??%', icon: DollarSign },
-    { title: 'Properties', value: '?', subtitle: '? published', icon: Building2 },
-    { title: 'Occupancy Rate', value: '??%', change: '+?%', icon: TrendingUp },
-    { title: 'Applications', value: '?', subtitle: 'Pending', icon: Users },
-  ];
-
-  const features = [
-    {
-      icon: Building2,
-      title: 'Property management',
-      description: 'Publish and manage all your co-living listings in one place',
-    },
-    {
-      icon: Users,
-      title: 'Resident Match',
-      description: 'Reçois uniquement des candidatures compatibles avec tes résidents actuels. Resident Match analyse chaque profil et te présente les meilleurs matchs — mêmes valeurs, mêmes rythmes. Moins de tri, plus de qualité.',
-    },
-    {
-      icon: DollarSign,
-      title: 'Financial tracking',
-      description: 'View your revenue, expenses and profitability in real time',
-    },
-    {
-      icon: MessageCircle,
-      title: 'Communication',
-      description: 'Easily exchange with your current and potential tenants',
-    },
-  ];
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -20 }}
-      transition={{ duration: 0.3 }}
-      className="space-y-6"
-    >
-      {/* Intro */}
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Gère ton portfolio de co-living
-        </h2>
-        <p className="text-gray-600">
-          Candidatures qualifiées, résidents heureux, gestion simplifiée.
-        </p>
-      </div>
-
-      {/* KPI Cards Preview */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {kpiCards.map((card, idx) => {
-          const Icon = card.icon;
-          return (
-            <motion.div
-              key={card.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              onClick={() => onLockedFeature('Create your owner account to access the dashboard')}
-              className="relative overflow-hidden superellipse-2xl bg-white p-4 shadow-sm border border-gray-200 cursor-pointer hover:shadow-md transition-all group"
-            >
-              <div className="absolute top-2 right-2">
-                <Lock className="w-4 h-4 group-hover:scale-110 transition" style={{ color: '#ad5684' }} />
-              </div>
-
-              <div className="w-10 h-10 superellipse-xl flex items-center justify-center mb-3" style={{ background: '#ad568420' }}>
-                <Icon className="w-5 h-5" style={{ color: '#ad5684' }} />
-              </div>
-
-              <p className="text-xs font-medium text-gray-500 mb-1">{card.title}</p>
-              <p className="text-xl font-bold text-gray-900 blur-[4px]">{card.value}</p>
-              {card.change && (
-                <p className="text-xs text-green-600 font-medium blur-[3px]">{card.change}</p>
-              )}
-              {card.subtitle && (
-                <p className="text-xs text-gray-500">{card.subtitle}</p>
-              )}
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Features Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {features.map((feature, idx) => {
-          const Icon = feature.icon;
-          return (
-            <motion.div
-              key={feature.title}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + idx * 0.1 }}
-              onClick={() => onLockedFeature(`Create your account to access "${feature.title}"`)}
-              className="bg-white superellipse-2xl p-5 shadow-sm border cursor-pointer hover:shadow-md transition-all group"
-              style={{ borderColor: '#ad568440' }}
-            >
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 superellipse-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition" style={{ background: '#ad568420' }}>
-                  <Icon className="w-6 h-6" style={{ color: '#ad5684' }} />
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <h3 className="font-bold text-gray-900">{feature.title}</h3>
-                    <Lock className="w-4 h-4" style={{ color: '#ad5684' }} />
-                  </div>
-                  <p className="text-sm text-gray-600">{feature.description}</p>
-                </div>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
-
-      {/* Add Property CTA */}
-      <div className="relative overflow-hidden superellipse-3xl p-8 text-center" style={{ background: '#ad568410', borderColor: '#ad568440', border: '1px solid' }}>
-        <div className="max-w-md mx-auto">
-          <div className="w-16 h-16 superellipse-2xl flex items-center justify-center mx-auto mb-4" style={{ background: '#ad5684' }}>
-            <Plus className="w-8 h-8 text-white" />
-          </div>
-          <h3 className="text-xl font-bold text-gray-900 mb-2">
-            Start publishing your properties
-          </h3>
-          <p className="text-gray-600 mb-6">
-            Create your owner account and publish your first listing for free.
-            Reach thousands of potential roommates.
-          </p>
-          <Button
-            onClick={() => router.push('/auth?mode=signup&role=owner')}
-            size="lg"
-            className="text-white font-semibold hover:brightness-110"
-            style={{ background: '#ad5684' }}
-          >
-            <Building2 className="w-5 h-5 mr-2" />
-            Create my owner account
-          </Button>
-        </div>
-      </div>
-
-      {/* Mock Chart Preview */}
-      <div className="bg-white superellipse-2xl p-6 shadow-sm border border-gray-200">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="font-bold text-gray-900 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" style={{ color: '#ad5684' }} />
-            Revenue trends
-          </h3>
-          <Lock className="w-5 h-5" style={{ color: '#ad5684' }} />
-        </div>
-        <div className="h-48 superellipse-xl flex items-center justify-center border border-dashed" style={{ background: '#ad568410', borderColor: '#ad568440' }}>
-          <div className="text-center">
-            <Eye className="w-10 h-10 mx-auto mb-2" style={{ color: '#ad568460' }} />
-            <p className="text-sm text-gray-500">Charts available after registration</p>
-          </div>
-        </div>
-      </div>
-    </motion.div>
   );
 }
 
 // Main export with Suspense for useSearchParams
 export default function GuestPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4" style={{ borderColor: '#ff9811', borderTopColor: 'transparent' }} />
-          <p className="text-gray-600">Loading...</p>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center">
+            <div
+              className="w-12 h-12 border-4 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+              style={{ borderColor: SEARCHER_COLORS.primary, borderTopColor: 'transparent' }}
+            />
+            <p className="text-gray-600">Chargement...</p>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <GuestPageContent />
     </Suspense>
   );
 }
+
+const SEARCHER_COLORS_FALLBACK = {
+  primary: '#ffa000',
+};
