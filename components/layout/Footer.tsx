@@ -12,11 +12,26 @@ export default function Footer() {
   const isDark = resolvedTheme === 'dark';
   const currentYear = new Date().getFullYear();
 
+  // Role colors from design system
+  const ROLE_COLORS = {
+    searcher: '#ffa000',   // Amber/Gold
+    resident: '#e05747',   // Coral/Orange
+    owner: '#9c5698',      // Purple/Mauve
+  };
+
   const footerLinks = {
+    roles: [
+      { label: 'Je cherche un co-living', href: '/guest', color: ROLE_COLORS.searcher },
+      { label: 'Je suis résident', href: '/auth/signup', color: ROLE_COLORS.resident },
+      { label: 'Je suis propriétaire', href: '/owners', color: ROLE_COLORS.owner },
+    ],
     company: [
       { label: 'À propos', href: '/about' },
-      { label: 'Propriétaires', href: '/owners' },
+      { label: 'Carrières', href: 'mailto:jobs@izzico.be' },
+    ],
+    help: [
       { label: 'Contact', href: 'mailto:hello@izzico.be' },
+      { label: 'Centre d\'aide', href: '/help' },
     ],
     legal: [
       { label: 'Conditions', href: '/legal/terms' },
@@ -50,9 +65,9 @@ export default function Footer() {
         }}
       >
         <div className="max-w-6xl mx-auto px-6 py-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12">
+          <div className="grid grid-cols-2 md:grid-cols-6 gap-8 lg:gap-10">
             {/* Brand Column */}
-            <div className="col-span-2">
+            <div className="col-span-2 md:col-span-2">
               <Image
                 src={isDark ? '/logos/izzico-lockup-squircle-epais-blanc.svg' : '/logos/izzico-lockup-squircle-epais-noir.svg'}
                 alt="Izzico"
@@ -87,6 +102,31 @@ export default function Footer() {
               </div>
             </div>
 
+            {/* Je suis... (Role-based navigation) */}
+            <div>
+              <h4 className={`font-semibold text-sm mb-3 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+                Je suis...
+              </h4>
+              <ul className="space-y-2">
+                {footerLinks.roles.map((link) => (
+                  <li key={link.href}>
+                    <Link
+                      href={link.href}
+                      className="text-sm transition-colors duration-200 flex items-center gap-2 group"
+                    >
+                      <span
+                        className="w-2 h-2 rounded-full transition-transform group-hover:scale-125"
+                        style={{ backgroundColor: link.color }}
+                      />
+                      <span className={isDark ? 'text-gray-400 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'}>
+                        {link.label}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
             {/* Izzico */}
             <div>
               <h4 className={`font-semibold text-sm mb-3 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
@@ -94,6 +134,42 @@ export default function Footer() {
               </h4>
               <ul className="space-y-2">
                 {footerLinks.company.map((link) => (
+                  <li key={link.href}>
+                    {link.href.startsWith('mailto:') ? (
+                      <a
+                        href={link.href}
+                        className={`text-sm transition-colors duration-200 ${
+                          isDark
+                            ? 'text-gray-400 hover:text-white'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        {link.label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={link.href}
+                        className={`text-sm transition-colors duration-200 ${
+                          isDark
+                            ? 'text-gray-400 hover:text-white'
+                            : 'text-gray-600 hover:text-gray-900'
+                        }`}
+                      >
+                        {link.label}
+                      </Link>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Aide */}
+            <div>
+              <h4 className={`font-semibold text-sm mb-3 ${isDark ? 'text-gray-100' : 'text-gray-900'}`}>
+                Aide
+              </h4>
+              <ul className="space-y-2">
+                {footerLinks.help.map((link) => (
                   <li key={link.href}>
                     {link.href.startsWith('mailto:') ? (
                       <a
