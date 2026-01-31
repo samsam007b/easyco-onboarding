@@ -176,11 +176,11 @@ class PortfolioService {
       const propertyIds = properties.map(p => p.id);
 
       // Fetch residents once for both property and performance stats (avoids duplicate query)
+      // Note: no is_active column, all residents are considered active
       const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('property_id')
-        .in('property_id', propertyIds)
-        .eq('is_active', true);
+        .in('property_id', propertyIds);
 
       const rentedPropertyIds = new Set(residents?.map(r => r.property_id) || []);
 
@@ -358,11 +358,11 @@ class PortfolioService {
       const publishedIds = properties.filter(p => p.status === 'published').map(p => p.id);
 
       if (publishedIds.length > 0) {
+        // Note: no is_active column, all residents are considered active
         const { data: residents } = await this.getSupabase()
           .from('property_residents')
           .select('property_id')
-          .in('property_id', publishedIds)
-          .eq('is_active', true);
+          .in('property_id', publishedIds);
 
         const rentedIds = new Set(residents?.map(r => r.property_id) || []);
         const vacantProperties = properties.filter(
@@ -444,12 +444,12 @@ class PortfolioService {
       if (!properties) return [];
 
       // Get rented status
+      // Note: no is_active column, all residents are considered active
       const propertyIds = properties.map(p => p.id);
       const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('property_id, move_in_date')
-        .in('property_id', propertyIds)
-        .eq('is_active', true);
+        .in('property_id', propertyIds);
 
       const rentedMap = new Map(residents?.map(r => [r.property_id, r.move_in_date]) || []);
 
