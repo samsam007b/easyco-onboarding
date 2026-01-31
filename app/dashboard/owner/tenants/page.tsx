@@ -67,7 +67,7 @@ interface PropertyResident {
 
 interface PropertyInfo {
   id: string;
-  name: string;
+  title: string;
   address: string;
   city: string;
   resident_count: number;
