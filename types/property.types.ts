@@ -89,7 +89,7 @@ export interface Property {
   // Status & Metadata
   status: PropertyStatus;
   views_count: number;
-  inquiries_count: number;
+  // Note: inquiries_count column doesn't exist in DB - tracked separately if needed
 
   // Timestamps
   created_at: string;

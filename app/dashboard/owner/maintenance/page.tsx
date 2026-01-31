@@ -126,7 +126,7 @@ const mapStatus = (status: MaintenanceStatus): TicketStatus => {
 
 interface PropertyInfo {
   id: string;
-  name: string;
+  title: string;
 }
 
 interface MaintenanceStats {
@@ -228,9 +228,10 @@ export default function MaintenancePage() {
       setVendors(ownerVendors);
 
       // 1. Get user's properties
+      // Note: properties table uses 'title' not 'name'
       const { data: userProperties, error: propError } = await supabase
         .from('properties')
-        .select('id, name')
+        .select('id, title')
         .eq('owner_id', user.id);
 
       if (propError) {

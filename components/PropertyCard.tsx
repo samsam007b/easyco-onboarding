@@ -108,7 +108,6 @@ function PropertyCard({
       images: property.images || [],
       status: 'published',
       views_count: property.views_count || 0,
-      inquiries_count: 0,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       residents: [],

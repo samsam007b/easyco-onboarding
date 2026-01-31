@@ -379,7 +379,7 @@ class GestionService {
 
       // 3. Urgent maintenance (batch query - avoids N+1)
       const allRequests = await maintenanceService.getRequestsForProperties(
-        properties.map(p => ({ id: p.id, name: p.title })),
+        properties.map(p => ({ id: p.id, title: p.title })),
         { status: ['open', 'in_progress'] }
       );
 
@@ -452,7 +452,7 @@ class GestionService {
 
       // Recent maintenance resolutions (batch query - avoids N+1)
       const resolvedRequests = await maintenanceService.getRequestsForProperties(
-        properties.map(p => ({ id: p.id, name: p.title })),
+        properties.map(p => ({ id: p.id, title: p.title })),
         { status: ['resolved', 'closed'] }
       );
 

@@ -148,7 +148,6 @@ interface PropertyData {
   status?: 'published' | 'draft' | 'archived';
   monthly_rent?: number;
   views_count?: number;
-  inquiries_count?: number;
 }
 
 class PortfolioService {
@@ -164,9 +163,10 @@ class PortfolioService {
     const supabase = this.getSupabase();
     try {
       // Fetch properties for this owner
+      // Note: inquiries_count column doesn't exist in properties table
       const { data: properties } = await supabase
         .from('properties')
-        .select('id, title, status, monthly_rent, views_count, inquiries_count')
+        .select('id, title, status, monthly_rent, views_count')
         .eq('owner_id', userId);
 
       if (!properties || properties.length === 0) {
@@ -277,7 +277,8 @@ class PortfolioService {
       : 0;
 
     const totalViews = properties.reduce((sum, p) => sum + (p.views_count || 0), 0);
-    const totalInquiries = properties.reduce((sum, p) => sum + (p.inquiries_count || 0), 0);
+    // Note: inquiries_count doesn't exist in properties table - would need separate tracking
+    const totalInquiries = 0;
 
     // Calculate occupancy rate from pre-fetched data
     const rentedCount = rentedPropertyIds.size;
@@ -436,7 +437,7 @@ class PortfolioService {
     try {
       const { data: properties } = await this.getSupabase()
         .from('properties')
-        .select('id, title, city, status, monthly_rent, bedrooms, images, views_count, inquiries_count, created_at')
+        .select('id, title, city, status, monthly_rent, bedrooms, images, views_count, created_at')
         .eq('owner_id', userId)
         .order('created_at', { ascending: false })
         .limit(limit);
@@ -468,7 +469,7 @@ class PortfolioService {
           bedrooms: p.bedrooms || 0,
           mainImage: p.images?.[0] || undefined,
           views: p.views_count || 0,
-          inquiries: p.inquiries_count || 0,
+          inquiries: 0, // inquiries_count doesn't exist in properties table
           isRented,
           daysVacant,
         };

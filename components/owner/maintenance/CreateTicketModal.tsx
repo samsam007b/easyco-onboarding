@@ -46,7 +46,7 @@ import {
 
 interface PropertyInfo {
   id: string;
-  name: string;
+  title: string;  // Note: properties table uses 'title' not 'name'
 }
 
 interface CreateTicketModalProps {
@@ -195,7 +195,7 @@ export function CreateTicketModal({
                   <option value="">{t?.selectProperty?.[language] || 'Select a property'}</option>
                   {properties.map((prop) => (
                     <option key={prop.id} value={prop.id}>
-                      {prop.name}
+                      {prop.title}
                     </option>
                   ))}
                 </select>

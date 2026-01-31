@@ -71,7 +71,7 @@ import type {
 /** Property info for batch fetching */
 interface PropertyInfo {
   id: string;
-  name: string;
+  title: string;  // Note: properties table uses 'title' not 'name'
 }
 
 /** Internal type for maintenance request with joined profile data */
@@ -119,7 +119,7 @@ class MaintenanceService {
       if (properties.length === 0) return [];
 
       const propertyIds = properties.map(p => p.id);
-      const propertyMap = new Map(properties.map(p => [p.id, p.name]));
+      const propertyMap = new Map(properties.map(p => [p.id, p.title]));
 
       let query = this.getSupabase()
         .from('maintenance_requests')

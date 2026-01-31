@@ -104,11 +104,11 @@ export default function PropertiesManagement() {
         const propertyIds = result.data.map(p => p.id);
 
         // Fetch rented status from property_residents
+        // Note: no is_active column, all residents are considered active
         const { data: residents } = await supabase
           .from('property_residents')
           .select('property_id')
-          .in('property_id', propertyIds)
-          .eq('is_active', true);
+          .in('property_id', propertyIds);
 
         const rentedIds = new Set(residents?.map(r => r.property_id) || []);
         setRentedPropertyIds(rentedIds);
@@ -162,7 +162,7 @@ export default function PropertiesManagement() {
         mainImage: typeof p.images?.[0] === 'string' ? p.images[0] : p.images?.[0]?.url,
         images: p.images?.map(img => typeof img === 'string' ? img : img.url),
         views: p.views_count || 0,
-        inquiries: p.inquiries_count || 0,
+        inquiries: 0, // inquiries_count doesn't exist in DB
         applications: applicationCounts.get(p.id) || 0,
         daysVacant: p.status === 'published' && !isRented && p.created_at
           ? Math.floor((Date.now() - new Date(p.created_at).getTime()) / (1000 * 60 * 60 * 24))

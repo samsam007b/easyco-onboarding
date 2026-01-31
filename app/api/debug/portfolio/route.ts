@@ -20,9 +20,10 @@ export async function GET() {
   }
 
   // 2. Direct query - same as portfolio-service.getPortfolioOverview
+  // Note: inquiries_count column doesn't exist in properties table
   const { data: properties, error: propError } = await supabase
     .from('properties')
-    .select('id, title, status, monthly_rent, views_count, inquiries_count')
+    .select('id, title, status, monthly_rent, views_count')
     .eq('owner_id', user.id);
 
   if (propError) {
