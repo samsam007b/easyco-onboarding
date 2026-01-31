@@ -69,7 +69,10 @@ import type {
 import { isDocumentExpired, isDocumentExpiringSoon } from '@/types/documents.types';
 
 class DocumentService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get all documents for a property
@@ -82,7 +85,7 @@ class DocumentService {
     }
   ): Promise<PropertyDocumentWithUploader[]> {
     try {
-      let query = this.supabase
+      let query = this.getSupabase()
         .from('property_documents')
         .select(
           `
@@ -132,7 +135,7 @@ class DocumentService {
    */
   async getDocument(documentId: string): Promise<PropertyDocumentWithUploader | null> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('property_documents')
         .select(
           `
@@ -183,7 +186,7 @@ class DocumentService {
       }
 
       // Create document record
-      const { data: document, error } = await this.supabase
+      const { data: document, error } = await this.getSupabase()
         .from('property_documents')
         .insert({
           property_id: propertyId,
@@ -227,7 +230,7 @@ class DocumentService {
     try {
       const fileName = `documents/${propertyId}/${userId}/${Date.now()}_${file.name}`;
 
-      const { data, error } = await this.supabase.storage
+      const { data, error } = await this.getSupabase().storage
         .from('property-documents')
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -239,7 +242,7 @@ class DocumentService {
       // Get public URL
       const {
         data: { publicUrl },
-      } = this.supabase.storage.from('property-documents').getPublicUrl(data.path);
+      } = this.getSupabase().storage.from('property-documents').getPublicUrl(data.path);
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
@@ -257,7 +260,7 @@ class DocumentService {
   async deleteDocument(documentId: string): Promise<{ success: boolean; error?: string }> {
     try {
       // Get document to delete file from storage
-      const { data: doc } = await this.supabase
+      const { data: doc } = await this.getSupabase()
         .from('property_documents')
         .select('file_url')
         .eq('id', documentId)
@@ -267,12 +270,12 @@ class DocumentService {
         // Extract path from URL and delete from storage
         const path = doc.file_url.split('/property-documents/')[1];
         if (path) {
-          await this.supabase.storage.from('property-documents').remove([path]);
+          await this.getSupabase().storage.from('property-documents').remove([path]);
         }
       }
 
       // Delete document record
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('property_documents')
         .delete()
         .eq('id', documentId);
@@ -300,7 +303,7 @@ class DocumentService {
     form: ShareDocumentForm
   ): Promise<{ success: boolean; share?: DocumentShare; error?: string }> {
     try {
-      const { data: share, error } = await this.supabase
+      const { data: share, error } = await this.getSupabase()
         .from('document_shares')
         .insert({
           document_id: documentId,
@@ -331,7 +334,7 @@ class DocumentService {
    */
   async getShares(documentId: string): Promise<DocumentShareWithUser[]> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('document_shares')
         .select(
           `
@@ -365,7 +368,7 @@ class DocumentService {
    */
   async removeShare(shareId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await this.supabase.from('document_shares').delete().eq('id', shareId);
+      const { error } = await this.getSupabase().from('document_shares').delete().eq('id', shareId);
 
       if (error) throw error;
 
@@ -386,7 +389,7 @@ class DocumentService {
    */
   async searchDocuments(propertyId: string, query: string): Promise<PropertyDocument[]> {
     try {
-      const { data, error } = await this.supabase.rpc('search_documents', {
+      const { data, error } = await this.getSupabase().rpc('search_documents', {
         p_property_id: propertyId,
         p_query: query,
       });
@@ -407,7 +410,7 @@ class DocumentService {
    */
   async getStats(propertyId: string): Promise<DocumentStats> {
     try {
-      const { data, error } = await this.supabase.rpc('get_document_stats', {
+      const { data, error } = await this.getSupabase().rpc('get_document_stats', {
         p_property_id: propertyId,
       });
 
@@ -454,7 +457,7 @@ class DocumentService {
       thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
       const futureDate = thirtyDaysFromNow.toISOString().split('T')[0];
 
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('property_documents')
         .select(
           `

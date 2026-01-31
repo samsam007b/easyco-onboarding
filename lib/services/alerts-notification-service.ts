@@ -41,7 +41,10 @@ const DEFAULT_CONFIG: AlertsConfig = {
 };
 
 class AlertsNotificationService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get all owners with their properties for alert processing
@@ -61,7 +64,7 @@ class AlertsNotificationService {
   > {
     try {
       // Get all owners who have at least one property
-      const { data: properties, error } = await this.supabase
+      const { data: properties, error } = await this.getSupabase()
         .from('properties')
         .select(`
           id,
@@ -138,12 +141,11 @@ class AlertsNotificationService {
 
       for (const owner of owners) {
         for (const property of owner.properties) {
-          // Get active residents for this property
-          const { data: residents } = await this.supabase
+          // Get residents for this property (note: no is_active column)
+          const { data: residents } = await this.getSupabase()
             .from('property_residents')
             .select('*')
-            .eq('property_id', property.id)
-            .eq('is_active', true);
+            .eq('property_id', property.id);
 
           if (!residents) continue;
 
@@ -198,7 +200,7 @@ class AlertsNotificationService {
       cutoffDate.setDate(cutoffDate.getDate() - config.maintenanceAlertDays);
 
       // Get open tickets older than the threshold or with high/urgent priority
-      const { data: tickets, error } = await this.supabase
+      const { data: tickets, error } = await this.getSupabase()
         .from('maintenance_requests')
         .select(`
           *,
@@ -262,7 +264,7 @@ class AlertsNotificationService {
    */
   private async getOverduePaymentsCount(ownerId: string): Promise<number> {
     try {
-      const { count, error } = await this.supabase
+      const { count, error } = await this.getSupabase()
         .from('rent_payments')
         .select('id', { count: 'exact', head: true })
         .eq('owner_id', ownerId)
@@ -281,7 +283,7 @@ class AlertsNotificationService {
     if (propertyIds.length === 0) return 0;
 
     try {
-      const { count, error } = await this.supabase
+      const { count, error } = await this.getSupabase()
         .from('applications')
         .select('id', { count: 'exact', head: true })
         .in('property_id', propertyIds)
@@ -299,7 +301,7 @@ class AlertsNotificationService {
   async generateDailyDigestForOwner(ownerId: string): Promise<DailyDigestData | null> {
     try {
       // Get owner info
-      const { data: owner, error: ownerError } = await this.supabase
+      const { data: owner, error: ownerError } = await this.getSupabase()
         .from('profiles')
         .select('id, full_name, email')
         .eq('id', ownerId)
@@ -308,7 +310,7 @@ class AlertsNotificationService {
       if (ownerError || !owner?.email) return null;
 
       // Get owner's properties
-      const { data: properties } = await this.supabase
+      const { data: properties } = await this.getSupabase()
         .from('properties')
         .select('id, title, status')
         .eq('owner_id', ownerId);
@@ -317,18 +319,17 @@ class AlertsNotificationService {
 
       const propertyIds = properties.map((p) => p.id);
 
-      // Get residents count (occupied properties)
-      const { data: residents } = await this.supabase
+      // Get residents count (occupied properties) - note: no is_active column
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('property_id')
-        .in('property_id', propertyIds)
-        .eq('is_active', true);
+        .in('property_id', propertyIds);
 
       const occupiedPropertyIds = new Set(residents?.map((r) => r.property_id) || []);
       const publishedProperties = properties.filter((p) => p.status === 'published');
 
       // Get maintenance tickets
-      const { data: tickets } = await this.supabase
+      const { data: tickets } = await this.getSupabase()
         .from('maintenance_requests')
         .select('id, priority, status')
         .in('property_id', propertyIds)
@@ -338,7 +339,7 @@ class AlertsNotificationService {
       const urgentTickets = tickets?.filter((t) => t.priority === 'urgent').length || 0;
 
       // Get overdue payments
-      const { data: overduePayments } = await this.supabase
+      const { data: overduePayments } = await this.getSupabase()
         .from('rent_payments')
         .select('id')
         .in('property_id', propertyIds)
@@ -351,7 +352,7 @@ class AlertsNotificationService {
       const sevenDaysAgo = new Date();
       sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 
-      const { data: recentPayments } = await this.supabase
+      const { data: recentPayments } = await this.getSupabase()
         .from('rent_payments')
         .select(`
           id,

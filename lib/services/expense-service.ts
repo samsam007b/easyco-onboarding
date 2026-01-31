@@ -86,7 +86,10 @@ import type {
 } from '@/types/finances.types';
 
 class ExpenseService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Create a new expense with OCR scan (if receipt provided)
@@ -162,7 +165,7 @@ class ExpenseService {
       console.log('[Expense] 💾 Inserting expense into database:', expenseData);
 
       // Create expense
-      const { data: expense, error: expenseError } = await this.supabase
+      const { data: expense, error: expenseError } = await this.getSupabase()
         .from('expenses')
         .insert(expenseData)
         .select()
@@ -204,7 +207,7 @@ class ExpenseService {
     try {
       const fileName = `${propertyId}/${Date.now()}_${file.name}`;
 
-      const { data, error } = await this.supabase.storage
+      const { data, error } = await this.getSupabase().storage
         .from('property-documents')
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -216,7 +219,7 @@ class ExpenseService {
       // Get public URL
       const {
         data: { publicUrl },
-      } = this.supabase.storage.from('property-documents').getPublicUrl(data.path);
+      } = this.getSupabase().storage.from('property-documents').getPublicUrl(data.path);
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
@@ -244,7 +247,7 @@ class ExpenseService {
       paid: false,
     }));
 
-    const { error } = await this.supabase.from('expense_splits').insert(splits);
+    const { error } = await this.getSupabase().from('expense_splits').insert(splits);
 
     if (error) {
       console.error('[Expense] ERROR: Failed to create splits:', error);
@@ -264,7 +267,7 @@ class ExpenseService {
   ): Promise<ExpenseWithDetails[]> {
     try {
       // Fetch expenses with splits
-      const { data: expenses, error } = await this.supabase
+      const { data: expenses, error } = await this.getSupabase()
         .from('expenses')
         .select(
           `
@@ -286,7 +289,7 @@ class ExpenseService {
 
       // Get user names for paid_by_id
       const userIds = [...new Set(expenses?.map((e) => e.paid_by_id) || [])];
-      const { data: users } = await this.supabase
+      const { data: users } = await this.getSupabase()
         .from('users')
         .select('id, full_name, avatar_url')
         .in('id', userIds);
@@ -322,7 +325,7 @@ class ExpenseService {
    */
   async calculateBalances(propertyId: string, userId: string): Promise<Balance[]> {
     try {
-      const { data: expenses, error } = await this.supabase
+      const { data: expenses, error } = await this.getSupabase()
         .from('expenses')
         .select(
           `
@@ -366,7 +369,7 @@ class ExpenseService {
 
       // Get user names
       const userIds = Array.from(balanceMap.keys());
-      const { data: users } = await this.supabase
+      const { data: users } = await this.getSupabase()
         .from('users')
         .select('id, full_name, avatar_url')
         .in('id', userIds);
@@ -396,7 +399,7 @@ class ExpenseService {
     userId: string
   ): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('expense_splits')
         .update({
           paid: true,
@@ -433,7 +436,7 @@ class ExpenseService {
       ]);
 
       // Fetch expenses
-      const { data: expenses } = await this.supabase
+      const { data: expenses } = await this.getSupabase()
         .from('expenses')
         .select('*')
         .eq('property_id', propertyId)

@@ -1,7 +1,10 @@
 import { createClient } from '@/lib/auth/supabase-client';
 
 export class StorageService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Optimise une image via API route (server-side Sharp)
@@ -98,7 +101,7 @@ export class StorageService {
       const filePath = folder ? `${folder}/${fileName}` : fileName;
 
       // Upload file
-      const { data, error } = await this.supabase.storage
+      const { data, error } = await this.getSupabase().storage
         .from(bucket)
         .upload(filePath, file, {
           cacheControl: '3600',
@@ -111,7 +114,7 @@ export class StorageService {
       }
 
       // Get public URL
-      const { data: { publicUrl } } = this.supabase.storage
+      const { data: { publicUrl } } = this.getSupabase().storage
         .from(bucket)
         .getPublicUrl(data.path);
 
@@ -154,7 +157,7 @@ export class StorageService {
    */
   async deleteFile(bucket: string, filePath: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await this.supabase.storage.from(bucket).remove([filePath]);
+      const { error } = await this.getSupabase().storage.from(bucket).remove([filePath]);
 
       if (error) {
         return { success: false, error: error.message };

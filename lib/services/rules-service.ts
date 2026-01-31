@@ -65,7 +65,10 @@ import type {
 import { calculateVotingProgress, getTimeRemaining } from '@/types/rules.types';
 
 class RulesService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get all rules for a property
@@ -78,7 +81,7 @@ class RulesService {
     }
   ): Promise<HouseRuleWithProposer[]> {
     try {
-      let query = this.supabase
+      let query = this.getSupabase()
         .from('house_rules')
         .select(
           `
@@ -102,7 +105,7 @@ class RulesService {
       if (error) throw error;
 
       // Get user's votes for all rules
-      const { data: userVotes } = await this.supabase
+      const { data: userVotes } = await this.getSupabase()
         .from('rule_votes')
         .select('rule_id, vote')
         .eq('user_id', userId);
@@ -140,7 +143,7 @@ class RulesService {
    */
   async getRule(ruleId: string, userId: string): Promise<HouseRuleWithProposer | null> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('house_rules')
         .select(
           `
@@ -157,7 +160,7 @@ class RulesService {
       if (error) throw error;
 
       // Get user's vote
-      const { data: userVote } = await this.supabase
+      const { data: userVote } = await this.getSupabase()
         .from('rule_votes')
         .select('vote')
         .eq('rule_id', ruleId)
@@ -195,7 +198,7 @@ class RulesService {
   ): Promise<{ success: boolean; rule?: HouseRule; error?: string }> {
     try {
       // Get number of members to set votes_required
-      const { data: members } = await this.supabase
+      const { data: members } = await this.getSupabase()
         .from('property_members')
         .select('user_id')
         .eq('property_id', propertyId);
@@ -207,7 +210,7 @@ class RulesService {
       const votingEndsAt = new Date();
       votingEndsAt.setDate(votingEndsAt.getDate() + votingDurationDays);
 
-      const { data: rule, error } = await this.supabase
+      const { data: rule, error } = await this.getSupabase()
         .from('house_rules')
         .insert({
           property_id: propertyId,
@@ -245,7 +248,7 @@ class RulesService {
     form: CastVoteForm
   ): Promise<{ success: boolean; result?: CastVoteResult; error?: string }> {
     try {
-      const { data, error } = await this.supabase.rpc('cast_rule_vote', {
+      const { data, error } = await this.getSupabase().rpc('cast_rule_vote', {
         p_rule_id: ruleId,
         p_user_id: userId,
         p_vote: form.vote,
@@ -275,7 +278,7 @@ class RulesService {
     ruleId: string
   ): Promise<{ success: boolean; result?: FinalizeVoteResult; error?: string }> {
     try {
-      const { data, error } = await this.supabase.rpc('finalize_rule_voting', {
+      const { data, error } = await this.getSupabase().rpc('finalize_rule_voting', {
         p_rule_id: ruleId,
       });
 
@@ -300,7 +303,7 @@ class RulesService {
    */
   async archiveRule(ruleId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('house_rules')
         .update({
           status: 'archived',
@@ -327,7 +330,7 @@ class RulesService {
    */
   async getVotes(ruleId: string): Promise<RuleVoteWithUser[]> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('rule_votes')
         .select(
           `
@@ -362,7 +365,7 @@ class RulesService {
    */
   async getStats(propertyId: string): Promise<RulesStats> {
     try {
-      const { data, error } = await this.supabase.rpc('get_active_rules_summary', {
+      const { data, error } = await this.getSupabase().rpc('get_active_rules_summary', {
         p_property_id: propertyId,
       });
 
@@ -381,13 +384,13 @@ class RulesService {
       const stats = data[0];
 
       // Get voting and rejected counts
-      const { data: votingRules } = await this.supabase
+      const { data: votingRules } = await this.getSupabase()
         .from('house_rules')
         .select('id')
         .eq('property_id', propertyId)
         .eq('status', 'voting');
 
-      const { data: rejectedRules } = await this.supabase
+      const { data: rejectedRules } = await this.getSupabase()
         .from('house_rules')
         .select('id')
         .eq('property_id', propertyId)

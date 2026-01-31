@@ -99,7 +99,10 @@ interface RequestWithProfile {
 }
 
 class MaintenanceService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get maintenance requests for multiple properties (batch query - fixes N+1)
@@ -118,7 +121,7 @@ class MaintenanceService {
       const propertyIds = properties.map(p => p.id);
       const propertyMap = new Map(properties.map(p => [p.id, p.name]));
 
-      let query = this.supabase
+      let query = this.getSupabase()
         .from('maintenance_requests')
         .select(`
           *,
@@ -185,7 +188,7 @@ class MaintenanceService {
     }
   ): Promise<MaintenanceRequestWithCreator[]> {
     try {
-      let query = this.supabase
+      let query = this.getSupabase()
         .from('maintenance_requests')
         .select(
           `
@@ -232,7 +235,7 @@ class MaintenanceService {
    */
   async getRequest(requestId: string): Promise<MaintenanceRequestWithCreator | null> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('maintenance_requests')
         .select(
           `
@@ -280,7 +283,7 @@ class MaintenanceService {
       }
 
       // Create request
-      const { data: request, error } = await this.supabase
+      const { data: request, error } = await this.getSupabase()
         .from('maintenance_requests')
         .insert({
           property_id: propertyId,
@@ -326,7 +329,7 @@ class MaintenanceService {
         updateData.resolved_at = new Date().toISOString();
       }
 
-      const { data: request, error } = await this.supabase
+      const { data: request, error } = await this.getSupabase()
         .from('maintenance_requests')
         .update(updateData)
         .eq('id', requestId)
@@ -361,7 +364,7 @@ class MaintenanceService {
         updateData.resolved_at = new Date().toISOString();
       }
 
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('maintenance_requests')
         .update(updateData)
         .eq('id', requestId);
@@ -385,7 +388,7 @@ class MaintenanceService {
    */
   async deleteRequest(requestId: string): Promise<{ success: boolean; error?: string }> {
     try {
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('maintenance_requests')
         .delete()
         .eq('id', requestId);
@@ -416,7 +419,7 @@ class MaintenanceService {
       try {
         const fileName = `maintenance/${propertyId}/${userId}/${Date.now()}_${file.name}`;
 
-        const { data, error } = await this.supabase.storage
+        const { data, error } = await this.getSupabase().storage
           .from('property-documents')
           .upload(fileName, file, {
             cacheControl: '3600',
@@ -428,7 +431,7 @@ class MaintenanceService {
         // Get public URL
         const {
           data: { publicUrl },
-        } = this.supabase.storage.from('property-documents').getPublicUrl(data.path);
+        } = this.getSupabase().storage.from('property-documents').getPublicUrl(data.path);
 
         return publicUrl;
       } catch (error) {
@@ -450,7 +453,7 @@ class MaintenanceService {
 
     try {
       // Single query for all properties
-      const { data: requests } = await this.supabase
+      const { data: requests } = await this.getSupabase()
         .from('maintenance_requests')
         .select('*')
         .in('property_id', propertyIds);
@@ -534,7 +537,7 @@ class MaintenanceService {
    */
   async getStats(propertyId: string): Promise<MaintenanceStats> {
     try {
-      const { data: requests } = await this.supabase
+      const { data: requests } = await this.getSupabase()
         .from('maintenance_requests')
         .select('*')
         .eq('property_id', propertyId);
@@ -614,7 +617,7 @@ class MaintenanceService {
    */
   async getOpenCount(propertyId: string): Promise<number> {
     try {
-      const { count, error } = await this.supabase
+      const { count, error } = await this.getSupabase()
         .from('maintenance_requests')
         .select('*', { count: 'exact', head: true })
         .eq('property_id', propertyId)

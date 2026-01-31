@@ -111,7 +111,10 @@ import type {
 } from '@/types/tasks.types';
 
 class TaskService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get all tasks for a property
@@ -122,7 +125,7 @@ class TaskService {
     limit: number = 50
   ): Promise<TaskWithDetails[]> {
     try {
-      const { data: tasks, error } = await this.supabase
+      const { data: tasks, error } = await this.getSupabase()
         .from('tasks')
         .select(
           `
@@ -149,7 +152,7 @@ class TaskService {
         ]),
       ];
 
-      const { data: users } = await this.supabase
+      const { data: users } = await this.getSupabase()
         .from('users')
         .select('id, full_name, avatar_url')
         .in('id', userIds);
@@ -205,7 +208,7 @@ class TaskService {
     form: CreateTaskForm
   ): Promise<{ success: boolean; task?: Task; error?: string }> {
     try {
-      const { data: task, error } = await this.supabase
+      const { data: task, error } = await this.getSupabase()
         .from('tasks')
         .insert({
           property_id: propertyId,
@@ -260,7 +263,7 @@ class TaskService {
           break;
       }
 
-      const { data: rotation, error } = await this.supabase
+      const { data: rotation, error } = await this.getSupabase()
         .from('task_rotations')
         .upsert(
           {
@@ -282,7 +285,7 @@ class TaskService {
 
       // If start immediately, rotate to first user
       if (form.start_immediately && form.user_ids.length > 0) {
-        await this.supabase
+        await this.getSupabase()
           .from('tasks')
           .update({ assigned_to: form.user_ids[0] })
           .eq('id', form.task_id);
@@ -305,7 +308,7 @@ class TaskService {
    */
   async rotateTask(taskId: string): Promise<RotateTaskResult> {
     try {
-      const { data, error } = await this.supabase.rpc('rotate_task_assignment', {
+      const { data, error } = await this.getSupabase().rpc('rotate_task_assignment', {
         p_task_id: taskId,
       });
 
@@ -315,7 +318,7 @@ class TaskService {
 
       if (result?.success) {
         // Get new assignee name
-        const { data: user } = await this.supabase
+        const { data: user } = await this.getSupabase()
           .from('users')
           .select('full_name')
           .eq('id', result.new_assignee)
@@ -349,10 +352,10 @@ class TaskService {
     form: RequestExchangeForm
   ): Promise<{ success: boolean; exchange?: TaskExchange; error?: string }> {
     try {
-      const { data: { user } } = await this.supabase.auth.getUser();
+      const { data: { user } } = await this.getSupabase().auth.getUser();
       if (!user) throw new Error('User not authenticated');
 
-      const { data: exchange, error } = await this.supabase
+      const { data: exchange, error } = await this.getSupabase()
         .from('task_exchanges')
         .insert({
           task_id: form.task_id,
@@ -393,7 +396,7 @@ class TaskService {
     try {
       const status = accept ? 'accepted' : 'declined';
 
-      const { error: updateError } = await this.supabase
+      const { error: updateError } = await this.getSupabase()
         .from('task_exchanges')
         .update({
           status,
@@ -406,7 +409,7 @@ class TaskService {
 
       // If accepted, swap the task assignments
       if (accept) {
-        const { data: exchange } = await this.supabase
+        const { data: exchange } = await this.getSupabase()
           .from('task_exchanges')
           .select('*')
           .eq('id', exchangeId)
@@ -440,7 +443,7 @@ class TaskService {
     form: SetAvailabilityForm
   ): Promise<{ success: boolean; availability?: UserAvailability; error?: string }> {
     try {
-      const { data: availability, error } = await this.supabase
+      const { data: availability, error } = await this.getSupabase()
         .from('user_availability')
         .insert({
           user_id: userId,
@@ -489,7 +492,7 @@ class TaskService {
   ): Promise<void> {
     try {
       // Get tasks assigned to this user during the period
-      const { data: tasks } = await this.supabase
+      const { data: tasks } = await this.getSupabase()
         .from('tasks')
         .select('id, task_rotations(*)')
         .eq('property_id', propertyId)
@@ -528,7 +531,7 @@ class TaskService {
       }
 
       // Update task
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('tasks')
         .update({
           status: 'completed',
@@ -562,7 +565,7 @@ class TaskService {
     try {
       const fileName = `tasks/${taskId}/${Date.now()}_${file.name}`;
 
-      const { data, error } = await this.supabase.storage
+      const { data, error } = await this.getSupabase().storage
         .from('property-documents')
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -573,7 +576,7 @@ class TaskService {
 
       const {
         data: { publicUrl },
-      } = this.supabase.storage.from('property-documents').getPublicUrl(data.path);
+      } = this.getSupabase().storage.from('property-documents').getPublicUrl(data.path);
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
@@ -593,7 +596,7 @@ class TaskService {
     daysAhead: number = 7
   ): Promise<UpcomingTask[]> {
     try {
-      const { data, error } = await this.supabase.rpc('get_user_upcoming_tasks', {
+      const { data, error } = await this.getSupabase().rpc('get_user_upcoming_tasks', {
         p_user_id: userId,
         p_days_ahead: daysAhead,
       });
@@ -612,7 +615,7 @@ class TaskService {
    */
   async getTaskStats(propertyId: string): Promise<TaskStats> {
     try {
-      const { data: tasks } = await this.supabase
+      const { data: tasks } = await this.getSupabase()
         .from('tasks')
         .select('*')
         .eq('property_id', propertyId);

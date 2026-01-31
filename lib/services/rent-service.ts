@@ -52,7 +52,10 @@ import type {
 } from '@/types/finances.types';
 
 class RentService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get upcoming rent due dates for a user
@@ -62,7 +65,7 @@ class RentService {
     daysAhead: number = 30
   ): Promise<UpcomingRentDue[]> {
     try {
-      const { data, error } = await this.supabase.rpc('get_upcoming_rent_dues', {
+      const { data, error } = await this.getSupabase().rpc('get_upcoming_rent_dues', {
         p_user_id: userId,
         p_days_ahead: daysAhead,
       });
@@ -84,7 +87,7 @@ class RentService {
     limit: number = 12
   ): Promise<RentPaymentWithProperty[]> {
     try {
-      const { data: payments, error } = await this.supabase
+      const { data: payments, error } = await this.getSupabase()
         .from('rent_payments')
         .select(
           `
@@ -135,7 +138,7 @@ class RentService {
       }
 
       // Upsert rent payment (unique constraint on property_id, user_id, month)
-      const { data: payment, error } = await this.supabase
+      const { data: payment, error } = await this.getSupabase()
         .from('rent_payments')
         .upsert(
           {
@@ -181,7 +184,7 @@ class RentService {
     try {
       const fileName = `rent/${propertyId}/${userId}/${Date.now()}_${file.name}`;
 
-      const { data, error } = await this.supabase.storage
+      const { data, error } = await this.getSupabase().storage
         .from('property-documents')
         .upload(fileName, file, {
           cacheControl: '3600',
@@ -193,7 +196,7 @@ class RentService {
       // Get public URL
       const {
         data: { publicUrl },
-      } = this.supabase.storage.from('property-documents').getPublicUrl(data.path);
+      } = this.getSupabase().storage.from('property-documents').getPublicUrl(data.path);
 
       return { success: true, url: publicUrl };
     } catch (error: any) {
@@ -210,7 +213,7 @@ class RentService {
    */
   async getRentStats(userId: string) {
     try {
-      const { data: payments } = await this.supabase
+      const { data: payments } = await this.getSupabase()
         .from('rent_payments')
         .select('amount, status, paid_at, due_date')
         .eq('user_id', userId)
@@ -272,7 +275,7 @@ class RentService {
    */
   async markOverduePayments(): Promise<number> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('rent_payments')
         .update({ status: 'overdue' })
         .eq('status', 'pending')
@@ -320,7 +323,7 @@ class RentService {
         });
       }
 
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('rent_payments')
         .upsert(payments, {
           onConflict: 'property_id,user_id,month',

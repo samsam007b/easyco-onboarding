@@ -120,7 +120,10 @@ export const vendorCategoryLabels: Record<VendorCategory, string> = {
 // =====================================================
 
 class VendorService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   // =====================================================
   // VENDOR CRUD
@@ -131,7 +134,7 @@ class VendorService {
    */
   async getVendors(ownerId: string): Promise<Vendor[]> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendors')
         .select('*')
         .eq('owner_id', ownerId)
@@ -156,7 +159,7 @@ class VendorService {
    */
   async getVendorsByCategory(ownerId: string, category: VendorCategory): Promise<Vendor[]> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendors')
         .select('*')
         .eq('owner_id', ownerId)
@@ -181,7 +184,7 @@ class VendorService {
    */
   async getVendor(vendorId: string): Promise<Vendor | null> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendors')
         .select('*')
         .eq('id', vendorId)
@@ -204,7 +207,7 @@ class VendorService {
    */
   async createVendor(ownerId: string, vendorData: CreateVendorData): Promise<Vendor | null> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendors')
         .insert({
           owner_id: ownerId,
@@ -241,7 +244,7 @@ class VendorService {
    */
   async updateVendor(vendorId: string, updates: Partial<CreateVendorData>): Promise<Vendor | null> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendors')
         .update({
           name: updates.name,
@@ -278,7 +281,7 @@ class VendorService {
    */
   async toggleFavorite(vendorId: string, isFavorite: boolean): Promise<boolean> {
     try {
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('vendors')
         .update({ is_favorite: isFavorite })
         .eq('id', vendorId);
@@ -300,7 +303,7 @@ class VendorService {
    */
   async deleteVendor(vendorId: string): Promise<boolean> {
     try {
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('vendors')
         .delete()
         .eq('id', vendorId);
@@ -326,7 +329,7 @@ class VendorService {
    */
   async getVendorRatings(vendorId: string): Promise<VendorRating[]> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendor_ratings')
         .select('*')
         .eq('vendor_id', vendorId)
@@ -349,7 +352,7 @@ class VendorService {
    */
   async submitRating(ownerId: string, ratingData: CreateRatingData): Promise<VendorRating | null> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendor_ratings')
         .insert({
           vendor_id: ratingData.vendorId,
@@ -378,7 +381,7 @@ class VendorService {
 
       // Mark maintenance request as rated if applicable
       if (ratingData.maintenanceRequestId) {
-        await this.supabase
+        await this.getSupabase()
           .from('maintenance_requests')
           .update({ vendor_rating_submitted: true })
           .eq('id', ratingData.maintenanceRequestId);
@@ -396,7 +399,7 @@ class VendorService {
    */
   async isMaintenanceRated(maintenanceRequestId: string): Promise<boolean> {
     try {
-      const { data, error } = await this.supabase
+      const { data, error } = await this.getSupabase()
         .from('vendor_ratings')
         .select('id')
         .eq('maintenance_request_id', maintenanceRequestId)
@@ -427,7 +430,7 @@ class VendorService {
       const vendor = await this.getVendor(vendorId);
       if (!vendor) return false;
 
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('maintenance_requests')
         .update({
           vendor_id: vendorId,
@@ -452,7 +455,7 @@ class VendorService {
    */
   async unassignVendorFromMaintenance(maintenanceRequestId: string): Promise<boolean> {
     try {
-      const { error } = await this.supabase
+      const { error } = await this.getSupabase()
         .from('maintenance_requests')
         .update({
           vendor_id: null,

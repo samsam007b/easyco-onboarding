@@ -66,7 +66,10 @@ export interface PropertyTimelineData {
 }
 
 class PropertyTimelineService {
-  private supabase = createClient();
+  // Create fresh client for each request to ensure user session is current
+  private getSupabase() {
+    return createClient();
+  }
 
   /**
    * Get complete timeline for a property
@@ -77,7 +80,7 @@ class PropertyTimelineService {
   ): Promise<PropertyTimelineData> {
     try {
       // Get property info
-      const { data: property } = await this.supabase
+      const { data: property } = await this.getSupabase()
         .from('properties')
         .select('id, title, created_at, status')
         .eq('id', propertyId)
@@ -169,7 +172,7 @@ class PropertyTimelineService {
     const events: TimelineEvent[] = [];
 
     try {
-      const { data: residents } = await this.supabase
+      const { data: residents } = await this.getSupabase()
         .from('property_residents')
         .select('*')
         .eq('property_id', propertyId)
@@ -223,7 +226,7 @@ class PropertyTimelineService {
     const events: TimelineEvent[] = [];
 
     try {
-      const { data: requests } = await this.supabase
+      const { data: requests } = await this.getSupabase()
         .from('maintenance_requests')
         .select('*, profiles!created_by(full_name)')
         .eq('property_id', propertyId)
@@ -279,7 +282,7 @@ class PropertyTimelineService {
     const events: TimelineEvent[] = [];
 
     try {
-      const { data: payments } = await this.supabase
+      const { data: payments } = await this.getSupabase()
         .from('rent_payments')
         .select('*, profiles!user_id(full_name)')
         .eq('property_id', propertyId)
@@ -329,7 +332,7 @@ class PropertyTimelineService {
     const events: TimelineEvent[] = [];
 
     try {
-      const { data: applications } = await this.supabase
+      const { data: applications } = await this.getSupabase()
         .from('applications')
         .select('*')
         .eq('property_id', propertyId)
