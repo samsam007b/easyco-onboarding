@@ -1,10 +1,10 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, useMotionValue, useTransform, animate } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { Search, Home, Building2, Smartphone, BarChart3, Users, Shield, Target, CheckCircle2, Wallet, MessageSquare } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Search, Home, Building2, Smartphone, BarChart3, Users, Shield, Target, CheckCircle2, Wallet, MessageSquare, Bell, TrendingUp, Calendar, Receipt, ArrowUpRight, Zap, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTheme } from '@/contexts/ThemeContext';
 import SafeGooglePlacesAutocomplete from '@/components/ui/SafeGooglePlacesAutocomplete';
@@ -14,6 +14,40 @@ import { type Role } from './RoleSwitcher';
 
 interface RoleHeroSectionProps {
   activeRole: Role;
+}
+
+// Custom hook for animated counters
+function useAnimatedCounter(targetValue: number, duration: number = 2, startDelay: number = 0, decimals: number = 0) {
+  const [displayValue, setDisplayValue] = useState(0);
+  const countRef = useRef<number>(0);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      const startTime = Date.now();
+      const endTime = startTime + duration * 1000;
+
+      const updateCount = () => {
+        const now = Date.now();
+        const progress = Math.min((now - startTime) / (duration * 1000), 1);
+        // Easing function for smooth deceleration
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = targetValue * eased;
+
+        setDisplayValue(Number(current.toFixed(decimals)));
+        countRef.current = current;
+
+        if (progress < 1) {
+          requestAnimationFrame(updateCount);
+        }
+      };
+
+      requestAnimationFrame(updateCount);
+    }, startDelay * 1000);
+
+    return () => clearTimeout(timeout);
+  }, [targetValue, duration, startDelay, decimals]);
+
+  return displayValue;
 }
 
 // Animation variants for smooth transitions
@@ -333,10 +367,43 @@ function HeroSearcher() {
 }
 
 // ============================================================================
-// RESIDENT HERO - App showcase with features
+// RESIDENT HERO - Professional App showcase with advanced animations
 // ============================================================================
 function HeroResident() {
   const { resolvedTheme } = useTheme();
+
+  // Animated counters
+  const balanceValue = useAnimatedCounter(127.5, 1.5, 0.8, 2);
+  const matchPercent = useAnimatedCounter(87, 1.2, 1.5, 0);
+  const progressValue = useAnimatedCounter(75, 1.8, 1.0, 0);
+
+  // Stagger animation variants with proper typing
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.08, delayChildren: 0.6 }
+    }
+  } as const;
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { type: 'spring' as const, stiffness: 300, damping: 24 }
+    }
+  } as const;
+
+  const floatingAnimation = {
+    y: [0, -8, 0],
+    transition: {
+      duration: 3,
+      repeat: Infinity,
+      ease: 'easeInOut' as const
+    }
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -403,9 +470,13 @@ function HeroResident() {
             { icon: Target, label: 'Living Match', color: '#ff7c10' },
             { icon: MessageSquare, label: 'Issue Hub', color: '#ffa000' },
           ].map((feature, i) => (
-            <div
+            <motion.div
               key={i}
-              className={`flex items-center gap-3 px-4 py-3 rounded-2xl ${resolvedTheme === 'dark' ? 'bg-white/5' : 'bg-white shadow-sm'}`}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 + i * 0.1, type: 'spring', stiffness: 200 }}
+              whileHover={{ scale: 1.05, y: -2 }}
+              className={`flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer ${resolvedTheme === 'dark' ? 'bg-white/5' : 'bg-white shadow-sm'}`}
             >
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center"
@@ -416,7 +487,7 @@ function HeroResident() {
               <span className={`font-medium ${resolvedTheme === 'dark' ? 'text-white' : 'text-gray-900'}`}>
                 {feature.label}
               </span>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
@@ -454,106 +525,273 @@ function HeroResident() {
         </motion.div>
       </div>
 
-      {/* Phone Mockup */}
+      {/* Phone Mockup with Advanced Animations */}
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
         className="relative flex justify-center order-1 lg:order-2"
       >
-        {/* Phone */}
-        <div
+        {/* Phone Frame */}
+        <motion.div
+          animate={floatingAnimation}
           className="relative w-[320px] h-[640px] rounded-[60px] p-4 shadow-2xl"
           style={{
             background: 'linear-gradient(145deg, #1a1a1a, #2d2d2d)',
             boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.5)',
           }}
         >
+          {/* Dynamic Island / Notch */}
+          <div className="absolute top-6 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-20" />
+
           {/* Screen */}
           <div className="w-full h-full rounded-[48px] overflow-hidden bg-white">
-            {/* App UI */}
-            <div className="h-full flex flex-col">
-              {/* Header */}
-              <div
-                className="h-16 flex items-center justify-center"
+            {/* App UI with Staggered Animations */}
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="h-full flex flex-col"
+            >
+              {/* Header with gradient */}
+              <motion.div
+                variants={itemVariants}
+                className="h-20 flex items-end pb-3 justify-center relative overflow-hidden"
                 style={{ background: 'linear-gradient(135deg, #e05747, #ff7c10)' }}
               >
-                <span className="text-white font-semibold text-lg">Mon co-living</span>
-              </div>
+                {/* Animated background shapes */}
+                <motion.div
+                  animate={{
+                    x: [0, 10, 0],
+                    opacity: [0.1, 0.2, 0.1],
+                  }}
+                  transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+                  className="absolute -top-4 -right-4 w-20 h-20 rounded-full bg-white/10"
+                />
+                <span className="text-white font-semibold text-lg relative z-10">Mon co-living</span>
+              </motion.div>
 
               {/* Content */}
-              <div className="flex-1 p-4 space-y-4 bg-gradient-to-b from-resident-50/50 to-white">
-                {/* Balance card */}
-                <div className="bg-white rounded-3xl p-4 shadow-lg border border-gray-100">
-                  <p className="text-xs text-gray-500 mb-1">Solde du mois</p>
-                  <p className="text-2xl font-bold text-gray-900">€127.50</p>
+              <div className="flex-1 p-4 space-y-4 bg-gradient-to-b from-resident-50/50 to-white overflow-hidden">
+                {/* Balance card with animated counter */}
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white rounded-3xl p-4 shadow-lg border border-gray-100"
+                >
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-xs text-gray-500">Solde du mois</p>
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 1.2, type: 'spring' }}
+                      className="flex items-center gap-1 px-2 py-0.5 bg-green-100 rounded-full"
+                    >
+                      <TrendingUp className="w-3 h-3 text-green-600" />
+                      <span className="text-xs font-medium text-green-600">+12%</span>
+                    </motion.div>
+                  </div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    €{balanceValue.toFixed(2)}
+                  </p>
                   <div className="mt-3 flex gap-2">
                     <div className="flex-1 h-2 bg-resident-200 rounded-full overflow-hidden">
-                      <div className="h-full w-3/4 bg-resident-500 rounded-full" />
+                      <motion.div
+                        initial={{ width: 0 }}
+                        animate={{ width: `${progressValue}%` }}
+                        transition={{ delay: 1.0, duration: 1.5, ease: 'easeOut' }}
+                        className="h-full bg-gradient-to-r from-resident-500 to-resident-400 rounded-full"
+                      />
                     </div>
                   </div>
-                </div>
+                  <p className="text-xs text-gray-400 mt-2">Budget mensuel utilisé</p>
+                </motion.div>
 
-                {/* Quick actions */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-resident-100 rounded-2xl p-4 text-center">
-                    <Wallet className="w-6 h-6 mx-auto mb-2 text-resident-600" />
-                    <p className="text-xs font-medium text-resident-700">Ajouter dépense</p>
-                  </div>
-                  <div className="bg-searcher-100 rounded-2xl p-4 text-center">
+                {/* Quick actions with hover effects */}
+                <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3">
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-gradient-to-br from-resident-100 to-resident-50 rounded-2xl p-4 text-center cursor-pointer border border-resident-200/50"
+                  >
+                    <motion.div
+                      animate={{ rotate: [0, -10, 10, 0] }}
+                      transition={{ delay: 2, duration: 0.5, repeat: Infinity, repeatDelay: 4 }}
+                    >
+                      <Receipt className="w-6 h-6 mx-auto mb-2 text-resident-600" />
+                    </motion.div>
+                    <p className="text-xs font-medium text-resident-700">Scanner ticket</p>
+                  </motion.div>
+                  <motion.div
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-gradient-to-br from-searcher-100 to-searcher-50 rounded-2xl p-4 text-center cursor-pointer border border-searcher-200/50"
+                  >
                     <Users className="w-6 h-6 mx-auto mb-2 text-searcher-600" />
-                    <p className="text-xs font-medium text-searcher-700">Voir les colocs</p>
-                  </div>
-                </div>
+                    <p className="text-xs font-medium text-searcher-700">Mes colocs</p>
+                  </motion.div>
+                </motion.div>
 
-                {/* Recent activity */}
-                <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
-                  <p className="text-sm font-semibold text-gray-900 mb-3">Activité récente</p>
+                {/* Recent activity with staggered items */}
+                <motion.div
+                  variants={itemVariants}
+                  className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100"
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <p className="text-sm font-semibold text-gray-900">Activité récente</p>
+                    <Calendar className="w-4 h-4 text-gray-400" />
+                  </div>
                   <div className="space-y-3">
                     {[
-                      { label: 'Courses Colruyt', amount: '-€45.20', color: 'text-red-500' },
-                      { label: 'Loyer reçu', amount: '+€850', color: 'text-green-500' },
+                      { label: 'Courses Colruyt', amount: '-€45.20', color: 'text-red-500', icon: '🛒', time: '14:32' },
+                      { label: 'Loyer reçu', amount: '+€850', color: 'text-green-500', icon: '🏠', time: '09:00' },
+                      { label: 'Internet', amount: '-€24.99', color: 'text-red-500', icon: '📶', time: 'Hier' },
                     ].map((item, i) => (
-                      <div key={i} className="flex justify-between items-center">
-                        <span className="text-sm text-gray-600">{item.label}</span>
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 1.4 + i * 0.15 }}
+                        className="flex justify-between items-center py-1"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm">{item.icon}</span>
+                          <div>
+                            <span className="text-sm text-gray-700 font-medium">{item.label}</span>
+                            <p className="text-xs text-gray-400">{item.time}</p>
+                          </div>
+                        </div>
                         <span className={`text-sm font-semibold ${item.color}`}>{item.amount}</span>
-                      </div>
+                      </motion.div>
                     ))}
                   </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                </motion.div>
 
-        {/* Floating notification */}
+                {/* Bottom nav */}
+                <motion.div
+                  variants={itemVariants}
+                  className="absolute bottom-4 left-4 right-4 h-16 bg-white/90 backdrop-blur-xl rounded-2xl shadow-lg flex items-center justify-around px-4"
+                  style={{ border: '1px solid rgba(0,0,0,0.05)' }}
+                >
+                  {[
+                    { icon: Home, active: true },
+                    { icon: Wallet, active: false },
+                    { icon: Users, active: false },
+                    { icon: Bell, active: false },
+                  ].map((item, i) => (
+                    <motion.div
+                      key={i}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                        item.active
+                          ? 'bg-gradient-to-br from-resident-500 to-resident-400'
+                          : 'hover:bg-gray-100'
+                      }`}
+                    >
+                      <item.icon className={`w-5 h-5 ${item.active ? 'text-white' : 'text-gray-400'}`} />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
+        {/* Floating notification - Match */}
         <motion.div
-          initial={{ opacity: 0, x: 30, y: -20 }}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="absolute -right-8 top-32 px-5 py-4 rounded-2xl shadow-2xl bg-white"
-          style={{ boxShadow: '0 20px 50px rgba(0,0,0,0.15)' }}
+          initial={{ opacity: 0, x: 50, y: -20, scale: 0.8 }}
+          animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+          transition={{ delay: 1.2, type: 'spring', stiffness: 200 }}
+          className="absolute -right-4 md:-right-12 top-24 px-5 py-4 rounded-2xl shadow-2xl bg-white"
+          style={{ boxShadow: '0 20px 50px rgba(224, 87, 71, 0.2)' }}
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-resident-100 flex items-center justify-center">
-              <Users className="w-6 h-6 text-resident-600" />
+          <motion.div
+            animate={{ scale: [1, 1.02, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="flex items-center gap-4"
+          >
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-resident-100 to-resident-200 flex items-center justify-center">
+                <Target className="w-6 h-6 text-resident-600" />
+              </div>
+              <motion.div
+                animate={{ scale: [1, 1.4, 1], opacity: [1, 0, 1] }}
+                transition={{ duration: 2, repeat: Infinity }}
+                className="absolute -top-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white"
+              />
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Nouveau match !</p>
-              <p className="text-sm text-gray-500">87% compatible</p>
+              <p className="text-sm font-semibold text-gray-900">Living Match !</p>
+              <p className="text-sm text-resident-500 font-bold">{matchPercent}% compatible</p>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Second floating element - Message notification */}
+        <motion.div
+          initial={{ opacity: 0, x: -50, y: 20, scale: 0.8 }}
+          animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+          transition={{ delay: 1.6, type: 'spring', stiffness: 200 }}
+          className="absolute -left-4 md:-left-8 bottom-40 px-4 py-3 rounded-2xl shadow-xl bg-white"
+          style={{ boxShadow: '0 15px 40px rgba(0, 0, 0, 0.1)' }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-searcher-100 to-searcher-200 flex items-center justify-center">
+              <MessageSquare className="w-5 h-5 text-searcher-600" />
+            </div>
+            <div>
+              <p className="text-xs text-gray-500">Emma a écrit</p>
+              <p className="text-sm font-medium text-gray-800">Qui fait les courses ?</p>
             </div>
           </div>
         </motion.div>
+
+        {/* Decorative glow */}
+        <div
+          className="absolute -z-10 inset-0 blur-3xl opacity-30"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, #e05747 0%, transparent 60%)',
+          }}
+        />
       </motion.div>
     </div>
   );
 }
 
 // ============================================================================
-// OWNER HERO - Dashboard focus with stats
+// OWNER HERO - Professional Dashboard with advanced animations
 // ============================================================================
 function HeroOwner() {
   const { resolvedTheme } = useTheme();
+
+  // Animated counters
+  const revenueValue = useAnimatedCounter(4250, 2, 0.8, 0);
+  const residentsCount = useAnimatedCounter(12, 1.5, 1, 0);
+  const occupancyRate = useAnimatedCounter(95, 1.8, 0.5, 0);
+  const timeReduction = useAnimatedCounter(70, 1.5, 0.7, 0);
+
+  // Chart data with animated heights
+  const chartData = [40, 60, 80, 70, 90, 95, 85, 90, 88, 92, 95, 97];
+  const months = ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'];
+
+  // Stagger animation variants with proper typing
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1, delayChildren: 0.5 }
+    }
+  } as const;
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.95 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { type: 'spring' as const, stiffness: 300, damping: 24 }
+    }
+  } as const;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -607,7 +845,7 @@ function HeroOwner() {
           Gère tes biens, trouve les meilleurs résidents et automatise ton quotidien de propriétaire.
         </motion.p>
 
-        {/* Stats */}
+        {/* Animated Stats */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -615,21 +853,27 @@ function HeroOwner() {
           className="grid grid-cols-3 gap-6 mb-10"
         >
           {[
-            { value: '95%', label: "Taux d'occupation" },
-            { value: '-70%', label: 'Temps de gestion' },
-            { value: '0€', label: 'Frais cachés' },
+            { value: occupancyRate, suffix: '%', label: "Taux d'occupation" },
+            { value: timeReduction, prefix: '-', suffix: '%', label: 'Temps de gestion' },
+            { value: 0, suffix: '€', label: 'Frais cachés' },
           ].map((stat, i) => (
-            <div key={i} className="text-center lg:text-left">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.5 + i * 0.15, type: 'spring' }}
+              className="text-center lg:text-left"
+            >
               <p
                 className="text-4xl font-bold bg-clip-text text-transparent"
                 style={{ backgroundImage: 'linear-gradient(135deg, #9c5698, #c85570)' }}
               >
-                {stat.value}
+                {stat.prefix || ''}{stat.value}{stat.suffix}
               </p>
               <p className={`text-sm ${resolvedTheme === 'dark' ? 'text-gray-500' : 'text-gray-500'}`}>
                 {stat.label}
               </p>
-            </div>
+            </motion.div>
           ))}
         </motion.div>
 
@@ -667,95 +911,301 @@ function HeroOwner() {
         </motion.div>
       </div>
 
-      {/* Dashboard Mockup */}
+      {/* Professional Dashboard Mockup */}
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ delay: 0.3, duration: 0.6 }}
         className="relative flex justify-center"
       >
-        {/* Browser Frame */}
-        <div
-          className="relative w-full max-w-[500px] rounded-2xl overflow-hidden shadow-2xl"
+        {/* Browser Frame with subtle floating animation */}
+        <motion.div
+          animate={{
+            y: [0, -5, 0],
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          className="relative w-full max-w-[520px] rounded-2xl overflow-hidden shadow-2xl"
           style={{
             background: '#1a1a1a',
-            boxShadow: '0 50px 100px -20px rgba(0, 0, 0, 0.5)',
+            boxShadow: '0 50px 100px -20px rgba(156, 86, 152, 0.3)',
           }}
         >
-          {/* Browser bar */}
-          <div className="h-10 bg-gray-800 flex items-center px-4 gap-2">
+          {/* Browser bar with real controls */}
+          <div className="h-12 bg-gradient-to-b from-gray-800 to-gray-900 flex items-center px-4 gap-3">
             <div className="flex gap-2">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500" />
-              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                className="w-3 h-3 rounded-full bg-red-500 cursor-pointer"
+              />
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                className="w-3 h-3 rounded-full bg-yellow-500 cursor-pointer"
+              />
+              <motion.div
+                whileHover={{ scale: 1.2 }}
+                className="w-3 h-3 rounded-full bg-green-500 cursor-pointer"
+              />
             </div>
-            <div className="flex-1 mx-8">
-              <div className="h-6 bg-gray-700 rounded-lg px-3 flex items-center">
-                <span className="text-xs text-gray-400">izzico.be/dashboard</span>
+            <div className="flex-1 mx-4">
+              <div className="h-7 bg-gray-700/50 rounded-lg px-3 flex items-center gap-2">
+                <Shield className="w-3 h-3 text-green-500" />
+                <span className="text-xs text-gray-400">izzico.be/dashboard/owner</span>
+              </div>
+            </div>
+            <div className="flex gap-2">
+              <div className="w-6 h-6 rounded bg-gray-700/50 flex items-center justify-center">
+                <Bell className="w-3 h-3 text-gray-400" />
               </div>
             </div>
           </div>
 
-          {/* Dashboard content */}
-          <div className="bg-owner-50 p-6">
-            {/* Header */}
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <p className="text-lg font-semibold text-gray-900">Tableau de bord</p>
-                <p className="text-sm text-gray-500">3 biens actifs</p>
+          {/* Dashboard content with staggered animations */}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="bg-gradient-to-br from-owner-50 to-white p-5"
+          >
+            {/* Header with user info */}
+            <motion.div variants={itemVariants} className="flex items-center justify-between mb-5">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 rounded-full bg-gradient-to-br from-owner-400 to-owner-600 flex items-center justify-center text-white font-bold">
+                  JD
+                </div>
+                <div>
+                  <p className="text-base font-semibold text-gray-900">Bonjour, Jean</p>
+                  <p className="text-xs text-gray-500">3 biens actifs</p>
+                </div>
               </div>
-              <div className="w-10 h-10 rounded-full bg-owner-200" />
-            </div>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1.2, type: 'spring' }}
+                className="flex items-center gap-2 px-3 py-1.5 bg-green-100 rounded-full"
+              >
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                <span className="text-xs font-medium text-green-700">Tout va bien</span>
+              </motion.div>
+            </motion.div>
 
-            {/* Stats grid */}
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <div className="bg-white rounded-2xl p-4 shadow-sm">
-                <p className="text-sm text-gray-500">Revenus ce mois</p>
-                <p className="text-2xl font-bold text-owner-600">€4,250</p>
-              </div>
-              <div className="bg-white rounded-2xl p-4 shadow-sm">
-                <p className="text-sm text-gray-500">Résidents</p>
-                <p className="text-2xl font-bold text-gray-900">12</p>
-              </div>
-            </div>
+            {/* Stats grid with animated counters */}
+            <motion.div variants={itemVariants} className="grid grid-cols-2 gap-3 mb-4">
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-owner-100 cursor-pointer"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs text-gray-500">Revenus ce mois</p>
+                  <motion.div
+                    initial={{ rotate: 0 }}
+                    animate={{ rotate: [0, 15, 0] }}
+                    transition={{ delay: 2, duration: 0.5, repeat: Infinity, repeatDelay: 5 }}
+                  >
+                    <ArrowUpRight className="w-4 h-4 text-green-500" />
+                  </motion.div>
+                </div>
+                <p className="text-2xl font-bold bg-clip-text text-transparent" style={{ backgroundImage: 'linear-gradient(135deg, #9c5698, #c85570)' }}>
+                  €{revenueValue.toLocaleString()}
+                </p>
+                <p className="text-xs text-green-600 mt-1">+8.5% vs mois dernier</p>
+              </motion.div>
+              <motion.div
+                whileHover={{ scale: 1.02, y: -2 }}
+                className="bg-white rounded-2xl p-4 shadow-sm border border-owner-100 cursor-pointer"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs text-gray-500">Résidents</p>
+                  <Users className="w-4 h-4 text-owner-400" />
+                </div>
+                <p className="text-2xl font-bold text-gray-900">{residentsCount}</p>
+                <div className="flex -space-x-2 mt-2">
+                  {[...Array(4)].map((_, i) => (
+                    <motion.div
+                      key={i}
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: 1.5 + i * 0.1 }}
+                      className="w-6 h-6 rounded-full border-2 border-white"
+                      style={{
+                        background: `linear-gradient(135deg, ${['#e05747', '#ff7c10', '#ffa000', '#9c5698'][i]}, ${['#ff7c10', '#ffa000', '#e05747', '#c85570'][i]})`,
+                      }}
+                    />
+                  ))}
+                  <motion.div
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 1.9 }}
+                    className="w-6 h-6 rounded-full border-2 border-white bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600"
+                  >
+                    +8
+                  </motion.div>
+                </div>
+              </motion.div>
+            </motion.div>
 
-            {/* Chart */}
-            <div className="bg-white rounded-2xl p-4 shadow-sm">
-              <p className="text-sm text-gray-500 mb-3">Occupation</p>
-              <div className="flex items-end gap-2 h-20">
-                {[40, 60, 80, 70, 90, 95, 85, 90, 88, 92, 95, 97].map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 rounded-t transition-all hover:opacity-80"
-                    style={{
-                      height: `${h}%`,
-                      background: 'linear-gradient(to top, #9c5698, #c85570)',
-                    }}
-                  />
+            {/* Occupation rate mini card */}
+            <motion.div
+              variants={itemVariants}
+              className="bg-gradient-to-r from-owner-500 to-owner-400 rounded-2xl p-4 mb-4 text-white"
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-xs text-white/70">Taux d'occupation</p>
+                  <p className="text-3xl font-bold">{occupancyRate}%</p>
+                </div>
+                <div className="w-16 h-16 relative">
+                  <svg className="w-16 h-16 transform -rotate-90">
+                    <circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="rgba(255,255,255,0.2)"
+                      strokeWidth="8"
+                      fill="none"
+                    />
+                    <motion.circle
+                      cx="32"
+                      cy="32"
+                      r="28"
+                      stroke="white"
+                      strokeWidth="8"
+                      fill="none"
+                      strokeLinecap="round"
+                      initial={{ strokeDasharray: '0 176' }}
+                      animate={{ strokeDasharray: `${(occupancyRate / 100) * 176} 176` }}
+                      transition={{ delay: 1, duration: 1.5, ease: 'easeOut' }}
+                    />
+                  </svg>
+                  <Zap className="w-5 h-5 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white" />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Chart with animated bars */}
+            <motion.div variants={itemVariants} className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between mb-3">
+                <p className="text-sm font-semibold text-gray-900">Revenus 2024</p>
+                <div className="flex items-center gap-1 text-xs text-gray-400">
+                  <TrendingUp className="w-3 h-3 text-green-500" />
+                  <span>+12%</span>
+                </div>
+              </div>
+              <div className="flex items-end gap-1.5 h-24">
+                {chartData.map((h, i) => (
+                  <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                    <motion.div
+                      initial={{ height: 0 }}
+                      animate={{ height: `${h}%` }}
+                      transition={{
+                        delay: 1.2 + i * 0.08,
+                        duration: 0.8,
+                        ease: [0.34, 1.56, 0.64, 1],
+                      }}
+                      whileHover={{ scale: 1.1, opacity: 0.9 }}
+                      className="w-full rounded-t cursor-pointer"
+                      style={{
+                        background: i === 11
+                          ? 'linear-gradient(to top, #9c5698, #c85570)'
+                          : i >= 9
+                          ? 'linear-gradient(to top, rgba(156, 86, 152, 0.7), rgba(200, 85, 112, 0.7))'
+                          : 'linear-gradient(to top, rgba(156, 86, 152, 0.3), rgba(200, 85, 112, 0.3))',
+                      }}
+                    />
+                    <span className="text-[9px] text-gray-400">{months[i]}</span>
+                  </div>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
+            </motion.div>
 
-        {/* Floating notification */}
+            {/* Recent payments list */}
+            <motion.div variants={itemVariants} className="mt-4 space-y-2">
+              {[
+                { name: 'Marc D.', amount: '+€850', time: 'Il y a 2h', avatar: 'MD' },
+                { name: 'Sophie L.', amount: '+€720', time: 'Hier', avatar: 'SL' },
+              ].map((payment, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 2 + i * 0.15 }}
+                  whileHover={{ x: 5 }}
+                  className="flex items-center justify-between p-3 bg-white rounded-xl border border-gray-100 cursor-pointer"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-resident-400 to-resident-500 flex items-center justify-center text-white text-xs font-medium">
+                      {payment.avatar}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{payment.name}</p>
+                      <p className="text-xs text-gray-400">{payment.time}</p>
+                    </div>
+                  </div>
+                  <span className="text-sm font-bold text-green-600">{payment.amount}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
+        </motion.div>
+
+        {/* Floating payment notification */}
         <motion.div
-          initial={{ opacity: 0, x: -30, y: 20 }}
-          animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ delay: 0.8 }}
-          className="absolute -left-8 bottom-20 px-5 py-4 rounded-2xl shadow-2xl bg-white"
-          style={{ boxShadow: '0 20px 50px rgba(0,0,0,0.15)' }}
+          initial={{ opacity: 0, x: -60, y: 20, scale: 0.8 }}
+          animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+          transition={{ delay: 1.4, type: 'spring', stiffness: 200 }}
+          className="absolute -left-4 md:-left-12 bottom-32 px-5 py-4 rounded-2xl shadow-2xl bg-white"
+          style={{ boxShadow: '0 20px 50px rgba(34, 197, 94, 0.2)' }}
         >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-              <CheckCircle2 className="w-6 h-6 text-green-600" />
+          <motion.div
+            animate={{ scale: [1, 1.02, 1] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="flex items-center gap-4"
+          >
+            <div className="relative">
+              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-100 to-green-200 flex items-center justify-center">
+                <CheckCircle2 className="w-6 h-6 text-green-600" />
+              </div>
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1.8, type: 'spring' }}
+                className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full border-2 border-white flex items-center justify-center"
+              >
+                <span className="text-[10px] text-white font-bold">✓</span>
+              </motion.div>
             </div>
             <div>
-              <p className="text-sm font-semibold text-gray-900">Loyer reçu</p>
-              <p className="text-sm text-gray-500">+€850 de Marc D.</p>
+              <p className="text-sm font-semibold text-gray-900">Paiement reçu !</p>
+              <p className="text-sm text-green-600 font-bold">+€850 de Marc D.</p>
+            </div>
+          </motion.div>
+        </motion.div>
+
+        {/* Floating new applicant notification */}
+        <motion.div
+          initial={{ opacity: 0, x: 60, y: -20, scale: 0.8 }}
+          animate={{ opacity: 1, x: 0, y: 0, scale: 1 }}
+          transition={{ delay: 1.8, type: 'spring', stiffness: 200 }}
+          className="absolute -right-4 md:-right-8 top-24 px-4 py-3 rounded-2xl shadow-xl bg-white"
+          style={{ boxShadow: '0 15px 40px rgba(156, 86, 152, 0.15)' }}
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-owner-100 to-owner-200 flex items-center justify-center">
+              <Star className="w-5 h-5 text-owner-600" />
+            </div>
+            <div>
+              <p className="text-xs text-gray-500">Nouvelle candidature</p>
+              <p className="text-sm font-medium text-gray-800">Emma K. - 92% match</p>
             </div>
           </div>
         </motion.div>
+
+        {/* Decorative glow */}
+        <div
+          className="absolute -z-10 inset-0 blur-3xl opacity-30"
+          style={{
+            background: 'radial-gradient(circle at 50% 50%, #9c5698 0%, transparent 60%)',
+          }}
+        />
       </motion.div>
     </div>
   );
