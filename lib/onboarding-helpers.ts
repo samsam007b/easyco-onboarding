@@ -76,6 +76,8 @@ export interface OnboardingData {
   // Owner-specific Information
   landlordType?: 'individual' | 'agency' | 'company'
   companyName?: string
+  businessRegistrationNumber?: string // BCE number for Belgian companies/agencies
+  vatNumber?: string // VAT/TVA number (optional)
   email?: string
   phoneNumber?: string
   ownerType?: 'individual' | 'agency' | 'company'
@@ -205,6 +207,8 @@ export async function saveOnboardingData(userId: string, data: OnboardingData, u
     // Owner-specific Information
     if (data.landlordType) profileData.landlord_type = data.landlordType
     if (data.companyName) profileData.company_name = data.companyName
+    if (data.businessRegistrationNumber) profileData.business_registration_number = data.businessRegistrationNumber
+    if (data.vatNumber) profileData.vat_number = data.vatNumber
     // Note: email is stored in auth.users, not user_profiles
     if (data.phoneNumber) profileData.phone_number = data.phoneNumber
     if (data.ownerType) profileData.owner_type = data.ownerType
@@ -482,6 +486,8 @@ export async function getOnboardingData(userId: string) {
 
     if (data.landlord_type) camelCaseData.landlordType = data.landlord_type
     if (data.company_name) camelCaseData.companyName = data.company_name
+    if (data.business_registration_number) camelCaseData.businessRegistrationNumber = data.business_registration_number
+    if (data.vat_number) camelCaseData.vatNumber = data.vat_number
     if (data.email) camelCaseData.email = data.email
     if (data.phone_number) camelCaseData.phoneNumber = data.phone_number
     if (data.owner_type) camelCaseData.ownerType = data.owner_type

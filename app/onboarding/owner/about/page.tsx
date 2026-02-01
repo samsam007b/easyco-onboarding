@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, Building2, Users, MapPin } from 'lucide-react';
+import { User, Building2, Users, MapPin, Hash, Receipt } from 'lucide-react';
 import { safeLocalStorage } from '@/lib/browser';
 import { createClient } from '@/lib/auth/supabase-client';
 import { toast } from 'sonner';
@@ -23,6 +23,8 @@ export default function OwnerAbout() {
   const [isLoading, setIsLoading] = useState(true);
   const [ownerType, setOwnerType] = useState('');
   const [companyName, setCompanyName] = useState('');
+  const [businessRegistrationNumber, setBusinessRegistrationNumber] = useState('');
+  const [vatNumber, setVatNumber] = useState('');
   const [primaryLocation, setPrimaryLocation] = useState('');
   const [hostingExperience, setHostingExperience] = useState('');
 
@@ -45,11 +47,15 @@ export default function OwnerAbout() {
         if (profileData) {
           setOwnerType(saved.ownerType || profileData.owner_type || '');
           setCompanyName(saved.companyName || profileData.company_name || '');
+          setBusinessRegistrationNumber(saved.businessRegistrationNumber || profileData.business_registration_number || '');
+          setVatNumber(saved.vatNumber || profileData.vat_number || '');
           setPrimaryLocation(saved.primaryLocation || profileData.primary_location || '');
           setHostingExperience(saved.hostingExperience || profileData.hosting_experience || '');
         } else if (saved.ownerType) {
           setOwnerType(saved.ownerType);
           setCompanyName(saved.companyName || '');
+          setBusinessRegistrationNumber(saved.businessRegistrationNumber || '');
+          setVatNumber(saved.vatNumber || '');
           setPrimaryLocation(saved.primaryLocation);
           setHostingExperience(saved.hostingExperience);
         }
@@ -67,14 +73,24 @@ export default function OwnerAbout() {
       return;
     }
 
-    if ((ownerType === 'agency' || ownerType === 'company') && !companyName.trim()) {
+    const isBusinessEntity = ownerType === 'agency' || ownerType === 'company';
+
+    if (isBusinessEntity && !companyName.trim()) {
       toast.error(t('onboarding.owner.about.errorCompanyName'));
+      return;
+    }
+
+    // Business registration number is required for agencies and companies
+    if (isBusinessEntity && !businessRegistrationNumber.trim()) {
+      toast.error(t('onboarding.owner.about.errorBusinessNumber') || 'Le numéro d\'entreprise est requis');
       return;
     }
 
     safeLocalStorage.set('ownerAbout', {
       ownerType,
-      companyName: (ownerType === 'agency' || ownerType === 'company') ? companyName : '',
+      companyName: isBusinessEntity ? companyName : '',
+      businessRegistrationNumber: isBusinessEntity ? businessRegistrationNumber : '',
+      vatNumber: isBusinessEntity ? vatNumber : '', // Optional but saved if provided
       primaryLocation,
       hostingExperience,
     });
@@ -108,8 +124,9 @@ export default function OwnerAbout() {
     { value: '3+ years', label: t('onboarding.owner.about.experience3plus') },
   ];
 
+  const isBusinessEntity = ['agency', 'company'].includes(ownerType);
   const canContinue = ownerType && primaryLocation && hostingExperience &&
-    (!['agency', 'company'].includes(ownerType) || companyName.trim());
+    (!isBusinessEntity || (companyName.trim() && businessRegistrationNumber.trim()));
 
   return (
     <OnboardingLayout
@@ -166,17 +183,36 @@ export default function OwnerAbout() {
           </div>
         </div>
 
-        {/* Company Name (conditional) */}
+        {/* Company Name & Legal Info (conditional) */}
         {(ownerType === 'agency' || ownerType === 'company') && (
-          <OnboardingInput
-            role="owner"
-            label={t('onboarding.owner.about.companyName')}
-            required
-            icon={Building2}
-            value={companyName}
-            onChange={(e) => setCompanyName(e.target.value)}
-            placeholder={t('onboarding.owner.about.companyNamePlaceholder')}
-          />
+          <>
+            <OnboardingInput
+              role="owner"
+              label={t('onboarding.owner.about.companyName')}
+              required
+              icon={Building2}
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              placeholder={t('onboarding.owner.about.companyNamePlaceholder')}
+            />
+            <OnboardingInput
+              role="owner"
+              label={t('onboarding.owner.about.businessRegistrationNumber') || 'Numéro d\'entreprise (BCE)'}
+              required
+              icon={Hash}
+              value={businessRegistrationNumber}
+              onChange={(e) => setBusinessRegistrationNumber(e.target.value)}
+              placeholder={t('onboarding.owner.about.businessRegistrationNumberPlaceholder') || 'Ex: 0123.456.789'}
+            />
+            <OnboardingInput
+              role="owner"
+              label={t('onboarding.owner.about.vatNumber') || 'Numéro de TVA (optionnel)'}
+              icon={Receipt}
+              value={vatNumber}
+              onChange={(e) => setVatNumber(e.target.value)}
+              placeholder={t('onboarding.owner.about.vatNumberPlaceholder') || 'Ex: BE0123456789'}
+            />
+          </>
         )}
 
         {/* Primary Location */}
