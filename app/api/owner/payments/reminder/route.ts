@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { createClient as createServerClient } from '@/lib/auth/supabase-server';
 import { sendPaymentReminder, type PaymentReminderData } from '@/lib/services/email-service';
 import { getApiLanguage, apiT } from '@/lib/i18n/api-translations';
 import { rateLimitMiddleware, getRateLimitIdentifier } from '@/lib/middleware/rate-limit';
@@ -32,7 +33,19 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // SECURITY: Verify the requesting user is authenticated and is the property owner
+    const supabase = await createServerClient();
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return NextResponse.json(
+        { error: apiT('common.unauthorized', lang) },
+        { status: 401 }
+      );
+    }
+
     // Get payment details with related data
+    // Note: rent_payments uses 'user_id' not 'tenant_id'
     const { data: payment, error: paymentError } = await supabaseAdmin
       .from('rent_payments')
       .select(`
@@ -41,16 +54,11 @@ export async function POST(request: NextRequest) {
         due_date,
         status,
         property_id,
-        tenant_id,
+        user_id,
         properties (
           id,
           title,
-          owner_id,
-          profiles:owner_id (
-            first_name,
-            last_name,
-            email
-          )
+          owner_id
         )
       `)
       .eq('id', paymentId)
@@ -64,11 +72,22 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get tenant information
+    // SECURITY: Verify the requesting user is the property owner
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const propertyData = payment.properties as any;
+    if (!propertyData || propertyData.owner_id !== user.id) {
+      console.warn(`[PaymentReminder] Unauthorized: user ${user.id} tried to send reminder for property owned by ${propertyData?.owner_id}`);
+      return NextResponse.json(
+        { error: apiT('common.unauthorized', lang) },
+        { status: 403 }
+      );
+    }
+
+    // Get tenant information (user_id in rent_payments = the resident/tenant)
     const { data: tenant, error: tenantError } = await supabaseAdmin
       .from('profiles')
       .select('first_name, last_name, email')
-      .eq('id', payment.tenant_id)
+      .eq('id', payment.user_id)
       .single();
 
     if (tenantError || !tenant) {
@@ -86,22 +105,23 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract property and owner info safely
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const properties = payment.properties as any;
-    const property = properties || {};
-    const ownerProfile = property.profiles?.[0] || property.profiles || null;
+    // Get owner profile for the email
+    const { data: ownerProfile } = await supabaseAdmin
+      .from('profiles')
+      .select('first_name, last_name')
+      .eq('id', user.id)
+      .single();
 
     // Prepare reminder data
     const reminderData: PaymentReminderData = {
       tenantName: `${tenant.first_name || ''} ${tenant.last_name || ''}`.trim() || 'Locataire',
       tenantEmail: tenant.email,
-      propertyTitle: property.title || 'Propriete',
+      propertyTitle: propertyData.title || 'Propriété',
       amount: Number(payment.amount),
       dueDate: new Date(payment.due_date),
       ownerName: ownerProfile
         ? `${ownerProfile.first_name || ''} ${ownerProfile.last_name || ''}`.trim()
-        : 'Proprietaire',
+        : 'Propriétaire',
       paymentId: payment.id,
     };
 
@@ -116,14 +136,17 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Log the reminder sent (could be stored in a separate table for tracking)
-    console.log(`[PaymentReminder] Sent to ${tenant.email} for payment ${paymentId}`);
+    // Log the reminder sent
+    console.log(`[PaymentReminder] Sent to ${tenant.email} for payment ${paymentId} by owner ${user.id}`);
 
-    // Optionally update a reminder_sent_at field if it exists
-    await supabaseAdmin
-      .from('rent_payments')
-      .update({ reminder_sent_at: new Date().toISOString() })
-      .eq('id', paymentId);
+    // TODO: Add reminder_sent_at column to rent_payments table via migration
+    // For now, we just log the reminder. A future migration should add:
+    // ALTER TABLE rent_payments ADD COLUMN reminder_sent_at TIMESTAMPTZ;
+    // Then uncomment:
+    // await supabaseAdmin
+    //   .from('rent_payments')
+    //   .update({ reminder_sent_at: new Date().toISOString() })
+    //   .eq('id', paymentId);
 
     return NextResponse.json({
       success: true,

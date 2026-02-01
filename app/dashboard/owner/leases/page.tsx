@@ -596,19 +596,27 @@ export default function LeasesPage() {
               onRenew={(leaseId) => {
                 const lease = leases.find(l => l.id === leaseId);
                 if (lease) {
-                  toast.info(
-                    t?.toast?.renewalComingSoon?.[language]?.replace('{tenant}', lease.tenant_name) ||
-                    `Lease renewal for ${lease.tenant_name} - Coming soon`
+                  // Redirect to messaging with renewal context
+                  toast.success(
+                    language === 'fr'
+                      ? `Redirection vers la messagerie pour discuter du renouvellement avec ${lease.tenant_name}`
+                      : `Redirecting to messaging to discuss renewal with ${lease.tenant_name}`,
+                    { duration: 2000 }
                   );
+                  router.push(`/dashboard/owner/messages?tenant=${lease.resident_id}&context=renewal`);
                 }
               }}
               onDecline={(leaseId) => {
                 const lease = leases.find(l => l.id === leaseId);
                 if (lease) {
+                  // Redirect to messaging to notify tenant about non-renewal
                   toast.info(
-                    t?.toast?.terminationComingSoon?.[language]?.replace('{tenant}', lease.tenant_name) ||
-                    `Lease termination for ${lease.tenant_name} - Coming soon`
+                    language === 'fr'
+                      ? `Contactez ${lease.tenant_name} pour l'informer de la non-reconduction du bail`
+                      : `Contact ${lease.tenant_name} to inform about lease non-renewal`,
+                    { duration: 3000 }
                   );
+                  router.push(`/dashboard/owner/messages?tenant=${lease.resident_id}&context=termination`);
                 }
               }}
             />

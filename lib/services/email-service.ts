@@ -42,7 +42,7 @@ async function sendViaProvider(options: EmailOptions): Promise<{ success: boolea
   if (provider === 'resend') {
     try {
       const fromEmail = process.env.EMAIL_FROM || 'noreply@easyco.app';
-      const fromName = process.env.EMAIL_FROM_NAME || 'EasyCo';
+      const fromName = process.env.EMAIL_FROM_NAME || 'Izzico';
       const apiKey = process.env.RESEND_API_KEY;
 
       // Use fetch to call Resend API directly (no need to install resend package)
@@ -133,7 +133,7 @@ export function generatePaymentReminderHTML(data: PaymentReminderData): string {
         <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #9c5698, #c2566b); border-radius: 16px 16px 0 0; padding: 30px;">
           <tr>
             <td align="center">
-              <h1 style="color: white; margin: 0; font-size: 28px;">EasyCo</h1>
+              <h1 style="color: white; margin: 0; font-size: 28px;">Izzico</h1>
               <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">Rappel de paiement</p>
             </td>
           </tr>
@@ -188,7 +188,7 @@ export function generatePaymentReminderHTML(data: PaymentReminderData): string {
 
               <p style="color: #4b5563; font-size: 15px; margin: 20px 0 0 0;">
                 Cordialement,<br>
-                <strong style="color: #9c5698;">L'equipe EasyCo</strong>
+                <strong style="color: #9c5698;">L'equipe Izzico</strong>
               </p>
             </td>
           </tr>
@@ -199,8 +199,8 @@ export function generatePaymentReminderHTML(data: PaymentReminderData): string {
           <tr>
             <td align="center">
               <p style="color: #9ca3af; font-size: 12px; margin: 0;">
-                Ce message a ete envoye automatiquement par EasyCo.<br>
-                &copy; ${new Date().getFullYear()} EasyCo. Tous droits reserves.
+                Ce message a ete envoye automatiquement par Izzico.<br>
+                &copy; ${new Date().getFullYear()} Izzico. Tous droits reserves.
               </p>
             </td>
           </tr>
@@ -236,10 +236,10 @@ Si vous avez deja effectue ce paiement, veuillez ignorer ce message.
 Pour toute question, n'hesitez pas a repondre a cet email.
 
 Cordialement,
-L'equipe EasyCo
+L'equipe Izzico
 
 ---
-Ce message a ete envoye automatiquement par EasyCo.
+Ce message a ete envoye automatiquement par Izzico.
   `.trim();
 }
 
@@ -310,7 +310,7 @@ export function generateLeaseExpirationHTML(data: LeaseExpirationData): string {
         <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #9c5698, #c2566b); border-radius: 16px 16px 0 0; padding: 30px;">
           <tr>
             <td align="center">
-              <h1 style="color: white; margin: 0; font-size: 28px;">EasyCo</h1>
+              <h1 style="color: white; margin: 0; font-size: 28px;">Izzico</h1>
               <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">Alerte Expiration Bail</p>
             </td>
           </tr>
@@ -385,7 +385,7 @@ export function generateLeaseExpirationHTML(data: LeaseExpirationData): string {
 
               <p style="color: #4b5563; font-size: 15px; margin: 20px 0 0 0;">
                 Cordialement,<br>
-                <strong style="color: #9c5698;">L'équipe EasyCo</strong>
+                <strong style="color: #9c5698;">L'équipe Izzico</strong>
               </p>
             </td>
           </tr>
@@ -396,8 +396,8 @@ export function generateLeaseExpirationHTML(data: LeaseExpirationData): string {
           <tr>
             <td align="center">
               <p style="color: #9ca3af; font-size: 12px; margin: 0;">
-                Ce message a été envoyé automatiquement par EasyCo.<br>
-                &copy; ${new Date().getFullYear()} EasyCo. Tous droits réservés.
+                Ce message a été envoyé automatiquement par Izzico.<br>
+                &copy; ${new Date().getFullYear()} Izzico. Tous droits réservés.
               </p>
             </td>
           </tr>
@@ -467,7 +467,7 @@ export function generateMaintenanceAlertHTML(data: MaintenanceAlertData): string
         <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #9c5698, #c2566b); border-radius: 16px 16px 0 0; padding: 30px;">
           <tr>
             <td align="center">
-              <h1 style="color: white; margin: 0; font-size: 28px;">EasyCo</h1>
+              <h1 style="color: white; margin: 0; font-size: 28px;">Izzico</h1>
               <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">Alerte Maintenance</p>
             </td>
           </tr>
@@ -554,7 +554,7 @@ export function generateMaintenanceAlertHTML(data: MaintenanceAlertData): string
 
               <p style="color: #4b5563; font-size: 15px; margin: 20px 0 0 0;">
                 Cordialement,<br>
-                <strong style="color: #9c5698;">L'équipe EasyCo</strong>
+                <strong style="color: #9c5698;">L'équipe Izzico</strong>
               </p>
             </td>
           </tr>
@@ -565,8 +565,8 @@ export function generateMaintenanceAlertHTML(data: MaintenanceAlertData): string
           <tr>
             <td align="center">
               <p style="color: #9ca3af; font-size: 12px; margin: 0;">
-                Ce message a été envoyé automatiquement par EasyCo.<br>
-                &copy; ${new Date().getFullYear()} EasyCo. Tous droits réservés.
+                Ce message a été envoyé automatiquement par Izzico.<br>
+                &copy; ${new Date().getFullYear()} Izzico. Tous droits réservés.
               </p>
             </td>
           </tr>
@@ -712,7 +712,7 @@ export function generateDailyDigestHTML(data: DailyDigestData): string {
         <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #9c5698, #c2566b); border-radius: 16px 16px 0 0; padding: 30px;">
           <tr>
             <td align="center">
-              <h1 style="color: white; margin: 0; font-size: 28px;">EasyCo</h1>
+              <h1 style="color: white; margin: 0; font-size: 28px;">Izzico</h1>
               <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 14px;">Résumé Quotidien</p>
               <p style="color: rgba(255,255,255,0.7); margin: 4px 0 0 0; font-size: 12px;">${formatDate(data.date)}</p>
             </td>
@@ -829,7 +829,7 @@ export function generateDailyDigestHTML(data: DailyDigestData): string {
 
               <p style="color: #4b5563; font-size: 15px; margin: 30px 0 0 0;">
                 Bonne journée !<br>
-                <strong style="color: #9c5698;">L'équipe EasyCo</strong>
+                <strong style="color: #9c5698;">L'équipe Izzico</strong>
               </p>
             </td>
           </tr>
@@ -841,7 +841,7 @@ export function generateDailyDigestHTML(data: DailyDigestData): string {
             <td align="center">
               <p style="color: #9ca3af; font-size: 12px; margin: 0;">
                 Ce résumé est envoyé quotidiennement à 8h.<br>
-                &copy; ${new Date().getFullYear()} EasyCo. Tous droits réservés.
+                &copy; ${new Date().getFullYear()} Izzico. Tous droits réservés.
               </p>
             </td>
           </tr>

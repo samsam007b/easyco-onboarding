@@ -78,6 +78,7 @@ export default function GestionHubPage() {
   const [overview, setOverview] = useState<GestionOverview | null>(null);
   const [urgentActions, setUrgentActions] = useState<UrgentAction[]>([]);
   const [recentActivity, setRecentActivity] = useState<ActivityItem[]>([]);
+  const [showAllActions, setShowAllActions] = useState(false);
 
   const loadData = useCallback(async (refresh = false) => {
     if (refresh) setIsRefreshing(true);
@@ -180,13 +181,16 @@ export default function GestionHubPage() {
     return items;
   }, [overview, language, t]);
 
-  // Mock trend data for visualization (in real app, would come from service)
+  // Trend data for health score visualization
+  // TODO: Replace with real historical data from a health_score_history table
   const trendData = useMemo(() => {
-    // Generate last 7 days of data based on current stats
+    // Generate last 7 days with stable variation pattern
     const baseScore = overview?.healthScore || 100;
+    // Stable variation pattern simulating gradual improvement
+    const variations = [-5, -3, -4, -2, 0, 1, 2];
     return Array.from({ length: 7 }, (_, i) => ({
       day: i,
-      score: Math.max(0, Math.min(100, baseScore + Math.floor(Math.random() * 10) - 5 + (i * 2))),
+      score: Math.max(0, Math.min(100, baseScore + variations[i])),
     }));
   }, [overview?.healthScore]);
 
@@ -541,15 +545,18 @@ export default function GestionHubPage() {
                   <AlertTriangle className="w-5 h-5" style={{ color: '#c2566b' }} />
                   {t?.urgentActions?.title?.[language] || 'Urgent actions'}
                 </h2>
-                {urgentActions.length > 3 && (
+                {urgentActions.length > 4 && (
                   <Button
                     variant="ghost"
                     size="sm"
                     className="text-sm"
                     style={{ color: '#9c5698' }}
+                    onClick={() => setShowAllActions(!showAllActions)}
                   >
-                    {t?.urgentActions?.viewAll?.[language] || 'View all'} ({urgentActions.length})
-                    <ArrowRight className="w-4 h-4 ml-1" />
+                    {showAllActions
+                      ? (t?.urgentActions?.showLess?.[language] || 'Show less')
+                      : `${t?.urgentActions?.viewAll?.[language] || 'View all'} (${urgentActions.length})`}
+                    <ArrowRight className={`w-4 h-4 ml-1 transition-transform ${showAllActions ? 'rotate-90' : ''}`} />
                   </Button>
                 )}
               </div>
@@ -567,7 +574,7 @@ export default function GestionHubPage() {
                 </div>
               ) : (
                 <div className="space-y-3">
-                  {urgentActions.slice(0, 4).map((action, index) => (
+                  {(showAllActions ? urgentActions : urgentActions.slice(0, 4)).map((action, index) => (
                     <motion.div
                       key={action.id}
                       initial={{ opacity: 0, x: -20 }}

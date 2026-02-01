@@ -105,32 +105,48 @@ export default function PropertiesManagement() {
 
         // Fetch rented status from property_residents
         // Note: no is_active column, all residents are considered active
-        const { data: residents } = await supabase
-          .from('property_residents')
-          .select('property_id')
-          .in('property_id', propertyIds);
+        try {
+          const { data: residents, error: residentsError } = await supabase
+            .from('property_residents')
+            .select('property_id')
+            .in('property_id', propertyIds);
 
-        const rentedIds = new Set(residents?.map(r => r.property_id) || []);
-        setRentedPropertyIds(rentedIds);
+          if (residentsError) {
+            console.error('[Properties] Failed to fetch residents:', residentsError);
+          }
+          const rentedIds = new Set(residents?.map(r => r.property_id) || []);
+          setRentedPropertyIds(rentedIds);
+        } catch (error) {
+          console.error('[Properties] Error fetching residents:', error);
+          setRentedPropertyIds(new Set());
+        }
 
         // Fetch applications count per property
-        const [{ data: individualApps }, { data: groupApps }] = await Promise.all([
-          supabase
-            .from('applications')
-            .select('property_id')
-            .in('property_id', propertyIds),
-          supabase
-            .from('group_applications')
-            .select('property_id')
-            .in('property_id', propertyIds),
-        ]);
+        try {
+          const [{ data: individualApps, error: indError }, { data: groupApps, error: grpError }] = await Promise.all([
+            supabase
+              .from('applications')
+              .select('property_id')
+              .in('property_id', propertyIds),
+            supabase
+              .from('group_applications')
+              .select('property_id')
+              .in('property_id', propertyIds),
+          ]);
 
-        const appCounts = new Map<string, number>();
-        [...(individualApps || []), ...(groupApps || [])].forEach(app => {
-          const current = appCounts.get(app.property_id) || 0;
-          appCounts.set(app.property_id, current + 1);
-        });
-        setApplicationCounts(appCounts);
+          if (indError) console.error('[Properties] Failed to fetch individual applications:', indError);
+          if (grpError) console.error('[Properties] Failed to fetch group applications:', grpError);
+
+          const appCounts = new Map<string, number>();
+          [...(individualApps || []), ...(groupApps || [])].forEach(app => {
+            const current = appCounts.get(app.property_id) || 0;
+            appCounts.set(app.property_id, current + 1);
+          });
+          setApplicationCounts(appCounts);
+        } catch (error) {
+          console.error('[Properties] Error fetching applications:', error);
+          setApplicationCounts(new Map());
+        }
       }
     } catch (error: unknown) {
       toast.error(t?.toast?.loadError?.[language] || 'Erreur lors du chargement');

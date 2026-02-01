@@ -224,8 +224,14 @@ export default function MaintenancePage() {
       setCurrentUserId(user.id);
 
       // Fetch vendors for this owner
-      const ownerVendors = await vendorService.getVendors(user.id);
-      setVendors(ownerVendors);
+      try {
+        const ownerVendors = await vendorService.getVendors(user.id);
+        setVendors(ownerVendors);
+      } catch (vendorError) {
+        console.error('[Maintenance] Failed to fetch vendors:', vendorError);
+        // Non-blocking - continue loading page without vendors
+        setVendors([]);
+      }
 
       // 1. Get user's properties
       // Note: properties table uses 'title' not 'name'
@@ -304,11 +310,14 @@ export default function MaintenancePage() {
       if (result.success) {
         // Refresh data
         await fetchMaintenanceData();
+        toast.success(getHookTranslation('maintenance', 'statusUpdated'));
       } else {
         console.error('Failed to update status:', result.error);
+        toast.error(result.error || getHookTranslation('maintenance', 'updateFailed'));
       }
     } catch (error) {
       console.error('Error updating status:', error);
+      toast.error(getHookTranslation('maintenance', 'updateFailed'));
     } finally {
       setIsUpdating(null);
     }

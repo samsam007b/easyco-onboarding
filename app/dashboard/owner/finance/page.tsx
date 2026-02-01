@@ -66,6 +66,7 @@ import {
 
 import { exportFinanceToCSV, exportFinanceToPDF, type FinanceExportData } from '@/lib/services/export-service';
 import { PaymentTable, FinanceAlerts, DocumentsModal, type PaymentRecord, type FinanceAlertData } from '@/components/owner/finances';
+import { PaymentDisclaimer } from '@/components/shared/PaymentDisclaimer';
 import { financesService, type FinancesOverview, type RentPaymentRecord } from '@/lib/services/finances-service';
 import {
   ownerGradient,
@@ -738,6 +739,15 @@ export default function FinanceAnalyticsPage() {
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+        </motion.div>
+
+        {/* Payment Philosophy Disclaimer */}
+        <motion.div variants={itemVariants} className="mb-6">
+          <PaymentDisclaimer
+            variant="subtle"
+            size="sm"
+            customMessage="Ces données représentent des déclarations de paiement. Izzico facilite le suivi mais ne gère pas les transferts d'argent."
+          />
         </motion.div>
 
         {/* Colorful KPI Cards - Each with different color */}

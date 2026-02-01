@@ -386,7 +386,11 @@ export function useApplications(userId?: string) {
 
   // Update group application status (approve/reject)
   const updateGroupApplicationStatus = useCallback(
-    async (groupApplicationId: string, newStatus: GroupApplication['status'], notes?: string): Promise<boolean> => {
+    async (
+      groupApplicationId: string,
+      newStatus: GroupApplication['status'],
+      rejectionReason?: string
+    ): Promise<boolean> => {
       try {
         const updateData: any = {
           status: newStatus,
@@ -396,8 +400,8 @@ export function useApplications(userId?: string) {
         if (newStatus === 'approved' || newStatus === 'rejected') {
           updateData.reviewed_at = new Date().toISOString();
           updateData.reviewed_by = userId;
-          if (notes) {
-            updateData.review_notes = notes;
+          if (newStatus === 'rejected' && rejectionReason) {
+            updateData.rejection_reason = rejectionReason;
           }
         }
 

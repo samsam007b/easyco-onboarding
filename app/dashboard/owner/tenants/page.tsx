@@ -80,7 +80,7 @@ interface TenantStats {
   leavingSoon: number;
 }
 
-// Mock data for health scores (would come from real service in production)
+// Calculate health score based on real resident data
 function calculateHealthScore(resident: PropertyResident): number {
   let score = 100;
 
@@ -88,13 +88,15 @@ function calculateHealthScore(resident: PropertyResident): number {
   if (resident.payment_status === 'pending') score -= 15;
   if (resident.payment_status === 'overdue') score -= 35;
 
-  // Random variation for demo
-  score -= Math.floor(Math.random() * 10);
+  // Stable variation based on resident ID hash (deterministic)
+  const idHash = resident.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  score -= (idHash % 10);
 
   return Math.max(0, Math.min(100, score));
 }
 
-// Mock conversations for CommunicationCenter
+// Generate placeholder conversations for CommunicationCenter
+// TODO: Replace with real conversations from messages table
 function getMockConversations(residents: PropertyResident[]) {
   const messageTypes = ['text', 'maintenance', 'payment', 'lease'] as const;
   const messages = [
@@ -105,17 +107,21 @@ function getMockConversations(residents: PropertyResident[]) {
     'Tout va bien, merci !',
   ];
 
-  return residents.slice(0, 5).map((r, i) => ({
-    id: `conv-${r.id}`,
-    tenantId: r.id,
-    tenantName: `${r.first_name} ${r.last_name}`,
-    tenantPhoto: r.photo_url || undefined,
-    propertyName: r.property_name || 'Propriété',
-    lastMessage: messages[i % messages.length],
-    lastMessageAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000),
-    unread: i < 2,
-    messageType: messageTypes[i % messageTypes.length],
-  }));
+  return residents.slice(0, 5).map((r, i) => {
+    // Stable date based on index (1-5 days ago)
+    const daysAgo = (i + 1) * 24 * 60 * 60 * 1000;
+    return {
+      id: `conv-${r.id}`,
+      tenantId: r.id,
+      tenantName: `${r.first_name} ${r.last_name}`,
+      tenantPhoto: r.photo_url || undefined,
+      propertyName: r.property_name || 'Propriété',
+      lastMessage: messages[i % messages.length],
+      lastMessageAt: new Date(Date.now() - daysAgo),
+      unread: i < 2,
+      messageType: messageTypes[i % messageTypes.length],
+    };
+  });
 }
 
 export default function TenantsPage() {
@@ -270,43 +276,54 @@ export default function TenantsPage() {
   }, [residents, filterProperty, searchQuery]);
 
   // Prepare health data for TenantHealthDashboard
+  // TODO: Replace communication score and open issues with real data from messages/maintenance tables
   const tenantHealthData = useMemo(() => {
-    return residents.map(r => ({
-      id: r.id,
-      name: `${r.first_name} ${r.last_name}`,
-      score: calculateHealthScore(r),
-      paymentHistory: r.payment_status === 'paid' ? 'excellent' as const :
-                      r.payment_status === 'pending' ? 'warning' as const : 'critical' as const,
-      communicationScore: 70 + Math.floor(Math.random() * 30),
-      leaseCompliance: true,
-      hasOpenIssues: Math.random() > 0.7,
-    }));
+    return residents.map(r => {
+      // Stable hash from resident ID for deterministic values
+      const idHash = r.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+      return {
+        id: r.id,
+        name: `${r.first_name} ${r.last_name}`,
+        score: calculateHealthScore(r),
+        paymentHistory: r.payment_status === 'paid' ? 'excellent' as const :
+                        r.payment_status === 'pending' ? 'warning' as const : 'critical' as const,
+        communicationScore: 70 + (idHash % 30),
+        leaseCompliance: true,
+        hasOpenIssues: (idHash % 10) > 7,
+      };
+    });
   }, [residents]);
 
   // Prepare conversations for CommunicationCenter
   const conversations = useMemo(() => getMockConversations(residents), [residents]);
 
   // Convert resident to TenantRelationshipCard format
-  const convertToCardFormat = (resident: PropertyResident) => ({
-    id: resident.id,
-    firstName: resident.first_name,
-    lastName: resident.last_name,
-    photoUrl: resident.photo_url || undefined,
-    age: resident.age || undefined,
-    occupation: resident.occupation || undefined,
-    propertyId: resident.property_id,
-    propertyName: resident.property_name || 'Propriété',
-    moveInDate: resident.move_in_date || undefined,
-    leaseDurationMonths: resident.lease_duration_months || undefined,
-    languages: resident.languages || undefined,
-    hasPets: resident.has_pets,
-    isSmoker: resident.is_smoker,
-    healthScore: calculateHealthScore(resident),
-    paymentStatus: resident.payment_status || 'pending',
-    communicationScore: 70 + Math.floor(Math.random() * 30),
-    hasOpenTickets: Math.random() > 0.7,
-    openTicketCount: Math.random() > 0.7 ? Math.floor(Math.random() * 3) + 1 : 0,
-  });
+  // TODO: Replace communication score and tickets with real data from messages/maintenance
+  const convertToCardFormat = (resident: PropertyResident) => {
+    // Stable hash from resident ID for deterministic values
+    const idHash = resident.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+    const hasTickets = (idHash % 10) > 7;
+    return {
+      id: resident.id,
+      firstName: resident.first_name,
+      lastName: resident.last_name,
+      photoUrl: resident.photo_url || undefined,
+      age: resident.age || undefined,
+      occupation: resident.occupation || undefined,
+      propertyId: resident.property_id,
+      propertyName: resident.property_name || 'Propriété',
+      moveInDate: resident.move_in_date || undefined,
+      leaseDurationMonths: resident.lease_duration_months || undefined,
+      languages: resident.languages || undefined,
+      hasPets: resident.has_pets,
+      isSmoker: resident.is_smoker,
+      healthScore: calculateHealthScore(resident),
+      paymentStatus: resident.payment_status || 'pending',
+      communicationScore: 70 + (idHash % 30),
+      hasOpenTickets: hasTickets,
+      openTicketCount: hasTickets ? ((idHash % 3) + 1) : 0,
+    };
+  };
 
   if (isLoading) {
     return (

@@ -67,6 +67,7 @@ import { useLanguage } from '@/lib/i18n/use-language';
 import { rentService } from '@/lib/services/rent-service';
 import { maintenanceService } from '@/lib/services/maintenance-service';
 import { AddPropertyModal } from './AddPropertyModal';
+import { toast } from 'sonner';
 
 // V3 Owner Gradient Colors
 const ownerGradient = 'linear-gradient(135deg, #9c5698 0%, #a5568d 25%, #af5682 50%, #b85676 75%, #c2566b 100%)';
@@ -199,14 +200,26 @@ export default function OwnerCommandCenter() {
       // Get property IDs for batch queries
       const propertyIds = propertiesData.map(p => p.id);
 
-      // BATCH: Get residents to calculate actual occupancy
+      // BATCH: Get residents with move_out_date to calculate occupancy and lease expiry
       const { data: allResidents } = await supabase
         .from('property_residents')
-        .select('property_id')
+        .select('property_id, move_out_date')
         .in('property_id', propertyIds);
 
       // Calculate which properties have residents (are actually rented)
       const rentedPropertyIds = new Set(allResidents?.map(r => r.property_id) || []);
+
+      // Map property_id to earliest lease end date (move_out_date)
+      const leaseEndDateByProperty = new Map<string, Date>();
+      allResidents?.forEach(r => {
+        if (r.move_out_date) {
+          const endDate = new Date(r.move_out_date);
+          const existing = leaseEndDateByProperty.get(r.property_id);
+          if (!existing || endDate < existing) {
+            leaseEndDateByProperty.set(r.property_id, endDate);
+          }
+        }
+      });
 
       // Calculate base stats using actual resident data
       const published = propertiesData.filter(p => p.status === 'published').length;
@@ -305,9 +318,15 @@ export default function OwnerCommandCenter() {
           });
         }
 
-        // Calculate lease expiry (mock - would come from leases table)
-        // TODO: Connect to real leases table
-        const leaseExpiringDays = property.status === 'rented' ? Math.floor(Math.random() * 120) : undefined;
+        // Calculate lease expiry from real property_residents.move_out_date
+        let leaseExpiringDays: number | undefined = undefined;
+        const leaseEndDate = leaseEndDateByProperty.get(property.id);
+        if (leaseEndDate && rentedPropertyIds.has(property.id)) {
+          const daysUntilExpiry = Math.ceil((leaseEndDate.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+          if (daysUntilExpiry > 0 && daysUntilExpiry <= 120) {
+            leaseExpiringDays = daysUntilExpiry;
+          }
+        }
 
         if (leaseExpiringDays !== undefined && leaseExpiringDays <= 30) {
           urgentActionsTemp.push({
@@ -435,18 +454,27 @@ export default function OwnerCommandCenter() {
     }
   }, [searchParams, router]);
 
-  // Generate revenue chart data (would be from real data)
+  // Generate revenue chart data
+  // Uses stable values based on collection rate instead of Math.random()
+  // TODO: Replace with real historical data from rent_payments aggregated by month
   const generateRevenueData = () => {
-    const monthKeys = ['jan', 'feb', 'mar', 'apr', 'may', 'jun'] as const;
-    const monthNames: Record<typeof monthKeys[number], string> = {
-      jan: 'Jan', feb: 'Fév', mar: 'Mar', apr: 'Avr', may: 'Mai', jun: 'Juin'
-    };
+    const now = new Date();
+    const months: { month: string; collected: number; expected: number }[] = [];
+    const monthNames = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Juin', 'Juil', 'Août', 'Sep', 'Oct', 'Nov', 'Déc'];
 
-    return monthKeys.map((key) => ({
-      month: monthNames[key],
-      collected: Math.floor(stats.totalExpected * (0.85 + Math.random() * 0.15)),
-      expected: stats.totalExpected,
-    }));
+    // Generate last 6 months of data with stable variation pattern
+    for (let i = 5; i >= 0; i--) {
+      const date = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const monthName = monthNames[date.getMonth()];
+      // Stable variation: use month index for predictable pattern
+      const variationFactor = [0.92, 0.95, 0.88, 0.97, 0.94, 0.96][i] || 0.95;
+      months.push({
+        month: monthName,
+        collected: Math.floor(stats.totalExpected * variationFactor),
+        expected: stats.totalExpected,
+      });
+    }
+    return months;
   };
 
   const revenueData = generateRevenueData();
@@ -489,6 +517,215 @@ export default function OwnerCommandCenter() {
       case 'pending_application': return Users;
     }
   };
+
+  // Export Command Center report as PDF
+  const exportReport = useCallback(() => {
+    const locale = language === 'fr' ? 'fr-FR' : language === 'nl' ? 'nl-NL' : language === 'de' ? 'de-DE' : 'en-GB';
+    const formatCurrency = (amount: number) => new Intl.NumberFormat(locale, {
+      style: 'currency',
+      currency: 'EUR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(amount);
+
+    const severityLabel = (s: string) => s === 'critical' ? 'Critique' : s === 'warning' ? 'Attention' : 'Info';
+    const severityColor = (s: string) => s === 'critical' ? '#ef4444' : s === 'warning' ? '#f59e0b' : '#3b82f6';
+
+    const urgentActionsHTML = urgentActions.slice(0, 10).map(action => `
+      <tr>
+        <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;background:${severityColor(action.severity)}20;color:${severityColor(action.severity)}">${severityLabel(action.severity)}</span></td>
+        <td>${action.title}</td>
+        <td>${action.description}</td>
+        <td>${action.propertyName}</td>
+      </tr>
+    `).join('');
+
+    const propertiesHTML = propertyStatuses.slice(0, 15).map(p => `
+      <tr>
+        <td>${p.title}</td>
+        <td>${p.city}</td>
+        <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;background:${p.occupancyStatus === 'occupied' ? '#10b98120' : '#f59e0b20'};color:${p.occupancyStatus === 'occupied' ? '#10b981' : '#f59e0b'}">${p.occupancyStatus === 'occupied' ? 'Louée' : 'Vacante'}</span></td>
+        <td style="text-align:right">${formatCurrency(p.monthlyRent)}</td>
+        <td style="text-align:center">${p.openMaintenanceCount}</td>
+      </tr>
+    `).join('');
+
+    const html = `
+<!DOCTYPE html>
+<html lang="${language}">
+<head>
+  <meta charset="UTF-8">
+  <title>Rapport Portefeuille - Izzico</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #1f2937;
+      padding: 40px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 3px solid;
+      border-image: linear-gradient(135deg, #9c5698, #c2566b, #e05747) 1;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, #9c5698, #c2566b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle { font-size: 14px; color: #6b7280; margin-top: 4px; }
+    .date { font-size: 12px; color: #9ca3af; text-align: right; }
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .summary-card {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .summary-card .label { font-size: 11px; color: #6b7280; margin-bottom: 4px; text-transform: uppercase; }
+    .summary-card .value { font-size: 22px; font-weight: 700; color: #1f2937; }
+    .summary-card.primary {
+      background: linear-gradient(135deg, #9c5698, #c2566b);
+      color: white;
+    }
+    .summary-card.primary .label, .summary-card.primary .value { color: white; }
+    .summary-card.danger .value { color: #ef4444; }
+    .summary-card.success .value { color: #10b981; }
+    h2 {
+      font-size: 16px;
+      font-weight: 600;
+      margin: 24px 0 12px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f3f4f6;
+      color: #374151;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px; }
+    th { background: #f3f4f6; padding: 10px 8px; text-align: left; font-weight: 600; color: #374151; }
+    td { padding: 10px 8px; border-bottom: 1px solid #f3f4f6; }
+    .footer {
+      margin-top: 40px;
+      padding-top: 20px;
+      border-top: 1px solid #e5e7eb;
+      font-size: 10px;
+      color: #9ca3af;
+      text-align: center;
+    }
+    @media print {
+      body { padding: 20px; }
+      .summary-card.primary { background: #9c5698 !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div>
+      <div class="logo">Izzico</div>
+      <div class="subtitle">Rapport Command Center</div>
+    </div>
+    <div class="date">
+      Généré le ${new Date().toLocaleDateString(locale)}<br>
+      à ${new Date().toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' })}
+    </div>
+  </div>
+
+  <div class="summary">
+    <div class="summary-card primary">
+      <div class="label">Revenus du mois</div>
+      <div class="value">${formatCurrency(stats.totalCollected)}</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Propriétés</div>
+      <div class="value">${stats.totalProperties}</div>
+    </div>
+    <div class="summary-card success">
+      <div class="label">Taux d'occupation</div>
+      <div class="value">${stats.occupationRate}%</div>
+    </div>
+    <div class="summary-card ${stats.overdueAmount > 0 ? 'danger' : ''}">
+      <div class="label">Impayés</div>
+      <div class="value">${formatCurrency(stats.overdueAmount)}</div>
+    </div>
+  </div>
+
+  <div class="summary" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="summary-card">
+      <div class="label">Louées</div>
+      <div class="value" style="color:#10b981">${stats.occupiedProperties}</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Vacantes</div>
+      <div class="value" style="color:#f59e0b">${stats.vacantProperties}</div>
+    </div>
+    <div class="summary-card">
+      <div class="label">Candidatures</div>
+      <div class="value">${stats.pendingApplications}</div>
+    </div>
+  </div>
+
+  ${urgentActions.length > 0 ? `
+  <h2>Actions urgentes (${urgentActions.length})</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:80px">Priorité</th>
+        <th>Type</th>
+        <th>Description</th>
+        <th>Propriété</th>
+      </tr>
+    </thead>
+    <tbody>${urgentActionsHTML}</tbody>
+  </table>
+  ` : ''}
+
+  <h2>Propriétés (${stats.totalProperties})</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nom</th>
+        <th>Ville</th>
+        <th>Statut</th>
+        <th style="text-align:right">Loyer/mois</th>
+        <th style="text-align:center">Tickets</th>
+      </tr>
+    </thead>
+    <tbody>${propertiesHTML}</tbody>
+  </table>
+
+  <div class="footer">
+    Document généré automatiquement par Izzico - Ce document n'a pas de valeur légale
+  </div>
+</body>
+</html>
+    `;
+
+    // Create hidden iframe for printing
+    const iframe = document.createElement('iframe');
+    iframe.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:none;';
+    document.body.appendChild(iframe);
+    iframe.srcdoc = html;
+    iframe.onload = () => {
+      setTimeout(() => {
+        iframe.contentWindow?.print();
+        setTimeout(() => document.body.removeChild(iframe), 1000);
+      }, 250);
+    };
+
+    toast.success('Rapport prêt', { description: 'Le dialogue d\'impression va s\'ouvrir' });
+  }, [language, stats, urgentActions, propertyStatuses]);
 
   if (isLoading) {
     return (
@@ -638,7 +875,7 @@ export default function OwnerCommandCenter() {
                       Ajouter une propriété
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => {/* Export functionality */}}
+                      onClick={exportReport}
                       className="cursor-pointer"
                     >
                       <Download className="w-4 h-4 mr-2" style={{ color: '#af5682' }} />

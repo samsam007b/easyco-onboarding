@@ -373,6 +373,7 @@ export default function PortfolioHubPage() {
                     size="sm"
                     className="text-sm"
                     style={{ color: '#9c5698' }}
+                    onClick={() => router.push('/dashboard/owner/gestion')}
                   >
                     {t?.viewAll?.[language] || 'View all'} ({actions.length})
                     <ArrowRight className="w-4 h-4 ml-1" />

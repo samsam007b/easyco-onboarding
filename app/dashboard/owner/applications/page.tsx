@@ -288,16 +288,19 @@ export default function OwnerApplicationsPage() {
       let success = false;
 
       if (isGroup) {
+        // For group applications: notes param is used for rejection reason
         success = await updateGroupApplicationStatus(
           app.id,
           newStatus,
           actionModal.action === 'reject' ? rejectReason || undefined : undefined
         );
       } else {
+        // For individual applications: 3rd param = reviewNotes, 4th param = rejectionReason
         success = await updateApplicationStatus(
           app.id,
           newStatus,
-          actionModal.action === 'reject' ? rejectReason || undefined : undefined
+          undefined, // reviewNotes
+          actionModal.action === 'reject' ? rejectReason || undefined : undefined // rejectionReason
         );
       }
 

@@ -140,15 +140,19 @@ export default function ModernOwnerDashboard() {
     }
   };
 
-  // Generate real revenue data from properties
+  // Generate revenue data from properties with stable variation
+  // TODO: Replace with real historical data from rent_payments/expenses tables
   const generateRevenueData = () => {
     const monthKeys = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'] as const;
     const baseRevenue = stats.totalRevenue;
+    // Stable variation patterns
+    const revenueFactors = [0.85, 0.92, 0.88, 0.95, 0.90, 0.97, 0.93, 0.89, 0.94, 0.91, 0.96, 0.98];
+    const expenseFactors = [0.22, 0.25, 0.20, 0.28, 0.23, 0.21, 0.26, 0.24, 0.22, 0.27, 0.23, 0.25];
 
-    return monthKeys.map((key) => ({
+    return monthKeys.map((key, i) => ({
       month: owner?.months?.[key] || key.charAt(0).toUpperCase() + key.slice(1),
-      revenue: Math.floor(baseRevenue * (0.7 + Math.random() * 0.4)),
-      expenses: Math.floor(baseRevenue * (0.2 + Math.random() * 0.15)),
+      revenue: Math.floor(baseRevenue * revenueFactors[i]),
+      expenses: Math.floor(baseRevenue * expenseFactors[i]),
     }));
   };
 
