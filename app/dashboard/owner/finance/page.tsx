@@ -35,6 +35,8 @@ import {
   Users,
   ArrowUpRight,
   Sparkles,
+  Home,
+  PiggyBank,
 } from 'lucide-react';
 import {
   AreaChart,
@@ -1246,6 +1248,86 @@ export default function FinanceAnalyticsPage() {
           </motion.div>
         )}
 
+        {/* Quick Actions - From Hub Page */}
+        <motion.div variants={itemVariants} className="mb-8">
+          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <PiggyBank className="w-5 h-5" style={{ color: ownerPalette.secondary.main }} />
+            Gestion financière
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* Portfolio Card */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => router.push('/dashboard/owner/portfolio')}
+              className="cursor-pointer superellipse-2xl p-6 relative overflow-hidden"
+              style={{
+                background: ownerPalette.quaternary.light,
+                border: `2px solid ${ownerPalette.quaternary.border}`,
+              }}
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full -mr-12 -mt-12"
+                style={{ background: `${ownerPalette.quaternary.main}10` }} />
+              <div className="relative z-10">
+                <div
+                  className="w-12 h-12 superellipse-xl flex items-center justify-center mb-4"
+                  style={{ background: ownerPalette.quaternary.main }}
+                >
+                  <Home className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Portfolio</h3>
+                <p className="text-gray-600 text-sm mb-4">
+                  Voir les performances de vos propriétés
+                </p>
+                <div className="flex items-center gap-3">
+                  <div
+                    className="superellipse-lg px-3 py-1.5"
+                    style={{ background: `${ownerPalette.quaternary.main}15` }}
+                  >
+                    <span style={{ color: ownerPalette.quaternary.text }} className="text-sm font-semibold">
+                      {overview?.kpis.occupationRate || 0}% occupation
+                    </span>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-gray-400" />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Gestion Card */}
+            <motion.div
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => router.push('/dashboard/owner/gestion')}
+              className="cursor-pointer superellipse-2xl p-6 relative overflow-hidden"
+              style={{
+                background: `linear-gradient(135deg, ${ownerPalette.secondary.main} 0%, ${ownerPalette.tertiary.main} 100%)`,
+                boxShadow: `0 8px 32px ${ownerPalette.secondary.shadow}`,
+              }}
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-white/10 -mr-12 -mt-12" />
+              <div className="absolute bottom-0 left-0 w-24 h-24 rounded-full bg-white/5 -ml-8 -mb-8" />
+              <div className="relative z-10">
+                <div className="w-12 h-12 superellipse-xl bg-white/20 flex items-center justify-center mb-4">
+                  <BarChart3 className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Gestion</h3>
+                <p className="text-white/70 text-sm mb-4">
+                  Suivre les encaissements et analyser vos revenus
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="bg-white/20 superellipse-lg px-3 py-1.5">
+                    <span className="text-white text-sm font-semibold">
+                      {properties.length} propriétés
+                    </span>
+                  </div>
+                  <ChevronRight className="w-5 h-5 text-white/60" />
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </motion.div>
+
         {/* Payment Table */}
         <motion.div variants={itemVariants}>
           <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
@@ -1269,6 +1351,46 @@ export default function FinanceAnalyticsPage() {
             onSendReminder={handleSendReminder}
             isLoading={isRefreshing}
           />
+        </motion.div>
+
+        {/* Bottom Summary Banner - From Hub Page */}
+        <motion.div variants={itemVariants} className="mt-8 mb-4">
+          <div
+            className="superellipse-2xl p-6 relative overflow-hidden"
+            style={{
+              background: ownerGradient,
+              boxShadow: '0 8px 32px rgba(156, 86, 152, 0.25)',
+            }}
+          >
+            <div className="absolute top-0 right-0 w-40 h-40 rounded-full bg-white/10 -mr-16 -mt-16" />
+            <div className="absolute bottom-0 left-1/2 w-32 h-32 rounded-full bg-white/5 -ml-16 -mb-16" />
+            <div className="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+              <div>
+                <p className="text-3xl font-bold text-white">
+                  €{(overview?.paymentSummary.paid || 0).toLocaleString()}
+                </p>
+                <p className="text-white/70 text-sm mt-1">Encaissé ce mois</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">
+                  €{(overview?.paymentSummary.pending || 0).toLocaleString()}
+                </p>
+                <p className="text-white/70 text-sm mt-1">En attente</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">
+                  €{(overview?.paymentSummary.overdue || 0).toLocaleString()}
+                </p>
+                <p className="text-white/70 text-sm mt-1">En retard</p>
+              </div>
+              <div>
+                <p className="text-3xl font-bold text-white">
+                  {overview?.kpis.collectionRate || 100}%
+                </p>
+                <p className="text-white/70 text-sm mt-1">Taux de recouvrement</p>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </motion.main>
 
