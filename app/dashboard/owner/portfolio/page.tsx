@@ -315,7 +315,7 @@ export default function PortfolioHubPage() {
             <motion.div
               whileHover={{ scale: 1.02, y: -4 }}
               whileTap={{ scale: 0.98 }}
-              onClick={() => router.push('/dashboard/owner/finances')}
+              onClick={() => router.push('/dashboard/owner/finance')}
               className="relative overflow-hidden superellipse-2xl p-5 cursor-pointer bg-white"
               style={{
                 border: `1px solid ${semanticColors.success.border}`,

@@ -142,7 +142,7 @@ const navigationDomains = {
     label: 'Finances',
     icon: Wallet,
     description: 'Track your income',
-    href: '/dashboard/owner/finances',
+    href: '/dashboard/owner/finance',
     items: []
   }
 };

@@ -882,7 +882,7 @@ export default function OwnerCommandCenter() {
                       Exporter rapport
                     </DropdownMenuItem>
                     <DropdownMenuItem
-                      onClick={() => router.push('/dashboard/owner/finances')}
+                      onClick={() => router.push('/dashboard/owner/finance')}
                       className="cursor-pointer"
                     >
                       <PieChart className="w-4 h-4 mr-2" style={{ color: '#b85676' }} />
