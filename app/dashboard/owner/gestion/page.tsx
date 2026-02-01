@@ -866,19 +866,27 @@ export default function GestionHubPage() {
               {/* Avg Resolution with trend */}
               <div className="space-y-1">
                 <p className="text-3xl font-bold text-white">
-                  {overview?.maintenance.avgResolutionHours || 0}h
+                  {overview?.maintenance.resolved && overview.maintenance.resolved > 0
+                    ? `${overview.maintenance.avgResolutionHours}h`
+                    : '--'}
                 </p>
                 <p className="text-white/70 text-sm">{t?.summary?.avgResolutionTime?.[language] || 'Avg resolution time'}</p>
                 <div className="flex items-center justify-center gap-1 text-xs">
-                  {overview?.maintenance.avgResolutionHours && overview.maintenance.avgResolutionHours < 48 ? (
-                    <span className="text-emerald-300 flex items-center">
-                      <TrendingDown className="w-3 h-3 mr-0.5" />
-                      {t?.summary?.fast?.[language] || 'Rapide'}
-                    </span>
+                  {overview?.maintenance.resolved && overview.maintenance.resolved > 0 ? (
+                    overview.maintenance.avgResolutionHours < 48 ? (
+                      <span className="text-emerald-300 flex items-center">
+                        <TrendingDown className="w-3 h-3 mr-0.5" />
+                        {t?.summary?.fast?.[language] || 'Rapide'}
+                      </span>
+                    ) : (
+                      <span className="text-amber-300 flex items-center">
+                        <Clock className="w-3 h-3 mr-0.5" />
+                        {t?.summary?.toImprove?.[language] || 'À améliorer'}
+                      </span>
+                    )
                   ) : (
-                    <span className="text-amber-300 flex items-center">
-                      <Clock className="w-3 h-3 mr-0.5" />
-                      {t?.summary?.toImprove?.[language] || 'À améliorer'}
+                    <span className="text-white/50 text-xs">
+                      En attente de données
                     </span>
                   )}
                 </div>

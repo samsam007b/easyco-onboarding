@@ -66,6 +66,7 @@ import UpgradeNotification from '@/components/subscriptions/UpgradeNotification'
 import { useLanguage } from '@/lib/i18n/use-language';
 import { rentService } from '@/lib/services/rent-service';
 import { maintenanceService } from '@/lib/services/maintenance-service';
+import { financesService } from '@/lib/services/finances-service';
 import { AddPropertyModal } from './AddPropertyModal';
 import { toast } from 'sonner';
 
@@ -122,7 +123,7 @@ interface UpcomingDeadline {
 
 interface DashboardStats {
   totalRevenue: number;
-  revenueChange: number;
+  revenueChange: number | null; // null = pas assez de données (< 2 mois)
   totalExpected: number;
   totalCollected: number;
   overdueAmount: number;
@@ -155,7 +156,7 @@ export default function OwnerCommandCenter() {
   const [showAddPropertyModal, setShowAddPropertyModal] = useState(false);
   const [stats, setStats] = useState<DashboardStats>({
     totalRevenue: 0,
-    revenueChange: 0,
+    revenueChange: null, // null until we have 2+ months of data
     totalExpected: 0,
     totalCollected: 0,
     overdueAmount: 0,
@@ -416,9 +417,21 @@ export default function OwnerCommandCenter() {
       setUrgentActions(urgentActionsTemp);
       setUpcomingDeadlines(deadlinesTemp.slice(0, 5));
       setPropertyStatuses(propertyStatusesTemp);
+      // Calculate revenue change from real data
+      let revenueChange: number | null = null;
+      try {
+        const comparison = await financesService.getMonthlyComparison(user.id);
+        // Only show percentage if we have previous month data
+        if (comparison.previousMonth.collected > 0) {
+          revenueChange = comparison.changePercent;
+        }
+      } catch (err) {
+        console.error('Error calculating revenue change:', err);
+      }
+
       setStats({
         totalRevenue: totalExpected - totalOverdueAmount,
-        revenueChange: 8, // Would calculate from historical data
+        revenueChange,
         totalExpected,
         totalCollected: totalExpected - totalOverdueAmount,
         overdueAmount: totalOverdueAmount,
